@@ -1,5 +1,11 @@
 # amilib
+library from pyamihtml
 
-Python library of `ami` software especially NLP, HTML, downloading and related convenience utilities.
+mainly for amiclimate to start with
 
-Designed as a problem-independent standalone library to support activities such as climate document processing.
+
+
+
+
+
+
