@@ -8,11 +8,11 @@ from pathlib import Path
 
 import lxml.etree
 
-from pyamihtmlx.ami_html import HtmlStyle
-from pyamihtmlx.ami_integrate import HtmlGenerator
-from pyamihtmlx.util import Util, EnhancedRegex, GENERATE
+from amilibx.ami_html import HtmlStyle
+from amilibx.ami_integrate import HtmlGenerator
+from amilibx.util import Util, EnhancedRegex, GENERATE
 # from pyamihtmlx.util import EnhancedRegex, GENERATE, Util
-from pyamihtmlx.xml_lib import HtmlLib, Templater, XmlLib
+from amilibx.xml_lib import HtmlLib, Templater, XmlLib
 
 
 def replace_parent(current_parents, div):

@@ -27,15 +27,14 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfplumber.page import Page
 
-from pyamihtmlx.ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, CSSStyle, FONT_FAMILY, P_X0, P_X1, \
+from amilibx.ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, CSSStyle, FONT_FAMILY, P_X0, P_X1, \
     P_Y0, \
     P_Y1, BOLD, ITALIC, HtmlUtil, FILL, TIMES, CALIBRI, FONT_FAMILIES, H_TABLE, H_THEAD, H_TBODY, \
     H_TR, H_TD
-from pyamihtmlx.ami_svg import AmiSVG
-from pyamihtmlx.ami_svg import SVG_G
-from pyamihtmlx.bbox_copy import BBox  # this is horrid, but I don't have a library
-from pyamihtmlx.util import Util, AmiLogger
-from pyamihtmlx.xml_lib import XmlLib, HtmlLib
+from amilibx.ami_svg import AmiSVG, SVG_G
+from amilibx.bbox import BBox
+from amilibx.util import Util, AmiLogger
+from amilibx.xml_lib import XmlLib, HtmlLib
 
 # local
 

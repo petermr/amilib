@@ -15,16 +15,15 @@ from pprint import pprint
 import lxml
 import lxml.etree
 import numpy as np
-import pandas as pd
 from lxml.etree import Element, _Element, _ElementTree
 from sklearn.linear_model import LinearRegression
 
 # local
 # from pyamihtmlx.ami_dict import AmiDictionary
 # from pyamihtmlx.ami_pdf_libs import AmiPDFPlumber
-from pyamihtmlx.bbox_copy import BBox
-from pyamihtmlx.util import SScript, AbstractArgs, Util, AmiLogger
-from pyamihtmlx.xml_lib import XmlLib, HtmlLib
+from amilibx.bbox import BBox
+from amilibx.util import SScript, AbstractArgs, Util, AmiLogger
+from amilibx.xml_lib import XmlLib, HtmlLib
 
 logger = AmiLogger.create_named_logger(__file__)
 

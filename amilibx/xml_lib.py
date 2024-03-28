@@ -13,7 +13,7 @@ from lxml import etree as ET
 from lxml.etree import _Element, _ElementTree
 from lxml.html import HTMLParser
 
-from pyamihtmlx.file_lib import FileLib
+from amilibx.file_lib import FileLib
 
 # from pyamihtmlx.util import EnhancedRegex
 
