@@ -725,7 +725,7 @@ def main(argv=None):
     """entry point for PDF conversiom
     typical:
     python -m pyamihtmlx.ami_pdf \
-        --inpath /Users/pm286/workspace/pyami/test/resources/ipcc/Chapter06/fulltext.pdf \
+        --inpath /Users/pm286/workspace/pyami/test/resources/ar6/Chapter06/fulltext.pdf \
         --outdir /Users/pm286/workspace/pyami/temp/pdf/chap6/
         --maxpage 100
 

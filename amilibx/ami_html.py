@@ -522,7 +522,7 @@ def get_target_href(target_id):
         report = report1 if report1 else report
         chapter = match.group("chapter").lower()
         section = match.group("section").lower()
-        href = f"{github_base}/petermr/semanticClimate/blob/main/ipcc/ar6/{report}/{chapter}/html/fulltext/groups_groups.html#{section}"
+        href = f"{github_base}/petermr/semanticClimate/blob/main/ar6/ar6/{report}/{chapter}/html/fulltext/groups_groups.html#{section}"
 
     return href
 
@@ -3218,9 +3218,9 @@ class HTMLArgs(AbstractArgs):
         self.parser.epilog = "==============="
 
     """python -m pyamihtmlx.pyamix HTML --annotate 
-     --dict /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
-     --inpath /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/fulltext.html
-     --outpsth /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/annotated/fulltext_emissions.html
+     --dict /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
+     --inpath /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/fulltext.html
+     --outpsth /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/annotated/fulltext_emissions.html
      --color pink
      """
 

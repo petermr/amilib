@@ -31,7 +31,7 @@ REPO_DIR = AMIX_DIR.parent
 #     DICT = "DICT"
 
 
-# class AmiLib:
+class AmiLib:
 #     """ main entry point for running pyami
 #      """
 #     OUTFILE = "outfile"
@@ -96,11 +96,11 @@ REPO_DIR = AMIX_DIR.parent
 #     logger = logging.getLogger("pyami")
 #     symbol_ini = None
 #
-#     def __init__(self):
-#         """constructor
-#
-#         creates symbols
-#         """
+    def __init__(self):
+        """constructor
+
+        creates symbols
+        """
 #
 #         self.logger.debug(f"===============Examples=================")
 #         if self.logger.getEffectiveLevel() <= logging.DEBUG:
@@ -159,157 +159,157 @@ REPO_DIR = AMIX_DIR.parent
 #         # self.func_dict[self.TXT2SENT] = (TextUtil.split_into_sentences, ".sen.txt")
 #         # 1:n methods
 #
-#     def create_arg_parser(self):
-#         """creates adds the arguments for pyami commandline
-#         """
-#
-#         def run_dict(self):
-#             print(f"run dict pyamix")
-#
-#         def run_pdf(args):
-#             print(f"run pdf")
-#
-#         # def run_project():
-#         #     print(f"run project {self.args}")
-#
-#         version = self.version()
-#         if not sys.argv or len(sys.argv) == 0:
-#             sys.argv = [AmiLib.PY4AMI]
-#         parser = argparse.ArgumentParser(
-#             description=f'pyamihtmlx: V{version} call with ONE of subcommands (HTML,PDF, IPCC, UNFCCC), e.g. pyamihtmlx IPCC --help'
-#         )
-#
-#         # apply_choices = [self.PDF2TXT, self.PDF2SVG, self.SVG2XML, self.TXT2SENT, self.XML2HTML, self.XML2TXT]
-#         # apply_choices = ConvType.list_values()
-#         # self.logger.debug(f"ch {apply_choices}")
-#         parser.add_argument('-v', '--version', action="store_true",
-#                             help=f"show version {version}")
-#         parser.formatter_class = argparse.RawDescriptionHelpFormatter
-#         parser.description = textwrap.dedent(
-#             'pyamihtml: create, manipulate, use CProject \n'
-#             '----------------------------------------\n\n'
-#             'Pyamihtml is the largest collection of functionality in the AMI system.'
-#             'It contains executable code and libraries to manage complex documents.\n'
-#             'A key structure is the corpus (CProject directory) which contains a list of subdirectories '
-#             '(CTrees) which themselves contain many different document features (text, tables, images, graphics.\n'
-#             'Pyamihtml can create, fill, manipulate, transform many of the components including PDF, HTML, TXT, images, CSV.\n'
-#             '\n'
-#             'The subcommands:\n\n'
-#             # '  DICT <options>      # create/edit/search dictionaries\n'
-#             # '  GUI <options>       # run tkinter GUI (prototype)\n'
-#             '  HTML <options>      # create/edit HTML\n'
-#             '  IPCC <options>      # customised IPCC tools\n'
-#             '  PDF <options>       # convert PDF into HTML and images\n'
-#             # '  PROJECT <options>   # create and transform a corpus of documents\n'
-#             '  UNFCCC <options>    # customised UNFCCC tools\n'
-#             '\n'
-#             'After installation, run \n'
-#             '  pyamihtmlx <subcommand> <options>\n'
-#             '\n'
-#             '\nExamples (# foo is a comment):\n'
-#             '  pyamihtmlx        # runs help\n'
-#             '  pyamihtmlx -h     # runs help\n'
-#             '  pyamihtmlx PDF -h # runs PDF help\n'
-#             '  pyamihtmlx PDF --infile foo.pdf --outdir bar/ # converts PDF to HTML\n'
-#             # '  pyamihtmlx PROJECT --project foodir/ # converts all PDF in foodir to CTrees\n'
-#             '  pyamihtmlx IPCC --pdf2html file/ # converts pdf file to html \n'
-#             '  pyamihtmlx UNFCCC --dir file/ # converts pdf files to html \n'
-#             '\n'
-#             '----------------------------------------\n\n'
-#         )
-#
-#         # TODO should tests be run from this menu
-#
-#         subparsers = parser.add_subparsers(help='subcommands', dest="command")
-#         for choice in subparsers.choices:
-#             print(f">>> {choice}")
-#
-#         # html_parser = HTMLArgs().make_sub_parser(subparsers)
-#         ipcc_parser = IPCCArgs().make_sub_parser(subparsers)
-#         # pdf_parser = PDFArgs().make_sub_parser(subparsers)
-#         unfccc_parser = UNFCCCArgs().make_sub_parser(subparsers)
-#
-#         parser.epilog = "other entry points run as 'python -m pyamihtmlx.ami_dict args' also ami_pdf, ami_project"
-#         parser.epilog = """run:
-#         pyamihtmlx <subcommand> <args>
-#           where subcommand is in   {DICT,GUI,HTML,PDF,PROJECT} and args depend on subcommand
-#         """
-#
-#         return parser
-#
-#     def commandline(self, commandline: str) -> None:
-#         """runs a commandline as a single string
-#         """
-#         if not commandline:
-#             self.run_command(["--help"])
-#         else:
-#             arglist = commandline.split(" ")
-#             self.run_command(arglist)
-#
-#     def run_commands(self, arglistlist):
-#         """runs a list of commands
-#
-#         :param arglistlist:  A list of commands (which are usually lists)
-#
-#         for each list element uses run_command
-#         This allows for setup, assertions, etc.
-#
-#         typical example:
-#         self.run_commands
-#         """
-#         if arglistlist is not None and isinstance(arglistlist, list):
-#             for arglist in arglistlist:
-#                 self.run_command(arglist)
-#
-#     def run_command(self, args):
-#         """parses cmdline, runs command and outputs symbols
-#
-#         :param args: either a string or a list of strings
-#
-#         if args is a string we split it at spaces into a list of strings
-#
-#         """
-#         if isinstance(args, str):
-#             args = args.strip()
-#             args = args.split(" ")
-#
-#         print(f"command: {args}")
-#         self.logger.debug(f"********** raw arglist {args}")
-#         test_catch = False
-#         if test_catch:  # try to trap exception
-#             try:
-#                 self.parse_and_run_args(args)
-#             except Exception as e:
-#                 print(f"ERROR {e.args} from {args}")
-#                 logging.error(f"\n============PARSE ERROR==({e.__cause__})======\n")
-#                 return
-#             if self.is_flag_true(self.PRINT_SYMBOLS):
-#                 self.symbol_ini.print_symbols()
-#         else:
-#             self.parse_and_run_args(args)
-#
-#         return
-#
-#     def parse_and_run_args(self, arglist, debug=False):
-#         """runs cmds and makes substitutions (${...} then runs workflow
-#
-#         :param arglist:
-#
-#         """
-#         # no args, create help
-#         if not arglist:
-#             self.logger.warning("No args, running --help")
-#             arglist = ["--help"]
-#         parser = self.create_arg_parser()
-#         self.args = self.make_substitutions_create_arg_tuples(arglist, parser, debug=debug)
-#         self.logger.debug("ARGS before substitution: " + str(self.args))
-#         # this may be redundant
-#         self.substitute_args()
-#         self.logger.debug(f"self.args {self.args}")
-#         self.add_single_str_to_list()
-#         self.logger.debug("ARGS after substitution: " + str(self.args))
-#         self.set_loglevel_from_args()
-#         self.run_arguments()
+    def create_arg_parser(self):
+        """creates adds the arguments for pyami commandline
+        """
+
+        def run_dict(self):
+            print(f"run dict pyamix")
+
+        def run_pdf(args):
+            print(f"run pdf")
+
+        # def run_project():
+        #     print(f"run project {self.args}")
+
+        version = self.version()
+        if not sys.argv or len(sys.argv) == 0:
+            sys.argv = [AmiLib.PY4AMI]
+        parser = argparse.ArgumentParser(
+            description=f'pyamihtmlx: V{version} call with ONE of subcommands (HTML,PDF, IPCC, UNFCCC), e.g. pyamihtmlx IPCC --help'
+        )
+
+        # apply_choices = [self.PDF2TXT, self.PDF2SVG, self.SVG2XML, self.TXT2SENT, self.XML2HTML, self.XML2TXT]
+        # apply_choices = ConvType.list_values()
+        # self.logger.debug(f"ch {apply_choices}")
+        parser.add_argument('-v', '--version', action="store_true",
+                            help=f"show version {version}")
+        parser.formatter_class = argparse.RawDescriptionHelpFormatter
+        parser.description = textwrap.dedent(
+            'pyamihtml: create, manipulate, use CProject \n'
+            '----------------------------------------\n\n'
+            'Pyamihtml is the largest collection of functionality in the AMI system.'
+            'It contains executable code and libraries to manage complex documents.\n'
+            'A key structure is the corpus (CProject directory) which contains a list of subdirectories '
+            '(CTrees) which themselves contain many different document features (text, tables, images, graphics.\n'
+            'Pyamihtml can create, fill, manipulate, transform many of the components including PDF, HTML, TXT, images, CSV.\n'
+            '\n'
+            'The subcommands:\n\n'
+            # '  DICT <options>      # create/edit/search dictionaries\n'
+            # '  GUI <options>       # run tkinter GUI (prototype)\n'
+            '  HTML <options>      # create/edit HTML\n'
+            '  IPCC <options>      # customised IPCC tools\n'
+            '  PDF <options>       # convert PDF into HTML and images\n'
+            # '  PROJECT <options>   # create and transform a corpus of documents\n'
+            '  UNFCCC <options>    # customised UNFCCC tools\n'
+            '\n'
+            'After installation, run \n'
+            '  pyamihtmlx <subcommand> <options>\n'
+            '\n'
+            '\nExamples (# foo is a comment):\n'
+            '  pyamihtmlx        # runs help\n'
+            '  pyamihtmlx -h     # runs help\n'
+            '  pyamihtmlx PDF -h # runs PDF help\n'
+            '  pyamihtmlx PDF --infile foo.pdf --outdir bar/ # converts PDF to HTML\n'
+            # '  pyamihtmlx PROJECT --project foodir/ # converts all PDF in foodir to CTrees\n'
+            '  pyamihtmlx IPCC --pdf2html file/ # converts pdf file to html \n'
+            '  pyamihtmlx UNFCCC --dir file/ # converts pdf files to html \n'
+            '\n'
+            '----------------------------------------\n\n'
+        )
+
+        # TODO should tests be run from this menu
+
+        subparsers = parser.add_subparsers(help='subcommands', dest="command")
+        for choice in subparsers.choices:
+            print(f">>> {choice}")
+
+        # html_parser = HTMLArgs().make_sub_parser(subparsers)
+        ipcc_parser = IPCCArgs().make_sub_parser(subparsers)
+        # pdf_parser = PDFArgs().make_sub_parser(subparsers)
+        unfccc_parser = UNFCCCArgs().make_sub_parser(subparsers)
+
+        parser.epilog = "other entry points run as 'python -m pyamihtmlx.ami_dict args' also ami_pdf, ami_project"
+        parser.epilog = """run:
+        pyamihtmlx <subcommand> <args>
+          where subcommand is in   {DICT,GUI,HTML,PDF,PROJECT} and args depend on subcommand
+        """
+
+        return parser
+
+    def commandline(self, commandline: str) -> None:
+        """runs a commandline as a single string
+        """
+        if not commandline:
+            self.run_command(["--help"])
+        else:
+            arglist = commandline.split(" ")
+            self.run_command(arglist)
+
+    def run_commands(self, arglistlist):
+        """runs a list of commands
+
+        :param arglistlist:  A list of commands (which are usually lists)
+
+        for each list element uses run_command
+        This allows for setup, assertions, etc.
+
+        typical example:
+        self.run_commands
+        """
+        if arglistlist is not None and isinstance(arglistlist, list):
+            for arglist in arglistlist:
+                self.run_command(arglist)
+
+    def run_command(self, args):
+        """parses cmdline, runs command and outputs symbols
+
+        :param args: either a string or a list of strings
+
+        if args is a string we split it at spaces into a list of strings
+
+        """
+        if isinstance(args, str):
+            args = args.strip()
+            args = args.split(" ")
+
+        print(f"command: {args}")
+        self.logger.debug(f"********** raw arglist {args}")
+        test_catch = False
+        if test_catch:  # try to trap exception
+            try:
+                self.parse_and_run_args(args)
+            except Exception as e:
+                print(f"ERROR {e.args} from {args}")
+                logging.error(f"\n============PARSE ERROR==({e.__cause__})======\n")
+                return
+            if self.is_flag_true(self.PRINT_SYMBOLS):
+                self.symbol_ini.print_symbols()
+        else:
+            self.parse_and_run_args(args)
+
+        return
+
+    def parse_and_run_args(self, arglist, debug=False):
+        """runs cmds and makes substitutions (${...} then runs workflow
+
+        :param arglist:
+
+        """
+        # no args, create help
+        if not arglist:
+            self.logger.warning("No args, running --help")
+            arglist = ["--help"]
+        parser = self.create_arg_parser()
+        self.args = self.make_substitutions_create_arg_tuples(arglist, parser, debug=debug)
+        self.logger.debug("ARGS before substitution: " + str(self.args))
+        # this may be redundant
+        self.substitute_args()
+        self.logger.debug(f"self.args {self.args}")
+        self.add_single_str_to_list()
+        self.logger.debug("ARGS after substitution: " + str(self.args))
+        self.set_loglevel_from_args()
+        self.run_arguments()
 #
 #     def substitute_args(self):
 #         """ iterates through self.args and makes subsitutions
