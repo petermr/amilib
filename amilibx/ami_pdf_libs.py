@@ -470,7 +470,7 @@ class AmiPage:
 
         creates Raw HTML
         """
-        from pyamihtmlx.ami_integrate import HtmlGenerator  # may avoid cyclic imports butn needs tidying
+        from amilibx.ami_integrate import HtmlGenerator  # may avoid cyclic imports butn needs tidying
 
         if not input_pdf or not Path(input_pdf).exists():
             logger.error(f"must have not-null, existing pdf {input_pdf} ")
@@ -1423,8 +1423,8 @@ class AmiPlumberJsonPage:
 
     def get_ami_font_and_style(self, fontname):
         """create AmiFont and CSSStyle from font-name"""
-        from pyamihtmlx.ami_html import CSSStyle
-        from pyamihtmlx.ami_html import AmiFont
+        from amilibx.ami_html import CSSStyle
+        from amilibx.ami_html import AmiFont
 
         ami_font = AmiFont.extract_name_weight_style_stretched_as_font(fontname)
         css_style = CSSStyle()
@@ -1442,7 +1442,7 @@ class AmiPlumberJsonPage:
         """
         y runs bottom to top (i.e. first lines in visual reading have high y)
         """
-        from pyamihtmlx.ami_html import CSSStyle
+        from amilibx.ami_html import CSSStyle
         rc = self.create_region_clipper(ami_plumber, debug=debug)
         tables = self.get_tables()
         if tables and len(tables):
@@ -1605,7 +1605,7 @@ class AmiPlumberJsonPage:
         :param elem: styled element
         :return: font_family and font_size
         """
-        from pyamihtmlx.ami_html import CSSStyle
+        from amilibx.ami_html import CSSStyle
         if elem is None:
             return None, None
         csss = CSSStyle.create_css_style_from_attribute_of_body_element(elem)
@@ -1875,7 +1875,11 @@ class AmiPDFPlumber:
         Path(imagedir).mkdir(exist_ok=True, parents=True)
         IM_NAME = 'name'
         name = im.get(IM_NAME)
+        if not name:
+            print(f"ERROR image has no name")
+            name = "no_name"
         print(f"===={name}====")
+
         for k in im:
             IM_WIDTH = "width"
             IM_HEIGHT = "height"
@@ -1895,13 +1899,14 @@ class AmiPDFPlumber:
                 print(f"keys {stream.keys()}")
                 rawdata = stream['rawdata']
                 print(f"stream type {type(rawdata)}")
+                print(f"imagedir {imagedir}, name {name}")
                 filename = f"{Path(imagedir, name)}.jpg"
-                # print(f"writing {filename}")
+                print(f"writing {filename}")
                 print(f'rawdata {rawdata}')
-                # image = open(filename, "wb")
-                # decode_data = base64.decodebytes(rawdata.encode())
-                # image.write(decode_data)
-                # image.close()
+                image = open(filename, "wb")
+                decode_data = base64.decodebytes(rawdata.encode())
+                image.write(decode_data)
+                image.close()
             else:
                 print(f"{k} {im[k]}")
 
@@ -1935,7 +1940,7 @@ class AmiPDFPlumber:
     def create_char_css(cls, char_dict):
         # ['matrix', 'fontname', 'adv', 'upright', 'x0', 'y0', 'x1', 'y1', 'width', 'height', 'size', 'object_type',
         #  'page_number', 'text', 'stroking_color', 'non_stroking_color', 'top', 'bottom', 'doctop'])
-        from pyamihtmlx.ami_html import CSSStyle
+        from amilibx.ami_html import CSSStyle
 
         upright = None
         obj_type = char_dict.get(CH_OBJECT_TYPE)
@@ -1964,7 +1969,7 @@ class AmiPDFPlumber:
         sets 5 font attributes (width, size, nonstroke, stroke, fontname
         values from cchar_dict
         """
-        from pyamihtmlx.ami_html import CSSStyle
+        from amilibx.ami_html import CSSStyle
         css.set_attribute(CSSStyle.WIDTH, AmiPDFPlumber.get_float(char_dict, PLUMB_WIDTH))
         css.set_attribute(CSSStyle.FONT_SIZE, AmiPDFPlumber.get_float(char_dict, PLUMB_SIZE))
         css.set_attribute(CSSStyle.FILL, char_dict.get(PLUMB_NONSTROKE))

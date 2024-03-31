@@ -14,12 +14,12 @@ from pathlib import Path
 
 import lxml.etree as etree
 # local
-# from pyamihtmlx.dict_lib import AmiDictionary
+# from amilibx.dict_lib import AmiDictionary
 
 from amilibx.ami_pdf import PDFArgs
 from amilibx.ami_html import HTMLArgs
 from amilibx.file_lib import FileLib
-from amilibx.util import AmiLogger, Util
+from amilibx.util import AmiLogger, Util, AbstractArgs
 from amilibx.wikimedia import WikidataLookup
 from amilibx.xml_lib import XmlLib
 
@@ -32,6 +32,7 @@ REPO_DIR = AMIX_DIR.parent
 
 
 class AmiLib:
+    logger = logging.getLogger("amilibx")
 #     """ main entry point for running pyami
 #      """
 #     OUTFILE = "outfile"
@@ -40,31 +41,31 @@ class AmiLib:
 #     APPLY = "apply"
 #     ASSERT = "assert"
 #     CHECK_URLS = "check_urls"
-#     COPY = "copy"
+    COPY = "copy"
 #     COMBINE = "combine"
 #     CONFIG = "config"
 #     CONTAINS = "contains"
-#     DEBUG = "debug"
+    DEBUG = "debug"
 #     DELETE = "delete"
 #     DEST = "dest"
 #     DICTIONARY = "dictionary"
-#     EXAMPLES = "examples"
+    EXAMPLES = "examples"
 #     FILTER = "filter"
-#     FLAGS = "flags"
-#     GLOB = "glob"
+    FLAGS = "flags"
+    GLOB = "glob"
 #     LOOKUP = "lookup"
 #     PRINT_SYMBOLS = "print_symbols"
-#     PROJ = "proj"
+    PROJ = "proj"
 #     RECURSE = "recurse"
 #     REGEX = "regex"
-#     SECT = "sect"
+    SECT = "sect"
 #     SRC = "src"
-#     SPLIT = "split"
+    SPLIT = "split"
 #     SYMBOLS = "symbols"
-#     SYSTEM_EXIT_OK = "SystemExitOK"
-#     SYSTEM_EXIT_FAIL = "SystemExitFail_"
+    SYSTEM_EXIT_OK = "SystemExitOK"
+    SYSTEM_EXIT_FAIL = "SystemExitFail_"
 #     TEST = "test"
-#     VERSION = "version"
+    VERSION = "version"
 #     WIKIDATA_SPARQL = "wikidata_sparql"
 #     XPATH = "xpath"
 #     # apply methods 1:1 input-output
@@ -82,7 +83,7 @@ class AmiLib:
 #     # split methods 1:n input-output
 #     # symbols to update table
 #     SPECIAL_SYMBOLS = ["_proj"]
-#     LOGLEVEL = "loglevel"
+    LOGLEVEL = "loglevel"
 #     PY4AMI = "pyamihtmlx"
 #
 #     # parsers are these used??
@@ -174,7 +175,7 @@ class AmiLib:
 
         version = self.version()
         if not sys.argv or len(sys.argv) == 0:
-            sys.argv = [AmiLib.PY4AMI]
+            sys.argv = [AmiLib.AmiLib]
         parser = argparse.ArgumentParser(
             description=f'pyamihtmlx: V{version} call with ONE of subcommands (HTML,PDF, IPCC, UNFCCC), e.g. pyamihtmlx IPCC --help'
         )
@@ -224,10 +225,10 @@ class AmiLib:
         for choice in subparsers.choices:
             print(f">>> {choice}")
 
-        # html_parser = HTMLArgs().make_sub_parser(subparsers)
-        ipcc_parser = IPCCArgs().make_sub_parser(subparsers)
-        # pdf_parser = PDFArgs().make_sub_parser(subparsers)
-        unfccc_parser = UNFCCCArgs().make_sub_parser(subparsers)
+        html_parser = HTMLArgs().make_sub_parser(subparsers)
+        pdf_parser = PDFArgs().make_sub_parser(subparsers)
+
+        amilib_parser = AmiLibArgs().make_sub_parser(subparsers)
 
         parser.epilog = "other entry points run as 'python -m pyamihtmlx.ami_dict args' also ami_pdf, ami_project"
         parser.epilog = """run:
@@ -311,159 +312,157 @@ class AmiLib:
         self.set_loglevel_from_args()
         self.run_arguments()
 #
-#     def substitute_args(self):
-#         """ iterates through self.args and makes subsitutions
-#         May duplicates
-#         """
-#         new_items = {}
-#         # self.logger.debug(f"SYMBOLS1 {self.symbol_ini.symbols}")
-#         for item in self.args.items():
-#             new_item = self.make_substitutions(item)
-#             self.logger.debug(f"++++++++{item} ==> {new_item}")
-#             new_items[new_item[0]] = new_item[1]
-#         self.args = new_items
-#         self.logger.debug(f"******** substituted ARGS {self.args}")
+    def substitute_args(self):
+        """ iterates through self.args and makes subsitutions
+        May duplicates
+        """
+        new_items = {}
+        # self.logger.debug(f"SYMBOLS1 {self.symbol_ini.symbols}")
+        for item in self.args.items():
+            new_item = self.make_substitutions(item)
+            self.logger.debug(f"++++++++{item} ==> {new_item}")
+            new_items[new_item[0]] = new_item[1]
+        self.args = new_items
+        self.logger.debug(f"******** substituted ARGS {self.args}")
 #
-#     def add_single_str_to_list(self):
-#         """convert single strings to list of one string
-#         Not sure of what this is for
-#         """
-#         str_args = [self.DEBUG, self.EXAMPLES]
-#         for str_arg in str_args:
-#             self.logger.debug(f"key {str_arg}")
-#             self.replace_single_values_in_self_args_with_list(str_arg)
-#             self.logger.debug(f"args => {self.args}")
+    def add_single_str_to_list(self):
+        """convert single strings to list of one string
+        Not sure of what this is for
+        """
+        str_args = [self.DEBUG, self.EXAMPLES]
+        for str_arg in str_args:
+            self.logger.debug(f"key {str_arg}")
+            self.replace_single_values_in_self_args_with_list(str_arg)
+            self.logger.debug(f"args => {self.args}")
 #
-#     def run_arguments(self):
-#         """ parse and expland arguments then ru options for
+    def run_arguments(self):
+        """ parse and expland arguments then ru options for
+
+        Currently:
+        * examples
+        * project
+        * tests
+
+        There will be more here
+
+         """
+        # print(f"RUN ARGUMENTS on {self} {self.args}")
+        # path workflow
+        self.wikipedia_lookup = WikidataLookup()
+        self.logger.debug(f"commandline args {self.args}")
+        subparser_type = self.args.get("command")
+        logging.debug(f" COMMAND: {subparser_type} {self.args}")
+
+        subparser_dict = {
+            # "DICT": AmiDictArgs(),
+            # "GUI":  GUIArgs(),
+            "HTML": HTMLArgs(),
+            "PDF": PDFArgs(),
+        }
+        abstract_args = subparser_dict.get(subparser_type)
+
+        if abstract_args:
+            abstract_args.parse_and_process1(self.args)
+        else:
+            self.run_core_mathods()
 #
-#         Currently:
-#         * examples
-#         * project
-#         * tests
+    def run_core_mathods(self):
+        logging.debug(f"run_core")
+        # mainly obsolete
+        if self.VERSION in self.args and self.args[self.VERSION] is not None:
+            self.print_version()
+        if self.FLAGS in self.args and self.args[self.FLAGS] is not None:
+            self.add_flags()
+        # if self.CONFIG in self.args and self.args[self.CONFIG] is not None:
+        #     self.apply_config()
+        # if self.EXAMPLES in self.args:
+        #     example_args = self.args[self.EXAMPLES]
+        #     if example_args is not None:
+        #         self.logger.debug(f" examples args: {example_args}")
+        #         Examples(self).run_examples(example_args)
+        if self.COPY in self.args and not self.args[self.COPY] is None:
+            self.logger.warning(f"COPY {self.args[self.COPY]}")
+            self.copy_files()
+        if self.PROJ in self.args:
+            if self.SECT in self.args or self.GLOB in self.args or self.SPLIT in self.args:
+                self.run_project_workflow()
+        if self.VERSION in self.args:
+            self.print_version()
+        # elif TestFile.TEST in self.args:
+        #     self.logger.warning(f"TEST in **args {self.args}")
+        #     TestFile.run_arg_tests(self.args)
+        # TODO linkup with test arguments
+
+    def print_version(self):
+        print(f"version {self.version()}")
 #
-#         There will be more here
+    def replace_single_values_in_self_args_with_list(self, key):
+        """always returns list even for single arg
+        e.g. turns "foo" into ["foo"]
+        This is to avoid strings being interpreted as lists of characters
+        I am sure there is a more pythonic way
+        """
+        # argsx = None
+        if self.args is None:
+            self.logger.warning(f"NULL self.args")
+        elif key in self.args:
+            argsx = self.args[key]
+            if argsx is not None:
+                if type(argsx) != list:
+                    self.args[key] = [argsx]
 #
-#          """
-#         # print(f"RUN ARGUMENTS on {self} {self.args}")
-#         # path workflow
-#         self.wikipedia_lookup = WikidataLookup()
-#         self.logger.debug(f"commandline args {self.args}")
-#         subparser_type = self.args.get("command")
-#         logging.debug(f" COMMAND: {subparser_type} {self.args}")
-#
-#         subparser_dict = {
-#             # "DICT": AmiDictArgs(),
-#             # "GUI":  GUIArgs(),
-#             "HTML": HTMLArgs(),
-#             "IPCC": IPCCArgs(),
-#             "PDF": PDFArgs(),
-#             "UNFCCC": UNFCCCArgs(),
-#         }
-#         abstract_args = subparser_dict.get(subparser_type)
-#
-#         if abstract_args:
-#             abstract_args.parse_and_process1(self.args)
-#         else:
-#             self.run_core_mathods()
-#
-#     def run_core_mathods(self):
-#         logging.debug(f"run_core")
-#         # mainly obsolete
-#         if self.VERSION in self.args and self.args[self.VERSION] is not None:
-#             self.print_version()
-#         if self.FLAGS in self.args and self.args[self.FLAGS] is not None:
-#             self.add_flags()
-#         if self.CONFIG in self.args and self.args[self.CONFIG] is not None:
-#             self.apply_config()
-#         # if self.EXAMPLES in self.args:
-#         #     example_args = self.args[self.EXAMPLES]
-#         #     if example_args is not None:
-#         #         self.logger.debug(f" examples args: {example_args}")
-#         #         Examples(self).run_examples(example_args)
-#         if self.COPY in self.args and not self.args[self.COPY] is None:
-#             self.logger.warning(f"COPY {self.args[self.COPY]}")
-#             self.copy_files()
-#         if self.PROJ in self.args:
-#             if self.SECT in self.args or self.GLOB in self.args or self.SPLIT in self.args:
-#                 self.run_project_workflow()
-#         if self.VERSION in self.args:
-#             self.print_version()
-#         # elif TestFile.TEST in self.args:
-#         #     self.logger.warning(f"TEST in **args {self.args}")
-#         #     TestFile.run_arg_tests(self.args)
-#         # TODO linkup with test arguments
-#
-#     def print_version(self):
-#         print(f"version {self.version()}")
-#
-#     def replace_single_values_in_self_args_with_list(self, key):
-#         """always returns list even for single arg
-#         e.g. turns "foo" into ["foo"]
-#         This is to avoid strings being interpreted as lists of characters
-#         I am sure there is a more pythonic way
-#         """
-#         # argsx = None
-#         if self.args is None:
-#             self.logger.warning(f"NULL self.args")
-#         elif key in self.args:
-#             argsx = self.args[key]
-#             if argsx is not None:
-#                 if type(argsx) != list:
-#                     self.args[key] = [argsx]
-#
-    # def make_substitutions(self, item):
-    #     """
-    #
-    #     :param item:
-    #
-    #     """
-    #     # no change
-    #     return item
-    #
-    #     # old_val = item[1]
-    #     # key = item[0]
-    #     # # new_val = None
-    #     # if True:
-    #     #     new_val = old_val
-    #     # elif old_val is None:
-    #     #     new_val = None
-    #     # elif isinstance(old_val, list) and len(old_val) == 1:  # single string in list
-    #     #     # not sure of list, is often used when only one value
-    #     #     val_item = old_val[0]
-    #     #     new_val = self.symbol_ini.replace_symbols_in_arg(val_item)
-    #     # elif isinstance(old_val, list):
-    #     #     new_list = []
-    #     #     for val_item in old_val:
-    #     #         self.logger.debug(f"OLD SYM {val_item}")
-    #     #         new_v = self.symbol_ini.replace_symbols_in_arg(val_item)
-    #     #         self.logger.debug(f"NEW SYM {new_v}")
-    #     #         new_list.append(new_v)
-    #     #     self.logger.debug(f"UPDATED LIST ITEMS: {new_list}")
-    #     #     new_val = new_list
-    #     # elif isinstance(old_val, (int, bool, float, complex)):
-    #     #     new_val = old_val
-    #     # elif isinstance(old_val, str):
-    #     #     if self.symbol_ini:
-    #     #         new_val = self.symbol_ini.replace_symbols_in_arg(old_val)
-    #     #         if "${" in new_val:
-    #     #             raise ValueError(f"Unresolved reference : {new_val}")
-    #     #             # print("=====================")
-    #     #             # self.symbol_ini.print_symbols()
-    #     #             # print("=====================")
-    #     #             # new_val = self.symbol_ini.replace_symbols_in_arg(old_val)
-    #     #         # else:
-    #     #         #     new_val = old_val
-    #     #         # new_items[key] = new_val
-    #     # else:
-    #     #     if type(old_val) is str:
-    #     #         self.logger.error(f"substitution: {old_val} unknown arg type {type(old_val)}")
-    #     #     new_val = old_val
-    #     #
-    #     # # special symbols such as "_proj"
-    #     # if new_val:
-    #     #     self.add_special_keys_to_symbols_ini(key, new_val)
-    #     # return key, new_val
+    def make_substitutions(self, item):
+        """
+
+        :param item:
+
+        """
+        # no change
+        return item
+
+        # old_val = item[1]
+        # key = item[0]
+        # # new_val = None
+        # if True:
+        #     new_val = old_val
+        # elif old_val is None:
+        #     new_val = None
+        # elif isinstance(old_val, list) and len(old_val) == 1:  # single string in list
+        #     # not sure of list, is often used when only one value
+        #     val_item = old_val[0]
+        #     new_val = self.symbol_ini.replace_symbols_in_arg(val_item)
+        # elif isinstance(old_val, list):
+        #     new_list = []
+        #     for val_item in old_val:
+        #         self.logger.debug(f"OLD SYM {val_item}")
+        #         new_v = self.symbol_ini.replace_symbols_in_arg(val_item)
+        #         self.logger.debug(f"NEW SYM {new_v}")
+        #         new_list.append(new_v)
+        #     self.logger.debug(f"UPDATED LIST ITEMS: {new_list}")
+        #     new_val = new_list
+        # elif isinstance(old_val, (int, bool, float, complex)):
+        #     new_val = old_val
+        # elif isinstance(old_val, str):
+        #     if self.symbol_ini:
+        #         new_val = self.symbol_ini.replace_symbols_in_arg(old_val)
+        #         if "${" in new_val:
+        #             raise ValueError(f"Unresolved reference : {new_val}")
+        #             # print("=====================")
+        #             # self.symbol_ini.print_symbols()
+        #             # print("=====================")
+        #             # new_val = self.symbol_ini.replace_symbols_in_arg(old_val)
+        #         # else:
+        #         #     new_val = old_val
+        #         # new_items[key] = new_val
+        # else:
+        #     if type(old_val) is str:
+        #         self.logger.error(f"substitution: {old_val} unknown arg type {type(old_val)}")
+        #     new_val = old_val
+        #
+        # # special symbols such as "_proj"
+        # if new_val:
+        #     self.add_special_keys_to_symbols_ini(key, new_val)
+        # return key, new_val
 
     # def get_symbol(self, symb):
     #     """gets symbol from pyami symbol table
@@ -471,59 +470,60 @@ class AmiLib:
     #     """
     #     return self.symbol_ini.symbols.get(symb)
     #
-    # def make_substitutions_create_arg_tuples(self, arglist, parser, debug=False):
-    #     """
-    #     processes raw args to expand substitutions
+
+    def make_substitutions_create_arg_tuples(self, arglist, parser, debug=False):
+        """
+        processes raw args to expand substitutions
+
+        :param arglist:
+        :param parser:
+        :return: list of transformed arguments as 2-tuples
+        """
+        new_items = {}
+        if arglist and len(arglist) > 0:
+            parsed_args = self.parse_args_and_trap_errors(arglist, parser)
+            if parsed_args is None:
+                print(f"PARSED ARGS FAILS {arglist}")
+                return new_items
+            if parsed_args == self.SYSTEM_EXIT_OK:  # return code 0
+                return new_items
+            if str(parsed_args).startswith(self.SYSTEM_EXIT_FAIL):
+                raise ValueError(f"bad command arguments {parsed_args} (see log output)")
+
+            self.logger.debug(f"PARSED_ARGS {parsed_args}")
+            if debug:
+                print(f"parsed args {parsed_args}")
+
+            try:
+                arg_vars = vars(parsed_args)  # FAILS in Pycharm
+            except Exception as e:
+                print(
+                    f"argparse and vars() fails, see \n BUG in Pycharm/Pandas see https://stackoverflow.com/questions/75453995/pandas-plot-vars-argument-must-have-dict-attribute\n try fudge")
+                # Namespace(command=None, version=True)
+                match = re.match("Namespace\\((?P<argvals>[^)]*)\\)", parsed_args)
+                if match:
+                    arglistx = match.groupdict("argvals")
+                    arg_vars = arglistx.split(",\\s*")
+
+            for item in arg_vars.items():  # BUG in Pycharm/Pandas see https://stackoverflow.com/questions/75453995/pandas-plot-vars-argument-must-have-dict-attribute
+                new_item = self.make_substitutions(item)
+                new_items[new_item[0]] = new_item[1]
+        return new_items
     #
-    #     :param arglist:
-    #     :param parser:
-    #     :return: list of transformed arguments as 2-tuples
-    #     """
-    #     new_items = {}
-    #     if arglist and len(arglist) > 0:
-    #         parsed_args = self.parse_args_and_trap_errors(arglist, parser)
-    #         if parsed_args is None:
-    #             print(f"PARSED ARGS FAILS {arglist}")
-    #             return new_items
-    #         if parsed_args == self.SYSTEM_EXIT_OK:  # return code 0
-    #             return new_items
-    #         if str(parsed_args).startswith(self.SYSTEM_EXIT_FAIL):
-    #             raise ValueError(f"bad command arguments {parsed_args} (see log output)")
-    #
-    #         self.logger.debug(f"PARSED_ARGS {parsed_args}")
-    #         if debug:
-    #             print(f"parsed args {parsed_args}")
-    #
-    #         try:
-    #             arg_vars = vars(parsed_args)  # FAILS in Pycharm
-    #         except Exception as e:
-    #             print(
-    #                 f"argparse and vars() fails, see \n BUG in Pycharm/Pandas see https://stackoverflow.com/questions/75453995/pandas-plot-vars-argument-must-have-dict-attribute\n try fudge")
-    #             # Namespace(command=None, version=True)
-    #             match = re.match("Namespace\\((?P<argvals>[^)]*)\\)", parsed_args)
-    #             if match:
-    #                 arglistx = match.groupdict("argvals")
-    #                 arg_vars = arglistx.split(",\\s*")
-    #
-    #         for item in arg_vars.items():  # BUG in Pycharm/Pandas see https://stackoverflow.com/questions/75453995/pandas-plot-vars-argument-must-have-dict-attribute
-    #             new_item = self.make_substitutions(item)
-    #             new_items[new_item[0]] = new_item[1]
-    #     return new_items
-    #
-    # def parse_args_and_trap_errors(self, arglist, parser):
-    #     """run argparse parser.parse_args and try to trap serious errors
-    #     --help calls SystemExit (we trap and return None)"""
-    #     try:
-    #         parsed_args = parser.parse_args(arglist)
-    #     except SystemExit as se:  # exit codes
-    #         if str(se) == '0':
-    #             parsed_args = self.SYSTEM_EXIT_OK
-    #         else:
-    #             parsed_args = self.SYSTEM_EXIT_FAIL + str(se)
-    #     except Exception as e:
-    #         parsed_args = None
-    #         self.logger.error(f"Cannot parse {arglist} , {e}")
-    #     return parsed_args
+    def parse_args_and_trap_errors(self, arglist, parser):
+        """run argparse parser.parse_args and try to trap serious errors
+        --help calls SystemExit (we trap and return None)"""
+        try:
+            parsed_args = parser.parse_args(arglist)
+        except SystemExit as se:  # exit codes
+            if str(se) == '0':
+                parsed_args = self.SYSTEM_EXIT_OK
+            else:
+                parsed_args = self.SYSTEM_EXIT_FAIL + str(se)
+        except Exception as e:
+            parsed_args = None
+            self.logger.error(f"Cannot parse {arglist} , {e}")
+        return parsed_args
     #
     # def add_special_keys_to_symbols_ini(self, key, value):
     #     """
@@ -536,23 +536,23 @@ class AmiLib:
     #         self.symbol_ini.symbols[key] = value
     #         self.logger.warning(f"added reserved symbol {key} => {value}")
     #
-    # def set_loglevel_from_args(self):
-    #     """ """
-    #     levels = {
-    #         "debug": logging.DEBUG,
-    #         "info": logging.INFO,
-    #         "warning": logging.WARNING,
-    #         "error": logging.ERROR,
-    #     }
-    #
-    #     if self.LOGLEVEL in self.args:
-    #         loglevel = self.args[self.LOGLEVEL]
-    #         self.logger.info(f"loglevel {loglevel}")
-    #         if loglevel is not None:
-    #             loglevel = str(loglevel)
-    #         if loglevel is not None and loglevel.lower() in levels:
-    #             level = levels[loglevel.lower()]
-    #             self.logger.loglevel = level
+    def set_loglevel_from_args(self):
+        """ """
+        levels = {
+            "debug": logging.DEBUG,
+            "info": logging.INFO,
+            "warning": logging.WARNING,
+            "error": logging.ERROR,
+        }
+
+        if self.LOGLEVEL in self.args:
+            loglevel = self.args[self.LOGLEVEL]
+            self.logger.info(f"loglevel {loglevel}")
+            if loglevel is not None:
+                loglevel = str(loglevel)
+            if loglevel is not None and loglevel.lower() in levels:
+                level = levels[loglevel.lower()]
+                self.logger.loglevel = level
     #
     # def run_project_workflow(self):
     #     """ run when PROJ is set"""
@@ -1150,16 +1150,16 @@ class AmiLib:
     #     except Exception:
     #         return False
 
-def version(self):
-    """
-    reads setup.py and extracts line of form version='0.0.29'
-    This is still a mess. We need to set the version once somewhere.
-    """
+    def version(self):
+        """
+        reads setup.py and extracts line of form version='0.0.29'
+        This is still a mess. We need to set the version once somewhere.
+        """
 
-    version = '0.0.1a1'  # 2024-03-27
+        version = '0.0.1a1'  # 2024-03-27
 
-    # logging.warn(f"VERSION {version}")
-    return version
+        # logging.warn(f"VERSION {version}")
+        return version
 
 
 # class ContentStore:
@@ -1188,6 +1188,107 @@ def version(self):
 #         """return dictionary or None"""
 #         return self.file_dict.get(file)
 #
+
+class AmiLibArgs(AbstractArgs):
+    """Parse args to analyze, edit and annotate HTML"""
+
+    def __init__(self):
+        """arg_dict is set to default"""
+        super().__init__()
+        self.dictfile = None
+        self.inpath = None
+        self.outpath = None
+        self.outstem = None
+        self.outdir = None
+        self.arg_dict = None
+        self.subparser_arg = "HTML"
+
+    def add_arguments(self):
+        if self.parser is None:
+            self.parser = argparse.ArgumentParser()
+        """adds arguments to a parser or subparser"""
+        self.parser.description = 'HTML editing analysing annotation'
+        self.parser.add_argument(f"--foo", action="store_true",
+                                 help="annotate HTML file with dictionary")
+        # self.parser.add_argument(f"--{COLOR}", type=str, nargs=1,
+        #                          help="colour for annotation")
+        # self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
+        #                          help="dictionary for annotation")
+        # self.parser.add_argument(f"--{INPATH}", type=str, nargs=1,
+        #                          help="input html file")
+        # self.parser.add_argument(f"--{OUTPATH}", type=str, nargs=1,
+        #                          help="output html file")
+        # self.parser.add_argument(f"--{OUTDIR}", type=str, nargs=1,
+        #                          help="output directory")
+        self.parser.epilog = "==============="
+
+    """python -m pyamihtmlx.pyamix HTML --annotate 
+     --dict /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
+     --inpath /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/fulltext.html
+     --outpsth /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/annotated/fulltext_emissions.html
+     --color pink
+     """
+
+    # class AmiDictArgs:
+    def process_args(self):
+        """runs parsed args
+        :return:
+        """
+
+        if not self.arg_dict:
+            logging.warning(f"no arg_dict given, no action")
+            return
+
+        self.foo = self.arg_dict.get("foo")
+        # self.color = self.arg_dict.get(COLOR)
+        # self.dictfile = self.arg_dict.get(DICT)
+        # self.inpath = self.arg_dict.get(INPATH)
+        # self.outdir = self.arg_dict.get(OUTDIR)
+        # self.outpath = self.arg_dict.get(OUTPATH)
+
+        if self.foo:
+            self.make_foo()
+
+    # class AmiDictArgs:
+
+    @classmethod
+    def create_default_arg_dict(cls):
+        """returns a new COPY of the default dictionary"""
+        arg_dict = dict()
+        arg_dict["dict"] = None
+        return arg_dict
+
+    @property
+    def module_stem(self):
+        """name of module"""
+        return Path(__file__).stem
+
+    def annotate_with_dict(self):
+        """uses dictionary to annotate words and phrases in HTML file"""
+        # from pyamihtmlx.ami_dict import AmiDictionary  # horrible
+        self.logger.warning("Dictionaries not supported")
+        return
+
+        if not self.dictfile:
+            logging.error(f"no dictionary given")
+            return
+        if not self.inpath:
+            logging.error(f"no input file to annotate given")
+            return
+        if not self.outpath:
+            logging.error(f"no output file given")
+            return
+        if not self.outdir:
+            self.outdir = Path(self.outpath).parent
+        self.outdir = Path(self.outdir)
+        self.outdir.mkdir(exist_ok=True)
+
+        self.ami_dict = AmiDictionary.create_from_xml_file(self.dictfile)
+        self.ami_dict.markup_html_from_dictionary(self.inpath, self.outpath, self.color)
+
+    def make_foo(self):
+        pass
+
 
 class Converter(Enum):
 

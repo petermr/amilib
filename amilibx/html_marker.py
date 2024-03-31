@@ -129,7 +129,7 @@ class SpanMarker:
 
     @classmethod
     def normalize_html_and_extract_styles(cls, html_elem, outdir=None):
-        from pyamihtmlx.ami_html import HtmlStyle
+        from amilibx.ami_html import HtmlStyle
         HtmlStyle.extract_all_style_attributes_to_head(html_elem)
         HtmlStyle.extract_styles_and_normalize_classrefs(html_elem, outdir=outdir)
 
@@ -292,7 +292,7 @@ class SpanMarker:
                             markup_dict=None,
                             templater_list=None, styles=None, debug=False):
         """Takes HTML file, extracts <span>s and splits/marks these using regex"""
-        from pyamihtmlx.ami_html import HtmlLib
+        from amilibx.ami_html import HtmlLib
         """
         splits at regex match, makes 3 spans and adds href with ID to middle (captured) spane
         INPUT: <span>Parties that have not ... ... with decision 9/CMA.1 ahead of the fourth ... as to provide timely input to the global stocktake;

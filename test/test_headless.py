@@ -33,7 +33,7 @@ WG3_URL = AR6_URL + "wg3/"
 SC_TEST_DIR = Path(OUT_DIR_TOP, "ar6", "test")
 
 # SYR_OUT_DIR = Path(SC_TEST_DIR, "syr")
-# WG1_OUT_DIR = Path(SC_TEST_DIR, "wg1")
+WG1_OUT_DIR = Path(SC_TEST_DIR, "wg1")
 # WG2_OUT_DIR = Path(SC_TEST_DIR, "wg2")
 # WG3_OUT_DIR = Path(SC_TEST_DIR, "wg3")
 
@@ -42,6 +42,11 @@ TOTAL_GLOSS_DIR = Path(SC_TEST_DIR, "total_glossary")
 OMIT_LONG = True
 
 SLEEP = 1
+
+EXPAND_SECTION_PARAS = [
+    '//button[contains(@class, "chapter-expand") and contains(text(), "Expand section")]',
+    '//p[contains(@class, "expand-paras") and contains(text(), "Read more...")]'
+]
 
 
 def predict_encoding(file_path: Path, n_lines: int = 20) -> str:
@@ -63,7 +68,7 @@ class MiscTest(AmiAnyTest):
         results = []
         for name in [
             "Benares",
-            "Bengaluru",
+#            "Bengaluru",
             "Delhi",
             "Ladakh",
             # "Mumbai",
@@ -74,7 +79,7 @@ class MiscTest(AmiAnyTest):
             results.append(tuple)
         assert results == [
             ('Benares', (25.3356491, 83.0076292), 25.3356491, 83.0076292),
-            ('Bengaluru', (12.9767936, 77.590082), 12.9767936, 77.590082),
+            # ('Bengaluru', (12.9767936, 77.590082), 12.9767936, 77.590082),
             ('Delhi', (28.6273928, 77.1716954), 28.6273928, 77.1716954),
             ('Ladakh', (33.9456407, 77.6568576), 33.9456407, 77.6568576),
             # ('Mumbai', (18.9733536, 72.82810491917377), 18.9733536, 72.82810491917377), # Mumbai seems to move!

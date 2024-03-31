@@ -164,6 +164,14 @@ class AmiUtil:
     #
     @classmethod
     def get_angle(cls, p0, p1, p2):
+        """
+        replace this
+
+        :param p0:
+        :param p1:
+        :param p2:
+        :return:
+        """
         '''
         signed angle p0-p1-p2
         :param p0:
@@ -176,9 +184,9 @@ class AmiUtil:
 
         linal = False
         if linal:
-            np0 = np.array(p0, dtype=np.uint8)
-            np1 = np.array(p1, dtype=np.uint8)
-            np2 = np.array(p2, dtype=np.uint8)
+            np0 = np.array(p0, dtype=uint8)
+            np1 = np.array(p1, dtype=uint8)
+            np2 = np.array(p2, dtype=uint8)
             v0 = np0 - np1
             v1 = np2 - np1
             angle = np.math.atan2(np.linalg.det([v0, v1]), np.dot(v0, v1))
@@ -253,13 +261,13 @@ class AmiUtil:
     @classmethod
     def float_list(cls, int_lst):
         """
-        converts a list of ints or np.uint16 or np.uint8 to floats
+        converts a list of ints or uint16 or uint8 to floats
         :param int_lst: 
         :return: 
         """
         assert int_lst is not None and type(int_lst) is list and len(int_lst) > 0, f"not a list: {int_lst}"
         tt = type(int_lst[0])
-        assert tt is int or tt is np.uint8 or tt is np.uint16, f"expected int, got {tt}"
+        assert tt is int or tt is uint8 or tt is uint16, f"expected int, got {tt}"
         return [float(i) for i in int_lst]
 
     @classmethod
@@ -330,7 +338,6 @@ class AmiUtil:
 class Vector2:
 
     def __init__(self, v2):
-        # self.vec2 = np.array()
         self.vec2 = v2
 
     # @classmethod

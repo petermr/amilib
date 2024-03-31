@@ -18,10 +18,6 @@ URL = "url"
 XPATH = "xpath"
 OUTFILE = "out_file"
 
-# EXPAND_SECTION_PARAS = [
-#     '//button[contains(@class, "chapter-expand") and contains(text(), "Expand section")]',
-#     '//p[contains(@class, "expand-paras") and contains(text(), "Read more...")]'
-# ]
 
 
 class AmiDriver:

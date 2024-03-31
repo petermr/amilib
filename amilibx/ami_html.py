@@ -19,8 +19,6 @@ from lxml.etree import Element, _Element, _ElementTree
 from sklearn.linear_model import LinearRegression
 
 # local
-# from pyamihtmlx.ami_dict import AmiDictionary
-# from pyamihtmlx.ami_pdf_libs import AmiPDFPlumber
 from amilibx.bbox import BBox
 from amilibx.util import SScript, AbstractArgs, Util, AmiLogger
 from amilibx.xml_lib import XmlLib, HtmlLib

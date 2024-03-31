@@ -4,7 +4,6 @@ import lxml
 import lxml.etree
 import re
 # local
-# from pyamihtmlx.ami_html import H_A
 from amilibx.util import Util
 
 

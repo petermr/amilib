@@ -437,7 +437,7 @@ class PDFArgs(AbstractArgs):
             maxpage=9999
     ):
 
-        from pyamihtmlx.ami_html import HtmlTidy
+        from amilibx.ami_html import HtmlTidy
 
         """converts PDF to raw_html and (optionally raw_html to tidy_html
         Uses PDFParser.convert_pdf to create raw_html_element
@@ -666,8 +666,8 @@ class PDFArgs(AbstractArgs):
             outdir=None,
             outpath=None,
     ):
-        from pyamihtmlx.ami_html import CSSStyle  # messy
-        from pyamihtmlx.ami_html import HtmlStyle
+        from amilibx.ami_html import CSSStyle  # messy
+        from amilibx.ami_html import HtmlStyle
 
         """
         main routine for converting PDF all the way to tidied styled HTML

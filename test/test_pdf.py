@@ -30,14 +30,14 @@ from lxml.html import HTMLParser
 # local
 # from pyamihtmlx.ami_bib import Publication
 
-from pyamihtmlx.ami_pdf_libs import SVG_NS, SVGX_NS, PDFDebug, PDFParser
-from pyamihtmlx.ami_pdf_libs import AmiPage, X, Y, SORT_XY, PDFImage, AmiPDFPlumber, AmiPlumberJsonPage, AmiPlumberJson
-from pyamihtmlx.ami_pdf_libs import WORDS, IMAGES, ANNOTS, CURVES, TEXTS
-from pyamihtmlx.ami_html import HtmlUtil, STYLE, FILL, STROKE, FONT_FAMILY, FONT_SIZE, HtmlLib
-from pyamihtmlx.ami_html import H_SPAN, H_BODY, H_P
-from pyamihtmlx.pyamix import PyAMI
-from pyamihtmlx.bbox_copy import BBox
-from pyamihtmlx.file_lib import FileLib
+from amilibx.ami_pdf_libs import SVG_NS, SVGX_NS, PDFDebug, PDFParser
+from amilibx.ami_pdf_libs import AmiPage, X, Y, SORT_XY, PDFImage, AmiPDFPlumber, AmiPlumberJsonPage, AmiPlumberJson
+from amilibx.ami_pdf_libs import WORDS, IMAGES, ANNOTS, CURVES, TEXTS
+from amilibx.ami_html import HtmlUtil, STYLE, FILL, STROKE, FONT_FAMILY, FONT_SIZE, HtmlLib
+from amilibx.ami_html import H_SPAN, H_BODY, H_P
+from amilibx.amix import AmiLib
+from amilibx.bbox import BBox
+from amilibx.file_lib import FileLib
 from pyamihtmlx.util import Util
 
 from test.resources import Resources
@@ -126,7 +126,8 @@ class PDFPlumberTest(AmiAnyTest):
 
     def test_pdfplumber_json_single_page_debug(self):
         """creates AmiPDFPlumber and reads pdf and debugs"""
-        path = os.path.join(HERE, "resources/pdffill-demo.pdf")
+        path = Path(os.path.join(HERE, "resources/pdffill-demo.pdf"))
+        assert path.exists, f"{path} should exist"
         ami_pdfplumber = AmiPDFPlumber()
         ami_plumber_json = ami_pdfplumber.create_ami_plumber_json(path)
         pages = ami_plumber_json.get_ami_json_pages()
@@ -371,7 +372,7 @@ class PDFTest(AmiAnyTest):
             "Im0.0.png", "Im1.png", "Im3.png", "Im0.2.png", "Im0.3.png", "Im2.png",
         ]
         for png in pngs:
-            assert Path(outdir, png).exists()
+            assert (p := Path(outdir, png)).exists(), "{p} should exist"
 
     def test_merge_pdf2txt_bmp_jpg_with_coords(self):
         """
@@ -447,7 +448,7 @@ class PDFTest(AmiAnyTest):
                " --outdir /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter17/raw/" \
                " --pages 1_4"
 
-        pyami = PyAMI()
+        pyami = AmiLib()
         pyami.run_command(args)
 
     @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
@@ -726,7 +727,7 @@ Uses:
         pdf = Resources.TEST_IPCC_CHAP06_PDF
         print(f"pdf file {pdf}")
         args = f"PDF --infile {pdf} --outdir {outdir} --pages 3_5 --flow True --outpath {outfile} --pdf2html pdfplumber"
-        PyAMI().run_command(args)
+        AmiLib().run_command(args)
         print(f"created outfile {outfile}")
         logging.warning(f"DID NOT CREATE FILE {outfile}")
         # assert outfile.exists(), f"{outfile} should exist"
@@ -765,7 +766,7 @@ Uses:
         assert Path(Resources.TEST_IPCC_CHAP06_PDF).exists(), f"expected {Resources.TEST_IPCC_CHAP06_PDF}"
 
         args = f"PDF --infile {Resources.TEST_IPCC_CHAP06_PDF} --pages 4 --outdir {AmiAnyTest.TEMP_HTML_IPCC_CHAP06} --flow True"
-        PyAMI().run_command(args)
+        AmiLib().run_command(args)
         outpath = Path(AmiAnyTest.TEMP_HTML_IPCC_CHAP06, "fulltext.flow_3.html")
         assert outpath.exists(), f"{outpath} should be created"
 
@@ -789,7 +790,7 @@ Uses:
         pages = "5_8"  # total is 0_171 (172pp)
         outdir = Path(AmiAnyTest.TEMP_DIR, "html", "ar6", "wg2_chap03")
         args = f"PDF --infile {infile} --outdir {outdir} --pages {pages}"
-        PyAMI().run_command(args)
+        AmiLib().run_command(args)
 
 
 class PDFCharacterTest(test.test_all.AmiAnyTest):
@@ -1060,6 +1061,11 @@ LTPage
             assert len(first_page.objects['char']) == 4411
             assert first_page.objects['char'][:2] == [
                 {'matrix': (9, 0, 0, 9, 319.74, 797.4203),
+                 'mcid': None,
+                 'ncs': 'DeviceCMYK',
+                 'non_stroking_pattern': None,
+                 'stroking_pattern': None,
+                 'tag': None,
                  'fontname': 'KAAHHD+Calibri,Italic',
                  'adv': 0.319,
                  'upright': True,
@@ -1070,6 +1076,11 @@ LTPage
                  'top': 37.8297, 'bottom': 46.8297, 'doctop': 37.8297
                  },
                 {'matrix': (9, 0, 0, 9, 322.6092, 797.4203), 'fontname': 'KAAHHD+Calibri,Italic', 'adv': 0.513,
+                 'mcid': None,
+                 'ncs': 'DeviceCMYK',
+                 'non_stroking_pattern': None,
+                 'stroking_pattern': None,
+                 'tag': None,
                  'upright': True,
                  'x0': 322.6092, 'y0': 795.1703, 'x1': 327.2262, 'y1': 804.1703, 'width': 4.617000000000019,
                  'height': 9.0, 'size': 9.0,
@@ -1085,7 +1096,9 @@ LTPage
                 'fill': False,
                 'height': 0.0,
                 'linewidth': 1,
-                'non_stroking_color': 0,
+                'mcid': None,
+                'non_stroking_color': (0,),
+                'non_stroking_pattern': None,
                 'object_type': 'line',
                 'page_number': 1,
                 #  this may be different y-coord system
@@ -1093,6 +1106,8 @@ LTPage
                 'pts': [(56.7, 48.24000000000001), (542.76, 48.24000000000001)],
                 'stroke': True,
                 'stroking_color': (0.3098, 0.24706, 0.2549, 0),
+                'stroking_pattern': None,
+                'tag': None,
                 'top': 48.24000000000001,
                 'width': 486.06,
                 'x0': 56.7,
@@ -1119,45 +1134,69 @@ LTPage
                  # looks like coordinate system was changed
                  'pts': [(56.7, 48.24000000000001), (542.76, 48.24000000000001)],
                  'linewidth': 1, 'stroke': True, 'fill': False,
-                 'evenodd': False, 'stroking_color': (0.3098, 0.24706, 0.2549, 0), 'non_stroking_color': 0,
+                 'evenodd': False, 'stroking_color': (0.3098, 0.24706, 0.2549, 0),
+                 'mcid': None,
+                 'non_stroking_color': (0,),
+                 'non_stroking_pattern': None,
                  'object_type': 'line', 'page_number': 1,
+                 'stroking_pattern': None,
+                 'tag': None,
                  'top': 48.24000000000001, 'bottom': 48.24000000000001,
                  'doctop': 48.24000000000001}]
 
             assert first_page.curves == []
             assert first_page.images == []
             assert len(first_page.chars) == 4411  # same as first_page.objects['char'] I think
-            assert first_page.chars[:1] == [
-                {'adv': 0.319,
-                 'bottom': 46.8297,
-                 'doctop': 37.8297,
-                 'fontname': 'KAAHHD+Calibri,Italic',
-                 'height': 9.0,
-                 'matrix': (9, 0, 0, 9, 319.74, 797.4203),
-                 'non_stroking_color': (0.86667, 0.26667, 1, 0.15294),
-                 'object_type': 'char',
-                 'page_number': 1,
-                 'size': 9.0,
-                 'stroking_color': None,
-                 'text': 'J',
-                 'top': 37.8297,
-                 'upright': True,
-                 'width': 2.870999999999981,
-                 'x0': 319.74,
-                 'x1': 322.611,
-                 'y0': 795.1703,
-                 'y1': 804.1703
-                 },
-            ]
+            assert first_page.chars[:1] == [{'adv': 0.319,
+  'bottom': 46.8297,
+  'doctop': 37.8297,
+  'fontname': 'KAAHHD+Calibri,Italic',
+  'height': 9.0,
+  'matrix': (9, 0, 0, 9, 319.74, 797.4203),
+  'mcid': None,
+  'ncs': 'DeviceCMYK',
+  'non_stroking_color': (0.86667, 0.26667, 1, 0.15294),
+  'non_stroking_pattern': None,
+  'object_type': 'char',
+  'page_number': 1,
+  'size': 9.0,
+  'stroking_color': None,
+  'stroking_pattern': None,
+  'tag': None,
+  'text': 'J',
+  'top': 37.8297,
+  'upright': True,
+  'width': 2.870999999999981,
+  'x0': 319.74,
+  'x1': 322.611,
+  'y0': 795.1703,
+  'y1': 804.1703}]
+
             """first_page.objects['char']"""
-            assert first_page.chars[0] == {'matrix': (9, 0, 0, 9, 319.74, 797.4203),
-                                           'fontname': 'KAAHHD+Calibri,Italic', 'adv': 0.319,
-                                           'upright': True, 'x0': 319.74, 'y0': 795.1703, 'x1': 322.611, 'y1': 804.1703,
-                                           'width': 2.870999999999981, 'height': 9.0, 'size': 9.0,
-                                           'object_type': 'char', 'page_number': 1,
-                                           'text': 'J', 'stroking_color': None,
-                                           'non_stroking_color': (0.86667, 0.26667, 1, 0.15294),
-                                           'top': 37.8297, 'bottom': 46.8297, 'doctop': 37.8297}
+            assert first_page.chars[0] == {'adv': 0.319,
+ 'bottom': 46.8297,
+ 'doctop': 37.8297,
+ 'fontname': 'KAAHHD+Calibri,Italic',
+ 'height': 9.0,
+ 'matrix': (9, 0, 0, 9, 319.74, 797.4203),
+ 'mcid': None,
+ 'ncs': 'DeviceCMYK',
+ 'non_stroking_color': (0.86667, 0.26667, 1, 0.15294),
+ 'non_stroking_pattern': None,
+ 'object_type': 'char',
+ 'page_number': 1,
+ 'size': 9.0,
+ 'stroking_color': None,
+ 'stroking_pattern': None,
+ 'tag': None,
+ 'text': 'J',
+ 'top': 37.8297,
+ 'upright': True,
+ 'width': 2.870999999999981,
+ 'x0': 319.74,
+ 'x1': 322.611,
+ 'y0': 795.1703,
+ 'y1': 804.1703}
             first_100 = first_page.extract_text()[:100]
             assert first_100.startswith("Journal of Medicine and Life Volume 7, Special Issue 3")
             assert 612 < len(first_page.extract_words()) < 616
@@ -1165,22 +1204,52 @@ LTPage
             assert list(word0.keys()) == ['text', 'x0', 'x1', 'top', 'doctop', 'bottom', 'upright', 'direction']
 
             # too fragile
-            assert first_page.edges == [
-                {'x0': 56.7, 'y0': 793.76, 'x1': 542.76, 'y1': 793.76, 'width': 486.06, 'height': 0.0,
-                 # 'pts': [(56.7, 793.76), (542.76, 793.76)],
-                 'pts': [(56.7, 48.24000000000001), (542.76, 48.24000000000001)],
-                 'linewidth': 1, 'stroke': True, 'fill': False,
-                 'evenodd': False, 'stroking_color': (0.3098, 0.24706, 0.2549, 0), 'non_stroking_color': 0,
-                 'object_type': 'line', 'page_number': 1, 'top': 48.24000000000001, 'bottom': 48.24000000000001,
-                 'doctop': 48.24000000000001, 'orientation': 'h'}]
-            assert first_page.horizontal_edges == [
-                {'x0': 56.7, 'y0': 793.76, 'x1': 542.76, 'y1': 793.76, 'width': 486.06, 'height': 0.0,
-                 # 'pts': [(56.7, 793.76), (542.76, 793.76)],
-                 'pts': [(56.7, 48.24000000000001), (542.76, 48.24000000000001)],
-                 'linewidth': 1, 'stroke': True, 'fill': False,
-                 'evenodd': False, 'stroking_color': (0.3098, 0.24706, 0.2549, 0), 'non_stroking_color': 0,
-                 'object_type': 'line', 'page_number': 1, 'top': 48.24000000000001, 'bottom': 48.24000000000001,
-                 'doctop': 48.24000000000001, 'orientation': 'h'}]
+            assert first_page.edges == [{'bottom': 48.24000000000001,
+  'doctop': 48.24000000000001,
+  'evenodd': False,
+  'fill': False,
+  'height': 0.0,
+  'linewidth': 1,
+  'mcid': None,
+  'non_stroking_color': (0,),
+  'non_stroking_pattern': None,
+  'object_type': 'line',
+  'orientation': 'h',
+  'page_number': 1,
+  'pts': [(56.7, 48.24000000000001), (542.76, 48.24000000000001)],
+  'stroke': True,
+  'stroking_color': (0.3098, 0.24706, 0.2549, 0),
+  'stroking_pattern': None,
+  'tag': None,
+  'top': 48.24000000000001,
+  'width': 486.06,
+  'x0': 56.7,
+  'x1': 542.76,
+  'y0': 793.76,
+  'y1': 793.76}]
+            assert first_page.horizontal_edges == [{'bottom': 48.24000000000001,
+  'doctop': 48.24000000000001,
+  'evenodd': False,
+  'fill': False,
+  'height': 0.0,
+  'linewidth': 1,
+  'mcid': None,
+  'non_stroking_color': (0,),
+  'non_stroking_pattern': None,
+  'object_type': 'line',
+  'orientation': 'h',
+  'page_number': 1,
+  'pts': [(56.7, 48.24000000000001), (542.76, 48.24000000000001)],
+  'stroke': True,
+  'stroking_color': (0.3098, 0.24706, 0.2549, 0),
+  'stroking_pattern': None,
+  'tag': None,
+  'top': 48.24000000000001,
+  'width': 486.06,
+  'x0': 56.7,
+  'x1': 542.76,
+  'y0': 793.76,
+  'y1': 793.76}]
             assert first_page.vertical_edges == []
             assert first_page.textboxverticals == []
             assert first_page.textboxhorizontals == []
@@ -1192,23 +1261,44 @@ LTPage
             assert type(csv) is str
             rows = csv.split("\r")
             assert len(rows) == 4414
-            assert rows[
-                       0] == "object_type,page_number,x0,x1,y0,y1,doctop,top,bottom,width,height,adv,evenodd,fill,fontname,linewidth,matrix,non_stroking_color,pts,size,stroke,stroking_color,text,upright"
-            assert rows[0].split() == [
-                'object_type,page_number,x0,x1,y0,y1,doctop,top,bottom,width,height,adv,evenodd,fill,fontname,linewidth,matrix,non_stroking_color,pts,size,stroke,stroking_color,text,upright']
-            assert rows[1].split() == [
-                'char,1,319.74,322.611,795.1703,804.1703,37.8297,37.8297,46.8297,2.870999999999981,9.0,0.319,,,"KAAHHD+Calibri,Italic",,"(9,',
-                '0,', '0,', '9,', '319.74,', '797.4203)","(0.86667,', '0.26667,', '1,', '0.15294)",,9.0,,,J,1']
+            assert rows[0] == "object_type,page_number,x0,x1,y0,y1,doctop,top,bottom,width,height,adv,evenodd,fill,fontname,linewidth,matrix,mcid,ncs,non_stroking_color,non_stroking_pattern,pts,size,stroke,stroking_color,stroking_pattern,tag,text,upright"
+            assert rows[0].split() == ['object_type,page_number,x0,x1,y0,y1,doctop,top,bottom,width,height,adv,evenodd,fill,fontname,linewidth,matrix,mcid,ncs,non_stroking_color,non_stroking_pattern,pts,size,stroke,stroking_color,stroking_pattern,tag,text,upright']
+            assert rows[1].split() == ['char,1,319.74,322.611,795.1703,804.1703,37.8297,37.8297,46.8297,2.870999999999981,9.0,0.319,,,"KAAHHD+Calibri,Italic",,"(9,',
+ '0,',
+ '0,',
+ '9,',
+ '319.74,',
+ '797.4203)",,DeviceCMYK,"(0.86667,',
+ '0.26667,',
+ '1,',
+ '0.15294)",,,9.0,,,,,J,1']
 
             #        assert rows[1] == 'char,1,319.74,322.611,795.1703,804.1703,37.8297,37.8297,46.8297,2.870999999999981,9.0,0.319,,,"KAAHHD+Calibri,Italic",,"(9, '\n '0, 0, 9, 319.74, 797.4203)","(0.86667, 0.26667, 1, 0.15294)",,9.0,,,J,1'
 
-            assert first_page.chars[0:1] == [
-                {'adv': 0.319, 'bottom': 46.8297, 'doctop': 37.8297, 'fontname': 'KAAHHD+Calibri,Italic', 'height': 9.0,
-                 'matrix': (9, 0, 0, 9, 319.74, 797.4203), 'non_stroking_color': (0.86667, 0.26667, 1, 0.15294),
-                 'object_type': 'char',
-                 'page_number': 1, 'size': 9.0, 'stroking_color': None, 'text': 'J', 'top': 37.8297, 'upright': True,
-                 'width': 2.870999999999981, 'x0': 319.74, 'x1': 322.611, 'y0': 795.1703, 'y1': 804.1703}]
-
+            assert first_page.chars[0:1] == [{'adv': 0.319,
+  'bottom': 46.8297,
+  'doctop': 37.8297,
+  'fontname': 'KAAHHD+Calibri,Italic',
+  'height': 9.0,
+  'matrix': (9, 0, 0, 9, 319.74, 797.4203),
+  'mcid': None,
+  'ncs': 'DeviceCMYK',
+  'non_stroking_color': (0.86667, 0.26667, 1, 0.15294),
+  'non_stroking_pattern': None,
+  'object_type': 'char',
+  'page_number': 1,
+  'size': 9.0,
+  'stroking_color': None,
+  'stroking_pattern': None,
+  'tag': None,
+  'text': 'J',
+  'top': 37.8297,
+  'upright': True,
+  'width': 2.870999999999981,
+  'x0': 319.74,
+  'x1': 322.611,
+  'y0': 795.1703,
+  'y1': 804.1703}]
             assert type(first_page.extract_text()) is str
             for ch in first_page.chars:  # prints all text as a single line
                 print(ch.get("text"), end="")
@@ -1256,6 +1346,7 @@ LTPage
 
         with pdfplumber.open(Resources.TEST_IPCC_WG2_CHAP03_PDF) as pdf:
             pages = list(pdf.pages)
+            print(f"PDF pages: {len(pages)}")
             for page in pages[:maxpage]:
                 pdf_debug.debug_page_properties(page, debug=[WORDS, IMAGES], outdir=outdir)
         pdf_debug.write_summary(outdir=outdir)
@@ -1595,7 +1686,7 @@ class PDFSVGTest(test.test_all.AmiAnyTest):
     def test_svg2page(self):
         proj = Resources.TEST_CLIMATE_10_PROJ_DIR
         args = f"--proj {proj} --apply svg2page"
-        PyAMI().run_command(args)
+        AmiLib().run_command(args)
 
     @unittest.skipUnless("enviroment", ADMIN)
     @unittest.skip("doesn't do SVG")
@@ -1704,13 +1795,12 @@ class PDFMainArgTest(test.test_all.AmiAnyTest):
             pass
 
     def test_pdf_help(self):
-        pyami = PyAMI()
+        pyami = AmiLib()
         pyami.run_command("PDF")
 
     def test_pdf_html_ipcc_command_help(self):
-        pyami = PyAMI()
+        pyami = AmiLib()
         pyami.run_command("HTML")
-        pyami.run_command("IPCC")
         pyami.run_command("PDF")
         # pyami.run_command("PDF")
 
@@ -1720,23 +1810,23 @@ class PDFMainArgTest(test.test_all.AmiAnyTest):
         Test that 'PDF' subcomand works without errors
         """
 
-        PyAMI().run_command(
+        AmiLib().run_command(
             ['HTML'])
-        PyAMI().run_command(
+        AmiLib().run_command(
             ['HTML', '--help'])
 
     def test_subcommands(self):
         # run args
         inpath = Path(Resources.TEST_PDFS_DIR, "1758-2946-3-44.pdf")
         outdir = Path(AmiAnyTest.TEMP_DIR, "pdf", "1758-2946-3-44")
-        PyAMI().run_command(
+        AmiLib().run_command(
             ['PDF', '--inpath', str(inpath), '--outdir', str(outdir), '--pages', '_2', '4', '6_8', '11_'])
 
     def test_subcommands_1(self):
         # run args
         inpath = Path(Resources.TEST_IPCC_DIR, "LongerReport", "fulltext.pdf")
         outdir = Path(AmiAnyTest.TEMP_DIR, "html", "LongerReport.html")
-        PyAMI().run_command(
+        AmiLib().run_command(
             ['PDF', '--inpath', str(inpath), '--outdir', str(outdir), '--maxpage', '999'])
 
     @unittest.skip("commands don't work properly")
@@ -1756,7 +1846,7 @@ class PDFMainArgTest(test.test_all.AmiAnyTest):
         htmls = FileLib.delete_files(outdir, "*.html")
         out2 = Path(outdir, "fulltext.flow_2.html")
         assert not out2.exists()
-        PyAMI().run_command(
+        AmiLib().run_command(
             ['PDF', '--inpath', str(inpath), '--outdir', str(outdir),
              "--pdf2html", "pdfplumber", "--pages", "1_3", "--flow", "True"])
         files = FileLib.list_files(outdir, "*.html")
@@ -1770,13 +1860,13 @@ class PDFMainArgTest(test.test_all.AmiAnyTest):
     def test_svg2page(self):
         proj = Resources.TEST_CLIMATE_10_PROJ_DIR
         args = f"--proj {proj} --apply svg2page"
-        PyAMI().run_command(args)
+        AmiLib().run_command(args)
 
     @unittest.skipIf(PDFTest.NYI, "page2sect")
     def test_page2chap(self):
         proj = Resources.TEST_CLIMATE_10_PROJ_DIR
         args = f"--proj {proj} --apply page2sect"
-        PyAMI().run_command(args)
+        AmiLib().run_command(args)
 
 
 def main(argv=None):

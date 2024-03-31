@@ -116,7 +116,7 @@ class TestFile(AmiAnyTest):
 
     @unittest.skip("if not windows")
     def test_glob_with_windows(self):
-        """some instances of glob.glob with fully forward slashes generate \or \\ on windows
+        """some instances of glob.glob with fully forward slashes generate backslash or double backslash on windows
 
         """
         input_dir = Path(Resources.TEST_RESOURCES_DIR, "ar6", "cleaned_content")

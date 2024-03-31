@@ -1375,7 +1375,8 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/spm/tot
 
     # Chatpers within Working groups
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    # @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skip("IPCC")
     def test_chapter_toolchain_chapters_HACKATHON(self):
         """
         writing XML /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/wg3/Chapter07/pages/page_114.html
@@ -1454,6 +1455,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         divs = html_elem.xpath("//div")
         assert 640 > len(divs) > 635
 
+    @unittest.skip("MOVE TO UN")
     def test_extract_anchors_initial_TEST_HACKATHON_KEY(self):
         """tests target IDs in SYR/LR in WGI"""
         import requests
@@ -1477,6 +1479,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         IPCCTargetLink.read_links_from_span_and_follow_to_ipcc_repository_KEY(anchor_div, leaf_name, link_factory, span_containing_curly_list)
 
 
+    @unittest.skip("MOVE TO UN")
     def test_extract_anchors_add_confidence_HACKATHON_KEY(self):
         """ reads whole of SYR/LR after grouping
       Then parses the confidence statements is SYR/LR
