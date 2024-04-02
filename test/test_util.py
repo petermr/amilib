@@ -103,19 +103,23 @@ class TestUtil(AmiAnyTest):
             assert str(ve) == f"arg [{arg}] may not contain whitespace"
 
     def test_read_csv(self):
-        """use Python csv to select column values"""
+        """
+        use Python csv to select column values
+        Reads compound_enzyme.csv into CSV DictReader and checks values in first 3 rows
+        with column names "NAME" and "TYPE"
+        """
         csv_file = Path(Resources.TEST_RESOURCES_DIR, "eoCompound", "compound_enzyme.csv")
         assert csv_file.exists(), f"{csv_file} should exist"
+        expected_row_values = [["isopentenyl diphosphate", "COMPOUND"],
+                               ["dimethylallyl diphosphate", "COMPOUND"],
+                               ["hemiterpene", "COMPOUND"]]
         with open(str(csv_file), newline='') as csvfile:
-            row_values = [["isopentenyl diphosphate", "COMPOUND"],
-                          ["dimethylallyl diphosphate", "COMPOUND"],
-                          ["hemiterpene", "COMPOUND"]]
             reader = csv.DictReader(csvfile)
 
             for i, row in enumerate(reader):
                 if i < 3:
-                    assert row['NAME'] == row_values[i][0]
-                    assert row['TYPE'] == row_values[i][1]
+                    assert row['NAME'] == expected_row_values[i][0]
+                    assert row['TYPE'] == expected_row_values[i][1]
 
     def test_select_csv_field_by_type(self):
         """select value in column of csv file by value of defining column
