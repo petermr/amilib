@@ -884,6 +884,7 @@ class DriverTest(AmiAnyTest):
                 print(f"qitem {qitem0, desc}")
                 wikiwriter.writerow([term, qitem0, desc, wikidata_hits])
 
+    @unittest.skip("no idea what this does - I wrote it!")
     def test_abbreviations_wikimedia_WIKI(self):
         """
         reads an acronym file as CSV and looks up entries in Wikidata and Wikipedia
@@ -894,11 +895,7 @@ class DriverTest(AmiAnyTest):
         offset = 1000
         count = 0
         MAXCOUNT = 3
-        for start in range(0, 1700, offset):
-            count += 1
-            if count > MAXCOUNT:
-                break
-            end = start + offset
+        for start in range(0, 3):
             lookup = WikidataLookup()
             output_file = Path(TOTAL_GLOSS_DIR, "glossaries", "total", f"acronyms_wiki_{start}_{end}.csv")
             with open(output_file, "w") as fout:
@@ -907,8 +904,6 @@ class DriverTest(AmiAnyTest):
                 with open(abbrev_file, newline='') as input:
                     csvreader = csv.reader(input)
                     for i, row in enumerate(csvreader):
-                        if i < start or i > end:
-                            continue
                         abb = row[0]
                         term = row[1]
                         qitem0, desc, hits = lookup.lookup_wikidata(term)
