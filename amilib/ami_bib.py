@@ -4,7 +4,7 @@ import lxml
 import lxml.etree
 import re
 # local
-from amilibx.util import Util
+from amilib.util import Util
 
 
 class Reference:

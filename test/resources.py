@@ -17,7 +17,7 @@ class Resources:
            (these are dictionaries, corpora, etc. used for development but not used for regression tests)
     """
     # small example projects in package
-    RESOURCES_DIR = Path(Path(__file__).parent.parent, "amilibx", "resources")
+    RESOURCES_DIR = Path(Path(__file__).parent.parent, "amilib", "resources")
     assert RESOURCES_DIR.name == "resources", f"{RESOURCES_DIR.name} should be 'resources'"
 
     # # test data (often snipped form large projects

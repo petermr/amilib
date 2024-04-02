@@ -1,10 +1,7 @@
 from pathlib import Path
 import csv
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import manifold
 
-from amilibx.ami_nlp import AmiNLP
+from amilib.ami_nlp import AmiNLP
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 

@@ -16,12 +16,13 @@ import lxml
 import lxml.etree
 import numpy as np
 from lxml.etree import Element, _Element, _ElementTree
+# from scikit-learn.linear_model import LinearRegression
 from sklearn.linear_model import LinearRegression
 
 # local
-from amilibx.bbox import BBox
-from amilibx.util import SScript, AbstractArgs, Util, AmiLogger
-from amilibx.xml_lib import XmlLib, HtmlLib
+from amilib.bbox import BBox
+from amilib.util import SScript, AbstractArgs, Util, AmiLogger
+from amilib.xml_lib import XmlLib, HtmlLib
 
 logger = AmiLogger.create_named_logger(__file__)
 

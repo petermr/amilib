@@ -2,8 +2,8 @@ import os
 
 import lxml.etree as ET
 
-from amilibx.ami_html import HtmlStyle
-from amilibx.xml_lib import XmlLib, HtmlLib
+from amilib.ami_html import HtmlStyle
+from amilib.xml_lib import XmlLib, HtmlLib
 
 from test.test_all import AmiAnyTest
 

@@ -1071,7 +1071,7 @@ class EnhancedRegex:
     def get_href(self, href, text=None):
         """generates href/idref from matched string
         """
-        from amilibx.util import GENERATE
+        from amilib.util import GENERATE
 
         if href == GENERATE:
             idref = self.make_id_with_regex(self.regex, text)

@@ -2,7 +2,7 @@
 
 import math
 # this should be in a separate library
-from amilibx.ami_util import AmiUtil
+from amilib.ami_util import AmiUtil
 
 
 

@@ -7,7 +7,7 @@ import unittest
 # from pyamihtmlx.file_lib import AmiPath, PROJ, FILE
 from pathlib import Path
 
-from amilibx.file_lib import FileLib
+from amilib.file_lib import FileLib
 
 from test.resources import Resources
 from test.test_all import AmiAnyTest

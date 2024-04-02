@@ -8,10 +8,10 @@ import sys
 import unittest
 from pathlib import Path
 
-from amilibx.file_lib import FileLib
-from amilibx.util import EnhancedRegex
-from amilibx.util import Util, GithubDownloader, ArgParseBuilder, AmiArgParser, AmiArgParseException
-from amilibx.xml_lib import Templater
+from amilib.file_lib import FileLib
+from amilib.util import EnhancedRegex
+from amilib.util import Util, GithubDownloader, ArgParseBuilder, AmiArgParser, AmiArgParseException
+from amilib.xml_lib import Templater
 
 from test.resources import Resources
 from test.test_all import AmiAnyTest

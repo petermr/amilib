@@ -10,9 +10,9 @@ from pathlib import Path
 from lxml import etree
 
 # local
-from amilibx.util import Util
-from amilibx.wikimedia import WikidataSparql as WS
-from amilibx.xml_lib import XmlLib
+from amilib.util import Util
+from amilib.wikimedia import WikidataSparql as WS
+from amilib.xml_lib import XmlLib
 
 from test.resources import Resources
 

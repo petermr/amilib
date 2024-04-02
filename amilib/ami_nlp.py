@@ -7,6 +7,12 @@ import matplotlib.pyplot as plt
 import nltk
 import numpy as np
 import pandas as pd
+
+# from scikit-learn import manifold
+# from scikit-learn.cluster import AgglomerativeClustering, KMeans
+# from scikit-learn.feature_extraction.text import TfidfVectorizer
+# from scikit-learn.metrics.pairwise import cosine_similarity
+
 from sklearn import manifold
 from sklearn.cluster import AgglomerativeClustering, KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer

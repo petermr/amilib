@@ -13,9 +13,9 @@ from lxml import etree as ET
 from lxml.etree import _Element, _ElementTree
 from lxml.html import HTMLParser
 
-from amilibx.file_lib import FileLib
+from amilib.file_lib import FileLib
 
-# from amilibx.util import EnhancedRegex
+# from amilib.util import EnhancedRegex
 
 logging.debug("loading xml_lib")
 
@@ -1488,7 +1488,7 @@ class Templater:
 
     @classmethod
     def create_id_from_section(cls, html_elem, id_xpath, template=None, regex=None, maxchar=100):
-        from amilibx.xml_lib import ID_TEMPLATE
+        from amilib.xml_lib import ID_TEMPLATE
         """create id from html content
         id_xpath is where to find the content
         template is how to transform it

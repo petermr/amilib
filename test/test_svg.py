@@ -2,8 +2,8 @@ from pathlib import Path
 
 import lxml.etree
 
-from amilibx.ami_svg import AmiSVG
-from amilibx.xml_lib import XmlLib
+from amilib.ami_svg import AmiSVG
+from amilib.xml_lib import XmlLib
 
 from test.resources import Resources
 from test.test_all import AmiAnyTest

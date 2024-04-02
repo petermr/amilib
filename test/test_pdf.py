@@ -18,9 +18,9 @@ import pandas as pd
 import requests
 
 import test.test_all
-from amilibx.ami_bib import Publication
-from amilibx.ami_pdf import PDFArgs
-from amilibx.ami_integrate import HtmlGenerator
+from amilib.ami_bib import Publication
+from amilib.ami_pdf import PDFArgs
+from amilib.ami_integrate import HtmlGenerator
 
 """NOTE REQUIRES LATEST pdfplumber"""
 import pdfplumber
@@ -30,14 +30,14 @@ from lxml.html import HTMLParser
 # local
 # from pyamihtmlx.ami_bib import Publication
 
-from amilibx.ami_pdf_libs import SVG_NS, SVGX_NS, PDFDebug, PDFParser
-from amilibx.ami_pdf_libs import AmiPage, X, Y, SORT_XY, PDFImage, AmiPDFPlumber, AmiPlumberJsonPage, AmiPlumberJson
-from amilibx.ami_pdf_libs import WORDS, IMAGES, ANNOTS, CURVES, TEXTS
-from amilibx.ami_html import HtmlUtil, STYLE, FILL, STROKE, FONT_FAMILY, FONT_SIZE, HtmlLib
-from amilibx.ami_html import H_SPAN, H_BODY, H_P
-from amilibx.amix import AmiLib
-from amilibx.bbox import BBox
-from amilibx.file_lib import FileLib
+from amilib.ami_pdf_libs import SVG_NS, SVGX_NS, PDFDebug, PDFParser
+from amilib.ami_pdf_libs import AmiPage, X, Y, SORT_XY, PDFImage, AmiPDFPlumber, AmiPlumberJsonPage, AmiPlumberJson
+from amilib.ami_pdf_libs import WORDS, IMAGES, ANNOTS, CURVES, TEXTS
+from amilib.ami_html import HtmlUtil, STYLE, FILL, STROKE, FONT_FAMILY, FONT_SIZE, HtmlLib
+from amilib.ami_html import H_SPAN, H_BODY, H_P
+from amilib.amix import AmiLib
+from amilib.bbox import BBox
+from amilib.file_lib import FileLib
 from pyamihtmlx.util import Util
 
 from test.resources import Resources

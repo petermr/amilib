@@ -16,18 +16,18 @@ import pandas as pd
 # local
 from lxml.etree import HTMLParser
 
-from amilibx.ami_bib import Reference, Biblioref
-from amilibx.file_lib import FileLib
-from amilibx.ami_html import HTMLSearcher, HtmlTree, HtmlAnnotator, AnnotatorCommand, URLCache
-from amilibx.ami_html import HtmlUtil, H_SPAN, CSSStyle, HtmlTidy, HtmlStyle, HtmlClass, SectionHierarchy, AmiFont, \
+from amilib.ami_bib import Reference, Biblioref
+from amilib.file_lib import FileLib
+from amilib.ami_html import HTMLSearcher, HtmlTree, HtmlAnnotator, AnnotatorCommand, URLCache
+from amilib.ami_html import HtmlUtil, H_SPAN, CSSStyle, HtmlTidy, HtmlStyle, HtmlClass, SectionHierarchy, AmiFont, \
     FloatBoundary, Footnote, HtmlGroup
-from amilibx.ami_pdf import PDFArgs
-from amilibx.ami_pdf_libs import AmiPDFPlumber
+from amilib.ami_pdf import PDFArgs
+from amilib.ami_pdf_libs import AmiPDFPlumber
 # from pyamihtmlx.ar6 import TargetExtractor, IPCCTarget, LinkFactory, IPCCTargetLink
-from amilibx.amix import AmiLib
-from amilibx.util import Util
-from amilibx.xml_lib import HtmlLib, XmlLib
-from amilibx.ami_integrate import HtmlGenerator
+from amilib.amix import AmiLib
+from amilib.util import Util
+from amilib.xml_lib import HtmlLib, XmlLib
+from amilib.ami_integrate import HtmlGenerator
 
 from test.resources import Resources
 from test.test_all import AmiAnyTest

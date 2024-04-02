@@ -14,14 +14,14 @@ from pathlib import Path
 
 import lxml.etree as etree
 # local
-# from amilibx.dict_lib import AmiDictionary
+# from amilib.dict_lib import AmiDictionary
 
-from amilibx.ami_pdf import PDFArgs
-from amilibx.ami_html import HTMLArgs
-from amilibx.file_lib import FileLib
-from amilibx.util import AmiLogger, Util, AbstractArgs
-from amilibx.wikimedia import WikidataLookup
-from amilibx.xml_lib import XmlLib
+from amilib.ami_pdf import PDFArgs
+from amilib.ami_html import HTMLArgs
+from amilib.file_lib import FileLib
+from amilib.util import AmiLogger, Util, AbstractArgs
+from amilib.wikimedia import WikidataLookup
+from amilib.xml_lib import XmlLib
 
 AMIX_DIR = Path(__file__).parent
 REPO_DIR = AMIX_DIR.parent
@@ -32,7 +32,7 @@ REPO_DIR = AMIX_DIR.parent
 
 
 class AmiLib:
-    logger = logging.getLogger("amilibx")
+    logger = logging.getLogger("amilib")
 #     """ main entry point for running pyami
 #      """
 #     OUTFILE = "outfile"

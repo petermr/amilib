@@ -9,19 +9,17 @@ import lxml.etree as ET
 from geopy.geocoders import Nominatim
 from lxml.html import HTMLParser, Element, HtmlElement
 
-from amilibx.amidriver import AmiDriver, URL, XPATH, OUTFILE  # EXPAND_SECTION_PARAS
-from amilibx.file_lib import FileLib
-from amilibx.wikimedia import WikidataLookup, WikidataPage
-from amilibx.xml_lib import XmlLib, HtmlLib, DECLUTTER_BASIC
+from amilib.amidriver import AmiDriver, URL, XPATH, OUTFILE  # EXPAND_SECTION_PARAS
+from amilib.file_lib import FileLib
+from amilib.wikimedia import WikidataLookup, WikidataPage
+from amilib.xml_lib import XmlLib, HtmlLib, DECLUTTER_BASIC
 from test.resources import Resources
 
 from test.test_all import AmiAnyTest
 
 # reset this yourself
-FileLib
-OUT_DIR_TOP = Path("/", "Users", "pm286", "projects")
-OUT_DIR_TOP = Path(FileLib.get_home(), "workspace")
-OUT_DIR_TOP = Path(Resources.TEST_RESOURCES_DIR)
+# FileLib
+OUT_DIR_TOP = Path(Resources.TEMP_DIR)
 # input
 IPCC_URL = "https://www.ipcc.ch/"
 AR6_URL = IPCC_URL + "report/ar6/"
@@ -32,7 +30,7 @@ WG3_URL = AR6_URL + "wg3/"
 
 SC_TEST_DIR = Path(OUT_DIR_TOP, "ar6", "test")
 
-# SYR_OUT_DIR = Path(SC_TEST_DIR, "syr")
+SYR_OUT_DIR = Path(SC_TEST_DIR, "syr")
 WG1_OUT_DIR = Path(SC_TEST_DIR, "wg1")
 # WG2_OUT_DIR = Path(SC_TEST_DIR, "wg2")
 # WG3_OUT_DIR = Path(SC_TEST_DIR, "wg3")
@@ -63,7 +61,14 @@ def predict_encoding(file_path: Path, n_lines: int = 20) -> str:
 
 class MiscTest(AmiAnyTest):
 
-    def test_geolocate(self):
+    def test_geolocate_GEO(self):
+        """
+        GEO: locates places by name using Nominatim
+
+        (Test occasionally returns variable decimal places
+        TODO needs a fixed-place numeric comparison
+        :return:
+        """
         geolocator = Nominatim(timeout=10, user_agent="semanticclimate@gmail.com")
         results = []
         for name in [
@@ -775,7 +780,7 @@ class DriverTest(AmiAnyTest):
         out_dir = Path(TOTAL_GLOSS_DIR, "output")
         make_glossary(dict_files, out_dir, debug=True)
 
-    def test_convert_characters(self):
+    def test_convert_characters_CHAR(self):
         """
             The original files are in an unknown encoding which we are gradually discovering by finding characters
             ?should be irrelevant if the encoding is known
@@ -796,10 +801,10 @@ class DriverTest(AmiAnyTest):
             except UnicodeEncodeError as e2:
                 print(f"failed encode with {encoding} gives {e2}")
 
-    unittest.skip("input file missing")
-
-    def test_glossary_encoding(self):
-        """Adaptation_limits_A.html"""
+    def test_glossary_encoding_CHAR(self):
+        """
+        Adaptation_limits_A.html
+        """
         input = Path(TOTAL_GLOSS_DIR, "input", "Adaptation_limits_A.html")
         with open(str(input), "r", encoding="UTF-8") as f:
             content = f.read()
@@ -832,9 +837,11 @@ class DriverTest(AmiAnyTest):
             tr = ET.SubElement(table, "tr")
             make_cell(output_file, output_name, tr, style="border: 1px blue; background: #eee; margin : 3px;")
 
-        HtmlLib.write_html_file(html, Path(TOTAL_GLOSS_DIR, "total.html"), encoding="UTF-8", debug=True)
+        path = Path(TOTAL_GLOSS_DIR, "total.html")
+        HtmlLib.write_html_file(html, path, encoding="UTF-8", debug=True)
+        assert path.exists(), f"{path} should exist"
 
-    def test_merge_PDF_HTML_glosaries(self):
+    def test_merge_IPCC_PDF_HTML_glosaries_MISC(self):
         glossaries = [
             "sr15",
             "srocc",
@@ -852,7 +859,7 @@ class DriverTest(AmiAnyTest):
             elements = gloss_html.xpath("//*")
             print(f"elements {len(elements)}")
 
-    def test_wikimedia(self):
+    def test_wikimedia_WIKI(self):
         """
 
         """
@@ -877,8 +884,7 @@ class DriverTest(AmiAnyTest):
                 print(f"qitem {qitem0, desc}")
                 wikiwriter.writerow([term, qitem0, desc, wikidata_hits])
 
-    @unittest.skipIf(OMIT_LONG, "toolong")
-    def test_abbreviations_wikimedia(self):
+    def test_abbreviations_wikimedia_WIKI(self):
         """
         reads an acronym file as CSV and looks up entries in Wikidata and Wikipedia
         TODO move elsewhere
@@ -918,8 +924,10 @@ class DriverTest(AmiAnyTest):
                             out_row = [abb, term, qitem0, desc, hits]
                         csvwriter.writerow(out_row)
 
-    def test_add_wikipedia_to_abbreviations(self):
-        """reads an abbreviations and looks up wikipedia"""
+    def test_add_wikipedia_to_abbreviations_WIKI(self):
+        """
+        reads an abbreviations and looks up wikipedia
+        """
         glossdir = Path(TOTAL_GLOSS_DIR, "glossaries", "total")
         glossdir.mkdir(exist_ok=True, parents=True)
         abbrev_file = Path(glossdir, "acronyms_wiki.csv")

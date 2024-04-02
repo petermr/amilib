@@ -9,8 +9,8 @@ from lxml import etree, html
 import lxml.etree
 
 # local
-from amilibx.ami_html import HtmlUtil
-from amilibx.util import Util
+from amilib.ami_html import HtmlUtil
+from amilib.util import Util
 
 # from pyamihtmlx.ami_dict import REGEX_BLACKLIST
 

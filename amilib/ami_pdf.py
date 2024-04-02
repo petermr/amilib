@@ -8,9 +8,9 @@ from pathlib import Path
 
 import lxml
 
-from amilibx.ami_html import A_HREF, H_A, H_SPAN
-from amilibx.ami_pdf_libs import AmiPage, PDFParser, DEBUG_OPTIONS
-from amilibx.util import AbstractArgs, AmiArgParser, Util, AmiLogger
+from amilib.ami_html import A_HREF, H_A, H_SPAN
+from amilib.ami_pdf_libs import AmiPage, PDFParser, DEBUG_OPTIONS
+from amilib.util import AbstractArgs, AmiArgParser, Util, AmiLogger
 
 INDIR = "indir"
 INFILE = "infile"
@@ -437,7 +437,7 @@ class PDFArgs(AbstractArgs):
             maxpage=9999
     ):
 
-        from amilibx.ami_html import HtmlTidy
+        from amilib.ami_html import HtmlTidy
 
         """converts PDF to raw_html and (optionally raw_html to tidy_html
         Uses PDFParser.convert_pdf to create raw_html_element
@@ -666,8 +666,8 @@ class PDFArgs(AbstractArgs):
             outdir=None,
             outpath=None,
     ):
-        from amilibx.ami_html import CSSStyle  # messy
-        from amilibx.ami_html import HtmlStyle
+        from amilib.ami_html import CSSStyle  # messy
+        from amilib.ami_html import HtmlStyle
 
         """
         main routine for converting PDF all the way to tidied styled HTML
