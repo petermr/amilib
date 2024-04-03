@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "amilib"
+version = "0.0.1a1"
+description = "utilities for downloading, semantifying, publishing documents in X/HTML with Wikidata"
+authors = ["petermr <peter.murray.rust@googlemail.com>"]
+license = "Apache2"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.31.0"
+lxml = "^5.2.0"
+numpy = "^1.26.4"
+pdfplumber = "^0.11.0"
+matplotlib = "^3.8.3"
+nltk = "^3.8.1"
+pandas = "^2.2.1"
+"pdfminer.six" = "^20231228"
+selenium = "^4.19.0"
+geopy = "^2.4.1"
+tinycss = "^0.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
