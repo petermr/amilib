@@ -3,7 +3,7 @@
 cd
 cd workspace/amilib  # or whatever your top dir
 rm -rf dist
-# *** EDIT VERSION NUMBER (e.g. 0.0.2) IN setup.py AND amilib/amix.PyAMI.version() ***
+# *** EDIT VERSION NUMBER (e.g. 0.0.2) IN setup.py AND amilib/amix.version() ***
 python setup.py sdist
 
 twine upload dist/* # <login is pypi, not github> I am petermr

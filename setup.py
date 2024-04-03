@@ -10,7 +10,7 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 long_desc = """
-amilib is a library for dowloading, cleaning, annotating, documents fo various sorts (HTML, PDF, XML)"""
+amilib is a library for downloading, cleaning, annotating, documents fo various sorts (HTML, PDF, XML)"""
 
 requirements = [
  'lxml',
@@ -31,7 +31,7 @@ requirements = [
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.0.1a3',
+    version='0.0.1',
     description='document download, cleaning, managemenr',
     long_description_content_type='text/markdown',
     long_description=readme,

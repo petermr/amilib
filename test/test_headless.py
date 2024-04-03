@@ -884,7 +884,7 @@ class DriverTest(AmiAnyTest):
                 print(f"qitem {qitem0, desc}")
                 wikiwriter.writerow([term, qitem0, desc, wikidata_hits])
 
-    @unittest.skip("no idea what this does - I wrote it!")
+    @unittest.skip("no idea what this does - I only wrote it!")
     def test_abbreviations_wikimedia_WIKI(self):
         """
         reads an acronym file as CSV and looks up entries in Wikidata and Wikipedia

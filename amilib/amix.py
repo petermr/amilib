@@ -1158,37 +1158,12 @@ class AmiLib:
 
         version = '0.0.1a1'  # 2024-03-27
         version = '0.0.1a3'  # 2024-03-27
+        version = '0.0.1'  # 2024-04-03
 
         # logging.warn(f"VERSION {version}")
         return version
 
 
-# class ContentStore:
-#     """holds path-related content
-#
-#     replaces earlier pyamihtmlx.file_dict
-#     uses a dict
-#     at presemt the key is the path(name) and the value is either the content or None
-#     """
-#
-#     def __init__(self, pyami):
-#         self.pyami = pyami
-#         self.file_dict = {}
-#
-#     def add_files(self, files, add_contents=False):
-#         for file in files:
-#             self.add_file(file, add_contents)
-#
-#     def add_file(self, file, add_contents=False):
-#         self.file_dict[file] = self.get_contents(file) if add_contents else None
-#
-#     def keys(self):
-#         return self.file_dict.keys() if self.file_dict is not None else None
-#
-#     def get_file_contents(self, file):
-#         """return dictionary or None"""
-#         return self.file_dict.get(file)
-#
 
 class AmiLibArgs(AbstractArgs):
     """Parse args to analyze, edit and annotate HTML"""
@@ -1313,21 +1288,21 @@ def main():
     """ main entry point for cmdline
 
     """
-    # print(f"PYAMI")
-    run_dsl = False
+    print(f"PYAMI")
     run_tests = False  # needs re-implementing
 
     run_commands = True
     #    run_commands = False
+
     #    run_tests = True
 
-    # AmiLib.logger.debug(
-    #     f"\n============== running pyami main ===============\n{sys.argv[1:]}")
-    # amix = AmiLib()
-    # print(f"***** PYAMI VERSION {amix.version()} *****")
-    # # this needs commandline
-    # if run_commands:
-    #     amix.run_command(sys.argv[1:])
+    AmiLib.logger.debug(
+        f"\n============== running pyami main ===============\n{sys.argv[1:]}")
+    amix = AmiLib()
+    print(f"***** PYAMI VERSION {amix.version()} *****")
+    # this needs commandline
+    if run_commands:
+        amix.run_command(sys.argv[1:])
 
 
 if __name__ == "__main__":
