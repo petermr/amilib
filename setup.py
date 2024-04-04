@@ -22,7 +22,9 @@ requirements = [
  'requests',
  'numpy',
  'pandas',
+ 'pyvis',
  'selenium',
+ 'tinycss',
  'webdriver-manager',
  'scikit-learn',
 
