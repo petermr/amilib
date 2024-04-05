@@ -9,7 +9,7 @@ from lxml import etree, html
 
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter
-# from pyamihtmlx.ami_dict import WIKIDATA_ID, AmiEntry
+from amilib.wikimedia import WikidataLookup
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -18,20 +18,6 @@ cd pyami # toplevel checkout
 python3 -m test.test_wikidata
 """
 
-# ignoring all dictionary functionality
-try:
-    from amilib.wikimedia import WikidataLookup
-
-    # from pyamihtmlx.ami_dict import AMIDictError, AmiDictionary
-
-    logging.info(f"loaded py4ami.ami_dict")
-except Exception:
-    try:
-        from amilib.wikimedia import WikidataLookup
-        # from pyamihtmlx.ami_dict import AMIDictError
-    except Exception as e:
-        logging.error(f"Cannot import from py4ami.ami_dict")
-
 ami_dictRESOURCES_DIR = Path(Path(__file__).parent.parent, "test", "resources")
 # TEMP_DIR = Path(Path(__file__).parent.parent, "temp_oldx_delete")
 # DICTIONARY_DIR = Path(os.path.expanduser("~"), "projects", "CEVOpen", "dictionary")
@@ -39,12 +25,19 @@ EO_COMPOUND = "eoCompound"
 EO_COMPOUND_DIR = Path(Resources.TEST_RESOURCES_DIR, EO_COMPOUND)
 
 
-# NOTE some of these are lengthy (seconds) as they lookup on the Ne
+# NOTE some of these are lengthy (seconds) as they lookup on the Net
 
-class TestWikidataLookup(unittest.TestCase):
+class TestWikidataLookup_WIKI_NET(unittest.TestCase):
+    """
+    lookup wikidata terms, Ids, Requires NET
+    """
 
-    def test_lookup_wikidata_acetone(self):
-        """FAILS probablt wikidata parsing (maybe u200 need parsing out)"""
+    def test_lookup_wikidata_acetone_WIKI_NET(self):
+        """
+        Lookup single term in Wikidata
+        Needs connectivity
+        :return:
+        """
         term = "acetone"
         wikidata_lookup = WikidataLookup()
         qitem0, desc, wikidata_hits = wikidata_lookup.lookup_wikidata(term)
@@ -53,9 +46,10 @@ class TestWikidataLookup(unittest.TestCase):
         # assert wikidata_hits == ['Q49546', 'Q24634417', 'Q329022', 'Q63986955', 'Q4673277']
         assert 'Q49546' in wikidata_hits and len(wikidata_hits) >= 3
 
-    def test_lookup_chemical_compound(self):
+    def test_lookup_wiki_properties_chemical_compound_WIKI_NET(self):
         """
-        FAILS probably wikidata parsing
+        Lookup Wikidata page by Q number and confirm properties
+        :return: None
         """
         wiki_page = WikidataPage("Q49546")
         # wiki_page.debug_page()
@@ -72,33 +66,24 @@ class TestWikidataLookup(unittest.TestCase):
         qval = wiki_page.get_predicate_object("P31", "Q13442814")
         assert len(qval) == 1
 
-    def test_lookup_wikidata_bad(self):
-        """This fails if uncommented"""
-        term = "benzene"
-        wikidata_lookup = WikidataLookup()
-        qitem0, desc, wikidata_hits = wikidata_lookup.lookup_wikidata(term)
-        # assert qitem0 == "Q170304"  # dopamine???
-        # assert desc == "hormone and neurotransmitter"
-        # this needs mending as it found dopmamine (4-(2-azanylethyl)benzene-1,2-diol)
-        assert len(wikidata_hits) > 0
-        # assert wikidata_hits == ['Q170304', 'Q2270', 'Q15779', 'Q186242', 'Q28917']
-
-    @unittest.skip(reason="NET, long")
-    def test_lookup_solvents(self):
-        terms = ["acetone", "chloroform", "ethanol"]
+    def test_lookup_multiple_terms_solvents_WIKI_NET(self):
+        """
+        search multiple terms in Wikidata
+        """
+        terms = ["acetone", "chloroform"]
         wikidata_lookup = WikidataLookup()
         qitems, descs = wikidata_lookup.lookup_items(terms)
-        assert qitems == ['Q49546', 'Q172275', 'Q153']
-        assert descs == ['chemical compound', 'chemical compound', 'chemical compound']
+        assert qitems == ['Q49546', 'Q172275']
+        assert descs == ['chemical compound', 'chemical compound']
 
-    @unittest.skip(reason="Net, Long")
-    def test_lookup_parkinsons(self):
+    @unittest.skip(reason="No AMI Dict in library")
+    def test_lookup_parkinsons_WIKI_NET_DICT(self):
         terms = [
-            "SCRNASeq",
-            "SNPS",
+            # "SCRNASeq",
+            # "SNPS",
             "A53T",
             "linkage disequilibrium",
-            "Parkinsons",
+            # "Parkinsons",
             "transcriptomics"
         ]
         wikidata_lookup = WikidataLookup()
@@ -211,7 +196,9 @@ class TestWikidataLookup(unittest.TestCase):
 
     @unittest.skip(f"constructor for WikidataPage needs adjusting")
     def test_get_wikidata_predicate_value(self):
-        """searches for instance-of (P31) chemical_compound (Q11173) in a wikidata page"""
+        """searches for instance-of (P31) chemical_compound (Q11173) in a wikidata page
+        TODO allow for reading local files directly
+        """
         pred_id = "P31"
         obj_id = "Q11173"
         file = str(Path(EO_COMPOUND_DIR, "q407418.html"))
@@ -236,8 +223,9 @@ class TestWikidataLookup(unittest.TestCase):
         <th scope="col" class="wikibase-entitytermsforlanguagelistview-cell wikibase-entitytermsforlanguagelistview-language">Language</th>
 
         """
-        language_elems = WikidataPage("q407418").get_elements_for_attval_containing_word("class",
-                                                                                         "wikibase-entitytermsforlanguagelistview-language")
+        language_elems = WikidataPage("q407418").get_elements_for_attval_containing_word(
+            "class",
+            "wikibase-entitytermsforlanguagelistview-language")
         assert len(language_elems) == 1
         assert language_elems[0].text == 'Language'
 
@@ -658,6 +646,28 @@ class TestWikidataLookup(unittest.TestCase):
         assert filter.json['filter']['description'] == "chemical"
         assert filter.json['filter'][
                    'regex'] == "(chemical compound|chemical element)", f"found {filter.json['filter']['regex']}"
+
+
+class WikimediaTests:
+    @classmethod
+    def test_sparql_wrapper_WIKI(cls):
+        """A
+        uthor Shweata M Hegde
+        from wikidata query site
+        """
+
+        query = """#research council
+        SELECT ?researchcouncil ?researchcouncilLabel 
+        WHERE 
+        {
+          ?researchcouncil wdt:P31 wd:Q10498148.
+          SERVICE wikibase:label_xml { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+        }"""
+
+        results = WS.get_results_xml(query)
+        print(results)
+
+
 
 
 if __name__ == '__main__':

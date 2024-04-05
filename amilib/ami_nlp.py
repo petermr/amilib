@@ -50,6 +50,12 @@ class AmiNLP:
         return self.stem_tokens(nltk.word_tokenize(text.lower().translate(self.remove_punctuation_map)))
 
     def cosine_sim(self, text1, text2):
+        """
+        cosine similarity (TfIdf) between two strings
+        :param text1: first string
+        :param text2: second string
+        :return: cosine similarity (None if argument is None)
+        """
         try:
             tfidf = self.vectorizer.fit_transform([text1, text2])
         except Exception as e:

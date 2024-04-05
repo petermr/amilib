@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import lxml.etree as ET
 
@@ -59,3 +60,98 @@ class TestXml(AmiAnyTest):
         HtmlStyle.add_head_styles_orig(html, styles)
         HtmlLib.get_body(html).append(div)
         HtmlLib.write_html_file(html, file, debug=True)
+
+class XmlTests:
+    XSLT_FILE = os.path.join(Path(__file__).parent, "jats2html.xsl")
+
+    @classmethod
+    def test_replace_nodes_with_text(cls):
+        data = '''<everything>
+    <m>Some text before <r/></m>
+    <m><r/> and some text after.</m>
+    <m><r/></m>
+    <m>Text before <r/> and after</m>
+    <m><b/> Text after a sibling <r/> Text before a sibling<b/></m>
+    </everything>
+    '''
+        result = XmlLib.replace_nodes_with_text(data, "//r", "DELETED")
+        print(etree.tostring(result))
+
+    @classmethod
+    def test_replace_nodenames(cls):
+        data = '''<p>essential oil extracted from
+ <italic>T. bovei</italic> was comprised ... on the
+ <italic>T. bovei</italic> activities ... activity.
+</p>'''
+
+        doc = etree.fromstring(data)
+        italics = doc.findall("italic")
+        for node in italics:
+            node.tag = "i"
+        print(etree.tostring(doc))
+
+    """transform = etree.XSLT(xslt_tree)
+>>> result = transform(doc, a="'A'")
+>>> bytes(result)
+b'<?xml version="1.0"?>\n<foo>A</foo>\n'
+    """
+
+    @classmethod
+    def test_xslt_italic(cls):
+        data = '''<p>essential oil extracted from
+ <italic>T. bovei</italic> was comprised ... on the
+ <italic>T. bovei</italic> activities ... activity.
+</p>'''
+        print("italic", XmlLib.xslt_transform_tostring(data, XmlTests.XSLT_FILE))
+
+    @classmethod
+    def test_xslt_copy(cls):
+        data = """<ack>
+ <title>Acknowledgements</title>
+ <p>The authors acknowledge the assistance of the technicians Mohamad Arar and Linda Esa and for An-Najah National University and Birzeit University for their support.</p>
+ <sec id="FPar1">
+  <title>Funding</title>
+  <p>None.</p>
+ </sec>
+ <boo>foo</boo>
+ <sec id="FPar2">
+  <title>Availability of data and materials</title>
+  <p>Data are all contained within the article.</p>
+ </sec>
+</ack>
+"""
+        print("copy", XmlLib.xslt_transform_tostring(data, XmlTests.XSLT_FILE))
+
+    @classmethod
+    def test_jats2html(cls):
+        print("test_jats2html")
+        data = '''<everything>
+<m>Some text before <r/></m>
+<m><r/> and some text after.</m>
+<m><r/></m>
+<m>Text before <r/> and after</m>
+<m><b/> Text after a sibling <r/> Text before a sibling<b/></m>
+</everything>
+'''
+        result = XmlLib.replace_nodes_with_text(data, "//r", "DELETED")
+        print(ET.tostring(result))
+
+
+if __name__ == "__main__":
+    print(f"running {__name__} main")
+
+    config_test = False
+    wiki_test = False
+    xml_test = False
+
+    # NYI
+    # if config_test:
+    #     ConfigTests.tests()
+    if wiki_test:
+        WikimediaTests.test_sparql_wrapper()
+    if xml_test:
+        XmlTests.test_replace_nodes_with_text()
+        XmlTests.test_replace_nodenames()
+        XmlTests.test_jats2html()
+        XmlTests.test_xslt_italic()
+        XmlTests.test_xslt_copy()

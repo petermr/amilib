@@ -590,7 +590,8 @@ class DriverTest(AmiAnyTest):
 
     @unittest.skipUnless(AmiAnyTest.run_long() or force, "run occasionally")
     def test_download_ancillary_html(self):
-        """tries to find SPM, TS, glossary, etc"""
+        """tries to find SPM, TS, glossary, etc
+        TODO reduce to single """
         for doc in [
             (AR6_URL, "wg1"),
             (AR6_URL, "wg2"),

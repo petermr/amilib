@@ -1,8 +1,10 @@
 import json
 import logging
 import os
+import re
 import sys
 from enum import Enum
+from pathlib import Path
 
 from lxml import etree as ET
 from lxml import etree, html
@@ -381,16 +383,32 @@ class WikidataPage:
         return wikidata_page
 
     def get_root_for_item(self, pqitem):
-        """search wikidata site for QItem
-        :param pqitem: Qitem (or P item to search
+        """search wikidata site for QItem OR read local file
+        TODO clean up reading of local wikidata file
+        :param pqitem: Qitem (or P item to search OR a local file copied from Wikidata TODO edit this
         :return: parsed lxml root"""
         if self.root is None:
-            url_for_pqitem = self.get_url_for_pqitem(pqitem)
+            if not pqitem:
+                return None
+            if not Path(pqitem).exists():
+                url_for_pqitem = self.get_url_for_pqitem(pqitem)
+                if not url_for_pqitem:
+                    raise ValueError(f"URL for {pqitem} should not be None")
+            else:
+                url_for_pqitem = pqitem
             self.root = ParserWrapper.parse_utf8_html_to_root(url_for_pqitem)
         return self.root
 
     def get_url_for_pqitem(self, qitem):
-        return self.get_wikidata_site() + qitem
+        """
+        Creates URL to lookup up P or Q item in wikidata.org
+        :param qitem: P or Q item (case-insensive)
+        :return: URL or None (doesn't match syntax)
+        """
+        pq_re = re.compile("[PpQq]\\d+")
+        if pq_re.match(qitem):
+            return self.get_wikidata_site() + qitem
+        return None
 
     @classmethod
     def get_wikidata_site(cls):
@@ -821,12 +839,14 @@ class ParserWrapper:
         from lxml import etree
         from urllib.error import HTTPError
 
+        if url is None:
+            raise ValueError("url is None")
         try:
             with urlopen(url) as u:
                 content = u.read().decode("utf-8")
         except HTTPError as e:
             print(f"cannout open {url} because {e}")
-        tree = etree.parse(StringIO(content), etree.HTMLParser())
+        tree = ET.parse(StringIO(content), ET.HTMLParser())
         root = tree.getroot()
         return root
 
