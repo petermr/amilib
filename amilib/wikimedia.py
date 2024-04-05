@@ -358,20 +358,23 @@ def label_match(label, wikidata_label, method, ignorecase):
 class WikidataPage:
     PROPERTY_ID = "id"
 
-    def __init__(self, pqitem=None):
+    def __init__(self, pqitem=None, file=None):
+
         self.root = None
         self.pqitem = pqitem
         self.json = None
+        self.file = file
         if pqitem:
             self.root = self.get_root_for_item(self.pqitem)
 
     @classmethod
     def create_wikidata_ppage_from_file(cls, file):
         page = None
-        if file and file.exists():
+        if file and Path(file).exists():
             tree = html.parse(str(file))
             page = WikidataPage()
             page.root = tree.getroot()
+            page.file = file
         return page
 
     @classmethod
@@ -385,18 +388,15 @@ class WikidataPage:
     def get_root_for_item(self, pqitem):
         """search wikidata site for QItem OR read local file
         TODO clean up reading of local wikidata file
-        :param pqitem: Qitem (or P item to search OR a local file copied from Wikidata TODO edit this
-        :return: parsed lxml root"""
+        :return: parsed lxml root or None if not found
+        :param pqitem: Qitem (or P item to search
+        """
         if self.root is None:
             if not pqitem:
                 return None
-            if not Path(pqitem).exists():
-                url_for_pqitem = self.get_url_for_pqitem(pqitem)
-                if not url_for_pqitem:
-                    raise ValueError(f"URL for {pqitem} should not be None")
-            else:
-                url_for_pqitem = pqitem
-            self.root = ParserWrapper.parse_utf8_html_to_root(url_for_pqitem)
+            url_for_pqitem = self.get_url_for_pqitem(pqitem)
+            if url_for_pqitem:
+                self.root = ParserWrapper.parse_utf8_html_to_root(url_for_pqitem)
         return self.root
 
     def get_url_for_pqitem(self, qitem):
