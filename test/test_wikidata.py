@@ -232,7 +232,7 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         assert len(language_elems) == 1
         assert language_elems[0].text == 'Language'
 
-    @unittest.skip("bug is object/ids, needs fixing")
+    @unittest.skip("bug is comparison of sets, needs fixing")
     def test_find_left_properties_and_statements(self):
         """
         TODO comparison of retrieved properties
