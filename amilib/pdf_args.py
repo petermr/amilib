@@ -1,3 +1,4 @@
+# TODO cyclic imports with html
 import argparse
 import logging
 import re
@@ -6,9 +7,9 @@ import textwrap
 import traceback
 from pathlib import Path
 
-import lxml
+import lxml.etree as ET
 
-from amilib.ami_html import A_HREF, H_A, H_SPAN
+from amilib.ami_html import A_HREF, H_A, H_SPAN, HtmlTidy, HtmlStyle, CSSStyle
 from amilib.ami_pdf_libs import AmiPage, PDFParser, DEBUG_OPTIONS
 from amilib.util import AbstractArgs, AmiArgParser, Util, AmiLogger
 
@@ -408,7 +409,7 @@ class PDFArgs(AbstractArgs):
         if inpath is None:
             raise ValueError("No input path in convert_write()")
         # out_html is tidied
-        out_html = self.pdf_to_raw_then_raw_to_tidy(
+        out_html = PDFArgs.pdf_to_raw_then_raw_to_tidy(
             pdf_path=inpath,
             flow=flow,
             outdir=outdir,
@@ -424,9 +425,9 @@ class PDFArgs(AbstractArgs):
             f.write(out_html)
             print(f"wrote partially tidied html {outpath}")
         return outpath, out_html
-
+    @classmethod
     def pdf_to_raw_then_raw_to_tidy(
-            self,
+            cls,
             pdf_path=None,
             flow=True,
             write_raw=True,
@@ -437,7 +438,6 @@ class PDFArgs(AbstractArgs):
             maxpage=9999
     ):
 
-        from amilib.ami_html import HtmlTidy
 
         """converts PDF to raw_html and (optionally raw_html to tidy_html
         Uses PDFParser.convert_pdf to create raw_html_element
@@ -456,12 +456,12 @@ class PDFArgs(AbstractArgs):
 
         :return: tidied html
         """
-        self.pdf_parser = PDFParser()
-        raw_html_element = self.pdf_parser.convert_pdf_CURRENT(
+        pdf_parser = PDFParser()
+        raw_html_element = pdf_parser.convert_pdf_CURRENT(
             path=pdf_path,
             # fmt=self.outform,
             maxpages=maxpage)
-        page_tops = ['%.2f' % (pt) for pt in self.pdf_parser.page_tops]
+        page_tops = ['%.2f' % (pt) for pt in pdf_parser.page_tops]
         logger.debug(f"page_tops {page_tops}")
         if raw_html_element is None:
             raise ValueError(f"null raw_html in convert_write()")
@@ -529,7 +529,7 @@ class PDFArgs(AbstractArgs):
         result = re.compile(refregex).search(text)
         if result:
             # print(f"matched: {result.group(1)} {result.group(2)}, {result.group(3)} {result.groups()}")
-            elem0 = lxml.etree.SubElement(par, H_SPAN)
+            elem0 = ET.SubElement(par, H_SPAN)
             elem0.text = result.group(1)
             for k, v in elem0.attrib.items():
                 elem0.attrib[k] = v
@@ -541,21 +541,19 @@ class PDFArgs(AbstractArgs):
                 if not self.ref_counter[ref]:
                     self.ref_counter[ref] == 0
                 self.ref_counter[ref] += 1
-                a = lxml.etree.SubElement(par, H_A)
+                a = ET.SubElement(par, H_A)
                 for k, v in elem0.attrib.items():
                     a.attrib[k] = v
                 a.attrib[A_HREF] = "https://github.com/petermr/discussions"
                 a.text = "([" + ref + "])"
                 current.addnext(a)
                 current = a
-            elem2 = lxml.etree.SubElement(par, H_SPAN)
+            elem2 = ET.SubElement(par, H_SPAN)
             for k, v in elem0.attrib.items():
                 elem2.attrib[k] = v
             elem2.text = result.group(3)
 
             par.remove(span)
-
-            # print(f"par {lxml.etree.tostring(par)}")
 
     @property
     def module_stem(self):
@@ -666,8 +664,6 @@ class PDFArgs(AbstractArgs):
             outdir=None,
             outpath=None,
     ):
-        from amilib.ami_html import CSSStyle  # messy
-        from amilib.ami_html import HtmlStyle
 
         """
         main routine for converting PDF all the way to tidied styled HTML
@@ -693,14 +689,14 @@ class PDFArgs(AbstractArgs):
         )
         assert len(html_str.strip()) > 0
         try:
-            html_elem = lxml.etree.fromstring(html_str)
+            html_elem = ET.fromstring(html_str)
         except Exception as e:
             raise Exception(f"***HTML PARSE ERROR {e} in [{html_str[:150]}...] from PDF {inpath} (outpath {outpath1}")
         HtmlStyle.extract_styles_and_normalize_classrefs(html_elem)
         CSSStyle.normalize_styles_in_fonts_in_html_head(html_elem)
         styles = CSSStyle.extract_styles_from_html_head_element(html_elem)
         with open(outpath1, "wb") as f:
-            f.write(lxml.etree.tostring(html_elem, encoding="UTF-8"))
+            f.write(ET.tostring(html_elem, encoding="UTF-8"))
         print(f"wrote styled html {outpath1}")
         style_dict = CSSStyle.create_style_dict_from_styles(style_elems=styles)
         return style_dict

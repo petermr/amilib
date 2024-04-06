@@ -77,22 +77,24 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         assert descs == ['chemical compound', 'chemical compound']
 
     @unittest.skip(reason="No AMI Dict in library")
-    def test_lookup_parkinsons_WIKI_NET_DICT(self):
+    def test_lookup_with_ami_dictionary_WIKI_NET_DICT(self):
+        """
+        Wikidata Lookup of items in AMIDict
+        TODO add AmiDict to amilib
+        :return:
+        """
         terms = [
-            # "SCRNASeq",
-            # "SNPS",
             "A53T",
             "linkage disequilibrium",
-            # "Parkinsons",
             "transcriptomics"
         ]
         wikidata_lookup = WikidataLookup()
         # qitems, descs = wikidata_lookup.lookup_items(terms)
         temp_dir = Path(AmiAnyTest.TEMP_DIR, "wikidata", "oldx")
         temp_dir.mkdir(exist_ok=True, parents=True)
-        # dictfile, amidict = AMIDict.create_from_list_of_strings_and_write_to_file(terms, title="parkinsons",
-        #                                                                           wikidata=True, directory=temp_dir)
-        # assert os.path.exists(dictfile)
+        dictfile, amidict = AMIDict.create_from_list_of_strings_and_write_to_file(
+            terms, title="parkinsons", wikidata=True, directory=temp_dir)
+        assert Path(dictfile).exists()
 
     def test_parse_wikidata_html(self):
         """find Wikidata items with given property
@@ -194,7 +196,6 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         assert len(qvals) == 1
         assert qvals[0].text == 'chemical compound'
 
-    @unittest.skip(f"constructor for WikidataPage needs adjusting")
     def test_get_wikidata_predicate_value(self):
         """searches for instance-of (P31) chemical_compound (Q11173) in a wikidata page
         TODO allow for reading local files directly
@@ -202,7 +203,9 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         pred_id = "P31"
         obj_id = "Q11173"
         file = str(Path(EO_COMPOUND_DIR, "q407418.html"))
-        qval = WikidataPage(file).get_predicate_object(pred_id, obj_id)
+        page = WikidataPage.create_wikidata_ppage_from_file(file)
+        assert page is not None
+        qval = page.get_predicate_object(pred_id, obj_id)
         assert qval[0].text == 'chemical compound'
 
     def test_get_title_of_page(self):
@@ -229,9 +232,10 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         assert len(language_elems) == 1
         assert language_elems[0].text == 'Language'
 
-    @unittest.skip("bug is object/ids, needs fixing")
+    @unittest.skip("bug is comparison of sets, needs fixing")
     def test_find_left_properties_and_statements(self):
         """
+        TODO comparison of retrieved properties
             <div class="wikibase-snaklistview">
                 <div class="wikibase-snaklistview-listview">
                     <div class="wikibase-snakview wikibase-snakview-755d14b02a41025911e80439cb6ed31dcc966768">
@@ -341,18 +345,18 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         print(f" data properties {data_property_list}")
         property_set = set(data_property_list)
         print(f"set {property_set}")
-        assert 78 >= len(property_set) >= 70
-        expected = {[
-            'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054']}
+        assert 100 >= len(property_set) >= 70
+        expected = set([
+            'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054'])
         difference = expected.symmetric_difference(property_set)
         print(f"diff {len(difference)} {difference}")
-        assert expected.issubset(property_set)
+        assert expected.issubset(property_set), f"not found in {property_set}"
         assert set(wikidata_page.get_property_id_list()[:10]).difference(expected) == set()
         assert wikidata_page.get_property_name_list()[:10] == [
             'instance of', 'subclass of', 'part of', 'chemical structure', 'molecular model or crystal lattice model',
             'mass', 'chemical formula', 'canonical SMILES', 'isomeric SMILES', 'density']
         property_list = wikidata_page.get_data_property_list()
-        assert 78 >= len(property_list) >= 70
+        assert 108 >= len(property_list) >= 70
         # assert wikidata_page.get_property_id_list()[:10] == [
         #     'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054']
         assert 'P31' in wikidata_page.get_property_id_list()

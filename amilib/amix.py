@@ -7,28 +7,19 @@ import pprint
 import re
 import sys
 import textwrap
-import traceback
-from collections import Counter
 from enum import Enum
 from pathlib import Path
 
-import lxml.etree as etree
+import lxml.etree as ET
 # local
-# from amilib.dict_lib import AmiDictionary
 
-from amilib.ami_pdf import PDFArgs
+from amilib.pdf_args import PDFArgs
 from amilib.ami_html import HTMLArgs
-from amilib.file_lib import FileLib
 from amilib.util import AmiLogger, Util, AbstractArgs
 from amilib.wikimedia import WikidataLookup
-from amilib.xml_lib import XmlLib
 
 AMIX_DIR = Path(__file__).parent
 REPO_DIR = AMIX_DIR.parent
-
-
-# class SubParser(Enum):
-#     DICT = "DICT"
 
 
 class AmiLib:
@@ -1242,7 +1233,6 @@ class AmiLibArgs(AbstractArgs):
 
     def annotate_with_dict(self):
         """uses dictionary to annotate words and phrases in HTML file"""
-        # from pyamihtmlx.ami_dict import AmiDictionary  # horrible
         self.logger.warning("Dictionaries not supported")
         return
 

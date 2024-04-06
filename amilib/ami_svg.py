@@ -1,4 +1,4 @@
-import lxml.etree
+import lxml.etree as ET
 
 from amilib.util import AmiLogger, Util
 from amilib.xml_lib import NS_MAP, XML_NS, SVG_NS
@@ -48,7 +48,7 @@ class AmiSVG:
     @classmethod
     def create_SVGElement(cls, tag):
         svg_ns = NS_MAP[SVG_NS]
-        return lxml.etree.Element(f"{{{svg_ns}}}{tag}")
+        return ET.Element(f"{{{svg_ns}}}{tag}")
 
     @classmethod
     def create_svg(cls):

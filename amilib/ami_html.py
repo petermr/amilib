@@ -12,17 +12,17 @@ from io import StringIO
 from pathlib import Path
 from pprint import pprint
 
-import lxml
-import lxml.etree
 import numpy as np
+import lxml.etree as ET
 from lxml.etree import Element, _Element, _ElementTree
-# from scikit-learn.linear_model import LinearRegression
 from sklearn.linear_model import LinearRegression
 
 # local
 from amilib.bbox import BBox
 from amilib.util import SScript, AbstractArgs, Util, AmiLogger
 from amilib.xml_lib import XmlLib, HtmlLib
+
+# no try-catch imports
 
 logger = AmiLogger.create_named_logger(__file__)
 
@@ -153,7 +153,7 @@ class AmiSpan:
     def create_and_add_to(self, div):
         html_span = None
         if div is not None:
-            html_span = lxml.etree.SubElement(div, H_SPAN)
+            html_span = ET.SubElement(div, H_SPAN)
             html_span.text = self.string
             HtmlStyle.set_style(html_span, self.text_style.create_css_string())
             if len(self.xx) > 0:
@@ -269,7 +269,7 @@ class HtmlTidy:
 
         if raw_html is None:
             raise ValueError("No HTML")
-        raw_tree = lxml.etree.parse(StringIO(raw_html), lxml.etree.HTMLParser())
+        raw_tree = ET.parse(StringIO(raw_html), ET.HTMLParser())
         self.raw_elem = raw_tree.getroot()
         self.extract_page_boxes()
 
@@ -295,7 +295,7 @@ class HtmlTidy:
         HtmlUtil.remove_unwanteds(self.raw_elem, self.unwanteds)
         HtmlUtil.remove_newlines(self.raw_elem)
         HtmlTree.make_sections_and_output(self.raw_elem, output_dir=self.outdir, recs_by_section=RECS_BY_SECTION)
-        htmlstr = lxml.etree.tostring(self.raw_elem, encoding=_UTF8).decode()
+        htmlstr = ET.tostring(self.raw_elem, encoding=_UTF8).decode()
         return htmlstr
 
     def remove_unwanted_attributes_and_elements(self):
@@ -305,7 +305,7 @@ class HtmlTidy:
         if self.add_id:
             HtmlUtil.add_generated_ids(self.raw_elem)
         for tag in self.descendants_to_remove:
-            lxml.etree.strip_tags(self.raw_elem, [tag])
+            ET.strip_tags(self.raw_elem, [tag])
         if self.remove_lh_line_numbers:
             HtmlUtil.remove_lh_line_numbers(self.raw_elem)
         if self.remove_large_fonted_elements:
@@ -452,7 +452,7 @@ class HtmlTidy:
             # one tag, ok
             pass
         elif descends == 0:
-            head = lxml.etree.Element(tag)
+            head = ET.Element(tag)
             html_root.insert(pos, head)
         return html_root
 
@@ -465,7 +465,7 @@ class HtmlTidy:
         old_root = html_elem.getroot() if type(html_elem) is _ElementTree else html_elem
         htmls = html_elem.xpath("/html")
         if len(htmls) == 0:
-            html_root = lxml.etree.Element("html")
+            html_root = ET.Element("html")
             html_root.insert(0, old_root)
             return html_root
         return html_elem
@@ -575,7 +575,7 @@ class HtmlGroup:
     def group_siblings_between_fenceposts(cls, fenceposts, style=None, debug=False):
         for i, fencepost in enumerate(fenceposts):
             fencepost_followers = fencepost.xpath("following-sibling::div[span]")
-            container_div = lxml.etree.Element("div")
+            container_div = ET.Element("div")
             container_div.attrib["style"] = style
             fencepost.addprevious(container_div)
             container_div.append(fencepost)
@@ -654,7 +654,7 @@ To achieve the desired output, you can use the following Python code to parse th
 
 python
 Copy code
-from lxml import etree
+from lxml import etree # in comment
 
 def group_divs_into_tree(html):
     # Parse the HTML
@@ -760,7 +760,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
         div_elements = body.xpath("./div")
 
         # Create a new root <div> element to hold the tree structure
-        root_div = lxml.etree.Element("div")
+        root_div = ET.Element("div")
         root_div.attrib["class"] = "root"
         root_div.attrib["title"] = "root"
 
@@ -810,7 +810,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
     def process_ipcc_start(cls, FLOAT, START, parent, start_ends, text):
         start_str = text[len(START):]
         start_ends.append(start_str)
-        sub_div = lxml.etree.SubElement(parent, "div")
+        sub_div = ET.SubElement(parent, "div")
         sub_div.attrib["class"] = FLOAT
         sub_div.attrib["title"] = text
         sub_div.attrib["style"] = "border: dashed blue 3px;"
@@ -833,7 +833,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
         if level:
             stack_parent = parents[level - 1]
             if stack_parent is not None:
-                new_div = lxml.etree.SubElement(stack_parent, "div")
+                new_div = ET.SubElement(stack_parent, "div")
                 new_div.attrib["title"] = text[:50]
                 new_div.attrib["style"] = div_styles[level - 1]
 
@@ -902,11 +902,11 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
 
     @classmethod
     def create_back_div(cls, html_elem):
-        back = lxml.etree.SubElement(HtmlLib.get_body(html_elem), "div")
+        back = ET.SubElement(HtmlLib.get_body(html_elem), "div")
         back.attrib["class"] = "back"
         back.attrib["title"] = "back matter"
         back.attrib["style"] = "background: #ffffdd; border: solid purple 1.5px; margin: 2px;"
-        back_title = lxml.etree.SubElement(back, "div")
+        back_title = ET.SubElement(back, "div")
         back_title.text = "Back Matter, Footnotes, Figures, Tables, Boxes"
         back_title.attrib["style"] = "font-size: 20px; font-family: sanserif;"
         return back
@@ -919,7 +919,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
 
     @classmethod
     def create_head_style_elem(cls, new_html, tail="ZZZ"):
-        style = lxml.etree.SubElement(HtmlLib.get_head(new_html), CSSStyle.STYLE)
+        style = ET.SubElement(HtmlLib.get_head(new_html), CSSStyle.STYLE)
         if tail:
             style.tail = tail
         # basic styling to show divs and spans
@@ -985,7 +985,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
             for i, follower in enumerate(followers):
                 letter = HtmlGroup.generate_lowercase_letter_id(i)
                 id = title_id + "." + letter
-                span = lxml.etree.Element("span")
+                span = ET.Element("span")
                 span.attrib["style"] = "background: #ffffdd; font-size: 8px"
                 span.text = id
                 span.attrib["id"] = id
@@ -1051,13 +1051,13 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                         if gp == "body":
                             target_ids = re.split("[,;]", t)
                             for target_id in target_ids:
-                                a = lxml.etree.SubElement(parent, "a")
+                                a = ET.SubElement(parent, "a")
                                 span.addprevious(a)
                                 a.text = target_id
                                 a.attrib["href"] = get_target_href(t)
                             # parent.remove(span)
                         else:
-                            spanx = lxml.etree.SubElement(parent, "span")
+                            spanx = ET.SubElement(parent, "span")
                             spanx.text = t
                             for att in span.attrib:
                                 spanx.attrib[att] = span.attrib[att]
@@ -1116,7 +1116,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
     def annotate_div_spans_write_final_html(cls, input_html, outfile, styles=None):
         if not styles:
             styles = HtmlGroup.DEFAULT_STYLES
-        html_elem = lxml.etree.parse(str(input_html)).getroot()
+        html_elem = ET.parse(str(input_html)).getroot()
         annotator = HtmlAnnotator.create_ipcc_annotator()
         HtmlStyle.add_head_styles_orig(html_elem, styles)
         spans = html_elem.xpath(".//span")
@@ -1146,12 +1146,12 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                     post = match.group("post")
                     span.text = pre
                     parent_div = span.getparent()
-                    next_span = lxml.etree.SubElement(parent_div, "span")
+                    next_span = ET.SubElement(parent_div, "span")
                     for att in span.attrib:
                         next_span.attrib[att[0]] = att[1]
                         span.addnext(next_span)
                     spans = spans[i + 1:]
-                    div = lxml.etree.SubElement(parent_div.getparent(), "div")
+                    div = ET.SubElement(parent_div.getparent(), "div")
 
                     break
                 if i == len(spans) - 1:
@@ -1267,7 +1267,7 @@ class HtmlUtil:
         assert tag
         parent = anchor_elem.getparent()
         assert parent is not None, f"No parent for anchor_elem"
-        sibling = lxml.etree.SubElement(parent, tag)
+        sibling = ET.SubElement(parent, tag)
         if copy_atts:
             for k, v in anchor_elem.attrib.items():
                 sibling.attrib[k] = v
@@ -1283,8 +1283,8 @@ class HtmlUtil:
         """utility method to create a div/span@text (probably mainly for testing)
         :param text: to add
         :return: the div"""
-        div = lxml.etree.Element(H_DIV)
-        span = lxml.etree.SubElement(div, H_SPAN)
+        div = ET.Element(H_DIV)
+        span = ET.SubElement(div, H_SPAN)
         if style:
             css_style = CSSStyle.create_css_style_from_css_string("font-size:12; font-weight: bold;")
             HtmlStyle.set_style(span, css_style.get_css_value())
@@ -1382,15 +1382,15 @@ class HtmlUtil:
     def extract_footnotes(cls, html_elem, font_size_condition, title="Footnotes"):
         divs = html_elem.xpath(f"//div[span[contains(@style, '{font_size_condition}') and number(.)=number(.)]]")
         footnote_div = HtmlGroup.get_back_div(html_elem)
-        footnote_title = lxml.etree.SubElement(footnote_div, "div")
+        footnote_title = ET.SubElement(footnote_div, "div")
         footnote_title.text = title
-        ul = lxml.etree.SubElement(footnote_div, "ul")
+        ul = ET.SubElement(footnote_div, "ul")
         current_li = None
         for div in divs:
             spans = div.xpath("./span")
             for i, span in enumerate(spans):
                 if XmlLib.is_integer(span) and (i == 0 or HtmlUtil.is_superscript(spans[i - 1], span)):
-                    current_li = lxml.etree.SubElement(ul, "li")
+                    current_li = ET.SubElement(ul, "li")
                 if current_li is not None:
                     current_li.append(span)
 
@@ -1492,14 +1492,14 @@ class HtmlUtil:
         :return: this html
         """
 
-        html = lxml.etree.Element(H_HTML)
-        head = lxml.etree.Element(H_HEAD)
+        html = ET.Element(H_HTML)
+        head = ET.Element(H_HEAD)
         html.append(head)
-        meta = lxml.etree.Element(H_META)
+        meta = ET.Element(H_META)
         head.append(meta)
-        style = lxml.etree.Element(H_STYLE)  # empty <style> means no display
+        style = ET.Element(H_STYLE)  # empty <style> means no display
         # head.append(style)
-        body = lxml.etree.Element(H_BODY)
+        body = ET.Element(H_BODY)
         html.append(body)
         return html
 
@@ -1708,7 +1708,7 @@ class HtmlUtil:
         xpath = f".//*[@style]"
         try:
             styled_elems = xpath_root_elem.xpath(xpath)
-        except lxml.etree.XPathEvalError as xpee:
+        except ET.XPathEvalError as xpee:
             raise ValueError(f"Bad xpath {xpath}")
 
         for styled_elem in styled_elems:
@@ -1773,7 +1773,7 @@ class HtmlUtil:
     @classmethod
     def check_tag(cls, elem, tag):
         """checks that elem is an Element with given tag"""
-        return type(elem) is lxml.etree._Element and elem.tag == tag
+        return type(elem) is ET._Element and elem.tag == tag
 
     @classmethod
     def get_id(cls, div):
@@ -1876,7 +1876,7 @@ class HtmlUtil:
         :param in_html: HTML file
         :return: well_formed XHTML
         """
-        html_elem = lxml.etree.parse(str(in_html), lxml.etree.HTMLParser()).xpath("/*")[0]
+        html_elem = ET.parse(str(in_html), ET.HTMLParser()).xpath("/*")[0]
         return html_elem
 
     @classmethod
@@ -1888,9 +1888,9 @@ class HtmlUtil:
         "return: None
         """
         if out_html == sys.stdout:
-            print (lxml.etree.tostring(elem, pretty_print=True, encoding="unicode"))
+            print (ET.tostring(elem, pretty_print=True, encoding="unicode"))
         else:
-            ss = lxml.etree.tostring(elem, pretty_print=pretty_print)
+            ss = ET.tostring(elem, pretty_print=pretty_print)
             Path(out_html).parent.mkdir(parents=True, exist_ok=True)
             with open(out_html, "wb") as f:
                 f.write(ss)
@@ -2137,7 +2137,7 @@ class AnnotatorCommand:
                 return
             if self.html_class:
                 self.update_class(xp_elem, self.html_class)
-                tostring = lxml.etree.tostring(xp_elem)
+                tostring = ET.tostring(xp_elem)
                 pass
 
     # class AnnotatorCommand
@@ -2182,7 +2182,7 @@ class AnnotatorCommand:
         else:
             pass
         for i, group_lead in enumerate(group_leads):
-            # print(f"group lead {lxml.etree.tostring(group_lead)}")
+            # print(f"group lead {ET.tostring(group_lead)}")
             # end_grouo = group_leads[i + 1] if i < len(group_leads) - 1 else None
             self.make_group(parent_elem, group_lead)
 
@@ -2198,7 +2198,7 @@ class AnnotatorCommand:
             pass
         else:
             print(f"siblings {len(siblings)}!!!")
-        div = lxml.etree.SubElement(parent, "div")
+        div = ET.SubElement(parent, "div")
         div.append(group_lead)
         div.attrib["title"] = group_lead.text if group_lead.text else "?"
         div.attrib["style"] = "border:black dashed 2px;"
@@ -2514,7 +2514,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
         """
         html_head = HtmlLib.get_head(html_elem)
         for style_t in style_texts:
-            style = lxml.etree.SubElement(html_head, "style")
+            style = ET.SubElement(html_head, "style")
             style.text = style_t
 
 # TODO
@@ -2588,7 +2588,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             return False
         css_style = HtmlStyle.lookup_head_style_by_classref(elem)
         if not css_style:
-            print(f"no style resolved for {lxml.etree.tostring(elem)}")
+            print(f"no style resolved for {ET.tostring(elem)}")
             return False
         return css_style.is_bold
 
@@ -2601,7 +2601,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             return False
         css_style = HtmlStyle.lookup_head_style_by_classref(elem)
         if not css_style:
-            print(f"no style resolved for {lxml.etree.tostring(elem)}")
+            print(f"no style resolved for {ET.tostring(elem)}")
             return False
         return css_style.is_italic
 
@@ -2879,7 +2879,7 @@ class HtmlTree:
             marker.translate(punct_mask)
             path = Path(output_dir, f"{marker}.html")
             with open(path, "wb") as f:
-                f.write(lxml.etree.tostring(child_div, pretty_print=True))
+                f.write(ET.tostring(child_div, pretty_print=True))
 
     # class HtmlTree
 
@@ -2924,9 +2924,9 @@ class HtmlTree:
         # first add all matching numbered divs to pre_chapsec
         if not class_dict:
             raise ValueError(f"missing class_dict")
-        top_div = lxml.etree.SubElement(elem, H_DIV)
+        top_div = ET.SubElement(elem, H_DIV)
         top_div.attrib[cls.CLASS] = class_dict.get(HtmlTree.TOP_DIV)
-        pre_chapsec = lxml.etree.SubElement(top_div, H_DIV)
+        pre_chapsec = ET.SubElement(top_div, H_DIV)
         pre_chapsec.attrib[cls.CLASS] = class_dict.get(HtmlTree.CHAPSEC)
         current_div = pre_chapsec
 
@@ -3048,7 +3048,7 @@ class HTMLSearcher:
 
     def search_path_chunk_node(self, html_path):
         assert html_path.exists(), f"{html_path} should exist"
-        tree = lxml.etree.parse(str(html_path))
+        tree = ET.parse(str(html_path))
 
         self.xpaths = self.xpath_dict.get(self.XPATH)
         if not self.xpaths:
@@ -3123,10 +3123,10 @@ class HTMLSearcher:
         tests xpath on a trivial element
         :param xpath:
         """
-        tree = lxml.etree.fromstring("<foo/>")
+        tree = ET.fromstring("<foo/>")
         try:
             tree.xpath(xpath)
-        except lxml.etree.XPathEvalError as e:
+        except ET.XPathEvalError as e:
             logging.error(f"bad XPath {xpath}, {e}")
             raise e
 
@@ -3259,7 +3259,6 @@ class HTMLArgs(AbstractArgs):
 
     def annotate_with_dict(self):
         """uses dictionary to annotate words and phrases in HTML file"""
-        # from pyamihtmlx.ami_dict import AmiDictionary  # horrible
         logger.warning("Dictionaries not supported")
         return
 
@@ -3340,7 +3339,7 @@ class FloatBoundaryDict:
         elem0 = self.html_elem.xpath(f".//div[@id='{div_id0}']")[0]
         elem1 = self.html_elem.xpath(f".//div[@id='{div_id1}']")[0]
         following = elem0.xpath("following::*")
-        new_div = lxml.etree.Element("div")
+        new_div = ET.Element("div")
         new_div.attrib["id"] = div_id0
         for follow in following:
             id_ = follow.attrib['id']
@@ -3884,7 +3883,7 @@ class CSSStyle:
         """
         DOT = "."
         s = DOT + html_class + " " + self.get_css_value(wrap_with_curly=True)
-        elem = lxml.etree.Element(CSSStyle.STYLE)
+        elem = ET.Element(CSSStyle.STYLE)
         elem.text = s
         return elem
 
@@ -3993,7 +3992,7 @@ class CSSStyle:
         :param html_str: string of form <html><head><style ...></style><style ...></style></head> ... </html>
         :return: list of _Elements (<style...> ...</style>) or []
         """
-        return cls.extract_styles_from_html_head_element(lxml.etree.fromstring(html_str))
+        return cls.extract_styles_from_html_head_element(ET.fromstring(html_str))
 
     #    class CSSStyle:
 
@@ -4358,8 +4357,8 @@ class AmiFont:
 
         if css_style is None:
             return None
-        if type(css_style) is lxml.etree._Element:
-            print (f"element {lxml.etree.tostring(css_style)}")
+        if type(css_style) is ET._Element:
+            print (f"element {ET.tostring(css_style)}")
         if type(css_style) is str:
             css_style = CSSStyle.create_css_style_from_css_string(css_style)
         if css_style is None:
@@ -4473,7 +4472,7 @@ class SectionHierarchy:
                 print(f" skip root...")
             elem = self.ensure_element(root, parent_id, parent_dict)
             if elem is not None:
-                sect_xml = lxml.etree.SubElement(elem, self.SECT)
+                sect_xml = ET.SubElement(elem, self.SECT)
                 sect_xml.attrib[self.ID] = sect_id
                 if missing:
                     sect_xml.attrib[self.MISSING] = "Y"
@@ -4501,7 +4500,7 @@ class Footnote:
         new_html_elem = HtmlLib.create_new_html_with_old_styles(html_elem)
         footnote_number_font_elems = html_elem.xpath(fn_xpath)
         last_footnum = 0
-        ul = lxml.etree.Element("ul")
+        ul = ET.Element("ul")
         HtmlLib.get_body(new_html_elem).append(ul)
         # messy, need a Footnote object here
         for footnote_number_elem in footnote_number_font_elems:
@@ -4564,7 +4563,7 @@ class Footnote:
     @classmethod
     def delete_footnote_number_and_following_text__and_add_to_list(
             cls, classes, footnote_number, footnote_number_elem):
-        li = lxml.etree.Element("li")
+        li = ET.Element("li")
         li.append(copy.deepcopy(footnote_number_elem))
         footnote_followers = XmlLib.get_following_elements(footnote_number_elem)
         # add one span(ends after font chamge)

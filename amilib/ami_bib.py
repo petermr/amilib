@@ -76,7 +76,6 @@ class Reference:
             ref.markup_dois_in_spans()
 
 
-
 class Biblioref:
     """in-text pointer to References
     of form:
@@ -146,6 +145,7 @@ class Biblioref:
                     for biblioref in bibliorefs:
                         total_bibliorefs.append(biblioref)
         return total_bibliorefs
+
 
 class Publication:
     CHAPTER = "Chapter"

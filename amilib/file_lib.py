@@ -1,6 +1,7 @@
 """
 standalone library from pyamihtml
 """
+import ast
 import glob
 import json
 import logging
@@ -146,7 +147,6 @@ class FileLib:
         :param file: JSON file to read
         :return: JSON dictionary (created by ast.literal_eval)
         """
-        import ast
         with open(file, "r") as f:
             pydict = ast.literal_eval(f.read())
         return pydict
