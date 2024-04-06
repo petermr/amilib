@@ -21,7 +21,7 @@ from amilib.file_lib import FileLib
 from amilib.ami_html import HTMLSearcher, HtmlTree, HtmlAnnotator, AnnotatorCommand, URLCache
 from amilib.ami_html import HtmlUtil, H_SPAN, CSSStyle, HtmlTidy, HtmlStyle, HtmlClass, SectionHierarchy, AmiFont, \
     FloatBoundary, Footnote, HtmlGroup
-from amilib.ami_pdf import PDFArgs
+from amilib.pdf_args import PDFArgs
 from amilib.ami_pdf_libs import AmiPDFPlumber
 # from pyamihtmlx.ar6 import TargetExtractor, IPCCTarget, LinkFactory, IPCCTargetLink
 from amilib.amix import AmiLib

@@ -6,15 +6,20 @@ import sys
 from enum import Enum
 from pathlib import Path
 
+import requests
 from lxml import etree as ET
 from lxml import etree, html
 import lxml.etree
+from urllib.parse import quote
+from io import StringIO
+from urllib.request import urlopen
+from lxml import etree
+from urllib.error import HTTPError
+from SPARQLWrapper import SPARQLWrapper
 
 # local
 from amilib.ami_html import HtmlUtil
 from amilib.util import Util
-
-# from pyamihtmlx.ami_dict import REGEX_BLACKLIST
 
 logging.debug("loading wikimedia.py")
 
@@ -100,7 +105,6 @@ class WikidataLookup:
         :return: triple (e.g. hit0_id, hit0_description, wikidata_hits)
         """
 
-        from urllib.parse import quote
 
         if not term:
             logging.warning("null term")
@@ -203,57 +207,6 @@ class WikidataLookup:
             if hits:
                 self.hits_dict[name] = hits
 
-"""
-class WikidataBrowser:
-    
-
-    def __init__(self, ami_gui, text):
-        from pyamihtmlx.xml_lib import XmlLib
-        from lxml import etree as LXET
-        from tkinterhtml import HtmlFrame
-        import tkinter as tk
-        from tkinter import scrolledtext
-        from pyamihtmlx.gutil import CreateToolTip
-        from urllib.request import urlopen
-
-        toplevel = tk.Toplevel(ami_gui.master)
-        text_display = scrolledtext.ScrolledText(
-            toplevel, font=("Arial, 18"), width=60, height=10)
-        text_display.pack(side=tk.BOTTOM)
-        label = tk.Label(toplevel, text="Wikidata search results")
-        CreateToolTip(label, "Contains text representation \nof wikidata query")
-        label.pack(side=tk.TOP)
-        url = ami_gui.create_wikidata_query_url(text)
-        with urlopen(url) as response:
-            the_page = bytes.decode(response.read())
-        html_root = XmlLib.parse_xml_string_to_root(the_page)
-        self.remove_xpath(html_root, ".//script")
-        head = html_root.xpath(".//head")[0]
-        style = LXET.SubElement(head, "style")
-        style.attrib["type"] = "text/css"
-        style.text = "* {font-size:40pt; color:red;}"
-        html_content = bytes.decode(LXET.tostring(html_root))
-        # div id="content" class="mw-body"
-        content_elem = html_root.xpath(".//div[@id='content']")[0]
-        div_content = LXET.tostring(content_elem)
-        # print(content) # doesn't display well in tkinter
-        text_display.insert("1.0", div_content)
-        text_display.pack_forget()
-
-        frame = HtmlFrame(toplevel, horizontal_scrollbar="auto")
-        frame.set_content(html_content)
-        frame.pack()
-
-    def remove_xpath(self, element, xpath):
-        "" "
-
-        :param element:
-        :param xpath:
-
-        "" "
-        for subelem in element.xpath(xpath):
-            subelem.getparent().remove(subelem)
-"""
 
 class WikidataFilter:
 
@@ -819,8 +772,6 @@ class WikidataSparql:
         Shweata M Hegde and Peter Murray-Rust
         :query: as SPARQL
         :return: xml <results>"""
-        from SPARQLWrapper import SPARQLWrapper
-        import sys
         WIKIDATA_SPARQL_ENDPOINT = "https://query.wikidata.org/sparql"
 
         user_agent = "WDQS-example Python/%s.%s" % (sys.version_info[0], sys.version_info[1])
@@ -834,10 +785,6 @@ class WikidataSparql:
 class ParserWrapper:
     @classmethod
     def parse_utf8_html_to_root(cla, url):
-        from io import StringIO
-        from urllib.request import urlopen
-        from lxml import etree
-        from urllib.error import HTTPError
 
         if url is None:
             raise ValueError("url is None")
@@ -850,9 +797,6 @@ class ParserWrapper:
         root = tree.getroot()
         return root
 
-
-import pprint
-import requests
 
 
 class WikidataExtractor:

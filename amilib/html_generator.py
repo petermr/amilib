@@ -5,13 +5,16 @@ from pathlib import Path
 
 import lxml
 import pdfplumber
+from pyamihtml.ami_pdf import PDFDebug
 
 from amilib.ami_html import HtmlUtil, P_FONTNAME, P_HEIGHT, P_STROKING_COLOR, P_NON_STROKING_COLOR, AmiSpan, P_TEXT, \
     HtmlGroup, HtmlStyle
-from amilib.ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber
+from amilib.ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber, AmiPlumberJson
+from amilib.ami_pdf_libs import AmiPDFPlumber,AmiPage, TextStyle
 from amilib.file_lib import FileLib
 from amilib.util import AmiLogger
 from amilib.xml_lib import HtmlLib, XmlLib
+from amilib.ami_html import H_BODY, H_DIV
 
 logger = AmiLogger.create_named_logger(__file__)
 logger = logging.getLogger(__file__)
@@ -82,7 +85,6 @@ class HtmlGenerator:
                                  total_pages="total_pages", outdir=None, write=True,
                                  svg_dir=None, max_edges=10000, param_dict=None, max_lines=10, page_json_dir=None,
                                  debug=False):
-        from amilib.ami_pdf_libs import AmiPDFPlumber  # HORRIBLE
 
         if not input_pdf:
             raise FileNotFoundError("missing pdf")
@@ -126,7 +128,6 @@ class HtmlGenerator:
         """
         :param tidy_primitives: convert thin rects to lines, and other layout stuff
         """
-        from amilib.ami_pdf_libs import AmiPlumberJson
 
         pre_plumber = HtmlGenerator.pmr_time()
         ami_plumber_json = ami_pdfplumber.create_ami_plumber_json(input_pdf, pages=pages)
@@ -223,7 +224,6 @@ class HtmlGenerator:
         max_curves=10,
         rawname="raw"
     ):
-        from amilib.ami_pdf_libs import PDFDebug
 
         if page_json_dir:
             cls.write_dict_as_json(ami_json_page, page_json_dir, page_no)
@@ -320,9 +320,6 @@ class HtmlGenerator:
     # TODO should be new class
     # Maybe should be lower and wrapped?
     def chars_to_spans_using_pdfplumber(cls, bbox, input_pdf, page_no):
-        from amilib.ami_pdf_libs import AmiPage
-        from amilib.ami_html import H_BODY, H_DIV
-        from amilib.ami_pdf_libs import TextStyle
 
         with pdfplumber.open(input_pdf) as pdf:
             pdf_page = pdf.pages[page_no]

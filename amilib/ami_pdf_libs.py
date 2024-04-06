@@ -30,7 +30,7 @@ from pdfplumber.page import Page
 from amilib.ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, CSSStyle, FONT_FAMILY, P_X0, P_X1, \
     P_Y0, \
     P_Y1, BOLD, ITALIC, HtmlUtil, FILL, TIMES, CALIBRI, FONT_FAMILIES, H_TABLE, H_THEAD, H_TBODY, \
-    H_TR, H_TD
+    H_TR, H_TD, AmiFont
 from amilib.ami_svg import AmiSVG, SVG_G
 from amilib.bbox import BBox
 from amilib.util import Util, AmiLogger
@@ -1423,8 +1423,6 @@ class AmiPlumberJsonPage:
 
     def get_ami_font_and_style(self, fontname):
         """create AmiFont and CSSStyle from font-name"""
-        from amilib.ami_html import CSSStyle
-        from amilib.ami_html import AmiFont
 
         ami_font = AmiFont.extract_name_weight_style_stretched_as_font(fontname)
         css_style = CSSStyle()
@@ -1940,7 +1938,6 @@ class AmiPDFPlumber:
     def create_char_css(cls, char_dict):
         # ['matrix', 'fontname', 'adv', 'upright', 'x0', 'y0', 'x1', 'y1', 'width', 'height', 'size', 'object_type',
         #  'page_number', 'text', 'stroking_color', 'non_stroking_color', 'top', 'bottom', 'doctop'])
-        from amilib.ami_html import CSSStyle
 
         upright = None
         obj_type = char_dict.get(CH_OBJECT_TYPE)
@@ -1969,7 +1966,6 @@ class AmiPDFPlumber:
         sets 5 font attributes (width, size, nonstroke, stroke, fontname
         values from cchar_dict
         """
-        from amilib.ami_html import CSSStyle
         css.set_attribute(CSSStyle.WIDTH, AmiPDFPlumber.get_float(char_dict, PLUMB_WIDTH))
         css.set_attribute(CSSStyle.FONT_SIZE, AmiPDFPlumber.get_float(char_dict, PLUMB_SIZE))
         css.set_attribute(CSSStyle.FILL, char_dict.get(PLUMB_NONSTROKE))

@@ -19,7 +19,7 @@ import requests
 
 import test.test_all
 from amilib.ami_bib import Publication
-from amilib.ami_pdf import PDFArgs
+from amilib.pdf_args import PDFArgs
 from amilib.ami_integrate import HtmlGenerator
 
 """NOTE REQUIRES LATEST pdfplumber"""

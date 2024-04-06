@@ -1,6 +1,8 @@
 import copy
+import html
 import logging
 import os
+import pprint
 import re
 from pathlib import Path
 from urllib.request import urlopen
@@ -9,13 +11,13 @@ import chardet
 import lxml
 import lxml.etree
 import requests
+import tkinterweb
 from lxml import etree as ET
 from lxml.etree import _Element, _ElementTree
 from lxml.html import HTMLParser
+import tkinter as tk
 
 from amilib.file_lib import FileLib
-
-# from amilib.util import EnhancedRegex
 
 logging.debug("loading xml_lib")
 
@@ -197,7 +199,6 @@ class XmlLib:
     @staticmethod
     def parse_xml_string_to_root(xml):
         """read xml string and parse to root element"""
-        from io import StringIO
         tree = ET.parse(StringIO(xml), ET.XMLParser(ns_clean=True))
         return tree.getroot()
 
@@ -338,9 +339,8 @@ class XmlLib:
         """adds UTF8 declaration to root
 
         """
-        from lxml import etree as LXET
         root = html_root.get_or_create_child(html_root, "head")
-        LXET.SubElement(root, "meta").attrib["charset"] = "UTF-8"
+        ET.SubElement(root, "meta").attrib["charset"] = "UTF-8"
 
     # replace nodes with text
     @staticmethod
@@ -815,7 +815,6 @@ class HtmlLib:
         :param element: lxml element
         :return: unicode string representation of element
         """
-        import html
         stringx = lxml.etree.tostring(element)
         string_unicode = html.unescape(stringx.decode(encoding))
         return string_unicode
@@ -1488,7 +1487,6 @@ class Templater:
 
     @classmethod
     def create_id_from_section(cls, html_elem, id_xpath, template=None, regex=None, maxchar=100):
-        from amilib.xml_lib import ID_TEMPLATE
         """create id from html content
         id_xpath is where to find the content
         template is how to transform it
@@ -1508,7 +1506,6 @@ class Templater:
 
 class Web:
     def __init__(self):
-        import tkinter as tk
         root = tk.Tk()
         site = "http://google.com"
         self.display_html(root, site)
@@ -1516,15 +1513,13 @@ class Web:
 
     @classmethod
     def display_html(cls, master, site):
-        import tkinterweb
         frame = tkinterweb.HtmlFrame(master)
         frame.load_website(site)
         frame.pack(fill="both", expand=True)
 
     @classmethod
     def tkinterweb_demo(cls):
-        from tkinterweb import Demo
-        Demo()
+        tkinterweb.Demo()
 
 
 def main():
@@ -1544,7 +1539,6 @@ def test_xml():
 
 
 def test_data_table():
-    import pprint
     data_table = DataTable("test")
     data_table.add_column_heads(["a", "b", "c"])
     data_table.add_row_old(["a1", "b1", "c1"])
