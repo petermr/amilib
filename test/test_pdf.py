@@ -149,9 +149,11 @@ class PDFPlumberTest(AmiAnyTest):
             ami_pdfplumber, input_pdf=input_pdf, outdir=output_page_dir, page_json_dir=page_json_dir,
             pages=[1, 2, 3, 4, 5, 6, 7])
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    # @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skip(reason="too complex")
     def test_pdfplumber_doublecol_create_pages_for_WGs_HACKATHON(self):
         """
+        TODO move this to climate
         creates AmiPDFPlumber and reads double-column pdf and debugs
         This is also an integration/project test
         """

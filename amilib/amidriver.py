@@ -1,3 +1,4 @@
+import logging
 import time
 from io import StringIO
 from pathlib import Path
@@ -18,7 +19,7 @@ URL = "url"
 XPATH = "xpath"
 OUTFILE = "out_file"
 
-
+logger = logging.getLogger(__file__)
 
 class AmiDriver:
     """

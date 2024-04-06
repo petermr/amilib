@@ -1,25 +1,24 @@
 """Supports parsing, editing, markup, restructing of HTML
 Should have relatively few dependencies"""
-import argparse
 import copy
 import logging
 import re
 import sys
 import time
-from collections import defaultdict, Counter
+from collections import defaultdict
 from enum import Enum
 from io import StringIO
 from pathlib import Path
 from pprint import pprint
 
-import numpy as np
 import lxml.etree as ET
+import numpy as np
 from lxml.etree import Element, _Element, _ElementTree
 from sklearn.linear_model import LinearRegression
 
 # local
 from amilib.bbox import BBox
-from amilib.util import SScript, AbstractArgs, Util, AmiLogger
+from amilib.util import SScript, Util, AmiLogger
 from amilib.xml_lib import XmlLib, HtmlLib
 
 # no try-catch imports
@@ -116,14 +115,6 @@ S_WRITING_MODE = "writing-mode"
 
 _UTF8 = "UTF-8"
 
-# commandline
-ANNOTATE = "annotate"
-COLOR = "color"
-DICT = "dict"
-INPATH = "inpath"
-OUTDIR = "outdir"
-OUTPATH = "outpath"
-
 CHAP_TOP_REC = re.compile("__NOT__YET__IMPLEMENTED__")
 SECTIONS_DECIMAL_REC = re.compile("\\d+\\.\\d+$")
 SUBSECTS_DECIMAL_REC = re.compile("\\d+\\.\\d+\\.\\d+$")
@@ -139,6 +130,7 @@ s1  to mean class name (classname)
 """
 
 logger = logging.getLogger(__file__)
+
 
 class AmiSpan:
     def __init__(self):
@@ -377,7 +369,6 @@ class HtmlTidy:
             css_last = css
         return elem_with_pagenos
 
-
     def print_pages_div(self, ranges=None):
         """
         maybe just a debugger
@@ -505,11 +496,12 @@ class HtmlTidy:
 
 
 def get_target_href(target_id):
-    re_target = re.compile("\\s*(?P<report>WGI|WGII|WGIII|SRCCL|SROCC|SR15|SYR)\\s+(?P<chapter>SPM|TS)\\s+(?P<section>[A-G]\\.?\\d+(?:\\.\\d+)*)")
+    re_target = re.compile(
+        "\\s*(?P<report>WGI|WGII|WGIII|SRCCL|SROCC|SR15|SYR)\\s+(?P<chapter>SPM|TS)\\s+(?P<section>[A-G]\\.?\\d+(?:\\.\\d+)*)")
     github_base = "https://htmlpreview.github.io/?https://github.com"
     working_url = "https://htmlpreview.github.io/?https://github.com/petermr/semanticClimate/blob/main/test.html"
     report_dict = {
-        "wgi" : "wg1",
+        "wgi": "wg1",
         "wgii": "wg2",
         "wgiii": "wg3",
     }
@@ -558,8 +550,6 @@ class HtmlGroup:
             return "@." + str(i)
         s = "" if jj == 0 else abc[jj - 1]
         return s + abc[ii]
-
-
 
     @classmethod
     def group_siblings(cls, html_elem, locator=None, parent_locator=None, style=None, debug=False):
@@ -738,6 +728,7 @@ Regenerate response
 Send a message.
 
 Free Research Preview. ChatGPT may produce inaccurate information about people, places, or facts. ChatGPT May 12 Version"""
+
     @classmethod
     def group_divs_into_tree(cls, body):
         """Peter Murray-Rust"""
@@ -749,7 +740,6 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
             re.compile("Adopted.*"),
             re.compile("Subject to Copy")
         ]
-
 
         div_styles = ["border: #8888ff solid 3px;",
                       "border: cyan dashed 2.5px;",
@@ -842,8 +832,6 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
             else:
                 logger.info(f"no parent on stack level {level}")
 
-
-
         parent.append(div)
         return parent
 
@@ -867,7 +855,6 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
             except Exception as e:
                 print(f"failed to match id in {regex}")
             div.attrib["class"] = section_class
-
 
     @classmethod
     def annotate_title_sections(cls, html_elem, section_regexes=None):
@@ -961,7 +948,6 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                                 div0.append(span)
                             div.getparent().remove(div)
 
-
     @classmethod
     def get_last_span(cls, div):
         spans = div.xpath("./span")
@@ -1023,9 +1009,9 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
     def group_nested_siblings(cls, html_elem, styles=None):
         if styles is None:
             styles = [
-            "border : solid purple 2px; margin:2px;",
-            "border : dashed green 1.5px; margin:1.5px;",
-            "border : dotted blue 1px; margin:1px;",
+                "border : solid purple 2px; margin:2px;",
+                "border : dashed green 1.5px; margin:1.5px;",
+                "border : dotted blue 1px; margin:1px;",
             ]
 
         HtmlGroup.group_siblings(html_elem, locator="section", style=styles[0])
@@ -1066,13 +1052,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
 
                 parent.remove(span)
 
-
-
-
             span.attrib["class"] = TARGETS
-
-
-
 
     @classmethod
     def extract_section_ids(cls, html_elem, xpaths=[".//div", "./span"], regexes=None):
@@ -1104,7 +1084,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                 if section_id:
                     sections.append(section_id)
                     continue
-            if len (regexes) > 1 and regexes[1]:
+            if len(regexes) > 1 and regexes[1]:
                 subsection_id = HtmlUtil.extract_substrings(div, xpath=xpaths[1],
                                                             regex=regexes[1],
                                                             remove=False)
@@ -1158,11 +1138,9 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                     spans = []
 
 
-
 class HtmlUtil:
     SCRIPT_FACT = 0.9  # maybe sholdn't be here; avoid circular
     MARKER = "marker"
-
 
     @classmethod
     def remove_empty_elements(cls, elem, tag):
@@ -1336,14 +1314,14 @@ class HtmlUtil:
             pass
             # no font style
         is_script = cls.is_required_script_type(script_type, last_font_size, last_span, this_font_size, this_span,
-                                            ydown)
+                                                ydown)
         return is_script
 
     @classmethod
     def is_required_script_type(cls, script_type, last_font_size, last_span, this_font_size, this_span, ydown=True, ):
         """old approach with AmiSpan
         This is not right!"""
-        YFACTOR = 3 # pixels
+        YFACTOR = 3  # pixels
         is_script = False
         script_factor = HtmlUtil.SCRIPT_FACT
         # if font sizes not given assume they don't matter
@@ -1394,7 +1372,6 @@ class HtmlUtil:
                 if current_li is not None:
                     current_li.append(span)
 
-
     @classmethod
     def annotate_script_type(cls, span, script_type, script_factor=None, last_span=None, ydown=True):
         """is a span a sub or superscript?
@@ -1431,7 +1408,6 @@ class HtmlUtil:
                 pass
         return is_script
 
-
     @classmethod
     def set_attrib(cls, element, attname, attvalue):
         """convenience method to set attribute value
@@ -1456,6 +1432,7 @@ class HtmlUtil:
         elems = root_elem.xpath(xpath)
         for i, el in enumerate(elems):
             el.attrib[A_ID] = A_ID + str(i)
+
     @classmethod
     def join_spans_in_same_div(cls, span0, span1, addspace=True, remove=True):
         """
@@ -1476,9 +1453,6 @@ class HtmlUtil:
             span0.text += span1.text
             if remove:
                 parent1.remove(span1)
-
-
-
 
     @classmethod
     def create_skeleton_html(cls):
@@ -1827,7 +1801,8 @@ class HtmlUtil:
         cls.get_lrtb(elem, "top", margin=80)
 
     @classmethod
-    def get_lrtb(cls, elem, direction, maxchar=50, min_count=10, max_texts=3, margin=80, mediabox=[[0,1000], [0,1000]], col=1 ):
+    def get_lrtb(cls, elem, direction, maxchar=50, min_count=10, max_texts=3, margin=80,
+                 mediabox=[[0, 1000], [0, 1000]], col=1):
         elems = HtmlLib.get_body(elem).xpath(f".//*[@{direction}]")
         dictx = defaultdict(list)
         for elem in elems:
@@ -1847,7 +1822,7 @@ class HtmlUtil:
         rows_ = sorted(rows, key=lambda c: c[col])
         print(f"rows\n{rows_}")
 
-                # sorted(student_tuples, key=lambda student: student[2])
+        # sorted(student_tuples, key=lambda student: student[2])
 
     @classmethod
     def get_body_elements_by_class(cls, elem, head_style):
@@ -1888,7 +1863,7 @@ class HtmlUtil:
         "return: None
         """
         if out_html == sys.stdout:
-            print (ET.tostring(elem, pretty_print=True, encoding="unicode"))
+            print(ET.tostring(elem, pretty_print=True, encoding="unicode"))
         else:
             ss = ET.tostring(elem, pretty_print=pretty_print)
             Path(out_html).parent.mkdir(parents=True, exist_ok=True)
@@ -1993,13 +1968,14 @@ class HtmlAnnotator:
         annotator.add_command(
             AnnotatorCommand(html_class="section_title", regex="Section\\s+(?P<id>\\d+):\\s+(?P<title>.*)",
                              add_id="section_|", add_title="|", style="{color : blue; background : pink;}",
-                            desc="add id and title for 'Section: ...'")
+                             desc="add id and title for 'Section: ...'")
         )
         annotator.add_command(
             AnnotatorCommand(html_class="sub_section_title", regex="\\s*(?P<id>\\d+\\.\\d+)\\s+(?P<title>.*)",
                              add_id="subsection_|", add_title="|", style="{color : green; background : yellow;}"))
         annotator.add_command(
-            AnnotatorCommand(html_class="sub_sub_section_title", regex="^\\s*(?P<id>\\d+\\.\\d+\\.\\d+)\\s+(?P<title>.*)",
+            AnnotatorCommand(html_class="sub_sub_section_title",
+                             regex="^\\s*(?P<id>\\d+\\.\\d+\\.\\d+)\\s+(?P<title>.*)",
                              add_id="subsection_|", add_title="|", style="{color : black; background : #dddddd;}"))
         annotator.add_command(
             AnnotatorCommand(html_class="confidence",
@@ -2013,41 +1989,48 @@ class HtmlAnnotator:
             AnnotatorCommand(html_class="superscript", script="super", add_id="super_|", add_title="|",
                              style="{color : blue; backgroound: yellow}"))
         annotator.add_command(
-            AnnotatorCommand(html_class="start", regex="\\s*\\[?START\\s*(?P<title>FIGURE|TABLE)\\s*(?P<id>\\d+\\.\\d+)\\s*(HERE)?\\]?",
+            AnnotatorCommand(html_class="start",
+                             regex="\\s*\\[?START\\s*(?P<title>FIGURE|TABLE)\\s*(?P<id>\\d+\\.\\d+)\\s*(HERE)?\\]?",
                              add_id="start_|", add_title="start_|", style="{color : green; background: pink}"))
         annotator.add_command(
-            AnnotatorCommand(html_class="end", regex="\\s*\\[?END\\s*(?P<title>FIGURE|TABLE)\\s*(?P<id>\\d+\\.\\d+)\\s*(HERE)?\\]?",
+            AnnotatorCommand(html_class="end",
+                             regex="\\s*\\[?END\\s*(?P<title>FIGURE|TABLE)\\s*(?P<id>\\d+\\.\\d+)\\s*(HERE)?\\]?",
                              add_id="end_|", add_title="end_|", style="{color : green; background: blue}"))
         annotator.add_command(
             AnnotatorCommand(html_class="targets", regex=".*\\{(?P<title>.+)\\}.*",
                              add_id="chunk_|", add_title="|", style="{color : green; background: orange}",
-                            desc="IPCC target IDs in curly brackets {WG1 SPM A.1.2, WGII SPM B.2.3}"))
+                             desc="IPCC target IDs in curly brackets {WG1 SPM A.1.2, WGII SPM B.2.3}"))
         annotator.add_command(
-            AnnotatorCommand(html_class="cruft", regex="^.*(Subject to Copy Edit |Adopted Longer Report IPCC AR6 SYR).*$",
+            AnnotatorCommand(html_class="cruft",
+                             regex="^.*(Subject to Copy Edit |Adopted Longer Report IPCC AR6 SYR).*$",
                              add_id="cruft_|", add_title="|", delete=True, style="{color : green; background: black}"))
         annotator.add_command(
             AnnotatorCommand(html_class="page", regex="^(?P<title>p\\.\\d+)",
-                              add_title="|", style="{color : purple}"))
+                             add_title="|", style="{color : purple}"))
         annotator.add_command(
-            AnnotatorCommand(html_class="fact", xpath="self::span[contains(@class, 'confidence')]/preceding-sibling::span[1]",
-                              style="{color : purple}"))
+            AnnotatorCommand(html_class="fact",
+                             xpath="self::span[contains(@class, 'confidence')]/preceding-sibling::span[1]",
+                             style="{color : purple}"))
         annotator.add_command(
             AnnotatorCommand(html_class="group", group_xpath="div[span[contains(@class, 'start')]]",
                              end_xpath="self::div[span[contains(text(),'END')]]",
-                            desc="?extracts groups and mmoves to end"))
+                             desc="?extracts groups and mmoves to end"))
         annotator.add_command(
-            AnnotatorCommand(html_class="subsubsection", group_xpath="div[span[contains(@class, 'subsubsection_title')]]",
+            AnnotatorCommand(html_class="subsubsection",
+                             group_xpath="div[span[contains(@class, 'subsubsection_title')]]",
                              end_xpath="self::div[span[contains(text(),'section_title')]]"))
         annotator.add_command(
-            AnnotatorCommand(html_class="footnote", xpath="//div[span[contains(@style, 'font-size: 6.0') and number(.)=number(.)]]",
+            AnnotatorCommand(html_class="footnote",
+                             xpath="//div[span[contains(@style, 'font-size: 6.0') and number(.)=number(.)]]",
                              desc="horrible hack testing font-size"))
-
 
         return annotator
 
 
 ANN_SPLIT = "|"
 LEN_TITLE = 50
+
+
 class AnnotatorCommand:
     """an annotation command
     e.g.
@@ -2073,7 +2056,7 @@ class AnnotatorCommand:
         self.add_id = None if not add_id or len(add_id) != 2 else add_id
         if add_title:
             add_title = add_title.split(ANN_SPLIT)
-        self.add_title= None if not add_title or len(add_title) != 2 else add_title
+        self.add_title = None if not add_title or len(add_title) != 2 else add_title
 
         self.html_class = html_class
         self.script = script
@@ -2084,7 +2067,7 @@ class AnnotatorCommand:
         self.end_xpath = end_xpath
         self.desc = desc
 
-# class AnnotatorCommand
+    # class AnnotatorCommand
 
     def run_command(self, elem):
         # print(f"run_command , tag, {elem.tag} parent: {elem.getparent()}")
@@ -2092,7 +2075,7 @@ class AnnotatorCommand:
             self.run_regex(elem)
         # elif self.extract:
         #     self.run_extract(elem)
-        elif self.xpath :
+        elif self.xpath:
             self.run_xpath(elem)
         elif self.script == "sub":
             self.run_subscript(elem)
@@ -2213,8 +2196,8 @@ class AnnotatorCommand:
             except Exception as e:
                 print(f"failed xpath {xp} {e}")
             if end_sib and len(end_sib) > 0:
-            # if sibling != end_group:
-            #     print(f"sibling {sibling}")
+                # if sibling != end_group:
+                #     print(f"sibling {sibling}")
                 break
             div.append(sibling)
         return div
@@ -2240,18 +2223,17 @@ class AnnotatorCommand:
         parent.remove(elem)
 
 
-
 STYLE_CURLY_RE = re.compile("(?P<pre>.*){(?P<value>[^}]*)}(?P<post>.*)")
+
+
 class HtmlStyle:
     """
     methods to process style attributes and <style> elements
     no instance data
     """
 
-    def __init__(self,css_string=None):
+    def __init__(self, css_string=None):
         self.css_string = css_string
-
-
 
     @classmethod
     def get_cssstyle_string(cls, elem):
@@ -2262,7 +2244,7 @@ class HtmlStyle:
         """
         return elem.attrib.get("style")
 
-# class HtmlStyle
+    # class HtmlStyle
 
     @classmethod
     def set_style(cls, elem, value):
@@ -2517,8 +2499,8 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             style = ET.SubElement(html_head, "style")
             style.text = style_t
 
-# TODO
-# create_font_edited_style_from_css_style_object
+    # TODO
+    # create_font_edited_style_from_css_style_object
 
     @classmethod
     def transfer_head_styles(cls, html_elem, new_html):
@@ -2684,7 +2666,7 @@ class HtmlClass:
             else:
                 raise ValueError(f"can only create HtmlClass from strings, found {type(classstr)} : {classstr}")
 
-# class HtmlClass:
+    # class HtmlClass:
 
     @classmethod
     def create_from_classed_element(cls, elem):
@@ -2817,7 +2799,7 @@ class HtmlTree:
     # XPaths
     ALL_DIV_XPATHS = ".//div"
 
-# class HtmlTree
+    # class HtmlTree
 
     @classmethod
     def make_sections_and_output(cls, elem, output_dir, recs_by_section=None):
@@ -3008,7 +2990,7 @@ class HtmlTree:
 
 RECS_BY_SECTION = {
     # HtmlTree.CHAP_TOP: IPCC_CHAP_TOP_REC, # should be injected by user
-    HtmlTree.CHAP_TOP: CHAP_TOP_REC, # should be injected by user
+    HtmlTree.CHAP_TOP: CHAP_TOP_REC,  # should be injected by user
     HtmlTree.CHAP_SECTIONS: SECTIONS_DECIMAL_REC,
     HtmlTree.CHAP_SUBSECTS: SUBSECTS_DECIMAL_REC,
 }
@@ -3183,103 +3165,6 @@ class HTMLSearcher:
         the_dict[key].append(value)
 
 
-class HTMLArgs(AbstractArgs):
-    """Parse args to analyze, edit and annotate HTML"""
-
-    def __init__(self):
-        """arg_dict is set to default"""
-        super().__init__()
-        self.dictfile = None
-        self.inpath = None
-        self.outpath = None
-        self.outstem = None
-        self.outdir = None
-        self.arg_dict = None
-        self.subparser_arg = "HTML"
-
-    def add_arguments(self):
-        if self.parser is None:
-            self.parser = argparse.ArgumentParser()
-        """adds arguments to a parser or subparser"""
-        self.parser.description = 'HTML editing analysing annotation'
-        self.parser.add_argument(f"--{ANNOTATE}", action="store_true",
-                                 help="annotate HTML file with dictionary")
-        self.parser.add_argument(f"--{COLOR}", type=str, nargs=1,
-                                 help="colour for annotation")
-        self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
-                                 help="dictionary for annotation")
-        self.parser.add_argument(f"--{INPATH}", type=str, nargs=1,
-                                 help="input html file")
-        self.parser.add_argument(f"--{OUTPATH}", type=str, nargs=1,
-                                 help="output html file")
-        self.parser.add_argument(f"--{OUTDIR}", type=str, nargs=1,
-                                 help="output directory")
-        self.parser.epilog = "==============="
-
-    """python -m pyamihtmlx.pyamix HTML --annotate 
-     --dict /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
-     --inpath /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/fulltext.html
-     --outpsth /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/annotated/fulltext_emissions.html
-     --color pink
-     """
-
-    # class AmiDictArgs:
-    def process_args(self):
-        """runs parsed args
-        :return:
-        """
-
-        if not self.arg_dict:
-            logging.warning(f"no arg_dict given, no action")
-            return
-
-        self.annotate = self.arg_dict.get(ANNOTATE)
-        self.color = self.arg_dict.get(COLOR)
-        self.dictfile = self.arg_dict.get(DICT)
-        self.inpath = self.arg_dict.get(INPATH)
-        self.outdir = self.arg_dict.get(OUTDIR)
-        self.outpath = self.arg_dict.get(OUTPATH)
-
-        if self.annotate:
-            self.annotate_with_dict()
-
-    # class AmiDictArgs:
-
-    @classmethod
-    def create_default_arg_dict(cls):
-        """returns a new COPY of the default dictionary"""
-        arg_dict = dict()
-        arg_dict[DICT] = None
-        return arg_dict
-
-    @property
-    def module_stem(self):
-        """name of module"""
-        return Path(__file__).stem
-
-    def annotate_with_dict(self):
-        """uses dictionary to annotate words and phrases in HTML file"""
-        logger.warning("Dictionaries not supported")
-        return
-
-        if not self.dictfile:
-            logging.error(f"no dictionary given")
-            return
-        if not self.inpath:
-            logging.error(f"no input file to annotate given")
-            return
-        if not self.outpath:
-            logging.error(f"no output file given")
-            return
-        if not self.outdir:
-            self.outdir = Path(self.outpath).parent
-        self.outdir = Path(self.outdir)
-        self.outdir.mkdir(exist_ok=True)
-
-        self.ami_dict = AmiDictionary.create_from_xml_file(self.dictfile)
-        self.ami_dict.markup_html_from_dictionary(self.inpath, self.outpath, self.color)
-
-
 class URLCache:
     def __init__(self):
         self.url_dict = dict()
@@ -3303,8 +3188,9 @@ class URLCache:
 
 
 ID = "id"
-OBJECT ="object"
+OBJECT = "object"
 STARTEND = "start_end"
+
 
 class FloatBoundaryDict:
 
@@ -3351,15 +3237,14 @@ class FloatBoundaryDict:
         return new_div
 
 
-
 class FloatBoundary:
     """
     Holds
     """
     IPCC_BOUNDARY = "\\[?" \
-            f"(?P<{STARTEND}>START|END)\\s*" \
-            f"(?P<{OBJECT}>.*BOX|FIGURE|TABLE)\\s*" \
-            f"(?P<{ID}>(?:(?:[A-Z0-9]+|\\d+)?(?:\\.\\d+)*))\\s*(?:HERE)\\]?"
+                    f"(?P<{STARTEND}>START|END)\\s*" \
+                    f"(?P<{OBJECT}>.*BOX|FIGURE|TABLE)\\s*" \
+                    f"(?P<{ID}>(?:(?:[A-Z0-9]+|\\d+)?(?:\\.\\d+)*))\\s*(?:HERE)\\]?"
 
     # [START CROSS-SECTION BOX.1 HERE]
 
@@ -3370,7 +3255,7 @@ class FloatBoundary:
         self.div_id = None
 
     def __str__(self):
-        return self.group_dict.get(STARTEND) + ";" +  self.group_dict.get(OBJECT) + ";" +  self.group_dict.get(ID)
+        return self.group_dict.get(STARTEND) + ";" + self.group_dict.get(OBJECT) + ";" + self.group_dict.get(ID)
 
     def __repr__(self):
         return self.__str__()
@@ -3421,7 +3306,6 @@ class FloatExtractor:
         return float_boundaries
 
 
-
 class CSSStyle:
     """
     common subset of CSS styles/commands
@@ -3469,7 +3353,7 @@ class CSSStyle:
     def __repr__(self):
         return f"{self.name_value_dict}"
 
-#    class CSSStyle:
+    #    class CSSStyle:
 
     @classmethod
     def create_css_style_from_attribute_of_body_element(cls, elem):
@@ -3545,7 +3429,6 @@ class CSSStyle:
         if type(other) is CSSStyle:
             return self.name_value_dict == other.name_value_dict
         return False
-
 
     def set_attribute(self, property, value):
         """
@@ -3824,7 +3707,6 @@ class CSSStyle:
         #     self.set_font_stretched(style)
         # print(f"new style {self}")
 
-
     #    class CSSStyle:
 
     def match_weight_style(self, family, weight_regex, value=None, mark=None):
@@ -3918,8 +3800,10 @@ class CSSStyle:
 
         if not extracted_style:
             raise ValueError("extracted style is None")
-        extracted_style1 = CSSStyle.extract_bold_italic_from_font_family_for_style(extracted_style) if extracted_style else None
-        extracted_html_style_element = extracted_style1.create_html_style_element(class_name) if extracted_style1 is not None else None
+        extracted_style1 = CSSStyle.extract_bold_italic_from_font_family_for_style(
+            extracted_style) if extracted_style else None
+        extracted_html_style_element = extracted_style1.create_html_style_element(
+            class_name) if extracted_style1 is not None else None
 
         retained_style_attval = retained_style.get_css_value() if retained_style else None
         html_class_val = CSSStyle.create_html_class_val(class_name, old_class_val=old_classstr)
@@ -4147,6 +4031,7 @@ class CSSConverter:
         self.html_elem = HtmlTidy.ensure_html_head_body(self.html_elem)
         return self.html_elem
 
+
 class FontProperty(Enum):
     """
     ArialNarrow
@@ -4184,8 +4069,11 @@ class FontProperty(Enum):
     def __repr__(self):
         return str(self.value)
 
+
 # strips prefix off font-names
 RE_PREF = re.compile("[A-Z]{6}\\+(?P<name>[^\\s]+)\\s*")
+
+
 class AmiFont:
     """
     empirical normalization of fonts. Tries to convert all to the
@@ -4195,7 +4083,6 @@ class AmiFont:
     forn-weight: normal/bold
     font-style: normal/italic
     """
-
 
     # empirical conversions; will need to be updated frequently
     conversion_dict = {
@@ -4219,7 +4106,7 @@ class AmiFont:
 
     style_regex = re.compile("(.*)(Italic|Ita|Oblique)(.*)")
 
-#    class AmiFont:
+    #    class AmiFont:
 
     def __init__(self):
         self.name = None
@@ -4246,7 +4133,7 @@ class AmiFont:
             if not match:
                 break
 
-        name = name.replace("-","")
+        name = name.replace("-", "")
 
         font.family = name
         font.name = name0
@@ -4316,7 +4203,7 @@ class AmiFont:
     def match_font_property(cls, name, regex):
         match = regex.match(name)
         if match:
-            name = match.group(1) + match.group(3) # chop out match
+            name = match.group(1) + match.group(3)  # chop out match
         return name, match
 
     @classmethod
@@ -4358,7 +4245,7 @@ class AmiFont:
         if css_style is None:
             return None
         if type(css_style) is ET._Element:
-            print (f"element {ET.tostring(css_style)}")
+            print(f"element {ET.tostring(css_style)}")
         if type(css_style) is str:
             css_style = CSSStyle.create_css_style_from_css_string(css_style)
         if css_style is None:
@@ -4491,6 +4378,7 @@ class SectionHierarchy:
     def sort_ids(cls):
         pass
 
+
 class Footnote:
     """extracts footnotes by size and style and perhaps positiom
     """
@@ -4526,8 +4414,7 @@ class Footnote:
             return True
         return False
 
-
-# Footnote
+    # Footnote
 
     @classmethod
     def extract_footnote_and_save(cls, footnote_number_elem, footnote_text_classes, last_footnum):
@@ -4587,5 +4474,3 @@ class Footnote:
                 if debug:
                     print(f"broke out of footnote at {clazz}")
                 break
-
-

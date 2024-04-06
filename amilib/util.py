@@ -1,25 +1,24 @@
 import argparse
 import ast
+import base64
 import codecs
+import csv
 import importlib
+import json
 import logging
 import os
-import sys
-import csv
 import re
-from enum import Enum
+import sys
+import time
 from abc import ABC, abstractmethod
 from collections import Counter
+from enum import Enum
+from pathlib import Path
 
-import lxml
 import pandas as pd
 import pyvis
-from lxml import html
-from pathlib import Path
-import time
 import requests
-import json
-import base64
+from lxml import html
 
 logger = logging.getLogger(__file__)
 

@@ -1,6 +1,6 @@
 import copy
 import csv
-import glob
+import logging
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -13,6 +13,8 @@ from amilib.ami_integrate import HtmlGenerator
 from amilib.util import Util, EnhancedRegex, GENERATE
 # from pyamihtmlx.util import EnhancedRegex, GENERATE, Util
 from amilib.xml_lib import HtmlLib, Templater, XmlLib
+
+logger = logging.getLogger(__file__)
 
 
 def replace_parent(current_parents, div):
@@ -982,56 +984,56 @@ class HtmlPipelineData:
     debug: bool
 
     def __init__(self,
-        file_splitter = None,
-        insubdir = None,
-        instem = None,
-        outsubdir = None,
-        top_outdir = None,
-        directory_maker = None,
-        markukp_dict = None,
-        inline_dict = None,
-        param_dict = None,
-        targets = None,
-        styles = None,
-        force_make_pdf = True,
-        svg_dir = None,
-        page_json_dir = None,
-        debug = False
-    ):
-        self.file_splitter=file_splitter
-        self.insubdir=insubdir
-        self.instem=instem
-        self.outsubdir=outsubdir
-        self.top_outdir=top_outdir
-        self.directory_maker=directory_maker
-        self.markukp_dict=markukp_dict
-        self.inline_dict=inline_dict
-        self.param_dict=param_dict
-        self.targets=targets
-        self.styles=styles
-        self.force_make_pdf=force_make_pdf
-        self.svg_dir=svg_dir
-        self.page_json_dir=page_json_dir
-        self.debug=debug
+                 file_splitter=None,
+                 insubdir=None,
+                 instem=None,
+                 outsubdir=None,
+                 top_outdir=None,
+                 directory_maker=None,
+                 markukp_dict=None,
+                 inline_dict=None,
+                 param_dict=None,
+                 targets=None,
+                 styles=None,
+                 force_make_pdf=True,
+                 svg_dir=None,
+                 page_json_dir=None,
+                 debug=False
+                 ):
+        self.file_splitter = file_splitter
+        self.insubdir = insubdir
+        self.instem = instem
+        self.outsubdir = outsubdir
+        self.top_outdir = top_outdir
+        self.directory_maker = directory_maker
+        self.markukp_dict = markukp_dict
+        self.inline_dict = inline_dict
+        self.param_dict = param_dict
+        self.targets = targets
+        self.styles = styles
+        self.force_make_pdf = force_make_pdf
+        self.svg_dir = svg_dir
+        self.page_json_dir = page_json_dir
+        self.debug = debug
 
     @classmethod
     def make_dataclass(cls):
         dc = HtmlPipelineData(
-        file_splitter = None,
-        insubdir = None,
-        instem = None,
-        outsubdir = None,
-        top_outdir = None,
-        directory_maker = None,
-        markukp_dict = None,
-        inline_dict = None,
-        param_dict = None,
-        targets = None,
-        styles = None,
-        force_make_pdf = True,
-        svg_dir = None,
-        page_json_dir = None,
-        debug = False
+            file_splitter=None,
+            insubdir=None,
+            instem=None,
+            outsubdir=None,
+            top_outdir=None,
+            directory_maker=None,
+            markukp_dict=None,
+            inline_dict=None,
+            param_dict=None,
+            targets=None,
+            styles=None,
+            force_make_pdf=True,
+            svg_dir=None,
+            page_json_dir=None,
+            debug=False
         )
         """holds state and can be passed between steps"""
         return dc
@@ -1248,6 +1250,7 @@ class HtmlPipeline:
     @classmethod
     def print_step(cls, step):
         print(f"==========\nrunning {step}\n============")
+
 
 class HearstPattern:
     """extracts Hearst paaterns using regexes

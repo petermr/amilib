@@ -1,22 +1,21 @@
 """tests in a single path
 This is until I or someone else can figure out relative imports
 """
+import logging
 import os
 import random
 import unittest
 from glob import glob
 from pathlib import Path
 
-from lxml import etree
-
 # local
 from amilib.util import Util
-from amilib.wikimedia import WikidataSparql as WS
-from amilib.xml_lib import XmlLib
 
 from test.resources import Resources
 
 skip_config_test = True
+
+logger = logging.getLogger(__file__)
 
 
 # TODO needs local config file
@@ -26,16 +25,16 @@ class AmiAnyTest(unittest.TestCase):
     # for marking and skipping unittests
     # skipUnless
     ADMIN = True  # check that low-level files, tools, etc. work
-    CMD = True   # test runs the commandline
-    DEBUG = True   # test runs the commandline
-    LONG = True   # test runs for a long time
-    NET = True    # test requires Internet
-    OLD = True    # test probably out of data
-    VERYLONG = False   # test runs for a long time
+    CMD = True  # test runs the commandline
+    DEBUG = True  # test runs the commandline
+    LONG = True  # test runs for a long time
+    NET = True  # test requires Internet
+    OLD = True  # test probably out of data
+    VERYLONG = False  # test runs for a long time
     # skipIf
-    NYI = True    # test not yet implemented
-    USER = True   # user-facing test
-    BUG = True    # skip BUGs
+    NYI = True  # test not yet implemented
+    USER = True  # user-facing test
+    BUG = True  # skip BUGs
 
     # outputs for tests
 
@@ -121,6 +120,3 @@ class FileTests:
         # pics = os.path.join(home, "projects", "*iagram", "**", "{*.climate10_,*.txt,*.png}")
         # print("od", pics)
         # print("pics", bg.braced_glob(pics, recursive=True))
-
-
-

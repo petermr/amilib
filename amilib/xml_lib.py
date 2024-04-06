@@ -4,10 +4,11 @@ import logging
 import os
 import pprint
 import re
+import tkinter as tk
+from io import StringIO
 from pathlib import Path
 from urllib.request import urlopen
 
-import chardet
 import lxml
 import lxml.etree
 import requests
@@ -15,7 +16,6 @@ import tkinterweb
 from lxml import etree as ET
 from lxml.etree import _Element, _ElementTree
 from lxml.html import HTMLParser
-import tkinter as tk
 
 from amilib.file_lib import FileLib
 

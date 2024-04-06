@@ -2,6 +2,7 @@
 standalone library from pyamihtml
 """
 import ast
+import errno
 import glob
 import json
 import logging
@@ -12,6 +13,8 @@ from pathlib import Path, PurePath, PurePosixPath
 
 import chardet
 import requests
+
+from amilib.util import TextUtil
 
 logging.debug("loading file_lib")
 
@@ -53,10 +56,10 @@ S_XML = "xml"
 # RAW = "raw"
 
 
+logger = logging.getLogger(__file__)
 
 
 class FileLib:
-
     logger = logging.getLogger("file_lib")
 
     @classmethod
@@ -72,8 +75,6 @@ class FileLib:
             except Exception as e:
                 cls.logger.error(f"cannot make dirx {dirx} , {e}")
                 print(f"cannot make dirx {dirx}, {e}")
-
-
 
     @classmethod
     def force_mkparent(cls, file):
@@ -233,7 +234,7 @@ class FileLib:
         :return None:
         """
         if not dirx or not Path(dirx).exists():
-            print (f"no directory given or found {dirx}")
+            print(f"no directory given or found {dirx}")
             return
         if delete_directory:
             shutil.rmtree(dirx)
@@ -318,7 +319,6 @@ class FileLib:
         posix_files = [PurePosixPath(f) for f in file_list]
         return posix_files
 
-
     @classmethod
     def delete_file(cls, file):
         """delete file (uses unlink) and asserts it has worked
@@ -342,7 +342,8 @@ class FileLib:
             print(f"wrote dictionary to {path}")
 
     @classmethod
-    def read_string_with_user_agent(self, url, user_agent='my-app/0.0.1', encoding="UTF-8", encoding_scheme="chardet", debug=False):
+    def read_string_with_user_agent(self, url, user_agent='my-app/0.0.1', encoding="UTF-8", encoding_scheme="chardet",
+                                    debug=False):
         """
         allows request.get() to use a user_agent
         :param url: url to read
@@ -360,7 +361,8 @@ class FileLib:
         if debug:
             print(f"apparent encoding: {response.apparent_encoding}")
         if encoding is None:
-            encoding = chardet.detect(content)['encoding'] if encoding_scheme == "chardet" else response.apparent_encoding
+            encoding = chardet.detect(content)[
+                'encoding'] if encoding_scheme == "chardet" else response.apparent_encoding
         content = content.decode(encoding)
         return content, encoding
 
@@ -403,7 +405,7 @@ class FileLib:
             return outputs
 
     @classmethod
-    def posix_glob(cls, glob_str, recursive = True):
+    def posix_glob(cls, glob_str, recursive=True):
         """expands glob and ensure all output is posix
         :param glob_str: glob or list of globs to expand
         :param recursive: use recursive glob
@@ -433,7 +435,6 @@ class FileLib:
             if abort:
                 raise e
 
-
     @classmethod
     def get_home(cls):
         """
@@ -441,7 +442,6 @@ class FileLib:
         """
         home = os.path.expanduser("~")
         return home
-
 
 
 # see https://realpython.com/python-pathlib/
@@ -460,6 +460,7 @@ else:
     #    print("running file_lib main anyway")
     #    main()
     pass
+
 
 # examples of regex for filenames
 

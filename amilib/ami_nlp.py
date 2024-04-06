@@ -31,6 +31,7 @@ T_ID = "t_id"
 N_ENGLISH = 'english'
 N_PUNKT = 'punkt'
 
+logger = logging.getLogger(__file__)
 
 class AmiNLP:
 

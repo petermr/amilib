@@ -4,18 +4,17 @@ import os
 import re
 import sys
 from enum import Enum
-from pathlib import Path
-
-import requests
-from lxml import etree as ET
-from lxml import etree, html
-import lxml.etree
-from urllib.parse import quote
 from io import StringIO
-from urllib.request import urlopen
-from lxml import etree
+from pathlib import Path
 from urllib.error import HTTPError
+from urllib.parse import quote
+from urllib.request import urlopen
+
+import lxml.etree
+import requests
 from SPARQLWrapper import SPARQLWrapper
+from lxml import etree as ET
+from lxml import html
 
 # local
 from amilib.ami_html import HtmlUtil
@@ -59,8 +58,10 @@ DICT_NAME = "dict_name"
 ARTICLEs = [
     ".*((scientific|journal)\\s+)?article.*",
     ".*((scientific|academic)\\s+)?journal.*"
-     ]
+]
 ARTS = [".*(film|song|album)"]
+
+logger = logging.getLogger(__file__)
 
 
 # this should go in config files
@@ -94,7 +95,6 @@ class WikidataLookup:
         self.exact_lookup = exact_lookup
         self.hits_dict = dict()
 
-
     def lookup_wikidata(self, term):
         """
         Looks up term in Wikidata and gets Q number and descriptiom
@@ -104,7 +104,6 @@ class WikidataLookup:
         :param term: word or phrase to lookup
         :return: triple (e.g. hit0_id, hit0_description, wikidata_hits)
         """
-
 
         if not term:
             logging.warning("null term")
@@ -174,7 +173,7 @@ class WikidataLookup:
         sub_dict = {}
         wikidata_dict[qitem] = sub_dict
         # make title from text children not tooltip
-        text = ''.join(result_heading_a.itertext()) # acetone (Q49546)
+        text = ''.join(result_heading_a.itertext())  # acetone (Q49546)
         title = text.split("(Q")[0]
         sub_dict[TITLE] = title
         find_arg = "./div[@class='" + SEARCH_RESULT + "']/span"
@@ -566,7 +565,6 @@ class WikidataPage:
         aliases = [li.text for li in li_list]
         return
 
-
     def get_id(self):
         """
         get id from <span class="wikibase-title-id">(Q42)</span>
@@ -683,7 +681,6 @@ class WikidataPage:
             if label_match(label, wikidata_label, method, ignorecase):  # METHOD NOT WRITTEN
                 idlist.append(id)
 
-
     """<div class="wikibase-entitytermsview-heading-description">chemical compound</div>"""
 
     def debug_page(self):
@@ -692,8 +689,6 @@ class WikidataPage:
             print(f"no root for wikidata")
         else:
             HtmlUtil.write_html_elem(self.root, sys.stdout, pretty_print=True)
-
-
 
 
 class WikidataSparql:
@@ -796,7 +791,6 @@ class ParserWrapper:
         tree = ET.parse(StringIO(content), ET.HTMLParser())
         root = tree.getroot()
         return root
-
 
 
 class WikidataExtractor:

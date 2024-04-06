@@ -1,156 +1,155 @@
 import argparse
-import ast
-import glob
 import logging
-import os
-import pprint
 import re
 import sys
 import textwrap
 from enum import Enum
 from pathlib import Path
 
-import lxml.etree as ET
-# local
-
+from amilib.html_args import HTMLArgs
 from amilib.pdf_args import PDFArgs
-from amilib.ami_html import HTMLArgs
-from amilib.util import AmiLogger, Util, AbstractArgs
+from amilib.util import AbstractArgs
 from amilib.wikimedia import WikidataLookup
+
+# local
 
 AMIX_DIR = Path(__file__).parent
 REPO_DIR = AMIX_DIR.parent
 
+logger = logging.getLogger(__file__)
+
 
 class AmiLib:
     logger = logging.getLogger("amilib")
-#     """ main entry point for running pyami
-#      """
-#     OUTFILE = "outfile"
-#
-#     # flags
-#     APPLY = "apply"
-#     ASSERT = "assert"
-#     CHECK_URLS = "check_urls"
+    #     """ main entry point for running pyami
+    #      """
+    #     OUTFILE = "outfile"
+    #
+    #     # flags
+    #     APPLY = "apply"
+    #     ASSERT = "assert"
+    #     CHECK_URLS = "check_urls"
     COPY = "copy"
-#     COMBINE = "combine"
-#     CONFIG = "config"
-#     CONTAINS = "contains"
+    #     COMBINE = "combine"
+    #     CONFIG = "config"
+    #     CONTAINS = "contains"
     DEBUG = "debug"
-#     DELETE = "delete"
-#     DEST = "dest"
-#     DICTIONARY = "dictionary"
+    #     DELETE = "delete"
+    #     DEST = "dest"
+    #     DICTIONARY = "dictionary"
     EXAMPLES = "examples"
-#     FILTER = "filter"
+    #     FILTER = "filter"
     FLAGS = "flags"
     GLOB = "glob"
-#     LOOKUP = "lookup"
-#     PRINT_SYMBOLS = "print_symbols"
+    #     LOOKUP = "lookup"
+    #     PRINT_SYMBOLS = "print_symbols"
     PROJ = "proj"
-#     RECURSE = "recurse"
-#     REGEX = "regex"
+    #     RECURSE = "recurse"
+    #     REGEX = "regex"
     SECT = "sect"
-#     SRC = "src"
+    #     SRC = "src"
     SPLIT = "split"
-#     SYMBOLS = "symbols"
+    #     SYMBOLS = "symbols"
     SYSTEM_EXIT_OK = "SystemExitOK"
     SYSTEM_EXIT_FAIL = "SystemExitFail_"
-#     TEST = "test"
+    #     TEST = "test"
     VERSION = "version"
-#     WIKIDATA_SPARQL = "wikidata_sparql"
-#     XPATH = "xpath"
-#     # apply methods 1:1 input-output
-#     # obsolete (use Converters)
-#     PDF2TXT = "pdf2svg"
-#     PDF2SVG = "pdf2svg"
-#     SVG2PAGE = "svg2page"
-#     XML2HTML = "xml2html"
-#     TXT2SENT = "txt2sent"
-#     XML2TXT = "xml2txt"
-#     TXT2PARA = "txt2para"
-#     XML2SECT = "xml2sect"
-#     # combine methods n:1 input-output
-#     CONCAT_STR = "concat_str"
-#     # split methods 1:n input-output
-#     # symbols to update table
-#     SPECIAL_SYMBOLS = ["_proj"]
+    #     WIKIDATA_SPARQL = "wikidata_sparql"
+    #     XPATH = "xpath"
+    #     # apply methods 1:1 input-output
+    #     # obsolete (use Converters)
+    #     PDF2TXT = "pdf2svg"
+    #     PDF2SVG = "pdf2svg"
+    #     SVG2PAGE = "svg2page"
+    #     XML2HTML = "xml2html"
+    #     TXT2SENT = "txt2sent"
+    #     XML2TXT = "xml2txt"
+    #     TXT2PARA = "txt2para"
+    #     XML2SECT = "xml2sect"
+    #     # combine methods n:1 input-output
+    #     CONCAT_STR = "concat_str"
+    #     # split methods 1:n input-output
+    #     # symbols to update table
+    #     SPECIAL_SYMBOLS = ["_proj"]
     LOGLEVEL = "loglevel"
-#     PY4AMI = "pyamihtmlx"
-#
-#     # parsers are these used??
-#     # DICT_PARSER = "DICT"
-#     # HTML_PARSER = "HTML"
-#     # IPCC_PARSER = "IPCC"
-#     # PDF_PARSER  = "PDF"
-#     # PROJECT_PARSER = "PROJECT"
-#     # UNFCCC_PARSER  = "UNFCCC"
-#
-#     logger = logging.getLogger("pyami")
-#     symbol_ini = None
-#
+
+    #     PY4AMI = "pyamihtmlx"
+    #
+    #     # parsers are these used??
+    #     # DICT_PARSER = "DICT"
+    #     # HTML_PARSER = "HTML"
+    #     # IPCC_PARSER = "IPCC"
+    #     # PDF_PARSER  = "PDF"
+    #     # PROJECT_PARSER = "PROJECT"
+    #     # UNFCCC_PARSER  = "UNFCCC"
+    #
+    #     logger = logging.getLogger("pyami")
+    #     symbol_ini = None
+    #
     def __init__(self):
         """constructor
 
         creates symbols
         """
-#
-#         self.logger.debug(f"===============Examples=================")
-#         if self.logger.getEffectiveLevel() <= logging.DEBUG:
-#             traceback.print_stack(file=sys.stdout)
-#
-#         self.args = {}  # args captured in here as name/value without "-" or "--"
-#         self.apply = []
-#         self.combine = None
-#         self.config = None  # holds configuration and global parameters (still being developed)
-#         self.current_file = None
-#         self.fileset = None
-#         # self.file_dict = {}  # possibly to be replaced by content_store.file_dict
-#         # self.content_store = ContentStore(self)  # will expose content_store.file_dict
-#         self.func_dict = {}
-#         self.result = None
-#         self.flag_dict = {}
-#         self.initialize_flags()
-#         self.wikidata_lookup = None
-#         self.wikipedia_lookup = None
-#         self.hit_counter = None
-#         # self.symbol_ini = SymbolIni(self)
-#         self.set_funcs()
-#         self.show_symbols = False
-#         self.ami_dictionary = None
-#         self.proj = None  # current project in searches
-#         self.current_ctree = None  # current ctree (may change during iteration
-#         self.cproject = None
-#         self.ami_logger = None
-#         self.outfile = None
-#         if self.show_symbols:
-#             pprint.pp(f"SYMBOLS\n {self.symbol_ini.symbols}")
-#
-#     def initialize_flags(self):
-#         """initialises flag_dict
-#         """
-#
-#         self.flag_dict = {
-#
-#             self.APPLY: None,
-#             self.CHECK_URLS: None,
-#             self.COMBINE: None,
-#             self.PRINT_SYMBOLS: False,
-#             self.RECURSE: True,
-#         }
-#
-#     def set_funcs(self):
-#         """initializes func_dict
-#         """
-#         # 1:1 methods
-#         # tuple of func+file_extnsion
-#         self.func_dict[self.XML2TXT] = (XmlLib.remove_all_tags, ".xml.txt")
-#         # self.func_dict[self.PDF2TXT] = (PdfReader.read_and_convert, ".pdf.txt")
-#         # self.func_dict[self.PDF2SVG] = (Pdf2SvgConverter.read_and_convert, ".pdf.svg")
-#         # self.func_dict[self.SVG2PAGE] = (Svg2PageConverter.read_and_convert, ".svg.xml")
-#         # self.func_dict[self.XML2HTML] = (Xml2HtmlConverter.read_and_convert, ".svg.html")
-#         # self.func_dict[self.TXT2SENT] = (TextUtil.split_into_sentences, ".sen.txt")
-#         # 1:n methods
-#
+
+    #
+    #         self.logger.debug(f"===============Examples=================")
+    #         if self.logger.getEffectiveLevel() <= logging.DEBUG:
+    #             traceback.print_stack(file=sys.stdout)
+    #
+    #         self.args = {}  # args captured in here as name/value without "-" or "--"
+    #         self.apply = []
+    #         self.combine = None
+    #         self.config = None  # holds configuration and global parameters (still being developed)
+    #         self.current_file = None
+    #         self.fileset = None
+    #         # self.file_dict = {}  # possibly to be replaced by content_store.file_dict
+    #         # self.content_store = ContentStore(self)  # will expose content_store.file_dict
+    #         self.func_dict = {}
+    #         self.result = None
+    #         self.flag_dict = {}
+    #         self.initialize_flags()
+    #         self.wikidata_lookup = None
+    #         self.wikipedia_lookup = None
+    #         self.hit_counter = None
+    #         # self.symbol_ini = SymbolIni(self)
+    #         self.set_funcs()
+    #         self.show_symbols = False
+    #         self.ami_dictionary = None
+    #         self.proj = None  # current project in searches
+    #         self.current_ctree = None  # current ctree (may change during iteration
+    #         self.cproject = None
+    #         self.ami_logger = None
+    #         self.outfile = None
+    #         if self.show_symbols:
+    #             pprint.pp(f"SYMBOLS\n {self.symbol_ini.symbols}")
+    #
+    #     def initialize_flags(self):
+    #         """initialises flag_dict
+    #         """
+    #
+    #         self.flag_dict = {
+    #
+    #             self.APPLY: None,
+    #             self.CHECK_URLS: None,
+    #             self.COMBINE: None,
+    #             self.PRINT_SYMBOLS: False,
+    #             self.RECURSE: True,
+    #         }
+    #
+    #     def set_funcs(self):
+    #         """initializes func_dict
+    #         """
+    #         # 1:1 methods
+    #         # tuple of func+file_extnsion
+    #         self.func_dict[self.XML2TXT] = (XmlLib.remove_all_tags, ".xml.txt")
+    #         # self.func_dict[self.PDF2TXT] = (PdfReader.read_and_convert, ".pdf.txt")
+    #         # self.func_dict[self.PDF2SVG] = (Pdf2SvgConverter.read_and_convert, ".pdf.svg")
+    #         # self.func_dict[self.SVG2PAGE] = (Svg2PageConverter.read_and_convert, ".svg.xml")
+    #         # self.func_dict[self.XML2HTML] = (Xml2HtmlConverter.read_and_convert, ".svg.html")
+    #         # self.func_dict[self.TXT2SENT] = (TextUtil.split_into_sentences, ".sen.txt")
+    #         # 1:n methods
+    #
     def create_arg_parser(self):
         """creates adds the arguments for pyami commandline
         """
@@ -302,7 +301,8 @@ class AmiLib:
         self.logger.debug("ARGS after substitution: " + str(self.args))
         self.set_loglevel_from_args()
         self.run_arguments()
-#
+
+    #
     def substitute_args(self):
         """ iterates through self.args and makes subsitutions
         May duplicates
@@ -315,7 +315,8 @@ class AmiLib:
             new_items[new_item[0]] = new_item[1]
         self.args = new_items
         self.logger.debug(f"******** substituted ARGS {self.args}")
-#
+
+    #
     def add_single_str_to_list(self):
         """convert single strings to list of one string
         Not sure of what this is for
@@ -325,7 +326,8 @@ class AmiLib:
             self.logger.debug(f"key {str_arg}")
             self.replace_single_values_in_self_args_with_list(str_arg)
             self.logger.debug(f"args => {self.args}")
-#
+
+    #
     def run_arguments(self):
         """ parse and expland arguments then ru options for
 
@@ -356,7 +358,8 @@ class AmiLib:
             abstract_args.parse_and_process1(self.args)
         else:
             self.run_core_mathods()
-#
+
+    #
     def run_core_mathods(self):
         logging.debug(f"run_core")
         # mainly obsolete
@@ -386,7 +389,8 @@ class AmiLib:
 
     def print_version(self):
         print(f"version {self.version()}")
-#
+
+    #
     def replace_single_values_in_self_args_with_list(self, key):
         """always returns list even for single arg
         e.g. turns "foo" into ["foo"]
@@ -401,7 +405,8 @@ class AmiLib:
             if argsx is not None:
                 if type(argsx) != list:
                     self.args[key] = [argsx]
-#
+
+    #
     def make_substitutions(self, item):
         """
 
@@ -500,6 +505,7 @@ class AmiLib:
                 new_item = self.make_substitutions(item)
                 new_items[new_item[0]] = new_item[1]
         return new_items
+
     #
     def parse_args_and_trap_errors(self, arglist, parser):
         """run argparse parser.parse_args and try to trap serious errors
@@ -515,6 +521,7 @@ class AmiLib:
             parsed_args = None
             self.logger.error(f"Cannot parse {arglist} , {e}")
         return parsed_args
+
     #
     # def add_special_keys_to_symbols_ini(self, key, value):
     #     """
@@ -544,6 +551,7 @@ class AmiLib:
             if loglevel is not None and loglevel.lower() in levels:
                 level = levels[loglevel.lower()]
                 self.logger.loglevel = level
+
     #
     # def run_project_workflow(self):
     #     """ run when PROJ is set"""
@@ -1151,10 +1159,12 @@ class AmiLib:
         version = '0.0.1a3'  # 2024-03-27
         version = '0.0.1'  # 2024-04-03
         version = '0.0.2'  # 2024-04-04
+        version = '0.0.3'  # 2024-04-06
+        version = '0.0.4'  # 2024-04-06
+        version = '0.0.5'  # 2024-04-06
 
         # logging.warn(f"VERSION {version}")
         return version
-
 
 
 class AmiLibArgs(AbstractArgs):
@@ -1297,6 +1307,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
-

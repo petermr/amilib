@@ -1,10 +1,13 @@
 """manages bibligraphy and related stuff"""
+import logging
 
 import lxml
 import lxml.etree
 import re
 # local
 from amilib.util import Util
+
+logger = logging.getLogger(__file__)
 
 
 class Reference:

@@ -1,6 +1,7 @@
 """
 Utilities (mainly classmethods)
 """
+import logging
 from pathlib import Path
 import numpy as np
 # import numpy.linalg as LA
@@ -9,6 +10,9 @@ import csv
 
 X = 0
 Y = 1
+
+logger = logging.getLogger(__file__)
+
 
 class AmiUtil:
 
@@ -37,8 +41,8 @@ class AmiUtil:
         :return: True tuple[1] > tuple[2]
         """
         return limits2 is not None and len(limits2) == 2 \
-               and AmiUtil.is_number(limits2[0]) and AmiUtil.is_number(limits2[1]) \
-               and limits2[1] > limits2[0]
+           and AmiUtil.is_number(limits2[0]) and AmiUtil.is_number(limits2[1]) \
+           and limits2[1] > limits2[0]
 
     @classmethod
     def is_number(cls, s):
@@ -71,7 +75,7 @@ class AmiUtil:
         :param ii: integer
         :return: 2-digit hex string of form 01, 09, 0f, 10, ff , or None if not int 0-125
         """
-        if ii is None or not type(ii) is int or ii < 0 or ii> 255:
+        if ii is None or not type(ii) is int or ii < 0 or ii > 255:
             return None
         return ('0' + hex(ii)[2:])[-2:]
 
@@ -129,7 +133,6 @@ class AmiUtil:
                 return False
         return True
 
-
     @classmethod
     def get_xy_from_sknw_centroid(cls, yx):
         """
@@ -184,9 +187,9 @@ class AmiUtil:
 
         linal = False
         if linal:
-            np0 = np.array(p0, dtype=uint8)
-            np1 = np.array(p1, dtype=uint8)
-            np2 = np.array(p2, dtype=uint8)
+            np0 = np.array(p0, dtype=np.uint8)
+            np1 = np.array(p1, dtype=np.uint8)
+            np2 = np.array(p2, dtype=np.uint8)
             v0 = np0 - np1
             v1 = np2 - np1
             angle = np.math.atan2(np.linalg.det([v0, v1]), np.dot(v0, v1))
@@ -235,7 +238,6 @@ class AmiUtil:
 
         return dist
 
-
     @classmethod
     def assert_is_float_array(cls, arr, length=2):
         """
@@ -267,7 +269,7 @@ class AmiUtil:
         """
         assert int_lst is not None and type(int_lst) is list and len(int_lst) > 0, f"not a list: {int_lst}"
         tt = type(int_lst[0])
-        assert tt is int or tt is uint8 or tt is uint16, f"expected int, got {tt}"
+        assert tt is int or tt is np.uint8 or tt is np.uint16, f"expected int, got {tt}"
         return [float(i) for i in int_lst]
 
     @classmethod
@@ -334,6 +336,7 @@ class AmiUtil:
             if header:
                 writer.writerow(header)
             writer.writerows(xy_array)
+
 
 class Vector2:
 
