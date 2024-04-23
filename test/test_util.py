@@ -270,3 +270,14 @@ class TestTemplate(AmiAnyTest):
         ss = ["Decision 12/CMP.5", "Decision 10/CP.17", "Decision 2/CMA.2", "Decision 4/CCC.9"]
         matched_templates = Templater.get_matched_templates(regex, ss, template)
         assert matched_templates == ['Decision_12_CMP_5', 'Decision_10_CP_17', 'Decision_2_CMA_2', None]
+
+class UtilTests:
+    def test_dict_read(self):
+        file = "section_templates.json"
+        return Util.read_pydict_from_json(file)
+
+class TestCommandline:
+
+    def test_command(self):
+        command = "--help"
+

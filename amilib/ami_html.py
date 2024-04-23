@@ -15,6 +15,7 @@ from pprint import pprint
 import numpy as np
 import lxml.etree as ET
 from lxml.etree import Element, _Element, _ElementTree
+from lxml.html import HTMLParser
 from sklearn.linear_model import LinearRegression
 
 # local
@@ -1075,17 +1076,17 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
 
 
     @classmethod
-    def extract_section_ids(cls, html_elem, xpaths=[".//div", "./span"], regexes=None):
+    def extract_section_ids(cls, html_elem, xpaths=None, regexes=None):
         """
         extracts sections and possibly subsections from compound elements (e.g. div)
         :param html_elem: compound element
         :param xpaths: list of xpath for section, optional subsection, currently len 1 or 2,
-          single xpath is then wrapped to list; default [".//div", "./span"]
+          single xpath is then wrapped to list; defaults to  [".//div", "./span"]
         :param regexes: list of regexes for each descent; single is wrapped to list ; if none given
           accepts all descendants from xpath
         """
         if not xpaths:
-            return None
+            xpaths = [".//div", "./span"]
         if not type(xpaths) is list:
             xpaths = [xpaths]
         assert 0 < len(xpaths) <= 2, f"no xpaths given"
@@ -1959,6 +1960,21 @@ class HtmlUtil:
         for elem in elems:
             HtmlUtil.remove_element_in_hierarchy(elem)
         return elems
+
+    @classmethod
+    def parse_html_lxml(cls, infile):
+        """
+        parse HTML with lxml convenience method
+        :param infile: str or path
+        :return: HTML tree
+        :except: cannot find/parse
+        """
+        try:
+            htmlx = ET.parse(str(infile), HTMLParser())
+        except Exception as e:
+            raise e
+        return htmlx
+
 
 
 class HtmlAnnotator:

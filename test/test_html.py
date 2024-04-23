@@ -21,6 +21,7 @@ from amilib.file_lib import FileLib
 from amilib.ami_html import HTMLSearcher, HtmlTree, HtmlAnnotator, AnnotatorCommand, URLCache
 from amilib.ami_html import HtmlUtil, H_SPAN, CSSStyle, HtmlTidy, HtmlStyle, HtmlClass, SectionHierarchy, AmiFont, \
     FloatBoundary, Footnote, HtmlGroup
+from amilib.html_extra import HtmlExtra
 from amilib.pdf_args import PDFArgs
 from amilib.ami_pdf_libs import AmiPDFPlumber
 # from pyamihtmlx.ar6 import TargetExtractor, IPCCTarget, LinkFactory, IPCCTargetLink
@@ -63,10 +64,10 @@ s1  to mean class name (classname)
 """
 
 
-def add_children(jats, htmlx):
-    tag = jats.tag()
-    if tag == 'p':
-        html
+# def add_children(jats, htmlx):
+#     tag = jats.tag()
+#     if tag == 'p':
+#         html
 
 
 class TestHtml(AmiAnyTest):
@@ -636,100 +637,70 @@ class TestHtml(AmiAnyTest):
              "\\d+(?:\\.\\d+)*"
              ")"
         )
-        matched_dict = self.create_matched_dict_and_unmatched_keys(paragraph_dict, node_re)
+        matched_dict = HtmlExtra.create_matched_dict_and_unmatched_keys(paragraph_dict, node_re)
 
-        return self.create_counters(PACKAGE, SECTION, SUBPACKAGE, matched_dict, debug=True)
+        return HtmlExtra.create_counters(PACKAGE, SECTION, SUBPACKAGE, matched_dict, debug=True)
         # print(f"unmatched {len(unmatched_keys)} {unmatched_keys}")
 
         (matched_dict.keys(), Counter(pck_counter), Counter(subp_counter), Counter(sect_counter))
 
         # print(f"counter {counter.most_common_values()}")
 
-    def create_counters(self, PACKAGE, SECTION, SUBPACKAGE, matched_dict, debug=False):
-        pck_counter = defaultdict(int)
-        subp_counter = defaultdict(int)
-        sect_counter = defaultdict(int)
-        for key in matched_dict:
-            value = matched_dict.get(key)
-            pck_counter[value[PACKAGE]] += 1
-            subp_counter[value[SUBPACKAGE]] += 1
-            sect_counter[value[SECTION]] += 1
-        if debug:
-            print(f"package: {Counter(pck_counter)}")
-            print(f"subpack: {Counter(subp_counter)}")
-            print(f"section: {Counter(sect_counter)}")
 
-        return (matched_dict.keys(), Counter(pck_counter), Counter(subp_counter), Counter(sect_counter))
-
-    def create_matched_dict_and_unmatched_keys(self, def_dict, node_re):
-        print(f"def_dict {def_dict}")
-        counter = Counter(def_dict)
-        print(f"counter {len(counter)}: {counter.most_common()}")
-
-        matched_dict = dict()
-        unmatched_keys = set()
-        for key in counter:
-            match = re.match(node_re, key)
-            if match is None:
-                unmatched_keys.add(key)
-            else:
-                matched_dict[key] = match.groupdict()
-        return matched_dict
-
-    @unittest.skip("climate specific")
-    def test_create_target_node_dir_tree_from_ipcc_chapter_html_DEVELOP(self):
-        """reads a chapter in HTML, finds targets in {...'...} , uses div id as anchor
-        and builds directory tree of targets
-        """
-        file = Path(Resources.TEST_IPCC_DIR, "LongerReport", "fulltext.html")
-        assert file.exists(), f"{file} should exist"
-        table = TargetExtractor.extract_ipcc_fulltext_into_source_target_table(file)
-        # TODO make pandas object to manage columns
-        target_extractor = TargetExtractor.create_target_extractor(
-            ['id', 'source', 'target', 'package', 'section', 'object', 'subsection', 'source_text'])
-        df = pd.DataFrame(table, columns=target_extractor.column_dict.keys())
-        print(f"df {df}")
-        lr_path = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6", "kg", "LongReport")
-        lr_path.mkdir(exist_ok=True, parents=True)
-        path = Path(lr_path, "edges.csv")
-        print(f"writing CSV: {path}")
-        df.to_csv(path_or_buf=path)
-        # print(f"data frame {df}")
-        common_source_tuples = target_extractor.find_commonest_in_node_lists (table, node_name="source")
-        common_target_tuples = target_extractor.find_commonest_in_node_lists (table, node_name="target")
-        print(f"target {common_target_tuples}\nsource {common_source_tuples}")
-        temp_dir = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6", "LR_network")
-        temp_dir.mkdir(exist_ok=True)
-
-        IPCCTarget.make_dirs_from_targets(common_target_tuples, temp_dir)
-
-    @unittest.skip("clime specific")
-    def test_create_target_node_dir_trees_from_ipcc_chapters_DEVELOP_HACKATHON(self):
-        """reads a chapter in HTML, finds targets in {...'...} , uses div id as anchor
-        and builds directory tree of targets
-        """
-        packages = [
-            "LongerReport",
-            "wg2_spm",
-            "wg3_spm",
-        ]
-        target_extractor = TargetExtractor.create_target_extractor(
-            ['id', 'source', 'target', 'package', 'section', 'object', 'subsection', 'source_text'])
-
-        for package in packages:
-            file = Path(Resources.TEST_IPCC_DIR, package, "fulltext.html")
-            table = TargetExtractor.extract_ipcc_fulltext_into_source_target_table(file)
-            df = pd.DataFrame(table)
-            print(f"df {df}")
-            print(f"row0 /1 {table[:2]}")
-            common_source_tuples = target_extractor.find_commonest_in_node_lists(table, node_name="source")
-            common_target_tuples = target_extractor.find_commonest_in_node_lists(table, node_name="target")
-            ipcc_dir = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6")
-            temp_dir = Path(ipcc_dir, f"{package}_network")
-            print(f"writing to {temp_dir}")
-            temp_dir.mkdir(exist_ok=True)
-
-            IPCCTarget.make_dirs_from_targets(common_target_tuples, temp_dir)
+    # @unittest.skip("climate specific")
+    # def test_create_target_node_dir_tree_from_ipcc_chapter_html_DEVELOP(self):
+    #     """reads a chapter in HTML, finds targets in {...'...} , uses div id as anchor
+    #     and builds directory tree of targets
+    #     """
+    #     file = Path(Resources.TEST_IPCC_DIR, "LongerReport", "fulltext.html")
+    #     assert file.exists(), f"{file} should exist"
+    #     table = TargetExtractor.extract_ipcc_fulltext_into_source_target_table(file)
+    #     # TODO make pandas object to manage columns
+    #     target_extractor = TargetExtractor.create_target_extractor(
+    #         ['id', 'source', 'target', 'package', 'section', 'object', 'subsection', 'source_text'])
+    #     df = pd.DataFrame(table, columns=target_extractor.column_dict.keys())
+    #     print(f"df {df}")
+    #     lr_path = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6", "kg", "LongReport")
+    #     lr_path.mkdir(exist_ok=True, parents=True)
+    #     path = Path(lr_path, "edges.csv")
+    #     print(f"writing CSV: {path}")
+    #     df.to_csv(path_or_buf=path)
+    #     # print(f"data frame {df}")
+    #     common_source_tuples = target_extractor.find_commonest_in_node_lists (table, node_name="source")
+    #     common_target_tuples = target_extractor.find_commonest_in_node_lists (table, node_name="target")
+    #     print(f"target {common_target_tuples}\nsource {common_source_tuples}")
+    #     temp_dir = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6", "LR_network")
+    #     temp_dir.mkdir(exist_ok=True)
+    #
+    #     IPCCTarget.make_dirs_from_targets(common_target_tuples, temp_dir)
+    #
+    # @unittest.skip("clime specific")
+    # def test_create_target_node_dir_trees_from_ipcc_chapters_DEVELOP_HACKATHON(self):
+    #     """reads a chapter in HTML, finds targets in {...'...} , uses div id as anchor
+    #     and builds directory tree of targets
+    #     """
+    #     packages = [
+    #         "LongerReport",
+    #         "wg2_spm",
+    #         "wg3_spm",
+    #     ]
+    #     target_extractor = TargetExtractor.create_target_extractor(
+    #         ['id', 'source', 'target', 'package', 'section', 'object', 'subsection', 'source_text'])
+    #
+    #     for package in packages:
+    #         file = Path(Resources.TEST_IPCC_DIR, package, "fulltext.html")
+    #         table = TargetExtractor.extract_ipcc_fulltext_into_source_target_table(file)
+    #         df = pd.DataFrame(table)
+    #         print(f"df {df}")
+    #         print(f"row0 /1 {table[:2]}")
+    #         common_source_tuples = target_extractor.find_commonest_in_node_lists(table, node_name="source")
+    #         common_target_tuples = target_extractor.find_commonest_in_node_lists(table, node_name="target")
+    #         ipcc_dir = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6")
+    #         temp_dir = Path(ipcc_dir, f"{package}_network")
+    #         print(f"writing to {temp_dir}")
+    #         temp_dir.mkdir(exist_ok=True)
+    #
+    #         IPCCTarget.make_dirs_from_targets(common_target_tuples, temp_dir)
 
     def test_remove_floats_from_fulltext_html_DEVELOP(self):
         package = "LongerReport"

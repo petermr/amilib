@@ -7,6 +7,7 @@ from amilib.ami_html import HtmlStyle
 from amilib.xml_lib import XmlLib, HtmlLib
 
 from test.test_all import AmiAnyTest
+from test.test_wikidata import WikimediaTests
 
 
 class TestXml(AmiAnyTest):
@@ -75,7 +76,7 @@ class XmlTests:
     </everything>
     '''
         result = XmlLib.replace_nodes_with_text(data, "//r", "DELETED")
-        print(etree.tostring(result))
+        print(ET.tostring(result))
 
     @classmethod
     def test_replace_nodenames(cls):
@@ -84,11 +85,11 @@ class XmlTests:
  <italic>T. bovei</italic> activities ... activity.
 </p>'''
 
-        doc = etree.fromstring(data)
+        doc = ET.fromstring(data)
         italics = doc.findall("italic")
         for node in italics:
             node.tag = "i"
-        print(etree.tostring(doc))
+        print(ET.tostring(doc))
 
     """transform = etree.XSLT(xslt_tree)
 >>> result = transform(doc, a="'A'")

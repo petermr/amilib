@@ -11,3 +11,4 @@ class AmiCSV:
 
         b = izip(*a)
         return b
+
