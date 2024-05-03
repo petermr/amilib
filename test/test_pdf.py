@@ -38,7 +38,8 @@ from amilib.ami_html import H_SPAN, H_BODY, H_P
 from amilib.amix import AmiLib
 from amilib.bbox import BBox
 from amilib.file_lib import FileLib
-from pyamihtmlx.util import Util
+from amilib.util import Util
+
 
 from test.resources import Resources
 from test.test_all import AmiAnyTest
