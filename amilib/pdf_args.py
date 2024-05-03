@@ -58,7 +58,7 @@ logger = AmiLogger.create_named_logger(__file__)
 
 class PDFArgs(AbstractArgs):
     """
-    Holds argument values for pyamihtmlx PDF commands and runs conversions
+    Holds argument values for pyami PDF commands and runs conversions
     Also holds much of the document data
 
         self.convert = DEFAULT_CONVERT
@@ -124,7 +124,7 @@ class PDFArgs(AbstractArgs):
         """
         if self.parser is None:
             # self.parser = argparse.ArgumentParser(
-            #     usage="pyamihtmlx always uses subcommands (DICT,GUI,HTML,PDF,PROJECT)\n e.g. pyamihtmlx PDF --help"
+            #     usage="pyami always uses subcommands (DICT,GUI,HTML,PDF,PROJECT)\n e.g. pyamihtmlx PDF --help"
             # )
             self.parser = AmiArgParser(
                 usage="pyamihtmlx always uses subcommands (DICT,GUI,HTML,PDF,IPCC,PROJECT)\n e.g. pyamihtmlx PDF --help"
@@ -720,7 +720,7 @@ def parse_and_process_1(pdf_args):
 def main(argv=None):
     """entry point for PDF conversiom
     typical:
-    python -m pyamihtmlx.ami_pdf \
+    python -m amilib.ami_pdf \
         --inpath /Users/pm286/workspace/pyami/test/resources/ar6/Chapter06/fulltext.pdf \
         --outdir /Users/pm286/workspace/pyami/temp/pdf/chap6/
         --maxpage 100

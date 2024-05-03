@@ -11,7 +11,6 @@ import lxml.etree
 from amilib.ami_html import HtmlStyle
 from amilib.ami_integrate import HtmlGenerator
 from amilib.util import Util, EnhancedRegex, GENERATE
-# from pyamihtmlx.util import EnhancedRegex, GENERATE, Util
 from amilib.xml_lib import HtmlLib, Templater, XmlLib
 
 

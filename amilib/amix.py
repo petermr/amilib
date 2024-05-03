@@ -71,83 +71,12 @@ class AmiLib:
     #     SPECIAL_SYMBOLS = ["_proj"]
     LOGLEVEL = "loglevel"
 
-    #     PY4AMI = "pyamihtmlx"
-    #
-    #     # parsers are these used??
-    #     # DICT_PARSER = "DICT"
-    #     # HTML_PARSER = "HTML"
-    #     # IPCC_PARSER = "IPCC"
-    #     # PDF_PARSER  = "PDF"
-    #     # PROJECT_PARSER = "PROJECT"
-    #     # UNFCCC_PARSER  = "UNFCCC"
-    #
-    #     logger = logging.getLogger("pyami")
-    #     symbol_ini = None
-    #
     def __init__(self):
         """constructor
 
         creates symbols
         """
 
-    #
-    #         self.logger.debug(f"===============Examples=================")
-    #         if self.logger.getEffectiveLevel() <= logging.DEBUG:
-    #             traceback.print_stack(file=sys.stdout)
-    #
-    #         self.args = {}  # args captured in here as name/value without "-" or "--"
-    #         self.apply = []
-    #         self.combine = None
-    #         self.config = None  # holds configuration and global parameters (still being developed)
-    #         self.current_file = None
-    #         self.fileset = None
-    #         # self.file_dict = {}  # possibly to be replaced by content_store.file_dict
-    #         # self.content_store = ContentStore(self)  # will expose content_store.file_dict
-    #         self.func_dict = {}
-    #         self.result = None
-    #         self.flag_dict = {}
-    #         self.initialize_flags()
-    #         self.wikidata_lookup = None
-    #         self.wikipedia_lookup = None
-    #         self.hit_counter = None
-    #         # self.symbol_ini = SymbolIni(self)
-    #         self.set_funcs()
-    #         self.show_symbols = False
-    #         self.ami_dictionary = None
-    #         self.proj = None  # current project in searches
-    #         self.current_ctree = None  # current ctree (may change during iteration
-    #         self.cproject = None
-    #         self.ami_logger = None
-    #         self.outfile = None
-    #         if self.show_symbols:
-    #             pprint.pp(f"SYMBOLS\n {self.symbol_ini.symbols}")
-    #
-    #     def initialize_flags(self):
-    #         """initialises flag_dict
-    #         """
-    #
-    #         self.flag_dict = {
-    #
-    #             self.APPLY: None,
-    #             self.CHECK_URLS: None,
-    #             self.COMBINE: None,
-    #             self.PRINT_SYMBOLS: False,
-    #             self.RECURSE: True,
-    #         }
-    #
-    #     def set_funcs(self):
-    #         """initializes func_dict
-    #         """
-    #         # 1:1 methods
-    #         # tuple of func+file_extnsion
-    #         self.func_dict[self.XML2TXT] = (XmlLib.remove_all_tags, ".xml.txt")
-    #         # self.func_dict[self.PDF2TXT] = (PdfReader.read_and_convert, ".pdf.txt")
-    #         # self.func_dict[self.PDF2SVG] = (Pdf2SvgConverter.read_and_convert, ".pdf.svg")
-    #         # self.func_dict[self.SVG2PAGE] = (Svg2PageConverter.read_and_convert, ".svg.xml")
-    #         # self.func_dict[self.XML2HTML] = (Xml2HtmlConverter.read_and_convert, ".svg.html")
-    #         # self.func_dict[self.TXT2SENT] = (TextUtil.split_into_sentences, ".sen.txt")
-    #         # 1:n methods
-    #
     def create_arg_parser(self):
         """creates adds the arguments for pyami commandline
         """
@@ -195,7 +124,6 @@ class AmiLib:
             '  pyamihtmlx -h     # runs help\n'
             '  pyamihtmlx PDF -h # runs PDF help\n'
             '  pyamihtmlx PDF --infile foo.pdf --outdir bar/ # converts PDF to HTML\n'
-            # '  pyamihtmlx PROJECT --project foodir/ # converts all PDF in foodir to CTrees\n'
             '  pyamihtmlx IPCC --pdf2html file/ # converts pdf file to html \n'
             '  pyamihtmlx UNFCCC --dir file/ # converts pdf files to html \n'
             '\n'
@@ -216,7 +144,8 @@ class AmiLib:
         parser.epilog = "other entry points run as 'python -m pyamihtmlx.ami_dict args' also ami_pdf, ami_project"
         parser.epilog = """run:
         pyamihtmlx <subcommand> <args>
-          where subcommand is in   {DICT,GUI,HTML,PDF,PROJECT} and args depend on subcommand
+          where subcommand is in   {
+          DICT,GUI,HTML,PDF,PROJECT} and args depend on subcommand
         """
 
         return parser
