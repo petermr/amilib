@@ -93,12 +93,6 @@ IPCC_CHAP_TOP_REC = re.compile(""
 SECTIONS_DECIMAL_REC = re.compile("\\d+\\.\\d+$")
 SUBSECTS_DECIMAL_REC = re.compile("\\d+\\.\\d+\\.\\d+$")
 
-# RECS_BY_SECTION = {
-#     HtmlTree.CHAP_TOP: IPCC_CHAP_TOP_REC,
-#     HtmlTree.CHAP_SECTIONS: SECTIONS_DECIMAL_REC,
-#     HtmlTree.CHAP_SUBSECTS: SUBSECTS_DECIMAL_REC,
-# }
-
 # coordinates
 PL_X0 = 'x0'
 PL_Y1 = 'y1'

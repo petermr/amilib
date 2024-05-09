@@ -29,21 +29,6 @@ MAXPAGE = "maxpage"
 PAGES = "pages"
 PDF2HTML = "pdf2html"
 
-# ANNOTS = "annots"
-# CURVES = "curves"
-# HYPERLINKS = "hyperlinks"
-# IMAGES = "images"
-# LINES = "lines"
-# PTS = 'pts'
-# RECTS = "rects"
-# TABLES = "tables"
-# TEXTS = "texts"
-# WORDS = "words"
-#
-# DEFAULT_CONVERT = "html"
-# DEBUG_OPTIONS = [WORDS, LINES, RECTS, CURVES, IMAGES, TABLES, HYPERLINKS, TEXTS, ANNOTS]
-# DEBUG_ALL = "debug_all"
-
 MAX_MAXPAGE = 9999999
 CONVERT = "convert"
 FLOW = "flow"
@@ -559,16 +544,6 @@ class PDFArgs(AbstractArgs):
     def module_stem(self):
         """name of module"""
         return Path(__file__).stem
-
-    # def create_range_list(self):
-    #     """makes list of ranges from pairs on numbers"""
-    #     range_list = range(1,999)
-    #     if type(self.pages) is list:
-    #         range_list = []
-    #         ll = list(map(int, self.pages))
-    #         for i in range(0, len(ll), 2):
-    #             range_list.append(ll[i:i + 2])
-    #     return range_list
 
     @classmethod
     def make_page_ranges(cls, raw_page_ranges, offset=0):

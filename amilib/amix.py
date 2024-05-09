@@ -6,8 +6,17 @@ import textwrap
 from enum import Enum
 from pathlib import Path
 
-from amilib.ami_html import HTMLArgs
+# sometimes relative imports work, sometimes absolute
+# maybe some wiser Pythonista can clean this
+# i have no idea why html_args and pdf_args behave differently
+
+try:
+    from html_args import HTMLArgs
+except ModuleNotFoundError as e:
+    from amilib.html_args import HTMLArgs
+
 from amilib.pdf_args import PDFArgs
+
 from amilib.util import AbstractArgs
 from amilib.wikimedia import WikidataLookup
 
@@ -508,7 +517,7 @@ def main():
     """ main entry point for cmdline
 
     """
-    print(f"PYAMI")
+    print(f"amilib")
     run_tests = False  # needs re-implementing
 
     run_commands = True
@@ -517,9 +526,9 @@ def main():
     #    run_tests = True
 
     AmiLib.logger.debug(
-        f"\n============== running pyami main ===============\n{sys.argv[1:]}")
+        f"\n============== running amilib main ===============\n{sys.argv[1:]}")
     amix = AmiLib()
-    print(f"***** PYAMI VERSION {amix.version()} *****")
+    print(f"***** VERSION {amix.version()} *****")
     # this needs commandline
     if run_commands:
         amix.run_command(sys.argv[1:])
