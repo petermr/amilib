@@ -199,7 +199,7 @@ class PDFArgs(AbstractArgs):
             outdir = self.arg_dict.get(OUTDIR)
             outpath = self.arg_dict.get(OUTPATH)
             if outdir is None and outpath is not None:
-                outdir = outpath.parent
+                outdir = Path(outpath).parent
             if outpath is None:
                 if outdir is None:
                     raise FileNotFoundError(f"no outdir or outpath given")
