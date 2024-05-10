@@ -7,14 +7,14 @@ import lxml
 import pdfplumber
 from pyamihtml.ami_pdf import PDFDebug
 
-from amilib.ami_html import HtmlUtil, P_FONTNAME, P_HEIGHT, P_STROKING_COLOR, P_NON_STROKING_COLOR, AmiSpan, P_TEXT, \
+from ami_html import HtmlUtil, P_FONTNAME, P_HEIGHT, P_STROKING_COLOR, P_NON_STROKING_COLOR, AmiSpan, P_TEXT, \
     HtmlGroup, HtmlStyle
-from amilib.ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber, AmiPlumberJson
-from amilib.ami_pdf_libs import AmiPDFPlumber,AmiPage, TextStyle
-from amilib.file_lib import FileLib
-from amilib.util import AmiLogger
-from amilib.xml_lib import HtmlLib, XmlLib
-from amilib.ami_html import H_BODY, H_DIV
+from ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber, AmiPlumberJson
+from ami_pdf_libs import AmiPDFPlumber,AmiPage, TextStyle
+from file_lib import FileLib
+from util import AmiLogger
+from xml_lib import HtmlLib, XmlLib
+from ami_html import H_BODY, H_DIV
 
 logger = AmiLogger.create_named_logger(__file__)
 logger = logging.getLogger(__file__)

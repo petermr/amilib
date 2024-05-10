@@ -1,7 +1,7 @@
 import lxml.etree as ET
 
-from amilib.util import AmiLogger, Util
-from amilib.xml_lib import NS_MAP, XML_NS, SVG_NS
+from util import AmiLogger, Util
+from xml_lib import NS_MAP, XML_NS, SVG_NS
 
 SVG_SVG = "svg"
 SVG_G = "g"

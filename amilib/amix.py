@@ -10,15 +10,16 @@ from pathlib import Path
 # maybe some wiser Pythonista can clean this
 # i have no idea why html_args and pdf_args behave differently
 
-try:
-    from html_args import HTMLArgs
-except ModuleNotFoundError as e:
-    from amilib.html_args import HTMLArgs
+# RELATIVE IMPORT VERSION (probably not the right way)
 
-from amilib.pdf_args import PDFArgs
+from html_args import HTMLArgs
+# except ModuleNotFoundError as e:
+#     from amilib.html_args import HTMLArgs
 
-from amilib.util import AbstractArgs
-from amilib.wikimedia import WikidataLookup
+from pdf_args import PDFArgs
+
+from util import AbstractArgs
+from wikimedia import WikidataLookup
 
 # local
 

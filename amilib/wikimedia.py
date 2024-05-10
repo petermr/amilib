@@ -18,8 +18,8 @@ from urllib.error import HTTPError
 from SPARQLWrapper import SPARQLWrapper
 
 # local
-from amilib.ami_html import HtmlUtil
-from amilib.util import Util
+from ami_html import HtmlUtil
+from util import Util
 
 logging.debug("loading wikimedia.py")
 

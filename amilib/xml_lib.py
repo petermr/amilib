@@ -17,7 +17,7 @@ from lxml.etree import _Element, _ElementTree
 from lxml.html import HTMLParser
 import tkinter as tk
 
-from amilib.file_lib import FileLib
+from file_lib import FileLib
 
 logging.debug("loading xml_lib")
 

@@ -9,9 +9,9 @@ from pathlib import Path
 
 import lxml.etree as ET
 
-from amilib.ami_html import A_HREF, H_A, H_SPAN, HtmlTidy, HtmlStyle, CSSStyle
-from amilib.ami_pdf_libs import AmiPage, PDFParser, DEBUG_OPTIONS
-from amilib.util import AbstractArgs, AmiArgParser, Util, AmiLogger
+from ami_html import A_HREF, H_A, H_SPAN, HtmlTidy, HtmlStyle, CSSStyle
+from ami_pdf_libs import AmiPage, PDFParser, DEBUG_OPTIONS
+from util import AbstractArgs, AmiArgParser, Util, AmiLogger
 
 INDIR = "indir"
 INFILE = "infile"
@@ -694,7 +694,7 @@ def parse_and_process_1(pdf_args):
 
 def main(argv=None):
     """entry point for PDF conversiom
-    typical:
+    typical: OBSOLETE
     python -m amilib.ami_pdf \
         --inpath /Users/pm286/workspace/pyami/test/resources/ar6/Chapter06/fulltext.pdf \
         --outdir /Users/pm286/workspace/pyami/temp/pdf/chap6/

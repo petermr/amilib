@@ -19,9 +19,9 @@ from lxml.html import HTMLParser
 from sklearn.linear_model import LinearRegression
 
 # local
-from amilib.bbox import BBox
-from amilib.util import SScript, AbstractArgs, Util, AmiLogger
-from amilib.xml_lib import XmlLib, HtmlLib
+from bbox import BBox
+from util import SScript, AbstractArgs, Util, AmiLogger
+from xml_lib import XmlLib, HtmlLib
 
 # no try-catch imports
 

@@ -8,8 +8,8 @@ from pathlib import Path
 import lxml.etree as ET
 from lxml.html import HTMLParser
 
-from amilib.wikimedia import WikidataLookup
-from amilib.xml_lib import HtmlElement, HtmlLib, XmlLib
+from wikimedia import WikidataLookup
+from xml_lib import HtmlElement, HtmlLib, XmlLib
 
 
 class HeadlessLib:

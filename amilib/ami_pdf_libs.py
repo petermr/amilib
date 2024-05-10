@@ -27,14 +27,14 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfplumber.page import Page
 
-from amilib.ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, CSSStyle, FONT_FAMILY, P_X0, P_X1, \
+from ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, CSSStyle, FONT_FAMILY, P_X0, P_X1, \
     P_Y0, \
     P_Y1, BOLD, ITALIC, HtmlUtil, FILL, TIMES, CALIBRI, FONT_FAMILIES, H_TABLE, H_THEAD, H_TBODY, \
     H_TR, H_TD, AmiFont
-from amilib.ami_svg import AmiSVG, SVG_G
-from amilib.bbox import BBox
-from amilib.util import Util, AmiLogger
-from amilib.xml_lib import XmlLib, HtmlLib
+from ami_svg import AmiSVG, SVG_G
+from bbox import BBox
+from util import Util, AmiLogger
+from xml_lib import XmlLib, HtmlLib
 
 # local
 
@@ -464,7 +464,7 @@ class AmiPage:
 
         creates Raw HTML
         """
-        from amilib.ami_integrate import HtmlGenerator  # may avoid cyclic imports butn needs tidying
+        from ami_integrate import HtmlGenerator  # may avoid cyclic imports butn needs tidying
 
         if not input_pdf or not Path(input_pdf).exists():
             logger.error(f"must have not-null, existing pdf {input_pdf} ")
@@ -1434,7 +1434,7 @@ class AmiPlumberJsonPage:
         """
         y runs bottom to top (i.e. first lines in visual reading have high y)
         """
-        from amilib.ami_html import CSSStyle
+        from ami_html import CSSStyle
         rc = self.create_region_clipper(ami_plumber, debug=debug)
         tables = self.get_tables()
         if tables and len(tables):
@@ -1597,7 +1597,7 @@ class AmiPlumberJsonPage:
         :param elem: styled element
         :return: font_family and font_size
         """
-        from amilib.ami_html import CSSStyle
+        from ami_html import CSSStyle
         if elem is None:
             return None, None
         csss = CSSStyle.create_css_style_from_attribute_of_body_element(elem)

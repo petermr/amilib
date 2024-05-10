@@ -2,7 +2,7 @@ import argparse
 import logging
 from pathlib import Path
 
-from amilib.util import AbstractArgs, AmiLogger
+from util import AbstractArgs, AmiLogger
 
 # commandline
 ANNOTATE = "annotate"

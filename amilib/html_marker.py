@@ -8,10 +8,10 @@ from pathlib import Path
 
 import lxml.etree
 
-from amilib.ami_html import HtmlStyle
-from amilib.ami_integrate import HtmlGenerator
-from amilib.util import Util, EnhancedRegex, GENERATE
-from amilib.xml_lib import HtmlLib, Templater, XmlLib
+from ami_html import HtmlStyle
+from ami_integrate import HtmlGenerator
+from util import Util, EnhancedRegex, GENERATE
+from xml_lib import HtmlLib, Templater, XmlLib
 
 
 def replace_parent(current_parents, div):

@@ -6,12 +6,12 @@ from pathlib import Path
 import lxml
 import pdfplumber
 
-from amilib.ami_html import HtmlUtil, P_FONTNAME, P_HEIGHT, P_STROKING_COLOR, P_NON_STROKING_COLOR, AmiSpan, P_TEXT, \
+from ami_html import HtmlUtil, P_FONTNAME, P_HEIGHT, P_STROKING_COLOR, P_NON_STROKING_COLOR, AmiSpan, P_TEXT, \
     HtmlGroup, HtmlStyle, H_BODY, H_DIV
-from amilib.ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber, PDFDebug, AmiPage, TextStyle, AmiPlumberJson
-from amilib.file_lib import FileLib
-from amilib.util import AmiLogger
-from amilib.xml_lib import HtmlLib, XmlLib
+from ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber, PDFDebug, AmiPage, TextStyle, AmiPlumberJson
+from file_lib import FileLib
+from util import AmiLogger
+from xml_lib import HtmlLib, XmlLib
 
 logger = AmiLogger.create_named_logger(__file__)
 logger = logging.getLogger(__file__)
