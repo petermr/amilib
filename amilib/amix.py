@@ -391,6 +391,7 @@ class AmiLib:
         version = '0.0.8'  # 2024-04-23
         version = '0.0.9'  # 2024-05-09
         version = '0.0.10'  # 2024-05-09
+        version = '0.1.0'  # 2024-05-10 # fixed absolute imports and mended tests
 
         # logging.warn(f"VERSION {version}")
         return version

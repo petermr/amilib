@@ -51,6 +51,7 @@ EXPAND_SECTION_PARAS = [
 
 class MiscTest(AmiAnyTest):
 
+    @unittest.skip("requires connection and output can micro-vary")
     def test_geolocate_GEO(self):
         """
         GEO: locates places by name using Nominatim
