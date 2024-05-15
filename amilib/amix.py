@@ -25,6 +25,7 @@ from amilib.wikimedia import WikidataLookup
 AMIX_DIR = Path(__file__).parent
 REPO_DIR = AMIX_DIR.parent
 
+logger = logging.getLogger(__file__)
 
 class AmiLib:
     logger = logging.getLogger("amilib")
@@ -46,16 +47,17 @@ class AmiLib:
 
         creates symbols
         """
+        logger.debug(f"amilib constructor")
 
     def create_arg_parser(self):
         """creates adds the arguments for pyami commandline
         """
 
         def run_dict(self):
-            print(f"run dict pyamix")
+            logger.debug(f"run dict pyamix")
 
         def run_pdf(args):
-            print(f"run pdf")
+            logger.debug(f"run pdf")
 
         # def run_project():
         #     print(f"run project {self.args}")
@@ -98,16 +100,20 @@ class AmiLib:
         for choice in subparsers.choices:
             print(f">>> {choice}")
 
-        html_parser = HTMLArgs().make_sub_parser(subparsers)
         pdf_parser = PDFArgs().make_sub_parser(subparsers)
+        logger.debug(f"pdf_parser {pdf_parser}")
+        html_parser = HTMLArgs().make_sub_parser(subparsers)
+        logger.debug(f"html_parser {html_parser}")
+
+
+
 
         amilib_parser = AmiLibArgs().make_sub_parser(subparsers)
 
-        parser.epilog = "other entry points run as 'python -m pyamihtmlx.ami_dict args' also ami_pdf, ami_project"
+        parser.epilog = "other entry points run as 'python -m amilib.amix <args>'"
         parser.epilog = """run:
         pyamihtmlx <subcommand> <args>
-          where subcommand is in   {
-          DICT,GUI,HTML,PDF,PROJECT} and args depend on subcommand
+          where subcommand is in   {HTML,PDF} and args depend on subcommand
         """
 
         return parser
@@ -144,12 +150,12 @@ class AmiLib:
         if args is a string we split it at spaces into a list of strings
 
         """
+        logger.debug(f"********** raw arglist {args}")
         if isinstance(args, str):
             args = args.strip()
             args = args.split(" ")
 
         print(f"command: {args}")
-        self.logger.debug(f"********** raw arglist {args}")
         test_catch = False
         if test_catch:  # try to trap exception
             try:
@@ -238,6 +244,7 @@ class AmiLib:
         }
         abstract_args = subparser_dict.get(subparser_type)
 
+        print(f"abstract_args {abstract_args}")
         if abstract_args:
             abstract_args.parse_and_process1(self.args)
         else:
@@ -251,13 +258,6 @@ class AmiLib:
             self.print_version()
         if self.FLAGS in self.args and self.args[self.FLAGS] is not None:
             self.add_flags()
-        # if self.CONFIG in self.args and self.args[self.CONFIG] is not None:
-        #     self.apply_config()
-        # if self.EXAMPLES in self.args:
-        #     example_args = self.args[self.EXAMPLES]
-        #     if example_args is not None:
-        #         self.logger.debug(f" examples args: {example_args}")
-        #         Examples(self).run_examples(example_args)
         if self.COPY in self.args and not self.args[self.COPY] is None:
             self.logger.warning(f"COPY {self.args[self.COPY]}")
             self.copy_files()
@@ -412,10 +412,12 @@ class AmiLibArgs(AbstractArgs):
         self.subparser_arg = "HTML"
 
     def add_arguments(self):
+        logger.warn("add arguments")
+
         if self.parser is None:
             self.parser = argparse.ArgumentParser()
         """adds arguments to a parser or subparser"""
-        self.parser.description = 'HTML editing analysing annotation'
+        self.parser.description = 'Abstract editing analysing annotation'
         self.parser.add_argument(f"--foo", action="store_true",
                                  help="annotate HTML file with dictionary")
         # self.parser.add_argument(f"--{COLOR}", type=str, nargs=1,
@@ -428,7 +430,7 @@ class AmiLibArgs(AbstractArgs):
         #                          help="output html file")
         # self.parser.add_argument(f"--{OUTDIR}", type=str, nargs=1,
         #                          help="output directory")
-        self.parser.epilog = "==============="
+        self.parser.epilog = "=======abstract add arguments ========"
 
     """python -m pyamihtmlx.pyamix HTML --annotate 
      --dict /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
@@ -504,14 +506,6 @@ class Converter(Enum):
         self.indir = indir
         self.outtype = outtype
         self.outdir = outdir
-
-    # PDF2SVG = (Pdf2SvgConverter, "pdf", "svg", ".", "svg")
-    # PDF2TXT = (PdfReader, Filetype.F_PDF, Filetype.F_TXT, ".", ".")
-    # XML2HTML = (Xml2HtmlConverter, "pdf", "html", ".", ".")
-    # XML2TXT = (Xml2TxtConverter, "xml", "txt", ".", ".")
-    # SVG2PAGE = (Svg2PageConverter, "svg", "html", "svg", "page")
-    # PAGE2SECT = (Page2SectConverter, "html", "html", "page", "sect")
-    # TXT2SENT = (Txt2SentSplitter, Filetype.F_TXT, Filetype.F_TXT, ".", "sent")
 
 
 def main():

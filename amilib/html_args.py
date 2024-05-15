@@ -1,8 +1,8 @@
 import argparse
 import logging
-from pathlib import Path
 
-from amilib.util import AbstractArgs, AmiLogger
+from amilib.file_lib import FileLib
+from amilib.util import AbstractArgs, AmiArgParser
 
 # commandline
 ANNOTATE = "annotate"
@@ -12,14 +12,16 @@ INPATH = "inpath"
 OUTDIR = "outdir"
 OUTPATH = "outpath"
 
-logger = AmiLogger.create_named_logger(__file__)
-
+# logger = AmiLogger.create_named_logger(__file__)
+logger = FileLib.get_logger(__file__)
+logger.setLevel(logging.DEBUG)
 
 class HTMLArgs(AbstractArgs):
     """Parse args to analyze, edit and annotate HTML"""
 
     def __init__(self):
         """arg_dict is set to default"""
+        logger.warning("creating HTML Args")
         super().__init__()
         self.dictfile = None
         self.inpath = None
@@ -33,10 +35,19 @@ class HTMLArgs(AbstractArgs):
         self.ami_dict = None
 
     def add_arguments(self):
+        logger.debug(f"================== add arguments HTML ================")
+
         if self.parser is None:
-            self.parser = argparse.ArgumentParser()
+            self.parser = AmiArgParser(
+                usage="HTML amilib always uses subcommands (HTML,PDF)\n e.g. amilib PDF --help"
+            )
+
+
         """adds arguments to a parser or subparser"""
-        self.parser.description = 'HTML editing analysing annotation'
+
+        self.parser.description = 'HTML editing, analysing annotation'
+        self.parser.formatter_class = argparse.RawDescriptionHelpFormatter
+
         self.parser.add_argument(f"--{ANNOTATE}", action="store_true",
                                  help="annotate HTML file with dictionary")
         self.parser.add_argument(f"--{COLOR}", type=str, nargs=1,
@@ -49,7 +60,8 @@ class HTMLArgs(AbstractArgs):
                                  help="output html file")
         self.parser.add_argument(f"--{OUTDIR}", type=str, nargs=1,
                                  help="output directory")
-        self.parser.epilog = "==============="
+        self.parser.epilog = "====== epilog ========="
+        return self.parser
 
     """python -m pyamihtmlx.pyamix HTML --annotate 
      --dict /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
@@ -58,14 +70,14 @@ class HTMLArgs(AbstractArgs):
      --color pink
      """
 
-    # class AmiDictArgs:
     def process_args(self):
         """runs parsed args
         :return:
         """
+        logger.debug(f"process_args")
 
         if not self.arg_dict:
-            logging.warning(f"no arg_dict given, no action")
+            logger.warning(f"no arg_dict given, no action")
             return
 
         self.annotate = self.arg_dict.get(ANNOTATE)
@@ -78,7 +90,6 @@ class HTMLArgs(AbstractArgs):
         if self.annotate:
             self.annotate_with_dict()
 
-    # class AmiDictArgs:
 
     @classmethod
     def create_default_arg_dict(cls):
@@ -86,11 +97,6 @@ class HTMLArgs(AbstractArgs):
         arg_dict = dict()
         arg_dict[DICT] = None
         return arg_dict
-
-    @property
-    def module_stem(self):
-        """name of module"""
-        return Path(__file__).stem
 
     def annotate_with_dict(self):
         """uses dictionary to annotate words and phrases in HTML file"""

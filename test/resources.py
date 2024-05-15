@@ -2,7 +2,6 @@
 This may develop into a dataclass"""
 
 import logging
-import os
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -122,7 +121,7 @@ class Resources:
     # could be changed by user
     TEMP_DIR = Path(Path(__file__).parent.parent, "temp")
 
-    # WG_REPORTS = {
+    WG_REPORTS = {
     #     "default": {
     #         "footer_height": 70,
     #         "header_height": 70,
@@ -246,15 +245,15 @@ class Resources:
     #         "header_height": 50
     #     },
     #
-    #     "WG3_CHAP08": {
-    #         "name": "WG3_Chapter08",
-    #         "input_pdf": Path(TEST_IPCC_DIR, "wg3", "Chapter08", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg3", "Chapter08", "pages"),
-    #         "footer_height": 30,
-    #         "header_height": 50
-    #     },
+        "WG3_CHAP08": {
+            "name": "WG3_Chapter08",
+            "input_pdf": Path(TEST_IPCC_DIR, "wg3", "Chapter08", "fulltext.pdf"),
+            "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg3", "Chapter08", "pages"),
+            "footer_height": 30,
+            "header_height": 50
+        },
     #
-    # }
+    }
     #
     def __init__(self):
         pass

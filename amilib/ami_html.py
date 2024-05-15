@@ -20,12 +20,13 @@ from sklearn.linear_model import LinearRegression
 
 # local
 from amilib.bbox import BBox
+from amilib.file_lib import FileLib
 from amilib.util import SScript, AbstractArgs, Util, AmiLogger
 from amilib.xml_lib import XmlLib, HtmlLib
 
 # no try-catch imports
 
-logger = AmiLogger.create_named_logger(__file__)
+logger = FileLib.get_logger(__file__)
 
 # HTML elements
 H_HTML = "html"
@@ -131,7 +132,7 @@ s1  to mean class name (classname)
 .s1 to mean a reference to a classname (only used in <style> elements but involved in conversions
 """
 
-logger = logging.getLogger(__file__)
+logger = FileLib.get_logger(__file__)
 
 class AmiSpan:
     def __init__(self):

@@ -21,7 +21,9 @@ import requests
 import json
 import base64
 
-logger = logging.getLogger(__file__)
+from amilib.file_lib import FileLib
+
+logger = FileLib.get_logger(__file__)
 
 HREF = "href"
 
@@ -493,6 +495,11 @@ class Util:
         clazz = getattr(importlib.import_module(classname_bits[0]), classname_bits[1])
         return clazz
 
+    @classmethod
+    def get_classname(cls, object):
+        return object.__class__.__name__
+        pass
+
 
 class GithubDownloader:
     """Note: Github uses the old 'master' name but we have changed it to 'main'"""
@@ -687,7 +694,8 @@ class AbstractArgs(ABC):
 
         """
         # strip all tokens including ".py" (will proably fail on some m/c)
-        print(f"module_stem: {self.module_stem}\n sys.argv {sys.argv}")
+        raise Exception("do we ever get here - test parse_and_process()")
+        print(f"parse_and_process() module_stem: {self.module_stem}\n sys.argv {sys.argv}")
         args_store = sys.argv.copy()
         while len(sys.argv) > 0 and self.module_stem not in str(sys.argv[0]):
             print(f"trimming sys.argv {sys.argv}")
@@ -695,6 +703,7 @@ class AbstractArgs(ABC):
         if len(sys.argv) == 0:  # must have name of prog
             sys.argv = args_store.copy()
         try:
+            print(f"adding args")
             self.add_arguments()
         except Exception as e:
             print(f"failed to add args {e}")
@@ -710,9 +719,9 @@ class AbstractArgs(ABC):
             self.parse_and_process1(argv_)
 
     def parse_and_process1(self, argv_):
-        logging.debug(f"********** args for parse_and_process1 {argv_}")
+        print("running parse_and_process1 in util?")
+        logging.warning(f"********** args for parse_and_process1 {argv_}")
         self.parsed_args = argv_ if self.parser is None else self.parser.parse_args(argv_)
-        #        logging.warning(f"ARG DICTYY {self.arg_dict}")
         self.arg_dict = self.create_arg_dict()
         self.process_args()
 
@@ -829,6 +838,11 @@ class AbstractArgs(ABC):
         self.parser = subparsers.add_parser(self.subparser_arg)
         self.add_arguments()
         return self.parser
+
+    @property
+    def module_stem(self):
+        """name of module"""
+        return Path(__file__).stem
 
 
 class ArgParseBuilder:

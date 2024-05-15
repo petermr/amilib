@@ -442,6 +442,25 @@ class FileLib:
         home = os.path.expanduser("~")
         return home
 
+    @classmethod
+    def get_logger(cls, filename, file_level=2, suffix=".py", level=logging.INFO):
+        """creates module syntax for logger
+        removes .py
+        retains level of hierarchy
+        e.g. foo/bar/junk.py with levels = 2 => bar.junk
+        :param filename: to act as logger name
+        :param file_level: to include in hierarchy
+        :param level: logging level (default INFO)
+        :param suffix: suffix to remove, e.g. ".py"
+        """
+        if filename:
+            if filename[-len(suffix):] == suffix:
+                filename = filename[:-len(suffix)]
+            module = '.'.join(filename.split(os.path.sep)[-file_level:])
+            logger = logging.getLogger(module)
+            return logger
+
+
 
 
 # see https://realpython.com/python-pathlib/

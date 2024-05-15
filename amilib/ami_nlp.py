@@ -18,7 +18,7 @@ from sklearn.cluster import AgglomerativeClustering, KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-logger = logging.getLogger(__file__)
+logger = FileLib.get_logger(__file__)
 
 # anchor
 A_TEXT = "a_text"

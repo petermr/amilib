@@ -1,6 +1,7 @@
 # TODO cyclic imports with html
 import argparse
 import logging
+import os
 import re
 import sys
 import textwrap
@@ -12,6 +13,7 @@ import lxml.etree as ET
 from amilib.ami_html import A_HREF, H_A, H_SPAN, HtmlTidy, HtmlStyle, CSSStyle
 from amilib.ami_pdf_libs import AmiPage, PDFParser, DEBUG_OPTIONS
 from amilib.util import AbstractArgs, AmiArgParser, Util, AmiLogger
+from amilib.file_lib import FileLib
 
 INDIR = "indir"
 INFILE = "infile"
@@ -38,7 +40,7 @@ HEADER = "header"
 DEFAULT_CONVERT = "html"
 DEFAULT_MAXPAGES = 100
 
-logger = AmiLogger.create_named_logger(__file__)
+logger = FileLib.get_logger(__file__)
 
 
 class PDFArgs(AbstractArgs):
@@ -75,6 +77,8 @@ class PDFArgs(AbstractArgs):
 
     def __init__(self):
         """arg_dict is set to default"""
+        logger.warning("creating PDFArgs")
+
         super().__init__()
         self.convert = DEFAULT_CONVERT
         self.html = None
@@ -107,12 +111,10 @@ class PDFArgs(AbstractArgs):
         """creates adds the arguments for pyami commandline
 
         """
+        logger.debug(f"================== add arguments PDF ================")
         if self.parser is None:
-            # self.parser = argparse.ArgumentParser(
-            #     usage="pyami always uses subcommands (DICT,GUI,HTML,PDF,PROJECT)\n e.g. pyamihtmlx PDF --help"
-            # )
             self.parser = AmiArgParser(
-                usage="pyamihtmlx always uses subcommands (DICT,GUI,HTML,PDF,IPCC,PROJECT)\n e.g. pyamihtmlx PDF --help"
+                usage="PDF: amilib always uses subcommands (HTML,PDF)\n e.g. amilib PDF --help"
             )
 
         self.parser.description = textwrap.dedent(
@@ -124,7 +126,6 @@ class PDFArgs(AbstractArgs):
             '  * PDF --help\n'
         )
         self.parser.formatter_class = argparse.RawDescriptionHelpFormatter
-        # self.parser.add_argument("--convert", type=str, choices=[], help="conversions (NYI)")
         self.parser.add_argument("--debug", type=str, choices=DEBUG_OPTIONS, help="debug these during parsing (NYI)")
         self.parser.add_argument("--flow", type=bool, nargs=1,
                                  help="create flowing HTML, e.g. join lines, pages (heuristics)", default=True)
@@ -162,6 +163,7 @@ class PDFArgs(AbstractArgs):
         self.parser.add_argument("--resolution", type=int, nargs=1, help="resolution of output images (if imagedir)",
                                  default=400)
         self.parser.add_argument("--template", type=str, nargs=1, help="file to parse specific type of document (NYI)")
+        self.parser.epilog = "============ PDF epilog ==========="
         return self.parser
 
     # class PDFArgs:
@@ -180,12 +182,12 @@ class PDFArgs(AbstractArgs):
                         resolution of output images
   --template TEMPLATE   file to parse specific type of document"""
 
+        logger.debug(f"running PDFArgs.process_args()")
         if self.arg_dict:
             #            logging.warning(f"ARG DICTXX {self.arg_dict}")
             self.read_from_arg_dict()
 
         if not self.check_input():
-            # self.parser.print_help() # self.parser is null
             print("for help, run 'pyamihtmlx PDF -h'")
             return
         self.create_consistent_output_filenames_and_dirs()
@@ -356,9 +358,9 @@ class PDFArgs(AbstractArgs):
         if self.flow runs self.tidy_flow
         :return: outpath
         """
-        print(f"flow {flow} indir {indir} inpath {inpath} maxpage {maxpage} outform {outform} \n"
+        logger.debug(f"flow {flow} indir {indir} inpath {inpath} maxpage {maxpage} outform {outform} \n"
               f"outpath {outpath} outstem {outstem} outdir {outdir} pdf2html {pdf2html} process_args {process_args}")
-        print(f"==============CONVERT================")
+        logger.debug(f"==============CONVERT================")
         # process arguments into a dictionary
         if flow:
             self.arg_dict[FLOW] = flow
@@ -540,10 +542,10 @@ class PDFArgs(AbstractArgs):
 
             par.remove(span)
 
-    @property
-    def module_stem(self):
-        """name of module"""
-        return Path(__file__).stem
+    # @property
+    # def module_stem(self):
+    #     """name of module"""
+    #     return Path(__file__).stem
 
     @classmethod
     def make_page_ranges(cls, raw_page_ranges, offset=0):
@@ -701,7 +703,7 @@ def main(argv=None):
         --maxpage 100
 
     """
-    print(f"running PDFArgs main")
+    logger.debug(f"running PDFArgs main")
     pdf_args = PDFArgs()
     parse_and_process_1(pdf_args)
 

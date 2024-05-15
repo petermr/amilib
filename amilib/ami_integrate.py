@@ -13,8 +13,7 @@ from amilib.file_lib import FileLib
 from amilib.util import AmiLogger
 from amilib.xml_lib import HtmlLib, XmlLib
 
-logger = AmiLogger.create_named_logger(__file__)
-logger = logging.getLogger(__file__)
+logger = FileLib.get_logger(__file__)
 
 DICT_KEYSET = set([
     'annots',

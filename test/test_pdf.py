@@ -1048,8 +1048,8 @@ LTPage
             assert first_page.page_number == 1
             assert first_page.rotation == 0
             assert first_page.initial_doctop == 0
-            assert first_page.cropbox == (0, 0, 595.22, 842)
-            assert first_page.mediabox == (0, 0, 595.22, 842)
+            assert first_page.cropbox == [0, 0, 595.22, 842]
+            assert first_page.mediabox == [0, 0, 595.22, 842]
             assert first_page.bbox == (0, 0, 595.22, 842)
             assert first_page.cached_properties == ['_rect_edges', '_curve_edges', '_edges', '_objects', '_layout']
             assert first_page.is_original
@@ -1805,8 +1805,18 @@ class PDFMainArgTest(test.test_all.AmiAnyTest):
             pass
 
     def test_pdf_help(self):
+        ''' runs PDF parser with --help to see if it produces terminal output
+        '''
         pyami = AmiLib()
         pyami.run_command("PDF")
+        pyami.run_command("PDF --help")
+
+    def test_html_help(self):
+        ''' runs HTML parser with --help to see if it produces terminal output
+        '''
+        pyami = AmiLib()
+        pyami.run_command("HTML")
+        pyami.run_command("HTML --help")
 
     def test_pdf_html_ipcc_command_help(self):
         pyami = AmiLib()
