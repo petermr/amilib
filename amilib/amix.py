@@ -3,6 +3,7 @@ import logging
 import re
 import sys
 import textwrap
+from abc import abstractmethod
 from enum import Enum
 from pathlib import Path
 
@@ -98,15 +99,15 @@ class AmiLib:
         for choice in subparsers.choices:
             print(f">>> {choice}")
 
-        pdf_parser = PDFArgs().make_sub_parser(subparsers)
+        pdf_parser = AmiLibArgs.make_sub_parser(PDFArgs(), subparsers)
         logger.debug(f"pdf_parser {pdf_parser}")
-        html_parser = HTMLArgs().make_sub_parser(subparsers)
+        html_parser = AmiLibArgs.make_sub_parser(HTMLArgs(), subparsers)
         logger.debug(f"html_parser {html_parser}")
 
 
 
 
-        amilib_parser = AmiLibArgs().make_sub_parser(subparsers)
+        # amilib_parser = AmiLibArgs().make_sub_parser(subparsers)
 
         parser.epilog = "other entry points run as 'python -m amilib.amix <args>'"
         parser.epilog = """run:
@@ -391,6 +392,7 @@ class AmiLibArgs(AbstractArgs):
         self.arg_dict = None
         self.subparser_arg = "HTML"
 
+    @abstractmethod
     def add_arguments(self):
         logger.warn("add arguments")
 
@@ -420,6 +422,7 @@ class AmiLibArgs(AbstractArgs):
      """
 
     # class AmiDictArgs:
+    @abstractmethod
     def process_args(self):
         """runs parsed args
         :return:

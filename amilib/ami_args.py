@@ -226,15 +226,16 @@ class AbstractArgs(ABC):
         print(f"run_func_name {func_name}")
         return func_name
 
-    def make_sub_parser(self, subparsers):
+    @classmethod
+    def make_sub_parser(cls, subclass, subparsers):
         """make subparser from subparsers
         requires self.subparser_arg (probably should be argument
         ALSO adds arguments through `self.add_arguments`
         :param subparsers: subparser generator
         :return: new subparser"""
-        self.parser = subparsers.add_parser(self.subparser_arg)
-        self.add_arguments()
-        return self.parser
+        subclass.parser = subparsers.add_parser(subclass.subparser_arg)
+        subclass.add_arguments()
+        return subclass.parser
 
     @property
     def module_stem(self):
