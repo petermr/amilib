@@ -10,7 +10,8 @@ from pathlib import Path
 
 from amilib.file_lib import FileLib
 from amilib.util import EnhancedRegex
-from amilib.util import Util, GithubDownloader, ArgParseBuilder, AmiArgParser, AmiArgParseException
+from amilib.util import Util, GithubDownloader
+from amilib.ami_args import ArgParseBuilder, AmiArgParser, AmiArgParseException
 from amilib.xml_lib import Templater
 
 from test.resources import Resources

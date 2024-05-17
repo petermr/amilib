@@ -21,7 +21,7 @@ from sklearn.linear_model import LinearRegression
 # local
 from amilib.bbox import BBox
 from amilib.file_lib import FileLib
-from amilib.util import SScript, AbstractArgs, Util, AmiLogger
+from amilib.util import SScript, Util, AmiLogger
 from amilib.xml_lib import XmlLib, HtmlLib
 
 # no try-catch imports

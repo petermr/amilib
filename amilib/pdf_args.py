@@ -10,9 +10,10 @@ from pathlib import Path
 
 import lxml.etree as ET
 
+from amilib.ami_args import AmiArgParser, AbstractArgs
 from amilib.ami_html import A_HREF, H_A, H_SPAN, HtmlTidy, HtmlStyle, CSSStyle
 from amilib.ami_pdf_libs import AmiPage, PDFParser, DEBUG_OPTIONS
-from amilib.util import AbstractArgs, AmiArgParser, Util, AmiLogger
+from amilib.util import Util, AmiLogger
 from amilib.file_lib import FileLib
 
 INDIR = "indir"

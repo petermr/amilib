@@ -9,6 +9,7 @@ from pathlib import Path
 # sometimes relative imports work, sometimes absolute
 # maybe some wiser Pythonista can clean this
 # i have no idea why html_args and pdf_args behave differently
+from amilib.file_lib import FileLib
 
 try:
     from html_args import HTMLArgs
@@ -17,7 +18,7 @@ except ModuleNotFoundError as e:
 
 from amilib.pdf_args import PDFArgs
 
-from amilib.util import AbstractArgs
+from amilib.ami_args import AbstractArgs
 from amilib.wikimedia import WikidataLookup
 
 # local
@@ -25,10 +26,9 @@ from amilib.wikimedia import WikidataLookup
 AMIX_DIR = Path(__file__).parent
 REPO_DIR = AMIX_DIR.parent
 
-logger = logging.getLogger(__file__)
+logger = FileLib.get_logger(__file__)
 
 class AmiLib:
-    logger = logging.getLogger("amilib")
     COPY = "copy"
     DEBUG = "debug"
     EXAMPLES = "examples"
@@ -59,8 +59,6 @@ class AmiLib:
         def run_pdf(args):
             logger.debug(f"run pdf")
 
-        # def run_project():
-        #     print(f"run project {self.args}")
 
         version = self.version()
         if not sys.argv or len(sys.argv) == 0:
@@ -155,17 +153,14 @@ class AmiLib:
             args = args.strip()
             args = args.split(" ")
 
-        print(f"command: {args}")
+        logger.warning(f"command: {args}")
         test_catch = False
         if test_catch:  # try to trap exception
             try:
                 self.parse_and_run_args(args)
             except Exception as e:
-                print(f"ERROR {e.args} from {args}")
-                logging.error(f"\n============PARSE ERROR==({e.__cause__})======\n")
+                logger.error(f"ERROR {e.args} from {args}")
                 return
-            if self.is_flag_true(self.PRINT_SYMBOLS):
-                self.symbol_ini.print_symbols()
         else:
             self.parse_and_run_args(args)
 
@@ -179,16 +174,16 @@ class AmiLib:
         """
         # no args, create help
         if not arglist:
-            self.logger.warning("No args, running --help")
+            logger.warning("No args, running --help")
             arglist = ["--help"]
         parser = self.create_arg_parser()
         self.args = self.make_substitutions_create_arg_tuples(arglist, parser, debug=debug)
-        self.logger.debug("ARGS before substitution: " + str(self.args))
+        logger.debug("ARGS before substitution: " + str(self.args))
         # this may be redundant
         self.substitute_args()
-        self.logger.debug(f"self.args {self.args}")
+        logger.debug(f"self.args {self.args}")
         self.add_single_str_to_list()
-        self.logger.debug("ARGS after substitution: " + str(self.args))
+        logger.debug("ARGS after substitution: " + str(self.args))
         self.set_loglevel_from_args()
         self.run_arguments()
 
@@ -201,10 +196,10 @@ class AmiLib:
         # self.logger.debug(f"SYMBOLS1 {self.symbol_ini.symbols}")
         for item in self.args.items():
             new_item = self.make_substitutions(item)
-            self.logger.debug(f"++++++++{item} ==> {new_item}")
+            logger.debug(f"++++++++{item} ==> {new_item}")
             new_items[new_item[0]] = new_item[1]
         self.args = new_items
-        self.logger.debug(f"******** substituted ARGS {self.args}")
+        logger.debug(f"******** substituted ARGS {self.args}")
 
     #
     def add_single_str_to_list(self):
@@ -213,9 +208,9 @@ class AmiLib:
         """
         str_args = [self.DEBUG, self.EXAMPLES]
         for str_arg in str_args:
-            self.logger.debug(f"key {str_arg}")
+            logger.debug(f"key {str_arg}")
             self.replace_single_values_in_self_args_with_list(str_arg)
-            self.logger.debug(f"args => {self.args}")
+            logger.debug(f"args => {self.args}")
 
     #
     def run_arguments(self):
@@ -229,10 +224,9 @@ class AmiLib:
         There will be more here
 
          """
-        # print(f"RUN ARGUMENTS on {self} {self.args}")
         # path workflow
         self.wikipedia_lookup = WikidataLookup()
-        self.logger.debug(f"commandline args {self.args}")
+        logger.debug(f"commandline args {self.args}")
         subparser_type = self.args.get("command")
         logging.debug(f" COMMAND: {subparser_type} {self.args}")
 
@@ -244,7 +238,7 @@ class AmiLib:
         }
         abstract_args = subparser_dict.get(subparser_type)
 
-        print(f"abstract_args {abstract_args}")
+        logger.warning(f"abstract_args {abstract_args}")
         if abstract_args:
             abstract_args.parse_and_process1(self.args)
         else:
@@ -256,20 +250,6 @@ class AmiLib:
         # mainly obsolete
         if self.VERSION in self.args and self.args[self.VERSION] is not None:
             self.print_version()
-        if self.FLAGS in self.args and self.args[self.FLAGS] is not None:
-            self.add_flags()
-        if self.COPY in self.args and not self.args[self.COPY] is None:
-            self.logger.warning(f"COPY {self.args[self.COPY]}")
-            self.copy_files()
-        if self.PROJ in self.args:
-            if self.SECT in self.args or self.GLOB in self.args or self.SPLIT in self.args:
-                self.run_project_workflow()
-        if self.VERSION in self.args:
-            self.print_version()
-        # elif TestFile.TEST in self.args:
-        #     self.logger.warning(f"TEST in **args {self.args}")
-        #     TestFile.run_arg_tests(self.args)
-        # TODO linkup with test arguments
 
     def print_version(self):
         print(f"version {self.version()}")
@@ -283,7 +263,7 @@ class AmiLib:
         """
         # argsx = None
         if self.args is None:
-            self.logger.warning(f"NULL self.args")
+            logger.warning(f"NULL self.args")
         elif key in self.args:
             argsx = self.args[key]
             if argsx is not None:
@@ -313,21 +293,21 @@ class AmiLib:
         if arglist and len(arglist) > 0:
             parsed_args = self.parse_args_and_trap_errors(arglist, parser)
             if parsed_args is None:
-                print(f"PARSED ARGS FAILS {arglist}")
+                logger.error(f"PARSED ARGS FAILS {arglist}")
                 return new_items
             if parsed_args == self.SYSTEM_EXIT_OK:  # return code 0
                 return new_items
             if str(parsed_args).startswith(self.SYSTEM_EXIT_FAIL):
                 raise ValueError(f"bad command arguments {parsed_args} (see log output)")
 
-            self.logger.debug(f"PARSED_ARGS {parsed_args}")
+            logger.debug(f"PARSED_ARGS {parsed_args}")
             if debug:
-                print(f"parsed args {parsed_args}")
+                logger.warning(f"parsed args {parsed_args}")
 
             try:
                 arg_vars = vars(parsed_args)  # FAILS in Pycharm
             except Exception as e:
-                print(
+                logger.error(
                     f"argparse and vars() fails, see \n BUG in Pycharm/Pandas see https://stackoverflow.com/questions/75453995/pandas-plot-vars-argument-must-have-dict-attribute\n try fudge")
                 # Namespace(command=None, version=True)
                 match = re.match("Namespace\\((?P<argvals>[^)]*)\\)", parsed_args)
@@ -353,7 +333,7 @@ class AmiLib:
                 parsed_args = self.SYSTEM_EXIT_FAIL + str(se)
         except Exception as e:
             parsed_args = None
-            self.logger.error(f"Cannot parse {arglist} , {e}")
+            logger.error(f"Cannot parse {arglist} , {e}")
         return parsed_args
 
     def set_loglevel_from_args(self):
@@ -367,12 +347,12 @@ class AmiLib:
 
         if self.LOGLEVEL in self.args:
             loglevel = self.args[self.LOGLEVEL]
-            self.logger.info(f"loglevel {loglevel}")
+            logger.info(f"loglevel {loglevel}")
             if loglevel is not None:
                 loglevel = str(loglevel)
             if loglevel is not None and loglevel.lower() in levels:
                 level = levels[loglevel.lower()]
-                self.logger.loglevel = level
+                logger.loglevel = level
 
     def version(self):
         """
@@ -475,7 +455,7 @@ class AmiLibArgs(AbstractArgs):
 
     def annotate_with_dict(self):
         """uses dictionary to annotate words and phrases in HTML file"""
-        self.logger.warning("Dictionaries not supported")
+        logger.warning("Dictionaries not supported")
         return
 
         if not self.dictfile:
@@ -513,7 +493,6 @@ def main():
     """ main entry point for cmdline
 
     """
-    print(f"amilib")
     run_tests = False  # needs re-implementing
 
     run_commands = True
@@ -521,10 +500,10 @@ def main():
 
     #    run_tests = True
 
-    AmiLib.logger.debug(
+    logger.debug(
         f"\n============== running amilib main ===============\n{sys.argv[1:]}")
     amix = AmiLib()
-    print(f"***** VERSION {amix.version()} *****")
+    logger.info(f"***** amilib VERSION {amix.version()} *****")
     # this needs commandline
     if run_commands:
         amix.run_command(sys.argv[1:])

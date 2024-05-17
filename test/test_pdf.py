@@ -28,7 +28,6 @@ from PIL import Image
 from lxml.html import HTMLParser
 
 # local
-# from pyamihtmlx.ami_bib import Publication
 
 from amilib.ami_pdf_libs import SVG_NS, SVGX_NS, PDFDebug, PDFParser
 from amilib.ami_pdf_libs import AmiPage, X, Y, SORT_XY, PDFImage, AmiPDFPlumber, AmiPlumberJsonPage, AmiPlumberJson
@@ -1811,13 +1810,6 @@ class PDFMainArgTest(test.test_all.AmiAnyTest):
         pyami = AmiLib()
         pyami.run_command("PDF")
         pyami.run_command("PDF --help")
-
-    def test_html_help(self):
-        ''' runs HTML parser with --help to see if it produces terminal output
-        '''
-        pyami = AmiLib()
-        pyami.run_command("HTML")
-        pyami.run_command("HTML --help")
 
     def test_pdf_html_ipcc_command_help(self):
         pyami = AmiLib()

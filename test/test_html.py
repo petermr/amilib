@@ -113,6 +113,14 @@ class TestHtml(AmiAnyTest):
         assert type(html_span) is lxml.etree._Element
         assert html_span.text == "to national level (4.2.2.3) and subnational"
 
+    def test_html_help(self):
+        ''' runs HTML parser with --help to see if it produces terminal output
+        '''
+        pyami = AmiLib()
+        pyami.run_command("HTML")
+        pyami.run_command("HTML --help")
+
+
     @unittest.skip("dictionaries not included")
     def test_parse_commandline(self):
         """

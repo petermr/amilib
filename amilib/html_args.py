@@ -1,8 +1,8 @@
 import argparse
 import logging
 
+from amilib.ami_args import AbstractArgs, AmiArgParser
 from amilib.file_lib import FileLib
-from amilib.util import AbstractArgs, AmiArgParser
 
 # commandline
 ANNOTATE = "annotate"
