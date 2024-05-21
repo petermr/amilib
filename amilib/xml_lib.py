@@ -11,11 +11,11 @@ import chardet
 import lxml
 import lxml.etree
 import requests
-import tkinterweb
+# import tkinterweb
 from lxml import etree as ET
 from lxml.etree import _Element, _ElementTree
 from lxml.html import HTMLParser
-import tkinter as tk
+# import tkinter as tk
 
 from amilib.file_lib import FileLib
 
@@ -1504,22 +1504,22 @@ class Templater:
         return id
 
 
-class Web:
-    def __init__(self):
-        root = tk.Tk()
-        site = "http://google.com"
-        self.display_html(root, site)
-        root.mainloop()
-
-    @classmethod
-    def display_html(cls, master, site):
-        frame = tkinterweb.HtmlFrame(master)
-        frame.load_website(site)
-        frame.pack(fill="both", expand=True)
-
-    @classmethod
-    def tkinterweb_demo(cls):
-        tkinterweb.Demo()
+# class Web:
+#     def __init__(self):
+#         root = tk.Tk()
+#         site = "http://google.com"
+#         self.display_html(root, site)
+#         root.mainloop()
+#
+#     @classmethod
+#     def display_html(cls, master, site):
+#         frame = tkinterweb.HtmlFrame(master)
+#         frame.load_website(site)
+#         frame.pack(fill="both", expand=True)
+#
+#     @classmethod
+#     def tkinterweb_demo(cls):
+#         tkinterweb.Demo()
 
 
 def main():

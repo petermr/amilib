@@ -373,6 +373,10 @@ class AmiLib:
         version = '0.0.9'  # 2024-05-09
         version = '0.0.10'  # 2024-05-09
         version = '0.1.0'  # 2024-05-10 # fixed absolute imports and mended tests
+        version = '0.1.1'  # 2024-05-11 # fixed subclassing of AmiLibArgs
+        version = '0.1.1a'  # 2024-05-11 # simple requirements.txt
+        version = '0.1.2'  # 2024-05-20 # uploadable to pypi
+        version = '0.1.3'  # 2024-05-20 # revert pdfplumber to 0.10.0
 
         # logging.warn(f"VERSION {version}")
         return version
