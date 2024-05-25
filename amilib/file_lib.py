@@ -420,12 +420,16 @@ class FileLib:
         return files
 
     @classmethod
-    def assert_exist_size(cls, file, minsize, abort=True):
+    def assert_exist_size(cls, file, minsize, abort=True, debug=True):
         """asserts a file exists and is of sufficient size
         :param file: file or path
         :param minsize: minimum size
+        :param abort: throw exception if fails (not sure what this does)
+        :param debug: output filename
         """
         path = Path(file)
+        if debug:
+            print(f"checking {file}")
         try:
             assert path.exists(), f"file {path} must exist"
             assert (s := path.stat().st_size) > minsize, f"file {file} size = {s} must be above {minsize}"

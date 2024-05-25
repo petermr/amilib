@@ -34,7 +34,7 @@ requirements = [
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.1.3',
+    version='0.1.4',
     description='document download, cleaning, management',
     long_description_content_type='text/markdown',
     long_description=readme,
