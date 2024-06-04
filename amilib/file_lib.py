@@ -11,6 +11,7 @@ import shutil
 from pathlib import Path, PurePath, PurePosixPath
 
 import chardet
+import idna
 import requests
 
 logging.debug("loading file_lib")

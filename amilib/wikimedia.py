@@ -789,10 +789,12 @@ class ParserWrapper:
         if url is None:
             raise ValueError("url is None")
         try:
+            content = None
             with urlopen(url) as u:
                 content = u.read().decode("utf-8")
         except HTTPError as e:
             print(f"cannout open {url} because {e}")
+            raise  HTTPError(f"failed to read {url} because {e}")
         tree = ET.parse(StringIO(content), ET.HTMLParser())
         root = tree.getroot()
         return root

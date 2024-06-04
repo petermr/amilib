@@ -33,7 +33,7 @@ class Resources:
     #
     # # ar6 and html
     TEST_IPCC_DIR = Path(TEST_RESOURCES_DIR, "ar6")
-    # TEST_IPCC_DICT_DIR = Path(TEST_IPCC_DIR, "dict")
+    TEST_IPCC_DICT_DIR = Path(TEST_IPCC_DIR, "dict")
     #
     # # local files not in package; mainly for development can be skipped
     # HOME = os.path.expanduser("~")
@@ -68,11 +68,11 @@ class Resources:
     assert TEST_IPCC_CHAP06.exists(), f"{TEST_IPCC_CHAP06} must exist"
     TEST_IPCC_CHAP06_PDF = Path(TEST_IPCC_CHAP06, "fulltext.pdf")
     assert TEST_IPCC_CHAP06_PDF.exists()
-    # #
-    # # TEST_IPCC_CHAP08 = Path(TEST_IPCC_DIR, "Chapter08")
-    # # assert TEST_IPCC_CHAP08.exists()
-    # # TEST_IPCC_CHAP08_DICT = Path(TEST_IPCC_CHAP08, "dict")
-    # # assert TEST_IPCC_CHAP08_DICT.exists()
+    # TODO uncomment the assert
+    TEST_IPCC_CHAP08 = Path(TEST_IPCC_DIR, "Chapter08")
+    # assert TEST_IPCC_CHAP08.exists(), f"file should exists {TEST_IPCC_CHAP08}"
+    TEST_IPCC_CHAP08_DICT = Path(TEST_IPCC_CHAP08, "dict")
+    # assert TEST_IPCC_CHAP08_DICT.exists(), f"file should exists {TEST_IPCC_CHAP08_DICT}"
     # # TEST_IPCC_CHAP08_ABB_DICT = Path(TEST_IPCC_CHAP08_DICT, "ip_3_8_urban_abb.xml")
     # # assert TEST_IPCC_CHAP08_ABB_DICT.exists()
     # # TEST_IPCC_CHAP08_MAN_DICT = Path(TEST_IPCC_CHAP08_DICT, "ip_3_8_urban_man.xml")

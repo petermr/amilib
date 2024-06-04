@@ -373,6 +373,7 @@ class AmiLib:
         version = '0.1.2'  # 2024-05-20 # uploadable to pypi
         version = '0.1.3'  # 2024-05-20 # revert pdfplumber to 0.10.0
         version = '0.1.4'  # 2024-05-22 # revert pdfplumber to 0.11.0 
+        version = '0.1.5'  # 2024-05-25 # fixed nlp, pdfplumber
 
         # logging.warn(f"VERSION {version}")
         return version
