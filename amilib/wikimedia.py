@@ -14,7 +14,7 @@ from urllib.parse import quote
 from io import StringIO
 from urllib.request import urlopen
 from lxml import etree
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from SPARQLWrapper import SPARQLWrapper
 
 # local
@@ -794,7 +794,7 @@ class ParserWrapper:
                 content = u.read().decode("utf-8")
         except HTTPError as e:
             print(f"cannout open {url} because {e}")
-            raise  HTTPError(f"failed to read {url} because {e}")
+            raise URLError(f"failed to read {url} because {e}")
         tree = ET.parse(StringIO(content), ET.HTMLParser())
         root = tree.getroot()
         return root

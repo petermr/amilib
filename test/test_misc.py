@@ -67,7 +67,6 @@ class MiscTest(AmiAnyTest):
     def test_tidy_transcript(self):
 
 
-        time_re = "(\\d\\d?:)?\\d\\d?:\\d\\d"
         infile = Path(Resources.TEST_RESOURCES_DIR, "misc", "transcript1.txt")
         assert infile.exists(), f"infile should exists {infile}"
         with open(infile, "r") as f:
@@ -75,16 +74,14 @@ class MiscTest(AmiAnyTest):
 
         assert lines is not None
         assert len(lines) == pytest.approx(1800, abs=20)
-        lines1 = [ll for ll in lines if not re.match(time_re, ll)]
-        assert len(lines1) == pytest.approx(1200, abs=10)
         lines2 = []
-        for ll in lines1:
+        for ll in lines:
             ll2 = multiple_replace(subs, ll)
             if len(ll.strip()) > 0:
                 lines2.append(ll2)
         transcript_dir = Path(Resources.TEMP_DIR, "misc", "transcript")
         transcript_dir.mkdir(exist_ok=True, parents=True)
-        outfile = Path(transcript_dir, "transcript1.txt")
+        outfile = Path(transcript_dir, "transcript2.txt")
         with open(outfile, "w") as f:
             f.writelines(lines2)
         print(f"lines2 {lines2}")

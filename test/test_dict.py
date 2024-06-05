@@ -853,8 +853,7 @@ class TestAmiDictionary(AmiAnyTest):
         property_ids = wikidata_page.get_property_ids()
         assert len(property_ids) >= 60
         id_set = set(property_ids)
-        test_set = set(['P31', 'P279', 'P361', 'P2067', 'P274', 'P233',
-                        'P2054', 'P2101', 'P2128', 'P2199'])
+        test_set = {'P31', 'P279', 'P361', 'P2067', 'P274', 'P233', 'P2054', 'P2101', 'P2128', 'P2199'}
         assert test_set.issubset(id_set)
 
     def test_create_dictionary_from_sparql(self):

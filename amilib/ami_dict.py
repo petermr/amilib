@@ -315,9 +315,16 @@ class AmiEntry:
         :return: list of corresponding WikidataPages
         """
         wikidata_pages = []
+        url_errors = []
         for id in wikidata_ids:
-            wikidata_page = WikidataPage(pqitem=id)
-            wikidata_pages.append(wikidata_page)
+            try:
+                wikidata_page = WikidataPage(pqitem=id)
+                wikidata_pages.append(wikidata_page)
+            except URLError as e:
+                url_errors.append(e)
+        if url_errors:
+            logger.error(f"could not find URLs {url_errors}")
+
         return wikidata_pages
 
     # AmiEntry
