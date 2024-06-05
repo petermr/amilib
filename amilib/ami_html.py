@@ -16,7 +16,7 @@ import numpy as np
 import lxml.etree as ET
 from lxml.etree import Element, _Element, _ElementTree
 from lxml.html import HTMLParser
-from sklearn.linear_model import LinearRegression
+# from sklearn.linear_model import LinearRegression
 
 # local
 from amilib.bbox import BBox

@@ -9,6 +9,11 @@ from pathlib import Path
 
 from lxml import etree
 
+# problems with Python loader
+import idna
+import certifi
+import SPARQLWrapper
+
 # local
 from amilib.util import Util
 from amilib.wikimedia import WikidataSparql as WS
