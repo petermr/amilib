@@ -377,6 +377,7 @@ class AmiLib:
         version = '0.1.3'  # 2024-05-20 # revert pdfplumber to 0.10.0
         version = '0.1.4'  # 2024-05-22 # revert pdfplumber to 0.11.0 
         version = '0.1.5'  # 2024-05-25 # fixed nlp, pdfplumber
+        version = '0.2.0a1'  # 2024-06-06 # includes amidict 
 
         # logging.warn(f"VERSION {version}")
         return version

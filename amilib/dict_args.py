@@ -3,9 +3,26 @@ import json
 from collections import Counter
 from pathlib import Path
 
+# commandline
+DELETE = "delete"
+DICT = "dict"
+FILTER = "filter"
+LANGUAGE = "language"
+METADATA = "metadata"
+REPLACE = "replace"
+SYNONYM = "synonym"
+VALIDATE = "validate"
+WORDS = "words"
+
+WIKIPEDIA = "wikipedia"
+WIKIDATA = "wikidata"
+
 from amilib.ami_args import AbstractArgs
-from amilib.ami_dict import AmiDictionary, DICT, VALIDATE, WIKIDATA, WORDS, DELETE, FILTER, LANGUAGE, METADATA, REPLACE, \
-    SYNONYM, WIKIPEDIA
+try:
+
+    from amilib.ami_dict import AmiDictionary
+except Exception as e:
+    pass
 from amilib.file_lib import FileLib
 from amilib.wikimedia import WikidataPage, WikidataLookup
 
@@ -32,6 +49,9 @@ class AmiDictArgs(AbstractArgs):
         self.subparser_arg = "DICT"
 
     def add_arguments(self):
+        # from amilib.ami_dict import DELETE, DICT, FILTER, LANGUAGE, METADATA, REPLACE, SYNONYM
+        # from amilib.ami_dict import VALIDATE, WIKIDATA, WIKIPEDIA, WORDS
+
         if self.parser is None:
             self.parser = argparse.ArgumentParser()
         """adds arguments to a parser or subparser"""
@@ -62,6 +82,9 @@ class AmiDictArgs(AbstractArgs):
         """runs parsed args
         :return:
         """
+        # from amilib.ami_dict import DELETE, DICT, FILTER, LANGUAGE, METADATA, REPLACE, SYNONYM
+        # from amilib.ami_dict import VALIDATE, WIKIDATA, WIKIPEDIA, WORDS
+
 
         """
         self.parser.add_argument(f"--dict", type=str, nargs=1, help="path for dictionary (existing = edit; new = create")
@@ -77,6 +100,7 @@ class AmiDictArgs(AbstractArgs):
         """
         logger.debug(f"DICT process_args {self.arg_dict}")
         if not self.arg_dict:
+
             print(f"no arg_dict given, no actiom")
 
         self.delete = self.arg_dict.get(DELETE)
@@ -119,6 +143,7 @@ class AmiDictArgs(AbstractArgs):
     @classmethod
     def create_default_arg_dict(cls):
         """returns a new COPY of the default dictionary"""
+        # from amilib.dict_args import DICT, VALIDATE, WIKIDATA, WORDS
         arg_dict = dict()
         arg_dict[DICT] = None
         arg_dict[VALIDATE] = None
@@ -127,6 +152,8 @@ class AmiDictArgs(AbstractArgs):
         return arg_dict
 
     def build_or_edit_dictionary(self):
+        from amilib.ami_dict import AmiDictionary
+
         if not self.dictfile:
             print("No dictionary file given")
             return None

@@ -19,6 +19,7 @@ from pathlib import Path
 from urllib.error import URLError
 from shutil import copyfile
 
+from amilib.dict_args import AmiDictArgs, SYNONYM
 # local
 # from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util
@@ -35,8 +36,6 @@ ENTRY = "entry"
 IMAGE = "image"
 RAW = "raw"
 TITLE = "title"
-WIKIPEDIA = "wikipedia"
-WIKIDATA = "wikidata"
 
 # attributes in amidict
 DESC = "desc"
@@ -54,15 +53,15 @@ WIKIDATA_HITS = "wikidata_hits"
 WIKIDATA_HIT = "wikidataHit"
 
 # commandline
-DELETE = "delete"
-DICT = "dict"
-FILTER = "filter"
-LANGUAGE = "language"
-METADATA = "metadata"
-REPLACE = "replace"
-SYNONYM = "synonym"
-VALIDATE = "validate"
-WORDS = "words"
+# DELETE = "delete"
+# DICT = "dict"
+# FILTER = "filter"
+# LANGUAGE = "language"
+# METADATA = "metadata"
+# REPLACE = "replace"
+# SYNONYM = "synonym"
+# VALIDATE = "validate"
+# WORDS = "words"
 
 # constants
 UTF_8 = "UTF-8"
@@ -1589,21 +1588,6 @@ def main(argv=None):
         print(traceback.format_exc())
         print(f"***Cannot run amidict***; see output for errors: {e} ")
 
-
-# def test_process_args_build_dictionary():
-#     words0_txt = f"{Path(Resources.TEST_RESOURCES_DIR, 'words0.txt')}"
-#     print(f"words {words0_txt}")
-#     with open(words0_txt, "r") as f:
-#         print(f"words ==> {f.readlines()}")
-#
-#     words0_xml = f"{Path(Resources.TEMP_DIR, 'words0.xml')}"
-#     print(f" s1 {sys.argv}")
-#     # sys.argv = ['/Applications/PyCharm CE.app/Contents/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py', 'ami_dict.py::test_process_args', "--words", f"{words0_txt}", "--dict", f"{words0_xml}", "--validate", "--wikidata", "label"]
-#     # print(f" s2 {sys.argv}")
-#     argv = ["dummy_prog_name", "--words", f"{words0_txt}", "--dict", f"{words0_xml}", "--validate", "--wikidata",
-#             "label"]
-#     print(f" s2 {argv}")
-#     main(argv=argv)
 
 
 if __name__ == "__main__":

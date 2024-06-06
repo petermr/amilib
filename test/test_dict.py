@@ -14,6 +14,7 @@ from lxml.etree import XMLSyntaxError, _Element
 # local
 from amilib.ami_dict import AmiDictionary, AmiEntry, AMIDictError, \
     AmiDictValidator, NAME, TITLE, TERM, LANG_UR, VERSION, WIKIDATA_ID
+from amilib.amix import AmiLib
 from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
 from amilib.wikimedia import WikidataSparql, WikidataPage
@@ -1234,6 +1235,35 @@ class TestAmiDictionary(AmiAnyTest):
 
         assert disambig_dict.get_entry_count() == 9, f"dictionary should have 9 entries"
         assert disambig_dict.get_entry_ids() == ['____alloaromadendrene']
+
+    def test_dict_commands(self):
+        amilib = AmiLib()
+        amilib.run_command(["--help"])
+
+        amilib.run_command(["DICT", "--help"])
+
+    def test_make_dict_from_file(self):
+        amilib = AmiLib()
+        words_file = Path(TEST_RESOURCE_DIR, "misc", "wordlist.txt")
+        amilib.run_command(["DICT", "--words", str(words_file)])
+
+    def test_process_args_build_dictionary(self):
+        amilib = AmiLib()
+        path = Path(Resources.TEST_RESOURCES_DIR, "misc", "wordlist.txt")
+        words0_txt = f"{path}"
+        print(f"words {words0_txt}")
+        with open(words0_txt, "r") as f:
+            print(f"words ==> {f.readlines()}")
+
+        words0_xml = f"{Path(Resources.TEMP_DIR, 'words0.xml')}"
+        # print(f" s1 {sys.argv}")
+        # sys.argv = ['/Applications/PyCharm CE.app/Contents/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py', 'ami_dict.py::test_process_args', "--words", f"{words0_txt}", "--dict", f"{words0_xml}", "--validate", "--wikidata", "label"]
+        # print(f" s2 {sys.argv}")
+        argv = ["DICT", "--words", f"{words0_txt}", "--dict", f"{words0_xml}", "--validate", "--wikidata",
+                "label"]
+        print(f" s2 {argv}")
+        amilib.run_command(argv)
+        # main(argv=argv)
 
     # ==== helpers ====
     def teardown(self):
