@@ -12,9 +12,10 @@ from lxml import etree
 from lxml.etree import XMLSyntaxError, _Element
 
 # local
-from amilib.ami_dict import AmiDictionary, AmiEntry, AmiDictArgs, AMIDictError, \
+from amilib.ami_dict import AmiDictionary, AmiEntry, AMIDictError, \
     AmiDictValidator, NAME, TITLE, TERM, LANG_UR, VERSION, WIKIDATA_ID
 from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
+from amilib.dict_args import AmiDictArgs
 from amilib.wikimedia import WikidataSparql, WikidataPage
 from amilib.xml_lib import XmlLib
 from test.resources import Resources
@@ -281,6 +282,7 @@ class TestAmiDictionary(AmiAnyTest):
     def test_validate_url_dict(self):
         """
         tests that historic dictionaries read into validator
+        TODO skip this
         """
         urllist = [
             PLANT_PART_RAW_DICT_URL,

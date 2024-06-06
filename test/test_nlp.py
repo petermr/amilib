@@ -11,6 +11,8 @@ from test.test_all import AmiAnyTest
 
 from amilib.ami_nlp import AmiNLP
 
+import nltk
+nltk.download('stopwords')
 
 
 class NLPTest(AmiAnyTest):
