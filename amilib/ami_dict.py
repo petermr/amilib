@@ -19,7 +19,7 @@ from pathlib import Path
 from urllib.error import URLError
 from shutil import copyfile
 
-from amilib.dict_args import AmiDictArgs, SYNONYM
+from amilib.dict_args import AmiDictArgs, SYNONYM, WIKIPEDIA
 # local
 # from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util

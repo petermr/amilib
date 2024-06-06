@@ -14,6 +14,7 @@ from lxml.etree import XMLSyntaxError, _Element
 # local
 from amilib.ami_dict import AmiDictionary, AmiEntry, AMIDictError, \
     AmiDictValidator, NAME, TITLE, TERM, LANG_UR, VERSION, WIKIDATA_ID
+from amilib.dict_args import WIKIPEDIA
 from amilib.amix import AmiLib
 from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
