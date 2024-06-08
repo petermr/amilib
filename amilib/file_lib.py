@@ -139,6 +139,7 @@ class FileLib:
             absolute_file = os.path.join(os.path.join(file_dir, file))
         return absolute_file
 
+    @classmethod
     def get_parent_dir(cls, file):
         return None if file is None else PurePath(file).parent
 
@@ -463,6 +464,7 @@ class FileLib:
                 filename = filename[:-len(suffix)]
             module = '.'.join(filename.split(os.path.sep)[-file_level:])
             logger = logging.getLogger(module)
+            print(f"created logger {module} {logger}")
             return logger
 
 

@@ -3,6 +3,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
+
 # commandline
 DELETE = "delete"
 DICT = "dict"
@@ -20,7 +21,7 @@ WIKIDATA = "wikidata"
 from amilib.ami_args import AbstractArgs
 try:
 
-    from amilib.ami_dict import AmiDictionary
+    from amilib.ami_dict import AmiDictionary, AmiEntry
 except Exception as e:
     pass
 from amilib.file_lib import FileLib
@@ -116,6 +117,7 @@ class AmiDictArgs(AbstractArgs):
         self.words = self.arg_dict.get(WORDS)
 
         if self.dictfile:
+            print(f"writing to {self.dictfile}")
             if self.ami_dict is not None:
                 with open(self.dictfile, "w") as f:
                     self.ami_dict.write(self.dictfile)
@@ -135,8 +137,13 @@ class AmiDictArgs(AbstractArgs):
                 print(f"validation finished")
 
         if self.wikidata:
-            self.add_wikidata_to_dict()
+            hit_dict = self.add_wikidata_to_dict()
             status = self.validate_dict()
+
+        if self.dictfile:
+            if self.ami_dict:
+                self.ami_dict.write_to_file(self.dictfile, debug=True)
+
 
     # class AmiDictArgs:
 
@@ -171,23 +178,34 @@ class AmiDictArgs(AbstractArgs):
         return self.ami_dict
 
     def add_wikidata_to_dict(self, description_regex=None):
+
+        # TODO fix circular imports
+        from amilib.ami_dict import AmiEntry
+
         desc_counter = Counter()
         hit_dict = dict()
         if self.dictfile is not None and self.ami_dict is not None:
             wikidata_lookup = WikidataLookup()
             for entry in self.ami_dict.entries:
+                ami_entry = AmiEntry.create_from_element(entry)
                 term = entry.attrib["term"]
                 term_dict = dict()
                 hit_dict[term] = term_dict
                 qitem0, desc, qitem_hits = wikidata_lookup.lookup_wikidata(term)
+                if qitem_hits is None:
+                    print(f"no qitem_hits {term} in add_wikidata_to_dict")
+                    continue
                 for i, qitem_hit in enumerate(qitem_hits):
                     qitem_hit_dict = self.create_hit_dict_for(i, qitem_hit)
                     term_dict[qitem_hit] = qitem_hit_dict
+                    ami_entry.add_hits_to_xml(qitem_hit_dict)
+                # print(f"add_wikidata_to_dict {ami_entry.get_term()} {term_dict}")
         else:
-            print(f"requires existing dictionary")
+            print(f"add_wikidata_to_dict requires existing dictionary")
 
-        print(json.dumps(hit_dict, sort_keys=False, indent=2))
+        print(f"JSON DUMPS {json.dumps(hit_dict, sort_keys=False, indent=2)}")
         counter = Counter()
+
         """
 {
   "acetone": {
@@ -232,7 +250,7 @@ class AmiDictArgs(AbstractArgs):
         if self.dictfile and Path(self.dictfile).exists():
             self.ami_dict.check_validity()
         else:
-            print(f"requires existing dictionary")
+            print(f"vallidate_dict requires existing dictionary; no validation")
         return status
 
     @property

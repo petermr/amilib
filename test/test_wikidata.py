@@ -8,8 +8,9 @@ import requests
 from lxml import etree, html
 
 # local
-from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter
+from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage
 from amilib.wikimedia import WikidataLookup
+from amilib.xml_lib import HtmlLib, XmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -23,6 +24,20 @@ ami_dictRESOURCES_DIR = Path(Path(__file__).parent.parent, "test", "resources")
 # DICTIONARY_DIR = Path(os.path.expanduser("~"), "projects", "CEVOpen", "dictionary")
 EO_COMPOUND = "eoCompound"
 EO_COMPOUND_DIR = Path(Resources.TEST_RESOURCES_DIR, EO_COMPOUND)
+
+
+class WikipediaTests(unittest.TestCase):
+    """
+    tests Wikipedia lookup
+    """
+    def test_wikipedia_lookup(self):
+        """tests lokup of wikipedia page by name"""
+        html_element = WikipediaPage.lookup_wikipedia_page("LULUCF")
+        assert html_element is not None
+        text_content = WikipediaPage.get_main_element(html_element)
+
+
+        XmlLib.write_xml(text_content, Path(Resources.TEMP_DIR, "html", "lulucf.html"), debug=True)
 
 
 # NOTE some of these are lengthy (seconds) as they lookup on the Net
@@ -650,6 +665,7 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         assert filter.json['filter']['description'] == "chemical"
         assert filter.json['filter'][
                    'regex'] == "(chemical compound|chemical element)", f"found {filter.json['filter']['regex']}"
+
 
 
 class WikimediaTests:

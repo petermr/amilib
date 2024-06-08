@@ -1245,26 +1245,31 @@ class TestAmiDictionary(AmiAnyTest):
 
     def test_make_dict_from_file(self):
         amilib = AmiLib()
-        words_file = Path(TEST_RESOURCE_DIR, "misc", "wordlist.txt")
+        words_file = Path(TEST_RESOURCE_DIR, "misc", "climate_words.txt")
         amilib.run_command(["DICT", "--words", str(words_file)])
 
     def test_process_args_build_dictionary(self):
+        """commandline
+        reads list of words, creates a dictionay, looks up Wikidata"""
         amilib = AmiLib()
-        path = Path(Resources.TEST_RESOURCES_DIR, "misc", "wordlist.txt")
-        words0_txt = f"{path}"
-        print(f"words {words0_txt}")
-        with open(words0_txt, "r") as f:
+        title = "climate_words"
+        title_path = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{title}.txt")
+        assert title_path.exists(), f"{title_path} should exist"
+        title_txt = f"{title_path}"
+        print(f"words {title_txt}")
+        with open(title_txt, "r") as f:
             print(f"words ==> {f.readlines()}")
+        title_dict = (f"{title}_dict.xml")
 
-        words0_xml = f"{Path(Resources.TEMP_DIR, 'words0.xml')}"
+        word_xml = f"{Path(Resources.TEMP_DIR, 'wordlist.xml')}"
         # print(f" s1 {sys.argv}")
         # sys.argv = ['/Applications/PyCharm CE.app/Contents/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py', 'ami_dict.py::test_process_args', "--words", f"{words0_txt}", "--dict", f"{words0_xml}", "--validate", "--wikidata", "label"]
         # print(f" s2 {sys.argv}")
-        argv = ["DICT", "--words", f"{words0_txt}", "--dict", f"{words0_xml}", "--validate", "--wikidata",
+        args = ["DICT", "--words", f"{title_path}", "--dict", f"{title_dict}", "--validate", "--wikidata",
                 "label"]
-        print(f" s2 {argv}")
-        amilib.run_command(argv)
-        # main(argv=argv)
+        print(f" s2 {args}")
+        amilib.run_command(args)
+        assert Path(title_dict).exists(), f"should write dictionary {title_dict}"
 
     # ==== helpers ====
     def teardown(self):

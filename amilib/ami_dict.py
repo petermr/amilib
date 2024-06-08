@@ -94,6 +94,7 @@ class AmiEntry:
     NAME_A = "name"
     WIKIDATA_A = "wikidataID"
     WIKIPEDIA_A = "wikipediaPage"
+    LINK = "link"
 
     REQUIRED_ATTS = {TERM_A}
     OPTIONAL_ATTS = {DESCRIPTION_A, NAME_A, WIKIDATA_A, WIKIPEDIA_A}
@@ -394,6 +395,16 @@ class AmiEntry:
         ami_entries = [AmiEntry.create_from_element(_element) for _element in _entries]
         return ami_entries
 
+    def add_hits_to_xml(self, dikt):
+        """
+        adds hits to XML element
+        :param diktt: Python dict with hits
+
+        """
+        for key in dikt.keys():
+            value = dikt.get(key)
+            link = ET.SubElement(self.element, AmiEntry.LINK)
+            link.attrib[WIKIDATA_ID] = str(value)
 
 
 class AmiDictionary:
@@ -902,14 +913,18 @@ class AmiDictionary:
         self.write_to_file(file)
         return file
 
-    def write_to_file(self, file):
-        """write dictiomary to file
+    def write_to_file(self, file, debug=True):
+        """write dictionary to file
         :param file: to write to
+        :param debug: debug output
         """
-        et = etree.ElementTree(self.root)
+        root = etree.ElementTree(self.root)
+        FileLib.force_mkparent(file)
         with open(file, 'wb') as f:
-            et.write(f, encoding="utf-8",
+            root.write(f, encoding="utf-8",
                      xml_declaration=True, pretty_print=True)
+        if debug:
+            print(f"wrote dictionary {self.title} to {file}")
 
     def add_wikidata_from_terms(self, allowed_descriptions=ANY):
 
@@ -945,6 +960,14 @@ class AmiDictionary:
 
     @classmethod
     def add_wikipedia_page_links(cls, entry, wikipedia_dict):
+        """
+        TODO improve documantation
+        iterates over items in wikipedia_dict
+        if item has "en" field adds  wikipediaPage attribute
+        otherwise creates list of subelemnts, one for each language
+        :param entry: dictionary entry
+        :
+        """
         for wp in wikipedia_dict.items():
             if wp[0] == "en":
                 entry.attrib[WIKIPEDIA_PAGE] = wp[1]

@@ -20,6 +20,7 @@ from SPARQLWrapper import SPARQLWrapper
 # local
 from amilib.ami_html import HtmlUtil
 from amilib.util import Util
+from amilib.xml_lib import HtmlLib, XmlLib
 
 logging.debug("loading wikimedia.py")
 
@@ -925,3 +926,41 @@ class WikidataExtractor:
         # 			if key=="P31":		# instance of
         # 				result["instance"]			= data["claims"][key][0]["mainsnak"]["datavalue"]["value"]["id"]
         return result
+
+class WikipediaPage:
+    from requests import request
+    WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
+
+    @classmethod
+    def lookup_wikipedia_page(cls, search_term):
+        """"""
+
+        "https://en.wikipedia.org/w/index.php?search=lulucx&title=Special%3ASearch&ns0=1"
+        url = f"{WikipediaPage.WIKIPEDIA_PHP}search={search_term}"
+        if url is None:
+            return None
+        try:
+            response = requests.get(url)
+            decode = response.content.decode("UTF-8")
+            html_content = HtmlLib.parse_html_string(decode)
+        except Exception as e:
+            print(f"HTML exception {e}")
+            return None
+
+        return html_content
+
+
+    @classmethod
+    def get_main_element(cls, html_element):
+        """gets main content from Wikipedia page
+        also cleans some non-content elements incl buttons, navs, etc.
+        """
+        if html_element is None:
+            return None
+        main_content = html_element.xpath(f".//main[@id='content']")[0]
+        XmlLib.remove_elements(main_content, xpath="//nav")
+        XmlLib.remove_elements(main_content, xpath="//noscript")
+        # XmlLib.remove_elements(main_content, xpath="//style")
+        XmlLib.remove_elements(main_content, xpath="//div[@id='p-lang-btn']")
+        return main_content
+
