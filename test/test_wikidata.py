@@ -2,7 +2,9 @@
 import logging
 import pprint
 import unittest
+import datetime
 from pathlib import Path
+import lxml.etree as ET
 
 import requests
 from lxml import etree, html
@@ -32,12 +34,28 @@ class WikipediaTests(unittest.TestCase):
     """
     def test_wikipedia_lookup(self):
         """tests lokup of wikipedia page by name"""
-        html_element = WikipediaPage.lookup_wikipedia_page("LULUCF")
-        assert html_element is not None
-        text_content = WikipediaPage.get_main_element(html_element)
+        search = "climate_words"
+        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{search}.txt")
+        words = Path(wordsfile).read_text().splitlines()
+        html_out = HtmlLib.create_html_with_empty_head_body()
+        new_body = HtmlLib.get_body(html_out)
+        for word in words:
+            print(f"\nword: {word}")
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page(word)
+            if wikipedia_page is not None:
+                wiki_main = wikipedia_page.get_main_element()
+                first_p = wikipedia_page.get_leading_para()
+                wikidata_href = wikipedia_page.get_wikidata_item()
+                print(f"wd {wikidata_href}")
+            else:
+                first_p = ET.Element("p")
+                first_p.text = "Could not find first para"
 
+            div = ET.SubElement(new_body, "div")
+            div.append(first_p)
+        path = Path(Resources.TEMP_DIR, "html", "terms", f"{search}.html")
+        XmlLib.write_xml(new_body, path, debug=True)
 
-        XmlLib.write_xml(text_content, Path(Resources.TEMP_DIR, "html", "lulucf.html"), debug=True)
 
 
 # NOTE some of these are lengthy (seconds) as they lookup on the Net

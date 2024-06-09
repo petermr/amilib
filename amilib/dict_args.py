@@ -195,10 +195,10 @@ class AmiDictArgs(AbstractArgs):
                 if qitem_hits is None:
                     print(f"no qitem_hits {term} in add_wikidata_to_dict")
                     continue
-                for i, qitem_hit in enumerate(qitem_hits):
-                    qitem_hit_dict = self.create_hit_dict_for(i, qitem_hit)
-                    term_dict[qitem_hit] = qitem_hit_dict
-                    ami_entry.add_hits_to_xml(qitem_hit_dict)
+                for i, qid in enumerate(qitem_hits):
+                    qitem_hit_dict = self.create_hit_dict_for(i, qid)
+                    term_dict[qid] = qitem_hit_dict
+                    ami_entry.add_hits_to_xml(qid, qitem_hit_dict)
                 # print(f"add_wikidata_to_dict {ami_entry.get_term()} {term_dict}")
         else:
             print(f"add_wikidata_to_dict requires existing dictionary")

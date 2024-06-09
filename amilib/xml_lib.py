@@ -487,6 +487,8 @@ class XmlLib:
         """
         if not path:
             return
+        if elem is None:
+            return
         path = Path(path)
         if mkdir:
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -498,7 +500,8 @@ class XmlLib:
 
                 xmlstr = lxml.etree.tostring(elem).decode(encoding)
             except Exception as e:
-                raise ValueError(f"****** cannot decode XML to {path}: {e} *******")
+                print(f"****** cannot decode XML to {path}: {e} *******")
+                return None
             try:
                 if debug:
                     print(f"writing XML {path}")

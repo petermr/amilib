@@ -1259,14 +1259,10 @@ class TestAmiDictionary(AmiAnyTest):
         print(f"words {title_txt}")
         with open(title_txt, "r") as f:
             print(f"words ==> {f.readlines()}")
-        title_dict = (f"{title}_dict.xml")
+        title_dict = Path(Resources.TEMP_DIR, "misc", f"{title}_dict.xml")
 
-        word_xml = f"{Path(Resources.TEMP_DIR, 'wordlist.xml')}"
-        # print(f" s1 {sys.argv}")
-        # sys.argv = ['/Applications/PyCharm CE.app/Contents/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py', 'ami_dict.py::test_process_args', "--words", f"{words0_txt}", "--dict", f"{words0_xml}", "--validate", "--wikidata", "label"]
-        # print(f" s2 {sys.argv}")
-        args = ["DICT", "--words", f"{title_path}", "--dict", f"{title_dict}", "--validate", "--wikidata",
-                "label"]
+        word_xml = f"{Path(Resources.TEMP_DIR, '{title}.xml')}"
+        args = ["DICT", "--words", f"{title_path}", "--dict", f"{title_dict}", "--wikidata", "level", "--wikipedia"]
         print(f" s2 {args}")
         amilib.run_command(args)
         assert Path(title_dict).exists(), f"should write dictionary {title_dict}"

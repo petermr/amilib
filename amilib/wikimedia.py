@@ -1,8 +1,10 @@
+import datetime
 import json
 import logging
 import os
 import re
 import sys
+from copy import copy
 from enum import Enum
 from pathlib import Path
 
@@ -21,6 +23,7 @@ from SPARQLWrapper import SPARQLWrapper
 from amilib.ami_html import HtmlUtil
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
+from test.resources import Resources
 
 logging.debug("loading wikimedia.py")
 
@@ -694,7 +697,29 @@ class WikidataPage:
         else:
             HtmlUtil.write_html_elem(self.root, sys.stdout, pretty_print=True)
 
-
+    # @classmethod
+    # def get_first_para(cls, html_element):
+    #     """
+    #     get the first paragraph (p) - normally the definition
+    #     :param html_element: trimmed html from Wikipedia
+    #     TODO make this an instance method
+    #     TODO deal with disambiguation
+    #     """
+    #     main_element = copy(WikipediaPage.get_main_element(html_element))
+    #     XmlLib.write_xml(html_element, Path(Resources.TEMP_DIR, "html", "junk", f"{datetime.datetime.now()}.html"), debug=True)
+    #     if main_element is None:
+    #         print(f"none main_element")
+    #         return None
+    #     ps = main_element.xpath(".//p")
+    #     print(f"len ps {len(ps)}")
+    #
+    #     for p in ps:
+    #         text = p.text
+    #         print(f"text:: {text[:50]}")
+    #     if len(ps) == 0:
+    #         print(f"no paras: ")
+    #     else:
+    #         return ps[0]
 
 
 class WikidataSparql:
@@ -931,9 +956,15 @@ class WikipediaPage:
     from requests import request
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
 
+    def __init__(self):
+        self.html_elem = None
+
     @classmethod
     def lookup_wikipedia_page(cls, search_term):
-        """"""
+        """
+        :param search_term: term/phrase to search with
+        :return: new WikipediaPage or None
+        """
 
         "https://en.wikipedia.org/w/index.php?search=lulucx&title=Special%3ASearch&ns0=1"
         url = f"{WikipediaPage.WIKIPEDIA_PHP}search={search_term}"
@@ -943,24 +974,60 @@ class WikipediaPage:
             response = requests.get(url)
             decode = response.content.decode("UTF-8")
             html_content = HtmlLib.parse_html_string(decode)
+            wikipedia_page = WikipediaPage()
+            wikipedia_page.html_elem = html_content
         except Exception as e:
             print(f"HTML exception {e}")
             return None
 
-        return html_content
+        return wikipedia_page
 
 
-    @classmethod
-    def get_main_element(cls, html_element):
+    def get_main_element(self):
         """gets main content from Wikipedia page
         also cleans some non-content elements incl buttons, navs, etc.
         """
-        if html_element is None:
+        try:
+            main_contents = self.html_elem.xpath(".//main")
+            main_content = main_contents[0]
+        except Exception as e:
+            print(f"except {e}")
             return None
-        main_content = html_element.xpath(f".//main[@id='content']")[0]
         XmlLib.remove_elements(main_content, xpath="//nav")
         XmlLib.remove_elements(main_content, xpath="//noscript")
         # XmlLib.remove_elements(main_content, xpath="//style")
         XmlLib.remove_elements(main_content, xpath="//div[@id='p-lang-btn']")
         return main_content
+
+    def get_leading_para(self):
+        """get first paragraph in main content (usually with definitions in lead sentence
+        """
+        main_elem = self.get_main_element()
+        ps = main_elem.xpath(".//p")
+        for p in ps:
+            text = XmlLib.get_text(p).strip()
+            if len(text) > 20:
+                return p
+        return None
+
+    def get_wikidata_item(self):
+        """
+<li id="t-wikibase" class="mw-list-item">
+<a href="https://www.wikidata.org/wiki/Special:EntityPage/Q13461160"
+    title="Structured data on this page hosted by Wikidata [g]" accesskey="g">
+<span>Wikidata item</span>
+</a>
+</li>
+        """
+        if self.html_elem is not None:
+            wds = self.html_elem.xpath(".//li[a[span[text()='Wikidata item']]]")
+            spans = self.html_elem.xpath(".//span[.='Wikidata item']")
+            print(f"spans: {spans}")
+            alist = self.html_elem.xpath(".//li/a[span[.='Wikidata item']]")
+            print (f"wds {wds}")
+            if len(wds) > 0:
+                alist = wds[0].xpath("a")
+                href = alist[0].attrib.get("href")
+                return href
+        return None
 

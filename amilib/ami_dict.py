@@ -395,16 +395,25 @@ class AmiEntry:
         ami_entries = [AmiEntry.create_from_element(_element) for _element in _entries]
         return ami_entries
 
-    def add_hits_to_xml(self, dikt):
+    def add_hits_to_xml(self, qid, dikt):
         """
         adds hits to XML element
         :param diktt: Python dict with hits
 
         """
+        incl_keys = ["title", "description"]
+
+        subelement = ET.SubElement(self.element, "div")
+        subelement.attrib["qid"] = qid
+        a = ET.SubElement(subelement, "a")
+        a.attrib["href"] = f"{WIKIDATA_URL}/{qid}"
+        a.text = "Wikidata"
         for key in dikt.keys():
-            value = dikt.get(key)
-            link = ET.SubElement(self.element, AmiEntry.LINK)
-            link.attrib[WIKIDATA_ID] = str(value)
+            if key in incl_keys:
+                value = dikt.get(key)
+                p = ET.SubElement(subelement, "p")
+                p.attrib["role"] = key
+                p.text = str(value)
 
 
 class AmiDictionary:
