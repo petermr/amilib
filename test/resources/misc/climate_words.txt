@@ -5,3 +5,8 @@ SIDS
 LULUCF
 radiative forcing
 methane
+antimicrobial resistance
+radiative forcing
+Paleoclimate
+Spatial hotspot
+permafrost

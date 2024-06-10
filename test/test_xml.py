@@ -7,7 +7,7 @@ from amilib.ami_html import HtmlStyle
 from amilib.xml_lib import XmlLib, HtmlLib
 
 from test.test_all import AmiAnyTest
-from test.test_wikidata import WikimediaTests
+from test.test_wikimedia import WikimediaTests
 
 
 class TestXml(AmiAnyTest):
@@ -149,6 +149,7 @@ if __name__ == "__main__":
     # if config_test:
     #     ConfigTests.tests()
     if wiki_test:
+        # TODO move to Wikimedia
         WikimediaTests.test_sparql_wrapper()
     if xml_test:
         XmlTests.test_replace_nodes_with_text()
