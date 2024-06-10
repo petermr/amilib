@@ -42,40 +42,7 @@ class WikipediaTests(unittest.TestCase):
         words = Path(wordsfile).read_text().splitlines()
         assert len(words) >= 10, f"wordsfile must have at least 10 words"
         outfile = Path(Resources.TEMP_DIR, "html", "terms", f"{search}.html")
-        self.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
-
-    def create_html_of_leading_wp_paragraphs(self, words, outfile=None, debug=True):
-        """
-        looks up Wikipedia entries for list of words and optionally writes to file
-        :param words: list of words/phrases to search for
-        :param outfile: optional output file for paragraphs
-        :param debug: debug output
-        :return: html file with list of paragraphs
-        """
-        html_out = HtmlLib.create_html_with_empty_head_body()
-        new_body = HtmlLib.get_body(html_out)
-        for word in words:
-            if debug:
-                print(f"\nword: {word}")
-            first_p = self.get_leading_paragraph_for_word(new_body, word)
-            div = ET.SubElement(new_body, "div")
-            div.append(first_p)
-        if outfile:
-            XmlLib.write_xml(new_body, outfile, debug=debug)
-        return html_out
-
-    def get_leading_paragraph_for_word(self, new_body, word):
-
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page(word)
-        if wikipedia_page is not None:
-            wiki_main = wikipedia_page.get_main_element()
-            first_p = wikipedia_page.get_leading_para()
-            wikidata_href = wikipedia_page.get_wikidata_item()
-            print(f"wd {wikidata_href}")
-        else:
-            first_p = ET.Element("p")
-            first_p.text = "Could not find first para"
-        return first_p
+        WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
 
 
 # NOTE some of these are lengthy (seconds) as they lookup on the Net

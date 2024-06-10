@@ -63,7 +63,7 @@ DICT_NAME = "dict_name"
 ARTICLEs = [
     ".*((scientific|journal)\\s+)?article.*",
     ".*((scientific|academic)\\s+)?journal.*"
-     ]
+]
 ARTS = [".*(film|song|album)"]
 
 
@@ -98,7 +98,6 @@ class WikidataLookup:
         self.exact_lookup = exact_lookup
         self.hits_dict = dict()
 
-
     def lookup_wikidata(self, term):
         """
         Looks up term in Wikidata and gets Q number and descriptiom
@@ -108,7 +107,6 @@ class WikidataLookup:
         :param term: word or phrase to lookup
         :return: triple (e.g. hit0_id, hit0_description, wikidata_hits)
         """
-
 
         if not term:
             logging.warning("null term")
@@ -178,7 +176,7 @@ class WikidataLookup:
         sub_dict = {}
         wikidata_dict[qitem] = sub_dict
         # make title from text children not tooltip
-        text = ''.join(result_heading_a.itertext()) # acetone (Q49546)
+        text = ''.join(result_heading_a.itertext())  # acetone (Q49546)
         title = text.split("(Q")[0]
         sub_dict[TITLE] = title
         find_arg = "./div[@class='" + SEARCH_RESULT + "']/span"
@@ -570,7 +568,6 @@ class WikidataPage:
         aliases = [li.text for li in li_list]
         return
 
-
     def get_id(self):
         """
         get id from <span class="wikibase-title-id">(Q42)</span>
@@ -670,23 +667,22 @@ class WikidataPage:
         :param titles: list of previously extracted wikidata labels
         NOT YET USED
         """
-        if labels == None:
+        if labels is None:
             logging.info(f"no labels given")
             return None
-        if ids == None:
+        if ids is None:
             logging.error(f"must give list of ids")
             return None
         if len(labels) != len(ids):
             logging.error(f"labels {labels} and ids {ids} are different lengths")
             return None
-        if wikidata_label == None:
+        if wikidata_label is None:
             logging.error(f"must give required wikidata label")
             return None
         idlist = []
         for label, id in zip(labels, ids):
             if label_match(label, wikidata_label, method, ignorecase):  # METHOD NOT WRITTEN
                 idlist.append(id)
-
 
     """<div class="wikibase-entitytermsview-heading-description">chemical compound</div>"""
 
@@ -826,7 +822,6 @@ class ParserWrapper:
         return root
 
 
-
 class WikidataExtractor:
     """Thanks to Awena for showing the approach"""
     VERSION = "0.1"
@@ -952,6 +947,7 @@ class WikidataExtractor:
         # 				result["instance"]			= data["claims"][key][0]["mainsnak"]["datavalue"]["value"]["id"]
         return result
 
+
 class WikipediaPage:
     from requests import request
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
@@ -981,7 +977,6 @@ class WikipediaPage:
             return None
 
         return wikipedia_page
-
 
     def get_main_element(self):
         """gets main content from Wikipedia page
@@ -1024,10 +1019,44 @@ class WikipediaPage:
             spans = self.html_elem.xpath(".//span[.='Wikidata item']")
             print(f"spans: {spans}")
             alist = self.html_elem.xpath(".//li/a[span[.='Wikidata item']]")
-            print (f"wds {wds}")
+            print(f"wds {wds}")
             if len(wds) > 0:
                 alist = wds[0].xpath("a")
                 href = alist[0].attrib.get("href")
                 return href
         return None
 
+    @classmethod
+    def create_html_of_leading_wp_paragraphs(cls, words, outfile=None, debug=True):
+        """
+        looks up Wikipedia entries for list of words and optionally writes to file
+        :param words: list of words/phrases to search for
+        :param outfile: optional output file for paragraphs
+        :param debug: debug output
+        :return: html file with list of paragraphs
+        """
+        html_out = HtmlLib.create_html_with_empty_head_body()
+        new_body = HtmlLib.get_body(html_out)
+        for word in words:
+            if debug:
+                print(f"\nword: {word}")
+            first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
+            div = ET.SubElement(new_body, "div")
+            div.append(first_p)
+        if outfile:
+            XmlLib.write_xml(new_body, outfile, debug=debug)
+        return html_out
+
+    @classmethod
+    def get_leading_paragraph_for_word(cls, new_body, word):
+
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page(word)
+        if wikipedia_page is not None:
+            wiki_main = wikipedia_page.get_main_element()
+            first_p = wikipedia_page.get_leading_para()
+            wikidata_href = wikipedia_page.get_wikidata_item()
+            print(f"wd {wikidata_href}")
+        else:
+            first_p = ET.Element("p")
+            first_p.text = "Could not find first para"
+        return first_p
