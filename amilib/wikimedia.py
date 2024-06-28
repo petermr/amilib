@@ -1039,7 +1039,7 @@ class WikipediaPage:
             if debug:
                 print(f"\nword: {word}")
             first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
-            WikipediaPage.get_tuple_for_first_paragraph(first_p)
+            WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
             div = ET.SubElement(new_body, "div")
             div.append(first_p)
         if outfile:
@@ -1060,18 +1060,23 @@ class WikipediaPage:
 
         return first_p
 
-    def get_tuple_for_first_paragraph(self):
+    @classmethod
+    def get_tuple_for_first_paragraph(cls, para, debug=True):
         """empirical approach to extract:
           * term word/phrase
           * abbreviation (in brackets)
           * definition (first sentence)
           * definition (rest of para)
+          :param para: para to extract assumed to be first
+          :return: (para, term, sentence, abbrev)
           """
+        if not para:
+            return None
         sentence =None
         term = None
         abbrev = None
 
-        para = self.get_leading_para()
+        # para = self.get_leading_para()
         rex = re.compile("(.*\\.)\\s+\\.*")
         if para is None:
             return None
@@ -1088,14 +1093,18 @@ class WikipediaPage:
 
         # split first sentence
         for tb in para.xpath("./text()|*"):
-            try:
-                print(f"<{tb.tag}>{HtmlUtil.get_text_content(tb)}</{tb.tag}>")
-            except Exception as e:
-                print(f"{tb}")
+            if debug:
+                try:
+                    print(f"<{tb.tag}>{HtmlUtil.get_text_content(tb)}</{tb.tag}>")
+                except Exception as e:
+                    print(f"{tb}")
         for text in para.xpath("./text()|./b/text()"):
-            print(f"t> {text}")
+            if debug:
+                print(f"t> {text}")
 
             match = rex.match(text)
             if match:
-                print(f">> {match.group(1)}")
+                if debug:
+                    print(f">> {match.group(1)}")
+
         return (para, term, sentence, abbrev)

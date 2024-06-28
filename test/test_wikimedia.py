@@ -49,10 +49,14 @@ class WikipediaTests(unittest.TestCase):
         """
         looks up page and returns first para tuple
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page("Paleoarctic")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page("Palearctic")
         assert type(wikipedia_page) is WikipediaPage
-        page_tuple = wikipedia_page.get_tuple_for_first_paragraph()
+        leading_para = wikipedia_page.get_leading_para()
+        print (f"leading {ET.tostring(leading_para)}")
+        page_tuple = WikipediaPage.get_tuple_for_first_paragraph(leading_para)
         assert page_tuple is not None
+        print(f"tuple {page_tuple}")
+        string ="The Palearctic or Palaearctic is the largest of the eight biogeographic realms of the Earth."
 
 
 # NOTE some of these are lengthy (seconds) as they lookup on the Net

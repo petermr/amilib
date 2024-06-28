@@ -498,14 +498,16 @@ class AmiDictionary:
         return dictionary
 
     @classmethod
-    def create_dictionary_from_words(cls, terms, title=None, desc=None, wikilangs=None, wikidata=False, outdir=None):
+    def create_dictionary_from_words(cls, terms, title=None, desc=None, wikilangs=None, wikidata=False, outdir=None,
+                                     debug=True):
         """use raw list of words and optionally lookup each. choosing WD page and using languages
-        :param terms: list of words/phrases
+        :param terms: list of words/phrases,
         :param title: for dictionary object and file
         :param desc: description of dictionary
         :param wikilangs: languages to use in Wikidata default EN)
         :param wikidata: if true lookup wikidata
         :param outdir: if not None write dictionary to outpath=<outdir>/<title>.xml
+        :param debug: debug
         :return dictionary,outpath tuple (outpath may be None)
         """
         if title is None:
@@ -524,6 +526,8 @@ class AmiDictionary:
             outpath = Path(outdir, title + ".xml")
             with open(outpath, "wb") as f:
                 f.write(lxml.etree.tostring(dictionary.root))
+            if debug:
+                print(f"wrote dictionary {outpath}")
 
         return dictionary, outpath
 
@@ -576,13 +580,18 @@ class AmiDictionary:
         self.entry_by_term[term] = entry
 
     @classmethod
-    def create_dictionary_from_wordfile(cls, wordfile=None, desc=None, wikidata=False, outdir=None, title=None):
+    def create_dictionary_from_wordfile(cls, wordfile=None, desc=None, wikidata=False, outdir=None, title=None,
+                                        max_entries=1000000, debug=True):
         """
         :param wordfile: contains lists of words and file stem gives title
         :param desc: description of dictionary
         :param wikilangs: languages to use in Wikidata default EN)
         :param wikidata: if true lookup wikidata
         :param outdir: if not None write dictionary to outpath=<outdir>/<title>.xml
+        :param title: title (required to create outfile) max_lengh 30, no spaces, [a-z0-9] will be lowercased
+            if absent taken from wordfile
+        :param max_entries: maximum entries (default 1000000)
+        :param debug: output debug
         :return dictionary,outpath tuple (outpath may be None)
 
         """
@@ -591,12 +600,15 @@ class AmiDictionary:
         wordpath = Path(wordfile)
         with open(wordpath, "r") as f:
             words = [line.strip() for line in f.readlines()]
+        words = words[:max_entries] # maximum words
         stem = Path(wordfile).stem
         if not title:
             title = stem
+        title = title.lower().replace(" ", "")
+
         print(f"creating dictionary title = {title}")
         dictionary, outpath = cls.create_dictionary_from_words(terms=words, title=title, desc=desc, wikidata=wikidata,
-                                                               outdir=outdir)
+                                                               outdir=outdir, debug=debug)
         return dictionary, outpath
 
     #    class AmiDictionary:
