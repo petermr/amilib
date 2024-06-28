@@ -1267,9 +1267,46 @@ class TestAmiDictionary(AmiAnyTest):
         amilib.run_command(args)
         assert Path(title_dict).exists(), f"should write dictionary {title_dict}"
 
+class CreateDictionaryTest(AmiAnyTest):
+    """
+    test methods which create dictionaries
+    (from lists of strings, files, urls, sparql etc.
+
+    """
+
+    def test_create_dictionary_from_list_of_strings_in_file(self):
+        """
+        read file with lists of strings and create AmiDictionary
+        """
+        out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
+
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "ar5_wg3_food_security_words.txt")
+        assert words_file.exists(), f"{words_file} should exist"
+
+# create dictioary without save or lookup
+        words_dictionary, _ = AmiDictionary.create_dictionary_from_wordfile(wordfile=words_file)
+        assert words_dictionary is not None, (f"words dictionary from {words_file} must not be None")
+
+        assert words_dictionary.get_entry_count() == 60, f"should have 60 entries , found {words_dictionary.get_entry_count()}"
+
+    def test_createdictionary_from_list_of_strings_in_file_and_lookup_wikidata(self):
+# add title, description, and save
+        out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "ar5_wg3_food_security_words.txt")
+
+        description = "food security terms in AR5_WG3_ch_5 selected by Anmol Negi"
+        # add title, description, and save
+        description = "food security terms in AR5_WG3_ch_5 selected by Anmol Negi and wikidata lookup"
+        words_dictionary, outfile = AmiDictionary.create_dictionary_from_wordfile(
+            wordfile=words_file, desc=description, title="food_security", outdir=out_dict_dir, wikidata=True)
+        assert words_dictionary is not None, f"words dictionary from {words_file} must not be None"
+        assert words_dictionary.get_entry_count() == 60, f"should have 60 entries , found {words_dictionary.get_entry_count()}"
+        assert outfile.exists(), f"should create {outfile}"
+
     # ==== helpers ====
     def teardown(self):
         dict1_root = None
+
 
 
 def main(argv=None):
