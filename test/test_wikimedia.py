@@ -37,12 +37,22 @@ class WikipediaTests(unittest.TestCase):
     def test_wikipedia_lookup(self):
         """tests lookup of wikipedia page by name"""
         search = "climate_words"
+        # contains list of words to search for
         wordsfile = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{search}.txt")
         print(f"searching {wordsfile}")
         words = Path(wordsfile).read_text().splitlines()
         assert len(words) >= 10, f"wordsfile must have at least 10 words"
         outfile = Path(Resources.TEMP_DIR, "html", "terms", f"{search}.html")
         WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
+
+    def test_wikipedia_page_tuple(self):
+        """
+        looks up page and returns first para tuple
+        """
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page("Paleoarctic")
+        assert type(wikipedia_page) is WikipediaPage
+        page_tuple = wikipedia_page.get_tuple_for_first_paragraph()
+        assert page_tuple is not None
 
 
 # NOTE some of these are lengthy (seconds) as they lookup on the Net

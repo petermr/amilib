@@ -1017,9 +1017,7 @@ class WikipediaPage:
         if self.html_elem is not None:
             wds = self.html_elem.xpath(".//li[a[span[text()='Wikidata item']]]")
             spans = self.html_elem.xpath(".//span[.='Wikidata item']")
-            print(f"spans: {spans}")
             alist = self.html_elem.xpath(".//li/a[span[.='Wikidata item']]")
-            print(f"wds {wds}")
             if len(wds) > 0:
                 alist = wds[0].xpath("a")
                 href = alist[0].attrib.get("href")
@@ -1041,6 +1039,7 @@ class WikipediaPage:
             if debug:
                 print(f"\nword: {word}")
             first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
+            WikipediaPage.get_tuple_for_first_paragraph(first_p)
             div = ET.SubElement(new_body, "div")
             div.append(first_p)
         if outfile:
@@ -1055,8 +1054,48 @@ class WikipediaPage:
             wiki_main = wikipedia_page.get_main_element()
             first_p = wikipedia_page.get_leading_para()
             wikidata_href = wikipedia_page.get_wikidata_item()
-            print(f"wd {wikidata_href}")
         else:
             first_p = ET.Element("p")
             first_p.text = "Could not find first para"
+
         return first_p
+
+    def get_tuple_for_first_paragraph(self):
+        """empirical approach to extract:
+          * term word/phrase
+          * abbreviation (in brackets)
+          * definition (first sentence)
+          * definition (rest of para)
+          """
+        sentence =None
+        term = None
+        abbrev = None
+
+        para = self.get_leading_para()
+        rex = re.compile("(.*\\.)\\s+\\.*")
+        if para is None:
+            return None
+        # find first full stop in normal text (not bold)
+        texts = para.xpath("./text()")
+        for text in texts:
+            # print(f"text> {text}")
+            pass
+
+        bolds = para.xpath("./b")
+        for bold in bolds:
+            # print(f"bold> {bold.text}")
+            pass
+
+        # split first sentence
+        for tb in para.xpath("./text()|*"):
+            try:
+                print(f"<{tb.tag}>{HtmlUtil.get_text_content(tb)}</{tb.tag}>")
+            except Exception as e:
+                print(f"{tb}")
+        for text in para.xpath("./text()|./b/text()"):
+            print(f"t> {text}")
+
+            match = rex.match(text)
+            if match:
+                print(f">> {match.group(1)}")
+        return (para, term, sentence, abbrev)

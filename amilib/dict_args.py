@@ -3,6 +3,14 @@ import json
 from collections import Counter
 from pathlib import Path
 
+from amilib.ami_args import AbstractArgs
+try:
+
+    from amilib.ami_dict import AmiDictionary, AmiEntry
+except Exception as e:
+    pass
+from amilib.file_lib import FileLib
+from amilib.wikimedia import WikidataPage, WikidataLookup
 
 # commandline
 DELETE = "delete"
@@ -18,14 +26,6 @@ WORDS = "words"
 WIKIPEDIA = "wikipedia"
 WIKIDATA = "wikidata"
 
-from amilib.ami_args import AbstractArgs
-try:
-
-    from amilib.ami_dict import AmiDictionary, AmiEntry
-except Exception as e:
-    pass
-from amilib.file_lib import FileLib
-from amilib.wikimedia import WikidataPage, WikidataLookup
 
 logger = FileLib.get_logger(__file__)
 
@@ -86,7 +86,6 @@ class AmiDictArgs(AbstractArgs):
         # from amilib.ami_dict import DELETE, DICT, FILTER, LANGUAGE, METADATA, REPLACE, SYNONYM
         # from amilib.ami_dict import VALIDATE, WIKIDATA, WIKIPEDIA, WORDS
 
-
         """
         self.parser.add_argument(f"--dict", type=str, nargs=1, help="path for dictionary (existing = edit; new = create")
         self.parser.add_argument(f"--metadata", type=str, nargs="+", help="metadata item/s to add")
@@ -101,7 +100,6 @@ class AmiDictArgs(AbstractArgs):
         """
         logger.debug(f"DICT process_args {self.arg_dict}")
         if not self.arg_dict:
-
             print(f"no arg_dict given, no actiom")
 
         self.delete = self.arg_dict.get(DELETE)
@@ -136,14 +134,23 @@ class AmiDictArgs(AbstractArgs):
                 status = self.validate_dict()
                 print(f"validation finished")
 
-        if self.wikidata:
+        # for argument --wikidata
+        print(f"wikidata: {self.wikidata}")
+        if self.wikidata is not None:
             hit_dict = self.add_wikidata_to_dict()
             status = self.validate_dict()
 
+        # for argument --wikipedia
+        if self.wikipedia:
+            # TODO
+            print(f"Wikipedia lookup NYI")
+            # hit_dict = self.add_wikipedia_to_dict()
+            # status = self.validate_dict()
+
+        print(f"writing to {self}")
         if self.dictfile:
             if self.ami_dict:
                 self.ami_dict.write_to_file(self.dictfile, debug=True)
-
 
     # class AmiDictArgs:
 
@@ -233,6 +240,11 @@ class AmiDictArgs(AbstractArgs):
                 print(f".....{key} item_title {item['title']}")
 
         return hit_dict
+
+    def add_wikipedia_to_dict(self):
+        """NYI
+        """
+        print("add_wikipedia_to_dict NYI")
 
     def create_hit_dict_for(self, serial, qitem_hit):
         qitem_hit_dict = dict()
