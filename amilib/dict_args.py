@@ -18,6 +18,7 @@ DICT = "dict"
 FILTER = "filter"
 LANGUAGE = "language"
 METADATA = "metadata"
+OUTPATH = "outpath"
 REPLACE = "replace"
 SYNONYM = "synonym"
 VALIDATE = "validate"
@@ -38,6 +39,7 @@ class AmiDictArgs(AbstractArgs):
         super().__init__()
         self.dictfile = None
         self.metadata = None
+        self.filter = None
         self.language = None
         self.words = None
         self.delete = None
@@ -65,6 +67,8 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{LANGUAGE}", type=str, nargs="+",
                                  help="list of 2-character codes to consider (default = ['en'] (NYI)")
         self.parser.add_argument(f"--{METADATA}", type=str, nargs="+", help="metadata item/s to add (NYI)")
+        self.parser.add_argument(f"--{OUTPATH}", type=str, nargs="+",
+                                 help="output file ")
         self.parser.add_argument(f"--{REPLACE}", type=str, nargs="+",
                                  help="replace any existing entries/attributes (default preserve) (NYI)")
         self.parser.add_argument(f"--{SYNONYM}", type=str, nargs="+",
@@ -108,6 +112,7 @@ class AmiDictArgs(AbstractArgs):
         self.language = self.arg_dict.get(LANGUAGE)
         self.metadata = self.arg_dict.get(METADATA)
         self.replace = self.arg_dict.get(REPLACE)
+        self.outpath = self.arg_dict.get(OUTPATH)
         self.synonym = self.arg_dict.get(SYNONYM)
         self.validate = self.arg_dict.get(VALIDATE)
         self.wikidata = self.arg_dict.get(WIKIDATA)
@@ -116,8 +121,9 @@ class AmiDictArgs(AbstractArgs):
 
         if self.dictfile:
             print(f"writing to {self.dictfile}")
+            # is this right??
             if self.ami_dict is not None:
-                with open(self.dictfile, "w") as f:
+                with open(self.dictfile, "w"):
                     self.ami_dict.write(self.dictfile)
                     print(f"wrote dict: {self.dictfile}")
             else:

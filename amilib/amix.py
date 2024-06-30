@@ -143,15 +143,19 @@ class AmiLib:
         """parses cmdline, runs command and outputs symbols
 
         :param args: either a string or a list of strings
+        NOTE: if any arg in noty a string it is transformed into one
 
         if args is a string we split it at spaces into a list of strings
 
         """
         logger.debug(f"********** raw arglist {args}")
+        # split space_separated string into strings
         if isinstance(args, str):
             args = args.strip()
             args = args.split(" ")
 
+        # convert all args to str
+        args = [str(s) for s in args]
         logger.warning(f"command: {args}")
         test_catch = False
         if test_catch:  # try to trap exception

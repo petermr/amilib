@@ -6,15 +6,17 @@ import re
 import traceback
 import unittest
 from pathlib import Path
+# from parametrized import parametrized
 
 import lxml
 from lxml import etree
 from lxml.etree import XMLSyntaxError, _Element
+import pytest
 
 # local
 from amilib.ami_dict import AmiDictionary, AmiEntry, AMIDictError, \
     AmiDictValidator, NAME, TITLE, TERM, LANG_UR, VERSION, WIKIDATA_ID
-from amilib.dict_args import WIKIPEDIA
+from amilib.file_lib import FileLib
 from amilib.amix import AmiLib
 from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
@@ -280,6 +282,7 @@ class TestAmiDictionary(AmiAnyTest):
             error_list = validator.get_xml_declaration_error_list()
             assert not error_list
 
+    @pytest.mark.url
     def test_validate_url_dict(self):
         """
         tests that historic dictionaries read into validator
@@ -300,10 +303,6 @@ class TestAmiDictionary(AmiAnyTest):
             error_list = validator.get_error_list()
             print(f"error_list {error_list}")
 
-    # def test_dictionary_has_xml_declaration_with_encoding_method(self):
-    #     amidict = AmiDictionary.create_from_xml_file(self.setup()[DICTFILE1])
-    #     amidict.has_xml_declaration_with_utf8()
-
     # AmiDictionary
 
     def test_can_create_ami_dict_from_file(self):
@@ -313,26 +312,44 @@ class TestAmiDictionary(AmiAnyTest):
         amidict = AmiDictionary.create_from_xml_file(one_entry_path)
         assert amidict is not None
 
+    @pytest.mark.simple
     def test_dictionary_is_an_ami_dictionary(self):
+        """
+        test dictionary with one entry
+        """
         setup_dict = self.setup()
         amidict = setup_dict[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
 
     def test_dictionary_get_entries(self):
+        """
+        unit test
+        """
         setup_dict = self.setup()
         amidict = setup_dict[ONE_ENTRY_DICT]
         entries = amidict.get_lxml_entries()
         assert entries is not None
 
+    @pytest.mark.simple
     def test_dictionary_contains_one_entry(self):
+        """
+        unit test
+        """
         amidict = self.setup()[ONE_ENTRY_DICT]
         assert amidict.get_entry_count() == 1, f"dict should have 1 entry, found  {amidict.get_entry_count()}"
 
     def test_get_first_entry(self):
+        """
+        unit test
+        """
         amidict = self.setup()[ONE_ENTRY_DICT]
         assert amidict.get_first_ami_entry() is not None
 
     def test_get_attribute_names(self):
+        """
+        unit test
+        """
+
         first_entry = self.setup()[ONE_ENTRY_DICT].get_first_ami_entry()
         assert type(first_entry) is AmiEntry
         attrib_names = {name for name in first_entry.element.attrib}
@@ -340,35 +357,45 @@ class TestAmiDictionary(AmiAnyTest):
 
     def test_get_term_of_first_entry(self):
         """
-        tests that we can retrieve the `name` value from an element
-        Also
+        tests that we can retrieve the `term` value from an element
+
         """
         amidict = self.setup()[ONE_ENTRY_DICT]
         assert amidict.get_first_entry().attrib[TERM] == "Douglas Adams"
 
     def test_get_name_of_first_entry(self):
+        """
+        unit test
+        """
+
         amidict = self.setup()[ONE_ENTRY_DICT]
         assert amidict.get_first_entry().attrib[NAME] == "Douglas Adams"
 
     def test_get_wikidata_of_first_entry(self):
+        """
+        unit test
+        """
+
         amidict = self.setup()[ONE_ENTRY_DICT]
         assert amidict.get_first_entry().attrib[WIKIDATA_ID] == "Q42"
 
     def test_get_synonym_count(self):
+        """
+        unit test
+        """
         amidict = self.setup()[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
         assert len(amidict.get_first_ami_entry().get_synonyms()) == 2
 
     def test_get_synonym_by_language(self):
+        """
+        unit test
+        """
+
         amidict = self.setup()[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
         elem = amidict.get_first_ami_entry().get_synonym_by_language(LANG_UR).element
         assert "ڈگلس ایڈمس" == ''.join(elem.itertext())
-
-    def test_dictionary_creation(self):
-        amidict = AmiDictionary.create_minimal_dictionary()
-        assert amidict is not None
-        assert amidict.get_version() == STARTING_VERSION
 
     def test_add_entry_with_term_to_zero_entry_dict(self):
         """
@@ -428,13 +455,18 @@ class TestAmiDictionary(AmiAnyTest):
         assert amidict.get_entry_count() == len(terms) + len(terms1)
 
     def test_add_list_of_entries_from_list_of_string_with_duplicates_and_replace(self):
+        """
+        creates dictionary from list of words and force replacement of duplicates
+        """
         terms = ["foo", "bar", "plugh", "xyzzy", "bar"]
         amidict = AmiDictionary.create_minimal_dictionary()
         amidict.add_entries_from_words(terms, duplicates="replace")
         assert amidict.get_entry_count() == 4, f"'bar' should be present"
 
     def test_add_list_of_entries_from_list_of_string_with_duplicates_and_no_replace(self):
-        """add list of terms which contains duplicate and raise error"""
+        """
+        add list of terms which contains duplicate and raise error
+        """
         terms = ["foo", "bar", "plugh", "xyzzy", "bar"]
         amidict = AmiDictionary.create_minimal_dictionary()
         try:
@@ -1236,35 +1268,30 @@ class TestAmiDictionary(AmiAnyTest):
         assert disambig_dict.get_entry_count() == 9, f"dictionary should have 9 entries"
         assert disambig_dict.get_entry_ids() == ['____alloaromadendrene']
 
-    def test_dict_commands(self):
+    def test_dict_commands_COMMAND_OK(self):
+        """
+        prints help
+        """
         amilib = AmiLib()
         amilib.run_command(["--help"])
 
         amilib.run_command(["DICT", "--help"])
 
-    def test_make_dict_from_file(self):
+    def test_make_dict_from_file_OK(self):
         amilib = AmiLib()
         words_file = Path(TEST_RESOURCE_DIR, "misc", "climate_words.txt")
-        amilib.run_command(["DICT", "--words", str(words_file)])
+        dictfile = Path(Resources.TEMP_DIR, "misc", "climate_words.xml")
+        expected_count = 11
+        FileLib.delete_file(dictfile)
+        amilib.run_command(["DICT",
+                            "--words", words_file,
+                            "--dict", dictfile
+                            ])
+        assert Path(dictfile).exists()
+        ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)
+        assert (c := ami_dictionary.get_entry_count()) == expected_count, \
+            f"dictionary should contain {expected_count} found {c}"
 
-    def test_process_args_build_dictionary(self):
-        """commandline
-        reads list of words, creates a dictionay, looks up Wikidata"""
-        amilib = AmiLib()
-        title = "climate_words"
-        title_path = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{title}.txt")
-        assert title_path.exists(), f"{title_path} should exist"
-        title_txt = f"{title_path}"
-        print(f"words {title_txt}")
-        with open(title_txt, "r") as f:
-            print(f"words ==> {f.readlines()}")
-        title_dict = Path(Resources.TEMP_DIR, "misc", f"{title}_dict.xml")
-
-        word_xml = f"{Path(Resources.TEMP_DIR, '{title}.xml')}"
-        args = ["DICT", "--words", f"{title_path}", "--dict", f"{title_dict}", "--wikidata", "level", "--wikipedia"]
-        print(f" s2 {args}")
-        amilib.run_command(args)
-        assert Path(title_dict).exists(), f"should write dictionary {title_dict}"
 
 class DictionaryCreationTest(AmiAnyTest):
     """
@@ -1273,20 +1300,50 @@ class DictionaryCreationTest(AmiAnyTest):
 
     """
 
-    def test_create_dictionary_from_list_of_strings_in_file(self):
+    def test_dictionary_creation(self):
+        """
+        unit test
+        """
+        amidict = AmiDictionary.create_minimal_dictionary()
+        assert amidict is not None
+        assert amidict.get_version() == STARTING_VERSION
+
+
+    def test_create_dictionary_from_list_of_strings_in_file(dictionary
+#                                                                         , words_txt, entry_count
+                                                                         ):
         """
         read file with lists of strings and create AmiDictionary
         """
-        out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
-        words_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate",
-                          "ar5_wg3_food_security_words.txt")
-        assert words_file.exists(), f"{words_file} should exist"
+        dictionary = "climate"
+        words_txt = "ar5_wg3_food_security_words.txt"
         entry_count = 60
+        dictionary_in_dir = Path(Resources.TEST_RESOURCES_DIR, "dictionary")
+        out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
+        words_file = Path(dictionary_in_dir, dictionary, words_txt)
+        assert words_file.exists(), f"{words_file} should exist"
 # create dictionary without save or lookup
         words_dictionary, _ = AmiDictionary.create_dictionary_from_wordfile(wordfile=words_file)
         assert words_dictionary is not None, (f"words dictionary from {words_file} must not be None")
 
         assert words_dictionary.get_entry_count() == entry_count, f"should have {entry_count} entries , found {words_dictionary.get_entry_count()}"
+
+# parametrize doesn't work easily withe unittest subclasses
+    # @pytest.mark.parametrize("dictionary,words_txt,entry_count",
+    #                          [("climate", "ar5_wg3_food_security_words.txt", 60)])
+    # def test_create_dictionary_from_list_of_strings_in_file_parameterize(dictionary, words_txt, entry_count):
+    #     """
+    #     read file with lists of strings and create AmiDictionary
+    #     """
+    #     dictionary_in_dir = Path(Resources.TEST_RESOURCES_DIR, "dictionary")
+    #     out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
+    #     words_file = Path(dictionary_in_dir, dictionary, words_txt)
+    #     assert words_file.exists(), f"{words_file} should exist"
+    #     # create dictionary without save or lookup
+    #     words_dictionary, _ = AmiDictionary.create_dictionary_from_wordfile(wordfile=words_file)
+    #     assert words_dictionary is not None, (f"words dictionary from {words_file} must not be None")
+    #
+    #     assert words_dictionary.get_entry_count() == entry_count, f"should have {entry_count} entries , found {words_dictionary.get_entry_count()}"
 
     def test_createdictionary_from_list_of_strings_in_file_and_lookup_wikidata(self):
 # add title, description, and save
@@ -1305,6 +1362,50 @@ class DictionaryCreationTest(AmiAnyTest):
         assert words_dictionary.get_entry_count() == max_entries, \
             f"should have {max_entries} entries , found {words_dictionary.get_entry_count()}"
         assert outfile.exists(), f"should create {outfile}"
+
+
+    def test_process_args_build_dictionary_add_wikidata_CMD_OK(self):
+        """commandline
+        reads list of words, creates a dictionary, looks up Wikidata
+        Wikidata has <entry>s in in format:
+    <entry name="UNFCCC" term="UNFCCC">
+    <div qid="Q21707860">
+        <a href="wikidataURL/Q21707860">Wikidata</a>
+        <p role="title">Paris Agreement</p>
+        <p role="description">international agreement from 12 December 2015 within the United Nations Framework Convention on Climate Change (UNFCCC) dealing with greenhouse gas emissions mitigation, adaptation and finance starting in the year 2020</p>
+    </div>
+    <div qid="Q208645">
+        <a href="wikidataURL/Q208645">Wikidata</a>
+        <p role="title">United Nations Framework Convention on Climate Change</p>
+        <p role="description">international treaty</p>
+    </div>
+    ...
+
+        Note that wikidata lookup does not necessarily put the best answers first
+        """
+        amilib = AmiLib()
+        title = "climate_words"
+        title_path = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{title}.txt")
+        assert title_path.exists(), f"{title_path} should exist"
+        title_txt = f"{title_path}"
+        print(f"words {title_txt}")
+        with open(title_txt, "r") as f:
+            print(f"words ==> {f.readlines()}")
+        title_dict = Path(Resources.TEMP_DIR, "misc", f"{title}_dict.xml")
+        FileLib.delete_file(title_dict)
+
+        word_xml = f"{Path(Resources.TEMP_DIR, '{title}.xml')}"
+        args = ["DICT",
+                "--words", f"{title_path}",
+                "--dict", f"{title_dict}",
+                "--wikidata"
+                # "--wikidata", "level",
+                # "--wikipedia"
+                ]
+        print(f" s2 {args}")
+        amilib.run_command(args)
+        assert Path(title_dict).exists(), f"should write dictionary {title_dict}"
+        print(f"wrote {title_dict}")
 
     # ==== helpers ====
     def teardown(self):
