@@ -34,15 +34,40 @@ class WikipediaTests(unittest.TestCase):
     """
     tests Wikipedia lookup
     """
-    def test_wikipedia_lookup(self):
+    def test_wikipedia_lookup_climate_words_anmol(self):
         """tests lookup of wikipedia page by name"""
-        search = "climate_words"
+        stem = "climate_words" # file stem
+        min_term_count = 10
+        self.search_wikipedia_for_terms(min_term_count, stem)
+
+    def test_wikipedia_lookup_climate_words_parijat(self):
+        """tests lookup of wikipedia page by name"""
+        stem = "carbon_cycle" # file stem
+        self.search_wikipedia_for_terms(stem)
+
+    def test_wikipedia_lookup_several_word_lists(self):
+        """tests multiple lookup of wikipedia page by name"""
+        wordlists = [
+            # "carbon_cycle",
+            # "climate_words",
+            "food_ecosystem"
+        ]
+        for stem in wordlists:
+            self.search_wikipedia_for_terms(stem)
+
+    def search_wikipedia_for_terms(self, stem, min_term_count=10):
+        """
+        uses file of weords in test/resources/misc
+        :param min_term_count: minimum number of terms expected
+        :param stem: file stem in resources
+        """
         # contains list of words to search for
-        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{search}.txt")
+        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{stem}.txt")
+        assert wordsfile.exists() , f"{wordsfile} should exist"
         print(f"searching {wordsfile}")
         words = Path(wordsfile).read_text().splitlines()
-        assert len(words) >= 10, f"wordsfile must have at least 10 words"
-        outfile = Path(Resources.TEMP_DIR, "html", "terms", f"{search}.html")
+        assert len(words) >= min_term_count, f"wordsfile must have at least {min_term_count} words"
+        outfile = Path(Resources.TEMP_DIR, "html", "terms", f"{stem}.html")
         WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
 
     def test_wikipedia_page_tuple(self):
