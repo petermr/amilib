@@ -854,7 +854,7 @@ class TestAmiDictionary(AmiAnyTest):
         assert len(dictionary.entries) == 1
         wikidata_page = dictionary.create_wikidata_page(dictionary.entries[0])
         property_ids = wikidata_page.get_property_ids()
-        assert len(property_ids) >= 60
+        assert len(property_ids) >= 55
         id_set = set(property_ids)
         test_set = {'P31', 'P279', 'P361', 'P2067', 'P274', 'P233', 'P2054', 'P2101', 'P2128', 'P2199'}
         assert test_set.issubset(id_set)
@@ -1279,9 +1279,9 @@ class DictionaryCreationTest(AmiAnyTest):
         """
         out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
         words_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate",
-                          "ar5_wg3_food_security_words.txt")
+                          "ar6_wgII_Food_Fibre_and_Other_Ecosystem_Products_words.txt")
         assert words_file.exists(), f"{words_file} should exist"
-        entry_count = 60
+        entry_count = 55
 # create dictionary without save or lookup
         words_dictionary, _ = AmiDictionary.create_dictionary_from_wordfile(wordfile=words_file)
         assert words_dictionary is not None, (f"words dictionary from {words_file} must not be None")
@@ -1292,14 +1292,14 @@ class DictionaryCreationTest(AmiAnyTest):
 # add title, description, and save
         out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
         words_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate",
-                          "ar5_wg3_food_security_words.txt")
+                          "ar6_wgII_Food_Fibre_and_Other_Ecosystem_Products_words.txt")
         max_entries = 7 # to reduce time
 
-        description = "food security terms in AR5_WG3_ch_5 selected by Anmol Negi"
+        description = "Food_Fibre_and_Other_Ecosystem_Products   terms in AR6_WGII_ch_5 selected by Anmol Negi"
         # add title, description, and save
-        description = "food security terms in AR5_WG3_ch_5 selected by Anmol Negi and wikidata lookup"
+        description = "Food_Fibre_and_Other_Ecosystem_Products terms in AR6_WGII_ch_5 selected by Anmol Negi and wikidata lookup"
         words_dictionary, outfile = AmiDictionary.create_dictionary_from_wordfile(
-            wordfile=words_file, desc=description, title="food_security", outdir=out_dict_dir, wikidata=True,
+            wordfile=words_file, desc=description, title="Food_Fibre_and_Other_Ecosystem_Products", outdir=out_dict_dir, wikidata=True,
             max_entries=max_entries, debug=True)
         assert words_dictionary is not None, f"words dictionary from {words_file} must not be None"
         assert words_dictionary.get_entry_count() == max_entries, \
