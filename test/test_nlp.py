@@ -1,6 +1,7 @@
 """
 Tests for NLP
 """
+import unittest
 from pathlib import Path
 import csv
 
@@ -21,6 +22,7 @@ class NLPTest(AmiAnyTest):
     """
     # import nltk, string
 
+    @unittest.skip("needs installation")
     def test_compute_text_similarity_STAT(self):
         """
         ami_nlp,cosine_sim compares strings

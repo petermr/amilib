@@ -58,6 +58,22 @@ class WikipediaTests(unittest.TestCase):
         print(f"tuple {page_tuple}")
         string ="The Palearctic or Palaearctic is the largest of the eight biogeographic realms of the Earth."
 
+    def test_parse_wikidata_page(self):
+        qitem = "Q144362"  # azulene
+        wpage = WikidataPage(qitem)
+        # note "zz" has no entries
+        ahref_dict = wpage.get_wikipedia_page_links(["en", "de", "zz"])
+        assert ahref_dict == {'en': 'https://en.wikipedia.org/wiki/Azulene',
+                              'de': 'https://de.wikipedia.org/wiki/Azulen'}
+
+
+    def test_wikipedia_page_from_wikidata(self):
+        qitem = "Q144362"  # azulene
+        wpage = WikidataPage(qitem)
+        links = wpage.get_wikipedia_page_links()
+        assert links == {'en': 'https://en.wikipedia.org/wiki/Azulene'}
+        url = wpage.get_wikipedia_page_link("en")
+        assert url == 'https://en.wikipedia.org/wiki/Azulene'
 
 # NOTE some of these are lengthy (seconds) as they lookup on the Net
 

@@ -124,28 +124,6 @@ class TestAmiDictionary(AmiAnyTest):
         setup_dict = self.setup()
         assert setup_dict[DICTFILE1].exists(), f"file should exist {setup_dict['dict1']}"
 
-    def test_read_wellformed_dictionary(self):
-        """test can create from XML string
-        includes well-formed and non-well-formed XML
-        """
-        dict_str = """
-        <dictionary title='foo'>
-        </dictionary>
-        """
-        ami_dict = AmiDictionary.create_dictionary_from_xml_string(dict_str)
-        assert ami_dict is not None
-
-        assert ami_dict.root.tag == "dictionary"
-
-        dict_str = """
-        <diktionary title='foo'>
-        </dictionary>
-        """
-        try:
-            ami_dict = AmiDictionary.create_dictionary_from_xml_string(dict_str)
-        except XMLSyntaxError as e:
-            print(f"xml error {e}")
-
     def test_dictionary_element(self):
         """
         reads xml string into dictiomary and tests that has "dictionary" root element
@@ -161,84 +139,6 @@ class TestAmiDictionary(AmiAnyTest):
         assert ami_dict.has_valid_root_tag()
         assert ami_dict.get_entry_count() == 0
 
-    def test_one_entry_dict_is_ami_dictionary(self):
-        """require the attribute to be present but does not check value"""
-        setup_dict = self.setup()
-        one_dict = setup_dict[ONE_ENTRY_DICT]
-        assert type(one_dict) is AmiDictionary, f"fila is not AmiDictionary {one_dict}"
-
-    def test_dict1_has_version_attribute(self):
-        """require the version attribute to be present but does not check value"""
-        setup_dict = self.setup()
-        one_dict = setup_dict[DICTFILE1]
-        amidict = AmiDictionary.create_from_xml_file(Path(one_dict))
-        version = amidict.get_version()
-        assert version == STARTING_VERSION
-
-    def test_dict1_with_missing_version_attribute_is_not_valid(self):
-        """
-        require the version attribute to have starting value
-        """
-        setup_dict = self.setup()
-        amidict = AmiDictionary.create_from_xml_file(Path(setup_dict[DICTFILE1]))
-        version = amidict.get_version()
-        assert version == STARTING_VERSION
-
-    def test_one_entry_dict_has_version_attribute(self):
-        """require the attribiute to be present but does not check value"""
-        setup_dict = self.setup()
-        one_dict = setup_dict[ONE_ENTRY_DICT]
-        assert one_dict is not None
-        version = one_dict.get_version()
-        assert version == "1.2.3"
-
-    def test_dictionary_has_version(self):
-        """require the attribute to be present but does not check value"""
-        setup_dict = self.setup()
-        one_dict = setup_dict[ONE_ENTRY_DICT]
-        version = one_dict.get_version()
-        assert version is not None, "missing version"
-
-    @unittest.skip("superseded by Validator")
-    def test_dictionary_has_valid_version(self):
-        """require the attribute to be present but does not check value"""
-        setup_dict = self.setup()
-        one_dict = setup_dict[ONE_ENTRY_DICT]
-        validator = AmiDictValidator(one_dict)
-        version = one_dict.get_version()
-        # assert validator. f"invalid version {version}"
-
-    def test_catch_invalid_version(self):
-        minimal_dict = AmiDictionary.create_minimal_dictionary()
-        try:
-            minimal_dict.set_version("1.2.a")
-            raise AMIDictError("should catch bad version error")
-        except AMIDictError as e:
-            """should catch bad version"""
-            # print(f"caught expected error")
-
-    def test_create_dictionary_from_url(self):
-        """lookup entry in Github repository
-        note: depends on INTERNET"""
-        mentha_url = "https://raw.githubusercontent.com/petermr/pyami/main/py4ami/resources/amidicts/mentha_tps.xml"
-        mentha_dict = AmiDictionary.create_dictionary_from_url(mentha_url)
-        assert len(mentha_dict.get_lxml_entries()) == 1
-        assert mentha_dict.get_first_ami_entry().get_term() == "1,8-cineole synthase"
-        assert mentha_dict.get_version() == "0.0.3"
-
-    def test_dict_has_xml_title(self):
-        """has root dictionary element got title attribute?
-        e.g. <dictionary title='dict1'> ..."""
-        setup_dict = self.setup()
-        root = setup_dict[ROOT]
-        assert root.attrib[TITLE] == "dict1"
-
-    def test_dict_title_matches_filename(self):
-        setup_dict = self.setup()
-        root = setup_dict[ROOT]
-        last_path = setup_dict[DICTFILE1].stem
-        print(last_path)
-        assert root.attrib["title"] == last_path
 
     def test_title_from_url_stem(self):
         amidict = AmiDictionary.create_minimal_dictionary()
@@ -383,7 +283,7 @@ class TestAmiDictionary(AmiAnyTest):
         """
         unit test
         """
-        amidict = self.setup()[ONE_ENTRY_DICT]
+        amidict = TestAmiDictionary().setup()[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
         assert len(amidict.get_first_ami_entry().get_synonyms()) == 2
 
@@ -651,74 +551,6 @@ class TestAmiDictionary(AmiAnyTest):
             AmiEntry.create_from_element(entry).check_validity()
 
     # integrations
-    def test_create_dictionary_from_list_of_string(self):
-        terms = ["foo", "bar", "plugh", "xyzzy", "baz"]
-        title = "foobar"
-        directory = None
-        amidict, _ = AmiDictionary.create_dictionary_from_words(terms, title)
-        assert amidict is not None
-        title = amidict.root.attrib[TITLE]
-        assert title == "foobar"
-
-    def test_create_dictionary_from_list_of_string_and_save(self):
-        """
-        Create dictionary from list of strings (no lookup)
-        """
-        terms = ["acetone", "benzene", "chloroform", "DMSO", "ethanol"]
-        title = "solvents"
-        temp_dir = Path(AmiAnyTest.TEMP_DIR, "dictionary")
-        temp_dir.mkdir(exist_ok=True, parents=True)
-        amidict, dictfile = AmiDictionary.create_dictionary_from_words(terms, title=title, outdir=temp_dir)
-        outfile = Path(temp_dir, title + ".xml")
-        assert Path(dictfile) == Path(temp_dir, title + ".xml") and os.path.exists(dictfile)
-        assert amidict.get_entry_count() == 5
-
-    def test_create_dictionary_from_list_of_string_save_and_compare(self):
-        terms = ["acetone", "benzene", "chloroform", "DMSO", "ethanol"]
-        temp_dir = Path(AmiAnyTest.TEMP_DIR, "dictionary")
-        amidict, dictfile = AmiDictionary.create_dictionary_from_words(terms, title="solvents", outdir=temp_dir)
-        with open(dictfile, "r") as f:
-            dict_text = f.read()
-        dict_text = re.sub("date=\"[^\"]*\"", "date=\"TODAY\"", dict_text)
-        assert len(dict_text) > 200, "lines of dict_text"
-        assert type(dict_text) is str, f"{type(dict_text)}"
-        # note, the date is nstripped as it changes with each run
-        text1 = """<dictionary version="0.0.1" title="solvents" encoding="UTF-8">
-      <metadata user="pm286" date="TODAY"/>
-      <entry term="acetone"/>
-      <entry term="benzene"/>
-      <entry term="chloroform"/>
-      <entry term="DMSO"/>
-      <entry term="ethanol"/>
-    </dictionary>
-    """
-        # assert text1 == dict_text, f"{text1} != {dict_text}"
-        # TODO remove user from metadata
-
-    # @unittest.skip("LONG")
-    def test_create_dictionary_from_list_of_string_and_add_wikidata(self):
-        terms = ["acetone",
-                 "chloroform",
-                 # "DMSO",
-                 # "ethanol"
-                 ]
-        amidict, _ = AmiDictionary.create_dictionary_from_words(terms, title="solvents", wikidata=True)
-        temp_dir = Path(AmiAnyTest.TEMP_DIR, "dictionary")
-        dictfile = amidict.write_to_dir(temp_dir)
-
-        with open(dictfile, "r") as f:
-            dict_text = f.read()
-        dict_text = re.sub("date=\"[^\"]*\"", "date=\"TODAY\"", dict_text)
-
-        # note, the date is stripped as it changes with each run
-        text1 = """<dictionary version="0.0.1" title="solvents" encoding="UTF-8">
-      <metadata user="pm286" date="TODAY"/>
-      <entry term="acetone" wikidataID="Q49546" description="chemical compound"/>
-      <entry term="chloroform" wikidataID="Q172275" description="chemical compound"/>
-    </dictionary>
-    """
-        # assert text1 == dict_text, f"{text1} != {dict_text}"
-        # TODO remove user from metadata
 
     def test_find_missing_wikidata_ids(self):
         ami_dict = AmiDictionary.create_from_xml_file(Resources.TEST_IPCC_CHAP02_ABB_DICT)
@@ -836,51 +668,13 @@ class TestAmiDictionary(AmiAnyTest):
         pp.pprint(lookup.hits_dict)
         assert 28 >= len(lookup.hits_dict) >= 22
 
-    # {
-    #     {'BECCS': {'Q146790': 'Aomori',
-    #                'Q209727': 'palmitic acid',
-    #                'Q455712': 'Domenico di Pace Beccafumi',
-    #                'Q472237': 'Nikolaos Gyzis',
-    #                'Q507854': 'Karlstadt am Main'},
-    #      'CBEs': {'Q1391': 'Maryland',
-    #               'Q227': 'Azerbaijan',
-    #               'Q7024': 'Lugano',
-    #               'Q8093': 'Nintendo',
-    #               'Q884': 'South Korea'},
-    #      'WMO': {'Property:P4136': 'WIGOS station ID',
-    #              'Property:P5956': 'War Memorials Online ID',
-    #              'Property:P9737': 'WMO code',
-    #              'Q170424': 'World Meteorological Organization',
-    #              'Q4468436': 'White Mountain Airport'}}
-    #     }
-
-    # =====helpers======
-
-    def test_parse_wikidata_page(self):
-        qitem = "Q144362"  # azulene
-        wpage = WikidataPage(qitem)
-        # note "zz" has no entries
-        ahref_dict = wpage.get_wikipedia_page_links(["en", "de", "zz"])
-        assert ahref_dict == {'en': 'https://en.wikipedia.org/wiki/Azulene',
-                              'de': 'https://de.wikipedia.org/wiki/Azulen'}
-
-    @unittest.skipUnless(False, "LONG DOWNLOAD")
-    def test_create_dictionary_terpenes(self):
-        words = ["limonene", "alpha-pinene", "Lantana camara"]
-        description = "created from words"
-        title = "test"
-        dictionary, _ = AmiDictionary.create_dictionary_from_words(words, title=title, desc=description, wikidata=True)
-        assert len(dictionary.entries) == 3
-        first_entry = dictionary.get_first_ami_entry()
-        term = first_entry.term
-        assert term == "limonene", f"first term is {term}"
 
     # TODO set changes over time
     def test_get_property_ids(self):
         """gets properties af a dictionary entry"""
         words = ["limonene"]
-        dictionary, _ = AmiDictionary.create_dictionary_from_words(words, "test", "created from words",
-                                                                   wikilangs=["en", "de"])
+        dictionary, _ = AmiDictionary.create_dictionary_from_words(
+            words, "test", "created from words",wikilangs=["en", "de"])
         dictionary.add_wikidata_from_terms()
         pprint.pprint(lxml.etree.tostring(dictionary.root).decode("UTF-8"))
         assert len(dictionary.entries) == 1
@@ -891,42 +685,6 @@ class TestAmiDictionary(AmiAnyTest):
         test_set = {'P31', 'P279', 'P361', 'P2067', 'P274', 'P233', 'P2054', 'P2101', 'P2128', 'P2199'}
         assert test_set.issubset(id_set)
 
-    def test_create_dictionary_from_sparql(self):
-        """
-        read spqrql file and create dictionary
-        then update from another sparql file
-        """
-        # PLANT = os.path.join(PHYSCHEM_RESOURCES, "plant")
-        PLANT = os.path.join(Resources.TEST_RESOURCES_DIR, "plant")
-        sparql_file = os.path.join(PLANT, "plant_part_sparql.xml")
-        dictionary_file = os.path.join(PLANT, "eoplant_part.xml")
-        assert Path(sparql_file).exists(), f"sparql_file should exist {sparql_file}"
-        assert Path(dictionary_file).exists(), f"dictionary_file should exist {dictionary_file}"
-        """
-        <result>
-            <binding name='item'>
-                <uri>http://www.wikidata.org/entity/Q2923673</uri>
-            </binding>
-            <binding name='image'>
-                <uri>http://commons.wikimedia.org/wiki/Special:FilePath/White%20Branches.jpg</uri>
-            </binding>
-        </result>
-"""
-        sparql_to_dictionary = {
-            "id_name": "item",
-            "sparql_name": "image",
-            "dict_name": "image",
-        }
-        dictionary = AmiDictionary.create_from_xml_file(dictionary_file)
-        wikidata_sparql = WikidataSparql(dictionary)
-        wikidata_sparql.update_from_sparql(sparql_file, sparql_to_dictionary)
-        outdir = Path(AmiAnyTest.TEMP_DIR, "sparql")
-        outdir.mkdir(exist_ok=True)
-        # ff = dictionary_file[:-(len(".xml"))] + "_update" + ".xml"
-        # print("saving to", ff)
-        dictionary.write_to_dir(outdir)
-        outpath = Path(outdir, "eoplant_part.xml")
-        assert outpath.exists(), f"{outpath} should have been written"
 
     @unittest.skipUnless(CEV_EXISTS, "requires local CEVOpen")
     def test_invasive(self):
@@ -934,12 +692,12 @@ class TestAmiDictionary(AmiAnyTest):
 
         """
 
-        INVASIVE_DIR = os.path.join(LOCAL_CEV_OPEN_DICT_DIR, "invasive_species")
-        assert (os.path.exists(INVASIVE_DIR)), f"INVASIVE_DIR should exists {INVASIVE_DIR}"
-        dictionary_file = os.path.join(INVASIVE_DIR, "invasive_plant.xml")
-        assert (os.path.exists(dictionary_file)), f"dictionary_file should exist {dictionary_file}"
-        SPARQL_DIR = os.path.join(INVASIVE_DIR, "sparql_output")
-        assert (os.path.exists(SPARQL_DIR)), f"SPARQL_DIR should exist {SPARQL_DIR}"
+        INVASIVE_DIR = Path(LOCAL_CEV_OPEN_DICT_DIR, "invasive_species")
+        assert INVASIVE_DIR.exists(), f"INVASIVE_DIR should exists {INVASIVE_DIR}"
+        dictionary_file = Path(INVASIVE_DIR, "invasive_plant.xml")
+        assert dictionary_file.exists(), f"dictionary_file should exist {dictionary_file}"
+        SPARQL_DIR = Path(INVASIVE_DIR, "sparql_output")
+        assert SPARQL_DIR.exists(), f"SPARQL_DIR should exist {SPARQL_DIR}"
         rename_file = False
 
         sparql_files = glob.glob(os.path.join(SPARQL_DIR, "sparql_*.xml"))
@@ -972,12 +730,12 @@ class TestAmiDictionary(AmiAnyTest):
         """
         """
 
-        DICT_DIR = os.path.join(LOCAL_CEV_OPEN_DICT_DIR, "plant_genus")
-        assert (os.path.exists(DICT_DIR)), f"DICT_DIR should exist {DICT_DIR}"
-        dictionary_file = os.path.join(DICT_DIR, "plant_genus.xml")
-        assert (os.path.exists(dictionary_file)), f"dictionary_file should exists {dictionary_file}"
-        SPARQL_DIR = os.path.join(DICT_DIR, "raw")
-        assert (os.path.exists(SPARQL_DIR)), f"SPARQL_DIR should exist {SPARQL_DIR}"
+        DICT_DIR = Path(LOCAL_CEV_OPEN_DICT_DIR, "plant_genus")
+        assert DICT_DIR.exists(), f"DICT_DIR should exist {DICT_DIR}"
+        dictionary_file = Path(DICT_DIR, "plant_genus.xml")
+        assert dictionary_file.exists(), f"dictionary_file should exists {dictionary_file}"
+        SPARQL_DIR = Path(DICT_DIR, "raw")
+        assert SPARQL_DIR.exists(), f"SPARQL_DIR should exist {SPARQL_DIR}"
         rename_file = False
 
         sparql_files = glob.glob(os.path.join(SPARQL_DIR, "sparql_test_concatenation.xml"))
@@ -1005,15 +763,16 @@ class TestAmiDictionary(AmiAnyTest):
     @unittest.skipUnless(CEV_EXISTS, "requires local CEVOpen")
     def test_compound(cls):
         """
+        ???
         """
 
-        DICT_DIR = os.path.join(LOCAL_CEV_OPEN_DICT_DIR, "eoCompound")
-        assert (os.path.exists(DICT_DIR)), f"DICT_DIR should exists {DICT_DIR}"
-        dictionary_file = os.path.join(DICT_DIR, "plant_compound.xml")
+        DICT_DIR = Path(LOCAL_CEV_OPEN_DICT_DIR, "eoCompound")
+        assert DICT_DIR.exists(), f"DICT_DIR should exists {DICT_DIR}"
+        dictionary_file = Path(DICT_DIR, "plant_compound.xml")
         assert (os.path.exists(dictionary_file)), f"dictionary_file should exist {dictionary_file}"
-        SPARQL_DIR = os.path.join(DICT_DIR, "raw")
+        SPARQL_DIR = Path(DICT_DIR, "raw")
         SPARQL_DIR = DICT_DIR
-        assert (os.path.exists(SPARQL_DIR)), f"SPARQL_DIR should exist {SPARQL_DIR}"
+        assert SPARQL_DIR.exists(), f"SPARQL_DIR should exist {SPARQL_DIR}"
         rename_file = False
 
         sparql_files = glob.glob(os.path.join(SPARQL_DIR, "sparql_6.xml"))
@@ -1044,7 +803,7 @@ class TestAmiDictionary(AmiAnyTest):
         AmiDictionary.apply_dicts_and_sparql(dictionary_file, rename_file, sparql2amidict_dict, sparql_files)
 
     @unittest.skipUnless(CEV_EXISTS, "requires local CEVOpen")
-    def test_plant_part(cls):
+    def test_plant_part_sparql(cls):
         """
         Takes WD-SPARQL-XML output (sparql.xml) and maps to AMIDictionary (eo_plant_part.xml)
 
@@ -1052,14 +811,14 @@ class TestAmiDictionary(AmiAnyTest):
         # current dictionary does not need updating
 
         print(f"***test_plant_part")
-        DICT_DIR = os.path.join(LOCAL_CEV_OPEN_DICT_DIR, "eoPlantPart")
+        DICT_DIR = Path(LOCAL_CEV_OPEN_DICT_DIR, "eoPlantPart")
         DICT_DIR = Path(TEST_RESOURCE_DIR, "eoPlantPart")
-        assert os.path.exists(DICT_DIR), f"{DICT_DIR} should exist"
-        dictionary_file = os.path.join(DICT_DIR, "eoplant_part.xml")
-        assert (os.path.exists(dictionary_file)), f"dictionary_file should exist {dictionary_file}"
-        SPARQL_DIR = os.path.join(DICT_DIR, "raw")
+        assert DICT_DIR.exists(), f"{DICT_DIR} should exist"
+        dictionary_file = Path(DICT_DIR, "eoplant_part.xml")
+        assert dictionary_file.exists(), f"dictionary_file should exist {dictionary_file}"
+        SPARQL_DIR = Path(DICT_DIR, "raw")
         SPARQL_DIR = DICT_DIR
-        assert (os.path.exists(SPARQL_DIR)), f"SPARQL_DIR should exists {SPARQL_DIR}"
+        assert SPARQL_DIR.exists(), f"SPARQL_DIR should exists {SPARQL_DIR}"
         rename_file = False
 
         sparql_files = glob.glob(os.path.join(SPARQL_DIR, "sparql.xml"))
@@ -1146,56 +905,6 @@ class TestAmiDictionary(AmiAnyTest):
             #            'GWP', 'UNFCCC',
             'WMO', 'GWP', 'CRF', 'LULUCF'}
 
-    def test_create_dictionary_from_csv(self):
-        """This does lookup, unfortunately Wikidata lookup changes as terms are added so this test is a mess"""
-        csv_term_file = Path(Resources.TEST_IPCC_CHAP08_DICT, "urban_terms_1.csv")
-        assert os.path.exists(str(csv_term_file)), f"csv_term_file should exist {csv_term_file}"
-        keyword_dict = AmiDictionary.create_dictionary_from_csv(csv_term_file, col_name='keyword/phrase',
-                                                                title="urban_terms_1")
-        print(f"keyword_dict {keyword_dict}")
-        entry = keyword_dict.get_first_ami_entry()
-        assert entry.get_term() == "urbanization"
-        assert entry.get_wikidata_id() == "Q161078" or entry.get_wikidata_id() == 'Q1508'
-        assert len(keyword_dict.entries) == 1
-        root_elem = keyword_dict.root
-        assert root_elem.tag == 'dictionary'
-        entry0 = root_elem.xpath("entry")[0]
-        assert entry0.attrib["desc"] == 'highly urbanized city in Metro Manila, Philippines'
-        # assert entry0.attrib["desc"] == 'longterm population movements (shift) from rural to urban areas'
-        assert entry0.attrib["name"] == 'urbanization'
-        # assert str(root) == \
-        #        '<dictionary title="urban_terms_1"><entry name="urbanization" term="urbanization" wikidataID="Q161078" wikidataURL="https://www.wikidata.org/entity/Q161078" desc="longterm population movements (shift) from rural to urban areas;gradual increase in the proportion of people living in urban areas, and the ways in which each society adapts to the change;process by which towns and cities are formed and become larger"><wikidataHit type="wikidata_hits">Q5381005</wikidataHit><wikidataHit type="wikidata_hits">Q23580084</wikidataHit><wikidataHit type="wikidata_hits">Q2608153</wikidataHit><wikidataHit type="wikidata_hits">Q95443723</wikidataHit></entry></dictionary>'
-
-    def test_validate_linked_dict(self):
-        """
-        tests a veriety of exploratory concepts such as inter- and intra-dictionary links
-        DEVELOP 2022-12
-        """
-        dict_path = Path(Resources.TEST_IPCC_DICT_DIR, "raw_linked_dict.xml")
-        assert dict_path.exists(), f"{dict_path} should exist"
-        dictx = AmiDictionary.create_from_xml_file(dict_path)
-        assert dictx is not None
-        assert dictx.get_entry_count() == 17, f"dictionary has {dictx.get_entry_count()} entries"
-        assert dictx.get_version() == '0.0.5', f"dictionary has version {dictx.get_version()}"
-        terms = dictx.get_terms()
-        assert len(terms) > 0, f"found {len(terms)}"
-        assert terms == ['carbon budget',
-                         'ffi',
-                         'folu',
-                         'fluorinated gas',
-                         'carbon pricing',
-                         'edgar',
-                         'cait',
-                         'ceds',
-                         'crf',
-                         'emissions factor',
-                         'emission inventory',
-                         'emission sectors',
-                         'gwp100',
-                         'slcf',
-                         'cgtp',
-                         'co2-equivalent emission',
-                         'baseline scenario'], f'found {terms}'
 
     def test_entries_have_ids(self):
         dict_file = Path(Resources.TEST_IPCC_DICT_DIR, "raw_linked_dict.xml")
@@ -1204,55 +913,6 @@ class TestAmiDictionary(AmiAnyTest):
         assert linked_dict is not None
         assert linked_dict.get_entry_count() == 17, f"found {linked_dict.get_entry_count()} entries"
         # assert linked_dict.get_lxml_entries_with_ids() == 2
-
-    def test_ipcc_dictionaries_from_URL(self):
-        """
-        read a number of IPCC dictionaries from URL and test their validity.
-        Maybe later move code to dictionary project
-        """
-        WG3_ROOT = "https://raw.githubusercontent.com/petermr/semanticClimate/main/ipcc/ar6/wg3"
-        dictionary_names = [
-            "Chapter02/dict/ip_3_2_emissions_abb.xml", "Chapter07/dict/ip_3_7_agri_abb.xml",
-            "wg2_03/dict/ip_3_3_longmitig_abb.xml", "Chapter08/dict/ip_3_8_urban_abb.xml",
-            "Chapter05/dict/ip_3_5_socmitig_abb.xml", "Chapter17/dict/ip_3_17_sustdev_abb.xml",
-            "Chapter06/dict/ip_3_6_energy_abb.xml"
-        ]
-
-        for dictionary_name in dictionary_names:
-            url = WG3_ROOT + "/" + dictionary_name
-            print(f" url {url}")
-            try:
-                dictionary = AmiDictionary.create_dictionary_from_url(url)
-            except Exception as e:
-                print(f"cannot download dictionary {url} beacuse {e}")
-
-    @unittest.skipUnless(Path(IPCC_DICT_ROOT).exists(), f"requires checked out IPCC dictionaries {IPCC_DICT_ROOT}")
-    def test_ipcc_dictionaries_from_file(self):
-        """
-        read a number of IPCC dictionaries from LOCAL (PMR-only) files and test their validity.
-        Maybe later move codeto dictionary project
-        """
-        dictionary_names = [
-            "Chapter02/dict/ip_3_2_emissions_abb.xml",
-            "Chapter07/dict/ip_3_7_agri_abb.xml",
-            # "wg2_03/dict/ip_3_3_longmitig_abb.xml",
-            "Chapter08/dict/ip_3_8_urban_abb.xml",
-            "Chapter05/dict/ip_3_5_socmitig_abb.xml",
-            "Chapter17/dict/ip_3_17_sustdev_abb.xml",
-            "Chapter06/dict/ip_3_6_energy_abb.xml"
-        ]
-        for dictionary_name in dictionary_names:
-            dict_file = Path(IPCC_DICT_ROOT, dictionary_name)
-            print(f"reading {dict_file}")
-            if not dict_file.exists():
-                print(f"dict file does not exist {dict_file}")
-                continue
-            try:
-                dictionary = AmiDictionary.read_dictionary(dict_file)
-                assert dictionary is not None, f"reading from {dict_file}"
-                assert dictionary.get_entry_count() > 0
-            except Exception as e:
-                print(f"cannot read dictionary {dict_file} beacuse {e}")
 
     def test_entry_id(self):
         """
@@ -1277,21 +937,112 @@ class TestAmiDictionary(AmiAnyTest):
 
         amilib.run_command(["DICT", "--help"])
 
-    def test_make_dict_from_file_OK(self):
-        amilib = AmiLib()
-        words_file = Path(TEST_RESOURCE_DIR, "misc", "climate_words.txt")
-        dictfile = Path(Resources.TEMP_DIR, "misc", "climate_words.xml")
-        expected_count = 11
-        FileLib.delete_file(dictfile)
-        amilib.run_command(["DICT",
-                            "--words", words_file,
-                            "--dict", dictfile
-                            ])
-        assert Path(dictfile).exists()
-        ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)
-        assert (c := ami_dictionary.get_entry_count()) == expected_count, \
-            f"dictionary should contain {expected_count} found {c}"
 
+class TestAmiEntry(AmiAnyTest):
+    """
+    test functionality of AmiEntry
+    """
+
+    def dummy(self):
+        pass
+
+
+class TestValidate(AmiAnyTest):
+    """
+    test validity of AmiEntry and AmiDictionary
+    """
+
+    def test_read_wellformed_dictionary(self):
+        """test can create from XML string
+        includes well-formed and non-well-formed XML
+        """
+        dict_str = """
+        <dictionary title='foo'>
+        </dictionary>
+        """
+        ami_dict = AmiDictionary.create_dictionary_from_xml_string(dict_str)
+        assert ami_dict is not None
+
+        assert ami_dict.root.tag == "dictionary"
+
+        dict_str = """
+        <diktionary title='foo'>
+        </dictionary>
+        """
+        try:
+            ami_dict = AmiDictionary.create_dictionary_from_xml_string(dict_str)
+        except XMLSyntaxError as e:
+            print(f"xml error {e}")
+
+    def test_one_entry_dict_is_ami_dictionary(self):
+        """require the attribute to be present but does not check value"""
+        setup_dict = TestAmiDictionary().setup()
+        one_dict = setup_dict[ONE_ENTRY_DICT]
+        assert type(one_dict) is AmiDictionary, f"fila is not AmiDictionary {one_dict}"
+
+    def test_dict1_has_version_attribute(self):
+        """require the version attribute to be present but does not check value"""
+        setup_dict = TestAmiDictionary().setup()
+        one_dict = setup_dict[DICTFILE1]
+        amidict = AmiDictionary.create_from_xml_file(Path(one_dict))
+        version = amidict.get_version()
+        assert version == STARTING_VERSION
+
+    def test_dict1_with_missing_version_attribute_is_not_valid(self):
+        """
+        require the version attribute to have starting value
+        """
+        setup_dict = TestAmiDictionary().setup()
+        amidict = AmiDictionary.create_from_xml_file(Path(setup_dict[DICTFILE1]))
+        version = amidict.get_version()
+        assert version == STARTING_VERSION
+
+    def test_one_entry_dict_has_version_attribute(self):
+        """require the attribiute to be present but does not check value"""
+        setup_dict = TestAmiDictionary().setup()
+        one_dict = setup_dict[ONE_ENTRY_DICT]
+        assert one_dict is not None
+        version = one_dict.get_version()
+        assert version == "1.2.3"
+
+    def test_dictionary_has_version(self):
+        """require the attribute to be present but does not check value"""
+        setup_dict = TestAmiDictionary().setup()
+        one_dict = setup_dict[ONE_ENTRY_DICT]
+        version = one_dict.get_version()
+        assert version is not None, "missing version"
+
+    @unittest.skip("superseded by Validator")
+    def test_dictionary_has_valid_version(self):
+        """require the attribute to be present but does not check value"""
+        setup_dict = self.setup()
+        one_dict = setup_dict[ONE_ENTRY_DICT]
+        validator = AmiDictValidator(one_dict)
+        version = one_dict.get_version()
+        # assert validator. f"invalid version {version}"
+
+    def test_catch_invalid_version(self):
+        minimal_dict = AmiDictionary.create_minimal_dictionary()
+        try:
+            minimal_dict.set_version("1.2.a")
+            raise AMIDictError("should catch bad version error")
+        except AMIDictError as e:
+            """should catch bad version"""
+            # print(f"caught expected error")
+
+    def test_dict_has_xml_title(self):
+        """has root dictionary element got title attribute?
+        e.g. <dictionary title='dict1'> ..."""
+        setup_dict = TestAmiDictionary().setup()
+        root = setup_dict[ROOT]
+        assert root.attrib[TITLE] == "dict1"
+
+    def test_dict_title_matches_filename(self):
+        setup_dict = TestAmiDictionary().setup()
+        root = setup_dict[ROOT]
+        last_path = setup_dict[DICTFILE1].stem
+        print(last_path)
+        assert root.attrib["title"] == last_path
 
 class DictionaryCreationTest(AmiAnyTest):
     """
@@ -1299,6 +1050,29 @@ class DictionaryCreationTest(AmiAnyTest):
     (from lists of strings, files, urls, sparql etc.
 
     """
+
+    def test_read_wellformed_dictionary(self):
+        """test can create from XML string
+        includes well-formed and non-well-formed XML
+        """
+        dict_str = """
+        <dictionary title='foo'>
+        </dictionary>
+        """
+        ami_dict = AmiDictionary.create_dictionary_from_xml_string(dict_str)
+        assert ami_dict is not None
+
+        assert ami_dict.root.tag == "dictionary"
+
+        dict_str = """
+        <diktionary title='foo'>
+        </dictionary>
+        """
+        try:
+            ami_dict = AmiDictionary.create_dictionary_from_xml_string(dict_str)
+        except XMLSyntaxError as e:
+            print(f"xml error {e}")
+
 
     def test_dictionary_creation(self):
         """
@@ -1325,7 +1099,6 @@ class DictionaryCreationTest(AmiAnyTest):
 # create dictionary without save or lookup
         words_dictionary, _ = AmiDictionary.create_dictionary_from_wordfile(wordfile=words_file)
         assert words_dictionary is not None, (f"words dictionary from {words_file} must not be None")
-
         assert words_dictionary.get_entry_count() == entry_count, f"should have {entry_count} entries , found {words_dictionary.get_entry_count()}"
 
 # parametrize doesn't work easily withe unittest subclasses
@@ -1399,15 +1172,279 @@ class DictionaryCreationTest(AmiAnyTest):
                 "--words", f"{title_path}",
                 "--dict", f"{title_dict}",
                 "--wikidata"
-                # "--wikidata", "level",
-                # "--wikipedia"
                 ]
         print(f" s2 {args}")
         amilib.run_command(args)
         assert Path(title_dict).exists(), f"should write dictionary {title_dict}"
         print(f"wrote {title_dict}")
 
-    # ==== helpers ====
+    # integrations
+    def test_create_dictionary_from_list_of_string(self):
+        terms = ["foo", "bar", "plugh", "xyzzy", "baz"]
+        title = "foobar"
+        directory = None
+        amidict, _ = AmiDictionary.create_dictionary_from_words(terms, title)
+        assert amidict is not None
+        title = amidict.root.attrib[TITLE]
+        assert title == "foobar"
+
+    def test_create_dictionary_from_list_of_string_and_save(self):
+        """
+        Create dictionary from list of strings (no lookup)
+        """
+        terms = ["acetone", "benzene", "chloroform", "DMSO", "ethanol"]
+        title = "solvents"
+        temp_dir = Path(AmiAnyTest.TEMP_DIR, "dictionary")
+        temp_dir.mkdir(exist_ok=True, parents=True)
+        amidict, dictfile = AmiDictionary.create_dictionary_from_words(terms, title=title, outdir=temp_dir)
+        outfile = Path(temp_dir, title + ".xml")
+        assert Path(dictfile) == Path(temp_dir, title + ".xml") and os.path.exists(dictfile)
+        assert amidict.get_entry_count() == 5
+
+    def test_make_dict_from_file_CMD_OK(self):
+        amilib = AmiLib()
+        words_file = Path(TEST_RESOURCE_DIR, "misc", "climate_words.txt")
+        dictfile = Path(Resources.TEMP_DIR, "misc", "climate_words.xml")
+        expected_count = 11
+        FileLib.delete_file(dictfile)
+        amilib.run_command(["DICT",
+                            "--words", words_file,
+                            "--dict", dictfile
+                            ])
+        assert Path(dictfile).exists()
+        ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)
+        assert (c := ami_dictionary.get_entry_count()) == expected_count, \
+            f"dictionary should contain {expected_count} found {c}"
+
+    def test_create_dictionary_from_csv(self):
+        """This does lookup, unfortunately Wikidata lookup changes as terms are added so this test is a mess"""
+        csv_term_file = Path(Resources.TEST_IPCC_CHAP08_DICT, "urban_terms_1.csv")
+        assert os.path.exists(str(csv_term_file)), f"csv_term_file should exist {csv_term_file}"
+        keyword_dict = AmiDictionary.create_dictionary_from_csv(csv_term_file, col_name='keyword/phrase',
+                                                                title="urban_terms_1")
+        print(f"keyword_dict {keyword_dict}")
+        entry = keyword_dict.get_first_ami_entry()
+        assert entry.get_term() == "urbanization"
+        assert entry.get_wikidata_id() == "Q161078" or entry.get_wikidata_id() == 'Q1508'
+        assert len(keyword_dict.entries) == 1
+        root_elem = keyword_dict.root
+        assert root_elem.tag == 'dictionary'
+        entry0 = root_elem.xpath("entry")[0]
+        assert entry0.attrib["desc"] == 'highly urbanized city in Metro Manila, Philippines'
+        # assert entry0.attrib["desc"] == 'longterm population movements (shift) from rural to urban areas'
+        assert entry0.attrib["name"] == 'urbanization'
+        # assert str(root) == \
+        #        '<dictionary title="urban_terms_1"><entry name="urbanization" term="urbanization" wikidataID="Q161078" wikidataURL="https://www.wikidata.org/entity/Q161078" desc="longterm population movements (shift) from rural to urban areas;gradual increase in the proportion of people living in urban areas, and the ways in which each society adapts to the change;process by which towns and cities are formed and become larger"><wikidataHit type="wikidata_hits">Q5381005</wikidataHit><wikidataHit type="wikidata_hits">Q23580084</wikidataHit><wikidataHit type="wikidata_hits">Q2608153</wikidataHit><wikidataHit type="wikidata_hits">Q95443723</wikidataHit></entry></dictionary>'
+
+    def test_validate_linked_dict(self):
+        """
+        tests a veriety of exploratory concepts such as inter- and intra-dictionary links
+        DEVELOP 2022-12
+        """
+        dict_path = Path(Resources.TEST_IPCC_DICT_DIR, "raw_linked_dict.xml")
+        assert dict_path.exists(), f"{dict_path} should exist"
+        dictx = AmiDictionary.create_from_xml_file(dict_path)
+        assert dictx is not None
+        assert dictx.get_entry_count() == 17, f"dictionary has {dictx.get_entry_count()} entries"
+        assert dictx.get_version() == '0.0.5', f"dictionary has version {dictx.get_version()}"
+        terms = dictx.get_terms()
+        assert len(terms) > 0, f"found {len(terms)}"
+        assert terms == ['carbon budget',
+                         'ffi',
+                         'folu',
+                         'fluorinated gas',
+                         'carbon pricing',
+                         'edgar',
+                         'cait',
+                         'ceds',
+                         'crf',
+                         'emissions factor',
+                         'emission inventory',
+                         'emission sectors',
+                         'gwp100',
+                         'slcf',
+                         'cgtp',
+                         'co2-equivalent emission',
+                         'baseline scenario'], f'found {terms}'
+    def test_create_dictionary_from_sparql(self):
+        """
+        read spqrql file and create dictionary
+        then update from another sparql file
+        """
+        # PLANT = os.path.join(PHYSCHEM_RESOURCES, "plant")
+        PLANT = os.path.join(Resources.TEST_RESOURCES_DIR, "plant")
+        sparql_file = os.path.join(PLANT, "plant_part_sparql.xml")
+        dictionary_file = os.path.join(PLANT, "eoplant_part.xml")
+        assert Path(sparql_file).exists(), f"sparql_file should exist {sparql_file}"
+        assert Path(dictionary_file).exists(), f"dictionary_file should exist {dictionary_file}"
+        """
+        <result>
+            <binding name='item'>
+                <uri>http://www.wikidata.org/entity/Q2923673</uri>
+            </binding>
+            <binding name='image'>
+                <uri>http://commons.wikimedia.org/wiki/Special:FilePath/White%20Branches.jpg</uri>
+            </binding>
+        </result>
+"""
+        sparql_to_dictionary = {
+            "id_name": "item",
+            "sparql_name": "image",
+            "dict_name": "image",
+        }
+        dictionary = AmiDictionary.create_from_xml_file(dictionary_file)
+        wikidata_sparql = WikidataSparql(dictionary)
+        wikidata_sparql.update_from_sparql(sparql_file, sparql_to_dictionary)
+        outdir = Path(AmiAnyTest.TEMP_DIR, "sparql")
+        outdir.mkdir(exist_ok=True)
+        # ff = dictionary_file[:-(len(".xml"))] + "_update" + ".xml"
+        # print("saving to", ff)
+        dictionary.write_to_dir(outdir)
+        outpath = Path(outdir, "eoplant_part.xml")
+        assert outpath.exists(), f"{outpath} should have been written"
+
+    @unittest.skipUnless(False, "LONG DOWNLOAD")
+    def test_create_dictionary_terpenes(self):
+        words = ["limonene", "alpha-pinene", "Lantana camara"]
+        description = "created from words"
+        title = "test"
+        dictionary, _ = AmiDictionary.create_dictionary_from_words(words, title=title, desc=description, wikidata=True)
+        assert len(dictionary.entries) == 3
+        first_entry = dictionary.get_first_ami_entry()
+        term = first_entry.term
+        assert term == "limonene", f"first term is {term}"
+
+    # @unittest.skip("LONG")
+    def test_create_dictionary_from_list_of_string_and_add_wikidata(self):
+        terms = ["acetone",
+                 "chloroform",
+                 # "DMSO",
+                 # "ethanol"
+                 ]
+        amidict, _ = AmiDictionary.create_dictionary_from_words(terms, title="solvents", wikidata=True)
+        temp_dir = Path(AmiAnyTest.TEMP_DIR, "dictionary")
+        dictfile = amidict.write_to_dir(temp_dir)
+
+        with open(dictfile, "r") as f:
+            dict_text = f.read()
+        dict_text = re.sub("date=\"[^\"]*\"", "date=\"TODAY\"", dict_text)
+
+        # note, the date is stripped as it changes with each run
+        text1 = """<dictionary version="0.0.1" title="solvents" encoding="UTF-8">
+      <metadata user="pm286" date="TODAY"/>
+      <entry term="acetone" wikidataID="Q49546" description="chemical compound"/>
+      <entry term="chloroform" wikidataID="Q172275" description="chemical compound"/>
+    </dictionary>
+    """
+        # assert text1 == dict_text, f"{text1} != {dict_text}"
+        # TODO remove user from metadata
+
+    def test_create_dictionary_from_list_of_string(self):
+        terms = ["foo", "bar", "plugh", "xyzzy", "baz"]
+        title = "foobar"
+        directory = None
+        amidict, _ = AmiDictionary.create_dictionary_from_words(terms, title)
+        assert amidict is not None
+        title = amidict.root.attrib[TITLE]
+        assert title == "foobar"
+
+    def test_create_dictionary_from_list_of_string_and_save(self):
+        """
+        Create dictionary from list of strings (no lookup)
+        """
+        terms = ["acetone", "benzene", "chloroform", "DMSO", "ethanol"]
+        title = "solvents"
+        temp_dir = Path(AmiAnyTest.TEMP_DIR, "dictionary")
+        temp_dir.mkdir(exist_ok=True, parents=True)
+        amidict, dictfile = AmiDictionary.create_dictionary_from_words(terms, title=title, outdir=temp_dir)
+        outfile = Path(temp_dir, title + ".xml")
+        assert Path(dictfile) == Path(temp_dir, title + ".xml") and os.path.exists(dictfile)
+        assert amidict.get_entry_count() == 5
+
+    def test_create_dictionary_from_list_of_string_save_and_compare(self):
+        terms = ["acetone", "benzene", "chloroform", "DMSO", "ethanol"]
+        temp_dir = Path(AmiAnyTest.TEMP_DIR, "dictionary")
+        amidict, dictfile = AmiDictionary.create_dictionary_from_words(terms, title="solvents", outdir=temp_dir)
+        with open(dictfile, "r") as f:
+            dict_text = f.read()
+        dict_text = re.sub("date=\"[^\"]*\"", "date=\"TODAY\"", dict_text)
+        assert len(dict_text) > 200, "lines of dict_text"
+        assert type(dict_text) is str, f"{type(dict_text)}"
+        # note, the date is nstripped as it changes with each run
+        text1 = """<dictionary version="0.0.1" title="solvents" encoding="UTF-8">
+      <metadata user="pm286" date="TODAY"/>
+      <entry term="acetone"/>
+      <entry term="benzene"/>
+      <entry term="chloroform"/>
+      <entry term="DMSO"/>
+      <entry term="ethanol"/>
+    </dictionary>
+    """
+        # assert text1 == dict_text, f"{text1} != {dict_text}"
+        # TODO remove user from metadata
+
+    def test_create_dictionary_from_url(self):
+        """lookup entry in Github repository
+        note: depends on INTERNET"""
+        mentha_url = "https://raw.githubusercontent.com/petermr/pyami/main/py4ami/resources/amidicts/mentha_tps.xml"
+        mentha_dict = AmiDictionary.create_dictionary_from_url(mentha_url)
+        assert len(mentha_dict.get_lxml_entries()) == 1
+        assert mentha_dict.get_first_ami_entry().get_term() == "1,8-cineole synthase"
+        assert mentha_dict.get_version() == "0.0.3"
+
+
+
+class IPCCDictTest(AmiAnyTest):
+    def test_ipcc_dictionaries_from_URL(self):
+        """
+        read a number of IPCC dictionaries from URL and test their validity.
+        Maybe later move code to dictionary project
+        """
+        WG3_ROOT = "https://raw.githubusercontent.com/petermr/semanticClimate/main/ipcc/ar6/wg3"
+        dictionary_names = [
+            "Chapter02/dict/ip_3_2_emissions_abb.xml", "Chapter07/dict/ip_3_7_agri_abb.xml",
+            "wg2_03/dict/ip_3_3_longmitig_abb.xml", "Chapter08/dict/ip_3_8_urban_abb.xml",
+            "Chapter05/dict/ip_3_5_socmitig_abb.xml", "Chapter17/dict/ip_3_17_sustdev_abb.xml",
+            "Chapter06/dict/ip_3_6_energy_abb.xml"
+        ]
+
+        for dictionary_name in dictionary_names:
+            url = WG3_ROOT + "/" + dictionary_name
+            print(f" url {url}")
+            try:
+                dictionary = AmiDictionary.create_dictionary_from_url(url)
+            except Exception as e:
+                print(f"cannot download dictionary {url} beacuse {e}")
+
+    @unittest.skipUnless(Path(IPCC_DICT_ROOT).exists(), f"requires checked out IPCC dictionaries {IPCC_DICT_ROOT}")
+    def test_ipcc_dictionaries_from_file(self):
+        """
+        read a number of IPCC dictionaries from LOCAL (PMR-only) files and test their validity.
+        Maybe later move codeto dictionary project
+        """
+        dictionary_names = [
+            "Chapter02/dict/ip_3_2_emissions_abb.xml",
+            "Chapter07/dict/ip_3_7_agri_abb.xml",
+            # "wg2_03/dict/ip_3_3_longmitig_abb.xml",
+            "Chapter08/dict/ip_3_8_urban_abb.xml",
+            "Chapter05/dict/ip_3_5_socmitig_abb.xml",
+            "Chapter17/dict/ip_3_17_sustdev_abb.xml",
+            "Chapter06/dict/ip_3_6_energy_abb.xml"
+        ]
+        for dictionary_name in dictionary_names:
+            dict_file = Path(IPCC_DICT_ROOT, dictionary_name)
+            print(f"reading {dict_file}")
+            if not dict_file.exists():
+                print(f"dict file does not exist {dict_file}")
+                continue
+            try:
+                dictionary = AmiDictionary.read_dictionary(dict_file)
+                assert dictionary is not None, f"reading from {dict_file}"
+                assert dictionary.get_entry_count() > 0
+            except Exception as e:
+                print(f"cannot read dictionary {dict_file} beacuse {e}")
+
+# ======================= helpers =====================
     def teardown(self):
         dict1_root = None
 

@@ -437,7 +437,7 @@ class AmiDictionary:
     ALLOWED_CHILDREN = REQUIRED_CHILDREN.union(OPTIONAL_CHILDREN)
     assert len(ALLOWED_CHILDREN) == 2
 
-    def __init__(self, title=None, wikilangs=None, ignorecase=True, **kwargs):
+    def __init__(self, title=None, wikilangs=["en"], ignorecase=True, **kwargs):
         self.logger = logger
         self.xml_content = None
         self.entries = []

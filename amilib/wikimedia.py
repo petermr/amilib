@@ -23,7 +23,6 @@ from SPARQLWrapper import SPARQLWrapper
 from amilib.ami_html import HtmlUtil
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
-from test.resources import Resources
 
 logging.debug("loading wikimedia.py")
 
@@ -371,8 +370,10 @@ class WikidataPage:
 
     # WikidataPage
 
-    def get_wikipedia_page_links(self, lang_list):
+    def get_wikipedia_page_links(self, lang_list=["en"]):
         """
+        get dict of Wikipedia URLS by language
+        :param lang_list: list of ISO languages
 <h2 class="wb-section-heading section-heading wikibase-sitelinks" dirx="auto">
   <span class="mw-headline" id="sitelinks">Sitelinks</span></h2>
   <div class="wikibase-sitelinkgrouplistview">
@@ -435,6 +436,19 @@ class WikidataPage:
                 if a is not None:
                     lang_pages[lang] = a.attrib[HREF]
         return lang_pages
+
+    def get_wikipedia_page_link(self, lang="en"):
+        """
+        gets WikipediaPage for WikidataPage
+        :param lang: ISO langiage code
+        :return: URL
+        """
+        if not lang:
+            return None
+        lang = lang.lower()
+        url_dict = self.get_wikipedia_page_links([lang])
+        return url_dict.get(lang)
+
 
     def get_image(self):
         pass
