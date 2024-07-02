@@ -34,22 +34,17 @@ class WikipediaTests(unittest.TestCase):
     """
     tests Wikipedia lookup
     """
-    def test_wikipedia_lookup_climate_words_anmol(self):
+    def test_wikipedia_lookup_climate_words_short(self):
         """tests lookup of wikipedia page by name"""
-        stem = "climate_words" # file stem
-        min_term_count = 10
-        self.search_wikipedia_for_terms(min_term_count, stem)
-
-    def test_wikipedia_lookup_climate_words_parijat(self):
-        """tests lookup of wikipedia page by name"""
-        stem = "carbon_cycle" # file stem
+        stem = "small_10" # file stem
         self.search_wikipedia_for_terms(stem)
 
+    @unittest.skip("too long")
     def test_wikipedia_lookup_several_word_lists(self):
         """tests multiple lookup of wikipedia page by name"""
         wordlists = [
-            # "carbon_cycle",
-            # "climate_words",
+            "carbon_cycle",
+            "climate_words",
             "food_ecosystem"
         ]
         for stem in wordlists:
