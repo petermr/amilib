@@ -1215,7 +1215,7 @@ class DictionaryCreationTest(AmiAnyTest):
         ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)
         assert (c := ami_dictionary.get_entry_count()) == expected_count, \
             f"dictionary should contain {expected_count} found {c}"
- n
+
     def test_create_dictionary_from_csv(self):
         """This does lookup, unfortunately Wikidata lookup changes as terms are added so this test is a mess"""
         csv_term_file = Path(Resources.TEST_IPCC_CHAP08_DICT, "urban_terms_1.csv")
