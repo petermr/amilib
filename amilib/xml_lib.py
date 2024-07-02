@@ -11,11 +11,11 @@ import chardet
 import lxml
 import lxml.etree
 import requests
-import tkinterweb
+# import tkinterweb
 from lxml import etree as ET
 from lxml.etree import _Element, _ElementTree
 from lxml.html import HTMLParser
-import tkinter as tk
+# import tkinter as tk
 
 from amilib.file_lib import FileLib
 
@@ -487,6 +487,8 @@ class XmlLib:
         """
         if not path:
             return
+        if elem is None:
+            return
         path = Path(path)
         if mkdir:
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -498,7 +500,8 @@ class XmlLib:
 
                 xmlstr = lxml.etree.tostring(elem).decode(encoding)
             except Exception as e:
-                raise ValueError(f"****** cannot decode XML to {path}: {e} *******")
+                print(f"****** cannot decode XML to {path}: {e} *******")
+                return None
             try:
                 if debug:
                     print(f"writing XML {path}")
@@ -977,6 +980,7 @@ class HtmlLib:
         """ensures html_elem is <html> and first child is <head>"""
         if html_elem is None:
             return None
+        print(f"html_elem {html_elem} {type(html_elem)} {html_elem.tag}")
         if html_elem.tag.lower() != "html":
             print(f"not a full html element")
             return None
@@ -1042,6 +1046,21 @@ class HtmlLib:
             except Exception as e:
                 print(f"cannot parse {infile} because {e}")
                 return None
+
+    @classmethod
+    def parse_html_string(cls, string):
+        """
+        parse string
+        :param string: html
+        :return: html element or None
+        """
+        try:
+            html_element = lxml.html.fromstring(string)
+        except Exception as e:
+            print(f"html error {e}")
+            return None
+
+        return html_element
 
     @classmethod
     def find_paras_with_ids(cls, html, xpath=None):
@@ -1504,22 +1523,22 @@ class Templater:
         return id
 
 
-class Web:
-    def __init__(self):
-        root = tk.Tk()
-        site = "http://google.com"
-        self.display_html(root, site)
-        root.mainloop()
-
-    @classmethod
-    def display_html(cls, master, site):
-        frame = tkinterweb.HtmlFrame(master)
-        frame.load_website(site)
-        frame.pack(fill="both", expand=True)
-
-    @classmethod
-    def tkinterweb_demo(cls):
-        tkinterweb.Demo()
+# class Web:
+#     def __init__(self):
+#         root = tk.Tk()
+#         site = "http://google.com"
+#         self.display_html(root, site)
+#         root.mainloop()
+#
+#     @classmethod
+#     def display_html(cls, master, site):
+#         frame = tkinterweb.HtmlFrame(master)
+#         frame.load_website(site)
+#         frame.pack(fill="both", expand=True)
+#
+#     @classmethod
+#     def tkinterweb_demo(cls):
+#         tkinterweb.Demo()
 
 
 def main():

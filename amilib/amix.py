@@ -12,6 +12,7 @@ from pathlib import Path
 # i have no idea why html_args and pdf_args behave differently
 from amilib.file_lib import FileLib
 
+from amilib.dict_args import AmiDictArgs
 try:
     from html_args import HTMLArgs
 except ModuleNotFoundError as e:
@@ -66,7 +67,7 @@ class AmiLib:
             # what does this do?
             sys.argv = [AmiLib.AmiLib]
         parser = argparse.ArgumentParser(
-            description=f'pyamihtmlx: V{version} call with ONE of subcommands (HTML,PDF, IPCC, UNFCCC), e.g. pyamihtmlx IPCC --help'
+            description=f'amilib: V{version} call with ONE of subcommands (DICT, HTML,PDF), e.g. amilib DICT --help'
         )
 
         parser.add_argument('-v', '--version', action="store_true",
@@ -86,9 +87,9 @@ class AmiLib:
             '\n'
             '\nExamples (# foo is a comment):\n'
             '  amilib        # runs help\n'
-            '  pyamihtmlx -h     # runs help\n'
-            '  pyamihtmlx PDF -h # runs PDF help\n'
-            '  pyamihtmlx PDF --infile foo.pdf --outdir bar/ # converts PDF to HTML\n'
+            '  amilib -h     # runs help\n'
+            '  amilib PDF -h # runs PDF help\n'
+            '  amilib PDF --infile foo.pdf --outdir bar/ # converts PDF to HTML\n'
             '\n'
             '----------------------------------------\n\n'
         )
@@ -103,16 +104,13 @@ class AmiLib:
         logger.debug(f"pdf_parser {pdf_parser}")
         html_parser = AmiLibArgs.make_sub_parser(HTMLArgs(), subparsers)
         logger.debug(f"html_parser {html_parser}")
-
-
-
-
-        # amilib_parser = AmiLibArgs().make_sub_parser(subparsers)
+        dict_parser = AmiLibArgs.make_sub_parser(AmiDictArgs(), subparsers)
+        logger.debug(f"dict_parser {dict_parser}")
 
         parser.epilog = "other entry points run as 'python -m amilib.amix <args>'"
         parser.epilog = """run:
         pyamihtmlx <subcommand> <args>
-          where subcommand is in   {HTML,PDF} and args depend on subcommand
+          where subcommand is in   {DICT, HTML,PDF} and args depend on subcommand
         """
 
         return parser
@@ -232,7 +230,7 @@ class AmiLib:
         logging.debug(f" COMMAND: {subparser_type} {self.args}")
 
         subparser_dict = {
-            # "DICT": AmiDictArgs(),
+            "DICT": AmiDictArgs(),
             # "GUI":  GUIArgs(),
             "HTML": HTMLArgs(),
             "PDF": PDFArgs(),
@@ -373,6 +371,13 @@ class AmiLib:
         version = '0.0.9'  # 2024-05-09
         version = '0.0.10'  # 2024-05-09
         version = '0.1.0'  # 2024-05-10 # fixed absolute imports and mended tests
+        version = '0.1.1'  # 2024-05-11 # fixed subclassing of AmiLibArgs
+        version = '0.1.1a'  # 2024-05-11 # simple requirements.txt
+        version = '0.1.2'  # 2024-05-20 # uploadable to pypi
+        version = '0.1.3'  # 2024-05-20 # revert pdfplumber to 0.10.0
+        version = '0.1.4'  # 2024-05-22 # revert pdfplumber to 0.11.0 
+        version = '0.1.5'  # 2024-05-25 # fixed nlp, pdfplumber
+        version = '0.2.0a1'  # 2024-06-06 # includes amidict 
 
         # logging.warn(f"VERSION {version}")
         return version

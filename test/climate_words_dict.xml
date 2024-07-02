@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dictionary title="climate_words">
+  <entry name="UNFCCC" term="UNFCCC">
+    <link wikidataID="Paris Agreement"/>
+    <link wikidataID="international agreement from 12 December 2015 within the United Nations Framework Convention on Climate Change (UNFCCC) dealing with greenhouse gas emissions mitigation, adaptation and finance starting in the year 2020"/>
+    <link wikidataID="0"/>
+    <link wikidataID="United Nations Framework Convention on Climate Change"/>
+    <link wikidataID="international treaty"/>
+    <link wikidataID="1"/>
+    <link wikidataID="2022 United Nations Climate Change Conference"/>
+    <link wikidataID="27th climate conference in Sharm el-Sheikh, Egypt"/>
+    <link wikidataID="2"/>
+    <link wikidataID="2016 United Nations Climate Change Conference"/>
+    <link wikidataID="international climate change conference in Marrakech, Morocco in November 2016"/>
+    <link wikidataID="3"/>
+    <link wikidataID="United Nations Climate Change conference"/>
+    <link wikidataID="annual conferences in the context of the UNFCCC"/>
+    <link wikidataID="4"/>
+  </entry>
+  <entry name="greenhouse gas" term="greenhouse gas">
+    <link wikidataID="greenhouse gas"/>
+    <link wikidataID="gas in an atmosphere of a planet (usually Earth) that absorbs and emits radiation within the thermal infrared range and causes the greenhouse effect"/>
+    <link wikidataID="0"/>
+    <link wikidataID="International Journal of Greenhouse Gas Control"/>
+    <link wikidataID="journal"/>
+    <link wikidataID="1"/>
+    <link wikidataID="Greenhouse Gas Measurement and Management"/>
+    <link wikidataID="UK scientific journal"/>
+    <link wikidataID="2"/>
+    <link wikidataID="greenhouse gas emissions"/>
+    <link wikidataID="sources and amounts of greenhouse gases emitted to the atmosphere from human activities"/>
+    <link wikidataID="3"/>
+    <link wikidataID="Regional Greenhouse Gas Initiative"/>
+    <link wikidataID="American carbon emission trading program"/>
+    <link wikidataID="4"/>
+  </entry>
+  <entry name="AMOC" term="AMOC">
+    <link wikidataID="Amoc"/>
+    <link wikidataID="Finnish-Inari Saami rapper"/>
+    <link wikidataID="0"/>
+    <link wikidataID="Amotz Zahavi"/>
+    <link wikidataID="Israeli evolutionary biologist (1928-2017)"/>
+    <link wikidataID="1"/>
+    <link wikidataID="Amok-kaččâm"/>
+    <link wikidataID="2007 debut studio album by Amoc"/>
+    <link wikidataID="2"/>
+    <link wikidataID="Understanding AMOC stability: the North Atlantic Hosing Model Intercomparison Project"/>
+    <link wikidataID=""/>
+    <link wikidataID="3"/>
+    <link wikidataID="Response of the AMOC to reduced solar radiation – the modulating role of atmospheric chemistry"/>
+    <link wikidataID=""/>
+    <link wikidataID="4"/>
+  </entry>
+  <entry name="SIDS" term="SIDS">
+    <link wikidataID="sudden infant death syndrome"/>
+    <link wikidataID="syndrome that is characterized by the sudden death of an infant that is not predicted by medical history and remains unexplained after a thorough forensic autopsy and detailed death scene investigation."/>
+    <link wikidataID="0"/>
+    <link wikidataID="Small Island Developing States"/>
+    <link wikidataID="Developing countries that are small island countries"/>
+    <link wikidataID="1"/>
+    <link wikidataID="Sid Meier"/>
+    <link wikidataID="Canadian-American game programmer and designer"/>
+    <link wikidataID="2"/>
+    <link wikidataID="IDS"/>
+    <link wikidataID="protein-coding gene in the species Homo sapiens"/>
+    <link wikidataID="3"/>
+    <link wikidataID="Šid"/>
+    <link wikidataID="town in Serbia"/>
+    <link wikidataID="4"/>
+  </entry>
+  <entry name="LULUCF" term="LULUCF">
+    <link wikidataID="Understanding the implications of the EU-LULUCF regulation for the wood supply from EU forests to the EU"/>
+    <link wikidataID="scientific article"/>
+    <link wikidataID="0"/>
+    <link wikidataID="No label defined"/>
+    <link wikidataID="motion by Johnny Skalin 2019"/>
+    <link wikidataID="1"/>
+    <link wikidataID="No label defined"/>
+    <link wikidataID="motion by Johnny Skalin 2015"/>
+    <link wikidataID="2"/>
+    <link wikidataID="No label defined"/>
+    <link wikidataID="motion by Johnny Skalin 2021"/>
+    <link wikidataID="3"/>
+    <link wikidataID="No label defined"/>
+    <link wikidataID="motion by Johnny Skalin 2017"/>
+    <link wikidataID="4"/>
+  </entry>
+  <entry name="radiative forcing" term="radiative forcing">
+    <link wikidataID="Estimates of the direct and indirect radiative forcing due to tropospheric aerosols: A review"/>
+    <link wikidataID="article"/>
+    <link wikidataID="0"/>
+    <link wikidataID="Radiative forcing and climate response"/>
+    <link wikidataID="article"/>
+    <link wikidataID="1"/>
+    <link wikidataID="Radiative forcing of carbon dioxide, methane, and nitrous oxide: A significant revision of the methane radiative forcing"/>
+    <link wikidataID="scholarly article"/>
+    <link wikidataID="2"/>
+    <link wikidataID="Global radiative forcing from contrail cirrus"/>
+    <link wikidataID=""/>
+    <link wikidataID="3"/>
+    <link wikidataID="Climate response to regional radiative forcing during the twentieth century"/>
+    <link wikidataID="article"/>
+    <link wikidataID="4"/>
+  </entry>
+  <entry name="methane" term="methane">
+    <link wikidataID="toluene"/>
+    <link wikidataID="chemical compound"/>
+    <link wikidataID="0"/>
+    <link wikidataID="methane"/>
+    <link wikidataID="simplest organic molecule with one carbon atom and four hydrogen"/>
+    <link wikidataID="1"/>
+    <link wikidataID="natural gas"/>
+    <link wikidataID="fossil fuel"/>
+    <link wikidataID="2"/>
+    <link wikidataID="dimethyl sulfone"/>
+    <link wikidataID="chemical compound"/>
+    <link wikidataID="3"/>
+    <link wikidataID="methane clathrate"/>
+    <link wikidataID="flammable solid similar to ice"/>
+    <link wikidataID="4"/>
+  </entry>
+</dictionary>

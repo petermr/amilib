@@ -1,12 +1,8 @@
 import csv
-import glob
-import re
 import unittest
-from collections import Counter
 from pathlib import Path
 
 import lxml.etree as ET
-from geopy.geocoders import Nominatim
 from lxml.html import HTMLParser, Element, HtmlElement
 
 from amilib.amidriver import AmiDriver, URL, XPATH, OUTFILE  # EXPAND_SECTION_PARAS
@@ -46,41 +42,6 @@ EXPAND_SECTION_PARAS = [
     '//button[contains(@class, "chapter-expand") and contains(text(), "Expand section")]',
     '//p[contains(@class, "expand-paras") and contains(text(), "Read more...")]'
 ]
-
-
-
-class MiscTest(AmiAnyTest):
-
-    @unittest.skip("requires connection and output can micro-vary")
-    def test_geolocate_GEO(self):
-        """
-        GEO: locates places by name using Nominatim
-
-        (Test occasionally returns variable decimal places
-        TODO needs a fixed-place numeric comparison
-        :return:
-        """
-        geolocator = Nominatim(timeout=10, user_agent="semanticclimate@gmail.com")
-        results = []
-        for name in [
-            "Benares",
-#            "Bengaluru",
-            "Delhi",
-            "Ladakh",
-            # "Mumbai",
-            "Mysore",
-        ]:
-            location = geolocator.geocode(name)
-            tuple = (name, location[1], location.latitude, location.longitude)
-            results.append(tuple)
-        assert results == [
-            ('Benares', (25.3356491, 83.0076292), 25.3356491, 83.0076292),
-            # ('Bengaluru', (12.9767936, 77.590082), 12.9767936, 77.590082),
-            ('Delhi', (28.6273928, 77.1716954), 28.6273928, 77.1716954),
-            ('Ladakh', (33.9456407, 77.6568576), 33.9456407, 77.6568576),
-            # ('Mumbai', (18.9733536, 72.82810491917377), 18.9733536, 72.82810491917377), # Mumbai seems to move!
-            ('Mysore', (12.3051828, 76.6553609), 12.3051828, 76.6553609),
-        ]
 
 
 

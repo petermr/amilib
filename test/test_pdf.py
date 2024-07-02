@@ -45,6 +45,8 @@ from test.test_all import AmiAnyTest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
+logger = FileLib.get_logger(__name__)
+
 # class PDFTest:
 
 FINAL_DRAFT_DIR = "/Users/pm286/projects/readable_climate_reports/ipcc/dup/finalDraft/svg"  # PMR only
@@ -119,6 +121,14 @@ def make_html_dir():
 
 
 class PDFPlumberTest(AmiAnyTest):
+    def test_logger(self):
+        logger.error("this is testing logger ERROR")
+
+        logger.warning("this is testing logger WARNING")
+        logger.info("this is testing logger INFO")
+        logger.debug("this is testing logger DEBUG")
+
+
     """
     tests that we can tun the new PDFPlumber tests
     Mainly directly for PDFPlumber rather than applications
@@ -179,7 +189,7 @@ class PDFPlumberTest(AmiAnyTest):
             print(f"\n==================== {report_name} ==================")
             input_pdf = report_dict["input_pdf"]
             if not input_pdf.exists():
-                print(f"cannot find {input_pdf}")
+                logger.error(f"cannot find {input_pdf}")
                 continue
             output_page_dir = report_dict["output_page_dir"]
             print(f"output dir {output_page_dir}")
@@ -196,9 +206,11 @@ class PDFPlumberTest(AmiAnyTest):
         for c in x:
             print(f"c {c} {ord(c)}")
 
+    @unittest.skip("input file missing")
     def test_misc_pdf(self):
         """an aritrary NGO report The result"""
         input_pdf = Path("/Users/pm286/workspace/misc/380981eng.pdf")
+        assert input_pdf.exists(), f"file should exist {input_pdf}"
         output_page_dir = Path(AmiAnyTest.TEMP_DIR, "html", "misc", "380981")
         output_page_dir.mkdir(exist_ok=True, parents=True)
         page_json_dir = output_page_dir

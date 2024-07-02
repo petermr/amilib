@@ -5,6 +5,7 @@ from collections import defaultdict
 
 import matplotlib.pyplot as plt
 import nltk
+from nltk.corpus import stopwords
 import numpy as np
 import pandas as pd
 
@@ -39,7 +40,26 @@ class AmiNLP:
     def __init__(self):
         self.stemmer = nltk.stem.porter.PorterStemmer()
         self.remove_punctuation_map = dict((ord(char), None) for char in string.punctuation)
-        self.vectorizer = TfidfVectorizer(tokenizer=self.normalize, stop_words=N_ENGLISH)
+        stop_words = N_ENGLISH
+        stop_words = stopwords.words('english')
+
+        stop_words.extend(
+            ['abov', 'afterward', 'alon', 'alreadi', 'alway', 'ani', 'anoth', 'anyon', 'anyth', 'anywher', 'becam',
+             'becaus', 'becom', 'befor', 'besid', 'cri', 'describ', 'dure', 'els', 'elsewher', 'empti', 'everi',
+             'everyon', 'everyth', 'everywher', 'fifti', 'forti', 'henc', 'hereaft', 'herebi', 'howev', 'hundr', 'inde',
+             'mani', 'meanwhil', 'moreov', 'nobodi', 'noon', 'noth', 'nowher', 'onc', 'onli', 'otherwis', 'ourselv',
+             'perhap', 'pleas', 'sever', 'sinc', 'sincer', 'sixti', 'someon', 'someth', 'sometim', 'somewher',
+             'themselv', 'thenc', 'thereaft', 'therebi', 'therefor', 'togeth', 'twelv', 'twenti', 'veri', 'whatev',
+             'whenc', 'whenev', 'wherea', 'whereaft', 'wherebi', 'wherev', 'whi', 'yourselv',
+             'anywh', 'arent', 'becau', 'couldnt', 'didnt', 'doe', 'doesnt', 'dont', 'el',
+             'elsewh', 'everywh', 'ha', 'hadnt', 'hasnt', 'havent', 'hi', 'ind', 'isnt',
+             'mightnt', 'mustnt', 'neednt', 'otherwi', 'plea', 'shant', 'shouldnt',
+             'shouldv', 'somewh', 'thatll', 'thi', 'wa', 'wasnt', 'werent', 'wont',
+             'wouldnt', 'youd', 'youll', 'youv']
+        )
+
+        self.vectorizer = TfidfVectorizer(tokenizer=self.normalize, stop_words=stop_words,
+                                          token_pattern=None)
 
         nltk.download(N_PUNKT)  # if necessary...
 

@@ -25,6 +25,7 @@ requirements = [
  'pyvis',
  'selenium',
  'tinycss',
+ 'Tkinterweb',
  'webdriver-manager',
  'scikit-learn',
 
@@ -33,8 +34,8 @@ requirements = [
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.1.0',
-    description='document download, cleaning, management',
+    version='0.2.0a1',
+    description='document and dictionary download, cleaning, management',
     long_description_content_type='text/markdown',
     long_description=readme,
     author="Peter Murray-Rust",
@@ -57,6 +58,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.10',
     ],
     entry_points={
         'console_scripts': [

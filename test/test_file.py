@@ -39,7 +39,7 @@ class TestFile(AmiAnyTest):
     @classmethod
     def example_setup(cls, pyamix):
         """ setup test or examples
-
+        these are general commands (i.e. not subcommands)
         :pyamix:
         """
         pyamix.run_commands([

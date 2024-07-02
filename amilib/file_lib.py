@@ -11,6 +11,7 @@ import shutil
 from pathlib import Path, PurePath, PurePosixPath
 
 import chardet
+import idna
 import requests
 
 logging.debug("loading file_lib")
@@ -138,6 +139,7 @@ class FileLib:
             absolute_file = os.path.join(os.path.join(file_dir, file))
         return absolute_file
 
+    @classmethod
     def get_parent_dir(cls, file):
         return None if file is None else PurePath(file).parent
 
@@ -420,12 +422,16 @@ class FileLib:
         return files
 
     @classmethod
-    def assert_exist_size(cls, file, minsize, abort=True):
+    def assert_exist_size(cls, file, minsize, abort=True, debug=True):
         """asserts a file exists and is of sufficient size
         :param file: file or path
         :param minsize: minimum size
+        :param abort: throw exception if fails (not sure what this does)
+        :param debug: output filename
         """
         path = Path(file)
+        if debug:
+            print(f"checking {file}")
         try:
             assert path.exists(), f"file {path} must exist"
             assert (s := path.stat().st_size) > minsize, f"file {file} size = {s} must be above {minsize}"
@@ -458,6 +464,7 @@ class FileLib:
                 filename = filename[:-len(suffix)]
             module = '.'.join(filename.split(os.path.sep)[-file_level:])
             logger = logging.getLogger(module)
+            print(f"created logger {module} {logger}")
             return logger
 
 

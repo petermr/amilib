@@ -1,8 +1,10 @@
+import datetime
 import json
 import logging
 import os
 import re
 import sys
+from copy import copy
 from enum import Enum
 from pathlib import Path
 
@@ -14,12 +16,14 @@ from urllib.parse import quote
 from io import StringIO
 from urllib.request import urlopen
 from lxml import etree
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from SPARQLWrapper import SPARQLWrapper
 
 # local
 from amilib.ami_html import HtmlUtil
 from amilib.util import Util
+from amilib.xml_lib import HtmlLib, XmlLib
+from test.resources import Resources
 
 logging.debug("loading wikimedia.py")
 
@@ -59,7 +63,7 @@ DICT_NAME = "dict_name"
 ARTICLEs = [
     ".*((scientific|journal)\\s+)?article.*",
     ".*((scientific|academic)\\s+)?journal.*"
-     ]
+]
 ARTS = [".*(film|song|album)"]
 
 
@@ -94,7 +98,6 @@ class WikidataLookup:
         self.exact_lookup = exact_lookup
         self.hits_dict = dict()
 
-
     def lookup_wikidata(self, term):
         """
         Looks up term in Wikidata and gets Q number and descriptiom
@@ -104,7 +107,6 @@ class WikidataLookup:
         :param term: word or phrase to lookup
         :return: triple (e.g. hit0_id, hit0_description, wikidata_hits)
         """
-
 
         if not term:
             logging.warning("null term")
@@ -174,7 +176,7 @@ class WikidataLookup:
         sub_dict = {}
         wikidata_dict[qitem] = sub_dict
         # make title from text children not tooltip
-        text = ''.join(result_heading_a.itertext()) # acetone (Q49546)
+        text = ''.join(result_heading_a.itertext())  # acetone (Q49546)
         title = text.split("(Q")[0]
         sub_dict[TITLE] = title
         find_arg = "./div[@class='" + SEARCH_RESULT + "']/span"
@@ -566,7 +568,6 @@ class WikidataPage:
         aliases = [li.text for li in li_list]
         return
 
-
     def get_id(self):
         """
         get id from <span class="wikibase-title-id">(Q42)</span>
@@ -666,23 +667,22 @@ class WikidataPage:
         :param titles: list of previously extracted wikidata labels
         NOT YET USED
         """
-        if labels == None:
+        if labels is None:
             logging.info(f"no labels given")
             return None
-        if ids == None:
+        if ids is None:
             logging.error(f"must give list of ids")
             return None
         if len(labels) != len(ids):
             logging.error(f"labels {labels} and ids {ids} are different lengths")
             return None
-        if wikidata_label == None:
+        if wikidata_label is None:
             logging.error(f"must give required wikidata label")
             return None
         idlist = []
         for label, id in zip(labels, ids):
             if label_match(label, wikidata_label, method, ignorecase):  # METHOD NOT WRITTEN
                 idlist.append(id)
-
 
     """<div class="wikibase-entitytermsview-heading-description">chemical compound</div>"""
 
@@ -693,7 +693,29 @@ class WikidataPage:
         else:
             HtmlUtil.write_html_elem(self.root, sys.stdout, pretty_print=True)
 
-
+    # @classmethod
+    # def get_first_para(cls, html_element):
+    #     """
+    #     get the first paragraph (p) - normally the definition
+    #     :param html_element: trimmed html from Wikipedia
+    #     TODO make this an instance method
+    #     TODO deal with disambiguation
+    #     """
+    #     main_element = copy(WikipediaPage.get_main_element(html_element))
+    #     XmlLib.write_xml(html_element, Path(Resources.TEMP_DIR, "html", "junk", f"{datetime.datetime.now()}.html"), debug=True)
+    #     if main_element is None:
+    #         print(f"none main_element")
+    #         return None
+    #     ps = main_element.xpath(".//p")
+    #     print(f"len ps {len(ps)}")
+    #
+    #     for p in ps:
+    #         text = p.text
+    #         print(f"text:: {text[:50]}")
+    #     if len(ps) == 0:
+    #         print(f"no paras: ")
+    #     else:
+    #         return ps[0]
 
 
 class WikidataSparql:
@@ -789,14 +811,15 @@ class ParserWrapper:
         if url is None:
             raise ValueError("url is None")
         try:
+            content = None
             with urlopen(url) as u:
                 content = u.read().decode("utf-8")
         except HTTPError as e:
             print(f"cannout open {url} because {e}")
+            raise URLError(f"failed to read {url} because {e}")
         tree = ET.parse(StringIO(content), ET.HTMLParser())
         root = tree.getroot()
         return root
-
 
 
 class WikidataExtractor:
@@ -923,3 +946,165 @@ class WikidataExtractor:
         # 			if key=="P31":		# instance of
         # 				result["instance"]			= data["claims"][key][0]["mainsnak"]["datavalue"]["value"]["id"]
         return result
+
+
+class WikipediaPage:
+    from requests import request
+    WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
+
+    def __init__(self):
+        self.html_elem = None
+
+    @classmethod
+    def lookup_wikipedia_page(cls, search_term):
+        """
+        :param search_term: term/phrase to search with
+        :return: new WikipediaPage or None
+        """
+
+        "https://en.wikipedia.org/w/index.php?search=lulucx&title=Special%3ASearch&ns0=1"
+        url = f"{WikipediaPage.WIKIPEDIA_PHP}search={search_term}"
+        if url is None:
+            return None
+        try:
+            response = requests.get(url)
+            decode = response.content.decode("UTF-8")
+            html_content = HtmlLib.parse_html_string(decode)
+            wikipedia_page = WikipediaPage()
+            wikipedia_page.html_elem = html_content
+        except Exception as e:
+            print(f"HTML exception {e}")
+            return None
+
+        return wikipedia_page
+
+    def get_main_element(self):
+        """gets main content from Wikipedia page
+        also cleans some non-content elements incl buttons, navs, etc.
+        """
+        try:
+            main_contents = self.html_elem.xpath(".//main")
+            main_content = main_contents[0]
+        except Exception as e:
+            print(f"except {e}")
+            return None
+        XmlLib.remove_elements(main_content, xpath="//nav")
+        XmlLib.remove_elements(main_content, xpath="//noscript")
+        # XmlLib.remove_elements(main_content, xpath="//style")
+        XmlLib.remove_elements(main_content, xpath="//div[@id='p-lang-btn']")
+        return main_content
+
+    def get_leading_para(self):
+        """get first paragraph in main content (usually with definitions in lead sentence
+        """
+        main_elem = self.get_main_element()
+        ps = main_elem.xpath(".//p")
+        for p in ps:
+            text = XmlLib.get_text(p).strip()
+            if len(text) > 20:
+                return p
+        return None
+
+    def get_wikidata_item(self):
+        """
+<li id="t-wikibase" class="mw-list-item">
+<a href="https://www.wikidata.org/wiki/Special:EntityPage/Q13461160"
+    title="Structured data on this page hosted by Wikidata [g]" accesskey="g">
+<span>Wikidata item</span>
+</a>
+</li>
+        """
+        if self.html_elem is not None:
+            wds = self.html_elem.xpath(".//li[a[span[text()='Wikidata item']]]")
+            spans = self.html_elem.xpath(".//span[.='Wikidata item']")
+            alist = self.html_elem.xpath(".//li/a[span[.='Wikidata item']]")
+            if len(wds) > 0:
+                alist = wds[0].xpath("a")
+                href = alist[0].attrib.get("href")
+                return href
+        return None
+
+    @classmethod
+    def create_html_of_leading_wp_paragraphs(cls, words, outfile=None, debug=True):
+        """
+        looks up Wikipedia entries for list of words and optionally writes to file
+        :param words: list of words/phrases to search for
+        :param outfile: optional output file for paragraphs
+        :param debug: debug output
+        :return: html file with list of paragraphs
+        """
+        html_out = HtmlLib.create_html_with_empty_head_body()
+        new_body = HtmlLib.get_body(html_out)
+        for word in words:
+            if debug:
+                print(f"\nword: {word}")
+            first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
+            WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
+            div = ET.SubElement(new_body, "div")
+            div.append(first_p)
+        if outfile:
+            XmlLib.write_xml(new_body, outfile, debug=debug)
+        return html_out
+
+    @classmethod
+    def get_leading_paragraph_for_word(cls, new_body, word):
+
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page(word)
+        if wikipedia_page is not None:
+            wiki_main = wikipedia_page.get_main_element()
+            first_p = wikipedia_page.get_leading_para()
+            wikidata_href = wikipedia_page.get_wikidata_item()
+        else:
+            first_p = ET.Element("p")
+            first_p.text = "Could not find first para"
+
+        return first_p
+
+    @classmethod
+    def get_tuple_for_first_paragraph(cls, para, debug=True):
+        """empirical approach to extract:
+          * term word/phrase
+          * abbreviation (in brackets)
+          * definition (first sentence)
+          * definition (rest of para)
+          :param para: para to extract assumed to be first
+          :return: (para, term, sentence, abbrev)
+          """
+        if not para:
+            return None
+        sentence =None
+        term = None
+        abbrev = None
+
+        # para = self.get_leading_para()
+        rex = re.compile("(.*\\.)\\s+\\.*")
+        if para is None:
+            return None
+        # find first full stop in normal text (not bold)
+        texts = para.xpath("./text()")
+        for text in texts:
+            # print(f"text> {text}")
+            pass
+
+        bolds = para.xpath("./b")
+        for bold in bolds:
+            # print(f"bold> {bold.text}")
+            pass
+
+        # split first sentence
+        for tb in para.xpath("./text()|*"):
+            if debug:
+                try:
+                    print(f"<{tb.tag}>{HtmlUtil.get_text_content(tb)}</{tb.tag}>")
+                except Exception as e:
+                    print(f"{tb}")
+        for text in para.xpath("./text()|./b/text()"):
+            if debug:
+                print(f"t> {text}")
+
+            match = rex.match(text)
+            if match:
+                if debug:
+                    print(f">> {match.group(1)}")
+
+        return (para, term, sentence, abbrev)

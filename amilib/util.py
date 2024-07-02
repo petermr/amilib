@@ -15,6 +15,7 @@ import pyvis
 from lxml import html
 from pathlib import Path
 import time
+import urllib3
 import requests
 import json
 import base64
