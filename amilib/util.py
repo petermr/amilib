@@ -499,6 +499,16 @@ class Util:
         return object.__class__.__name__
         pass
 
+    @classmethod
+    def get_username(cls):
+        """
+        gets username
+        https://stackoverflow.com/questions/842059/is-there-a-portable-way-to-get-the-current-username-in-python
+        some possibility of spoofing , biut doesn't matter for us
+        """
+        import getpass
+        return getpass.getuser()
+
 
 class GithubDownloader:
     """Note: Github uses the old 'master' name but we have changed it to 'main'"""
