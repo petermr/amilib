@@ -1057,6 +1057,8 @@ class WikipediaPage:
             if debug:
                 print(f"\nword: {word}")
             first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
+            if first_p is None:
+                continue
             WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
             div = ET.SubElement(new_body, "div")
             if div is not None:

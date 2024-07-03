@@ -9,6 +9,7 @@ import lxml.etree as ET
 import requests
 from lxml import etree, html
 
+from amilib.ami_dict import AmiDictionary
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage
 from amilib.wikimedia import WikidataLookup
@@ -46,7 +47,8 @@ class WikipediaTests(unittest.TestCase):
             # "carbon_cycle",
             # "climate_words",
             # "food_ecosystem",
-            "water_cyclone",
+            # "water_cyclone",
+            "poverty",
         ]
         for stem in wordlists:
             self.search_wikipedia_for_terms(stem)
@@ -95,6 +97,14 @@ class WikipediaTests(unittest.TestCase):
         assert links == {'en': 'https://en.wikipedia.org/wiki/Azulene'}
         url = wpage.get_wikipedia_page_link("en")
         assert url == 'https://en.wikipedia.org/wiki/Azulene'
+
+    def test_wikipedia_lookup_cmd(self):
+        """
+        runn comandd for wikipedia lookup
+        """
+        args = ["DICT", "--help"]
+        pyami = Pyami()
+
 
 # NOTE some of these are lengthy (seconds) as they lookup on the Net
 
@@ -163,7 +173,7 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         # qitems, descs = wikidata_lookup.lookup_items(terms)
         temp_dir = Path(AmiAnyTest.TEMP_DIR, "wikidata", "oldx")
         temp_dir.mkdir(exist_ok=True, parents=True)
-        dictfile, amidict = AMIDict.create_from_list_of_strings_and_write_to_file(
+        dictfile, amidict = AmiDictionary.create_from_list_of_strings_and_write_to_file(
             terms, title="parkinsons", wikidata=True, directory=temp_dir)
         assert Path(dictfile).exists()
 
