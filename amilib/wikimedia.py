@@ -1059,7 +1059,8 @@ class WikipediaPage:
             first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
             WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
             div = ET.SubElement(new_body, "div")
-            div.append(first_p)
+            if div is not None:
+                div.append(first_p)
         if outfile:
             XmlLib.write_xml(new_body, outfile, debug=debug)
         return html_out

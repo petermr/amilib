@@ -39,13 +39,14 @@ class WikipediaTests(unittest.TestCase):
         stem = "small_10" # file stem
         self.search_wikipedia_for_terms(stem)
 
-    @unittest.skip("too long")
+    @unittest.skipUnless(AmiAnyTest.IS_PMR, "long and development only")
     def test_wikipedia_lookup_several_word_lists(self):
         """tests multiple lookup of wikipedia page by name"""
         wordlists = [
-            "carbon_cycle",
-            "climate_words",
-            "food_ecosystem"
+            # "carbon_cycle",
+            # "climate_words",
+            # "food_ecosystem",
+            "water_cyclone",
         ]
         for stem in wordlists:
             self.search_wikipedia_for_terms(stem)
@@ -57,7 +58,7 @@ class WikipediaTests(unittest.TestCase):
         :param stem: file stem in resources
         """
         # contains list of words to search for
-        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{stem}.txt")
+        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
         assert wordsfile.exists() , f"{wordsfile} should exist"
         print(f"searching {wordsfile}")
         words = Path(wordsfile).read_text().splitlines()
