@@ -9,6 +9,8 @@ import lxml.etree as ET
 import requests
 from lxml import etree, html
 
+from amilib.ami_dict import AmiDictionary
+from amilib.amix import AmiLib
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage
 from amilib.wikimedia import WikidataLookup
@@ -36,33 +38,36 @@ class WikipediaTests(unittest.TestCase):
     """
     def test_wikipedia_lookup_climate_words_short(self):
         """tests lookup of wikipedia page by name"""
+        wordlist_dir = Path(Resources.TEST_RESOURCES_DIR, "wordlists")
         stem = "small_10" # file stem
-        self.search_wikipedia_for_terms(stem)
+        self.search_wikipedia_for_terms(stem, wordlist_dir)
 
-    @unittest.skip("too long")
+    @unittest.skipUnless(AmiAnyTest.IS_PMR, "too long")
     def test_wikipedia_lookup_several_word_lists(self):
         """tests multiple lookup of wikipedia page by name"""
+        wordlist_dir = Path(Resources.TEST_RESOURCES_DIR, "wordlists")
         wordlists = [
             "carbon_cycle",
             "climate_words",
             "food_ecosystem"
         ]
-        for stem in wordlists:
-            self.search_wikipedia_for_terms(stem)
+        for wordlist_stem in wordlists:
+            self.search_wikipedia_for_terms(wordlist_stem, wordlist_dir)
 
-    def search_wikipedia_for_terms(self, stem, min_term_count=10):
+    def search_wikipedia_for_terms(self, wordlist_stem, wordlist_dir, min_term_count=10):
         """
-        uses file of weords in test/resources/misc
+        uses file of words in test/resources/misc
+        :param wordlist_dir: directory containg {wordlist_stem}.txt file(s)
+        :param wordlist_stem: file stem in resources
         :param min_term_count: minimum number of terms expected
-        :param stem: file stem in resources
         """
         # contains list of words to search for
-        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{stem}.txt")
+        wordsfile = Path(wordlist_dir, f"{wordlist_stem}.txt")
         assert wordsfile.exists() , f"{wordsfile} should exist"
         print(f"searching {wordsfile}")
         words = Path(wordsfile).read_text().splitlines()
         assert len(words) >= min_term_count, f"wordsfile must have at least {min_term_count} words"
-        outfile = Path(Resources.TEMP_DIR, "html", "terms", f"{stem}.html")
+        outfile = Path(Resources.TEMP_DIR, "html", "terms", f"{wordlist_stem}.html")
         WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
 
     def test_wikipedia_page_tuple(self):
@@ -95,7 +100,41 @@ class WikipediaTests(unittest.TestCase):
         url = wpage.get_wikipedia_page_link("en")
         assert url == 'https://en.wikipedia.org/wiki/Azulene'
 
-# NOTE some of these are lengthy (seconds) as they lookup on the Net
+
+    def test_lookup_wikidata_commandline(self):
+        """
+
+        """
+        stem = "small_5"
+        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        assert wordsfile.exists(), f"{wordsfile} should exist"
+        pyami = AmiLib()
+        # args = ["DICT", "--help"]
+        # pyami.run_command(args)
+
+        args = ["DICT", "--words", str(wordsfile),
+                "--dict", str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikidata.xml")),
+                "--wikidata"]
+        print(f"args {args}")
+        pyami.run_command(args)
+
+    def test_lookup_wikipedia_commandline(self):
+        """
+
+        """
+        stem = "small_5"
+        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        assert wordsfile.exists(), f"{wordsfile} should exist"
+        pyami = AmiLib()
+        # args = ["DICT", "--help"]
+        # pyami.run_command(args)
+
+        args = ["DICT", "--words", str(wordsfile),
+                "--dict", str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikipedia.xml")),
+                "--wikipedia"]
+        print(f"args {args}")
+        pyami.run_command(args)
+
 
 class TestWikidataLookup_WIKI_NET(unittest.TestCase):
     """
@@ -146,25 +185,6 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         assert qitems == ['Q49546', 'Q172275']
         assert descs == ['chemical compound', 'chemical compound']
 
-    @unittest.skip(reason="No AMI Dict in library")
-    def test_lookup_with_ami_dictionary_WIKI_NET_DICT(self):
-        """
-        Wikidata Lookup of items in AMIDict
-        TODO add AmiDict to amilib
-        :return:
-        """
-        terms = [
-            "A53T",
-            "linkage disequilibrium",
-            "transcriptomics"
-        ]
-        wikidata_lookup = WikidataLookup()
-        # qitems, descs = wikidata_lookup.lookup_items(terms)
-        temp_dir = Path(AmiAnyTest.TEMP_DIR, "wikidata", "oldx")
-        temp_dir.mkdir(exist_ok=True, parents=True)
-        dictfile, amidict = AMIDict.create_from_list_of_strings_and_write_to_file(
-            terms, title="parkinsons", wikidata=True, directory=temp_dir)
-        assert Path(dictfile).exists()
 
     def test_parse_wikidata_html(self):
         """find Wikidata items with given property

@@ -1056,13 +1056,17 @@ class WikipediaPage:
         for word in words:
             if debug:
                 print(f"\nword: {word}")
-            first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
-            WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
-            div = ET.SubElement(new_body, "div")
-            div.append(first_p)
+            cls.create_html_of_leading_wp_para(new_body, word, debug)
         if outfile:
             XmlLib.write_xml(new_body, outfile, debug=debug)
         return html_out
+
+    @classmethod
+    def create_html_of_leading_wp_para(cls, parent_elem, word, debug=False):
+        first_p = WikipediaPage.get_leading_paragraph_for_word(parent_elem, word)
+        WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
+        div = ET.SubElement(parent_elem, "div")
+        div.append(first_p)
 
     @classmethod
     def get_leading_paragraph_for_word(cls, new_body, word):

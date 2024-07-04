@@ -1,34 +1,30 @@
-import argparse
 import ast
-import json
 import logging
-
-from lxml import etree as ET
-from lxml import etree
-from lxml.etree import Element, _Element
-from enum import Enum
-import lxml
 import os
-import pandas as pd
 import re
 import traceback
 import urllib.request
-
 from collections import Counter
+from enum import Enum
 from pathlib import Path
-from urllib.error import URLError
 from shutil import copyfile
+from urllib.error import URLError
 
+import lxml
+import pandas as pd
+from lxml import etree
+from lxml import etree as ET
+from lxml.etree import _Element
+
+from amilib.ami_html import HtmlUtil, CSSStyle, H_A, H_SPAN, H_BODY, H_DIV, H_UL, H_LI, A_ID, \
+    A_HREF, A_NAME, A_TITLE, A_TERM
+from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR, LOCAL_OV21_DIR, LOCAL_DICT_AMI3
 from amilib.dict_args import AmiDictArgs, SYNONYM, WIKIPEDIA
+from amilib.file_lib import FileLib
 # local
 # from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util
-from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR, LOCAL_OV21_DIR, LOCAL_DICT_AMI3
-from amilib.ami_html import HtmlUtil, CSSStyle, H_A, H_SPAN, H_BODY, H_DIV, H_UL, H_LI, A_ID, \
-    A_HREF, A_NAME, A_TITLE, A_TERM
-from amilib.file_lib import FileLib
-from amilib.ami_args import AbstractArgs
-from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage
+from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage
 
 # elements in amidict
 DICTIONARY = "dictionary"
@@ -87,6 +83,9 @@ but it stops me making errors
 """
 
 class AmiEntry:
+    """
+    wraps the HTML element  representing the entry and provides access and mutatiom
+    """
     TAG = "entry"
 
     TERM_A = "term"
@@ -414,6 +413,13 @@ class AmiEntry:
                 p = ET.SubElement(subelement, "p")
                 p.attrib["role"] = key
                 p.text = str(value)
+
+    def lookup_and_add_wikipedia_page(self):
+        term = self.get_term()
+        if term:
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page(term)
+            if wikipedia_page:
+                self.element.append(wikipedia_page.get_leading_para())
 
 
 class AmiDictionary:
@@ -1619,26 +1625,3 @@ class AmiDictValidator:
         return error_list1
 
 
-# ====================
-
-
-def main(argv=None):
-    # AMIDict.debug_tdd()
-    print(f"running AmiDict main")
-    dict_args = AmiDictArgs()
-    try:
-        dict_args.parse_and_process()
-    except Exception as e:
-        print(traceback.format_exc())
-        print(f"***Cannot run amidict***; see output for errors: {e} ")
-
-
-
-if __name__ == "__main__":
-    print("running dict main")
-    main()
-else:
-
-    #    print("running dict main anyway")
-    #    main()
-    pass
