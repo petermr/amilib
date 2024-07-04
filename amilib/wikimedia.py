@@ -536,6 +536,8 @@ class WikidataPage:
         """gets title (string preceeding Q/P number)
         identical to label in language of browser (or only en?)
         """
+        if self.root is None:
+            return "No title"
         title_elem_list = self.root.xpath(
             f"/html/body/div/h1/span/span[normalize-space(@class)='wikibase-title-label']")
         title = title_elem_list[0].text
@@ -604,6 +606,8 @@ class WikidataPage:
         :param lead: leading string (e.g. "/html//*")
         :param trail: trailing string (e.g. "/li"
         """
+        if self.root is None:
+            return []
         xpath = self.create_xpath_for_equality_whitespaced_attvals(attname, attval, lead=lead, trail=trail)
         elems = self.root.xpath(xpath)
         return elems
@@ -1053,9 +1057,12 @@ class WikipediaPage:
             if debug:
                 print(f"\nword: {word}")
             first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
+            if first_p is None:
+                continue
             WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
             div = ET.SubElement(new_body, "div")
-            div.append(first_p)
+            if div is not None:
+                div.append(first_p)
         if outfile:
             XmlLib.write_xml(new_body, outfile, debug=debug)
         return html_out

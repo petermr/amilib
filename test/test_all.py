@@ -42,6 +42,8 @@ class AmiAnyTest(unittest.TestCase):
     USER = True   # user-facing test
     BUG = True    # skip BUGs
 
+    PMR_NAME ="pm286"
+    IS_PMR = (PMR_NAME == Util.get_username())
     # outputs for tests
 
     # temporary output data (can be deleted after tests)

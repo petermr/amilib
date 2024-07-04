@@ -207,6 +207,12 @@ class TestUtil(AmiAnyTest):
                                             ['', '(?P<decision>\\d+)', '/', '(?P<type>CP|CMA|CMP)', '\\.',
                                              '(?P<session>\\d+)', ''])
 
+    def test_get_username(self):
+        """gets username
+        """
+        username = Util.get_username()
+        assert username == "pm286"
+
 
 class TestGithubDownloader(AmiAnyTest):
     # def __init__(self):
@@ -272,10 +278,10 @@ class TestTemplate(AmiAnyTest):
         matched_templates = Templater.get_matched_templates(regex, ss, template)
         assert matched_templates == ['Decision_12_CMP_5', 'Decision_10_CP_17', 'Decision_2_CMA_2', None]
 
-class UtilTests:
-    def test_dict_read(self):
-        file = "section_templates.json"
-        return Util.read_pydict_from_json(file)
+# class UtilTests:
+#     def test_dict_read(self):
+#         file = "section_templates.json"
+#         return Util.read_pydict_from_json(file)
 
 class TestCommandline:
 
