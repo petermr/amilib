@@ -1159,13 +1159,13 @@ class DictionaryCreationTest(AmiAnyTest):
         """
         amilib = AmiLib()
         title = "climate_words"
-        title_path = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{title}.txt")
+        title_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{title}.txt")
         assert title_path.exists(), f"{title_path} should exist"
         title_txt = f"{title_path}"
         print(f"words {title_txt}")
         with open(title_txt, "r") as f:
             print(f"words ==> {f.readlines()}")
-        title_dict = Path(Resources.TEMP_DIR, "misc", f"{title}_dict.xml")
+        title_dict = Path(Resources.TEMP_DIR, "words", f"{title}_dict.xml")
         FileLib.delete_file(title_dict)
 
         word_xml = f"{Path(Resources.TEMP_DIR, '{title}.xml')}"
@@ -1204,8 +1204,8 @@ class DictionaryCreationTest(AmiAnyTest):
 
     def test_make_dict_from_file_CMD_OK(self):
         amilib = AmiLib()
-        words_file = Path(TEST_RESOURCE_DIR, "misc", "climate_words.txt")
-        dictfile = Path(Resources.TEMP_DIR, "misc", "climate_words.xml")
+        words_file = Path(TEST_RESOURCE_DIR, "wordlists", "climate_words.txt")
+        dictfile = Path(Resources.TEMP_DIR, "words", "climate_words.xml")
         expected_count = 11
         FileLib.delete_file(dictfile)
         amilib.run_command(["DICT",

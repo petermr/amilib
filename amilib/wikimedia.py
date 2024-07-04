@@ -4,7 +4,6 @@ import logging
 import os
 import re
 import sys
-from copy import copy
 from enum import Enum
 from pathlib import Path
 
@@ -15,7 +14,6 @@ import lxml.etree
 from urllib.parse import quote
 from io import StringIO
 from urllib.request import urlopen
-from lxml import etree
 from urllib.error import HTTPError, URLError
 from SPARQLWrapper import SPARQLWrapper
 
@@ -1071,9 +1069,10 @@ class WikipediaPage:
     @classmethod
     def create_html_of_leading_wp_para(cls, parent_elem, word, debug=False):
         first_p = WikipediaPage.get_leading_paragraph_for_word(parent_elem, word)
-        WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
-        div = ET.SubElement(parent_elem, "div")
-        div.append(first_p)
+        if first_p is not None:
+            WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
+            div = ET.SubElement(parent_elem, "div")
+            div.append(first_p)
 
     @classmethod
     def get_leading_paragraph_for_word(cls, new_body, word):
