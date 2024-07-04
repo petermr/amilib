@@ -1057,6 +1057,13 @@ class WikipediaPage:
             if debug:
                 print(f"\nword: {word}")
             cls.create_html_of_leading_wp_para(new_body, word, debug)
+            first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
+            if first_p is None:
+                continue
+            WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
+            div = ET.SubElement(new_body, "div")
+            if div is not None:
+                div.append(first_p)
         if outfile:
             XmlLib.write_xml(new_body, outfile, debug=debug)
         return html_out
