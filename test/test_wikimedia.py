@@ -1,6 +1,7 @@
 # Tests wikipedia and wikidata methods under pytest
 import logging
 import pprint
+import re
 import unittest
 import datetime
 from pathlib import Path
@@ -125,7 +126,7 @@ class WikipediaTests(unittest.TestCase):
         """
 
         """
-        stem = "small_5"
+        stem = "breward"
         wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
         assert wordsfile.exists(), f"{wordsfile} should exist"
         pyami = AmiLib()
@@ -137,6 +138,47 @@ class WikipediaTests(unittest.TestCase):
                 "--wikipedia"]
         print(f"args {args}")
         pyami.run_command(args)
+
+
+    def test_wikipedia_page_first_para(self):
+        """
+        creates WikipediaPage.FirstPage object
+        """
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        first_para = wikipedia_page.create_wikipedia_first_para(wikipedia_page)
+        assert first_para is not None
+        print(f"first para {type(first_para)} {first_para.parent} ")
+        print(f"first para: {ET.tostring(first_para.para_element)}")
+
+    def test_wikipedia_page_first_para_bold_ahrefs(self):
+        """
+        creates WikipediaPage.FirstPage object , looks for <b> and <a @href>
+        """
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        first_para = wikipedia_page.create_wikipedia_first_para(wikipedia_page)
+        assert first_para is not None
+        bolds =  first_para.get_bolds()
+        assert len(bolds) == 2
+        assert bolds[0].text == "Atlantic meridional overturning circulation"
+        ahrefs =  first_para.get_ahrefs()
+        assert len(ahrefs) == 9
+        assert ahrefs[0].text == "ocean current"
+        assert ahrefs[0].attrib.get("href") == "/wiki/Ocean_current"
+
+
+    def test_wikipedia_page_first_para_sentence_breaks(self):
+        """
+        creates WikipediaPage.FirstPage object
+        """
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        first_para = wikipedia_page.create_wikipedia_first_para(wikipedia_page)
+        assert first_para is not None
+        texts = first_para.get_texts()
+        assert len(texts) == 24
+        text_breaks = [t for t in texts if re.match(".*\.\s+[A-Z].*", t)]
+        assert len(text_breaks) == 2
+        for t in text_breaks:
+            print(f"t> {t}")
 
 
 class TestWikidataLookup_WIKI_NET(unittest.TestCase):

@@ -419,7 +419,9 @@ class AmiEntry:
         if term:
             wikipedia_page = WikipediaPage.lookup_wikipedia_page(term)
             if wikipedia_page:
-                self.element.append(wikipedia_page.get_leading_para())
+                para = wikipedia_page.get_leading_para()
+                if para is not None:
+                    self.element.append(para)
 
 
 class AmiDictionary:

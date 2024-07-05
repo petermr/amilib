@@ -1021,6 +1021,17 @@ class WikipediaPage:
                 return p
         return None
 
+    def create_wikipedia_first_para(self, para_element=None):
+        """
+        finds first paragraph and wraps in WikipediaPage.FirstPara
+        """
+        wp_first_para = None
+        p = self.get_leading_para()
+        if p is not None:
+            wp_first_para = WikipediaPage.FirstPara(p)
+        return wp_first_para
+
+
     def get_wikidata_item(self):
         """
 <li id="t-wikibase" class="mw-list-item">
@@ -1136,3 +1147,38 @@ class WikipediaPage:
                     print(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
+
+    @classmethod
+    class FirstPara:
+        """
+        first paragraph of WikipediaPage
+        """
+        def __init__(self, parent, para_element):
+            self.parent = parent
+            self.para_element = para_element
+
+        def get_bolds(self):
+            """get all <b> descendants
+            :return list of <b> elements (may be empty
+            """
+            bolds = []
+            if self.para_element is not None:
+                bolds = self.para_element.xpath(".//b")
+            return bolds
+
+        def get_ahrefs(self):
+            """get all <a href=''> descendants
+            :return list of <a> elements (may be empty
+            """
+            ahrefs = []
+            if self.para_element is not None:
+                ahrefs = self.para_element.xpath(".//a[@href]")
+            return ahrefs
+
+        def get_texts(self):
+            """returns all descendant texts
+            :return: list of text objects (may be empty)
+            """
+            texts = [] if self.para_element is None else self.para_element.xpath(".//text()")
+            return texts
+
