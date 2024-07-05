@@ -1,0 +1,273 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dictionary title="small_10">
+  <entry name="anthropogenic" term="anthropogenic">
+    <div qid="Q7942">
+      <a href="wikidataURL/Q7942">Wikidata</a>
+      <p role="title">global warming</p>
+      <p role="description">current rise in Earth's average temperature and related large-scale shifts in weather patterns</p>
+    </div>
+    <div qid="Q180644">
+      <a href="wikidataURL/Q180644">Wikidata</a>
+      <p role="title">light pollution</p>
+      <p role="description">anthropogenic light in the night environment, caused by excess or misdirected lighting</p>
+    </div>
+    <div qid="Q271669">
+      <a href="wikidataURL/Q271669">Wikidata</a>
+      <p role="title">landform</p>
+      <p role="description">a natural or anthropogenic land feature on the solid surface of the Earth or other planetary body; geomorphological unit in the Earth sciences</p>
+    </div>
+    <div qid="Q1780867">
+      <a href="wikidataURL/Q1780867">Wikidata</a>
+      <p role="title">litter</p>
+      <p role="description">waste products that have been disposed improperly, without consent, at an inappropriate location</p>
+    </div>
+    <div qid="Q574376">
+      <a href="wikidataURL/Q574376">Wikidata</a>
+      <p role="title">human impact on the environment</p>
+      <p role="description">observed or potential changes to biophysical environments and ecosystems caused directly or indirectly by humans, including global warming, environmental degradation, mass extinction and biodiversity loss, ecological crisis and collapse</p>
+    </div>
+  </entry>
+  <entry name="physical-biogeochemical" term="physical-biogeochemical">
+    <div qid="Q58315251">
+      <a href="wikidataURL/Q58315251">Wikidata</a>
+      <p role="title">Nitrogen transfers off Walvis Bay: a 3-D coupled physical/biogeochemical modeling approach in the Namibian upwelling system</p>
+      <p role="description"></p>
+    </div>
+    <div qid="Q57892773">
+      <a href="wikidataURL/Q57892773">Wikidata</a>
+      <p role="title">Low-frequency variability in North Sea and Baltic Sea identified through simulations with the 3-D coupled physical–biogeochemical model ECOSMO</p>
+      <p role="description"></p>
+    </div>
+    <div qid="Q58315250">
+      <a href="wikidataURL/Q58315250">Wikidata</a>
+      <p role="title">Coupled physical/biogeochemical modeling including O&lt;sub&gt;2&lt;/sub&gt;-dependent processes in the Eastern Boundary Upwelling Systems: application in the Benguela</p>
+      <p role="description"></p>
+    </div>
+    <div qid="Q57890761">
+      <a href="wikidataURL/Q57890761">Wikidata</a>
+      <p role="title">Nutrient transports in the Baltic Sea – results from a 30-year physical–biogeochemical reanalysis</p>
+      <p role="description"></p>
+    </div>
+    <div qid="Q59138650">
+      <a href="wikidataURL/Q59138650">Wikidata</a>
+      <p role="title">The effect of surface flooding on the physical–biogeochemical dynamics of a warm-core eddy off southeast Australia</p>
+      <p role="description">article</p>
+    </div>
+  </entry>
+  <entry name="peat drainage" term="peat drainage">
+    <div qid="Q57267366">
+      <a href="wikidataURL/Q57267366">Wikidata</a>
+      <p role="title">A methanotrophic community in a tropical peatland is unaffected by drainage and forest fires in a tropical peat soil</p>
+      <p role="description"></p>
+    </div>
+    <div qid="Q58654347">
+      <a href="wikidataURL/Q58654347">Wikidata</a>
+      <p role="title">Effect of drainage and wildfire on peat hydrophysical properties</p>
+      <p role="description">scholarly article by J. H. Sherwood et al published 19 April 2013 in Hydrological Processes</p>
+    </div>
+    <div qid="Q57863858">
+      <a href="wikidataURL/Q57863858">Wikidata</a>
+      <p role="title">Application of a Peat-humic Agent for Treatment of Acid Mine Drainage</p>
+      <p role="description"></p>
+    </div>
+    <div qid="Q107804327">
+      <a href="wikidataURL/Q107804327">Wikidata</a>
+      <p role="title">Limited effect of drainage on peat properties, porewater chemistry, and peat decomposition proxies in a boreal peatland</p>
+      <p role="description">scientific article</p>
+    </div>
+    <div qid="Q26360166">
+      <a href="wikidataURL/Q26360166">Wikidata</a>
+      <p role="title">Low-cost Removal of Trace Metals from Copper-nickel Mine Stockpile Drainage. Volume II--trace Metal Sequestration by Peat, Other Organics, Tailings, and Soils: A Literature Review</p>
+      <p role="description">final contract report published in 1986</p>
+    </div>
+  </entry>
+  <entry name="tropospheric" term="tropospheric">
+    <div qid="Q64767836">
+      <a href="wikidataURL/Q64767836">Wikidata</a>
+      <p role="title">Tropospheric Emissions: Monitoring of Pollution</p>
+      <p role="description">NASA spectrograph flown on the Intelsat 40e communications satellite</p>
+    </div>
+    <div qid="Q3999747">
+      <a href="wikidataURL/Q3999747">Wikidata</a>
+      <p role="title">Tropospheric Emission Spectrometer</p>
+      <p role="description">instrument on NASA's Aura satellite</p>
+    </div>
+    <div qid="Q44488745">
+      <a href="wikidataURL/Q44488745">Wikidata</a>
+      <p role="title">Tropomi</p>
+      <p role="description">spectrometer carried by Sentinel 5 Precursor</p>
+    </div>
+    <div qid="Q56613608">
+      <a href="wikidataURL/Q56613608">Wikidata</a>
+      <p role="title">Modelling interactions between vegetation and tropospheric ozone</p>
+      <p role="description">doctoral thesis</p>
+    </div>
+    <div qid="Q59624159">
+      <a href="wikidataURL/Q59624159">Wikidata</a>
+      <p role="title">Time-resolved absorption spectroscopy applied to tropospheric chemistry</p>
+      <p role="description">doctoral thesis by Thomas Robert Lewis</p>
+    </div>
+  </entry>
+  <entry name="permafrost" term="permafrost">
+    <div qid="Q179918">
+      <a href="wikidataURL/Q179918">Wikidata</a>
+      <p role="title">permafrost</p>
+      <p role="description">soil frozen permanently (practically for a duration of at least two years)</p>
+    </div>
+    <div qid="Q15765134">
+      <a href="wikidataURL/Q15765134">Wikidata</a>
+      <p role="title">Permafrost and Periglacial Processes</p>
+      <p role="description">journal</p>
+    </div>
+    <div qid="Q17415474">
+      <a href="wikidataURL/Q17415474">Wikidata</a>
+      <p role="title">Permafrost</p>
+      <p role="description">2014 Norwegian film directed by John Sullivan</p>
+    </div>
+    <div qid="Q61754770">
+      <a href="wikidataURL/Q61754770">Wikidata</a>
+      <p role="title">The Shell of Permafrost</p>
+      <p role="description"></p>
+    </div>
+    <div qid="Q54087038">
+      <a href="wikidataURL/Q54087038">Wikidata</a>
+      <p role="title">Permafrost</p>
+      <p role="description">novel by Eva Baltasar</p>
+    </div>
+  </entry>
+  <entry name="centennial" term="centennial">
+    <div qid="Q155743">
+      <a href="wikidataURL/Q155743">Wikidata</a>
+      <p role="title">Centennial Hall</p>
+      <p role="description">multi-purpose hall in Wrocław, Poland</p>
+    </div>
+    <div qid="Q945332">
+      <a href="wikidataURL/Q945332">Wikidata</a>
+      <p role="title">Centennial</p>
+      <p role="description">12-episode American television miniseries</p>
+    </div>
+    <div qid="Q387322">
+      <a href="wikidataURL/Q387322">Wikidata</a>
+      <p role="title">Centennial</p>
+      <p role="description">city in Colorado, United States of America</p>
+    </div>
+    <div qid="Q578">
+      <a href="wikidataURL/Q578">Wikidata</a>
+      <p role="title">century</p>
+      <p role="description">unit of time lasting 100 years</p>
+    </div>
+    <div qid="Q1956117">
+      <a href="wikidataURL/Q1956117">Wikidata</a>
+      <p role="title">Centennial</p>
+      <p role="description">census-designated place in Albany County, Wyoming, United States</p>
+    </div>
+  </entry>
+  <entry name="aerosols" term="aerosols">
+    <div qid="Q104541">
+      <a href="wikidataURL/Q104541">Wikidata</a>
+      <p role="title">aerosol</p>
+      <p role="description">colloid of fine solid particles or liquid droplets, in air or another gas</p>
+    </div>
+    <div qid="Q170477">
+      <a href="wikidataURL/Q170477">Wikidata</a>
+      <p role="title">chimney</p>
+      <p role="description">structure that provides ventilation for exhausting the hot or toxic flue gases, aerosols and smokes produced by a boiler, stove, furnace or fireplace inside a building to the outside atmosphere</p>
+    </div>
+    <div qid="Q35494">
+      <a href="wikidataURL/Q35494">Wikidata</a>
+      <p role="title">CALIPSO</p>
+      <p role="description">joint NASA and CNES Earth observation satellite</p>
+    </div>
+    <div qid="Q15763037">
+      <a href="wikidataURL/Q15763037">Wikidata</a>
+      <p role="title">Journal of Aerosol Science</p>
+      <p role="description">journal</p>
+    </div>
+    <div qid="Q659495">
+      <a href="wikidataURL/Q659495">Wikidata</a>
+      <p role="title">aerosol spray</p>
+      <p role="description">dispensing system of an aerosol mist: a can with a payload and propellant under pressure</p>
+    </div>
+  </entry>
+  <entry name="sequestration" term="sequestration">
+    <div qid="Q15305550">
+      <a href="wikidataURL/Q15305550">Wikidata</a>
+      <p role="title">carbon sequestration</p>
+      <p role="description">process of long-term carbon capture</p>
+    </div>
+    <div qid="Q688890">
+      <a href="wikidataURL/Q688890">Wikidata</a>
+      <p role="title">pulmonary sequestration</p>
+      <p role="description">congenital disorder of respiratory system</p>
+    </div>
+    <div qid="Q57408422">
+      <a href="wikidataURL/Q57408422">Wikidata</a>
+      <p role="title">Peter D. Warwick</p>
+      <p role="description">project chief of the USGS Geologic Carbon Sequestration Project</p>
+    </div>
+    <div qid="Q661356">
+      <a href="wikidataURL/Q661356">Wikidata</a>
+      <p role="title">sequestration</p>
+      <p role="description">lawfully seizing property from its owner to be possessed by the state</p>
+    </div>
+    <div qid="Q18554173">
+      <a href="wikidataURL/Q18554173">Wikidata</a>
+      <p role="title">splenic sequestration</p>
+      <p role="description">Human disease</p>
+    </div>
+  </entry>
+  <entry name="albedo" term="albedo">
+    <div qid="Q101038">
+      <a href="wikidataURL/Q101038">Wikidata</a>
+      <p role="title">albedo</p>
+      <p role="description">ratio of reflected radiation to incident radiation</p>
+    </div>
+    <div qid="Q593691">
+      <a href="wikidataURL/Q593691">Wikidata</a>
+      <p role="title">Albedo 0.39</p>
+      <p role="description">1976 studio album by Vangelis</p>
+    </div>
+    <div qid="Q114814096">
+      <a href="wikidataURL/Q114814096">Wikidata</a>
+      <p role="title">A Study of Earth Radiation Characteristics and Testing of Their Use in a Model of the ISS RS Power Supply System (Albedo)</p>
+      <p role="description">International Space Station experiment</p>
+    </div>
+    <div qid="Property:P4501">
+      <a href="wikidataURL/Property:P4501">Wikidata</a>
+      <p role="title">No title</p>
+      <p role="description"></p>
+    </div>
+    <div qid="Property:P720">
+      <a href="wikidataURL/Property:P720">Wikidata</a>
+      <p role="title">No title</p>
+      <p role="description"></p>
+    </div>
+  </entry>
+  <entry name="exacerbating" term="exacerbating">
+    <div qid="Q35869">
+      <a href="wikidataURL/Q35869">Wikidata</a>
+      <p role="title">asthma</p>
+      <p role="description">long-term disease involving inflamed airways</p>
+    </div>
+    <div qid="Q64611995">
+      <a href="wikidataURL/Q64611995">Wikidata</a>
+      <p role="title">Study to Evaluate Efficacy and Safety of Mepolizumab for Frequently Exacerbating Chronic Obstructive Pulmonary Disease (COPD) Patients</p>
+      <p role="description">clinical trial</p>
+    </div>
+    <div qid="Q2551913">
+      <a href="wikidataURL/Q2551913">Wikidata</a>
+      <p role="title">occupational asthma</p>
+      <p role="description">medical condition caused or exacerbated by the workplace</p>
+    </div>
+    <div qid="Q34687157">
+      <a href="wikidataURL/Q34687157">Wikidata</a>
+      <p role="title">A pilot trial of Cop 1 in exacerbating-remitting multiple sclerosis</p>
+      <p role="description">scientific article</p>
+    </div>
+    <div qid="Q12301086">
+      <a href="wikidataURL/Q12301086">Wikidata</a>
+      <p role="title">allergic asthma</p>
+      <p role="description">asthma with a basis in a pathological type I hypersensitivity reaction</p>
+    </div>
+  </entry>
+</dictionary>

@@ -10,7 +10,7 @@ import lxml.etree as ET
 import requests
 from lxml import etree, html
 
-from amilib.ami_dict import AmiDictionary
+from amilib.ami_dict import AmiDictionary, AmiEntry
 from amilib.amix import AmiLib
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage
@@ -179,6 +179,30 @@ class WikipediaTests(unittest.TestCase):
         assert len(text_breaks) == 2
         for t in text_breaks:
             print(f"t> {t}")
+
+    def test_create_semantic_html_from_xml(self):
+        """
+        create semanticHtml from XML dictionary (created by lookup wikipedia)
+        """
+        xml_dict_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "xml", "breward_wikipedia.xml")
+        assert xml_dict_file.exists()
+        xml_ami_dict = AmiDictionary.create_from_xml_file(xml_dict_file)
+        assert xml_ami_dict is not None
+        entries = xml_ami_dict.get_ami_entries()
+        assert len(entries) == 30, f"{xml_dict_file} should have 30 entries"
+        ami_entry = entries[0]
+        div = ami_entry.create_semantic_div()
+        html_elem = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(html_elem)
+        body.append(div)
+        path = Path(Resources.TEMP_DIR, "words", "html", "covid.html")
+        HtmlLib.write_html_file(
+            html_elem, path, debug=True)
+        assert path.exists()
+
+        dict_html = xml_ami_dict.create_semantic_html()
+        HtmlLib.write_html_file(dict_html, Path(Resources.TEMP_DIR, "words", "html", "semantic_dict.html"), debug=True)
+
 
 
 class TestWikidataLookup_WIKI_NET(unittest.TestCase):

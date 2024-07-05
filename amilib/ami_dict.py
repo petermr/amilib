@@ -25,6 +25,7 @@ from amilib.file_lib import FileLib
 # from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util
 from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage
+from amilib.xml_lib import HtmlLib
 
 # elements in amidict
 DICTIONARY = "dictionary"
@@ -423,6 +424,43 @@ class AmiEntry:
                 if para is not None:
                     self.element.append(para)
 
+    def create_semantic_html(self):
+        """
+        output semantic html for dictionary
+        :return: semantic HTML
+        """
+        print(f"create_semantic_html NYI")
+
+    def get_wikipedia_page_child_para(self):
+        """
+        return child paragraph added by wikipedia lookup as first_para of wikipedia_page
+        :return: wikpedia first para or None
+        """
+        child_paras  = self.element.xpath("./p")
+        return None if len(child_paras) == 0 else child_paras[0]
+
+    def create_semantic_div(self):
+        """
+        create html div for term with wikipedia page para
+        :param ami_entry: ami entry with wikipedia page paragraph
+        :return: div with term and para
+        """
+        term = self.get_term()
+        para = self.get_wikipedia_page_child_para()
+        if para is None:
+            return None
+        assert para is not None
+        html_div = ET.Element("div")
+        html_div.append(para)
+        term_para = ET.SubElement(html_div, "p")
+        term_name_span = ET.SubElement(term_para, "span")
+        term_name_span.text = "Term:"
+        term_value_span = ET.SubElement(term_para, "span")
+        term_value_span.text = self.get_term()
+        html_div.append(para)
+        return html_div
+
+
 
 class AmiDictionary:
     """wrapper for an ami dictionary including search flags
@@ -494,6 +532,7 @@ class AmiDictionary:
             xml_tree = ET.parse(str(xml_file), parser=ET.XMLParser(encoding="utf-8"))
         except lxml.etree.XMLSyntaxError as e:
             logging.error(f"Cannot parse xml file {xml_file} because {e}")
+            print(f"cannot parse xml_file {xml_file}")
             return None
         except Exception as e:
             logging.warning(f"error parsing {xml_file} {e}")
@@ -1394,6 +1433,22 @@ class AmiDictionary:
             if id is not None:
                 id_list.append(id)
         return id_list
+
+    def create_semantic_html(self):
+        """
+        output semantic html for dictionary
+        :return: semantic HTML
+        """
+        html_dict = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(html_dict)
+        entries = self.get_ami_entries()
+        for ami_entry in entries:
+            div = ami_entry.create_semantic_div()
+            if div is not None:
+                assert type(div) is _Element
+                body.append(div)
+        return html_dict
+
 
 
 
