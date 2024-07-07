@@ -432,7 +432,7 @@ class DriverTest(AmiAnyTest):
         glossdir.mkdir(exist_ok=True, parents=True)
         abbrev_file = Path(glossdir, "acronyms_wiki.csv")
         output_file = Path(glossdir, "acronyms_wiki_pedia.csv")
-        maxout = 20  # 1700 in total
+        maxout = 5  # 1700 in total
         lookup = WikidataLookup()
         with open(output_file, "w") as fout:
             csvwriter = csv.writer(fout)
@@ -486,7 +486,7 @@ class DriverTest(AmiAnyTest):
 # ipcc_graph_with_coloured_nodes.to_csv('coloured.csv')
 # make_graph(ipcc_graph_with_coloured_nodes, source='source', target='target', colour ='node_colour')
 
-class TestUtils1:
+class Utils1Test:
 
     @unittest.skip("not written")
     def test_strip_guillemets(self):

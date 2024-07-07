@@ -420,9 +420,9 @@ class AmiEntry:
         if term:
             wikipedia_page = WikipediaPage.lookup_wikipedia_page(term)
             if wikipedia_page:
-                para = wikipedia_page.get_leading_para()
-                if para is not None:
-                    self.element.append(para)
+                wp_para = wikipedia_page.create_first_wikipedia_para()
+                if wp_para is not None:
+                    self.element.append(wp_para.para_element)
 
     def create_semantic_html(self):
         """
@@ -431,12 +431,13 @@ class AmiEntry:
         """
         print(f"create_semantic_html NYI")
 
-    def get_wikipedia_page_child_para(self):
+    def get_wikipedia_page_child_para(self, xpath="./p"):
         """
         return child paragraph added by wikipedia lookup as first_para of wikipedia_page
+        :param xpath: paragrapg selector (default './p')
         :return: wikpedia first para or None
         """
-        child_paras  = self.element.xpath("./p")
+        child_paras  = self.element.xpath(xpath)
         return None if len(child_paras) == 0 else child_paras[0]
 
     def create_semantic_div(self):

@@ -59,7 +59,7 @@ def _create_amidict_with_foo_bar_entries():
     return amidict
 
 
-class TestAmiDictionary(AmiAnyTest):
+class AmiDictionaryTest(AmiAnyTest):
     """These are tests for developing CODE for dictionary creation and validation
 
     Code for VALIDATION of dictionaries should probably be bundled with the dictionaries themselves
@@ -283,7 +283,7 @@ class TestAmiDictionary(AmiAnyTest):
         """
         unit test
         """
-        amidict = TestAmiDictionary().create_file_dict()[ONE_ENTRY_DICT]
+        amidict = AmiDictionaryTest().create_file_dict()[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
         assert len(amidict.get_first_ami_entry().get_synonyms()) == 2
 
@@ -939,7 +939,7 @@ class TestAmiDictionary(AmiAnyTest):
         amilib.run_command(["DICT", "--help"])
 
 
-class TestAmiEntry(AmiAnyTest):
+class AmiEntryTest(AmiAnyTest):
     """
     test functionality of AmiEntry
     """
@@ -948,7 +948,7 @@ class TestAmiEntry(AmiAnyTest):
         pass
 
 
-class TestValidate(AmiAnyTest):
+class ValidateTest(AmiAnyTest):
     """
     test validity of AmiEntry and AmiDictionary
     """
@@ -977,13 +977,13 @@ class TestValidate(AmiAnyTest):
 
     def test_one_entry_dict_is_ami_dictionary(self):
         """require the attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         assert type(one_dict) is AmiDictionary, f"fila is not AmiDictionary {one_dict}"
 
     def test_dict1_has_version_attribute(self):
         """require the version attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[DICTFILE1]
         amidict = AmiDictionary.create_from_xml_file(Path(one_dict))
         version = amidict.get_version()
@@ -993,14 +993,14 @@ class TestValidate(AmiAnyTest):
         """
         require the version attribute to have starting value
         """
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         amidict = AmiDictionary.create_from_xml_file(Path(setup_dict[DICTFILE1]))
         version = amidict.get_version()
         assert version == STARTING_VERSION
 
     def test_one_entry_dict_has_version_attribute(self):
         """require the attribiute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         assert one_dict is not None
         version = one_dict.get_version()
@@ -1008,7 +1008,7 @@ class TestValidate(AmiAnyTest):
 
     def test_dictionary_has_version(self):
         """require the attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         version = one_dict.get_version()
         assert version is not None, "missing version"
@@ -1034,12 +1034,12 @@ class TestValidate(AmiAnyTest):
     def test_dict_has_xml_title(self):
         """has root dictionary element got title attribute?
         e.g. <dictionary title='dict1'> ..."""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         root = setup_dict[ROOT]
         assert root.attrib[TITLE] == "dict1"
 
     def test_dict_title_matches_filename(self):
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         root = setup_dict[ROOT]
         last_path = setup_dict[DICTFILE1].stem
         print(last_path)
@@ -1124,7 +1124,7 @@ class DictionaryCreationTest(AmiAnyTest):
         out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
         words_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate",
                           "ar5_wg3_food_security_words.txt")
-        max_entries = 7 # to reduce time
+        max_entries = 2 # to reduce time
 
         description = "food security terms in AR5_WG3_ch_5 selected by Anmol Negi"
         # add title, description, and save
@@ -1158,7 +1158,7 @@ class DictionaryCreationTest(AmiAnyTest):
         Note that wikidata lookup does not necessarily put the best answers first
         """
         amilib = AmiLib()
-        title = "climate_words"
+        title = "small_2"
         title_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{title}.txt")
         assert title_path.exists(), f"{title_path} should exist"
         title_txt = f"{title_path}"

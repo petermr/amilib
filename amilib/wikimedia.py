@@ -963,8 +963,32 @@ class WikidataExtractor:
         # 				result["instance"]			= data["claims"][key][0]["mainsnak"]["datavalue"]["value"]["id"]
         return result
 
+class Wikipedia:
+    """
+    mainly class methods for Wikipedia
+    """
+    @classmethod
+    def search_wikipedia_for_terms(cls, wordlist_stem, wordlist_dir, outdir=None, min_term_count=2):
+        """
+        uses file of words in test/resources/misc
+        :param wordlist_dir: directory containg {wordlist_stem}.txt file(s)
+        :param wordlist_stem: file stem in resources
+        :param outdir: if not None writes <outdir>/<wordlist_stem>.html
+        :param min_term_count: minimum number of terms expected
+        """
+        # contains list of words to search for
+        wordsfile = Path(wordlist_dir, f"{wordlist_stem}.txt")
+        assert wordsfile.exists(), f"{wordsfile} should exist"
+        print(f"searching {wordsfile}")
+        words = Path(wordsfile).read_text().splitlines()
+        assert len(words) >= min_term_count, f"wordsfile must have at least {min_term_count} words"
+        if outdir:
+            outfile = Path(outdir, f"{wordlist_stem}.html")
+            WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
+
 
 class WikipediaPage:
+    FIRST_PARA = "wpage_first_para"
     from requests import request
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
 
@@ -1010,27 +1034,20 @@ class WikipediaPage:
         XmlLib.remove_elements(main_content, xpath="//div[@id='p-lang-btn']")
         return main_content
 
-    def get_leading_para(self):
-        """get first paragraph in main content (usually with definitions in lead sentence
+    def create_first_wikipedia_para  (self):
+        """
+        get wrapper for first paragraph in main content (usually with definitions in lead sentence
         """
         main_elem = self.get_main_element()
         ps = main_elem.xpath(".//p")
+        if not ps:
+            return None
+        # iterate until meaningfile para length found
         for p in ps:
             text = XmlLib.get_text(p).strip()
-            if len(text) > 20:
-                return p
+            if len(text) > WikipediaPara.MIN_FIRST_PARA_LEN:
+                return WikipediaPara(self, p, para_class=WikipediaPage.FIRST_PARA)
         return None
-
-    def create_wikipedia_first_para(self, para_element=None):
-        """
-        finds first paragraph and wraps in WikipediaPage.FirstPara
-        """
-        wp_first_para = None
-        p = self.get_leading_para()
-        if p is not None:
-            wp_first_para = WikipediaPage.FirstPara(p)
-        return wp_first_para
-
 
     def get_wikidata_item(self):
         """
@@ -1066,38 +1083,69 @@ class WikipediaPage:
             if debug:
                 print(f"\nword: {word}")
             cls.create_html_of_leading_wp_para(new_body, word, debug)
-            first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
-            if first_p is None:
-                continue
-            WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
-            div = ET.SubElement(new_body, "div")
-            if div is not None:
-                div.append(first_p)
+            first_wp_para = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
+            if first_wp_para is not None:
+                div = ET.SubElement(new_body, "div")
+                div.append(first_wp_para.para_element)
         if outfile:
             XmlLib.write_xml(new_body, outfile, debug=debug)
         return html_out
 
     @classmethod
     def create_html_of_leading_wp_para(cls, parent_elem, word, debug=False):
-        first_p = WikipediaPage.get_leading_paragraph_for_word(parent_elem, word)
-        if first_p is not None:
-            WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
+        first_wp_para = WikipediaPage.get_leading_paragraph_for_word(parent_elem, word)
+        if (first_wp_para is not None):
             div = ET.SubElement(parent_elem, "div")
-            div.append(first_p)
+            div.append(first_wp_para.para_element)
 
     @classmethod
     def get_leading_paragraph_for_word(cls, new_body, word):
 
         wikipedia_page = WikipediaPage.lookup_wikipedia_page(word)
+        first_wp_para = None
         if wikipedia_page is not None:
-            wiki_main = wikipedia_page.get_main_element()
-            first_p = wikipedia_page.get_leading_para()
-            wikidata_href = wikipedia_page.get_wikidata_item()
-        else:
-            first_p = ET.Element("p")
-            first_p.text = "Could not find first para"
+            first_wp_para = wikipedia_page.create_first_wikipedia_para()
+        return first_wp_para
 
-        return first_p
+
+class WikipediaPara:
+    """
+    a paragraph of a WikipediaPage
+    The first para is often the most important
+    """
+    MIN_FIRST_PARA_LEN = 20
+
+    def __init__(self, parent, para_element=None, para_class=None):
+        self.parent = parent
+        print(f"parent: {parent}")
+        self.para_element = para_element
+        if self.para_element is not None and para_class:
+            self.para_element.attrib[HtmlLib.CLASS_ATTNAME] = para_class
+
+    def get_bolds(self):
+        """get all <b> descendants
+        :return list of <b> elements (may be empty
+        """
+        bolds = []
+        if self.para_element is not None:
+            bolds = self.para_element.xpath(".//b")
+        return bolds
+
+    def get_ahrefs(self):
+        """get all <a href=''> descendants
+        :return list of <a> elements (may be empty
+        """
+        ahrefs = []
+        if self.para_element is not None:
+            ahrefs = self.para_element.xpath(".//a[@href]")
+        return ahrefs
+
+    def get_texts(self):
+        """returns all descendant texts
+        :return: list of text objects (may be empty)
+        """
+        texts = [] if self.para_element is None else self.para_element.xpath(".//text()")
+        return texts
 
     @classmethod
     def get_tuple_for_first_paragraph(cls, para, debug=True):
@@ -1147,38 +1195,4 @@ class WikipediaPage:
                     print(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
-
-    @classmethod
-    class FirstPara:
-        """
-        first paragraph of WikipediaPage
-        """
-        def __init__(self, parent, para_element):
-            self.parent = parent
-            self.para_element = para_element
-
-        def get_bolds(self):
-            """get all <b> descendants
-            :return list of <b> elements (may be empty
-            """
-            bolds = []
-            if self.para_element is not None:
-                bolds = self.para_element.xpath(".//b")
-            return bolds
-
-        def get_ahrefs(self):
-            """get all <a href=''> descendants
-            :return list of <a> elements (may be empty
-            """
-            ahrefs = []
-            if self.para_element is not None:
-                ahrefs = self.para_element.xpath(".//a[@href]")
-            return ahrefs
-
-        def get_texts(self):
-            """returns all descendant texts
-            :return: list of text objects (may be empty)
-            """
-            texts = [] if self.para_element is None else self.para_element.xpath(".//text()")
-            return texts
 

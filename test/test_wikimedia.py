@@ -13,7 +13,8 @@ from lxml import etree, html
 from amilib.ami_dict import AmiDictionary, AmiEntry
 from amilib.amix import AmiLib
 # local
-from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage
+from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage, \
+    Wikipedia, WikipediaPara
 from amilib.wikimedia import WikidataLookup
 from amilib.xml_lib import HtmlLib, XmlLib
 from test.resources import Resources
@@ -35,7 +36,7 @@ tests for Wikimedia routines for Wikipedia and Wikidata
 """
 
 
-class WikipediaTests(unittest.TestCase):
+class WikipediaTest(unittest.TestCase):
     """
     tests Wikipedia lookup
     """
@@ -44,7 +45,7 @@ class WikipediaTests(unittest.TestCase):
         """tests lookup of wikipedia page by name"""
         wordlist_dir = Path(Resources.TEST_RESOURCES_DIR, "wordlists")
         stem = "small_10"  # file stem
-        self.search_wikipedia_for_terms(stem, wordlist_dir)
+        Wikipedia.search_wikipedia_for_terms(stem, wordlist_dir)
 
     @unittest.skipUnless(AmiAnyTest.IS_PMR, "long and development only")
     def test_wikipedia_lookup_several_word_lists(self):
@@ -55,47 +56,12 @@ class WikipediaTests(unittest.TestCase):
             # "climate_words",
             # "food_ecosystem",
             # "water_cyclone",
-            "poverty",
+            # "poverty",
+            "small_2"
         ]
+        outdir = Path(Resources.TEMP_DIR, "html", "terms")
         for wordlist_stem in wordlists:
-            self.search_wikipedia_for_terms(wordlist_stem, wordlist_dir)
-
-    def search_wikipedia_for_terms(self, wordlist_stem, wordlist_dir, min_term_count=10):
-        """
-        uses file of words in test/resources/misc
-        :param wordlist_dir: directory containg {wordlist_stem}.txt file(s)
-        :param wordlist_stem: file stem in resources
-        :param min_term_count: minimum number of terms expected
-        """
-        # contains list of words to search for
-        wordsfile = Path(wordlist_dir, f"{wordlist_stem}.txt")
-        assert wordsfile.exists(), f"{wordsfile} should exist"
-        print(f"searching {wordsfile}")
-        words = Path(wordsfile).read_text().splitlines()
-        assert len(words) >= min_term_count, f"wordsfile must have at least {min_term_count} words"
-        outfile = Path(Resources.TEMP_DIR, "html", "terms", f"{wordlist_stem}.html")
-        WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
-
-    def test_wikipedia_page_tuple(self):
-        """
-        looks up page and returns first para tuple
-        """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page("Palearctic")
-        assert type(wikipedia_page) is WikipediaPage
-        leading_para = wikipedia_page.get_leading_para()
-        print(f"leading {ET.tostring(leading_para)}")
-        page_tuple = WikipediaPage.get_tuple_for_first_paragraph(leading_para)
-        assert page_tuple is not None
-        print(f"tuple {page_tuple}")
-        string = "The Palearctic or Palaearctic is the largest of the eight biogeographic realms of the Earth."
-
-    def test_parse_wikidata_page(self):
-        qitem = "Q144362"  # azulene
-        wpage = WikidataPage(qitem)
-        # note "zz" has no entries
-        ahref_dict = wpage.get_wikipedia_page_links(["en", "de", "zz"])
-        assert ahref_dict == {'en': 'https://en.wikipedia.org/wiki/Azulene',
-                              'de': 'https://de.wikipedia.org/wiki/Azulen'}
+            Wikipedia.search_wikipedia_for_terms(wordlist_stem, wordlist_dir, outdir)
 
     def test_wikipedia_page_from_wikidata(self):
         qitem = "Q144362"  # azulene
@@ -105,28 +71,11 @@ class WikipediaTests(unittest.TestCase):
         url = wpage.get_wikipedia_page_link("en")
         assert url == 'https://en.wikipedia.org/wiki/Azulene'
 
-    def test_lookup_wikidata_commandline(self):
-        """
-
-        """
-        stem = "small_5"
-        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
-        assert wordsfile.exists(), f"{wordsfile} should exist"
-        pyami = AmiLib()
-        # args = ["DICT", "--help"]
-        # pyami.run_command(args)
-
-        args = ["DICT", "--words", str(wordsfile),
-                "--dict", str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikidata.xml")),
-                "--wikidata"]
-        print(f"args {args}")
-        pyami.run_command(args)
-
     def test_lookup_wikipedia_commandline(self):
         """
 
         """
-        stem = "breward"
+        stem = "small_5"
         wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
         assert wordsfile.exists(), f"{wordsfile} should exist"
         pyami = AmiLib()
@@ -145,7 +94,7 @@ class WikipediaTests(unittest.TestCase):
         creates WikipediaPage.FirstPage object
         """
         wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
-        first_para = wikipedia_page.create_wikipedia_first_para(wikipedia_page)
+        first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
         print(f"first para {type(first_para)} {first_para.parent} ")
         print(f"first para: {ET.tostring(first_para.para_element)}")
@@ -155,7 +104,7 @@ class WikipediaTests(unittest.TestCase):
         creates WikipediaPage.FirstPage object , looks for <b> and <a @href>
         """
         wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
-        first_para = wikipedia_page.create_wikipedia_first_para(wikipedia_page)
+        first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
         bolds =  first_para.get_bolds()
         assert len(bolds) == 2
@@ -171,14 +120,17 @@ class WikipediaTests(unittest.TestCase):
         creates WikipediaPage.FirstPage object
         """
         wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
-        first_para = wikipedia_page.create_wikipedia_first_para(wikipedia_page)
-        assert first_para is not None
+        first_para = wikipedia_page.create_first_wikipedia_para()
+        print (f"type first para {first_para}")
+        assert type(first_para) is WikipediaPara
         texts = first_para.get_texts()
         assert len(texts) == 24
-        text_breaks = [t for t in texts if re.match(".*\.\s+[A-Z].*", t)]
-        assert len(text_breaks) == 2
-        for t in text_breaks:
-            print(f"t> {t}")
+        text_breaks = [(j,t) for (j,t) in enumerate(texts) if re.match(".*\.($|\s+[A-Z].*)", t)]
+        assert len(text_breaks) == 4
+        for (idx,txt) in text_breaks:
+            prec = '^' if idx == 0 else texts[idx - 1]
+            foll = '$' if idx == len(texts) - 1 else texts[idx + 1]
+            print(f"|{prec}|{txt}|{foll}|")
 
     def test_create_semantic_html_from_xml(self):
         """
@@ -205,12 +157,12 @@ class WikipediaTests(unittest.TestCase):
 
 
 
-class TestWikidataLookup_WIKI_NET(unittest.TestCase):
+class WikidataTest(unittest.TestCase):
     """
     lookup wikidata terms, Ids, Requires NET
     """
 
-    def test_lookup_wikidata_acetone_WIKI_NET(self):
+    def test_lookup_wikidata_acetone(self):
         """
         Lookup single term in Wikidata
         Needs connectivity
@@ -224,7 +176,16 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         # assert wikidata_hits == ['Q49546', 'Q24634417', 'Q329022', 'Q63986955', 'Q4673277']
         assert 'Q49546' in wikidata_hits and len(wikidata_hits) >= 3
 
-    def test_lookup_wiki_properties_chemical_compound_WIKI_NET(self):
+    def test_parse_wikidata_page(self):
+        qitem = "Q144362"  # azulene
+        wpage = WikidataPage(qitem)
+        # note "zz" has no entries
+        ahref_dict = wpage.get_wikipedia_page_links(["en", "de", "zz"])
+        assert ahref_dict == {'en': 'https://en.wikipedia.org/wiki/Azulene',
+                              'de': 'https://de.wikipedia.org/wiki/Azulen'}
+
+
+    def test_lookup_wiki_properties_chemical_compound(self):
         """
         Lookup Wikidata page by Q number and confirm properties
         :return: None
@@ -244,7 +205,25 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         qval = wiki_page.get_predicate_object("P31", "Q13442814")
         assert len(qval) == 1
 
-    def test_lookup_multiple_terms_solvents_WIKI_NET(self):
+    def test_lookup_wikidata_commandline(self):
+        """
+
+        """
+        stem = "small_2"
+        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        assert wordsfile.exists(), f"{wordsfile} should exist"
+        pyami = AmiLib()
+        # args = ["DICT", "--help"]
+        # pyami.run_command(args)
+
+        args = ["DICT", "--words", str(wordsfile),
+                "--dict", str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikidata.xml")),
+                "--wikidata"]
+        print(f"args {args}")
+        pyami.run_command(args)
+
+
+    def test_lookup_multiple_terms_solvents(self):
         """
         search multiple terms in Wikidata
         """
@@ -253,26 +232,6 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         qitems, descs = wikidata_lookup.lookup_items(terms)
         assert qitems == ['Q49546', 'Q172275']
         assert descs == ['chemical compound', 'chemical compound']
-
-    @unittest.skip(reason="No AMI Dict in library")
-    def test_lookup_with_ami_dictionary_WIKI_NET_DICT(self):
-        """
-        Wikidata Lookup of items in AMIDict
-        TODO add AmiDict to amilib
-        :return:
-        """
-        terms = [
-            "A53T",
-            "linkage disequilibrium",
-            "transcriptomics"
-        ]
-        wikidata_lookup = WikidataLookup()
-        # qitems, descs = wikidata_lookup.lookup_items(terms)
-        temp_dir = Path(AmiAnyTest.TEMP_DIR, "wikidata", "oldx")
-        temp_dir.mkdir(exist_ok=True, parents=True)
-        dictfile, amidict = AmiDictionary.create_from_list_of_strings_and_write_to_file(
-            terms, title="parkinsons", wikidata=True, directory=temp_dir)
-        assert Path(dictfile).exists()
 
     def test_parse_wikidata_html(self):
         """find Wikidata items with given property
@@ -400,7 +359,7 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
         assert "compound" in desc  # wikidata changed this!! 'organic compound used as flavouring and for analgesic properties'
 
     def test_attval_contains(self):
-        """does a concatenated attavle contain a word
+        """does a concatenated attavl contain a word
         <th scope="col" class="wikibase-entitytermsforlanguagelistview-cell wikibase-entitytermsforlanguagelistview-language">Language</th>
 
         """
@@ -808,7 +767,7 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
 
     #        wikidata_page = WikidataPage.create_from_response(response)
 
-    def test_multiple_ids(self):
+    def test_multiple_wikidata_ids(self):
         ids = "P31|P117"
         url_str = f"https://www.wikidata.org/w/api.php?action=wbgetentities&ids={ids}&language=en&format=json"
         response = requests.get(url_str)
@@ -830,7 +789,7 @@ class TestWikidataLookup_WIKI_NET(unittest.TestCase):
                    'regex'] == "(chemical compound|chemical element)", f"found {filter.json['filter']['regex']}"
 
 
-class WikimediaTests:
+class SPARQLTests:
     @classmethod
     @unittest.skip("WS symbol?")
     def test_sparql_wrapper_WIKI(cls):

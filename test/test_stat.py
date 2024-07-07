@@ -6,7 +6,7 @@ from test.resources import Resources
 from test.test_all import AmiAnyTest
 
 
-class TestStat(AmiAnyTest):
+class StatTest(AmiAnyTest):
     """
     test statistics and ML (small at present)
     """
