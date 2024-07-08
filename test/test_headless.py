@@ -50,6 +50,7 @@ force = False
 
 
 # force = True # uncomment to run tests with this keyword
+@unittest.skipUnless(AmiAnyTest.IS_PMR)
 class DriverTest(AmiAnyTest):
     """ Currently 8 minutes"""
     """

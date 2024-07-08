@@ -211,7 +211,8 @@ class Util0Test(AmiAnyTest):
         """gets username
         """
         username = Util.get_username()
-        assert username == "pm286"
+        if AmiAnyTest.IS_PMR:
+            assert username == "pm286"
 
 
 class GithubDownloaderTest(AmiAnyTest):
