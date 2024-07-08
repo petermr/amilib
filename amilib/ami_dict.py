@@ -417,12 +417,14 @@ class AmiEntry:
 
     def lookup_and_add_wikipedia_page(self):
         term = self.get_term()
+        wikipedia_page = None
         if term:
             wikipedia_page = WikipediaPage.lookup_wikipedia_page(term)
             if wikipedia_page:
                 wp_para = wikipedia_page.create_first_wikipedia_para()
                 if wp_para is not None:
                     self.element.append(wp_para.para_element)
+        return wikipedia_page
 
     def create_semantic_html(self):
         """
@@ -440,25 +442,29 @@ class AmiEntry:
         child_paras  = self.element.xpath(xpath)
         return None if len(child_paras) == 0 else child_paras[0]
 
-    def create_semantic_div(self):
+    def create_semantic_div(self, parent_elem=None):
         """
         create html div for term with wikipedia page para
         :param ami_entry: ami entry with wikipedia page paragraph
         :return: div with term and para
         """
         term = self.get_term()
-        para = self.get_wikipedia_page_child_para()
-        if para is None:
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page(term)
+        wp_para = wikipedia_page.create_first_wikipedia_para()
+        if wp_para is None:
+            print(f"could not find page for term {term}")
             return None
-        assert para is not None
+        assert wp_para is not None
+        print(f"para type {type(wp_para)}")
         html_div = ET.Element("div")
-        html_div.append(para)
+        pe = wp_para.para_element
+        print(f"type {pe}")
+        html_div.append(pe)
         term_para = ET.SubElement(html_div, "p")
         term_name_span = ET.SubElement(term_para, "span")
         term_name_span.text = "Term:"
         term_value_span = ET.SubElement(term_para, "span")
         term_value_span.text = self.get_term()
-        html_div.append(para)
         return html_div
 
 
@@ -1449,7 +1455,6 @@ class AmiDictionary:
                 assert type(div) is _Element
                 body.append(div)
         return html_dict
-
 
 
 

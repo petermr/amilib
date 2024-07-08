@@ -155,6 +155,33 @@ class WikipediaTest(unittest.TestCase):
         dict_html = xml_ami_dict.create_semantic_html()
         HtmlLib.write_html_file(dict_html, Path(Resources.TEMP_DIR, "words", "html", "semantic_dict.html"), debug=True)
 
+    def test_create_semantic_html_from_words(self):
+        """
+        create semanticHtml from wordlist and lookup in Wikipedia
+        """
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        assert words_file.exists()
+        xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
+        assert xml_ami_dict is not None
+        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", "carbon_cycle.xml"))
+        html_elem = xml_ami_dict.create_semantic_html()
+        path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        HtmlLib.write_html_file(html_elem, path, debug=True)
+        assert path.exists()
+
+    def test_create_semantic_html_split_sentences(self):
+        """
+        create semanticHtml from wordlist and lookup in Wikipedia
+        """
+        xml_dict_file = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        assert words_file.exists()
+        xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
+        assert xml_ami_dict is not None
+        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", ))
+        html_elem = xml_ami_dict.create_semantic_html(words_file)
+        path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        HtmlLib.write_html_file(html_elem, path, debug=True)
+        assert path.exists()
 
 
 class WikidataTest(unittest.TestCase):
