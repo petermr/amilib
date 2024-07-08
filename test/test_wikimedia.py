@@ -125,7 +125,7 @@ class WikipediaTest(unittest.TestCase):
         assert type(first_para) is WikipediaPara
         texts = first_para.get_texts()
         assert len(texts) == 24
-        text_breaks = [(j,t) for (j,t) in enumerate(texts) if re.match(".*\.($|\s+[A-Z].*)", t)]
+        text_breaks = [(j,t) for (j,t) in enumerate(texts) if re.match(".*\\.($|\\s+[A-Z].*)", t)]
         assert len(text_breaks) == 4
         for (idx,txt) in text_breaks:
             prec = '^' if idx == 0 else texts[idx - 1]
