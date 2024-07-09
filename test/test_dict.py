@@ -182,7 +182,7 @@ class AmiDictionaryTest(AmiAnyTest):
             error_list = validator.get_xml_declaration_error_list()
             assert not error_list
 
-    @pytest.mark.url
+    # @pytest.mark.url
     def test_validate_url_dict(self):
         """
         tests that historic dictionaries read into validator
@@ -212,7 +212,7 @@ class AmiDictionaryTest(AmiAnyTest):
         amidict = AmiDictionary.create_from_xml_file(one_entry_path)
         assert amidict is not None
 
-    @pytest.mark.simple
+    # @pytest.mark.simple
     def test_dictionary_is_an_ami_dictionary(self):
         """
         test dictionary with one entry
@@ -230,7 +230,7 @@ class AmiDictionaryTest(AmiAnyTest):
         entries = amidict.get_lxml_entries()
         assert entries is not None
 
-    @pytest.mark.simple
+    # @pytest.mark.simple
     def test_dictionary_contains_one_entry(self):
         """
         unit test
