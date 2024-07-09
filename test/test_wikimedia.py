@@ -147,7 +147,7 @@ class WikipediaTest(unittest.TestCase):
         html_elem = HtmlLib.create_html_with_empty_head_body()
         body = HtmlLib.get_body(html_elem)
         body.append(div)
-        path = Path(Resources.TEMP_DIR, "words", "html", "covid.html")
+        path = Path(Resources.TEMP_DIR, "words", "html", "breward_wikipedia.html")
         HtmlLib.write_html_file(
             html_elem, path, debug=True)
         assert path.exists()
@@ -155,6 +155,31 @@ class WikipediaTest(unittest.TestCase):
         dict_html = xml_ami_dict.create_semantic_html()
         HtmlLib.write_html_file(dict_html, Path(Resources.TEMP_DIR, "words", "html", "semantic_dict.html"), debug=True)
 
+    """<li id="t-wikibase" class="mw-list-item">
+         <a href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783" 
+         title="Structured data on this page hosted by Wikidata [ctrl-option-g]" accesskey="g"><span>Wikidata item</span></a></li>
+    """
+    def test_get_wikidata_from_wikipedia(self):
+        url = "https://en.wikipedia.org/wiki/MV_Arctic_Sea"
+        term = "MV_Arctic_Sea"
+        wpage = WikipediaPage.lookup_wikipedia_page(term)
+        qitem = wpage.get_qitem_from_wikipedia_page()
+        q_ = "Q615783"
+        assert qitem == q_, f"should get {q_} for {term}"
+
+    def test_get_infobox_from_wikipedia(self):
+        url = "https://en.wikipedia.org/wiki/MV_Arctic_Sea"
+        term = "MV_Arctic_Sea"
+        wpage = WikipediaPage.lookup_wikipedia_page(term)
+        infobox = wpage.get_infobox()
+        assert infobox is not None
+
+    def test_get_basic_information_from_wikipedia(self):
+        url = "https://en.wikipedia.org/wiki/MV_Arctic_Sea"
+        term = "MV_Arctic_Sea"
+        wpage = WikipediaPage.lookup_wikipedia_page(term)
+        basic_information = wpage.get_basic_information()
+        assert basic_information is not None
 
 
 class WikidataTest(unittest.TestCase):

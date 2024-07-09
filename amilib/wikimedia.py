@@ -987,6 +987,7 @@ class Wikipedia:
             WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
 
 
+
 class WikipediaPage:
     FIRST_PARA = "wpage_first_para"
     from requests import request
@@ -998,6 +999,8 @@ class WikipediaPage:
     @classmethod
     def lookup_wikipedia_page(cls, search_term):
         """
+        gets Wikipedia URL by term.
+        Also gets exact page if last fiels of URL is used
         :param search_term: term/phrase to search with
         :return: new WikipediaPage or None
         """
@@ -1034,7 +1037,7 @@ class WikipediaPage:
         XmlLib.remove_elements(main_content, xpath="//div[@id='p-lang-btn']")
         return main_content
 
-    def create_first_wikipedia_para  (self):
+    def create_first_wikipedia_para(self):
         """
         get wrapper for first paragraph in main content (usually with definitions in lead sentence
         """
@@ -1107,6 +1110,119 @@ class WikipediaPage:
             first_wp_para = wikipedia_page.create_first_wikipedia_para()
         return first_wp_para
 
+    @classmethod
+    def get_page_for_url(cls, url):
+        pass
+
+    def get_qitem_from_wikipedia_page(self):
+        """
+        gets Qitem from wikipedia page
+        navigates right menu (2024)
+        :return:pqid or None
+        """
+        ahrefs = self.html_elem.xpath(".//li[@id='t-wikibase']/a[@href]")
+        qitem = None
+        if len(ahrefs) == 1:
+            ahref = ahrefs[0]
+            href = ahref.get("href")
+            qitem = href.split("/")[-1]
+        return qitem
+
+    def get_infobox(self):
+        """
+        <table class="infobox biography vcard">
+          <tbody>
+            <tr><th colspan="2" class="infobox-above">
+              <div class="fn">Peter Murray-Rust</div></th></tr>
+              <tr><td colspan="2" class="infobox-image">
+                <span class="mw-default-size" typeof="mw:File/Frameless">
+                  <a href="/wiki/File:Peter_Murray-Rust,8083939.JPG" class="mw-file-description">
+                    <img src="//upload.wikimedia.org/wikipedia/commons/thumb/3/31/Peter_Murray-Rust%2C8083939.JPG/220px-Peter_Murray-Rust%2C8083939.JPG" decoding="async" width="220" height="293" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/3/31/Peter_Murray-Rust%2C8083939.JPG/330px-Peter_Murray-Rust%2C8083939.JPG 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/3/31/Peter_Murray-Rust%2C8083939.JPG/440px-Peter_Murray-Rust%2C8083939.JPG 2x" data-file-width="3024" data-file-height="4032"></a></span>
+                    <div class="infobox-caption">at Wikimania 2014</div></td></tr><tr><th scope="row" class="infobox-label">Born</th>
+                    <td class="infobox-data">1941 (age&nbsp;82–83)<br><div style="display:inline" class="birthplace"><a href="/wiki/Guildford" title="Guildford">Guildford</a>, England</div></td></tr><tr><th scope="row" class="infobox-label">Alma&nbsp;mater</th><td class="infobox-data"><a href="/wiki/Balliol_College,_Oxford" title="Balliol College, Oxford">Balliol College, Oxford</a></td></tr><tr><th scope="row" class="infobox-label">Known&nbsp;for</th><td class="infobox-data"><style data-mw-deduplicate="TemplateStyles:r1126788409">.mw-parser-output .plainlist ol,.mw-parser-output .plainlist ul{line-height:inherit;list-style:none;margin:0;padding:0}.mw-parser-output .plainlist ol li,.mw-parser-output .plainlist ul li{margin-bottom:0}</style><div class="plainlist">
+<ul><li><a href="/wiki/Blue_Obelisk" title="Blue Obelisk">Blue Obelisk</a></li>
+<li><a href="/wiki/Chemical_Markup_Language" title="Chemical Markup Language">Chemical Markup Language</a></li>
+</ul>
+</div></td></tr><tr><th scope="row" class="infobox-label">Awards</th><td class="infobox-data"><a href="/wiki/Herman_Skolnik_Award" title="Herman Skolnik Award">Herman Skolnik Award</a></td></tr><tr><td colspan="2" class="infobox-full-data"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1229112069"><b>Scientific career</b></td></tr><tr><th scope="row" class="infobox-label">Fields</th><td class="infobox-data category"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1126788409"><div class="plainlist">
+<ul><li><a href="/wiki/Chemistry" title="Chemistry">Chemistry</a></li>
+<li><a href="/wiki/Cheminformatics" title="Cheminformatics">Cheminformatics</a></li></ul>
+</div></td></tr><tr><th scope="row" class="infobox-label">Institutions</th><td class="infobox-data"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1126788409"><div class="plainlist">
+<ul><li><a href="/wiki/University_of_Cambridge" title="University of Cambridge">University of Cambridge</a></li>
+<li><a href="/wiki/University_of_Oxford" title="University of Oxford">University of Oxford</a></li>
+<li><a href="/wiki/University_of_Stirling" title="University of Stirling">University of Stirling</a></li>
+<li><a href="/wiki/University_of_Nottingham" title="University of Nottingham">University of Nottingham</a></li>
+<li><a href="/wiki/GlaxoSmithKline" class="mw-redirect" title="GlaxoSmithKline">Glaxo</a></li></ul>
+</div></td></tr><tr><th scope="row" class="infobox-label"><a href="/wiki/Thesis" title="Thesis">Thesis</a></th><td class="infobox-data"><i><a rel="nofollow" class="external text" href="http://ora.ox.ac.uk/objects/uuid:a5979458-2d50-4bfc-b728-de1f4e0bf14d">A structural investigation of some compounds showing charge-transfer properties</a></i>&nbsp;<span style="font-size:97%;">(1969)</span></td></tr><tr style="display:none"><td colspan="2">
+</td></tr><tr><td colspan="2" class="infobox-full-data"><style data-mw-deduplicate="TemplateStyles:r1217611005">.mw-parser-output .side-box{margin:4px 0;box-sizing:border-box;border:1px solid #aaa;font-size:88%;line-height:1.25em;background-color:#f9f9f9;display:flow-root}.mw-parser-output .side-box-abovebelow,.mw-parser-output .side-box-text{padding:0.25em 0.9em}.mw-parser-output .side-box-image{padding:2px 0 2px 0.9em;text-align:center}.mw-parser-output .side-box-imageright{padding:2px 0.9em 2px 0;text-align:center}@media(min-width:500px){.mw-parser-output .side-box-flex{display:flex;align-items:center}.mw-parser-output .side-box-text{flex:1;min-width:0}}@media(min-width:720px){.mw-parser-output .side-box{width:238px}.mw-parser-output .side-box-right{clear:right;float:right;margin-left:1em}.mw-parser-output .side-box-left{margin-right:1em}}</style><style data-mw-deduplicate="TemplateStyles:r1096940132">.mw-parser-output .listen .side-box-text{line-height:1.1em}.mw-parser-output .listen-plain{border:none;background:transparent}.mw-parser-output .listen-embedded{width:100%;margin:0;border-width:1px 0 0 0;background:transparent}.mw-parser-output .listen-header{padding:2px}.mw-parser-output .listen-embedded .listen-header{padding:2px 0}.mw-parser-output .listen-file-header{padding:4px 0}.mw-parser-output .listen .description{padding-top:2px}.mw-parser-output .listen .mw-tmh-player{max-width:100%}@media(max-width:719px){.mw-parser-output .listen{clear:both}}@media(min-width:720px){.mw-parser-output .listen:not(.listen-noimage){width:320px}.mw-parser-output .listen-left{overflow:visible;float:left}.mw-parser-output .listen-center{float:none;margin-left:auto;margin-right:auto}}</style><div class="side-box side-box-left listen noprint listen-embedded listen-noimage"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1126788409">
+<div class="side-box-flex">
+<div class="side-box-text plainlist"><div class="haudio">
+<div class="listen-file-header"><a href="/wiki/File:Peter_Murray-Rust_voice.flac" title="File:Peter Murray-Rust voice.flac">Peter Murray-Rust's voice</a></div>
+<div><span typeof="mw:File"><span><span class="mw-tmh-player audio mw-file-element" style="width:215px;"><audio id="mwe_player_0_placeholder" preload="none" data-mw-tmh="" class="" width="215" style="width:215px;" data-durationhint="14" data-mwtitle="Peter_Murray-Rust_voice.flac" data-mwprovider="wikimediacommons" playsinline="" disabled="disabled" tabindex="-1"></audio><a class="mw-tmh-play" href="/wiki/File:Peter_Murray-Rust_voice.flac" title="Play audio" role="button"><span class="mw-tmh-play-icon notheme"></span></a><span class="mw-tmh-duration mw-tmh-label"><span class="sr-only">Duration: 14 seconds.</span><span aria-hidden="true">0:14</span></span></span></span></span></div>
+<div class="description">recorded July 2014</div></div></div></div>
+</div></td></tr><tr><th scope="row" class="infobox-label">Website</th><td class="infobox-data"><span class="url"><a rel="nofollow" class="external text" href="http://www-pmr.ch.cam.ac.uk">www-pmr<wbr>.ch<wbr>.cam<wbr>.ac<wbr>.uk</a></span></td></tr></tbody></table>
+        """
+
+        iboxes = self.html_elem.xpath(".//table[contains(@class,'infobox')]")
+        wp_infobox = None
+        if len(iboxes) == 1:
+            wp_infobox = WikipediaInfoBox(iboxes[0])
+        return wp_infobox
+
+    def get_basic_information(self):
+        """
+        get BasicInformation wrapper for table
+        <table class="wikitable mw-page-info">
+<tbody><tr id="mw-pageinfo-display-title" style="vertical-align: top;"><td>Display title</td><td>MV <i>Arctic Sea</i></td></tr>
+<tr id="mw-pageinfo-default-sort" style="vertical-align: top;"><td>Default sort key</td><td>Arctic Sea, Mv</td></tr>
+<tr id="mw-pageinfo-length" style="vertical-align: top;"><td>Page length (in bytes)</td><td>40,084</td></tr>
+<tr id="mw-pageinfo-namespace-id" style="vertical-align: top;"><td>Namespace ID</td><td>0</td></tr>
+<tr id="mw-pageinfo-article-id" style="vertical-align: top;"><td>Page ID</td><td>23947896</td></tr>
+<tr style="vertical-align: top;"><td>Page content language</td><td>en - English</td></tr>
+<tr id="mw-pageinfo-content-model" style="vertical-align: top;"><td>Page content model</td><td>wikitext</td></tr>
+<tr id="mw-pageinfo-robot-policy" style="vertical-align: top;"><td>Indexing by robots</td><td>Allowed</td></tr>
+<tr id="mw-pageinfo-watchers" style="vertical-align: top;"><td>Number of page watchers</td><td>91</td></tr>
+<tr id="mw-pageinfo-visiting-watchers" style="vertical-align: top;"><td>Number of page watchers who visited in the last 30 days</td><td>2</td></tr>
+<tr style="vertical-align: top;"><td><a href="/w/index.php?title=Special:WhatLinksHere/MV_Arctic_Sea&amp;hidelinks=1&amp;hidetrans=1" title="Special:WhatLinksHere/MV Arctic Sea">Number of redirects to this page</a></td><td>4</td></tr>
+<tr id="mw-pageinfo-contentpage" style="vertical-align: top;"><td>Counted as a content page</td><td>Yes</td></tr>
+<tr style="vertical-align: top;"><td>Wikidata item ID</td><td><a class="extiw wb-entity-link external" href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783">Q615783</a></td></tr>
+<tr style="vertical-align: top;"><td>Local description</td><td>Ship</td></tr>
+<tr style="vertical-align: top;"><td>Central description</td><td>ship built in 1992</td></tr>
+<tr id="mw-pageimages-info-label" style="vertical-align: top;"><td>Page image</td><td><a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description"><img alt="MV Arctic sea.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png" decoding="async" width="220" height="156" data-file-width="1052" data-file-height="744"></a></td></tr>
+<tr id="mw-pvi-month-count" style="vertical-align: top;"><td>Page views in the past 30 days</td><td><div class="mw-pvi-month"><a rel="nofollow" class="external text" href="https://pageviews.wmcloud.org/?project=en.wikipedia.org&amp;platform=all-access&amp;agent=user&amp;redirects=0&amp;range=latest-30&amp;pages=MV_Arctic_Sea">268</a></div></td></tr>
+</tbody></table>
+
+<li id="t-info" class="mw-list-item">
+  <a href="/w/index.php?title=Troposphere&amp;action=info" title="More information about this page"><span>Page information</span></a></li>
+        """
+        tinfo = "t-info"
+        t_info_page = self.create_tools_page(tinfo)
+
+
+        page_info = "mw-page-info"
+        tables = self.html_elem.xpath(".//table[contains(@class,'{page_info}')]")
+        wp_basicinfo = None
+        if len(tables) == 1:
+            wp_basicinfo = WikipediaBasicInfo(tables[0])
+        return wp_basicinfo
+
+    def create_tools_page(self, t_item):
+        """
+        create page for item in Tools dropdown
+        :param t_item: id in Tools menu (e.g. "t-info")
+
+        """
+        ahrefs = self.html_elem.xpath(f".//li[@id='{t_item}']/a[@href]")
+        ahref = ahrefs[0] if len(ahrefs) == 1 else None
+        html_page = HtmlUtil.parse_html_file_to_xml(ahref)
+        return html_page
+
+    @classmethod
+    def get_default_wikipedia_url(cls):
+        """
+        base url (=currently "https://en.wikipedia.org/")
+        """
+        # return "https://www.wikipedia.org/"
+        return "https://en.wikipedia.org/"
 
 class WikipediaPara:
     """
@@ -1195,4 +1311,28 @@ class WikipediaPara:
                     print(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
+
+class WikipediaInfoBox:
+    """
+    wrapper for wikipedia infobox HTML <table>
+    """
+
+    def __init__(self, table=None):
+        """
+        Wrapper for Wikipedia InfoBox
+        """
+        self.table = table
+
+class WikipediaBasicInfo:
+    """
+    wrapper for wikipedia basic information tabls
+    """
+
+    def __init__(self, table=None):
+        """
+        Wrapper for Wikipedia basic information
+        """
+        self.table = table
+
+
 
