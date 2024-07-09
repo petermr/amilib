@@ -93,7 +93,7 @@ class WikipediaTest(unittest.TestCase):
         """
         creates WikipediaPage.FirstPage object
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
         print(f"first para {type(first_para)} {first_para.parent} ")
@@ -103,7 +103,7 @@ class WikipediaTest(unittest.TestCase):
         """
         creates WikipediaPage.FirstPage object , looks for <b> and <a @href>
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
         bolds =  first_para.get_bolds()
@@ -119,7 +119,7 @@ class WikipediaTest(unittest.TestCase):
         """
         creates WikipediaPage.FirstPage object
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
         print (f"type first para {first_para}")
         assert type(first_para) is WikipediaPara
@@ -162,7 +162,7 @@ class WikipediaTest(unittest.TestCase):
     def test_get_wikidata_from_wikipedia(self):
         url = "https://en.wikipedia.org/wiki/MV_Arctic_Sea"
         term = "MV_Arctic_Sea"
-        wpage = WikipediaPage.lookup_wikipedia_page(term)
+        wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
         qitem = wpage.get_qitem_from_wikipedia_page()
         q_ = "Q615783"
         assert qitem == q_, f"should get {q_} for {term}"
@@ -170,16 +170,27 @@ class WikipediaTest(unittest.TestCase):
     def test_get_infobox_from_wikipedia(self):
         url = "https://en.wikipedia.org/wiki/MV_Arctic_Sea"
         term = "MV_Arctic_Sea"
-        wpage = WikipediaPage.lookup_wikipedia_page(term)
+        wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
         infobox = wpage.get_infobox()
         assert infobox is not None
 
     def test_get_basic_information_from_wikipedia(self):
         url = "https://en.wikipedia.org/wiki/MV_Arctic_Sea"
         term = "MV_Arctic_Sea"
-        wpage = WikipediaPage.lookup_wikipedia_page(term)
+        wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
         basic_information = wpage.get_basic_information()
         assert basic_information is not None
+        table = basic_information.table
+        trs = table.xpath(".//tr")
+        assert len(trs) >= 17 # might vary over the years
+        wikidata_id = basic_information.get_wikidata_href_id()
+        assert wikidata_id == ("https://www.wikidata.org/wiki/Special:EntityPage/Q615783", "Q615783")
+
+        assert basic_information.get_local_description() == "Ship"
+        assert basic_information.get_local_description() == "Ship"
+
+        image_url = basic_information.get_image_url()
+        assert image_url == "https://en.wikipedia.org//wiki/File:MV_Arctic_sea.svg"
 
 
 class WikidataTest(unittest.TestCase):

@@ -4,6 +4,7 @@ import logging
 import os
 import pprint
 import re
+from io import StringIO
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -1031,23 +1032,27 @@ class HtmlLib:
     def parse_html(cls, infile):
         """
         parse html file as checks for file existence
-        :param infile: file to parse
+        :param infile: file to parse or url (checks prefix)
         :return: root element
         """
         if not infile:
             print(f"infile is None")
             return None
-        path = Path(infile)
-        if not path.exists():
-            print(f"file does not exist {infile}")
-            return None
-        else:
-            try:
-                html_tree = lxml.etree.parse(str(infile))
-                return html_tree.getroot()
-            except Exception as e:
-                print(f"cannot parse {infile} because {e}")
+        if not str(infile).startswith("http"):
+            path = Path(infile)
+            if not path.exists():
+                print(f"file does not exist {infile}")
                 return None
+        try:
+            infile = "https://en.wikipedia.org"
+            print(f"infile {infile}")
+            html_tree = lxml.html.parse(infile, HTMLParser())
+            if html_tree is None:
+                print(f"Cannot parse {infile}, returned None")
+            return html_tree.getroot()
+        except Exception as e:
+            print(f"cannot parse {infile} because {e}")
+            return None
 
     @classmethod
     def parse_html_string(cls, string):

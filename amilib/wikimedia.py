@@ -21,6 +21,7 @@ from SPARQLWrapper import SPARQLWrapper
 from amilib.ami_html import HtmlUtil
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
+from amilib.file_lib import FileLib
 
 logging.debug("loading wikimedia.py")
 
@@ -997,7 +998,7 @@ class WikipediaPage:
         self.html_elem = None
 
     @classmethod
-    def lookup_wikipedia_page(cls, search_term):
+    def lookup_wikipedia_page_for_term(cls, search_term):
         """
         gets Wikipedia URL by term.
         Also gets exact page if last fiels of URL is used
@@ -1007,18 +1008,20 @@ class WikipediaPage:
 
         "https://en.wikipedia.org/w/index.php?search=lulucx&title=Special%3ASearch&ns0=1"
         url = f"{WikipediaPage.WIKIPEDIA_PHP}search={search_term}"
-        if url is None:
-            return None
-        try:
-            response = requests.get(url)
-            decode = response.content.decode("UTF-8")
-            html_content = HtmlLib.parse_html_string(decode)
-            wikipedia_page = WikipediaPage()
-            wikipedia_page.html_elem = html_content
-        except Exception as e:
-            print(f"HTML exception {e}")
-            return None
+        return cls.lookup_wikipedia_page_for_url(url)
 
+    @classmethod
+    def lookup_wikipedia_page_for_url(cls, url):
+        wikipedia_page = None
+        if url is not None:
+            try:
+                response = requests.get(url)
+                decode = response.content.decode("UTF-8")
+                html_content = HtmlLib.parse_html_string(decode)
+                wikipedia_page = WikipediaPage()
+                wikipedia_page.html_elem = html_content
+            except Exception as e:
+                print(f"HTML exception {e}")
         return wikipedia_page
 
     def get_main_element(self):
@@ -1104,7 +1107,7 @@ class WikipediaPage:
     @classmethod
     def get_leading_paragraph_for_word(cls, new_body, word):
 
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page(word)
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(word)
         first_wp_para = None
         if wikipedia_page is not None:
             first_wp_para = wikipedia_page.create_first_wikipedia_para()
@@ -1171,8 +1174,14 @@ class WikipediaPage:
     def get_basic_information(self):
         """
         get BasicInformation wrapper for table
-        <table class="wikitable mw-page-info">
-<tbody><tr id="mw-pageinfo-display-title" style="vertical-align: top;"><td>Display title</td><td>MV <i>Arctic Sea</i></td></tr>
+
+
+<div id="mw-content-text" class="mw-body-content">
+  <div class="mw-parser-output">...
+  <h2 id="Basic_information"><span id="mw-pageinfo-header-basic"></span>Basic information</h2>
+  <table class="wikitable mw-page-info">
+      <tbody>
+         <tr id="mw-pageinfo-display-title" style="vertical-align: top;"><td>Display title</td><td>MV <i>Arctic Sea</i></td></tr>
 <tr id="mw-pageinfo-default-sort" style="vertical-align: top;"><td>Default sort key</td><td>Arctic Sea, Mv</td></tr>
 <tr id="mw-pageinfo-length" style="vertical-align: top;"><td>Page length (in bytes)</td><td>40,084</td></tr>
 <tr id="mw-pageinfo-namespace-id" style="vertical-align: top;"><td>Namespace ID</td><td>0</td></tr>
@@ -1195,26 +1204,48 @@ class WikipediaPage:
   <a href="/w/index.php?title=Troposphere&amp;action=info" title="More information about this page"><span>Page information</span></a></li>
         """
         tinfo = "t-info"
-        t_info_page = self.create_tools_page(tinfo)
 
-
-        page_info = "mw-page-info"
-        tables = self.html_elem.xpath(".//table[contains(@class,'{page_info}')]")
-        wp_basicinfo = None
-        if len(tables) == 1:
-            wp_basicinfo = WikipediaBasicInfo(tables[0])
+        t_info_page = self.create_tools_wikipedia_page(tinfo)
+        info_xpath = ".//*[@id='Basic_information'][1]"
+        h2_basics = t_info_page.html_elem.xpath(info_xpath)
+        if len(h2_basics) != 1:
+            print(f"cannot find Basic Information section {info_xpath}")
+            return None
+        h2_basic = h2_basics[0]
+        # print(f"basic h2 {ET.tostring(h2_basic)}")
+        parent = h2_basic.getparent()
+        children = parent.xpath("*")
+        idx = parent.index(h2_basic)
+        # print(f"idx-1 {idx-1} {ET.tostring(children[idx-1])}")
+        # print(f"idx {idx} {ET.tostring(children[idx])}")
+        idx += 1
+        # print(f"idx OK {idx} {ET.tostring(children[idx])}")
+        table_ok = children[idx]
+        rows = table_ok.xpath(".//tr")
+        # print(f"rows: {len(rows)}")
+        wp_basicinfo = WikipediaBasicInfo(table_ok)
         return wp_basicinfo
 
-    def create_tools_page(self, t_item):
+    def create_tools_wikipedia_page(self, t_item):
         """
         create page for item in Tools dropdown
         :param t_item: id in Tools menu (e.g. "t-info")
 
         """
+        print(f"looking up t_item: {t_item}")
         ahrefs = self.html_elem.xpath(f".//li[@id='{t_item}']/a[@href]")
         ahref = ahrefs[0] if len(ahrefs) == 1 else None
-        html_page = HtmlUtil.parse_html_file_to_xml(ahref)
-        return html_page
+        if ahref is None:
+            print(f"cannot find {t_item} in drop-down tools")
+            return None
+        # html_page = HtmlUtil.parse_html_file_to_xml(ahref)
+        href = ahref.attrib.get("href")
+        assert href is not None
+        url = f"{WikipediaPage.get_default_wikipedia_url()}/{href}"
+        url = url.replace("///", "/")
+        print(f"lookup wikipedia subpage for {url}")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_url(url)
+        return wikipedia_page
 
     @classmethod
     def get_default_wikipedia_url(cls):
@@ -1328,11 +1359,135 @@ class WikipediaBasicInfo:
     wrapper for wikipedia basic information tabls
     """
 
+    """
+    Display title	MV Arctic Sea
+    Default sort key	Arctic Sea, Mv
+    Page length (in bytes)	40,084
+    Namespace ID	0
+    Page ID	23947896
+    Page content language	en - English
+    Page content model	wikitext
+    Indexing by robots	Allowed
+    Number of page watchers	91
+    Number of page watchers who visited in the last 30 days	2
+    Number of redirects to this page	4
+    Counted as a content page	Yes
+    Wikidata item ID	Q615783
+    Local description	Ship
+    Central description	ship built in 1992
+    Page image	MV Arctic sea.svg
+    Page views in the past 30 days	273
+    """
+    DISPLAY_TITLE = "Display title"
+    SORT_KEY = "Default sort key"
+    PAGE_LENGTH = "Page length (in bytes)"
+    NAMESPACE_ID = "Namespace ID"
+    PAGE_ID = "Page ID"
+    PAGE_LANGAUGE = "Page content language"
+    CONTENT_MODEL = "Page content model"
+    INDEXING_BY_ROBOTS = "Indexing by robots"
+    PAGE_WATCHERS = "Number of page watchers"
+    PAGE_WATCHERS_30 = "Number of page watchers who visited in the last 30 days"
+    REDIRECTS = "Number of redirects to this page"
+    IS_CONTENT_PAGE = "Counted as a content page"
+    WIKIDATA_ITEM = "Wikidata item ID"
+    LOCAL_DESCRIPTION = "Local description"
+    CENTRAL_DESCRIPTION = "Central description"
+    PAGE_IMAGE = "Page image"
+    PAGE_VIEWS_30 = "Page views in the past 30 days"
+
+    KEYS = [
+        DISPLAY_TITLE,
+        SORT_KEY,
+        PAGE_LENGTH,
+        NAMESPACE_ID,
+        PAGE_ID,
+        PAGE_LANGAUGE,
+        CONTENT_MODEL,
+        INDEXING_BY_ROBOTS,
+        PAGE_WATCHERS,
+        PAGE_WATCHERS_30,
+        REDIRECTS,
+        IS_CONTENT_PAGE,
+        WIKIDATA_ITEM,
+        LOCAL_DESCRIPTION,
+        CENTRAL_DESCRIPTION,
+        PAGE_IMAGE,
+        PAGE_VIEWS_30,
+    ]
+
     def __init__(self, table=None):
         """
         Wrapper for Wikipedia basic information
         """
         self.table = table
+        self.table_dict = dict()
+        self.create_table_dict()
 
+    def get_wikidata_href_id(self):
+        """
+        return wikidate href and id (Note
+        :return: (href, id) tuplpe or None
+        """
+        value = self.get_value_for_key(self.WIKIDATA_ITEM)
+        id = value.split("/")[-1]
+        return None if value is None else (value, id)
+
+    def get_local_description(self):
+        key = self.LOCAL_DESCRIPTION
+        return self.get_value_for_key(key)
+
+    def get_value_for_key(self, key):
+        return self.table_dict[key]
+
+    def get_image_url(self):
+        url_tail = self.get_value_for_key(self.PAGE_IMAGE)
+        url = f"{WikipediaPage.get_default_wikipedia_url()}{url_tail}"
+        return url
+
+    def create_table_dict(self):
+        """
+        creates name-value table, where value can be text or XML element
+        """
+        self.table_dict = dict()
+        rows = self.table.xpath(".//tr")
+        for row in rows:
+            name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
+            if not name in self.KEYS:
+                print(f"unknown key {name} in Basic Information")
+            value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
+            self.table_dict[name] = value
+        # print(f"dict {self.table_dict}")
+
+    def get_cell_value(self, td, idx):
+        """
+        HYPERLINK
+        <td>
+          <a
+            class="extiw wb-entity-link external"
+            href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783"
+            >Q615783</a>
+        </td>
+        """
+        tda = td.xpath("a")  # might be a hyperlink
+        if len(tda) > 0:
+            href = tda[0].attrib.get("href")
+            aval = tda[0].text
+            href = aval if idx == 0 else href
+            return href
+        """
+        IMAGE
+        <td>
+          <a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description">
+            <img 
+              alt="MV Arctic sea.svg" 
+              src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png" 
+              decoding="async" 
+              width="220" 
+              height="156" 
+              data-file-width="1052"
+              data-file-height="744"
+              ></a></td>"""
+        return td.text
 
 

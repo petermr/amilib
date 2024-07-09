@@ -418,7 +418,7 @@ class AmiEntry:
     def lookup_and_add_wikipedia_page(self):
         term = self.get_term()
         if term:
-            wikipedia_page = WikipediaPage.lookup_wikipedia_page(term)
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
             if wikipedia_page:
                 wp_para = wikipedia_page.create_first_wikipedia_para()
                 if wp_para is not None:

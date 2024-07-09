@@ -1226,7 +1226,7 @@ class DictionaryCreationTest(AmiAnyTest):
         print(f"keyword_dict {keyword_dict}")
         entry = keyword_dict.get_first_ami_entry()
         assert entry.get_term() == "urbanization"
-        assert entry.get_wikidata_id() == "Q161078" or entry.get_wikidata_id() == 'Q1508'
+        assert entry.get_wikidata_href_id() == "Q161078" or entry.get_wikidata_href_id() == 'Q1508'
         assert len(keyword_dict.entries) == 1
         root_elem = keyword_dict.root
         assert root_elem.tag == 'dictionary'
