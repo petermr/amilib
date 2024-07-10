@@ -121,16 +121,63 @@ class WikipediaTest(unittest.TestCase):
         """
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
-        print (f"type first para {first_para}")
         assert type(first_para) is WikipediaPara
-        texts = first_para.get_texts()
-        assert len(texts) == 24
-        text_breaks = [(j,t) for (j,t) in enumerate(texts) if re.match(".*\\.($|\\s+[A-Z].*)", t)]
-        assert len(text_breaks) == 4
-        for (idx,txt) in text_breaks:
-            prec = '^' if idx == 0 else texts[idx - 1]
-            foll = '$' if idx == len(texts) - 1 else texts[idx + 1]
-            print(f"|{prec}|{txt}|{foll}|")
+        splits = first_para.get_sentence_breaks()
+        assert splits == [
+'|Atlantic Ocean|.|[1]|',
+ '|climate system|. The AMOC includes Atlantic currents at the surface and at '
+ 'great depths that are driven by changes in weather, temperature and '
+ '|salinity|',
+ '|salinity|. Those currents comprise half of the global |thermohaline '
+ 'circulation|',
+ '|Southern Ocean overturning circulation|.|[2]|'
+        ]
+
+    def test_wikipedia_pages_sentence_breaks(self):
+        terms = [
+            "troposphere",
+            "Permafrost",
+            "centennial",
+            "aerosol",
+            "Albedo",
+
+        ]
+        sentence_breaks_array = []
+        for term in terms:
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+            first_para = wikipedia_page.create_first_wikipedia_para()
+            s_breaks = first_para.get_sentence_breaks()
+            sentence_breaks_array.append(s_breaks)
+        assert sentence_breaks_array == [
+        ['|atmosphere of Earth|. It contains 80% of the total mass of the |planetary '
+          'atmosphere|',
+          '|weather| phenomena occur.|[1]|',
+          '|polar regions| in winter; thus the average height of the troposphere is '
+          '13\xa0km (8.1\xa0mi; 43,000\xa0ft).\n'
+          '|$|'],
+         ['|sediment| which continuously remains below 0\xa0°C (32\xa0°F) for two '
+          'years or more: the oldest permafrost had been continuously frozen for '
+          'around 700,000 years.|[1]|',
+          '|[1]| Whilst the shallowest permafrost has a vertical extent of below a '
+          'meter (3\xa0ft), the deepest is greater than 1,500\xa0m (4,900\xa0ft).|[2]|',
+          '|Arctic| regions.|[3]|',
+          '|active layer| of soil which freezes and thaws depending on the '
+          'season.|[4]|'],
+         ['|century|, a period of an exact century.\n|$|'],
+         ['|gas|.|[1]|',
+          '|human causes|. The term |aerosol|',
+          '|particulates| in air, and not to the particulate matter alone.|[2]|',
+          '|dust|. Examples of human caused aerosols include |particulate|',
+          '|sprayed pesticides|, and medical treatments for respiratory '
+          'illnesses.|[3]|'],
+         ['|diffusely reflected| by a body. It is measured on a scale from 0 '
+          '(corresponding to a |black body|',
+          '|e| (flux per unit area) received by a surface.|[2]|',
+          '|[2]| The proportion reflected is not only determined by properties of the '
+          'surface itself, but also by the spectral and angular distribution of solar '
+          "radiation reaching the Earth's surface.|[3]|"]
+
+        ]
 
     def test_create_semantic_html_from_xml(self):
         """
@@ -174,13 +221,14 @@ class WikipediaTest(unittest.TestCase):
         """
         create semanticHtml from wordlist and lookup in Wikipedia
         """
-        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        stem = "small_5"
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
-        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "carbon_cycle_noabb.html"))
+        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", f"{stem}.html"))
         html_elem = xml_ami_dict.create_semantic_html()
-        path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
 

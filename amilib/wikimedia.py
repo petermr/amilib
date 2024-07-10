@@ -1271,7 +1271,7 @@ class WikipediaPara:
 
     def __init__(self, parent, para_element=None, para_class=None):
         self.parent = parent
-        print(f"parent: {parent}")
+        # print(f"parent: {parent}")
         self.para_element = para_element
         if self.para_element is not None and para_class:
             self.para_element.attrib[HtmlLib.CLASS_ATTNAME] = para_class
@@ -1349,6 +1349,23 @@ class WikipediaPara:
                     print(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
+
+    def get_sentence_breaks(self):
+        """
+        split html/text in paragrah into sentences
+        :return: array of splits (still being developed)
+        """
+        texts = self.get_texts()
+        text_breaks = [(j, t) for (j, t) in enumerate(texts) if re.match(".*\\.($|\\s+[A-Z].*)", t)]
+        splits = []
+        for (idx, txt) in text_breaks:
+            prec = '^' if idx == 0 else texts[idx - 1]
+            foll = '$' if idx == len(texts) - 1 else texts[idx + 1]
+            # print(f"|{prec}|{txt}|{foll}|")
+            splits.append(f"|{prec}|{txt}|{foll}|")
+        return splits
+
+
 
 class WikipediaInfoBox:
     """
