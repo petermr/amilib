@@ -23,7 +23,7 @@ TEST = "test"
 a few tests on globbing, etc"""
 
 
-class TestFile(AmiAnyTest):
+class File0Test(AmiAnyTest):
     # nothing much here
     logger = logging.getLogger("test_file")
     TEST = "test"
@@ -128,5 +128,5 @@ class TestFile(AmiAnyTest):
 
 
 def main():
-    TestFile.test_file_simple()
-    TestFile.test_templates()
+    File0Test.test_file_simple()
+    File0Test.test_templates()

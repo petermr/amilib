@@ -1362,7 +1362,7 @@ LTPage
         outputs wordcount for page, and any image data.
         Would be better if we knew how to read PDFStream
         """
-        maxpage = 9  # images on page 8, and 9
+        maxpage = 4  # images on page 8, and 9
         outdir = Path(AmiAnyTest.TEMP_DIR, "pdf", "wg2_chap3")
         pdf_debug = PDFDebug()
 

@@ -1,16 +1,16 @@
 import argparse
 import json
+import traceback
 from collections import Counter
 from pathlib import Path
 
 from amilib.ami_args import AbstractArgs
-try:
 
-    from amilib.ami_dict import AmiDictionary, AmiEntry
-except Exception as e:
-    pass
+# cyclic import
+from amilib.ami_args import AbstractArgs
+# from amilib.ami_dict import AmiEntry
 from amilib.file_lib import FileLib
-from amilib.wikimedia import WikidataPage, WikidataLookup
+from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage
 
 # commandline
 DELETE = "delete"
@@ -18,6 +18,7 @@ DICT = "dict"
 FILTER = "filter"
 LANGUAGE = "language"
 METADATA = "metadata"
+OUTPATH = "outpath"
 REPLACE = "replace"
 SYNONYM = "synonym"
 VALIDATE = "validate"
@@ -38,6 +39,7 @@ class AmiDictArgs(AbstractArgs):
         super().__init__()
         self.dictfile = None
         self.metadata = None
+        self.filter = None
         self.language = None
         self.words = None
         self.delete = None
@@ -65,6 +67,8 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{LANGUAGE}", type=str, nargs="+",
                                  help="list of 2-character codes to consider (default = ['en'] (NYI)")
         self.parser.add_argument(f"--{METADATA}", type=str, nargs="+", help="metadata item/s to add (NYI)")
+        self.parser.add_argument(f"--{OUTPATH}", type=str, nargs="+",
+                                 help="output file ")
         self.parser.add_argument(f"--{REPLACE}", type=str, nargs="+",
                                  help="replace any existing entries/attributes (default preserve) (NYI)")
         self.parser.add_argument(f"--{SYNONYM}", type=str, nargs="+",
@@ -108,6 +112,7 @@ class AmiDictArgs(AbstractArgs):
         self.language = self.arg_dict.get(LANGUAGE)
         self.metadata = self.arg_dict.get(METADATA)
         self.replace = self.arg_dict.get(REPLACE)
+        self.outpath = self.arg_dict.get(OUTPATH)
         self.synonym = self.arg_dict.get(SYNONYM)
         self.validate = self.arg_dict.get(VALIDATE)
         self.wikidata = self.arg_dict.get(WIKIDATA)
@@ -116,8 +121,9 @@ class AmiDictArgs(AbstractArgs):
 
         if self.dictfile:
             print(f"writing to {self.dictfile}")
+            # is this right??
             if self.ami_dict is not None:
-                with open(self.dictfile, "w") as f:
+                with open(self.dictfile, "w"):
                     self.ami_dict.write(self.dictfile)
                     print(f"wrote dict: {self.dictfile}")
             else:
@@ -141,11 +147,10 @@ class AmiDictArgs(AbstractArgs):
             status = self.validate_dict()
 
         # for argument --wikipedia
-        if self.wikipedia:
-            # TODO
-            print(f"Wikipedia lookup NYI")
-            # hit_dict = self.add_wikipedia_to_dict()
-            # status = self.validate_dict()
+        if self.wikipedia is not None:
+            print(f"Wikipedia lookup")
+            hit_dict = self.add_wikipedia_to_dict()
+            status = self.validate_dict()
 
         print(f"writing to {self}")
         if self.dictfile:
@@ -191,24 +196,12 @@ class AmiDictArgs(AbstractArgs):
 
         desc_counter = Counter()
         hit_dict = dict()
-        if self.dictfile is not None and self.ami_dict is not None:
-            wikidata_lookup = WikidataLookup()
-            for entry in self.ami_dict.entries:
-                ami_entry = AmiEntry.create_from_element(entry)
-                term = entry.attrib["term"]
-                term_dict = dict()
-                hit_dict[term] = term_dict
-                qitem0, desc, qitem_hits = wikidata_lookup.lookup_wikidata(term)
-                if qitem_hits is None:
-                    print(f"no qitem_hits {term} in add_wikidata_to_dict")
-                    continue
-                for i, qid in enumerate(qitem_hits):
-                    qitem_hit_dict = self.create_hit_dict_for(i, qid)
-                    term_dict[qid] = qitem_hit_dict
-                    ami_entry.add_hits_to_xml(qid, qitem_hit_dict)
-                # print(f"add_wikidata_to_dict {ami_entry.get_term()} {term_dict}")
-        else:
+        if self.dictfile is None or self.ami_dict is None:
             print(f"add_wikidata_to_dict requires existing dictionary")
+            return
+        wikidata_lookup = WikidataLookup()
+        for entry in self.ami_dict.entries:
+            self.add_wikidata_to_entry(entry, hit_dict, wikidata_lookup)
 
         print(f"JSON DUMPS {json.dumps(hit_dict, sort_keys=False, indent=2)}")
         counter = Counter()
@@ -241,10 +234,33 @@ class AmiDictArgs(AbstractArgs):
 
         return hit_dict
 
+    def add_wikidata_to_entry(self, entry, hit_dict, wikidata_lookup):
+        # cyclic import
+        from amilib.ami_dict import AmiEntry
+        ami_entry = AmiEntry.create_from_element(entry)
+        term = entry.attrib["term"]
+        term_dict = dict()
+        hit_dict[term] = term_dict
+        qitem0, desc, qitem_hits = wikidata_lookup.lookup_wikidata(term)
+        if qitem_hits is None:
+            print(f"no qitem_hits {term} in add_wikidata_to_dict")
+            return
+        for i, qid in enumerate(qitem_hits):
+            qitem_hit_dict = self.create_hit_dict_for(i, qid)
+            term_dict[qid] = qitem_hit_dict
+            ami_entry.add_hits_to_xml(qid, qitem_hit_dict)
+
     def add_wikipedia_to_dict(self):
-        """NYI
+        # TODO CYCLIC import
+        from amilib.ami_dict import AmiEntry
         """
-        print("add_wikipedia_to_dict NYI")
+        NYI
+        """
+        for entry_elem in self.ami_dict.entries:
+            ami_entry = AmiEntry.create_from_element(entry_elem)
+            ami_entry.lookup_and_add_wikipedia_page()
+
+
 
     def create_hit_dict_for(self, serial, qitem_hit):
         qitem_hit_dict = dict()
@@ -269,3 +285,27 @@ class AmiDictArgs(AbstractArgs):
     def module_stem(self):
         """name of module"""
         return Path(__file__).stem
+
+# ====================
+
+
+def main(argv=None):
+    # AMIDict.debug_tdd()
+    print(f"running AmiDict main")
+    dict_args = AmiDictArgs()
+    try:
+        dict_args.parse_and_process()
+    except Exception as e:
+        print(traceback.format_exc())
+        print(f"***Cannot run amidict***; see output for errors: {e} ")
+
+
+
+if __name__ == "__main__":
+    print("running dict main")
+    main()
+else:
+
+    #    print("running dict main anyway")
+    #    main()
+    pass

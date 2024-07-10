@@ -9,7 +9,7 @@ from test.resources import Resources
 from test.test_all import AmiAnyTest
 
 
-class TestSvg(AmiAnyTest):
+class SvgTest(AmiAnyTest):
 
     def test_create_namespaced_element(self):
         svg_elem = AmiSVG.create_SVGElement("circle")

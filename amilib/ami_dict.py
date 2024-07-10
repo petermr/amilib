@@ -1,34 +1,31 @@
-import argparse
 import ast
-import json
 import logging
-
-from lxml import etree as ET
-from lxml import etree
-from lxml.etree import Element, _Element
-from enum import Enum
-import lxml
 import os
-import pandas as pd
 import re
 import traceback
 import urllib.request
-
 from collections import Counter
+from enum import Enum
 from pathlib import Path
-from urllib.error import URLError
 from shutil import copyfile
+from urllib.error import URLError
 
+import lxml
+import pandas as pd
+from lxml import etree
+from lxml import etree as ET
+from lxml.etree import _Element
+
+from amilib.ami_html import HtmlUtil, CSSStyle, H_A, H_SPAN, H_BODY, H_DIV, H_UL, H_LI, A_ID, \
+    A_HREF, A_NAME, A_TITLE, A_TERM
+from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR, LOCAL_OV21_DIR, LOCAL_DICT_AMI3
 from amilib.dict_args import AmiDictArgs, SYNONYM, WIKIPEDIA
+from amilib.file_lib import FileLib
 # local
 # from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util
-from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR, LOCAL_OV21_DIR, LOCAL_DICT_AMI3
-from amilib.ami_html import HtmlUtil, CSSStyle, H_A, H_SPAN, H_BODY, H_DIV, H_UL, H_LI, A_ID, \
-    A_HREF, A_NAME, A_TITLE, A_TERM
-from amilib.file_lib import FileLib
-from amilib.ami_args import AbstractArgs
-from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage
+from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage
+from amilib.xml_lib import HtmlLib
 
 # elements in amidict
 DICTIONARY = "dictionary"
@@ -87,6 +84,9 @@ but it stops me making errors
 """
 
 class AmiEntry:
+    """
+    wraps the HTML element  representing the entry and provides access and mutatiom
+    """
     TAG = "entry"
 
     TERM_A = "term"
@@ -415,6 +415,59 @@ class AmiEntry:
                 p.attrib["role"] = key
                 p.text = str(value)
 
+    def lookup_and_add_wikipedia_page(self):
+        term = self.get_term()
+        wikipedia_page = None
+        if term:
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+            if wikipedia_page:
+                wp_para = wikipedia_page.create_first_wikipedia_para()
+                if wp_para is not None:
+                    self.element.append(wp_para.para_element)
+        return wikipedia_page
+
+    def create_semantic_html(self):
+        """
+        output semantic html for dictionary
+        :return: semantic HTML
+        """
+        print(f"create_semantic_html NYI")
+
+    def get_wikipedia_page_child_para(self, xpath="./p"):
+        """
+        return child paragraph added by wikipedia lookup as first_para of wikipedia_page
+        :param xpath: paragrapg selector (default './p')
+        :return: wikpedia first para or None
+        """
+        child_paras  = self.element.xpath(xpath)
+        return None if len(child_paras) == 0 else child_paras[0]
+
+    def create_semantic_div(self, parent_elem=None):
+        """
+        create html div for term with wikipedia page para
+        :param ami_entry: ami entry with wikipedia page paragraph
+        :return: div with term and para
+        """
+        term = self.get_term()
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        wp_para = wikipedia_page.create_first_wikipedia_para()
+        if wp_para is None:
+            print(f"could not find page for term {term}")
+            return None
+        assert wp_para is not None
+        print(f"para type {type(wp_para)}")
+        html_div = ET.Element("div")
+        pe = wp_para.para_element
+        print(f"type {pe}")
+        html_div.append(pe)
+        term_para = ET.SubElement(html_div, "p")
+        term_name_span = ET.SubElement(term_para, "span")
+        term_name_span.text = "Term:"
+        term_value_span = ET.SubElement(term_para, "span")
+        term_value_span.text = self.get_term()
+        return html_div
+
+
 
 class AmiDictionary:
     """wrapper for an ami dictionary including search flags
@@ -437,7 +490,7 @@ class AmiDictionary:
     ALLOWED_CHILDREN = REQUIRED_CHILDREN.union(OPTIONAL_CHILDREN)
     assert len(ALLOWED_CHILDREN) == 2
 
-    def __init__(self, title=None, wikilangs=None, ignorecase=True, **kwargs):
+    def __init__(self, title=None, wikilangs=["en"], ignorecase=True, **kwargs):
         self.logger = logger
         self.xml_content = None
         self.entries = []
@@ -486,6 +539,7 @@ class AmiDictionary:
             xml_tree = ET.parse(str(xml_file), parser=ET.XMLParser(encoding="utf-8"))
         except lxml.etree.XMLSyntaxError as e:
             logging.error(f"Cannot parse xml file {xml_file} because {e}")
+            print(f"cannot parse xml_file {xml_file}")
             return None
         except Exception as e:
             logging.warning(f"error parsing {xml_file} {e}")
@@ -1387,6 +1441,21 @@ class AmiDictionary:
                 id_list.append(id)
         return id_list
 
+    def create_semantic_html(self):
+        """
+        output semantic html for dictionary
+        :return: semantic HTML
+        """
+        html_dict = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(html_dict)
+        entries = self.get_ami_entries()
+        for ami_entry in entries:
+            div = ami_entry.create_semantic_div()
+            if div is not None:
+                assert type(div) is _Element
+                body.append(div)
+        return html_dict
+
 
 
 class AmiSynonym:
@@ -1619,26 +1688,3 @@ class AmiDictValidator:
         return error_list1
 
 
-# ====================
-
-
-def main(argv=None):
-    # AMIDict.debug_tdd()
-    print(f"running AmiDict main")
-    dict_args = AmiDictArgs()
-    try:
-        dict_args.parse_and_process()
-    except Exception as e:
-        print(traceback.format_exc())
-        print(f"***Cannot run amidict***; see output for errors: {e} ")
-
-
-
-if __name__ == "__main__":
-    print("running dict main")
-    main()
-else:
-
-    #    print("running dict main anyway")
-    #    main()
-    pass
