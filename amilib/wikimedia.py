@@ -988,6 +988,9 @@ class Wikipedia:
 
 
 class WikipediaPage:
+
+    WM_DISAMBIGUATION_PAGE = "Wikimedia disambiguation page"
+
     FIRST_PARA = "wpage_first_para"
     from requests import request
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
@@ -1034,7 +1037,6 @@ class WikipediaPage:
             return None
         XmlLib.remove_elements(main_content, xpath="//nav")
         XmlLib.remove_elements(main_content, xpath="//noscript")
-        # XmlLib.remove_elements(main_content, xpath="//style")
         XmlLib.remove_elements(main_content, xpath="//div[@id='p-lang-btn']")
         return main_content
 
@@ -1210,17 +1212,12 @@ class WikipediaPage:
             print(f"cannot find Basic Information section {info_xpath}")
             return None
         h2_basic = h2_basics[0]
-        # print(f"basic h2 {ET.tostring(h2_basic)}")
         parent = h2_basic.getparent()
         children = parent.xpath("*")
         idx = parent.index(h2_basic)
-        # print(f"idx-1 {idx-1} {ET.tostring(children[idx-1])}")
-        # print(f"idx {idx} {ET.tostring(children[idx])}")
         idx += 1
-        # print(f"idx OK {idx} {ET.tostring(children[idx])}")
         table_ok = children[idx]
         rows = table_ok.xpath(".//tr")
-        # print(f"rows: {len(rows)}")
         wp_basicinfo = WikipediaBasicInfo(table_ok)
         return wp_basicinfo
 
@@ -1230,18 +1227,16 @@ class WikipediaPage:
         :param t_item: id in Tools menu (e.g. "t-info")
 
         """
-        print(f"looking up t_item: {t_item}")
+        # print(f"looking up t_item: {t_item}")
         ahrefs = self.html_elem.xpath(f".//li[@id='{t_item}']/a[@href]")
         ahref = ahrefs[0] if len(ahrefs) == 1 else None
         if ahref is None:
             print(f"cannot find {t_item} in drop-down tools")
             return None
-        # html_page = HtmlUtil.parse_html_file_to_xml(ahref)
         href = ahref.attrib.get("href")
         assert href is not None
         url = f"{WikipediaPage.get_default_wikipedia_url()}/{href}"
         url = url.replace("///", "/")
-        print(f"lookup wikipedia subpage for {url}")
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_url(url)
         return wikipedia_page
 
@@ -1252,6 +1247,20 @@ class WikipediaPage:
         """
         # return "https://www.wikipedia.org/"
         return "https://en.wikipedia.org/"
+
+    def is_disambiguation_page(self):
+        """
+        uses basic info to determine whether page is a disambiguation page
+        :return: Trie if basic_info.central_desceription is Wikimedia disambiguation page
+        """
+        is_disambig = False
+        basic_info = self.get_basic_information()
+        if basic_info is not None:
+            central_desc = basic_info.get_central_description()
+            is_disambig =  central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
+        return is_disambig
+
+
 
 class WikipediaPara:
     """
@@ -1432,8 +1441,10 @@ class WikipediaBasicInfo:
         return None if value is None else (value, id)
 
     def get_local_description(self):
-        key = self.LOCAL_DESCRIPTION
-        return self.get_value_for_key(key)
+        return self.get_value_for_key(self.LOCAL_DESCRIPTION)
+
+    def get_central_description(self):
+        return self.get_value_for_key(self.CENTRAL_DESCRIPTION)
 
     def get_value_for_key(self, key):
         return self.table_dict[key]
