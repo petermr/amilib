@@ -449,7 +449,7 @@ class AmiEntry:
         :return: div with term and para
         """
         term = self.get_term()
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page(term)
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
         wp_para = wikipedia_page.create_first_wikipedia_para()
         if wp_para is None:
             print(f"could not find page for term {term}")

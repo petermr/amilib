@@ -93,7 +93,7 @@ class WikipediaTest(unittest.TestCase):
         """
         creates WikipediaPage.FirstPage object
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
         print(f"first para {type(first_para)} {first_para.parent} ")
@@ -103,7 +103,7 @@ class WikipediaTest(unittest.TestCase):
         """
         creates WikipediaPage.FirstPage object , looks for <b> and <a @href>
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
         bolds =  first_para.get_bolds()
@@ -119,7 +119,7 @@ class WikipediaTest(unittest.TestCase):
         """
         creates WikipediaPage.FirstPage object
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page("AMOC")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
         print (f"type first para {first_para}")
         assert type(first_para) is WikipediaPara
@@ -173,12 +173,12 @@ class WikipediaTest(unittest.TestCase):
         """
         create semanticHtml from wordlist and lookup in Wikipedia
         """
-        xml_dict_file = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
-        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", ))
-        html_elem = xml_ami_dict.create_semantic_html(words_file)
+        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "carbon_cycle_noabb.html"))
+        html_elem = xml_ami_dict.create_semantic_html()
         path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
