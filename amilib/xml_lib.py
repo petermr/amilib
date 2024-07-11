@@ -806,6 +806,8 @@ class HtmlElement:
 
 class HtmlLib:
 
+    CLASS_ATTNAME = "class"
+
     @classmethod
     def convert_character_entities_in_lxml_element_to_unicode_string(cls, element, encoding="UTF-8") -> str:
         """

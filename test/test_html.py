@@ -70,7 +70,7 @@ s1  to mean class name (classname)
 #         html
 
 
-class TestHtml(AmiAnyTest):
+class HtmlTest(AmiAnyTest):
     """
     parsing , structuring linking in/to.form HTML
     This will evolve into an ami_html.py module
@@ -1038,12 +1038,12 @@ class TestHtml(AmiAnyTest):
 
 
 
-class Test_PDFHTML(AmiAnyTest):
+class PDFHTMLTest(AmiAnyTest):
     """
     Combine PDF2HTML with styles and other tidy
     """
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skipUnless(AmiAnyTest.run_long() and AmiAnyTest.IS_PMR, "run occasionally")
     def test_pdf_to_styled_chapter_15_EXAMPLE(self):
         pdf_args = PDFArgs()
         outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "Chapter15")
@@ -1055,7 +1055,7 @@ class Test_PDFHTML(AmiAnyTest):
         style_dict = pdf_args.pdf_to_styled_html_CORE(inpath, maxpage, outdir, outpath1)
         pprint.pprint(f"STYLE {style_dict}")
 
-    @unittest.skipUnless(True, "multiple chapter and documents")
+    @unittest.skipUnless(AmiAnyTest.IS_PMR, "multiple chapter and documents")
     def test_pdf_to_styled_multiple_EXAMPLE(self):
         pdf_args = PDFArgs()
         for chapter in [
@@ -1236,7 +1236,7 @@ class Test_PDFHTML(AmiAnyTest):
         with open(outfile, "wb") as f:
             f.write(lxml.etree.tostring(html_elem, method="html"))
     # IMPORTANT
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skipUnless(AmiAnyTest.run_long() and AmiAnyTest.IS_PMR, "run occasionally")
     def test_annotate_spm_reports_HACKATHON(self):
         """uses Annotator approach"""
         reports = [
@@ -1262,7 +1262,7 @@ class Test_PDFHTML(AmiAnyTest):
             with open(outfile, "wb") as f:
                 f.write(lxml.etree.tostring(html_elem, method="html"))
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skipUnless(AmiAnyTest.run_long() and AmiAnyTest.IS_PMR, "run occasionally")
     def test_extract_sections_report_HACKATHON_LATEST(self):
         """extract float/s from HTML and copy to custom directories"""
         # stem = "section2mini"
@@ -1316,7 +1316,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/spm/tot
             outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "annotation", wg, "spm")
             HtmlGroup.make_hierarchical_sections_KEY(html_elem, stem, section_regexes=section_regexes, outdir=outdir)
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skipUnless(AmiAnyTest.run_long() and AmiAnyTest.IS_PMR, "run occasionally")
     def test_extract_sections_report_all_wg_HACKATHON_LATEST(self):
         """create html for all WGs
         starts_with *total_pages.html
@@ -1653,7 +1653,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         assert lxml.etree.tostring(body).decode(encoding="UTF-8") == '<body id="b"><div id="d22"/><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></body>'
 
 
-class TestHtmlTidy(AmiAnyTest):
+class HtmlTidyTest(AmiAnyTest):
 
     def test_html_good(self):
         """
@@ -1777,7 +1777,7 @@ TEST_HEAD = """<html><head>
 <style classref=".s5778">.s5778 {font-family: MyriadPro-Regular; font-size: 8.59;}</style></head></html>"""
 
 
-class TestCSSStyle(AmiAnyTest):
+class CSSStyleTest(AmiAnyTest):
 
     def test_extract_character_style(self):
         """
@@ -2188,7 +2188,7 @@ class TestCSSStyle(AmiAnyTest):
             print(f"\n============================================")
 
 
-class TestHtmlClass(AmiAnyTest):
+class HtmlClassTest(AmiAnyTest):
     """
 
     """
@@ -2279,7 +2279,7 @@ class TestHtmlClass(AmiAnyTest):
         assert html_class.class_string == "bar plugh"
 
 
-class TestHtmlTree(AmiAnyTest):
+class HtmlTreeTest(AmiAnyTest):
     """
     makes sections from unstructured text
     """
@@ -2320,7 +2320,7 @@ class TestHtmlTree(AmiAnyTest):
         hierarchy.add_sections(decimal_sections, poplist=["Chapter 3:"])
         hierarchy.sort_sections()
 
-class TestFont(AmiAnyTest):
+class FontTest(AmiAnyTest):
 
     def _assert_new_css_style(self, style, new_value):
         css_style = CSSStyle.create_css_style_from_css_string(style)
