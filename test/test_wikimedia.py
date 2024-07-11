@@ -159,13 +159,14 @@ class WikipediaTest(unittest.TestCase):
         """
         create semanticHtml from wordlist and lookup in Wikipedia
         """
-        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        stem = "small_10"
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
-        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", "carbon_cycle.xml"))
+        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", f"{stem}.xml"))
         html_elem = xml_ami_dict.create_semantic_html()
-        path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html", debug="True")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
 
@@ -182,6 +183,36 @@ class WikipediaTest(unittest.TestCase):
         path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
+
+    def test_disambiguation_page(self):
+        """
+        annotates disambiguation page
+        """
+        term = "Anthropogenic"
+        wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        basic_info = wpage.get_basic_information()
+        assert basic_info is not None
+        central_desc = basic_info.get_central_description()
+        assert central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
+        assert wpage.is_disambiguation_page()
+
+    def test_create_basic_info_for_page(self):
+        """
+        extract table with basic info for a wikipedia page
+        """
+        url = "https://en.wikipedia.org/wiki/Jawaharlal_Nehru_University"
+        wpage = WikipediaPage.lookup_wikipedia_page_for_url(url)
+        assert wpage is not None
+        basic_info = wpage.get_basic_information()
+        assert basic_info is not None
+        href_id = basic_info.get_wikidata_href_id()
+        assert href_id == ('https://www.wikidata.org/wiki/Special:EntityPage/Q1147063', 'Q1147063')
+        image_url = basic_info.get_image_url()
+        assert image_url == 'https://en.wikipedia.org//wiki/File:Jawaharlal_Nehru_University_Logo_vectorized.svg'
+
+
+
+
 
 
 class WikidataTest(unittest.TestCase):

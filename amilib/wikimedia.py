@@ -962,32 +962,12 @@ class WikidataExtractor:
         # 				result["instance"]			= data["claims"][key][0]["mainsnak"]["datavalue"]["value"]["id"]
         return result
 
-class Wikipedia:
-    """
-    mainly class methods for Wikipedia
-    """
-    @classmethod
-    def search_wikipedia_for_terms(cls, wordlist_stem, wordlist_dir, outdir=None, min_term_count=2):
-        """
-        uses file of words in test/resources/misc
-        :param wordlist_dir: directory containg {wordlist_stem}.txt file(s)
-        :param wordlist_stem: file stem in resources
-        :param outdir: if not None writes <outdir>/<wordlist_stem>.html
-        :param min_term_count: minimum number of terms expected
-        """
-        # contains list of words to search for
-        wordsfile = Path(wordlist_dir, f"{wordlist_stem}.txt")
-        assert wordsfile.exists(), f"{wordsfile} should exist"
-        print(f"searching {wordsfile}")
-        words = Path(wordsfile).read_text().splitlines()
-        assert len(words) >= min_term_count, f"wordsfile must have at least {min_term_count} words"
-        if outdir:
-            outfile = Path(outdir, f"{wordlist_stem}.html")
-            WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
-
-
 
 class WikipediaPage:
+
+    WM_DISAMBIGUATION_PAGE = "Wikimedia disambiguation page"
+
+    FIRST_PARA = "wpage_first_para"
     FIRST_PARA = "wpage_first_para"
     from requests import request
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
@@ -1034,7 +1014,6 @@ class WikipediaPage:
             return None
         XmlLib.remove_elements(main_content, xpath="//nav")
         XmlLib.remove_elements(main_content, xpath="//noscript")
-        # XmlLib.remove_elements(main_content, xpath="//style")
         XmlLib.remove_elements(main_content, xpath="//div[@id='p-lang-btn']")
         return main_content
 
@@ -1210,17 +1189,12 @@ class WikipediaPage:
             print(f"cannot find Basic Information section {info_xpath}")
             return None
         h2_basic = h2_basics[0]
-        # print(f"basic h2 {ET.tostring(h2_basic)}")
         parent = h2_basic.getparent()
         children = parent.xpath("*")
         idx = parent.index(h2_basic)
-        # print(f"idx-1 {idx-1} {ET.tostring(children[idx-1])}")
-        # print(f"idx {idx} {ET.tostring(children[idx])}")
         idx += 1
-        # print(f"idx OK {idx} {ET.tostring(children[idx])}")
         table_ok = children[idx]
         rows = table_ok.xpath(".//tr")
-        # print(f"rows: {len(rows)}")
         wp_basicinfo = WikipediaBasicInfo(table_ok)
         return wp_basicinfo
 
@@ -1230,18 +1204,16 @@ class WikipediaPage:
         :param t_item: id in Tools menu (e.g. "t-info")
 
         """
-        print(f"looking up t_item: {t_item}")
+        # print(f"looking up t_item: {t_item}")
         ahrefs = self.html_elem.xpath(f".//li[@id='{t_item}']/a[@href]")
         ahref = ahrefs[0] if len(ahrefs) == 1 else None
         if ahref is None:
             print(f"cannot find {t_item} in drop-down tools")
             return None
-        # html_page = HtmlUtil.parse_html_file_to_xml(ahref)
         href = ahref.attrib.get("href")
         assert href is not None
         url = f"{WikipediaPage.get_default_wikipedia_url()}/{href}"
         url = url.replace("///", "/")
-        print(f"lookup wikipedia subpage for {url}")
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_url(url)
         return wikipedia_page
 
@@ -1252,6 +1224,20 @@ class WikipediaPage:
         """
         # return "https://www.wikipedia.org/"
         return "https://en.wikipedia.org/"
+
+    def is_disambiguation_page(self):
+        """
+        uses basic info to determine whether page is a disambiguation page
+        :return: Trie if basic_info.central_desceription is Wikimedia disambiguation page
+        """
+        is_disambig = False
+        basic_info = self.get_basic_information()
+        if basic_info is not None:
+            central_desc = basic_info.get_central_description()
+            is_disambig =  central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
+        return is_disambig
+
+
 
 class WikipediaPara:
     """
@@ -1340,6 +1326,157 @@ class WikipediaPara:
                     print(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
+
+class WikipediaInfoBox:
+    """
+    wrapper for wikipedia infobox HTML <table>
+    """
+
+    def __init__(self, table=None):
+        """
+        Wrapper for Wikipedia InfoBox
+        """
+        self.table = table
+
+class WikipediaBasicInfo:
+    """
+    wrapper for wikipedia basic information tabls
+    """
+
+    """
+    Display title	MV Arctic Sea
+    Default sort key	Arctic Sea, Mv
+    Page length (in bytes)	40,084
+    Namespace ID	0
+    Page ID	23947896
+    Page content language	en - English
+    Page content model	wikitext
+    Indexing by robots	Allowed
+    Number of page watchers	91
+    Number of page watchers who visited in the last 30 days	2
+    Number of redirects to this page	4
+    Counted as a content page	Yes
+    Wikidata item ID	Q615783
+    Local description	Ship
+    Central description	ship built in 1992
+    Page image	MV Arctic sea.svg
+    Page views in the past 30 days	273
+    """
+    DISPLAY_TITLE = "Display title"
+    SORT_KEY = "Default sort key"
+    PAGE_LENGTH = "Page length (in bytes)"
+    NAMESPACE_ID = "Namespace ID"
+    PAGE_ID = "Page ID"
+    PAGE_LANGAUGE = "Page content language"
+    CONTENT_MODEL = "Page content model"
+    INDEXING_BY_ROBOTS = "Indexing by robots"
+    PAGE_WATCHERS = "Number of page watchers"
+    PAGE_WATCHERS_30 = "Number of page watchers who visited in the last 30 days"
+    REDIRECTS = "Number of redirects to this page"
+    IS_CONTENT_PAGE = "Counted as a content page"
+    WIKIDATA_ITEM = "Wikidata item ID"
+    LOCAL_DESCRIPTION = "Local description"
+    CENTRAL_DESCRIPTION = "Central description"
+    PAGE_IMAGE = "Page image"
+    PAGE_VIEWS_30 = "Page views in the past 30 days"
+
+    KEYS = [
+        DISPLAY_TITLE,
+        SORT_KEY,
+        PAGE_LENGTH,
+        NAMESPACE_ID,
+        PAGE_ID,
+        PAGE_LANGAUGE,
+        CONTENT_MODEL,
+        INDEXING_BY_ROBOTS,
+        PAGE_WATCHERS,
+        PAGE_WATCHERS_30,
+        REDIRECTS,
+        IS_CONTENT_PAGE,
+        WIKIDATA_ITEM,
+        LOCAL_DESCRIPTION,
+        CENTRAL_DESCRIPTION,
+        PAGE_IMAGE,
+        PAGE_VIEWS_30,
+    ]
+
+    def __init__(self, table=None):
+        """
+        Wrapper for Wikipedia basic information
+        """
+        self.table = table
+        self.table_dict = dict()
+        self.create_table_dict()
+
+    def get_wikidata_href_id(self):
+        """
+        return wikidate href and id (Note
+        :return: (href, id) tuplpe or None
+        """
+        value = self.get_value_for_key(self.WIKIDATA_ITEM)
+        id = value.split("/")[-1]
+        return None if value is None else (value, id)
+
+    def get_local_description(self):
+        return self.get_value_for_key(self.LOCAL_DESCRIPTION)
+
+    def get_central_description(self):
+        return self.get_value_for_key(self.CENTRAL_DESCRIPTION)
+
+    def get_value_for_key(self, key):
+        return self.table_dict[key]
+
+    def get_image_url(self):
+        url_tail = self.get_value_for_key(self.PAGE_IMAGE)
+        url = f"{WikipediaPage.get_default_wikipedia_url()}{url_tail}"
+        return url
+
+    def create_table_dict(self):
+        """
+        creates name-value table, where value can be text or XML element
+        """
+        self.table_dict = dict()
+        rows = self.table.xpath(".//tr")
+        for row in rows:
+            name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
+            if not name in self.KEYS:
+                print(f"unknown key {name} in Basic Information")
+            value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
+            self.table_dict[name] = value
+        # print(f"dict {self.table_dict}")
+
+    def get_cell_value(self, td, idx):
+        """
+        HYPERLINK
+        <td>
+          <a
+            class="extiw wb-entity-link external"
+            href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783"
+            >Q615783</a>
+        </td>
+        """
+        tda = td.xpath("a")  # might be a hyperlink
+        if len(tda) > 0:
+            href = tda[0].attrib.get("href")
+            aval = tda[0].text
+            href = aval if idx == 0 else href
+            return href
+        """
+        IMAGE
+        <td>
+          <a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description">
+            <img 
+              alt="MV Arctic sea.svg" 
+              src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png" 
+              decoding="async" 
+              width="220" 
+              height="156" 
+              data-file-width="1052"
+              data-file-height="744"
+              ></a></td>"""
+        return td.text
+
+
 
 class WikipediaInfoBox:
     """
