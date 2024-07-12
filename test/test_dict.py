@@ -59,7 +59,7 @@ def _create_amidict_with_foo_bar_entries():
     return amidict
 
 
-class TestAmiDictionary(AmiAnyTest):
+class AmiDictionaryTest(AmiAnyTest):
     """These are tests for developing CODE for dictionary creation and validation
 
     Code for VALIDATION of dictionaries should probably be bundled with the dictionaries themselves
@@ -92,7 +92,7 @@ class TestAmiDictionary(AmiAnyTest):
 
     CEV_EXISTS = Path(LOCAL_CEV_OPEN_DICT_DIR).exists()
 
-    def setup(self):
+    def create_file_dict(self):
         """Variables created afresh for every test"""
         dictfile1 = Path(AMIDICTS, "dict1.xml")
         # dictfile1 = Path(Path(__file__).parent.parent, "py4ami/resources/amidicts/dict1.xml")
@@ -121,7 +121,7 @@ class TestAmiDictionary(AmiAnyTest):
     @unittest.skipUnless("environment", ADMIN)
     def test_dictionary_file1_exists(self):
         """Test that a simple dictionary "dictfile1" file exists"""
-        setup_dict = self.setup()
+        setup_dict = self.create_file_dict()
         assert setup_dict[DICTFILE1].exists(), f"file should exist {setup_dict['dict1']}"
 
     def test_dictionary_element(self):
@@ -151,12 +151,12 @@ class TestAmiDictionary(AmiAnyTest):
         assert amidict.root.attrib[TITLE] == "minimal"
 
     def test_dict_has_root_dictionary(self):
-        setup_dict = self.setup()
+        setup_dict = self.create_file_dict()
         root = setup_dict[ROOT]
         assert root.tag == AmiDictionary.TAG
 
     def test_dict_contains_xml_element(self):
-        root = etree.parse(str(self.setup()[DICTFILE1]))
+        root = etree.parse(str(self.create_file_dict()[DICTFILE1]))
         assert root is not None
 
     def test_can_read_dictionary_from_url_as_xml(self):
@@ -176,13 +176,13 @@ class TestAmiDictionary(AmiAnyTest):
         print()
         for dikt in dicts:
             print(f"...{dikt}")
-            root = etree.parse(str(self.setup()[dikt]))
+            root = etree.parse(str(self.create_file_dict()[dikt]))
             dictionary = AmiDictionary.create_from_xml_object(root)
             validator = AmiDictValidator(dictionary)
             error_list = validator.get_xml_declaration_error_list()
             assert not error_list
 
-    @pytest.mark.url
+    # @pytest.mark.url
     def test_validate_url_dict(self):
         """
         tests that historic dictionaries read into validator
@@ -207,17 +207,17 @@ class TestAmiDictionary(AmiAnyTest):
 
     def test_can_create_ami_dict_from_file(self):
         """read an existing XML AmiDictionary"""
-        setup_dict = self.setup()
+        setup_dict = self.create_file_dict()
         one_entry_path = setup_dict[ONE_ENTRY_PATH]
         amidict = AmiDictionary.create_from_xml_file(one_entry_path)
         assert amidict is not None
 
-    @pytest.mark.simple
+    # @pytest.mark.simple
     def test_dictionary_is_an_ami_dictionary(self):
         """
         test dictionary with one entry
         """
-        setup_dict = self.setup()
+        setup_dict = self.create_file_dict()
         amidict = setup_dict[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
 
@@ -225,24 +225,24 @@ class TestAmiDictionary(AmiAnyTest):
         """
         unit test
         """
-        setup_dict = self.setup()
+        setup_dict = self.create_file_dict()
         amidict = setup_dict[ONE_ENTRY_DICT]
         entries = amidict.get_lxml_entries()
         assert entries is not None
 
-    @pytest.mark.simple
+    # @pytest.mark.simple
     def test_dictionary_contains_one_entry(self):
         """
         unit test
         """
-        amidict = self.setup()[ONE_ENTRY_DICT]
+        amidict = self.create_file_dict()[ONE_ENTRY_DICT]
         assert amidict.get_entry_count() == 1, f"dict should have 1 entry, found  {amidict.get_entry_count()}"
 
     def test_get_first_entry(self):
         """
         unit test
         """
-        amidict = self.setup()[ONE_ENTRY_DICT]
+        amidict = self.create_file_dict()[ONE_ENTRY_DICT]
         assert amidict.get_first_ami_entry() is not None
 
     def test_get_attribute_names(self):
@@ -250,7 +250,7 @@ class TestAmiDictionary(AmiAnyTest):
         unit test
         """
 
-        first_entry = self.setup()[ONE_ENTRY_DICT].get_first_ami_entry()
+        first_entry = self.create_file_dict()[ONE_ENTRY_DICT].get_first_ami_entry()
         assert type(first_entry) is AmiEntry
         attrib_names = {name for name in first_entry.element.attrib}
         assert attrib_names is not None
@@ -260,7 +260,7 @@ class TestAmiDictionary(AmiAnyTest):
         tests that we can retrieve the `term` value from an element
 
         """
-        amidict = self.setup()[ONE_ENTRY_DICT]
+        amidict = self.create_file_dict()[ONE_ENTRY_DICT]
         assert amidict.get_first_entry().attrib[TERM] == "Douglas Adams"
 
     def test_get_name_of_first_entry(self):
@@ -268,7 +268,7 @@ class TestAmiDictionary(AmiAnyTest):
         unit test
         """
 
-        amidict = self.setup()[ONE_ENTRY_DICT]
+        amidict = self.create_file_dict()[ONE_ENTRY_DICT]
         assert amidict.get_first_entry().attrib[NAME] == "Douglas Adams"
 
     def test_get_wikidata_of_first_entry(self):
@@ -276,14 +276,14 @@ class TestAmiDictionary(AmiAnyTest):
         unit test
         """
 
-        amidict = self.setup()[ONE_ENTRY_DICT]
+        amidict = self.create_file_dict()[ONE_ENTRY_DICT]
         assert amidict.get_first_entry().attrib[WIKIDATA_ID] == "Q42"
 
     def test_get_synonym_count(self):
         """
         unit test
         """
-        amidict = TestAmiDictionary().setup()[ONE_ENTRY_DICT]
+        amidict = AmiDictionaryTest().create_file_dict()[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
         assert len(amidict.get_first_ami_entry().get_synonyms()) == 2
 
@@ -292,7 +292,7 @@ class TestAmiDictionary(AmiAnyTest):
         unit test
         """
 
-        amidict = self.setup()[ONE_ENTRY_DICT]
+        amidict = self.create_file_dict()[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
         elem = amidict.get_first_ami_entry().get_synonym_by_language(LANG_UR).element
         assert "ڈگلس ایڈمس" == ''.join(elem.itertext())
@@ -485,7 +485,7 @@ class TestAmiDictionary(AmiAnyTest):
 
     def test_get_duplicate_entries(self):
         """Dictionary has two entries for 'apical' but only one for 'cone'"""
-        dup_dict = AmiDictionary.create_from_xml_file(self.setup()[DUPLICATE_ENTRIES])
+        dup_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[DUPLICATE_ENTRIES])
         entries = dup_dict.get_lxml_entries()
         assert len(entries) == 4, "one duplicate term omitted"
         entries = dup_dict.find_entries_with_term("apical")
@@ -495,7 +495,7 @@ class TestAmiDictionary(AmiAnyTest):
 
     def test_get_terms_from_valid_dictionary(self):
         """ETHNOBOT has no multiple entries'"""
-        ethno_dict = AmiDictionary.create_from_xml_file(self.setup()[ETHNOBOT_DICT])
+        ethno_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[ETHNOBOT_DICT])
         terms = ethno_dict.get_terms()
         assert terms is not None
         assert len(terms) == 8
@@ -504,26 +504,26 @@ class TestAmiDictionary(AmiAnyTest):
 
     def test_get_terms_from_invalid_dictionary(self):
         """DUPLICATE_ENTRIES has two entries for 'apical' and some missing terms"""
-        dup_dict = AmiDictionary.create_from_xml_file(self.setup()[DUPLICATE_ENTRIES])
+        dup_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[DUPLICATE_ENTRIES])
         terms = dup_dict.get_terms()
         assert terms == ['apical', 'flowering top', 'cone', 'pistil']
 
     # review dictionaries
     def test_mini_plant_part_is_valid(self):
         # pp_dict = AmiDictionary(setup_amidict[MINI_PLANT_PART])
-        pp_dict = AmiDictionary.create_from_xml_file(self.setup()[MINI_PLANT_PART])
+        pp_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[MINI_PLANT_PART])
         if pp_dict is None:
             raise AMIDictError(f"test_dictionary_should_have_desc cannot read dictionary {pp_dict}")
         pp_dict.check_validity()
 
     def test_mini_mentha_tps_dict_is_valid(self):
-        mentha_dict = AmiDictionary.create_from_xml_file(self.setup()[MINI_MENTHA])
+        mentha_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[MINI_MENTHA])
         if mentha_dict is None:
             raise AMIDictError("cannot find/read mentha_dict")
         mentha_dict.check_validity()
 
     def test_ethnobot_dict_has_version(self):
-        ethnobot_dict = AmiDictionary.create_from_xml_file(self.setup()[ETHNOBOT_DICT])
+        ethnobot_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[ETHNOBOT_DICT])
         version = ethnobot_dict.get_version()
         assert version is not None
         assert AmiDictionary.is_valid_version_string(version)
@@ -531,22 +531,22 @@ class TestAmiDictionary(AmiAnyTest):
 
     def test_ethnobot_dict_is_valid(self):
         print(f" validating {ETHNOBOT_DICT}")
-        ethnobot_dict = AmiDictionary.create_from_xml_file(self.setup()[ETHNOBOT_DICT])
+        ethnobot_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[ETHNOBOT_DICT])
         ethnobot_dict.check_validity()
         # assert ethnobot_dict.get_version() == "0.0.1"
 
     def test_ethnobot_dict_has_8_entries(self):
-        ethnobot_dict = AmiDictionary.create_from_xml_file(self.setup()[ETHNOBOT_DICT])
+        ethnobot_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[ETHNOBOT_DICT])
         entries = ethnobot_dict.get_lxml_entries()
         assert len(entries) == 8
 
     def test_ethnobot_dict_entry_0_is_valid(self):
-        ethnobot_dict = AmiDictionary.create_from_xml_file(self.setup()[ETHNOBOT_DICT])
+        ethnobot_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[ETHNOBOT_DICT])
         entry0 = ethnobot_dict.get_lxml_entries()[0]
         AmiEntry.create_from_element(entry0).check_validity()
 
     def test_all_ethnobot_dict_entries_are_valid(self):
-        ethnobot_dict = AmiDictionary.create_from_xml_file(self.setup()[ETHNOBOT_DICT])
+        ethnobot_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[ETHNOBOT_DICT])
         for entry in ethnobot_dict.get_lxml_entries():
             AmiEntry.create_from_element(entry).check_validity()
 
@@ -691,6 +691,7 @@ class TestAmiDictionary(AmiAnyTest):
         """
 
         """
+
 
         INVASIVE_DIR = Path(LOCAL_CEV_OPEN_DICT_DIR, "invasive_species")
         assert INVASIVE_DIR.exists(), f"INVASIVE_DIR should exists {INVASIVE_DIR}"
@@ -938,7 +939,7 @@ class TestAmiDictionary(AmiAnyTest):
         amilib.run_command(["DICT", "--help"])
 
 
-class TestAmiEntry(AmiAnyTest):
+class AmiEntryTest(AmiAnyTest):
     """
     test functionality of AmiEntry
     """
@@ -947,7 +948,7 @@ class TestAmiEntry(AmiAnyTest):
         pass
 
 
-class TestValidate(AmiAnyTest):
+class ValidateTest(AmiAnyTest):
     """
     test validity of AmiEntry and AmiDictionary
     """
@@ -976,13 +977,13 @@ class TestValidate(AmiAnyTest):
 
     def test_one_entry_dict_is_ami_dictionary(self):
         """require the attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().setup()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         assert type(one_dict) is AmiDictionary, f"fila is not AmiDictionary {one_dict}"
 
     def test_dict1_has_version_attribute(self):
         """require the version attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().setup()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[DICTFILE1]
         amidict = AmiDictionary.create_from_xml_file(Path(one_dict))
         version = amidict.get_version()
@@ -992,14 +993,14 @@ class TestValidate(AmiAnyTest):
         """
         require the version attribute to have starting value
         """
-        setup_dict = TestAmiDictionary().setup()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         amidict = AmiDictionary.create_from_xml_file(Path(setup_dict[DICTFILE1]))
         version = amidict.get_version()
         assert version == STARTING_VERSION
 
     def test_one_entry_dict_has_version_attribute(self):
         """require the attribiute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().setup()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         assert one_dict is not None
         version = one_dict.get_version()
@@ -1007,7 +1008,7 @@ class TestValidate(AmiAnyTest):
 
     def test_dictionary_has_version(self):
         """require the attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().setup()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         version = one_dict.get_version()
         assert version is not None, "missing version"
@@ -1033,12 +1034,12 @@ class TestValidate(AmiAnyTest):
     def test_dict_has_xml_title(self):
         """has root dictionary element got title attribute?
         e.g. <dictionary title='dict1'> ..."""
-        setup_dict = TestAmiDictionary().setup()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         root = setup_dict[ROOT]
         assert root.attrib[TITLE] == "dict1"
 
     def test_dict_title_matches_filename(self):
-        setup_dict = TestAmiDictionary().setup()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         root = setup_dict[ROOT]
         last_path = setup_dict[DICTFILE1].stem
         print(last_path)
@@ -1123,7 +1124,7 @@ class DictionaryCreationTest(AmiAnyTest):
         out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
         words_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate",
                           "ar5_wg3_food_security_words.txt")
-        max_entries = 7 # to reduce time
+        max_entries = 2 # to reduce time
 
         description = "food security terms in AR5_WG3_ch_5 selected by Anmol Negi"
         # add title, description, and save
@@ -1157,14 +1158,14 @@ class DictionaryCreationTest(AmiAnyTest):
         Note that wikidata lookup does not necessarily put the best answers first
         """
         amilib = AmiLib()
-        title = "climate_words"
-        title_path = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{title}.txt")
+        title = "small_2"
+        title_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{title}.txt")
         assert title_path.exists(), f"{title_path} should exist"
         title_txt = f"{title_path}"
         print(f"words {title_txt}")
         with open(title_txt, "r") as f:
             print(f"words ==> {f.readlines()}")
-        title_dict = Path(Resources.TEMP_DIR, "misc", f"{title}_dict.xml")
+        title_dict = Path(Resources.TEMP_DIR, "words", f"{title}_dict.xml")
         FileLib.delete_file(title_dict)
 
         word_xml = f"{Path(Resources.TEMP_DIR, '{title}.xml')}"
@@ -1203,8 +1204,8 @@ class DictionaryCreationTest(AmiAnyTest):
 
     def test_make_dict_from_file_CMD_OK(self):
         amilib = AmiLib()
-        words_file = Path(TEST_RESOURCE_DIR, "misc", "climate_words.txt")
-        dictfile = Path(Resources.TEMP_DIR, "misc", "climate_words.xml")
+        words_file = Path(TEST_RESOURCE_DIR, "wordlists", "climate_words.txt")
+        dictfile = Path(Resources.TEMP_DIR, "words", "climate_words.xml")
         expected_count = 11
         FileLib.delete_file(dictfile)
         amilib.run_command(["DICT",

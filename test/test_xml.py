@@ -7,10 +7,10 @@ from amilib.ami_html import HtmlStyle
 from amilib.xml_lib import XmlLib, HtmlLib
 
 from test.test_all import AmiAnyTest
-from test.test_wikimedia import WikimediaTests
+# from test.test_wikimedia import WikidataTest
 
 
-class TestXml(AmiAnyTest):
+class Xml0Test(AmiAnyTest):
 
     def test_is_integer(self):
         span = ET.Element("span")
@@ -62,7 +62,7 @@ class TestXml(AmiAnyTest):
         HtmlLib.get_body(html).append(div)
         HtmlLib.write_html_file(html, file, debug=True)
 
-class XmlTests:
+class XmlTest:
     XSLT_FILE = os.path.join(Path(__file__).parent, "jats2html.xsl")
 
     @classmethod
@@ -103,7 +103,7 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
  <italic>T. bovei</italic> was comprised ... on the
  <italic>T. bovei</italic> activities ... activity.
 </p>'''
-        print("italic", XmlLib.xslt_transform_tostring(data, XmlTests.XSLT_FILE))
+        print("italic", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
 
     @classmethod
     def test_xslt_copy(cls):
@@ -121,7 +121,7 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
  </sec>
 </ack>
 """
-        print("copy", XmlLib.xslt_transform_tostring(data, XmlTests.XSLT_FILE))
+        print("copy", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
 
     @classmethod
     def test_jats2html(cls):
@@ -150,10 +150,10 @@ if __name__ == "__main__":
     #     ConfigTests.tests()
     if wiki_test:
         # TODO move to Wikimedia
-        WikimediaTests.test_sparql_wrapper()
+        WikimediaTest.test_sparql_wrapper()
     if xml_test:
-        XmlTests.test_replace_nodes_with_text()
-        XmlTests.test_replace_nodenames()
-        XmlTests.test_jats2html()
-        XmlTests.test_xslt_italic()
-        XmlTests.test_xslt_copy()
+        XmlTest.test_replace_nodes_with_text()
+        XmlTest.test_replace_nodenames()
+        XmlTest.test_jats2html()
+        XmlTest.test_xslt_italic()
+        XmlTest.test_xslt_copy()

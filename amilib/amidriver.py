@@ -6,10 +6,17 @@ from selenium import webdriver
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.remote.webelement import WebElement
-try:
-    from webdriver_manager.chrome import ChromeDriverManager
-except Exception as e:
-    """behaves differently in pytest and PyCharm"""
+
+"""This is a problem in PyCharm
+see https://stackoverflow.com/questions/64618538/cant-find-webdriver-manager-module-in-pycharm
+"""
+
+"""behaves differently in pytest and PyCharm"""
+"""I unnstalled 4.0.1 and installed 4.0.0
+also rm -rf .idea and restart Pycharm
+"""
+from webdriver_manager.chrome import ChromeDriverManager
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
