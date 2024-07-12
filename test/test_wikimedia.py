@@ -136,18 +136,18 @@ class WikipediaTest(unittest.TestCase):
         """
         create semanticHtml from XML dictionary (created by lookup wikipedia)
         """
-        xml_dict_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "xml", "breward_wikipedia.xml")
+        xml_dict_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "xml", "food_ecosystem.xml")
         assert xml_dict_file.exists()
         xml_ami_dict = AmiDictionary.create_from_xml_file(xml_dict_file)
         assert xml_ami_dict is not None
         entries = xml_ami_dict.get_ami_entries()
-        assert len(entries) == 30, f"{xml_dict_file} should have 30 entries"
+        assert len(entries) == 53, f"{xml_dict_file} should have 53 entries"
         ami_entry = entries[0]
         div = ami_entry.create_semantic_div()
         html_elem = HtmlLib.create_html_with_empty_head_body()
         body = HtmlLib.get_body(html_elem)
         body.append(div)
-        path = Path(Resources.TEMP_DIR, "words", "html", "covid.html")
+        path = Path(Resources.TEMP_DIR, "words", "html", "food_ecosystem.html")
         HtmlLib.write_html_file(
             html_elem, path, debug=True)
         assert path.exists()
@@ -159,13 +159,13 @@ class WikipediaTest(unittest.TestCase):
         """
         create semanticHtml from wordlist and lookup in Wikipedia
         """
-        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "food_ecosystem.txt")
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
-        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", "carbon_cycle.xml"))
+        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", "food_ecosystem.xml"))
         html_elem = xml_ami_dict.create_semantic_html()
-        path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        path = Path(Resources.TEMP_DIR, "words", "html", "food_ecosystem.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
 
@@ -173,13 +173,13 @@ class WikipediaTest(unittest.TestCase):
         """
         create semanticHtml from wordlist and lookup in Wikipedia
         """
-        xml_dict_file = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        xml_dict_file = Path(Resources.TEMP_DIR, "words", "html", "food_ecosystem.html")
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
         xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", ))
         html_elem = xml_ami_dict.create_semantic_html(words_file)
-        path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        path = Path(Resources.TEMP_DIR, "words", "html", "food_ecosystem.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
 
