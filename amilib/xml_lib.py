@@ -14,7 +14,7 @@ import lxml.etree
 import requests
 # import tkinterweb
 from lxml import etree as ET
-from lxml.etree import _Element, _ElementTree
+from lxml.etree import _Element, _ElementTree, _ElementUnicodeResult
 from lxml.html import HTMLParser
 # import tkinter as tk
 
@@ -154,6 +154,8 @@ logging.debug(f"===========LOGGING {logger.level} .. {logging.DEBUG}")
 
 
 class XmlLib:
+    SENTENCE_RE = ".*\\.(\\s*$|\\s+[A-Z].*)" # maybe obsolete
+    SENTENCE_START_RE = ".*\\.\\s+[A-Z].*"
 
     def __init__(self, file=None, section_dir=SECTIONS):
         self.max_file_len = 30
@@ -799,10 +801,164 @@ class XmlLib:
         a_elem.text = atext
         span.text = None
 
+    """
+    MIXED CONTENT IN lxml (!!!) NOT EASY
+    see https://lxml.de/tutorial.html#using-xpath-to-find-text
+    and 
+    https://stackoverflow.com/questions/57301789/how-can-i-select-and-update-text-nodes-in-mixed-content-using-lxml
+    
+    the text references the previous elem through getparent()
+
+    >> I found the key to this solution in the docs: Using XPath to find text
+    
+    >> Specifically the is_text and is_tail properties of _ElementUnicodeResult.
+
+    """
+    @classmethod
+    def debug_direct_text_children(cls, elem):
+        """
+        iterate over sequence of elements and texts and replace by span(text)
+        This gets rid of the node + node.tail  and converts the texts to a first class element
+        :param elem: element with child elements and child texts
+        Assumes no PIs, no textdata
+        """
+        if elem is None:
+            return
+        children = elem.xpath("*|text()")
+        for child in children:
+            if type(child) is _ElementUnicodeResult:
+                 print(f"T:{child}:Tail:{child.is_tail}, Text:{child.is_text}, Parent:{child.getparent().tag}")
+            elif type(child) is _Element:
+                print(f"E:{child}|{child.tail}")
+            else:
+                print(f"?:{child}")
+
+    @classmethod
+    def replace_tail_text_with_span(cls, elem):
+        """
+        <foo>...</foo>tail
+        is replaced by
+        <foo>...</foo><span>tail<span>
+        :param elem: to be edited
+        """
+        if elem is None or elem.getparent() is None:
+            return
+        if elem.tail is not None:
+            parent = elem.getparent()
+            span = ET.Element("span")
+            span.text = elem.tail
+            elem.tail = None
+            elem.addnext(span)
+
+    @classmethod
+    def replace_child_tail_texts_with_spans(cls, parent_elem):
+        """
+        find all (tail) text childrren and wrap in spans
+        :param parent_elem: parent elem with child texts
+        """
+        if parent_elem is None:
+            return
+        texts = parent_elem.xpath("./text()")
+        for text in texts:
+            pre_elem = text.getparent()
+            cls.replace_tail_text_with_span(pre_elem)
+        return
+
+    def get_sentence_breaks(self, texts):
+        """
+        split html/text iinto sentences
+        :param texts: mixed content texts (tails)
+        :return: array of splits (still being developed)
+        """
+        # texts = self.get_texts()
+
+        text_breaks = [(j, t) for (j, t) in enumerate(texts) if re.match(self.SENTENCE_RE, t)]
+        splits = []
+        for (idx, txt) in text_breaks:
+            prec = '^' if idx == 0 else texts[idx - 1]
+            foll = '$' if idx == len(texts) - 1 else texts[idx + 1]
+            # print(f"|{prec}|{txt}|{foll}|")
+            splits.append(f"|{prec}|{txt}|{foll}|")
+        return splits
+
+    @classmethod
+    def add_sentence_brs(cls, texts):
+        """
+        split html/text in paragrah into sentences
+        add <br> element after period
+        :return: None (modifies texts) (still being developed)
+        """
+        if len(texts) == 0:
+            return
+        parent = texts[0].getparent().getparent()
+        print(f"parent: {parent}")
+        for text in texts:
+            head = text.getparent()
+            # print(f"head: {head.tag}")
+            if re.match(cls.SENTENCE_START_RE, text):
+                splits = text.split('.', 1)
+                prec_elem = text.getparent()
+                prec_elem.tail = splits[0] + "."
+                br_elem = ET.Element("br")
+                br_elem.tail = splits[1]
+                prec_elem.addnext(br_elem)
+        return
+
+
 
 class HtmlElement:
     """to provide fluent HTML builder and parser NYI"""
     pass
+
+
+class HtmlEditor:
+    """
+    Convenience method for creating HTML tree
+    skeleton html with attributes for head, style, body
+    hardcoded attributes (Html elements) are:
+    .html - the whole document
+    .head - the head
+    .style - a style stub in head (add others with SubElement)
+    .body - a stub body
+    (To create other elemnts you have to use SubElement or append)
+
+    example:
+    skel = HtmlSkeleton()
+    skel.style.text = "p {background: pink;}"
+    p = ET.SubElement(skel.body, "p")
+    p.text = "foo"
+    p = ET.SubElement(skel.body, "p")
+    p.text = "bar"
+    skel.write(myfile, debug=True)
+
+
+
+    """
+
+    def __init__(self):
+        """
+        creates elements self.html, self.head, self.body
+        """
+        self.html = lxml.etree.Element("html")
+        self.head = ET.SubElement(self.html, "head")
+        self.body = ET.SubElement(self.html, "body")
+
+    def write(self, file, debug=True):
+        HtmlLib.write_html_file(self.html, file, debug=debug)
+
+    def add_style(self, selector, value):
+        """
+        at present just use HTML style content,
+        content includes the "{...}'
+        e.g.
+        selector ="span"
+        value = "{background, pink; border: solid 1px blue;}
+        htmlx.add_style(selector, value)
+
+        """
+
+        style = ET.SubElement(self.head, "style")
+        style.text = f"{selector} {value}"
 
 
 class HtmlLib:
@@ -834,6 +990,20 @@ class HtmlLib:
           <body/>
         </html>
         """
+        html_elem = lxml.etree.Element("html")
+        html_elem.append(lxml.etree.Element("head"))
+        html_elem.append(lxml.etree.Element("body"))
+        return html_elem
+
+    def create_html_container_with_head_style_body(cls):
+        """
+        creates
+        <html>
+          <head/>
+          <body/>
+        </html>
+        """
+        html_container = Html_Container()
         html_elem = lxml.etree.Element("html")
         html_elem.append(lxml.etree.Element("head"))
         html_elem.append(lxml.etree.Element("body"))
@@ -1160,7 +1330,7 @@ class DataTable:
         self.add_rows(rowdata)
         self.head = None
         self.title = None
-        self.title.text = None
+        # self.title.text = None
 
     def create_head(self, title):
         """

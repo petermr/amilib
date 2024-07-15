@@ -385,6 +385,7 @@ class AmiLib:
         version = '0.2.1a1'  # 2024-06-06 # includes amidict and commandline
         version = '0.2.1a2'  # 2024-06-06 # includes amidict and commandline
         version = '0.2.1a3'  # 2024-07-03 # added wordlists
+        version = '0.2.2a1'  # 2024-07-11 # wikipedia lookup and paragrah splitting
 
         # logging.warn(f"VERSION {version}")
         return version
@@ -479,16 +480,16 @@ class AmiLibArgs(AbstractArgs):
         if not self.inpath:
             logging.error(f"no input file to annotate given")
             return
-        if not self.outpath:
+        if not self.location_xml:
             logging.error(f"no output file given")
             return
         if not self.outdir:
-            self.outdir = Path(self.outpath).parent
+            self.outdir = Path(self.location_xml).parent
         self.outdir = Path(self.outdir)
         self.outdir.mkdir(exist_ok=True)
 
         self.ami_dict = AmiDictionary.create_from_xml_file(self.dictfile)
-        self.ami_dict.markup_html_from_dictionary(self.inpath, self.outpath, self.color)
+        self.ami_dict.markup_html_from_dictionary(self.inpath, self.location_xml, self.color)
 
     def make_foo(self):
         pass

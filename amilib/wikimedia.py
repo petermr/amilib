@@ -1,4 +1,3 @@
-import datetime
 import json
 import logging
 import os
@@ -21,7 +20,6 @@ from SPARQLWrapper import SPARQLWrapper
 from amilib.ami_html import HtmlUtil
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
-from amilib.file_lib import FileLib
 
 logging.debug("loading wikimedia.py")
 
@@ -191,7 +189,7 @@ class WikidataLookup:
         entry_hits = self.lookup_wikidata(name)
         print(f"------{name}-------")
         if not entry_hits[0]:
-            #                print(f" no hit for {name}")
+            # print(f" no hit for {name}")
             pass
         else:
             hits = dict()
@@ -218,11 +216,10 @@ class WikidataFilter:
             print(f"no file {file}")
             return None
         filter = WikidataFilter()
-        print(f"file.. {file}")
         with open(file, "r") as f:
             text = f.read()
         filter.json = json.loads(text)
-        print(f"dict {type(filter.json)} {filter.json}")
+        # print(f"dict {type(filter.json)} {filter.json}")
         return filter
 
 
@@ -234,7 +231,7 @@ class WikidataProperty:
     def __str__(self):
         s = "WikidataProperty: "
         if self.element is not None:
-            print(f"type self.element {type(self.element)}")
+            # print(f"type self.element {type(self.element)}")
             s += f"{lxml.etree.tostring(self.element)}"
         return s
 
@@ -992,7 +989,6 @@ class WikipediaPage:
     WM_DISAMBIGUATION_PAGE = "Wikimedia disambiguation page"
 
     FIRST_PARA = "wpage_first_para"
-    from requests import request
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
 
     def __init__(self):
@@ -1267,6 +1263,9 @@ class WikipediaPara:
     a paragraph of a WikipediaPage
     The first para is often the most important
     """
+    #  split after '.' with following space(s) and [A-Z]  OR end of para
+    # SENTENCE_RE = ".*\\.(\\s*$|\\s+[A-Z].*)" # maybe obsolete
+    # SENTENCE_START_RE = ".*\\.\\s+[A-Z].*"
     MIN_FIRST_PARA_LEN = 20
 
     def __init__(self, parent, para_element=None, para_class=None):
@@ -1296,7 +1295,7 @@ class WikipediaPara:
 
     def get_texts(self):
         """returns all descendant texts
-        :return: list of text objects (may be empty)
+        :return: list of mixed content text objects (tail) (may be empty)
         """
         texts = [] if self.para_element is None else self.para_element.xpath(".//text()")
         return texts
@@ -1349,22 +1348,6 @@ class WikipediaPara:
                     print(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
-
-    def get_sentence_breaks(self):
-        """
-        split html/text in paragrah into sentences
-        :return: array of splits (still being developed)
-        """
-        texts = self.get_texts()
-        text_breaks = [(j, t) for (j, t) in enumerate(texts) if re.match(".*\\.($|\\s+[A-Z].*)", t)]
-        splits = []
-        for (idx, txt) in text_breaks:
-            prec = '^' if idx == 0 else texts[idx - 1]
-            foll = '$' if idx == len(texts) - 1 else texts[idx + 1]
-            # print(f"|{prec}|{txt}|{foll}|")
-            splits.append(f"|{prec}|{txt}|{foll}|")
-        return splits
-
 
 
 class WikipediaInfoBox:

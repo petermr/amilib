@@ -62,7 +62,7 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{DELETE}", type=str, nargs="+",
                                  help="list of entries (terms) to delete ? duplicates (NYI)")
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
-                                 help="path for dictionary (existing = edit; new = create")
+                                 help="path for dictionary (existing = edit; new = create (type depends on suffix *.xml or *.html)")
         self.parser.add_argument(f"--{FILTER}", type=str, nargs=1, help="path for filter py_dictionary")
         self.parser.add_argument(f"--{LANGUAGE}", type=str, nargs="+",
                                  help="list of 2-character codes to consider (default = ['en'] (NYI)")

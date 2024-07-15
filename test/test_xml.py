@@ -1,10 +1,12 @@
 import os
+import unittest
 from pathlib import Path
 
 import lxml.etree as ET
 
 from amilib.ami_html import HtmlStyle
-from amilib.xml_lib import XmlLib, HtmlLib
+from amilib.xml_lib import XmlLib, HtmlLib, HtmlEditor
+from test.resources import Resources
 
 from test.test_all import AmiAnyTest
 # from test.test_wikimedia import WikidataTest
@@ -62,8 +64,22 @@ class Xml0Test(AmiAnyTest):
         HtmlLib.get_body(html).append(div)
         HtmlLib.write_html_file(html, file, debug=True)
 
-class XmlTest:
-    XSLT_FILE = os.path.join(Path(__file__).parent, "jats2html.xsl")
+    def test_skeleton_html(self):
+        """create HTML with head, style, body
+        """
+        skel = HtmlEditor()
+        skel.style.text = "p {background: pink;}"
+        p = ET.SubElement(skel.body, "p")
+        p.text = "foo"
+        p = ET.SubElement(skel.body, "p")
+        p.text = "bar"
+        myfile = Path(Resources.TEMP_DIR, "misc", "skeleton1.html")
+        skel.write(myfile, debug=True)
+
+
+class XmlTest(AmiAnyTest):
+    XSLT_FILE = Path(Path(__file__).parent, "jats2html.xsl")
+
 
     @classmethod
     def test_replace_nodes_with_text(cls):
@@ -98,14 +114,17 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
     """
 
     @classmethod
+    @unittest.skip("no XSLT file")
     def test_xslt_italic(cls):
         data = '''<p>essential oil extracted from
  <italic>T. bovei</italic> was comprised ... on the
  <italic>T. bovei</italic> activities ... activity.
 </p>'''
+        assert XmlTest.XSLT_FILE.exists()
         print("italic", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
 
     @classmethod
+    @unittest.skip("no XSLT file")
     def test_xslt_copy(cls):
         data = """<ack>
  <title>Acknowledgements</title>
@@ -121,6 +140,8 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
  </sec>
 </ack>
 """
+        assert XmlTest.XSLT_FILE.exists()
+
         print("copy", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
 
     @classmethod
@@ -137,6 +158,39 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
         result = XmlLib.replace_nodes_with_text(data, "//r", "DELETED")
         print(ET.tostring(result))
 
+    def test_debug_text_children(self):
+        """
+
+        """
+        xml_str = "<p><a/>atail<b>cont</b>btail<c/><d>dcont</d></p>"
+        xml_elem = ET.fromstring(xml_str)
+        XmlLib.debug_direct_text_children(xml_elem)
+
+
+    def test_replace_tail_text_with_spans(self):
+        """
+        wraps a mixed content text (tail text) in <span>
+        """
+        xml_str = "<p><a>acont</a>atail</p>"
+        p_elem = ET.fromstring(xml_str)
+        a_elem = p_elem.xpath('a')[0]
+        XmlLib.replace_tail_text_with_span(a_elem)
+        assert ET.tostring(p_elem) == b'<p><a>acont</a><span>atail</span></p>'
+
+    def test_replace_child_tail_texts_with_spans(self):
+        """
+        wraps all mixed content text (tail texts) in <span>s
+        """
+        xml_str = "<p><a/>atail<b>cont</b>btail<c/><d>dcont</d></p>"
+        p_elem = ET.fromstring(xml_str)
+        XmlLib.replace_child_tail_texts_with_spans(p_elem)
+        assert ET.tostring(p_elem) == b'<p><a/><span>atail</span><b>cont</b><span>btail</span><c/><d>dcont</d></p>'
+
+    def test_split_to_sentences_with_brs(self):
+        """
+
+        """
+
 
 if __name__ == "__main__":
     print(f"running {__name__} main")
@@ -148,9 +202,6 @@ if __name__ == "__main__":
     # NYI
     # if config_test:
     #     ConfigTests.tests()
-    if wiki_test:
-        # TODO move to Wikimedia
-        WikimediaTest.test_sparql_wrapper()
     if xml_test:
         XmlTest.test_replace_nodes_with_text()
         XmlTest.test_replace_nodenames()

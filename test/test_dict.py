@@ -151,6 +151,9 @@ class AmiDictionaryTest(AmiAnyTest):
         assert amidict.root.attrib[TITLE] == "minimal"
 
     def test_dict_has_root_dictionary(self):
+        """
+        Tests that the dictionary has <dictionary> root element
+        """
         setup_dict = self.create_file_dict()
         root = setup_dict[ROOT]
         assert root.tag == AmiDictionary.TAG
@@ -162,6 +165,7 @@ class AmiDictionaryTest(AmiAnyTest):
     def test_can_read_dictionary_from_url_as_xml(self):
         """
         Checks that a dictionary can be read from a URL into XML
+        Reads PLANT_PART_RAW_DICT_URL and validates that has about 728 entries
         """
 
         url = PLANT_PART_RAW_DICT_URL
