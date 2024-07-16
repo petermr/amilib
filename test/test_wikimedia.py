@@ -1,16 +1,13 @@
 # Tests wikipedia and wikidata methods under pytest
-import logging
 import pprint
-import re
 import unittest
-import datetime
 from pathlib import Path
 import lxml.etree as ET
 
 import requests
 from lxml import etree, html
 
-from amilib.ami_dict import AmiDictionary, AmiEntry
+from amilib.ami_dict import AmiDictionary
 from amilib.ami_html import HtmlUtil
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
@@ -89,7 +86,7 @@ class WikipediaTest(unittest.TestCase):
         args = ["DICT", "--words", str(wordsfile),
                 "--dict", dict_xml,
                 "--wikipedia"]
-        print(f"args {args}")
+        # print(f"args {args}")
         pyami.run_command(args)
 
 
@@ -100,8 +97,6 @@ class WikipediaTest(unittest.TestCase):
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
-        print(f"first para {type(first_para)} {first_para.parent} ")
-        print(f"first para: {ET.tostring(first_para.para_element)}")
 
     def test_wikipedia_page_first_para_bold_ahrefs(self):
         """
@@ -152,15 +147,6 @@ class WikipediaTest(unittest.TestCase):
  b'turning circulation</a><span>.</span><sup id="cite_ref-NOAA2023_2-0" class="'
  b'reference"><a href="#cite_note-NOAA2023-2">[2]</a></sup><span>\n</span></p>')
 
-#         assert splits == [
-# '|Atlantic Ocean|.|[1]|',
-#  '|climate system|. The AMOC includes Atlantic currents at the surface and at '
-#  'great depths that are driven by changes in weather, temperature and '
-#  '|salinity|',
-#  '|salinity|. Those currents comprise half of the global |thermohaline '
-#  'circulation|',
-#  '|Southern Ocean overturning circulation|.|[2]|'
-#         ]
 
     def test_wikipedia_page_first_para_sentence_add_brs(self):
         """
@@ -172,7 +158,6 @@ class WikipediaTest(unittest.TestCase):
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert type(first_para) is WikipediaPara
         XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
-        # print(f"Tailed text: {ET.tostring(first_para.para_element)}")
         assert ET.tostring(first_para.para_element) == (
             b'<p class="wpage_first_para">The <b>Atlantic meridional overturning circulati'
             b'on</b><span> (</span><b>AMOC</b><span>) is the main </span><a href="/wiki/Oc'
@@ -653,7 +638,6 @@ class WikidataTest(unittest.TestCase):
             selector = f".//div[@data-property-id]"
             # selector = f".//div[contains(@class,'wikibase-statementgroupview') and contains(@class,'listview-item')]"
             # selector = f".//div[contains(@class,'listview-item')]"
-        print(f" selector {selector} ")
 
         property_list = WikidataPage("q407418").root.xpath(selector)
 
@@ -722,14 +706,11 @@ class WikidataTest(unittest.TestCase):
 
         wikidata_page = WikidataPage("q407418")
         data_property_list = wikidata_page.get_data_property_list()
-        print(f" data properties {data_property_list}")
         property_set = set(data_property_list)
-        print(f"set {property_set}")
         assert 100 >= len(property_set) >= 70
         expected = set([
             'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054'])
         difference = expected.symmetric_difference(property_set)
-        print(f"diff {len(difference)} {difference}")
         assert expected.issubset(property_set), f"not found in {property_set}"
         assert set(wikidata_page.get_property_id_list()[:10]).difference(expected) == set()
         assert wikidata_page.get_property_name_list()[:10] == [
@@ -747,8 +728,8 @@ class WikidataTest(unittest.TestCase):
 
         properties_dict = WikidataProperty.get_properties_dict(property_list)
         dict_str = pprint.pformat(properties_dict)
-        print(f"\ndict: \n"
-              f"{dict_str}")
+        # print(f"\ndict: \n"
+        #       f"{dict_str}")
         assert properties_dict['P662'] == {'name': 'PubChem CID', 'value': '16666'}
 
     # all wikidata asserts are fragile
@@ -946,7 +927,7 @@ class WikidataTest(unittest.TestCase):
         extractor = WikidataExtractor('en')
         id = extractor.search(query)
         id_dict = extractor.load(id)
-        print(id_dict)
+        # print(id_dict)
 
     def test_simple_wikidata_query(self):
         """get ID list for query results

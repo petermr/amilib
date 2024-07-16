@@ -1153,7 +1153,6 @@ class HtmlLib:
         """ensures html_elem is <html> and first child is <head>"""
         if html_elem is None:
             return None
-        print(f"html_elem {html_elem} {type(html_elem)} {html_elem.tag}")
         if html_elem.tag.lower() != "html":
             print(f"not a full html element")
             return None
@@ -1255,21 +1254,54 @@ class HtmlLib:
         return paras
 
     @classmethod
-    def para_contains_phrase(cls, para, phrase, ignore_case=True):
+    def para_contains_phrase(cls, para, phrase, ignore_case=True, markup=None):
+        """
+        search paragraph with phrase. If markuip is not None add hyperlinks
+
+        Parameters
+        ----------
+        para paragraph to search
+        phrase search phrase
+        ignore_case if True lowercase text and phrase
+        markup if True search each itertext and insert hrefs, else just seatch concatenation
+
+        Returns
+        -------
+
+        """
+        search_re = r'\b' + phrase + r'\b'
         if ignore_case:
             phrase = phrase.lower()
-        text = "".join(para.itertext())
-        if ignore_case:
-            text = text.lower()
-        if re.search(r'\b' + phrase + r'\b', text):
-            return True
+        if not markup:
+            text = "".join(para.itertext())
+            if ignore_case:
+                text = text.lower()
+            if re.search(search_re, text):
+                return True
+        else:
+            texts = para.xpath(".//text()")
+            for text in texts:
+                match = re.search(search_re, text)
+                if match:
+                    # id = AmiEntry.create_id(phrase)
+                    id = phrase.strip().lower().replace("\\s+", "_")
+                    lead = text.getparent()
+                    aelem = ET.SubElement(lead, "a")
+                    href = f"{markup}#{id}"
+                    aelem.attrib["href"] = href
+                    lead.tail = text[0:match.start()]
+                    aelem.text = text[match.start():match.end()]
+                    aelem.tail = text[match.end():]
+                    print(f"=== {ET.tostring(lead)}")
+
         return False
 
     @classmethod
-    def create_para_ohrase_dict(cls, paras, phrases):
+    def search_phrases_in_paragraphs(cls, paras, phrases, markup=None):
         """search for phrases in paragraphs
         :param paras: list of HTML elems with text (normally <p>), must have @id else ignored
         :param phrases: list of strings to search for (word boundary honoured)
+        :param markup:html dictionary with phrases
         :return: dict() keyed on para_ids values are dict of search hits by phrase
         """
         para_phrase_dict = dict()
@@ -1279,7 +1311,7 @@ class HtmlLib:
                 continue
             phrase_dict = dict()
             for phrase in phrases:
-                count = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True)
+                count = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True, markup=markup)
                 if count > 0:
                     phrase_dict[phrase] = count
                     para_phrase_dict[para_id] = phrase_dict

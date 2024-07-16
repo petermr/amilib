@@ -303,7 +303,6 @@ class AmiEntry:
         for wikidata_page in wikidata_pages:
             title = wikidata_page.get_title()
             if wikidata_page.title_matches(wikidata_title):
-                # print(f"exact match for {wikidata_title} is {wikidata_page.get_id()}")
                 matched_pages.append(wikidata_page)
         return matched_pages
 
@@ -786,22 +785,6 @@ class AmiDictionary:
 
     #    class AmiDictionary:
 
-    # @classmethod
-    # def create_dictionary_from_wordfile(cls, wordfile=None, title=None, desc=None, wikidata=False):
-    #     with open(wordfile, "r") as f:
-    #         words = f.readlines()
-    #     dictionary = cls.create_dictionary_from_words(
-    #         words=words, title=title, desc=desc, wikidata=wikidata)
-    #     return dictionary
-
-    # @classmethod
-    # def create_dictionary_from_words_and_add_wikidata(cls, words=None, title=None, desc=None):
-    #     assert desc and title and words
-    #     dictionary = AmiDictionary.create_dictionary_from_words(words, title=title, desc=desc, wikilangs=["en", "de"])
-    #     dictionary.add_wikidata_from_terms()
-    #     pprint.pprint(ET.tostring(dictionary.root).decode("UTF-8"))
-    #     return dictionary
-    #
     @classmethod
     def create_dictionary_from_xml_string(cls, xml_str):
         """create dictionary from xml string
@@ -828,7 +811,6 @@ class AmiDictionary:
 
     def add_desc_element(self, desc):
         """create and add desc element to root element"""
-        print(f"self.root {self.root}")
         desc_elem = ET.SubElement(self.root, DESC)
         desc_elem.text = desc
 
@@ -923,8 +905,6 @@ class AmiDictionary:
                         for term in " ".split(term):
                             self.add_processed_term(term)
 
-        #            print(len(self.term_set), list(sorted(self.term_set)))
-        #        print ("terms", len(self.term_set))
         return self.term_set
 
     #    class AmiDictionary:
@@ -1083,7 +1063,6 @@ class AmiDictionary:
         return lxml_entry_new
 
     def check_unique_wikidata_ids(self):
-        # print("entries", len(self.entries))
         self.entry_by_wikidata_id = {}
         for entry in self.entries:
             if WIKIDATA_ID not in entry.attrib:
@@ -1095,7 +1074,6 @@ class AmiDictionary:
                 else:
                     self.entry_by_wikidata_id[wikidata_id] = entry
 
-    #        print("entry by id", self.entry_by_wikidata_id)
 
     def write_to_dir(self, directory):
         """write dictionary to file based on title
@@ -1218,7 +1196,6 @@ class AmiDictionary:
             self.lookup_and_add_wikidata_to_entry(entry, allowed_descriptions="")
             wikidata_id = AmiDictionary.get_wikidata_id(entry)
             if wikidata_id is None:
-                # print(f"no wikidata entry for {term}")
                 entry.attrib[WIKIDATA_ID] = AmiDictionary.NOT_FOUND
             else:
                 logging.debug(f"found {wikidata_id} for {term} desc = {entry.get('desc')}")
@@ -1311,14 +1288,12 @@ class AmiDictionary:
     def write_annotated_html(self, background_color, output_path,
                              target_elem):
         a_elems = target_elem.xpath(f".//{H_A}")
-        print(f" a_elems {len(a_elems)}")
         multidict = dict()
         match_counter = Counter()
         id_dict = dict()
         for a_elem in a_elems:
             entry = self.get_lxml_entry(a_elem.text, ignorecase=True)  # lookup in dictionary
             if entry is None:
-                # print(f" BUG {text}") # this seemed to catch "Page n"
                 continue
             preceding = a_elem.xpath("preceding-sibling::*[1]")
             preceding_text = preceding[0].text if len(preceding) > 0 else None
@@ -1342,10 +1317,7 @@ class AmiDictionary:
                     a_elem.attrib[A_TITLE] = entry.attrib.get(A_TERM)
 
             else:
-                # print(f" {text} has no wikidataIO")
                 pass
-        print(f"match_counter {match_counter}")
-        print(f"multidict {multidict}")
         with open(str(output_path), "wb") as f:
             f.write(lxml.etree.tostring(target_elem))
             print(f"wrote {output_path}")
@@ -1412,8 +1384,6 @@ class AmiDictionary:
 
     def set_encoding(self, encoding=UTF_8):
         assert self.root is not None
-        # self.root.docinfo.encoding = encoding
-        # print(f"cannot yet set encoding")
 
     def set_version(self, version='0.0.1'):
         assert self.root is not None
@@ -1473,15 +1443,12 @@ class AmiDictionary:
         :param term: term to match in entry@term
         :param abort_multiple: if True raise AmiDictError for multiple entries with same term
         """
-        # print(f"looking for {term} in {len(self.get_entries())}")
         _entries = []
         for entry in self.get_lxml_entries():
             _term = AmiEntry.get_attribute_value(entry, TERM)
-            print(f"{type(entry)}  {_term}")
             if _term == term:
                 if abort_multiple and len(_entries) > 0:
                     raise AMIDictError(f"multiple entries with term = {_term}")
-                # print(f" matched: {term}")
                 _entries.append(entry)
         print("================")
         return _entries
@@ -1693,7 +1660,6 @@ class AmiDictionaries:
 
         self.make_ami3_dictionaries()
 
-        #        self.print_dicts()
         return self.dictionary_dict
 
     def print_dicts(self):
@@ -1747,7 +1713,6 @@ class AmiDictionaries:
             self.add_with_check(item[0], item[1])
 
     def add_with_check(self, key, file):
-        #        print("adding dictionary", path)
         if key in self.dictionary_dict:
             raise Exception("duplicate dictionary key " +
                             key + " in " + str(self.dictionary_dict))
@@ -1820,8 +1785,6 @@ class AmiDictValidator:
             error_list1.append(f"Dictionary does not have file")
         if self.ami_dictionary.file != self.ami_dictionary.file:
             error_list1.append(f"Dictionary file {self.ami_dictionary.file} does not match title {self.ami_dictionary.title}")
-        attribs = self.ami_dictionary.root.attrib
-        print (f"dictionary attributes {attribs}")
 
         return error_list1
 

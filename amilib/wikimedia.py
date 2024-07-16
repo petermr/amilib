@@ -1270,7 +1270,6 @@ class WikipediaPara:
 
     def __init__(self, parent, para_element=None, para_class=None):
         self.parent = parent
-        # print(f"parent: {parent}")
         self.para_element = para_element
         if self.para_element is not None and para_class:
             self.para_element.attrib[HtmlLib.CLASS_ATTNAME] = para_class
@@ -1466,7 +1465,6 @@ class WikipediaBasicInfo:
                 print(f"unknown key {name} in Basic Information")
             value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
             self.table_dict[name] = value
-        # print(f"dict {self.table_dict}")
 
     def get_cell_value(self, td, idx):
         """

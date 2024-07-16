@@ -5,11 +5,14 @@ import pprint
 import re
 import traceback
 import unittest
+from lxml.html import HTMLParser
 from pathlib import Path
+
 # from parametrized import parametrized
 
 import lxml
 from lxml import etree
+import lxml.etree as ET
 from lxml.etree import XMLSyntaxError, _Element
 import pytest
 
@@ -21,7 +24,7 @@ from amilib.amix import AmiLib
 from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
 from amilib.wikimedia import WikidataSparql, WikidataPage
-from amilib.xml_lib import XmlLib
+from amilib.xml_lib import XmlLib, HtmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -67,6 +70,8 @@ class AmiDictionaryTest(AmiAnyTest):
     """
 
     logging.info(f"loading {__file__}")
+
+    HTML_WITH_IDS = "html_with_ids"
 
     DICTFILE1 = "dictfile1"
     ROOT = "root"
@@ -941,6 +946,51 @@ class AmiDictionaryTest(AmiAnyTest):
         amilib.run_command(["--help"])
 
         amilib.run_command(["DICT", "--help"])
+
+
+    def test_search_with_dictionary_and_make_links_IMPORTANT(self):
+        """
+        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids)
+
+        Returns
+        -------
+
+
+        """
+
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", f"{self.HTML_WITH_IDS}.html")
+        paras = self._extract_paras_with_ids(chapter_file, count=1163)
+        xml_dict_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "climate_words.xml")
+        dictionary = AmiDictionary.create_from_xml_file(xml_dict_path)
+        assert dictionary is not None
+        phrases = dictionary.get_terms()
+        html_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "climate_words.html")
+        dictionary.write_to_file(html_path, debug=True)
+        dictionary.location = html_path
+        assert len(phrases) == 11
+        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_path)
+        chapter_elem = paras[0].xpath("/html")[0]
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "Chapter03", "marked_up.html", debug=True)
+        HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
+
+    def _extract_paras_with_ids(self, infile, count=-1):
+        """
+
+        Parameters
+        ----------
+        infile html file with p[@id]
+        count number of paragraphs with @id (default -1) . if count >= 0, asserts number flound == count
+
+        Returns
+        -------
+
+        """
+        assert infile.exists(), f"{infile} does not exist"
+        html = ET.parse(str(infile), HTMLParser())
+        paras = HtmlLib.find_paras_with_ids(html)
+        if count >= 0:
+            assert len(paras) == count
+        return paras
 
 
 class AmiEntryTest(AmiAnyTest):

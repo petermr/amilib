@@ -21,7 +21,7 @@ class HTMLArgs(AbstractArgs):
 
     def __init__(self):
         """arg_dict is set to default"""
-        logger.warning("creating HTML Args")
+        # logger.debug("creating HTML Args")
         super().__init__()
         self.dictfile = None
         self.inpath = None
