@@ -1562,6 +1562,31 @@ class AmiDictionary:
         return html_dict
 
 
+    @classmethod
+    def read_html_dictionary_and_markup_html_file(cls, chapter_file, chapter_outpath, html_dict_path):
+        """
+        read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
+        markup paras, and write marked  file
+        :param chapter_file: to be marked up
+        :param chapter_outpath: resulting marked file
+        :param html_dict_path: dictiomary in HTML format
+        :return: HTML element marked_up
+        """
+        assert chapter_file.exists()
+        paras = HtmlLib._extract_paras_with_ids(chapter_file)
+        assert html_dict_path.exists()
+        dictionary = AmiDictionary.create_from_html_file(html_dict_path)
+        assert dictionary is not None
+        phrases = dictionary.get_terms()
+        dictionary.location = html_dict_path
+        HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
+        # write marked_up html
+        chapter_elem = paras[0].xpath("/html")[0]
+        HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
+        assert chapter_outpath.exists()
+        return chapter_elem
+
+
 
 class AmiSynonym:
     TAG = "synonym"

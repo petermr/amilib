@@ -959,7 +959,7 @@ class AmiDictionaryTest(AmiAnyTest):
         """
 
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", f"{self.HTML_WITH_IDS}.html")
-        paras = self._extract_paras_with_ids(chapter_file, count=1163)
+        paras = HtmlLib._extract_paras_with_ids(chapter_file, count=1163)
         xml_dict_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "climate_words.xml")
         dictionary = AmiDictionary.create_from_xml_file(xml_dict_path)
         assert dictionary is not None
@@ -973,24 +973,65 @@ class AmiDictionaryTest(AmiAnyTest):
         chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "Chapter03", "marked_up.html", debug=True)
         HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
 
-    def _extract_paras_with_ids(self, infile, count=-1):
+    def test_search_with_dictionary_and_make_links_WORKFLOW(self):
         """
-
-        Parameters
-        ----------
-        infile html file with p[@id]
-        count number of paragraphs with @id (default -1) . if count >= 0, asserts number flound == count
+        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids)
 
         Returns
         -------
 
+
         """
-        assert infile.exists(), f"{infile} does not exist"
-        html = ET.parse(str(infile), HTMLParser())
-        paras = HtmlLib.find_paras_with_ids(html)
-        if count >= 0:
-            assert len(paras) == count
-        return paras
+        stem = "carbon_cycle"
+        words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}_edited.txt")
+        assert words_path.exists()
+
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
+        assert chapter_file.exists()
+
+        paras = HtmlLib._extract_paras_with_ids(chapter_file, count=1724)
+
+        dictionary, outpath = AmiDictionary.create_dictionary_from_wordfile(words_path)
+        assert dictionary is not None
+        assert len(dictionary.get_terms()) == 43
+
+        xml_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.xml")
+        dictionary.write_to_file(xml_dict_path, debug=True)
+        assert xml_dict_path.exists()
+
+        html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
+        dictionary.write_to_file(html_dict_path, debug=True)
+        assert html_dict_path.exists()
+
+        phrases = dictionary.get_terms()
+        dictionary.location = html_dict_path
+        assert len(phrases) == 43
+        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
+
+        # write marked_up html
+        chapter_elem = paras[0].xpath("/html")[0]
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
+        assert  chapter_outpath.exists()
+
+    def test_search_with_dictionary_and_make_links_COMMANDLINE(self):
+        """
+        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids)
+
+        Returns
+        -------
+
+
+        """
+        stem = "carbon_cycle"
+
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        FileLib.delete_file(chapter_outpath)
+        html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
+
+        AmiDictionary.read_html_dictionary_and_markup_html_file(chapter_file, chapter_outpath, html_dict_path=html_dict_path)
+        assert chapter_outpath.exists()
 
 
 class AmiEntryTest(AmiAnyTest):

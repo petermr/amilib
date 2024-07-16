@@ -1331,6 +1331,27 @@ class HtmlLib:
 
         return html
 
+    @classmethod
+    def _extract_paras_with_ids(cls, infile, count=-1):
+        """
+
+        Parameters
+        ----------
+        infile html file with p[@id]
+        count number of paragraphs with @id (default -1) . if count >= 0, asserts number flound == count
+
+        Returns
+        -------
+
+        """
+        assert infile.exists(), f"{infile} does not exist"
+        html = ET.parse(str(infile), HTMLParser())
+        paras = HtmlLib.find_paras_with_ids(html)
+        if count >= 0:
+            assert len(paras) == count
+        return paras
+
+
 
 class DataTable:
     """
