@@ -1289,23 +1289,73 @@ class HtmlLib:
 
     @classmethod
     def _insert_ahref(cls, url_base, match, phrase, text):
+        """
+        Add hyperlinks to text. The order of opratyations matters
+        """
         # id = AmiEntry.create_id(phrase)
         id = HtmlLib.generate_id(phrase)
-        lead = text.getparent()
-        aelem = ET.SubElement(lead, "a")
-        href = f"{url_base}#{id}"
-        aelem.attrib["href"] = href
-        lead.tail = text[0:match.start()]
-        aelem.text = text[match.start():match.end()]
-        aelem.tail = text[match.end():]
-        print(f"=== {ET.tostring(lead)}")
+
+        href = f"{url_base}"
+        href_elem = ET.parse(href, HTMLParser())
+        idelems0 = href_elem.xpath(f".//*[@id]")
+        idd = [e.attrib.get('id') for e in idelems0]
+        print(f"idelems0 {idd[:10]}")
+        idelems = href_elem.xpath(f".//*[@id='{id}']")
+        title = id
+        if len(idelems) > 0:
+            ps = idelems[0].xpath("./p")
+            if len(ps) > 0:
+                p = ps[0] if len(ps) == 1 else ps[1]
+                if p is not None:
+                    title = "".join(p.itertext())
+
+        # start_ = f"[s[{text[0:match.start()]}]s]"
+        # mid_ = f"[m[{text[match.start():match.end()]}]m]"
+        # end_ = f"[e[{text[match.end():]}]e]"
+        start_ = text[0:match.start()]
+        mid_ = text[match.start():match.end()]
+        end_ = text[match.end():]
+
+        # might be a text (contained within lead) or tail following it
+
+        if text.is_text:
+            print(f"TEXT  {start_}|{mid_}|{end_}")
+            parent = text.getparent()
+            tail = parent.tail
+
+            aelem = ET.SubElement(parent, "a")
+            aelem.attrib["style"] = "border:solid 1px; background: #ffffbb;"
+            aelem.attrib["href"] = href
+            parent.text = start_
+            parent.tail = tail
+
+            aelem.text = mid_
+            aelem.tail = end_
+        elif text.is_tail:
+            print(f"TAIL {start_}|{mid_}|{end_}")
+            prev = text.getparent()
+
+            aelem = ET.Element("a")
+            aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
+            aelem.attrib["href"] = href
+
+            prev.addnext(aelem) #order metters1
+            prev.tail = start_ + " "
+
+            aelem.text = mid_
+            aelem.tail = end_
+        else:
+            print(f"??? {start_}|{mid_}|{end_}")
+        if title:
+            aelem.attrib["title"] = title
 
     @classmethod
     def generate_id(cls, phrase):
         """
         strip, converts whitespace to single "-" and lowercase
         """
-        return phrase.strip().lower().replace("\\s+", "_")
+        phrase1 = re.sub(r"\s+", "_", phrase)
+        return phrase1
 
     @classmethod
     def search_phrases_in_paragraphs(cls, paras, phrases, markup=None):
@@ -1355,7 +1405,7 @@ class HtmlLib:
         -------
 
         """
-        assert infile.exists(), f"{infile} does not exist"
+        assert Path(infile).exists(), f"{infile} does not exist"
         html = ET.parse(str(infile), HTMLParser())
         paras = HtmlLib.find_paras_with_ids(html)
         if count >= 0:

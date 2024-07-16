@@ -1014,25 +1014,42 @@ class AmiDictionaryTest(AmiAnyTest):
         HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
         assert  chapter_outpath.exists()
 
-    def test_search_with_dictionary_and_make_links_COMMANDLINE(self):
+    def test_search_with_dictionary_and_make_links_code(self):
         """
-        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids)
-
-        Returns
+        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids) and add hyperlinks
         -------
-
 
         """
         stem = "carbon_cycle"
-
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
         chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
         FileLib.delete_file(chapter_outpath)
         html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
 
-        AmiDictionary.read_html_dictionary_and_markup_html_file(chapter_file, chapter_outpath, html_dict_path=html_dict_path)
+        AmiDictionary.read_html_dictionary_and_markup_html_file(
+            chapter_file, chapter_outpath, html_dict_path=html_dict_path)
         assert chapter_outpath.exists()
 
+    def test_search_with_dictionary_and_make_links_COMMANDLINE(self):
+        """
+        same logice and files as test_search_with_dictionary_and_make_links_CODE. Check that that runs
+        """
+
+        stem = "carbon_cycle"
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        FileLib.delete_file(chapter_outpath)
+        html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
+
+        # commandline
+        args = [
+            "DICT",
+            "--inpath", chapter_file,
+            "--outpath", chapter_outpath,
+            "--dict", html_dict_path,
+        ]
+        AmiLib().run_command(args)
+        assert chapter_outpath.exists()
 
 class AmiEntryTest(AmiAnyTest):
     """
