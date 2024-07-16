@@ -386,6 +386,7 @@ class AmiLib:
         version = '0.2.1a2'  # 2024-06-06 # includes amidict and commandline
         version = '0.2.1a3'  # 2024-07-03 # added wordlists
         version = '0.2.2a1'  # 2024-07-11 # wikipedia lookup and paragrah splitting
+        version = '0.2.3a1'  # 2024-07-11 # markup html with dictionaries
 
         # logging.warn(f"VERSION {version}")
         return version
