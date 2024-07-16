@@ -1269,9 +1269,9 @@ class HtmlLib:
         -------
 
         """
-        search_re = r'\b' + phrase + r'\b'
         if ignore_case:
             phrase = phrase.lower()
+        search_re = r'\b' + phrase + r'\b'
         if not markup:
             text = "".join(para.itertext())
             if ignore_case:
@@ -1283,18 +1283,29 @@ class HtmlLib:
             for text in texts:
                 match = re.search(search_re, text)
                 if match:
-                    # id = AmiEntry.create_id(phrase)
-                    id = phrase.strip().lower().replace("\\s+", "_")
-                    lead = text.getparent()
-                    aelem = ET.SubElement(lead, "a")
-                    href = f"{markup}#{id}"
-                    aelem.attrib["href"] = href
-                    lead.tail = text[0:match.start()]
-                    aelem.text = text[match.start():match.end()]
-                    aelem.tail = text[match.end():]
-                    print(f"=== {ET.tostring(lead)}")
+                    cls._insert_ahref(markup, match, phrase, text)
 
         return False
+
+    @classmethod
+    def _insert_ahref(cls, url_base, match, phrase, text):
+        # id = AmiEntry.create_id(phrase)
+        id = HtmlLib.generate_id(phrase)
+        lead = text.getparent()
+        aelem = ET.SubElement(lead, "a")
+        href = f"{url_base}#{id}"
+        aelem.attrib["href"] = href
+        lead.tail = text[0:match.start()]
+        aelem.text = text[match.start():match.end()]
+        aelem.tail = text[match.end():]
+        print(f"=== {ET.tostring(lead)}")
+
+    @classmethod
+    def generate_id(cls, phrase):
+        """
+        strip, converts whitespace to single "-" and lowercase
+        """
+        return phrase.strip().lower().replace("\\s+", "_")
 
     @classmethod
     def search_phrases_in_paragraphs(cls, paras, phrases, markup=None):

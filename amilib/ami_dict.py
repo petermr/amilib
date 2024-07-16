@@ -688,7 +688,8 @@ class AmiDictionary:
         outpath = None
         if outdir:
             outdir.mkdir(exist_ok=True)
-            dictionary.location_xml = Path(outdir, title + ".xml")
+            outpath = Path(outdir, title + ".xml")
+            dictionary.location_xml = outpath
             with open(outpath, "wb") as f:
                 f.write(lxml.etree.tostring(dictionary.root))
             if debug:

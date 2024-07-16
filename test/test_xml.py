@@ -68,7 +68,7 @@ class Xml0Test(AmiAnyTest):
         """create HTML with head, style, body
         """
         skel = HtmlEditor()
-        skel.style.text = "p {background: pink;}"
+        skel.add_style("p", "{background: pink;}")
         p = ET.SubElement(skel.body, "p")
         p.text = "foo"
         p = ET.SubElement(skel.body, "p")
