@@ -81,6 +81,12 @@ class AmiDictArgs(AbstractArgs):
                                  help="add Wikipedia link/s (forces --{WIKIDATA}) (NYI)")
         self.parser.add_argument(f"--{WORDS}", type=str, nargs=1,
                                  help="path/file with words to make or edit dictionary")
+        self.parser.epilog = """
+        Examples:
+        DICT --words wordsfile --dict dictfile --wikipedia   # creates dictionary from wordsfile and adds wikipedia info
+        DICT --inpath htmlfile --dict dictfile --outpath resultfile # reads htmlfile, marks up words in dict and write to outpath
+        
+        """
         # parser.add_argument(f"--{SORT}", type=str, nargs=1, help="sort by term, sort synonyms, sort by weight (NYI)")
         # parser.add_argument(f"--{CATEGORY}", type=str, nargs=1, help="annotate by category (NYI)")
 

@@ -1292,14 +1292,58 @@ class HtmlLib:
         """
         Add hyperlinks to text. The order of opratyations matters
         """
-        # id = AmiEntry.create_id(phrase)
         id = HtmlLib.generate_id(phrase)
+        href, title = cls._create_href_and_title(id, url_base)
 
+        # text before, inside and after <a> element
+        start_ = text[0:match.start()]
+        mid_ = text[match.start():match.end()]
+        end_ = text[match.end():]
+
+        # might be a text (contained within lead) or tail following it
+
+        # text contained in element
+        if text.is_text:
+            aelem = cls.add_href_for_lxml_text(start_, text)
+
+        # text following element
+        elif text.is_tail:
+            aelem = cls._add_href_for_lxml_tail(start_, text)
+        else:
+            print(f"ERROR??? (not text of tail) {start_}|{mid_}|{end_}")
+
+        # add content and attributes to aelem
+        aelem.attrib["href"] = href
+        aelem.text = mid_
+        aelem.tail = end_
+        if title:
+            aelem.attrib["title"] = title
+
+    @classmethod
+    def _add_href_for_lxml_tail(cls, start_, text):
+        # print(f"TAIL {start_}|{mid_}|{end_}")
+        prev = text.getparent()
+        aelem = ET.Element("a")
+        aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
+        prev.addnext(aelem)  # order metters1
+        prev.tail = start_ + " "
+        return aelem
+
+    @classmethod
+    def add_href_for_lxml_text(cls, start_, text):
+        # print(f"TEXT  {start_}|{mid_}|{end_}")
+        parent = text.getparent()
+        tail = parent.tail
+        aelem = ET.SubElement(parent, "a")
+        aelem.attrib["style"] = "border:solid 1px; background: #ffffbb;"
+        parent.text = start_
+        parent.tail = tail
+        return aelem
+
+    @classmethod
+    def _create_href_and_title(cls, id, url_base):
         href = f"{url_base}"
         href_elem = ET.parse(href, HTMLParser())
-        idelems0 = href_elem.xpath(f".//*[@id]")
-        idd = [e.attrib.get('id') for e in idelems0]
-        print(f"idelems0 {idd[:10]}")
         idelems = href_elem.xpath(f".//*[@id='{id}']")
         title = id
         if len(idelems) > 0:
@@ -1308,46 +1352,7 @@ class HtmlLib:
                 p = ps[0] if len(ps) == 1 else ps[1]
                 if p is not None:
                     title = "".join(p.itertext())
-
-        # start_ = f"[s[{text[0:match.start()]}]s]"
-        # mid_ = f"[m[{text[match.start():match.end()]}]m]"
-        # end_ = f"[e[{text[match.end():]}]e]"
-        start_ = text[0:match.start()]
-        mid_ = text[match.start():match.end()]
-        end_ = text[match.end():]
-
-        # might be a text (contained within lead) or tail following it
-
-        if text.is_text:
-            print(f"TEXT  {start_}|{mid_}|{end_}")
-            parent = text.getparent()
-            tail = parent.tail
-
-            aelem = ET.SubElement(parent, "a")
-            aelem.attrib["style"] = "border:solid 1px; background: #ffffbb;"
-            aelem.attrib["href"] = href
-            parent.text = start_
-            parent.tail = tail
-
-            aelem.text = mid_
-            aelem.tail = end_
-        elif text.is_tail:
-            print(f"TAIL {start_}|{mid_}|{end_}")
-            prev = text.getparent()
-
-            aelem = ET.Element("a")
-            aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
-            aelem.attrib["href"] = href
-
-            prev.addnext(aelem) #order metters1
-            prev.tail = start_ + " "
-
-            aelem.text = mid_
-            aelem.tail = end_
-        else:
-            print(f"??? {start_}|{mid_}|{end_}")
-        if title:
-            aelem.attrib["title"] = title
+        return href, title
 
     @classmethod
     def generate_id(cls, phrase):
@@ -1530,7 +1535,6 @@ class DataTable:
             for val in row:
                 td = ET.SubElement(tr, H_TD)
                 td.text = val
-                # print("td", td.text)
 
     def make_row(self):
         """
@@ -1562,10 +1566,6 @@ class DataTable:
             print("WROTE", data_table_file)
 
     def __str__(self):
-        # s = self.html.text
-        # print("s", s)
-        # return s
-        # ic("ichtml", self.html)
         htmltext = ET.tostring(self.html)
         print("SELF", htmltext)
         return htmltext
