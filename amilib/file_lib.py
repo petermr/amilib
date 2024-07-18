@@ -325,6 +325,7 @@ class FileLib:
     def delete_file(cls, file):
         """delete file (uses unlink) and asserts it has worked
         ;param file: to delete"""
+        file = Path(file)
         if file.exists():
             file.unlink()
         assert not file.exists()

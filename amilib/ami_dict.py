@@ -1,34 +1,32 @@
-import argparse
 import ast
-import json
 import logging
-
-from lxml import etree as ET
-from lxml import etree
-from lxml.etree import Element, _Element
-from enum import Enum
-import lxml
 import os
-import pandas as pd
 import re
 import traceback
 import urllib.request
-
 from collections import Counter
+from enum import Enum
 from pathlib import Path
-from urllib.error import URLError
 from shutil import copyfile
+from urllib.error import URLError
 
+import lxml
+import pandas as pd
+from lxml import etree
+from lxml import etree as ET
+from lxml.etree import _Element
+from lxml.html import HTMLParser
+
+from amilib.ami_html import HtmlUtil, CSSStyle, H_A, H_SPAN, H_BODY, H_DIV, H_UL, H_LI, A_ID, \
+    A_HREF, A_NAME, A_TITLE, A_TERM
+from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR, LOCAL_OV21_DIR, LOCAL_DICT_AMI3
 from amilib.dict_args import AmiDictArgs, SYNONYM, WIKIPEDIA
+from amilib.file_lib import FileLib
 # local
 # from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util
-from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR, LOCAL_OV21_DIR, LOCAL_DICT_AMI3
-from amilib.ami_html import HtmlUtil, CSSStyle, H_A, H_SPAN, H_BODY, H_DIV, H_UL, H_LI, A_ID, \
-    A_HREF, A_NAME, A_TITLE, A_TERM
-from amilib.file_lib import FileLib
-from amilib.ami_args import AbstractArgs
-from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage
+from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage
+from amilib.xml_lib import HtmlLib
 
 # elements in amidict
 DICTIONARY = "dictionary"
@@ -87,6 +85,9 @@ but it stops me making errors
 """
 
 class AmiEntry:
+    """
+    wraps the HTML element  representing the entry and provides access and mutatiom
+    """
     TAG = "entry"
 
     TERM_A = "term"
@@ -303,7 +304,6 @@ class AmiEntry:
         for wikidata_page in wikidata_pages:
             title = wikidata_page.get_title()
             if wikidata_page.title_matches(wikidata_title):
-                # print(f"exact match for {wikidata_title} is {wikidata_page.get_id()}")
                 matched_pages.append(wikidata_page)
         return matched_pages
 
@@ -415,6 +415,77 @@ class AmiEntry:
                 p.attrib["role"] = key
                 p.text = str(value)
 
+    def lookup_and_add_wikipedia_page(self):
+        term = self.get_term()
+        wikipedia_page = None
+        if term:
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+            if wikipedia_page:
+                wp_para = wikipedia_page.create_first_wikipedia_para()
+                if wp_para is not None:
+                    self.element.append(wp_para.para_element)
+        return wikipedia_page
+
+    def create_semantic_html(self):
+        """
+        output semantic html for dictionary
+        :return: semantic HTML
+        """
+        print(f"create_semantic_html NYI")
+
+    def get_wikipedia_page_child_para(self, xpath="./p"):
+        """
+        return child paragraph added by wikipedia lookup as first_para of wikipedia_page
+        :param xpath: paragrapg selector (default './p')
+        :return: wikpedia first para or None
+        """
+        child_paras  = self.element.xpath(xpath)
+        return None if len(child_paras) == 0 else child_paras[0]
+
+    def create_semantic_div(self, parent_elem=None):
+        """
+        create html div for term with wikipedia page para
+        :param ami_entry: ami entry with wikipedia page paragraph
+        :return: div with term and para
+        """
+        html_div = ET.Element("div")
+        html_div.attrib["role"] = "ami_entry"
+        term = self.get_term()
+        name = self.get_name()
+        id = self.create_id(name)
+        html_div.attrib["id"] = id
+
+        self._add_raw_term(html_div)
+
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        wp_para = wikipedia_page.create_first_wikipedia_para()
+        if wp_para is None:
+            print(f"could not find page for term {term}")
+            return None
+        assert wp_para is not None
+        pe = wp_para.para_element
+        html_div.append(pe)
+        return html_div
+
+    def _add_raw_term(self, html_div):
+        term_para = ET.SubElement(html_div, "p")
+        term_name_span = ET.SubElement(term_para, "span")
+        term_name_span.text = "Term:"
+        term_value_span = ET.SubElement(term_para, "span")
+        term_value_span.text = self.get_term()
+
+    @classmethod
+    def create_id(cls, name):
+        """
+        create id from name
+        converts to lowercase and replaces space by "_"
+        :param name: name for term
+        :return: lowercase term with underscores (or None)
+
+        """
+        id = None if name is None else name.strip().lower().replace("\\s+", "_")
+        return id
+
 
 class AmiDictionary:
     """wrapper for an ami dictionary including search flags
@@ -456,8 +527,9 @@ class AmiDictionary:
         self.url = None
         self.wikilangs = wikilangs
         self.wikidata_lookup = WikidataLookup()
-
+        self.location_xml = None # path where dictionary lives; maybe set on dictionary reading or writing
         self.options = {} if "options" not in kwargs else kwargs["options"]
+
         if "synonyms" in self.options:
             print("use synonyms")
         if "noignorecase" in self.options:
@@ -486,6 +558,7 @@ class AmiDictionary:
             xml_tree = ET.parse(str(xml_file), parser=ET.XMLParser(encoding="utf-8"))
         except lxml.etree.XMLSyntaxError as e:
             logging.error(f"Cannot parse xml file {xml_file} because {e}")
+            print(f"cannot parse xml_file {xml_file}")
             return None
         except Exception as e:
             logging.warning(f"error parsing {xml_file} {e}")
@@ -494,9 +567,104 @@ class AmiDictionary:
         dictionary.xml_content = xml_tree
         dictionary.file = xml_file
         dictionary.root = xml_tree.getroot()
+        dictionary.location_xml = xml_file
 
         return dictionary
+    @classmethod
+    def create_from_html_file(cls, html_file,
+                             title=None,
+                             ignorecase=False):
+        """
+        reads a dictionary XML file, creates and returns the AMIDictionary from it
+        uses AmiDictionary.read_dictionary_from_xml_file()
+        :param xml_file: file containing an AMI Dictionary as XML
 
+        :param title: Obsolete
+        :param ignorecase: see AmiDictionary.create_from_xml_object
+        :returns: AmiDictionary object or null
+
+        Structure is:
+        <html>
+          <head>...</head>
+          <body>
+            <div title="some_title" role="ami_dictionary">
+              <div role="ami_entry" id="something"
+        """
+        html_root = None
+        if not os.path.exists(html_file):
+            logging.warning("cannot find dictionary path " + str(html_file))
+            return None
+        try:
+            html_root = HtmlUtil.parse_html_file_to_xml(html_file)
+            assert html_root is not None, f"cannot parse htnl dictionary from {html_file}"
+        except lxml.etree.XMLSyntaxError as e:
+            logging.error(f"Cannot parse xml file {html_file} because {e}")
+            print(f"cannot parse xml_file {html_file}")
+            return None
+        except Exception as e:
+            logging.warning(f"error parsing {html_file} {e}")
+
+        if html_root is None:
+            print(f"could not create dictionary from {html_file}")
+            return
+        dictionary_divs = html_root.xpath("./body/div[@role='ami_dictionary']")
+        if len(dictionary_divs) == 0:
+            raise ValueError("HTML dictionary needs html/body/div[@role='ami_dictionary']")
+        dictionary_div = dictionary_divs[0]
+        title = dictionary_div.attrib.get(TITLE)
+        if title is None:
+            raise ValueError("HTML dictionary needs html/body/div[@role='ami_dictionary' and @title]")
+
+        dictionary = AmiDictionary.create_dictionary_with_root(title=title)
+        dictionary.xml_content = None
+        dictionary.file = None
+        dictionary.location_html = html_file
+
+        cls.add_ami_entries_to_dict_and_create_entries_by_term(dictionary, dictionary_div)
+        return dictionary
+
+    @classmethod
+    def add_ami_entries_to_dict_and_create_entries_by_term(cls, dictionary, dictionary_div):
+        """
+        :param dictionary: AmiDidictionary
+        :param dictionary_div: div in HTML with @role='ami_dictionary' and @title attributes
+        """
+        html_entries = dictionary_div.xpath("./div[@role='ami_entry']")
+        dictionary.entry_by_term = dict()
+        for html_entry in html_entries:
+            term = cls.get_term_from_html_entry(html_entry)
+            if term is None:
+                print(f" cannot find term for entry")
+                continue
+            id = html_entry.attrib.get("id")
+            ami_entry = AmiEntry()
+            dictionary.entry_by_term[term] = ami_entry
+            ami_entry.element = ET.SubElement(dictionary_div, "entry")
+
+            ami_entry.element.attrib[TERM] = term
+            ami_entry.element.attrib["id"] = id
+            contents = html_entry.xpath("*")
+            for content in contents:
+                ami_entry.element.append(content)
+
+    @classmethod
+    def get_term_from_html_entry(cls, html_entry_element):
+        """
+
+        assumes
+        <div role="ami_entry" term="term" ...
+        OR
+        <div role="ami_entry">
+           <p><span>Term:</span><span>anthropogenic</span></p>
+        """
+        if html_entry_element is None:
+            return None
+        term = html_entry_element.attrib.get(TERM)
+        if term is None:
+            spans = html_entry_element.xpath("p[span='Term:']/span[2]")
+            if len(spans) == 1:
+                term = spans[0].text
+        return term
     @classmethod
     def create_dictionary_from_words(cls, terms, title=None, desc=None, wikilangs=None, wikidata=False, outdir=None,
                                      debug=True):
@@ -512,9 +680,7 @@ class AmiDictionary:
         """
         if title is None:
             title = "no_title"
-        dictionary = AmiDictionary(title=title, wikilangs=wikilangs)
-        dictionary.root = ET.Element(DICTIONARY)
-        dictionary.root.attrib[TITLE] = title
+        dictionary = cls.create_dictionary_with_root(title, wikilangs)
         if desc:
             dictionary.add_desc_element(desc)
         dictionary.add_entries_from_words(terms)
@@ -524,12 +690,20 @@ class AmiDictionary:
         if outdir:
             outdir.mkdir(exist_ok=True)
             outpath = Path(outdir, title + ".xml")
+            dictionary.location_xml = outpath
             with open(outpath, "wb") as f:
                 f.write(lxml.etree.tostring(dictionary.root))
             if debug:
                 print(f"wrote dictionary {outpath}")
 
         return dictionary, outpath
+
+    @classmethod
+    def create_dictionary_with_root(cls, title, wikilangs=None):
+        dictionary = AmiDictionary(title=title, wikilangs=wikilangs)
+        dictionary.root = ET.Element(DICTIONARY)
+        dictionary.root.attrib[TITLE] = title
+        return dictionary
 
     @classmethod
     def create_dictionary_from_csv(cls, csv_term_file, col_name=None, title=None):
@@ -613,22 +787,6 @@ class AmiDictionary:
 
     #    class AmiDictionary:
 
-    # @classmethod
-    # def create_dictionary_from_wordfile(cls, wordfile=None, title=None, desc=None, wikidata=False):
-    #     with open(wordfile, "r") as f:
-    #         words = f.readlines()
-    #     dictionary = cls.create_dictionary_from_words(
-    #         words=words, title=title, desc=desc, wikidata=wikidata)
-    #     return dictionary
-
-    # @classmethod
-    # def create_dictionary_from_words_and_add_wikidata(cls, words=None, title=None, desc=None):
-    #     assert desc and title and words
-    #     dictionary = AmiDictionary.create_dictionary_from_words(words, title=title, desc=desc, wikilangs=["en", "de"])
-    #     dictionary.add_wikidata_from_terms()
-    #     pprint.pprint(ET.tostring(dictionary.root).decode("UTF-8"))
-    #     return dictionary
-    #
     @classmethod
     def create_dictionary_from_xml_string(cls, xml_str):
         """create dictionary from xml string
@@ -655,7 +813,6 @@ class AmiDictionary:
 
     def add_desc_element(self, desc):
         """create and add desc element to root element"""
-        print(f"self.root {self.root}")
         desc_elem = ET.SubElement(self.root, DESC)
         desc_elem.text = desc
 
@@ -750,8 +907,6 @@ class AmiDictionary:
                         for term in " ".split(term):
                             self.add_processed_term(term)
 
-        #            print(len(self.term_set), list(sorted(self.term_set)))
-        #        print ("terms", len(self.term_set))
         return self.term_set
 
     #    class AmiDictionary:
@@ -811,6 +966,9 @@ class AmiDictionary:
         is a lowercase match
 
         """
+        if termx is None:
+            print("term is None")
+            return None
         lcase = termx.lower()  # all keys are lowercase
         if self.entry_by_term is None or len(self.entry_by_term) == 0:
             self.create_entry_by_term()
@@ -910,7 +1068,6 @@ class AmiDictionary:
         return lxml_entry_new
 
     def check_unique_wikidata_ids(self):
-        # print("entries", len(self.entries))
         self.entry_by_wikidata_id = {}
         for entry in self.entries:
             if WIKIDATA_ID not in entry.attrib:
@@ -922,7 +1079,6 @@ class AmiDictionary:
                 else:
                     self.entry_by_wikidata_id[wikidata_id] = entry
 
-    #        print("entry by id", self.entry_by_wikidata_id)
 
     def write_to_dir(self, directory):
         """write dictionary to file based on title
@@ -936,14 +1092,26 @@ class AmiDictionary:
 
     def write_to_file(self, file, debug=True):
         """write dictionary to file
-        :param file: to write to
+        :param file: to write to (type is determined by suffix (.xml) or (.html)
         :param debug: debug output
         """
         root = etree.ElementTree(self.root)
         FileLib.force_mkparent(file)
-        with open(file, 'wb') as f:
-            root.write(f, encoding="utf-8",
-                     xml_declaration=True, pretty_print=True)
+        file_str = str(file)
+        if file_str.endswith(".xml"):
+            with open(file, 'wb') as f:
+                root.write(f, encoding="utf-8",
+                         xml_declaration=True, pretty_print=True)
+        elif file_str.endswith(".html"):
+            print(f"writing HTML to {file}")
+            title = Path(file).stem
+            sem_html = self.create_html_dictionary(title=title)
+            HtmlLib.write_html_file(
+                sem_html, file, debug=True)
+
+        else:
+            print(f"unknown output suffix in {file}")
+
         if debug:
             print(f"wrote dictionary {self.title} to {file}")
 
@@ -1033,7 +1201,6 @@ class AmiDictionary:
             self.lookup_and_add_wikidata_to_entry(entry, allowed_descriptions="")
             wikidata_id = AmiDictionary.get_wikidata_id(entry)
             if wikidata_id is None:
-                # print(f"no wikidata entry for {term}")
                 entry.attrib[WIKIDATA_ID] = AmiDictionary.NOT_FOUND
             else:
                 logging.debug(f"found {wikidata_id} for {term} desc = {entry.get('desc')}")
@@ -1103,7 +1270,7 @@ class AmiDictionary:
             lookup.get_possible_wikidata_hits(string)
         return lookup
 
-    def markup_html_from_dictionary(self, target_path, output_path, background_color):
+    def markup_html_from_dictionary(self, target_path, output_path, background_color="pink", recurse=False):
         term_set = self.get_or_create_term_set()
         re_join = '|'.join(term_set)
         try:
@@ -1111,12 +1278,15 @@ class AmiDictionary:
         except Exception as e:
             logging.error(f"dictionary {self.title}: Cannot parse terms into regex: \\n{re_join}\\n please remove or escape characters")
             return None
-        target_elem = lxml.etree.parse(str(target_path))
+        target_elem = ET.parse(str(target_path), HTMLParser())
         div_spans = target_elem.xpath(f".//{H_DIV}/{H_SPAN}")
         for span in div_spans:
             text = span.text
+            id_root = span.attrib.get('id')
+            if id_root is not None:
+                id_root += "_"
             new_elems = HtmlUtil.split_span_at_match(span, rec, new_tags=[H_SPAN, H_A, H_SPAN],
-                                                     recurse=True, id_root=f"{span.attrib['id']}_", id_counter=0)
+                                                     recurse=recurse, id_root=id_root, id_counter=0)
         self.convert_matched_spans_to_a(target_elem)
 
         id_dict, multidict = self.write_annotated_html(background_color, output_path, target_elem)
@@ -1126,14 +1296,12 @@ class AmiDictionary:
     def write_annotated_html(self, background_color, output_path,
                              target_elem):
         a_elems = target_elem.xpath(f".//{H_A}")
-        print(f" a_elems {len(a_elems)}")
         multidict = dict()
         match_counter = Counter()
         id_dict = dict()
         for a_elem in a_elems:
             entry = self.get_lxml_entry(a_elem.text, ignorecase=True)  # lookup in dictionary
             if entry is None:
-                # print(f" BUG {text}") # this seemed to catch "Page n"
                 continue
             preceding = a_elem.xpath("preceding-sibling::*[1]")
             preceding_text = preceding[0].text if len(preceding) > 0 else None
@@ -1157,10 +1325,7 @@ class AmiDictionary:
                     a_elem.attrib[A_TITLE] = entry.attrib.get(A_TERM)
 
             else:
-                # print(f" {text} has no wikidataIO")
                 pass
-        print(f"match_counter {match_counter}")
-        print(f"multidict {multidict}")
         with open(str(output_path), "wb") as f:
             f.write(lxml.etree.tostring(target_elem))
             print(f"wrote {output_path}")
@@ -1227,8 +1392,6 @@ class AmiDictionary:
 
     def set_encoding(self, encoding=UTF_8):
         assert self.root is not None
-        # self.root.docinfo.encoding = encoding
-        # print(f"cannot yet set encoding")
 
     def set_version(self, version='0.0.1'):
         assert self.root is not None
@@ -1288,15 +1451,12 @@ class AmiDictionary:
         :param term: term to match in entry@term
         :param abort_multiple: if True raise AmiDictError for multiple entries with same term
         """
-        # print(f"looking for {term} in {len(self.get_entries())}")
         _entries = []
         for entry in self.get_lxml_entries():
             _term = AmiEntry.get_attribute_value(entry, TERM)
-            print(f"{type(entry)}  {_term}")
             if _term == term:
                 if abort_multiple and len(_entries) > 0:
                     raise AMIDictError(f"multiple entries with term = {_term}")
-                # print(f" matched: {term}")
                 _entries.append(entry)
         print("================")
         return _entries
@@ -1386,6 +1546,53 @@ class AmiDictionary:
             if id is not None:
                 id_list.append(id)
         return id_list
+
+    def create_html_dictionary(self, title=None):
+        """
+        output semantic html for dictionary
+        :return: semantic HTML
+        """
+        html_dict = HtmlLib.create_html_with_empty_head_body()
+        head = HtmlLib.get_head(html_dict)
+        style = ET.SubElement(head, "style")
+        style.text = ("div[role] {border:solid 1px;margin:1px;}")
+        body = HtmlLib.get_body(html_dict)
+        dictionary_div = ET.SubElement(body, "div")
+        dictionary_div.attrib["role"] = "ami_dictionary"
+        if title is not None:
+            dictionary_div.attrib[TITLE] = title
+        entries = self.get_ami_entries()
+        for ami_entry in entries:
+            entry_div = ami_entry.create_semantic_div()
+            if entry_div is not None:
+                assert type(entry_div) is _Element
+                dictionary_div.append(entry_div)
+        return html_dict
+
+
+    @classmethod
+    def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path):
+        """
+        read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
+        markup paras, and write marked  file
+        :param inpath: to be marked up
+        :param outpath: resulting marked file
+        :param html_dict_path: dictiomary in HTML format
+        :return: HTML element marked_up
+        """
+        assert Path(inpath).exists()
+        paras = HtmlLib._extract_paras_with_ids(inpath)
+        assert Path(html_dict_path).exists()
+        dictionary = AmiDictionary.create_from_html_file(html_dict_path)
+        assert dictionary is not None
+        phrases = dictionary.get_terms()
+        dictionary.location = html_dict_path
+        HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
+        # write marked_up html
+        chapter_elem = paras[0].xpath("/html")[0]
+        HtmlLib.write_html_file(chapter_elem, outpath, debug=True)
+        assert Path(outpath).exists()
+        return chapter_elem
 
 
 
@@ -1486,7 +1693,6 @@ class AmiDictionaries:
 
         self.make_ami3_dictionaries()
 
-        #        self.print_dicts()
         return self.dictionary_dict
 
     def print_dicts(self):
@@ -1540,7 +1746,6 @@ class AmiDictionaries:
             self.add_with_check(item[0], item[1])
 
     def add_with_check(self, key, file):
-        #        print("adding dictionary", path)
         if key in self.dictionary_dict:
             raise Exception("duplicate dictionary key " +
                             key + " in " + str(self.dictionary_dict))
@@ -1613,32 +1818,7 @@ class AmiDictValidator:
             error_list1.append(f"Dictionary does not have file")
         if self.ami_dictionary.file != self.ami_dictionary.file:
             error_list1.append(f"Dictionary file {self.ami_dictionary.file} does not match title {self.ami_dictionary.title}")
-        attribs = self.ami_dictionary.root.attrib
-        print (f"dictionary attributes {attribs}")
 
         return error_list1
 
 
-# ====================
-
-
-def main(argv=None):
-    # AMIDict.debug_tdd()
-    print(f"running AmiDict main")
-    dict_args = AmiDictArgs()
-    try:
-        dict_args.parse_and_process()
-    except Exception as e:
-        print(traceback.format_exc())
-        print(f"***Cannot run amidict***; see output for errors: {e} ")
-
-
-
-if __name__ == "__main__":
-    print("running dict main")
-    main()
-else:
-
-    #    print("running dict main anyway")
-    #    main()
-    pass

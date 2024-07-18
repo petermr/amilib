@@ -1,10 +1,8 @@
-import datetime
 import json
 import logging
 import os
 import re
 import sys
-from copy import copy
 from enum import Enum
 from pathlib import Path
 
@@ -15,7 +13,6 @@ import lxml.etree
 from urllib.parse import quote
 from io import StringIO
 from urllib.request import urlopen
-from lxml import etree
 from urllib.error import HTTPError, URLError
 from SPARQLWrapper import SPARQLWrapper
 
@@ -192,7 +189,7 @@ class WikidataLookup:
         entry_hits = self.lookup_wikidata(name)
         print(f"------{name}-------")
         if not entry_hits[0]:
-            #                print(f" no hit for {name}")
+            # print(f" no hit for {name}")
             pass
         else:
             hits = dict()
@@ -219,11 +216,10 @@ class WikidataFilter:
             print(f"no file {file}")
             return None
         filter = WikidataFilter()
-        print(f"file.. {file}")
         with open(file, "r") as f:
             text = f.read()
         filter.json = json.loads(text)
-        print(f"dict {type(filter.json)} {filter.json}")
+        # print(f"dict {type(filter.json)} {filter.json}")
         return filter
 
 
@@ -235,7 +231,7 @@ class WikidataProperty:
     def __str__(self):
         s = "WikidataProperty: "
         if self.element is not None:
-            print(f"type self.element {type(self.element)}")
+            # print(f"type self.element {type(self.element)}")
             s += f"{lxml.etree.tostring(self.element)}"
         return s
 
@@ -805,8 +801,6 @@ class WikidataSparql:
         if entry_child.text is not None and len(entry_child.text.strip()) > 0:
             entry.append(entry_child)
 
-    #        print(">>", ET.tostring(entry))
-
     def get_results_xml(self, query):
         """query Wikidata SPARQL endpoint and return XML results
         Shweata M Hegde and Peter Murray-Rust
@@ -965,35 +959,66 @@ class WikidataExtractor:
         # 				result["instance"]			= data["claims"][key][0]["mainsnak"]["datavalue"]["value"]["id"]
         return result
 
+class Wikipedia:
+    """
+    mainly class methods for Wikipedia
+    """
+    @classmethod
+    def search_wikipedia_for_terms(cls, wordlist_stem, wordlist_dir, outdir=None, min_term_count=2):
+        """
+        uses file of words in test/resources/misc
+        :param wordlist_dir: directory containg {wordlist_stem}.txt file(s)
+        :param wordlist_stem: file stem in resources
+        :param outdir: if not None writes <outdir>/<wordlist_stem>.html
+        :param min_term_count: minimum number of terms expected
+        """
+        # contains list of words to search for
+        wordsfile = Path(wordlist_dir, f"{wordlist_stem}.txt")
+        assert wordsfile.exists(), f"{wordsfile} should exist"
+        print(f"searching {wordsfile}")
+        words = Path(wordsfile).read_text().splitlines()
+        assert len(words) >= min_term_count, f"wordsfile must have at least {min_term_count} words"
+        if outdir:
+            outfile = Path(outdir, f"{wordlist_stem}.html")
+            WikipediaPage.create_html_of_leading_wp_paragraphs(words, outfile=outfile)
+
+
 
 class WikipediaPage:
-    from requests import request
+
+    WM_DISAMBIGUATION_PAGE = "Wikimedia disambiguation page"
+
+    FIRST_PARA = "wpage_first_para"
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
 
     def __init__(self):
         self.html_elem = None
 
     @classmethod
-    def lookup_wikipedia_page(cls, search_term):
+    def lookup_wikipedia_page_for_term(cls, search_term):
         """
+        gets Wikipedia URL by term.
+        Also gets exact page if last fiels of URL is used
         :param search_term: term/phrase to search with
         :return: new WikipediaPage or None
         """
 
         "https://en.wikipedia.org/w/index.php?search=lulucx&title=Special%3ASearch&ns0=1"
         url = f"{WikipediaPage.WIKIPEDIA_PHP}search={search_term}"
-        if url is None:
-            return None
-        try:
-            response = requests.get(url)
-            decode = response.content.decode("UTF-8")
-            html_content = HtmlLib.parse_html_string(decode)
-            wikipedia_page = WikipediaPage()
-            wikipedia_page.html_elem = html_content
-        except Exception as e:
-            print(f"HTML exception {e}")
-            return None
+        return cls.lookup_wikipedia_page_for_url(url)
 
+    @classmethod
+    def lookup_wikipedia_page_for_url(cls, url):
+        wikipedia_page = None
+        if url is not None:
+            try:
+                response = requests.get(url)
+                decode = response.content.decode("UTF-8")
+                html_content = HtmlLib.parse_html_string(decode)
+                wikipedia_page = WikipediaPage()
+                wikipedia_page.html_elem = html_content
+            except Exception as e:
+                print(f"HTML exception {e}")
         return wikipedia_page
 
     def get_main_element(self):
@@ -1008,19 +1033,22 @@ class WikipediaPage:
             return None
         XmlLib.remove_elements(main_content, xpath="//nav")
         XmlLib.remove_elements(main_content, xpath="//noscript")
-        # XmlLib.remove_elements(main_content, xpath="//style")
         XmlLib.remove_elements(main_content, xpath="//div[@id='p-lang-btn']")
         return main_content
 
-    def get_leading_para(self):
-        """get first paragraph in main content (usually with definitions in lead sentence
+    def create_first_wikipedia_para(self):
+        """
+        get wrapper for first paragraph in main content (usually with definitions in lead sentence
         """
         main_elem = self.get_main_element()
         ps = main_elem.xpath(".//p")
+        if not ps:
+            return None
+        # iterate until meaningfile para length found
         for p in ps:
             text = XmlLib.get_text(p).strip()
-            if len(text) > 20:
-                return p
+            if len(text) > WikipediaPara.MIN_FIRST_PARA_LEN:
+                return WikipediaPara(self, p, para_class=WikipediaPage.FIRST_PARA)
         return None
 
     def get_wikidata_item(self):
@@ -1056,28 +1084,220 @@ class WikipediaPage:
         for word in words:
             if debug:
                 print(f"\nword: {word}")
-            first_p = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
-            WikipediaPage.get_tuple_for_first_paragraph(first_p, debug=debug)
-            div = ET.SubElement(new_body, "div")
-            if div is not None:
-                div.append(first_p)
+            cls.create_html_of_leading_wp_para(new_body, word, debug)
+            first_wp_para = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
+            if first_wp_para is not None:
+                div = ET.SubElement(new_body, "div")
+                div.append(first_wp_para.para_element)
         if outfile:
             XmlLib.write_xml(new_body, outfile, debug=debug)
         return html_out
 
     @classmethod
+    def create_html_of_leading_wp_para(cls, parent_elem, word, debug=False):
+        first_wp_para = WikipediaPage.get_leading_paragraph_for_word(parent_elem, word)
+        if (first_wp_para is not None):
+            div = ET.SubElement(parent_elem, "div")
+            div.append(first_wp_para.para_element)
+
+    @classmethod
     def get_leading_paragraph_for_word(cls, new_body, word):
 
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page(word)
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(word)
+        first_wp_para = None
         if wikipedia_page is not None:
-            wiki_main = wikipedia_page.get_main_element()
-            first_p = wikipedia_page.get_leading_para()
-            wikidata_href = wikipedia_page.get_wikidata_item()
-        else:
-            first_p = ET.Element("p")
-            first_p.text = "Could not find first para"
+            first_wp_para = wikipedia_page.create_first_wikipedia_para()
+        return first_wp_para
 
-        return first_p
+    @classmethod
+    def get_page_for_url(cls, url):
+        pass
+
+    def get_qitem_from_wikipedia_page(self):
+        """
+        gets Qitem from wikipedia page
+        navigates right menu (2024)
+        :return:pqid or None
+        """
+        ahrefs = self.html_elem.xpath(".//li[@id='t-wikibase']/a[@href]")
+        qitem = None
+        if len(ahrefs) == 1:
+            ahref = ahrefs[0]
+            href = ahref.get("href")
+            qitem = href.split("/")[-1]
+        return qitem
+
+    def get_infobox(self):
+        """
+        <table class="infobox biography vcard">
+          <tbody>
+            <tr><th colspan="2" class="infobox-above">
+              <div class="fn">Peter Murray-Rust</div></th></tr>
+              <tr><td colspan="2" class="infobox-image">
+                <span class="mw-default-size" typeof="mw:File/Frameless">
+                  <a href="/wiki/File:Peter_Murray-Rust,8083939.JPG" class="mw-file-description">
+                    <img src="//upload.wikimedia.org/wikipedia/commons/thumb/3/31/Peter_Murray-Rust%2C8083939.JPG/220px-Peter_Murray-Rust%2C8083939.JPG" decoding="async" width="220" height="293" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/3/31/Peter_Murray-Rust%2C8083939.JPG/330px-Peter_Murray-Rust%2C8083939.JPG 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/3/31/Peter_Murray-Rust%2C8083939.JPG/440px-Peter_Murray-Rust%2C8083939.JPG 2x" data-file-width="3024" data-file-height="4032"></a></span>
+                    <div class="infobox-caption">at Wikimania 2014</div></td></tr><tr><th scope="row" class="infobox-label">Born</th>
+                    <td class="infobox-data">1941 (age&nbsp;82–83)<br><div style="display:inline" class="birthplace"><a href="/wiki/Guildford" title="Guildford">Guildford</a>, England</div></td></tr><tr><th scope="row" class="infobox-label">Alma&nbsp;mater</th><td class="infobox-data"><a href="/wiki/Balliol_College,_Oxford" title="Balliol College, Oxford">Balliol College, Oxford</a></td></tr><tr><th scope="row" class="infobox-label">Known&nbsp;for</th><td class="infobox-data"><style data-mw-deduplicate="TemplateStyles:r1126788409">.mw-parser-output .plainlist ol,.mw-parser-output .plainlist ul{line-height:inherit;list-style:none;margin:0;padding:0}.mw-parser-output .plainlist ol li,.mw-parser-output .plainlist ul li{margin-bottom:0}</style><div class="plainlist">
+<ul><li><a href="/wiki/Blue_Obelisk" title="Blue Obelisk">Blue Obelisk</a></li>
+<li><a href="/wiki/Chemical_Markup_Language" title="Chemical Markup Language">Chemical Markup Language</a></li>
+</ul>
+</div></td></tr><tr><th scope="row" class="infobox-label">Awards</th><td class="infobox-data"><a href="/wiki/Herman_Skolnik_Award" title="Herman Skolnik Award">Herman Skolnik Award</a></td></tr><tr><td colspan="2" class="infobox-full-data"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1229112069"><b>Scientific career</b></td></tr><tr><th scope="row" class="infobox-label">Fields</th><td class="infobox-data category"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1126788409"><div class="plainlist">
+<ul><li><a href="/wiki/Chemistry" title="Chemistry">Chemistry</a></li>
+<li><a href="/wiki/Cheminformatics" title="Cheminformatics">Cheminformatics</a></li></ul>
+</div></td></tr><tr><th scope="row" class="infobox-label">Institutions</th><td class="infobox-data"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1126788409"><div class="plainlist">
+<ul><li><a href="/wiki/University_of_Cambridge" title="University of Cambridge">University of Cambridge</a></li>
+<li><a href="/wiki/University_of_Oxford" title="University of Oxford">University of Oxford</a></li>
+<li><a href="/wiki/University_of_Stirling" title="University of Stirling">University of Stirling</a></li>
+<li><a href="/wiki/University_of_Nottingham" title="University of Nottingham">University of Nottingham</a></li>
+<li><a href="/wiki/GlaxoSmithKline" class="mw-redirect" title="GlaxoSmithKline">Glaxo</a></li></ul>
+</div></td></tr><tr><th scope="row" class="infobox-label"><a href="/wiki/Thesis" title="Thesis">Thesis</a></th><td class="infobox-data"><i><a rel="nofollow" class="external text" href="http://ora.ox.ac.uk/objects/uuid:a5979458-2d50-4bfc-b728-de1f4e0bf14d">A structural investigation of some compounds showing charge-transfer properties</a></i>&nbsp;<span style="font-size:97%;">(1969)</span></td></tr><tr style="display:none"><td colspan="2">
+</td></tr><tr><td colspan="2" class="infobox-full-data"><style data-mw-deduplicate="TemplateStyles:r1217611005">.mw-parser-output .side-box{margin:4px 0;box-sizing:border-box;border:1px solid #aaa;font-size:88%;line-height:1.25em;background-color:#f9f9f9;display:flow-root}.mw-parser-output .side-box-abovebelow,.mw-parser-output .side-box-text{padding:0.25em 0.9em}.mw-parser-output .side-box-image{padding:2px 0 2px 0.9em;text-align:center}.mw-parser-output .side-box-imageright{padding:2px 0.9em 2px 0;text-align:center}@media(min-width:500px){.mw-parser-output .side-box-flex{display:flex;align-items:center}.mw-parser-output .side-box-text{flex:1;min-width:0}}@media(min-width:720px){.mw-parser-output .side-box{width:238px}.mw-parser-output .side-box-right{clear:right;float:right;margin-left:1em}.mw-parser-output .side-box-left{margin-right:1em}}</style><style data-mw-deduplicate="TemplateStyles:r1096940132">.mw-parser-output .listen .side-box-text{line-height:1.1em}.mw-parser-output .listen-plain{border:none;background:transparent}.mw-parser-output .listen-embedded{width:100%;margin:0;border-width:1px 0 0 0;background:transparent}.mw-parser-output .listen-header{padding:2px}.mw-parser-output .listen-embedded .listen-header{padding:2px 0}.mw-parser-output .listen-file-header{padding:4px 0}.mw-parser-output .listen .description{padding-top:2px}.mw-parser-output .listen .mw-tmh-player{max-width:100%}@media(max-width:719px){.mw-parser-output .listen{clear:both}}@media(min-width:720px){.mw-parser-output .listen:not(.listen-noimage){width:320px}.mw-parser-output .listen-left{overflow:visible;float:left}.mw-parser-output .listen-center{float:none;margin-left:auto;margin-right:auto}}</style><div class="side-box side-box-left listen noprint listen-embedded listen-noimage"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1126788409">
+<div class="side-box-flex">
+<div class="side-box-text plainlist"><div class="haudio">
+<div class="listen-file-header"><a href="/wiki/File:Peter_Murray-Rust_voice.flac" title="File:Peter Murray-Rust voice.flac">Peter Murray-Rust's voice</a></div>
+<div><span typeof="mw:File"><span><span class="mw-tmh-player audio mw-file-element" style="width:215px;"><audio id="mwe_player_0_placeholder" preload="none" data-mw-tmh="" class="" width="215" style="width:215px;" data-durationhint="14" data-mwtitle="Peter_Murray-Rust_voice.flac" data-mwprovider="wikimediacommons" playsinline="" disabled="disabled" tabindex="-1"></audio><a class="mw-tmh-play" href="/wiki/File:Peter_Murray-Rust_voice.flac" title="Play audio" role="button"><span class="mw-tmh-play-icon notheme"></span></a><span class="mw-tmh-duration mw-tmh-label"><span class="sr-only">Duration: 14 seconds.</span><span aria-hidden="true">0:14</span></span></span></span></span></div>
+<div class="description">recorded July 2014</div></div></div></div>
+</div></td></tr><tr><th scope="row" class="infobox-label">Website</th><td class="infobox-data"><span class="url"><a rel="nofollow" class="external text" href="http://www-pmr.ch.cam.ac.uk">www-pmr<wbr>.ch<wbr>.cam<wbr>.ac<wbr>.uk</a></span></td></tr></tbody></table>
+        """
+
+        iboxes = self.html_elem.xpath(".//table[contains(@class,'infobox')]")
+        wp_infobox = None
+        if len(iboxes) == 1:
+            wp_infobox = WikipediaInfoBox(iboxes[0])
+        return wp_infobox
+
+    def get_basic_information(self):
+        """
+        get BasicInformation wrapper for table
+
+
+<div id="mw-content-text" class="mw-body-content">
+  <div class="mw-parser-output">...
+  <h2 id="Basic_information"><span id="mw-pageinfo-header-basic"></span>Basic information</h2>
+  <table class="wikitable mw-page-info">
+      <tbody>
+         <tr id="mw-pageinfo-display-title" style="vertical-align: top;"><td>Display title</td><td>MV <i>Arctic Sea</i></td></tr>
+<tr id="mw-pageinfo-default-sort" style="vertical-align: top;"><td>Default sort key</td><td>Arctic Sea, Mv</td></tr>
+<tr id="mw-pageinfo-length" style="vertical-align: top;"><td>Page length (in bytes)</td><td>40,084</td></tr>
+<tr id="mw-pageinfo-namespace-id" style="vertical-align: top;"><td>Namespace ID</td><td>0</td></tr>
+<tr id="mw-pageinfo-article-id" style="vertical-align: top;"><td>Page ID</td><td>23947896</td></tr>
+<tr style="vertical-align: top;"><td>Page content language</td><td>en - English</td></tr>
+<tr id="mw-pageinfo-content-model" style="vertical-align: top;"><td>Page content model</td><td>wikitext</td></tr>
+<tr id="mw-pageinfo-robot-policy" style="vertical-align: top;"><td>Indexing by robots</td><td>Allowed</td></tr>
+<tr id="mw-pageinfo-watchers" style="vertical-align: top;"><td>Number of page watchers</td><td>91</td></tr>
+<tr id="mw-pageinfo-visiting-watchers" style="vertical-align: top;"><td>Number of page watchers who visited in the last 30 days</td><td>2</td></tr>
+<tr style="vertical-align: top;"><td><a href="/w/index.php?title=Special:WhatLinksHere/MV_Arctic_Sea&amp;hidelinks=1&amp;hidetrans=1" title="Special:WhatLinksHere/MV Arctic Sea">Number of redirects to this page</a></td><td>4</td></tr>
+<tr id="mw-pageinfo-contentpage" style="vertical-align: top;"><td>Counted as a content page</td><td>Yes</td></tr>
+<tr style="vertical-align: top;"><td>Wikidata item ID</td><td><a class="extiw wb-entity-link external" href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783">Q615783</a></td></tr>
+<tr style="vertical-align: top;"><td>Local description</td><td>Ship</td></tr>
+<tr style="vertical-align: top;"><td>Central description</td><td>ship built in 1992</td></tr>
+<tr id="mw-pageimages-info-label" style="vertical-align: top;"><td>Page image</td><td><a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description"><img alt="MV Arctic sea.svg" src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png" decoding="async" width="220" height="156" data-file-width="1052" data-file-height="744"></a></td></tr>
+<tr id="mw-pvi-month-count" style="vertical-align: top;"><td>Page views in the past 30 days</td><td><div class="mw-pvi-month"><a rel="nofollow" class="external text" href="https://pageviews.wmcloud.org/?project=en.wikipedia.org&amp;platform=all-access&amp;agent=user&amp;redirects=0&amp;range=latest-30&amp;pages=MV_Arctic_Sea">268</a></div></td></tr>
+</tbody></table>
+
+<li id="t-info" class="mw-list-item">
+  <a href="/w/index.php?title=Troposphere&amp;action=info" title="More information about this page"><span>Page information</span></a></li>
+        """
+        tinfo = "t-info"
+
+        t_info_page = self.create_tools_wikipedia_page(tinfo)
+        info_xpath = ".//*[@id='Basic_information'][1]"
+        h2_basics = t_info_page.html_elem.xpath(info_xpath)
+        if len(h2_basics) != 1:
+            print(f"cannot find Basic Information section {info_xpath}")
+            return None
+        h2_basic = h2_basics[0]
+        parent = h2_basic.getparent()
+        children = parent.xpath("*")
+        idx = parent.index(h2_basic)
+        idx += 1
+        table_ok = children[idx]
+        rows = table_ok.xpath(".//tr")
+        wp_basicinfo = WikipediaBasicInfo(table_ok)
+        return wp_basicinfo
+
+    def create_tools_wikipedia_page(self, t_item):
+        """
+        create page for item in Tools dropdown
+        :param t_item: id in Tools menu (e.g. "t-info")
+
+        """
+        # print(f"looking up t_item: {t_item}")
+        ahrefs = self.html_elem.xpath(f".//li[@id='{t_item}']/a[@href]")
+        ahref = ahrefs[0] if len(ahrefs) == 1 else None
+        if ahref is None:
+            print(f"cannot find {t_item} in drop-down tools")
+            return None
+        href = ahref.attrib.get("href")
+        assert href is not None
+        url = f"{WikipediaPage.get_default_wikipedia_url()}/{href}"
+        url = url.replace("///", "/")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_url(url)
+        return wikipedia_page
+
+    @classmethod
+    def get_default_wikipedia_url(cls):
+        """
+        base url (=currently "https://en.wikipedia.org/")
+        """
+        # return "https://www.wikipedia.org/"
+        return "https://en.wikipedia.org/"
+
+    def is_disambiguation_page(self):
+        """
+        uses basic info to determine whether page is a disambiguation page
+        :return: Trie if basic_info.central_desceription is Wikimedia disambiguation page
+        """
+        is_disambig = False
+        basic_info = self.get_basic_information()
+        if basic_info is not None:
+            central_desc = basic_info.get_central_description()
+            is_disambig =  central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
+        return is_disambig
+
+
+
+class WikipediaPara:
+    """
+    a paragraph of a WikipediaPage
+    The first para is often the most important
+    """
+    #  split after '.' with following space(s) and [A-Z]  OR end of para
+    # SENTENCE_RE = ".*\\.(\\s*$|\\s+[A-Z].*)" # maybe obsolete
+    # SENTENCE_START_RE = ".*\\.\\s+[A-Z].*"
+    MIN_FIRST_PARA_LEN = 20
+
+    def __init__(self, parent, para_element=None, para_class=None):
+        self.parent = parent
+        self.para_element = para_element
+        if self.para_element is not None and para_class:
+            self.para_element.attrib[HtmlLib.CLASS_ATTNAME] = para_class
+
+    def get_bolds(self):
+        """get all <b> descendants
+        :return list of <b> elements (may be empty
+        """
+        bolds = []
+        if self.para_element is not None:
+            bolds = self.para_element.xpath(".//b")
+        return bolds
+
+    def get_ahrefs(self):
+        """get all <a href=''> descendants
+        :return list of <a> elements (may be empty
+        """
+        ahrefs = []
+        if self.para_element is not None:
+            ahrefs = self.para_element.xpath(".//a[@href]")
+        return ahrefs
+
+    def get_texts(self):
+        """returns all descendant texts
+        :return: list of mixed content text objects (tail) (may be empty)
+        """
+        texts = [] if self.para_element is None else self.para_element.xpath(".//text()")
+        return texts
 
     @classmethod
     def get_tuple_for_first_paragraph(cls, para, debug=True):
@@ -1127,3 +1347,154 @@ class WikipediaPage:
                     print(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
+
+
+class WikipediaInfoBox:
+    """
+    wrapper for wikipedia infobox HTML <table>
+    """
+
+    def __init__(self, table=None):
+        """
+        Wrapper for Wikipedia InfoBox
+        """
+        self.table = table
+
+class WikipediaBasicInfo:
+    """
+    wrapper for wikipedia basic information tabls
+    """
+
+    """
+    Display title	MV Arctic Sea
+    Default sort key	Arctic Sea, Mv
+    Page length (in bytes)	40,084
+    Namespace ID	0
+    Page ID	23947896
+    Page content language	en - English
+    Page content model	wikitext
+    Indexing by robots	Allowed
+    Number of page watchers	91
+    Number of page watchers who visited in the last 30 days	2
+    Number of redirects to this page	4
+    Counted as a content page	Yes
+    Wikidata item ID	Q615783
+    Local description	Ship
+    Central description	ship built in 1992
+    Page image	MV Arctic sea.svg
+    Page views in the past 30 days	273
+    """
+    DISPLAY_TITLE = "Display title"
+    SORT_KEY = "Default sort key"
+    PAGE_LENGTH = "Page length (in bytes)"
+    NAMESPACE_ID = "Namespace ID"
+    PAGE_ID = "Page ID"
+    PAGE_LANGAUGE = "Page content language"
+    CONTENT_MODEL = "Page content model"
+    INDEXING_BY_ROBOTS = "Indexing by robots"
+    PAGE_WATCHERS = "Number of page watchers"
+    PAGE_WATCHERS_30 = "Number of page watchers who visited in the last 30 days"
+    REDIRECTS = "Number of redirects to this page"
+    IS_CONTENT_PAGE = "Counted as a content page"
+    WIKIDATA_ITEM = "Wikidata item ID"
+    LOCAL_DESCRIPTION = "Local description"
+    CENTRAL_DESCRIPTION = "Central description"
+    PAGE_IMAGE = "Page image"
+    PAGE_VIEWS_30 = "Page views in the past 30 days"
+
+    KEYS = [
+        DISPLAY_TITLE,
+        SORT_KEY,
+        PAGE_LENGTH,
+        NAMESPACE_ID,
+        PAGE_ID,
+        PAGE_LANGAUGE,
+        CONTENT_MODEL,
+        INDEXING_BY_ROBOTS,
+        PAGE_WATCHERS,
+        PAGE_WATCHERS_30,
+        REDIRECTS,
+        IS_CONTENT_PAGE,
+        WIKIDATA_ITEM,
+        LOCAL_DESCRIPTION,
+        CENTRAL_DESCRIPTION,
+        PAGE_IMAGE,
+        PAGE_VIEWS_30,
+    ]
+
+    def __init__(self, table=None):
+        """
+        Wrapper for Wikipedia basic information
+        """
+        self.table = table
+        self.table_dict = dict()
+        self.create_table_dict()
+
+    def get_wikidata_href_id(self):
+        """
+        return wikidate href and id (Note
+        :return: (href, id) tuplpe or None
+        """
+        value = self.get_value_for_key(self.WIKIDATA_ITEM)
+        id = value.split("/")[-1]
+        return None if value is None else (value, id)
+
+    def get_local_description(self):
+        return self.get_value_for_key(self.LOCAL_DESCRIPTION)
+
+    def get_central_description(self):
+        return self.get_value_for_key(self.CENTRAL_DESCRIPTION)
+
+    def get_value_for_key(self, key):
+        return self.table_dict[key]
+
+    def get_image_url(self):
+        url_tail = self.get_value_for_key(self.PAGE_IMAGE)
+        url = f"{WikipediaPage.get_default_wikipedia_url()}{url_tail}"
+        return url
+
+    def create_table_dict(self):
+        """
+        creates name-value table, where value can be text or XML element
+        """
+        self.table_dict = dict()
+        rows = self.table.xpath(".//tr")
+        for row in rows:
+            name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
+            if not name in self.KEYS:
+                print(f"unknown key {name} in Basic Information")
+            value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
+            self.table_dict[name] = value
+
+    def get_cell_value(self, td, idx):
+        """
+        HYPERLINK
+        <td>
+          <a
+            class="extiw wb-entity-link external"
+            href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783"
+            >Q615783</a>
+        </td>
+        """
+        tda = td.xpath("a")  # might be a hyperlink
+        if len(tda) > 0:
+            href = tda[0].attrib.get("href")
+            aval = tda[0].text
+            href = aval if idx == 0 else href
+            return href
+        """
+        IMAGE
+        <td>
+          <a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description">
+            <img 
+              alt="MV Arctic sea.svg" 
+              src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png" 
+              decoding="async" 
+              width="220" 
+              height="156" 
+              data-file-width="1052"
+              data-file-height="744"
+              ></a></td>"""
+        return td.text
+
+

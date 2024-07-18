@@ -1,9 +1,12 @@
-
 positive radiative forcing
 paleo records
 pre-industrial
+<<<<<<< HEAD
 model 
 simulations
+=======
+model simulations
+>>>>>>> main
 Biogeochemical
 Coupled Model Intercomparison Project Phase 6
 Coupled Model Intercomparison Project Phase 5
@@ -11,20 +14,25 @@ CMIP5
 global-mean 
 surface air temperature
 mid-Holocene
+forcing
 anthropogenic forcings
 tropospheric warming
 volcanism
-Internal variability
 Pacific Decadal Variability
+<<<<<<< HEAD
 Discernible
+=======
+>>>>>>> main
 proxy-reconstructed
-intensification
 poleward expansion
 zonal mean Hadley cell
+Hadley cell
 Euro-Atlantic sector
 observed basin-scale salinity changes
-Atlantic Meridional Overturning Circulation (AMOC)
-Southern Annular Mode (SAM)
+Atlantic Meridional Overturning Circulation
+AMOC
+Southern Annular Mode
+SAM
 extratropical jet
 boreal winter
 storm track
@@ -32,26 +40,34 @@ El Niño–Southern Oscillation
 Indian Ocean Basin
 Dipole modes
 Modelled mean state
-Atlantic Multi-decadal Variability (AMV)
-Pacific Decadal Variability (PDV)
+Atlantic Multi-decadal Variability
+AMV
+Pacific Decadal Variability
+PDV
 Earth System Model Evaluation Tool
 NCAR Climate Variability Diagnostic Package
+<<<<<<< HEAD
 fingerprinting 
 robustness
+=======
+>>>>>>> main
 Bayesian model averaging
 Bootstrap method
 Weak signal regime
 Orthogonal function
 Pilocene and Eocene warm periods
+Pilocene warm period
+Eocene warm period
 Temporal resolution
 Meltwater
 equilibrium climate sensitivity
-Atlantic Multi-decadal Oscillation (AMO)
-Detection and Attribution Model Intercomparison Project (DAMIP)
+Atlantic Multi-decadal Oscillation
+AMO
+Detection and Attribution Model Intercomparison Project
+DAMIP
 spatio-temporal pattern
 centennial
 volcanism
-discrepancy
 quasi-zonally symmetric
 SST gradient
 inter-basin teleconnections
@@ -64,12 +80,14 @@ augmented
 altimeter
 commensurate
 phenological
-North Atlantic Oscillation (NAO)
+North Atlantic Oscillation
+NAO
 thermocline dome
 continuum
-atmospheric Bjerknes feedback
+ Bjerknes feedback
 biennial periodicity
 gyre adjustments
+<<<<<<< HEAD
 epistemological
 stratocumulus clouds
 snow-albedo feedback 
@@ -79,3 +97,6 @@ meridional
 
 
 
+=======
+epistemological
+>>>>>>> main

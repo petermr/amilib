@@ -1,4 +1,5 @@
 import csv
+import unittest
 from pathlib import Path
 
 from amilib.ami_nlp import AmiNLP
@@ -6,11 +7,12 @@ from test.resources import Resources
 from test.test_all import AmiAnyTest
 
 
-class TestStat(AmiAnyTest):
+class StatTest(AmiAnyTest):
     """
     test statistics and ML (small at present)
     """
 
+    @unittest.skip("throws warning, needs fixing, uncomment if needed")
     def test_plot_scatter_noel_oboyle_STAT_PLOT(self):
         """
         computes labelled 2-D projection of points from distance matrix

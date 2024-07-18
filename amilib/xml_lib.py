@@ -4,6 +4,7 @@ import logging
 import os
 import pprint
 import re
+from io import StringIO
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -13,7 +14,7 @@ import lxml.etree
 import requests
 # import tkinterweb
 from lxml import etree as ET
-from lxml.etree import _Element, _ElementTree
+from lxml.etree import _Element, _ElementTree, _ElementUnicodeResult
 from lxml.html import HTMLParser
 # import tkinter as tk
 
@@ -153,6 +154,8 @@ logging.debug(f"===========LOGGING {logger.level} .. {logging.DEBUG}")
 
 
 class XmlLib:
+    SENTENCE_RE = ".*\\.(\\s*$|\\s+[A-Z].*)" # maybe obsolete
+    SENTENCE_START_RE = ".*\\.\\s+[A-Z].*"
 
     def __init__(self, file=None, section_dir=SECTIONS):
         self.max_file_len = 30
@@ -798,13 +801,169 @@ class XmlLib:
         a_elem.text = atext
         span.text = None
 
+    """
+    MIXED CONTENT IN lxml (!!!) NOT EASY
+    see https://lxml.de/tutorial.html#using-xpath-to-find-text
+    and 
+    https://stackoverflow.com/questions/57301789/how-can-i-select-and-update-text-nodes-in-mixed-content-using-lxml
+    
+    the text references the previous elem through getparent()
+
+    >> I found the key to this solution in the docs: Using XPath to find text
+    
+    >> Specifically the is_text and is_tail properties of _ElementUnicodeResult.
+
+    """
+    @classmethod
+    def debug_direct_text_children(cls, elem):
+        """
+        iterate over sequence of elements and texts and replace by span(text)
+        This gets rid of the node + node.tail  and converts the texts to a first class element
+        :param elem: element with child elements and child texts
+        Assumes no PIs, no textdata
+        """
+        if elem is None:
+            return
+        children = elem.xpath("*|text()")
+        for child in children:
+            if type(child) is _ElementUnicodeResult:
+                 print(f"T:{child}:Tail:{child.is_tail}, Text:{child.is_text}, Parent:{child.getparent().tag}")
+            elif type(child) is _Element:
+                print(f"E:{child}|{child.tail}")
+            else:
+                print(f"?:{child}")
+
+    @classmethod
+    def replace_tail_text_with_span(cls, elem):
+        """
+        <foo>...</foo>tail
+        is replaced by
+        <foo>...</foo><span>tail<span>
+        :param elem: to be edited
+        """
+        if elem is None or elem.getparent() is None:
+            return
+        if elem.tail is not None:
+            parent = elem.getparent()
+            span = ET.Element("span")
+            span.text = elem.tail
+            elem.tail = None
+            elem.addnext(span)
+
+    @classmethod
+    def replace_child_tail_texts_with_spans(cls, parent_elem):
+        """
+        find all (tail) text childrren and wrap in spans
+        :param parent_elem: parent elem with child texts
+        """
+        if parent_elem is None:
+            return
+        texts = parent_elem.xpath("./text()")
+        for text in texts:
+            pre_elem = text.getparent()
+            cls.replace_tail_text_with_span(pre_elem)
+        return
+
+    def get_sentence_breaks(self, texts):
+        """
+        split html/text iinto sentences
+        :param texts: mixed content texts (tails)
+        :return: array of splits (still being developed)
+        """
+        # texts = self.get_texts()
+
+        text_breaks = [(j, t) for (j, t) in enumerate(texts) if re.match(self.SENTENCE_RE, t)]
+        splits = []
+        for (idx, txt) in text_breaks:
+            prec = '^' if idx == 0 else texts[idx - 1]
+            foll = '$' if idx == len(texts) - 1 else texts[idx + 1]
+            # print(f"|{prec}|{txt}|{foll}|")
+            splits.append(f"|{prec}|{txt}|{foll}|")
+        return splits
+
+    @classmethod
+    def add_sentence_brs(cls, texts):
+        """
+        split html/text in paragrah into sentences
+        add <br> element after period
+        :return: None (modifies texts) (still being developed)
+        """
+        if len(texts) == 0:
+            return
+        parent = texts[0].getparent().getparent()
+        print(f"parent: {parent}")
+        for text in texts:
+            head = text.getparent()
+            # print(f"head: {head.tag}")
+            if re.match(cls.SENTENCE_START_RE, text):
+                splits = text.split('.', 1)
+                prec_elem = text.getparent()
+                prec_elem.tail = splits[0] + "."
+                br_elem = ET.Element("br")
+                br_elem.tail = splits[1]
+                prec_elem.addnext(br_elem)
+        return
+
+
 
 class HtmlElement:
     """to provide fluent HTML builder and parser NYI"""
     pass
 
 
+class HtmlEditor:
+    """
+    Convenience method for creating HTML tree
+    skeleton html with attributes for head, style, body
+    hardcoded attributes (Html elements) are:
+    .html - the whole document
+    .head - the head
+    .style - a style stub in head (add others with SubElement)
+    .body - a stub body
+    (To create other elemnts you have to use SubElement or append)
+
+    example:
+    skel = HtmlSkeleton()
+    skel.style.text = "p {background: pink;}"
+    p = ET.SubElement(skel.body, "p")
+    p.text = "foo"
+    p = ET.SubElement(skel.body, "p")
+    p.text = "bar"
+    skel.write(myfile, debug=True)
+
+
+
+    """
+
+    def __init__(self):
+        """
+        creates elements self.html, self.head, self.body
+        """
+        self.html = lxml.etree.Element("html")
+        self.head = ET.SubElement(self.html, "head")
+        self.body = ET.SubElement(self.html, "body")
+
+    def write(self, file, debug=True):
+        HtmlLib.write_html_file(self.html, file, debug=debug)
+
+    def add_style(self, selector, value):
+        """
+        at present just use HTML style content,
+        content includes the "{...}'
+        e.g.
+        selector ="span"
+        value = "{background, pink; border: solid 1px blue;}
+        htmlx.add_style(selector, value)
+
+        """
+
+        style = ET.SubElement(self.head, "style")
+        style.text = f"{selector} {value}"
+
+
 class HtmlLib:
+
+    CLASS_ATTNAME = "class"
 
     @classmethod
     def convert_character_entities_in_lxml_element_to_unicode_string(cls, element, encoding="UTF-8") -> str:
@@ -831,6 +990,20 @@ class HtmlLib:
           <body/>
         </html>
         """
+        html_elem = lxml.etree.Element("html")
+        html_elem.append(lxml.etree.Element("head"))
+        html_elem.append(lxml.etree.Element("body"))
+        return html_elem
+
+    def create_html_container_with_head_style_body(cls):
+        """
+        creates
+        <html>
+          <head/>
+          <body/>
+        </html>
+        """
+        html_container = Html_Container()
         html_elem = lxml.etree.Element("html")
         html_elem.append(lxml.etree.Element("head"))
         html_elem.append(lxml.etree.Element("body"))
@@ -980,7 +1153,6 @@ class HtmlLib:
         """ensures html_elem is <html> and first child is <head>"""
         if html_elem is None:
             return None
-        print(f"html_elem {html_elem} {type(html_elem)} {html_elem.tag}")
         if html_elem.tag.lower() != "html":
             print(f"not a full html element")
             return None
@@ -1029,23 +1201,27 @@ class HtmlLib:
     def parse_html(cls, infile):
         """
         parse html file as checks for file existence
-        :param infile: file to parse
+        :param infile: file to parse or url (checks prefix)
         :return: root element
         """
         if not infile:
             print(f"infile is None")
             return None
-        path = Path(infile)
-        if not path.exists():
-            print(f"file does not exist {infile}")
-            return None
-        else:
-            try:
-                html_tree = lxml.etree.parse(str(infile))
-                return html_tree.getroot()
-            except Exception as e:
-                print(f"cannot parse {infile} because {e}")
+        if not str(infile).startswith("http"):
+            path = Path(infile)
+            if not path.exists():
+                print(f"file does not exist {infile}")
                 return None
+        try:
+            infile = "https://en.wikipedia.org"
+            print(f"infile {infile}")
+            html_tree = lxml.html.parse(infile, HTMLParser())
+            if html_tree is None:
+                print(f"Cannot parse {infile}, returned None")
+            return html_tree.getroot()
+        except Exception as e:
+            print(f"cannot parse {infile} because {e}")
+            return None
 
     @classmethod
     def parse_html_string(cls, string):
@@ -1078,21 +1254,120 @@ class HtmlLib:
         return paras
 
     @classmethod
-    def para_contains_phrase(cls, para, phrase, ignore_case=True):
+    def para_contains_phrase(cls, para, phrase, ignore_case=True, markup=None):
+        """
+        search paragraph with phrase. If markuip is not None add hyperlinks
+
+        Parameters
+        ----------
+        para paragraph to search
+        phrase search phrase
+        ignore_case if True lowercase text and phrase
+        markup if True search each itertext and insert hrefs, else just seatch concatenation
+
+        Returns
+        -------
+
+        """
         if ignore_case:
             phrase = phrase.lower()
-        text = "".join(para.itertext())
-        if ignore_case:
-            text = text.lower()
-        if re.search(r'\b' + phrase + r'\b', text):
-            return True
+        search_re = r'\b' + phrase + r'\b'
+        if not markup:
+            text = "".join(para.itertext())
+            if ignore_case:
+                text = text.lower()
+            if re.search(search_re, text):
+                return True
+        else:
+            texts = para.xpath(".//text()")
+            for text in texts:
+                match = re.search(search_re, text)
+                if match:
+                    cls._insert_ahref(markup, match, phrase, text)
+
         return False
 
     @classmethod
-    def create_para_ohrase_dict(cls, paras, phrases):
+    def _insert_ahref(cls, url_base, match, phrase, text):
+        """
+        Add hyperlinks to text. The order of opratyations matters
+        """
+        id = HtmlLib.generate_id(phrase)
+        href, title = cls._create_href_and_title(id, url_base)
+
+        # text before, inside and after <a> element
+        start_ = text[0:match.start()]
+        mid_ = text[match.start():match.end()]
+        end_ = text[match.end():]
+
+        # might be a text (contained within lead) or tail following it
+
+        # text contained in element
+        if text.is_text:
+            aelem = cls.add_href_for_lxml_text(start_, text)
+
+        # text following element
+        elif text.is_tail:
+            aelem = cls._add_href_for_lxml_tail(start_, text)
+        else:
+            print(f"ERROR??? (not text of tail) {start_}|{mid_}|{end_}")
+
+        # add content and attributes to aelem
+        aelem.attrib["href"] = href
+        aelem.text = mid_
+        aelem.tail = end_
+        if title:
+            aelem.attrib["title"] = title
+
+    @classmethod
+    def _add_href_for_lxml_tail(cls, start_, text):
+        # print(f"TAIL {start_}|{mid_}|{end_}")
+        prev = text.getparent()
+        aelem = ET.Element("a")
+        aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
+        prev.addnext(aelem)  # order metters1
+        prev.tail = start_ + " "
+        return aelem
+
+    @classmethod
+    def add_href_for_lxml_text(cls, start_, text):
+        # print(f"TEXT  {start_}|{mid_}|{end_}")
+        parent = text.getparent()
+        tail = parent.tail
+        aelem = ET.SubElement(parent, "a")
+        aelem.attrib["style"] = "border:solid 1px; background: #ffffbb;"
+        parent.text = start_
+        parent.tail = tail
+        return aelem
+
+    @classmethod
+    def _create_href_and_title(cls, id, url_base):
+        href = f"{url_base}"
+        href_elem = ET.parse(href, HTMLParser())
+        idelems = href_elem.xpath(f".//*[@id='{id}']")
+        title = id
+        if len(idelems) > 0:
+            ps = idelems[0].xpath("./p")
+            if len(ps) > 0:
+                p = ps[0] if len(ps) == 1 else ps[1]
+                if p is not None:
+                    title = "".join(p.itertext())
+        return href, title
+
+    @classmethod
+    def generate_id(cls, phrase):
+        """
+        strip, converts whitespace to single "-" and lowercase
+        """
+        phrase1 = re.sub(r"\s+", "_", phrase)
+        return phrase1
+
+    @classmethod
+    def search_phrases_in_paragraphs(cls, paras, phrases, markup=None):
         """search for phrases in paragraphs
         :param paras: list of HTML elems with text (normally <p>), must have @id else ignored
         :param phrases: list of strings to search for (word boundary honoured)
+        :param markup:html dictionary with phrases
         :return: dict() keyed on para_ids values are dict of search hits by phrase
         """
         para_phrase_dict = dict()
@@ -1102,7 +1377,7 @@ class HtmlLib:
                 continue
             phrase_dict = dict()
             for phrase in phrases:
-                count = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True)
+                count = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True, markup=markup)
                 if count > 0:
                     phrase_dict[phrase] = count
                     para_phrase_dict[para_id] = phrase_dict
@@ -1121,6 +1396,27 @@ class HtmlLib:
         html = lxml.html.fromstring(content, base_url=url, parser=HTMLParser())
 
         return html
+
+    @classmethod
+    def _extract_paras_with_ids(cls, infile, count=-1):
+        """
+
+        Parameters
+        ----------
+        infile html file with p[@id]
+        count number of paragraphs with @id (default -1) . if count >= 0, asserts number flound == count
+
+        Returns
+        -------
+
+        """
+        assert Path(infile).exists(), f"{infile} does not exist"
+        html = ET.parse(str(infile), HTMLParser())
+        paras = HtmlLib.find_paras_with_ids(html)
+        if count >= 0:
+            assert len(paras) == count
+        return paras
+
 
 
 class DataTable:
@@ -1153,7 +1449,7 @@ class DataTable:
         self.add_rows(rowdata)
         self.head = None
         self.title = None
-        self.title.text = None
+        # self.title.text = None
 
     def create_head(self, title):
         """
@@ -1239,7 +1535,6 @@ class DataTable:
             for val in row:
                 td = ET.SubElement(tr, H_TD)
                 td.text = val
-                # print("td", td.text)
 
     def make_row(self):
         """
@@ -1271,10 +1566,6 @@ class DataTable:
             print("WROTE", data_table_file)
 
     def __str__(self):
-        # s = self.html.text
-        # print("s", s)
-        # return s
-        # ic("ichtml", self.html)
         htmltext = ET.tostring(self.html)
         print("SELF", htmltext)
         return htmltext

@@ -5,11 +5,14 @@ import pprint
 import re
 import traceback
 import unittest
+from lxml.html import HTMLParser
 from pathlib import Path
+
 # from parametrized import parametrized
 
 import lxml
 from lxml import etree
+import lxml.etree as ET
 from lxml.etree import XMLSyntaxError, _Element
 import pytest
 
@@ -21,7 +24,7 @@ from amilib.amix import AmiLib
 from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
 from amilib.wikimedia import WikidataSparql, WikidataPage
-from amilib.xml_lib import XmlLib
+from amilib.xml_lib import XmlLib, HtmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -59,7 +62,7 @@ def _create_amidict_with_foo_bar_entries():
     return amidict
 
 
-class TestAmiDictionary(AmiAnyTest):
+class AmiDictionaryTest(AmiAnyTest):
     """These are tests for developing CODE for dictionary creation and validation
 
     Code for VALIDATION of dictionaries should probably be bundled with the dictionaries themselves
@@ -67,6 +70,8 @@ class TestAmiDictionary(AmiAnyTest):
     """
 
     logging.info(f"loading {__file__}")
+
+    HTML_WITH_IDS = "html_with_ids"
 
     DICTFILE1 = "dictfile1"
     ROOT = "root"
@@ -151,6 +156,9 @@ class TestAmiDictionary(AmiAnyTest):
         assert amidict.root.attrib[TITLE] == "minimal"
 
     def test_dict_has_root_dictionary(self):
+        """
+        Tests that the dictionary has <dictionary> root element
+        """
         setup_dict = self.create_file_dict()
         root = setup_dict[ROOT]
         assert root.tag == AmiDictionary.TAG
@@ -162,6 +170,7 @@ class TestAmiDictionary(AmiAnyTest):
     def test_can_read_dictionary_from_url_as_xml(self):
         """
         Checks that a dictionary can be read from a URL into XML
+        Reads PLANT_PART_RAW_DICT_URL and validates that has about 728 entries
         """
 
         url = PLANT_PART_RAW_DICT_URL
@@ -182,7 +191,7 @@ class TestAmiDictionary(AmiAnyTest):
             error_list = validator.get_xml_declaration_error_list()
             assert not error_list
 
-    @pytest.mark.url
+    # @pytest.mark.url
     def test_validate_url_dict(self):
         """
         tests that historic dictionaries read into validator
@@ -212,7 +221,7 @@ class TestAmiDictionary(AmiAnyTest):
         amidict = AmiDictionary.create_from_xml_file(one_entry_path)
         assert amidict is not None
 
-    @pytest.mark.simple
+    # @pytest.mark.simple
     def test_dictionary_is_an_ami_dictionary(self):
         """
         test dictionary with one entry
@@ -230,7 +239,7 @@ class TestAmiDictionary(AmiAnyTest):
         entries = amidict.get_lxml_entries()
         assert entries is not None
 
-    @pytest.mark.simple
+    # @pytest.mark.simple
     def test_dictionary_contains_one_entry(self):
         """
         unit test
@@ -283,7 +292,7 @@ class TestAmiDictionary(AmiAnyTest):
         """
         unit test
         """
-        amidict = TestAmiDictionary().create_file_dict()[ONE_ENTRY_DICT]
+        amidict = AmiDictionaryTest().create_file_dict()[ONE_ENTRY_DICT]
         assert type(amidict) is AmiDictionary
         assert len(amidict.get_first_ami_entry().get_synonyms()) == 2
 
@@ -939,7 +948,111 @@ class TestAmiDictionary(AmiAnyTest):
         amilib.run_command(["DICT", "--help"])
 
 
-class TestAmiEntry(AmiAnyTest):
+    def test_search_with_dictionary_and_make_links_IMPORTANT(self):
+        """
+        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids)
+
+        Returns
+        -------
+
+
+        """
+
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", f"{self.HTML_WITH_IDS}.html")
+        paras = HtmlLib._extract_paras_with_ids(chapter_file, count=1163)
+        xml_dict_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "climate_words.xml")
+        dictionary = AmiDictionary.create_from_xml_file(xml_dict_path)
+        assert dictionary is not None
+        phrases = dictionary.get_terms()
+        html_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "climate_words.html")
+        dictionary.write_to_file(html_path, debug=True)
+        dictionary.location = html_path
+        assert len(phrases) == 11
+        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_path)
+        chapter_elem = paras[0].xpath("/html")[0]
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "Chapter03", "marked_up.html", debug=True)
+        HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
+
+    def test_search_with_dictionary_and_make_links_WORKFLOW(self):
+        """
+        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids)
+
+        Returns
+        -------
+
+
+        """
+        stem = "carbon_cycle"
+        words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}_edited.txt")
+        assert words_path.exists()
+
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
+        assert chapter_file.exists()
+
+        paras = HtmlLib._extract_paras_with_ids(chapter_file, count=1724)
+
+        dictionary, outpath = AmiDictionary.create_dictionary_from_wordfile(words_path)
+        assert dictionary is not None
+        assert len(dictionary.get_terms()) == 43
+
+        xml_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.xml")
+        dictionary.write_to_file(xml_dict_path, debug=True)
+        assert xml_dict_path.exists()
+
+        html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
+        dictionary.write_to_file(html_dict_path, debug=True)
+        assert html_dict_path.exists()
+
+        phrases = dictionary.get_terms()
+        dictionary.location = html_dict_path
+        assert len(phrases) == 43
+        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
+
+        # write marked_up html
+        chapter_elem = paras[0].xpath("/html")[0]
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
+        assert  chapter_outpath.exists()
+
+    def test_search_with_dictionary_and_make_links_code(self):
+        """
+        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids) and add hyperlinks
+        -------
+
+        """
+        stem = "carbon_cycle"
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        FileLib.delete_file(chapter_outpath)
+        html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
+
+        AmiDictionary.read_html_dictionary_and_markup_html_file(
+            chapter_file, chapter_outpath, html_dict_path=html_dict_path)
+        assert chapter_outpath.exists()
+
+    def test_search_with_dictionary_and_make_links_COMMANDLINE(self):
+        """
+        same logice and files as test_search_with_dictionary_and_make_links_CODE. Check that that runs
+        """
+
+        stem = "carbon_cycle"
+        chapter_file = str(Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html"))
+        chapter_outpath = str(Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True))
+        FileLib.delete_file(chapter_outpath)
+        html_dict_path = str(Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html"))
+
+        # commandline
+        args = [
+            "DICT",
+            "--inpath", chapter_file,
+            "--outpath", chapter_outpath,
+            "--dict", html_dict_path,
+        ]
+        print(f"cmd> {' '.join(args)}")
+        AmiLib().run_command(args)
+        assert Path(chapter_outpath).exists()
+
+class AmiEntryTest(AmiAnyTest):
     """
     test functionality of AmiEntry
     """
@@ -948,7 +1061,7 @@ class TestAmiEntry(AmiAnyTest):
         pass
 
 
-class TestValidate(AmiAnyTest):
+class ValidateTest(AmiAnyTest):
     """
     test validity of AmiEntry and AmiDictionary
     """
@@ -977,13 +1090,13 @@ class TestValidate(AmiAnyTest):
 
     def test_one_entry_dict_is_ami_dictionary(self):
         """require the attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         assert type(one_dict) is AmiDictionary, f"fila is not AmiDictionary {one_dict}"
 
     def test_dict1_has_version_attribute(self):
         """require the version attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[DICTFILE1]
         amidict = AmiDictionary.create_from_xml_file(Path(one_dict))
         version = amidict.get_version()
@@ -993,14 +1106,14 @@ class TestValidate(AmiAnyTest):
         """
         require the version attribute to have starting value
         """
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         amidict = AmiDictionary.create_from_xml_file(Path(setup_dict[DICTFILE1]))
         version = amidict.get_version()
         assert version == STARTING_VERSION
 
     def test_one_entry_dict_has_version_attribute(self):
         """require the attribiute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         assert one_dict is not None
         version = one_dict.get_version()
@@ -1008,7 +1121,7 @@ class TestValidate(AmiAnyTest):
 
     def test_dictionary_has_version(self):
         """require the attribute to be present but does not check value"""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         one_dict = setup_dict[ONE_ENTRY_DICT]
         version = one_dict.get_version()
         assert version is not None, "missing version"
@@ -1034,12 +1147,12 @@ class TestValidate(AmiAnyTest):
     def test_dict_has_xml_title(self):
         """has root dictionary element got title attribute?
         e.g. <dictionary title='dict1'> ..."""
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         root = setup_dict[ROOT]
         assert root.attrib[TITLE] == "dict1"
 
     def test_dict_title_matches_filename(self):
-        setup_dict = TestAmiDictionary().create_file_dict()
+        setup_dict = AmiDictionaryTest().create_file_dict()
         root = setup_dict[ROOT]
         last_path = setup_dict[DICTFILE1].stem
         print(last_path)
@@ -1124,7 +1237,7 @@ class DictionaryCreationTest(AmiAnyTest):
         out_dict_dir = Path(Resources.TEMP_DIR, "dictionary", "climate")
         words_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate",
                           "ar5_wg3_food_security_words.txt")
-        max_entries = 7 # to reduce time
+        max_entries = 2 # to reduce time
 
         description = "food security terms in AR5_WG3_ch_5 selected by Anmol Negi"
         # add title, description, and save
@@ -1158,14 +1271,14 @@ class DictionaryCreationTest(AmiAnyTest):
         Note that wikidata lookup does not necessarily put the best answers first
         """
         amilib = AmiLib()
-        title = "climate_words"
-        title_path = Path(Resources.TEST_RESOURCES_DIR, "misc", f"{title}.txt")
+        title = "small_2"
+        title_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{title}.txt")
         assert title_path.exists(), f"{title_path} should exist"
         title_txt = f"{title_path}"
         print(f"words {title_txt}")
         with open(title_txt, "r") as f:
             print(f"words ==> {f.readlines()}")
-        title_dict = Path(Resources.TEMP_DIR, "misc", f"{title}_dict.xml")
+        title_dict = Path(Resources.TEMP_DIR, "words", f"{title}_dict.xml")
         FileLib.delete_file(title_dict)
 
         word_xml = f"{Path(Resources.TEMP_DIR, '{title}.xml')}"
@@ -1204,8 +1317,8 @@ class DictionaryCreationTest(AmiAnyTest):
 
     def test_make_dict_from_file_CMD_OK(self):
         amilib = AmiLib()
-        words_file = Path(TEST_RESOURCE_DIR, "misc", "climate_words.txt")
-        dictfile = Path(Resources.TEMP_DIR, "misc", "climate_words.xml")
+        words_file = Path(TEST_RESOURCE_DIR, "wordlists", "climate_words.txt")
+        dictfile = Path(Resources.TEMP_DIR, "words", "climate_words.xml")
         expected_count = 11
         FileLib.delete_file(dictfile)
         amilib.run_command(["DICT",

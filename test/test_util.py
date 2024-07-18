@@ -23,7 +23,7 @@ from test.test_all import AmiAnyTest
 logger = logging.getLogger("py4ami_test_util")
 
 
-class TestUtil(AmiAnyTest):
+class Util0Test(AmiAnyTest):
     # def __init__(self):
     sys_argv_save = None
 
@@ -211,10 +211,11 @@ class TestUtil(AmiAnyTest):
         """gets username
         """
         username = Util.get_username()
-        assert username == "pm286"
+        if AmiAnyTest.IS_PMR:
+            assert username == "pm286"
 
 
-class TestGithubDownloader(AmiAnyTest):
+class GithubDownloaderTest(AmiAnyTest):
     # def __init__(self):
     #     pass
 
@@ -234,7 +235,7 @@ class TestGithubDownloader(AmiAnyTest):
         downloader.load_page(url, level=0)
 
 
-class TestAmiArgParser(AmiAnyTest):
+class AmiArgParserTest(AmiAnyTest):
 
     def test_ami_arg_parse(self):
         """
@@ -259,7 +260,7 @@ class TestAmiArgParser(AmiAnyTest):
         print(f"arg_dict2 {arg_dict}")
 
 
-class TestTemplate(AmiAnyTest):
+class TemplateTest(AmiAnyTest):
 
     def test_id_templates(self):
         """Splits files at Decisions"""
@@ -283,7 +284,7 @@ class TestTemplate(AmiAnyTest):
 #         file = "section_templates.json"
 #         return Util.read_pydict_from_json(file)
 
-class TestCommandline:
+class CommandlineTest:
 
     def test_command(self):
         command = "--help"

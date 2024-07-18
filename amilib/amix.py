@@ -56,7 +56,7 @@ class AmiLib:
         """
 
         def run_dict(self):
-            logger.debug(f"run dict pyamix")
+            logger.debug(f"run dict amilib")
 
         def run_pdf(args):
             logger.debug(f"run pdf")
@@ -385,6 +385,9 @@ class AmiLib:
         version = '0.2.1a1'  # 2024-06-06 # includes amidict and commandline
         version = '0.2.1a2'  # 2024-06-06 # includes amidict and commandline
         version = '0.2.1a3'  # 2024-07-03 # added wordlists
+        version = '0.2.2a1'  # 2024-07-11 # wikipedia lookup and paragrah splitting
+        version = '0.2.3a1'  # 2024-07-16 # markup html with dictionaries
+        version = '0.2.3a2'  # 2024-07-17 # markup html with dictionaries
 
         # logging.warn(f"VERSION {version}")
         return version
@@ -413,7 +416,7 @@ class AmiLibArgs(AbstractArgs):
         """adds arguments to a parser or subparser"""
         self.parser.description = 'Abstract editing analysing annotation'
         self.parser.add_argument(f"--foo", action="store_true",
-                                 help="annotate HTML file with dictionary")
+                                 help="annotate HTML file with dictionary (NYI, TEST)")
         # self.parser.add_argument(f"--{COLOR}", type=str, nargs=1,
         #                          help="colour for annotation")
         # self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
@@ -424,7 +427,7 @@ class AmiLibArgs(AbstractArgs):
         #                          help="output html file")
         # self.parser.add_argument(f"--{OUTDIR}", type=str, nargs=1,
         #                          help="output directory")
-        self.parser.epilog = "=======abstract add arguments ========"
+        self.parser.epilog = "======= ========"
 
     """python -m pyamihtmlx.pyamix HTML --annotate 
      --dict /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
@@ -479,16 +482,16 @@ class AmiLibArgs(AbstractArgs):
         if not self.inpath:
             logging.error(f"no input file to annotate given")
             return
-        if not self.outpath:
+        if not self.location_xml:
             logging.error(f"no output file given")
             return
         if not self.outdir:
-            self.outdir = Path(self.outpath).parent
+            self.outdir = Path(self.location_xml).parent
         self.outdir = Path(self.outdir)
         self.outdir.mkdir(exist_ok=True)
 
         self.ami_dict = AmiDictionary.create_from_xml_file(self.dictfile)
-        self.ami_dict.markup_html_from_dictionary(self.inpath, self.outpath, self.color)
+        self.ami_dict.markup_html_from_dictionary(self.inpath, self.location_xml, self.color)
 
     def make_foo(self):
         pass

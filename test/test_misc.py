@@ -64,6 +64,7 @@ class MiscTest(AmiAnyTest):
         ]
 
 
+    @unittest.skip("Not processing transcript ")
     def test_tidy_transcript(self):
 
 

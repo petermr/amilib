@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dictionary title="small_2">
+  <entry name="anthropogenic" term="anthropogenic">
+    <div qid="Q7942">
+      <a href="wikidataURL/Q7942">Wikidata</a>
+      <p role="title">climate change</p>
+      <p role="description">current rise in Earth's average temperature and related large-scale shifts in weather patterns</p>
+    </div>
+    <div qid="Q180644">
+      <a href="wikidataURL/Q180644">Wikidata</a>
+      <p role="title">light pollution</p>
+      <p role="description">anthropogenic light in the night environment, caused by excess or misdirected lighting</p>
+    </div>
+    <div qid="Q271669">
+      <a href="wikidataURL/Q271669">Wikidata</a>
+      <p role="title">landform</p>
+      <p role="description">a natural or anthropogenic land feature on the solid surface of the Earth or other planetary body; geomorphological unit in the Earth sciences</p>
+    </div>
+    <div qid="Q1780867">
+      <a href="wikidataURL/Q1780867">Wikidata</a>
+      <p role="title">litter</p>
+      <p role="description">waste products that have been disposed improperly, without consent, at an inappropriate location</p>
+    </div>
+    <div qid="Q574376">
+      <a href="wikidataURL/Q574376">Wikidata</a>
+      <p role="title">human impact on the environment</p>
+      <p role="description">observed or potential changes to biophysical environments and ecosystems caused directly or indirectly by humans, including global warming, environmental degradation, mass extinction and biodiversity loss, ecological crisis and collapse</p>
+    </div>
+  </entry>
+  <entry name="tropospheric" term="tropospheric">
+    <div qid="Q64767836">
+      <a href="wikidataURL/Q64767836">Wikidata</a>
+      <p role="title">Tropospheric Emissions: Monitoring of Pollution</p>
+      <p role="description">NASA spectrograph flown on the Intelsat 40e communications satellite</p>
+    </div>
+    <div qid="Q3999747">
+      <a href="wikidataURL/Q3999747">Wikidata</a>
+      <p role="title">Tropospheric Emission Spectrometer</p>
+      <p role="description">instrument on NASA's Aura satellite</p>
+    </div>
+    <div qid="Q44488745">
+      <a href="wikidataURL/Q44488745">Wikidata</a>
+      <p role="title">Tropomi</p>
+      <p role="description">spectrometer carried by Sentinel 5 Precursor</p>
+    </div>
+    <div qid="Q56613608">
+      <a href="wikidataURL/Q56613608">Wikidata</a>
+      <p role="title">Modelling interactions between vegetation and tropospheric ozone</p>
+      <p role="description">doctoral thesis</p>
+    </div>
+    <div qid="Q59624159">
+      <a href="wikidataURL/Q59624159">Wikidata</a>
+      <p role="title">Time-resolved absorption spectroscopy applied to tropospheric chemistry</p>
+      <p role="description">doctoral thesis by Thomas Robert Lewis</p>
+    </div>
+  </entry>
+</dictionary>

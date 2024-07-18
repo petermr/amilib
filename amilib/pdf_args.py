@@ -78,7 +78,7 @@ class PDFArgs(AbstractArgs):
 
     def __init__(self):
         """arg_dict is set to default"""
-        logger.warning("creating PDFArgs")
+        # logger.warning("creating PDFArgs")
 
         super().__init__()
         self.convert = DEFAULT_CONVERT
