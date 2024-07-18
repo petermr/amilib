@@ -2,14 +2,14 @@
 positive radiative forcing
 paleo records
 pre-industrial
-model simulations
-AR5 (high confidence).
+model 
+simulations
 Biogeochemical
 Coupled Model Intercomparison Project Phase 6
-CMIP6
 Coupled Model Intercomparison Project Phase 5
 CMIP5
-global-mean surface air temperature
+global-mean 
+surface air temperature
 mid-Holocene
 anthropogenic forcings
 tropospheric warming
@@ -17,7 +17,6 @@ volcanism
 Internal variability
 Pacific Decadal Variability
 Discernible
-Model simulations
 proxy-reconstructed
 intensification
 poleward expansion
@@ -37,7 +36,7 @@ Atlantic Multi-decadal Variability (AMV)
 Pacific Decadal Variability (PDV)
 Earth System Model Evaluation Tool
 NCAR Climate Variability Diagnostic Package
-fingerprinting methods
+fingerprinting 
 robustness
 Bayesian model averaging
 Bootstrap method
@@ -72,3 +71,11 @@ atmospheric Bjerknes feedback
 biennial periodicity
 gyre adjustments
 epistemological
+stratocumulus clouds
+snow-albedo feedback 
+Antarctic Circumpolar Current 
+Quasi Biennial Oscillation
+meridional
+
+
+
