@@ -1,22 +1,21 @@
 # Tests wikipedia and wikidata methods under pytest
-import logging
 import pprint
-import re
 import unittest
-import datetime
 from pathlib import Path
 import lxml.etree as ET
 
 import requests
 from lxml import etree, html
 
-from amilib.ami_dict import AmiDictionary, AmiEntry
+from amilib.ami_dict import AmiDictionary
+from amilib.ami_html import HtmlUtil
 from amilib.amix import AmiLib
+from amilib.file_lib import FileLib
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage, \
     Wikipedia, WikipediaPara
 from amilib.wikimedia import WikidataLookup
-from amilib.xml_lib import HtmlLib, XmlLib
+from amilib.xml_lib import HtmlLib, XmlLib, HtmlEditor
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -82,10 +81,12 @@ class WikipediaTest(unittest.TestCase):
         # args = ["DICT", "--help"]
         # pyami.run_command(args)
 
+        dict_xml = str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikipedia.xml"))
+        dict_html = str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikipedia.html"))
         args = ["DICT", "--words", str(wordsfile),
-                "--dict", str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikipedia.xml")),
+                "--dict", dict_xml,
                 "--wikipedia"]
-        print(f"args {args}")
+        # print(f"args {args}")
         pyami.run_command(args)
 
 
@@ -96,8 +97,6 @@ class WikipediaTest(unittest.TestCase):
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
-        print(f"first para {type(first_para)} {first_para.parent} ")
-        print(f"first para: {ET.tostring(first_para.para_element)}")
 
     def test_wikipedia_page_first_para_bold_ahrefs(self):
         """
@@ -115,24 +114,153 @@ class WikipediaTest(unittest.TestCase):
         assert ahrefs[0].attrib.get("href") == "/wiki/Ocean_current"
 
 
-    def test_wikipedia_page_first_para_sentence_breaks(self):
+    def test_wikipedia_page_first_para_sentence_span_tails(self):
         """
         creates WikipediaPage.FirstPage object
+        wraps all tails (mixed content text) in spans
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
+        term = "AMOC"
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
         first_para = wikipedia_page.create_first_wikipedia_para()
-        print (f"type first para {first_para}")
         assert type(first_para) is WikipediaPara
-        texts = first_para.get_texts()
-        assert len(texts) == 24
-        text_breaks = [(j,t) for (j,t) in enumerate(texts) if re.match(".*\\.($|\\s+[A-Z].*)", t)]
-        assert len(text_breaks) == 4
-        for (idx,txt) in text_breaks:
-            prec = '^' if idx == 0 else texts[idx - 1]
-            foll = '$' if idx == len(texts) - 1 else texts[idx + 1]
-            print(f"|{prec}|{txt}|{foll}|")
+        # texts = self.get_texts()
+        XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
+        print(f"Tailed text: {ET.tostring(first_para.para_element)}")
+        assert ET.tostring(first_para.para_element) == (b'<p class="wpage_first_para">The <b>Atlantic meridional overturning circulati'
+ b'on</b><span> (</span><b>AMOC</b><span>) is the main </span><a href="/wiki/Oc'
+ b'ean_current" title="Ocean current">ocean current</a><span> system in the </s'
+ b'pan><a href="/wiki/Atlantic_Ocean" title="Atlantic Ocean">Atlantic Ocean</a>'
+ b'<span>.</span><sup id="cite_ref-IPCC_AR6_AnnexVII_1-0" class="reference"><a '
+ b'href="#cite_note-IPCC_AR6_AnnexVII-1">[1]</a></sup><sup class="reference now'
+ b'rap"><span title="Page / location: 2238">:&#8202;2238&#8202;</span></sup><sp'
+ b'an> It is a component of Earth\'s </span><a href="/wiki/Ocean_circulation'
+ b'" class="mw-redirect" title="Ocean circulation">ocean circulation</a><span> '
+ b'system and plays an important role in the </span><a href="/wiki/Climate_syst'
+ b'em" title="Climate system">climate system</a><span>. The AMOC includes Atlan'
+ b'tic currents at the surface and at great depths that are driven by changes i'
+ b'n weather, temperature and </span><a href="/wiki/Salinity" title="Salinity">'
+ b'salinity</a><span>. Those currents comprise half of the global </span><a hre'
+ b'f="/wiki/Thermohaline_circulation" title="Thermohaline circulation">thermoha'
+ b'line circulation</a><span> that includes the flow of major ocean currents, t'
+ b'he other half being the </span><a href="/wiki/Southern_Ocean_overturning_cir'
+ b'culation" title="Southern Ocean overturning circulation">Southern Ocean over'
+ b'turning circulation</a><span>.</span><sup id="cite_ref-NOAA2023_2-0" class="'
+ b'reference"><a href="#cite_note-NOAA2023-2">[2]</a></sup><span>\n</span></p>')
 
-    def test_create_semantic_html_from_xml(self):
+
+    def test_wikipedia_page_first_para_sentence_add_brs(self):
+        """
+        creates WikipediaPage.FirstPage object
+        wraps all tails (mixed content text) in spans
+        """
+        term = "AMOC"
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        first_para = wikipedia_page.create_first_wikipedia_para()
+        assert type(first_para) is WikipediaPara
+        XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
+        assert ET.tostring(first_para.para_element) == (
+            b'<p class="wpage_first_para">The <b>Atlantic meridional overturning circulati'
+            b'on</b><span> (</span><b>AMOC</b><span>) is the main </span><a href="/wiki/Oc'
+            b'ean_current" title="Ocean current">ocean current</a><span> system in the </s'
+            b'pan><a href="/wiki/Atlantic_Ocean" title="Atlantic Ocean">Atlantic Ocean</a>'
+            b'<span>.</span><sup id="cite_ref-IPCC_AR6_AnnexVII_1-0" class="reference"><a '
+            b'href="#cite_note-IPCC_AR6_AnnexVII-1">[1]</a></sup><sup class="reference now'
+            b'rap"><span title="Page / location: 2238">:&#8202;2238&#8202;</span></sup><sp'
+            b'an> It is a component of Earth\'s </span><a href="/wiki/Ocean_circulation'
+            b'" class="mw-redirect" title="Ocean circulation">ocean circulation</a><span> '
+            b'system and plays an important role in the </span><a href="/wiki/Climate_syst'
+            b'em" title="Climate system">climate system</a><span>. The AMOC includes Atlan'
+            b'tic currents at the surface and at great depths that are driven by changes i'
+            b'n weather, temperature and </span><a href="/wiki/Salinity" title="Salinity">'
+            b'salinity</a><span>. Those currents comprise half of the global </span><a hre'
+            b'f="/wiki/Thermohaline_circulation" title="Thermohaline circulation">thermoha'
+            b'line circulation</a><span> that includes the flow of major ocean currents, t'
+            b'he other half being the </span><a href="/wiki/Southern_Ocean_overturning_cir'
+            b'culation" title="Southern Ocean overturning circulation">Southern Ocean over'
+            b'turning circulation</a><span>.</span><sup id="cite_ref-NOAA2023_2-0" class="'
+            b'reference"><a href="#cite_note-NOAA2023-2">[2]</a></sup><span>\n</span><'
+            b'/p>')
+
+        htmlx = HtmlEditor()
+        htmlx.add_style("span", "{border:solid 1px;}")
+        htmlx.body.append(first_para.para_element)
+        htmlx.write(Path(Resources.TEMP_DIR, "misc", "amoc2.html"))
+
+    def test_insert_br_for_lone_period(self):
+        """
+        insert a <br/> after a single '.'
+        this will be developed to include more complex situations later
+
+        """
+        term = "AMOC"
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        first_para = wikipedia_page.create_first_wikipedia_para()
+        assert type(first_para) is WikipediaPara
+        XmlLib.add_sentence_brs(first_para.get_texts())
+        # assert ET.tostring(first_para.para_element) == 'foo'
+        html_file = Path(Resources.TEMP_DIR, "words", "html", "amoc_test.html")
+        htmlx = HtmlEditor()
+        htmlx.add_style("span", "{background: pink; border: solid 1px blue;}")
+
+        htmlx.body.append(first_para.para_element)
+        htmlx.write(html_file, debug=True)
+
+
+
+    @unittest.skip("splits no longer used")
+    def test_wikipedia_pages_sentence_breaks(self):
+        terms = [
+            "troposphere",
+            "Permafrost",
+            "centennial",
+            "aerosol",
+            "Albedo",
+
+        ]
+        sentence_breaks_array = []
+        for term in terms:
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+            first_para = wikipedia_page.create_first_wikipedia_para()
+            # texts = self.get_texts()
+            XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
+            s_breaks = None
+            sentence_breaks_array.append(s_breaks)
+        assert sentence_breaks_array == [
+        ['|atmosphere of Earth|. It contains 80% of the total mass of the |planetary '
+          'atmosphere|',
+          '|weather| phenomena occur.|[1]|',
+          '|polar regions| in winter; thus the average height of the troposphere is '
+          '13\xa0km (8.1\xa0mi; 43,000\xa0ft).\n'
+          '|$|'],
+         ['|sediment| which continuously remains below 0\xa0°C (32\xa0°F) for two '
+          'years or more: the oldest permafrost had been continuously frozen for '
+          'around 700,000 years.|[1]|',
+          '|[1]| Whilst the shallowest permafrost has a vertical extent of below a '
+          'meter (3\xa0ft), the deepest is greater than 1,500\xa0m (4,900\xa0ft).|[2]|',
+          '|Arctic| regions.|[3]|',
+          '|active layer| of soil which freezes and thaws depending on the '
+          'season.|[4]|'],
+         ['|century|, a period of an exact century.\n|$|'],
+         ['|gas|.|[1]|',
+          '|human causes|. The term |aerosol|',
+          '|particulates| in air, and not to the particulate matter alone.|[2]|',
+          '|dust|. Examples of human caused aerosols include |particulate|',
+          '|sprayed pesticides|, and medical treatments for respiratory '
+          'illnesses.|[3]|'],
+         ['|diffusely reflected| by a body. It is measured on a scale from 0 '
+          '(corresponding to a |black body|',
+          '|black body| that absorbs all incident radiation) to 1 (corresponding to a '
+          'body that reflects all incident radiation). |Surface albedo|',
+          '|e| (flux per unit area) received by a surface.|[2]|',
+          '|[2]| The proportion reflected is not only determined by properties of the '
+          'surface itself, but also by the spectral and angular distribution of solar '
+          "radiation reaching the Earth's surface.|[3]|",
+          '|position of the Sun|). \n|$|'
+          ]
+
+        ]
+
+    def test_create_html_dictionary_from_xml(self):
         """
         create semanticHtml from XML dictionary (created by lookup wikipedia)
         """
@@ -152,10 +280,7 @@ class WikipediaTest(unittest.TestCase):
             html_elem, path, debug=True)
         assert path.exists()
 
-        dict_html = xml_ami_dict.create_semantic_html()
-        HtmlLib.write_html_file(dict_html, Path(Resources.TEMP_DIR, "words", "html", "semantic_dict.html"), debug=True)
-
-    def test_create_semantic_html_from_words(self):
+    def test_create_html_dictionary_from_words(self):
         """
         create semanticHtml from wordlist and lookup in Wikipedia
         """
@@ -165,22 +290,67 @@ class WikipediaTest(unittest.TestCase):
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
         xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", f"{stem}.xml"))
-        html_elem = xml_ami_dict.create_semantic_html()
+        html_elem = xml_ami_dict.create_html_dictionary(title=stem)
         path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html", debug="True")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
+
+    def test_create_html_dictionary_from_words_COMMAND(self):
+        """
+        create HTML dictionary from amilib commandline
+        """
+        stem = "small_10"
+        input = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
+        print(f"output dict: {output_dict}")
+        FileLib.delete_file(output_dict)
+        args = ["DICT",
+                "--words", str(input),
+                "--dict", str(output_dict),
+                "--wikipedia",
+                ]
+        amilib = AmiLib()
+        # create by COMMANDLINE
+        amilib.run_command(args)
+        # check validity
+        assert output_dict.exists()
+        dict_elem = HtmlUtil.parse_html_file_to_xml(output_dict)
+        assert dict_elem is not None
+        assert dict_elem.tag == "html"
+        dictionary_elem = dict_elem.xpath("./body/div[@role='ami_dictionary']")[0]
+        assert dictionary_elem is not None
+        assert dictionary_elem.attrib.get("title") is not None
+        entry_divs = dict_elem.xpath("./body/div[@role='ami_dictionary']/div[@role='ami_entry']")
+        LEN = 10
+        assert len(entry_divs) == LEN
+
+        # validate
+        ami_dict = AmiDictionary.create_from_html_file(output_dict)
+        assert ami_dict is not None
+        assert len(ami_dict.get_ami_entries()) == LEN
+
+    def test_create_from_html_dictionary(self):
+        """
+        reads a valid HTML ami_dictionary
+        """
+        dict_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "html", "small_10.html")
+        assert dict_file.exists(), f"cannot find HTML dictionary {dict_file}"
+        ami_dict = AmiDictionary.create_from_html_file(dict_file)
+        ami_entries = ami_dict.get_ami_entries()
+        assert len(ami_entries) == 10
 
     def test_create_semantic_html_split_sentences(self):
         """
         create semanticHtml from wordlist and lookup in Wikipedia
         """
-        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        stem = "small_5"
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
-        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "carbon_cycle_noabb.html"))
-        html_elem = xml_ami_dict.create_semantic_html()
-        path = Path(Resources.TEMP_DIR, "words", "html", "carbon_cycle_noabb.html")
+        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", f"{stem}.html"))
+        html_elem = xml_ami_dict.create_html_dictionary()
+        path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
 
@@ -468,7 +638,6 @@ class WikidataTest(unittest.TestCase):
             selector = f".//div[@data-property-id]"
             # selector = f".//div[contains(@class,'wikibase-statementgroupview') and contains(@class,'listview-item')]"
             # selector = f".//div[contains(@class,'listview-item')]"
-        print(f" selector {selector} ")
 
         property_list = WikidataPage("q407418").root.xpath(selector)
 
@@ -537,14 +706,11 @@ class WikidataTest(unittest.TestCase):
 
         wikidata_page = WikidataPage("q407418")
         data_property_list = wikidata_page.get_data_property_list()
-        print(f" data properties {data_property_list}")
         property_set = set(data_property_list)
-        print(f"set {property_set}")
         assert 100 >= len(property_set) >= 70
         expected = set([
             'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054'])
         difference = expected.symmetric_difference(property_set)
-        print(f"diff {len(difference)} {difference}")
         assert expected.issubset(property_set), f"not found in {property_set}"
         assert set(wikidata_page.get_property_id_list()[:10]).difference(expected) == set()
         assert wikidata_page.get_property_name_list()[:10] == [
@@ -562,8 +728,8 @@ class WikidataTest(unittest.TestCase):
 
         properties_dict = WikidataProperty.get_properties_dict(property_list)
         dict_str = pprint.pformat(properties_dict)
-        print(f"\ndict: \n"
-              f"{dict_str}")
+        # print(f"\ndict: \n"
+        #       f"{dict_str}")
         assert properties_dict['P662'] == {'name': 'PubChem CID', 'value': '16666'}
 
     # all wikidata asserts are fragile
@@ -761,7 +927,7 @@ class WikidataTest(unittest.TestCase):
         extractor = WikidataExtractor('en')
         id = extractor.search(query)
         id_dict = extractor.load(id)
-        print(id_dict)
+        # print(id_dict)
 
     def test_simple_wikidata_query(self):
         """get ID list for query results
@@ -870,3 +1036,7 @@ class SPARQLTests:
 
 if __name__ == '__main__':
     unittest.main()
+    # if wiki_test:
+    #     # TODO move to Wikimedia
+    #     WikimediaTest.test_sparql_wrapper()
+

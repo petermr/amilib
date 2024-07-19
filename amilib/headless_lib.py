@@ -132,7 +132,6 @@ class HeadlessLib:
             texts = []
             text = "NONE"
             for node in nodes:
-                # print(f"type {type(node)} == {node}")
                 if type(node) is HtmlElement:
                     if node.tag == "h6":
                         pass

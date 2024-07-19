@@ -1,4 +1,3 @@
-import datetime
 import json
 import logging
 import os
@@ -21,7 +20,6 @@ from SPARQLWrapper import SPARQLWrapper
 from amilib.ami_html import HtmlUtil
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
-from amilib.file_lib import FileLib
 
 logging.debug("loading wikimedia.py")
 
@@ -191,7 +189,7 @@ class WikidataLookup:
         entry_hits = self.lookup_wikidata(name)
         print(f"------{name}-------")
         if not entry_hits[0]:
-            #                print(f" no hit for {name}")
+            # print(f" no hit for {name}")
             pass
         else:
             hits = dict()
@@ -218,11 +216,10 @@ class WikidataFilter:
             print(f"no file {file}")
             return None
         filter = WikidataFilter()
-        print(f"file.. {file}")
         with open(file, "r") as f:
             text = f.read()
         filter.json = json.loads(text)
-        print(f"dict {type(filter.json)} {filter.json}")
+        # print(f"dict {type(filter.json)} {filter.json}")
         return filter
 
 
@@ -234,7 +231,7 @@ class WikidataProperty:
     def __str__(self):
         s = "WikidataProperty: "
         if self.element is not None:
-            print(f"type self.element {type(self.element)}")
+            # print(f"type self.element {type(self.element)}")
             s += f"{lxml.etree.tostring(self.element)}"
         return s
 
@@ -1244,11 +1241,13 @@ class WikipediaPara:
     a paragraph of a WikipediaPage
     The first para is often the most important
     """
+    #  split after '.' with following space(s) and [A-Z]  OR end of para
+    # SENTENCE_RE = ".*\\.(\\s*$|\\s+[A-Z].*)" # maybe obsolete
+    # SENTENCE_START_RE = ".*\\.\\s+[A-Z].*"
     MIN_FIRST_PARA_LEN = 20
 
     def __init__(self, parent, para_element=None, para_class=None):
         self.parent = parent
-        print(f"parent: {parent}")
         self.para_element = para_element
         if self.para_element is not None and para_class:
             self.para_element.attrib[HtmlLib.CLASS_ATTNAME] = para_class
@@ -1273,7 +1272,7 @@ class WikipediaPara:
 
     def get_texts(self):
         """returns all descendant texts
-        :return: list of text objects (may be empty)
+        :return: list of mixed content text objects (tail) (may be empty)
         """
         texts = [] if self.para_element is None else self.para_element.xpath(".//text()")
         return texts
@@ -1326,6 +1325,7 @@ class WikipediaPara:
                     print(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
+
 
 class WikipediaInfoBox:
     """
@@ -1422,6 +1422,154 @@ class WikipediaBasicInfo:
 
     def get_central_description(self):
         return self.get_value_for_key(self.CENTRAL_DESCRIPTION)
+
+    def get_value_for_key(self, key):
+        return self.table_dict[key]
+
+    def get_image_url(self):
+        url_tail = self.get_value_for_key(self.PAGE_IMAGE)
+        url = f"{WikipediaPage.get_default_wikipedia_url()}{url_tail}"
+        return url
+
+    def create_table_dict(self):
+        """
+        creates name-value table, where value can be text or XML element
+        """
+        self.table_dict = dict()
+        rows = self.table.xpath(".//tr")
+        for row in rows:
+            name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
+            if not name in self.KEYS:
+                print(f"unknown key {name} in Basic Information")
+            value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
+            self.table_dict[name] = value
+
+    def get_cell_value(self, td, idx):
+        """
+        HYPERLINK
+        <td>
+          <a
+            class="extiw wb-entity-link external"
+            href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783"
+            >Q615783</a>
+        </td>
+        """
+        tda = td.xpath("a")  # might be a hyperlink
+        if len(tda) > 0:
+            href = tda[0].attrib.get("href")
+            aval = tda[0].text
+            href = aval if idx == 0 else href
+            return href
+        """
+        IMAGE
+        <td>
+          <a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description">
+            <img 
+              alt="MV Arctic sea.svg" 
+              src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png" 
+              decoding="async" 
+              width="220" 
+              height="156" 
+              data-file-width="1052"
+              data-file-height="744"
+              ></a></td>"""
+        return td.text
+
+
+
+class WikipediaInfoBox:
+    """
+    wrapper for wikipedia infobox HTML <table>
+    """
+
+    def __init__(self, table=None):
+        """
+        Wrapper for Wikipedia InfoBox
+        """
+        self.table = table
+
+class WikipediaBasicInfo:
+    """
+    wrapper for wikipedia basic information tabls
+    """
+
+    """
+    Display title	MV Arctic Sea
+    Default sort key	Arctic Sea, Mv
+    Page length (in bytes)	40,084
+    Namespace ID	0
+    Page ID	23947896
+    Page content language	en - English
+    Page content model	wikitext
+    Indexing by robots	Allowed
+    Number of page watchers	91
+    Number of page watchers who visited in the last 30 days	2
+    Number of redirects to this page	4
+    Counted as a content page	Yes
+    Wikidata item ID	Q615783
+    Local description	Ship
+    Central description	ship built in 1992
+    Page image	MV Arctic sea.svg
+    Page views in the past 30 days	273
+    """
+    DISPLAY_TITLE = "Display title"
+    SORT_KEY = "Default sort key"
+    PAGE_LENGTH = "Page length (in bytes)"
+    NAMESPACE_ID = "Namespace ID"
+    PAGE_ID = "Page ID"
+    PAGE_LANGAUGE = "Page content language"
+    CONTENT_MODEL = "Page content model"
+    INDEXING_BY_ROBOTS = "Indexing by robots"
+    PAGE_WATCHERS = "Number of page watchers"
+    PAGE_WATCHERS_30 = "Number of page watchers who visited in the last 30 days"
+    REDIRECTS = "Number of redirects to this page"
+    IS_CONTENT_PAGE = "Counted as a content page"
+    WIKIDATA_ITEM = "Wikidata item ID"
+    LOCAL_DESCRIPTION = "Local description"
+    CENTRAL_DESCRIPTION = "Central description"
+    PAGE_IMAGE = "Page image"
+    PAGE_VIEWS_30 = "Page views in the past 30 days"
+
+    KEYS = [
+        DISPLAY_TITLE,
+        SORT_KEY,
+        PAGE_LENGTH,
+        NAMESPACE_ID,
+        PAGE_ID,
+        PAGE_LANGAUGE,
+        CONTENT_MODEL,
+        INDEXING_BY_ROBOTS,
+        PAGE_WATCHERS,
+        PAGE_WATCHERS_30,
+        REDIRECTS,
+        IS_CONTENT_PAGE,
+        WIKIDATA_ITEM,
+        LOCAL_DESCRIPTION,
+        CENTRAL_DESCRIPTION,
+        PAGE_IMAGE,
+        PAGE_VIEWS_30,
+    ]
+
+    def __init__(self, table=None):
+        """
+        Wrapper for Wikipedia basic information
+        """
+        self.table = table
+        self.table_dict = dict()
+        self.create_table_dict()
+
+    def get_wikidata_href_id(self):
+        """
+        return wikidate href and id (Note
+        :return: (href, id) tuplpe or None
+        """
+        value = self.get_value_for_key(self.WIKIDATA_ITEM)
+        id = value.split("/")[-1]
+        return None if value is None else (value, id)
+
+    def get_local_description(self):
+        key = self.LOCAL_DESCRIPTION
+        return self.get_value_for_key(key)
 
     def get_value_for_key(self, key):
         return self.table_dict[key]
