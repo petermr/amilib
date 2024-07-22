@@ -72,7 +72,7 @@ North Atlantic Oscillation
 NAO
 thermocline dome
 continuum
-atmospheric Bjerknes feedback
+ Bjerknes feedback
 biennial periodicity
 gyre adjustments
 epistemological
