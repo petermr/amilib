@@ -1,9 +1,97 @@
+import json
+from pathlib import Path
+
 import pandas as pd
 import lxml.etree as ET
 
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib
 
+
+class EPMCPaper:
+    """
+
+    """
+
+
+    def __init__(self):
+        self.doi = None
+        self.title = None
+        self.author_string = None
+        self.journal_info = None
+        self.pub_year = None
+        self.page_info = None
+        self.abstract_text = None
+
+    def __str__(self):
+        s = ""
+        s = _add_str(s,  self.doi)
+        s = _add_str(s, self.title)
+        s = _add_str(s, self.author_string)
+        s = _add_str(s, self.journal_info)
+        s = _add_str(s, self.pub_year)
+        s = _add_str(s, self.page_info)
+        s = _add_str(s, self.abstract_text)
+        return s
+
+    @classmethod
+    def create_paper_from_json(cls, paper):
+        if paper is not None:
+            epmc_paper = EPMCPaper()
+            epmc_paper.doi = paper.get(EPMCBib.DOI)
+            epmc_paper.title = paper.get(EPMCBib.TITLE)
+            epmc_paper.author_string = paper.get(EPMCBib.AUTHOR_STRING)
+            jinf = paper.get(EPMCBib.JOURNAL_INFO)
+            epmc_paper.journal_info = JournalInfo.read_json(jinf)
+
+            return epmc_paper
+
+
+    def create_bib_span(self, ul):
+        """
+
+        """
+        li = ET.SubElement(ul, "li")
+        self.add_author_span(li)
+        self.add_title_span(li)
+
+        self.add_journal_info_span(li)
+        # self.add_year_span(li)
+        self.add_page_span(li)
+        self.add_doi_span(li)
+
+    def add_author_span(self, li):
+        if self.author_string is not None:
+            span = ET.SubElement(li, "span")
+            span.text = " " + self.author_string + " "
+
+    def add_title_span(self, li):
+        if self.title is not None:
+            span = ET.SubElement(li, "span")
+            span.text = ' "' + self.title + '" '
+
+    def add_vol_issue_span(self, li):
+        if self.journal_info is not None:
+            span = ET.SubElement(li, "span")
+
+    def add_year_span(self, li):
+        if self.pub_year is not None:
+            span = ET.SubElement(li, "span")
+            span.text = " (" + self.pub_year + ") "
+
+    def add_page_span(self, li):
+        if self.page_info is not None:
+            span = ET.SubElement(li, "span")
+            span.text = " " + self.page_info + " "
+
+    def add_doi_span(self, li):
+        if self.doi is not None:
+            span = ET.SubElement(li, "span")
+            span.text = " DOI: " + self.doi + " "
+
+    def add_journal_info_span(self, li):
+        if self.journal_info is not None:
+            self.journal_info.add_spans(li)
 
 class EPMCBib:
     """
@@ -15,6 +103,155 @@ class EPMCBib:
         # dateOfCreation,firstIndexDate,fullTextReceivedDate,dateOfRevision,electronicPublicationDate,
         # firstPublicationDate,subsetList,commentCorrectionList,meshHeadingList,dateOfCompletion,manuscriptId,
         # embargoDate,chemicalList]
+    """
+    """
+{
+	"papers": {
+		"PMC11193050": {
+			"downloaded": true,
+			"pdfdownloaded": true,
+			"jsondownloaded": true,
+			"csvmade": false,
+			"htmlmade": false,
+			"id": "38912110",
+			"source": "MED",
+			"pmid": "38912110",
+			"pmcid": "PMC11193050",
+			"fullTextIdList": {
+				"fullTextId": "PMC11193050"
+			},
+			"doi": "10.3897/bdj.12.e120304",
+			"title": "Towards computable taxonomic knowledge: Leveraging nanopublications for sharing new synonyms in the Madagascan genus <i>Helictopleurus</i> (Coleoptera, Scarabaeinae).",
+			"authorString": "Rossini M, Montanaro G, Montreuil O, Tarasov S.",
+			"authorList": {
+				"author": [
+					{
+						"fullName": "Rossini M",
+						"firstName": "Michele",
+						"lastName": "Rossini",
+						"initials": "M",
+						"authorId": {
+							"@type": "ORCID",
+							"#text": "0000-0002-1938-6105"
+						},
+						"authorAffiliationDetailsList": {
+							"authorAffiliation": [
+								{
+									"affiliation": "Finnish Museum of Natural History (LUOMUS), University of Helsinki, Helsinki, Finland Finnish Museum of Natural History (LUOMUS), University of Helsinki Helsinki Finland."
+								},
+								{
+									"affiliation": "Department of Agronomy, Food, Natural resources, Animals and Environment (DAFNAE), University of Padova, Padova, Italy Department of Agronomy, Food, Natural resources, Animals and Environment (DAFNAE), University of Padova Padova Italy."
+								}
+							]
+						}
+					},
+					...
+								"authorIdList": {
+				"authorId": [
+					{
+						"@type": "ORCID",
+						"#text": "0000-0001-5237-2330"
+					},
+					...
+					
+				]
+			},
+			...
+						"dataLinksTagsList": {
+				"dataLinkstag": "altmetrics"
+			},
+			"journalInfo": {
+				"volume": "12",
+				"journalIssueId": "3697827",
+				"dateOfPublication": "2024",
+				"monthOfPublication": "0",
+				"yearOfPublication": "2024",
+				"printPublicationDate": "2024-01-01",
+				"journal": {
+					"title": "Biodiversity data journal",
+					"ISOAbbreviation": "Biodivers Data J",
+					"medlineAbbreviation": "Biodivers Data J",
+					"NLMid": "101619899",
+					"ISSN": "1314-2828",
+					"ESSN": "1314-2828"
+				}
+			},
+			"pubYear": "2024",
+			"pageInfo": "e120304",
+			"abstractText": "<h4>Background</h4>Numerous taxonomic studies have focused on the dung beetle genus <i>Helictopleurus</i> d'Orbigny, 1915, endemic to Madagascar. However, this genus stilll needs a thorough revision. Semantic technologies, such as nanopublications, hold the potential to enhance taxonomy by transforming how data are published and analysed. This paper evaluates the effectiveness of nanopublications in establishing synonyms within the genus <i>Helictopleurus</i>.<h4>New information</h4>In this study, we identify four new synonyms within <i>Helictopleurus</i>: <i>H.rudicollis</i> (Fairmaire, 1898) = <i>H.hypocrita</i> Balthasar, 1941 <b>syn. nov.</b>; <i>H.vadoni</i> Lebis, 1960 = <i>H.perpunctatus</i> Balthasar, 1963 <b>syn. nov.</b>; <i>H.halffteri</i> Balthasar, 1964 = <i>H.dorbignyi</i> Montreuil, 2005 <b>syn. nov.</b>; <i>H.clouei</i> (Harold, 1869) = <i>H.gibbicollis</i> (Fairmaire, 1895) <b>syn. nov.</b> <i>Helictopleurus</i> may have a significantly larger number of synonyms than currently known, indicating potentially inaccurate estimates about its recent extinction.We also publish the newly-established synonyms as nanopublications, which are machine-readable data snippets accessible online. Additionally, we explore the utility of nanopublications in taxonomy and demonstrate their practical use with an example query for data extraction.",
+			"affiliation": "Finnish Museum of Natural History (LUOMUS), University of Helsinki, Helsinki, Finland Finnish Museum of Natural History (LUOMUS), University of Helsinki Helsinki Finland.",
+			"publicationStatus": "epublish",
+			"language": "eng",
+			"pubModel": "Electronic-eCollection",
+			"pubTypeList": {
+				"pubType": [
+					"research-article",
+					"Journal Article"
+				]
+			},
+			"keywordList": {
+				"keyword": [
+					"Taxonomy",
+					"Extinction",
+					"Nomenclature",
+					"Madagascar",
+					"Ontology",
+					"Dung Beetles",
+					"Sparql",
+					"Machine-readable Data"
+				]
+			},
+			"fullTextUrlList": {
+				"fullTextUrl": [
+					{
+						"availability": "Subscription required",
+						"availabilityCode": "S",
+						"documentStyle": "doi",
+						"site": "DOI",
+						"url": "https://doi.org/10.3897/BDJ.12.e120304"
+					},
+					{
+						"availability": "Open access",
+						"availabilityCode": "OA",
+						"documentStyle": "html",
+						"site": "Europe_PMC",
+						"url": "https://europepmc.org/articles/PMC11193050"
+					},
+					{
+						"availability": "Open access",
+						"availabilityCode": "OA",
+						"documentStyle": "pdf",
+						"site": "Europe_PMC",
+						"url": "https://europepmc.org/articles/PMC11193050?pdf=render"
+					}
+				]
+			},
+			"isOpenAccess": "Y",
+			"inEPMC": "Y",
+			"inPMC": "N",
+			"hasPDF": "Y",
+			"hasBook": "N",
+			"hasSuppl": "Y",
+			"citedByCount": "0",
+			"hasData": "Y",
+			"hasReferences": "Y",
+			"hasTextMinedTerms": "Y",
+			"hasDbCrossReferences": "N",
+			"hasLabsLinks": "Y",
+			"license": "cc by",
+			"hasEvaluations": "N",
+			"authMan": "N",
+			"epmcAuthMan": "N",
+			"nihAuthMan": "N",
+			"hasTMAccessionNumbers": "N",
+			"dateOfCreation": "2024-06-24",
+			"firstIndexDate": "2024-06-25",
+			"fullTextReceivedDate": "2024-06-24",
+			"dateOfRevision": "2024-06-25",
+			"electronicPublicationDate": "2024-06-14",
+			"firstPublicationDate": "2024-06-14"
+		},
+
     """
     INT = "int"
     LIST = "list"
@@ -49,52 +286,47 @@ class EPMCBib:
         'pageInfo'
     ]
 
-    @classmethod
-    def format_field(cls, name, val):
+    def __init__(self):
+        self.infile = None
+        self.bib_json = None
+        self.papers = []
+
+    def read_bib_json(self, infile):
         """
-        uses 'name' in EPMC metadata to find format and return transformed value,
+        :param infile: input json
+        """
+        assert Path(infile).exists(), f"JSON file {infile} must exist"
+        self.infile = infile
+        with open(infile, "r") as f:
+            self.bib_json = json.load(f)
+        if self.bib_json is None:
+            print(f"No bib_json")
+            return None
+        papers = self.bib_json.get("papers")
+        assert papers is not None, f"must have 'papers'"
+        print(f"read {len(papers)} papers")
 
-        :param name: name of field (e.g. 'journalInfo')
-        :param val: raw string value
-        :return: object of correct type (e.g. List or OrderedDict
+        for paper in papers:
+            paper_value = papers.get(paper)
+            epmc_paper = EPMCPaper.create_paper_from_json(paper_value)
+
+            self.papers.append(epmc_paper)
+
+
+
+
+    def create_html_json(self):
         """
 
-        fmt = cls.FORMATS.get(name)
-        if fmt is None:
-            fmt = cls.STR
-        valx = str(val)
-        if fmt == cls.LIST:
-            valx = [v.strip() for v in val.split(",")]
-        if fmt == cls.INT:
-            valx = int(val)
-        if fmt == cls.ORDERED_DICT:
-            valx = Util.read_ordered_dict_from_str(val)
-
-        return valx
-
-    @classmethod
-    def make_bib_html(cls, infile):
+        """
         htmlx = HtmlLib.create_html_with_empty_head_body()
         body = HtmlLib.get_body(htmlx)
         ul = ET.SubElement(body, "ul")
+        for epmc_paper in self.papers:
+            # print(f"paper {epmc_paper}")
+            epmc_paper.create_bib_span(ul)
 
-        usecols = EPMCBib.COMMON
-        usecols = None
-        df = pd.read_csv(str(infile), usecols=usecols)
-        for index, row in df.iterrows():
-            cls.create_add_li(row, ul)
         return htmlx
-
-    @classmethod
-    def create_add_li(cls, row, ul):
-        line_span = ET.SubElement(ul, "li")
-        # cls.add_span(row, line_span, cls.PMCID)
-        # jinfo = JournalInfo.create_journal_info_span(row, line_span)
-        cls.add_span(row, line_span, cls.AUTHOR_STRING, end=", ")
-        cls.add_span(row, line_span, cls.TITLE, start=' "', end='" ')
-        cls.add_journal_info_span(row, line_span)
-        cls.add_span(row, line_span, cls.PAGE_INFO, start=' ', end=' ')
-        cls.add_span(row, line_span, cls.DOI, start=' DOI: ', end='')
 
 
     @classmethod
@@ -105,28 +337,11 @@ class EPMCBib:
             el.text = start + str(val)
             el.tail = end
 
-    @classmethod
-    def add_journal_info_span(cls, row, line_span):
-        jinfo = JournalInfo.create_journal_info(row)
-        if jinfo is not None:
-            jinfo_span = ET.SubElement(line_span, "span")
-            cls._add_span(jinfo_span, jinfo.vol, start=" ", end="")
-            cls._add_span(jinfo_span, jinfo.issue, start="(", end=") ")
-            # cls._add_span(jinfo_span, jinfo.pub_date, start=" (", end="): ")
-            # cls._add_span(jinfo_span, jinfo.month_pub, start=" M ", end=" ")
-            cls._add_span(jinfo_span, jinfo.year_pub, start=" (", end="): ")
-            # cls._add_span(jinfo_span, jinfo.print_pub_date, start=" X ", end=" ")
-            # cls._add_span(jinfo_span, jinfo.nlm_id)
-            # cls._add_span(jinfo_span, jinfo.issn)
-            # cls._add_span(jinfo_span, jinfo.essn)
 
-
-    @classmethod
-    def _add_span(cls, jinfo_span, text, start="", end=""):
-        if jinfo_span is not None and text is not None:
-            el = ET.SubElement(jinfo_span, "span")
-            el.text = start + text + end
-
+def _add_str(s, value):
+    if value is not None:
+        s += str(value) + "\n"
+    return s
 
 
 class JournalInfo:
@@ -147,6 +362,9 @@ class JournalInfo:
     NLM_ID = 'NLMid'  # str
     ISSN = 'ISSN'  # dddd-dddd,
     ESSN = 'ESSN'  # dddd-dddd,
+    TITLE = "title"
+    ISO_ABB = "ISOAbbreviation"
+    MEDLINE_ABB = "medlineAbbreviation"
 
     def __init__(self):
         self.vol = None
@@ -159,37 +377,98 @@ class JournalInfo:
         self.issn = None
         self.essn = None
 
-    @classmethod
-    def create_journal_info(cls, row):
-        jinfo = None
-        if row is not None:
-            jinfo = JournalInfo()
-            jinfo_s = row.get(cls.JOURNAL_INFO)
-            keys = row.keys()
-            print(f"row keys {keys} /// {jinfo_s}")
-            jinfo_od = Util.read_ordered_dict_from_str(jinfo_s)
-            # jinfo_dict = Util.read_ordered_dict_from_str1(jinfo_s)
-            keys = jinfo_od.keys()
-            print(f"keys0 {keys}")
+        self.journal_title = None
+        self.volume = None
+        self.issue = None
+        self.iso_abbrev = None
+        self.medline_abbrev = None
 
-            jinfo.vol = jinfo_od.get(cls.VOLUME)
-            jinfo.issue = jinfo_od.get(cls.ISSUE)
-            jinfo.pub_date = jinfo_od.get(cls.DATE_OF_PUBLICATION)
-            jinfo.month_pub = jinfo_od.get(cls.MONTH_OF_PUBLICATION)
-            jinfo.year_pub = jinfo_od.get(cls.YEAR_OF_PUBLICATION)
-            jinfo.print_pub_date = jinfo_od.get(cls.PRINT_PUBLICATION_DATE)
-            jinfo.nlm_id = jinfo_od.get(cls.NLM_ID)
-            jinfo.issn = jinfo_od.get(cls.ISSN)
-            jinfo.essn = jinfo_od.get(cls.ESSN)
+        self.volume = None
+        self.issue = None
+        """
+        "journal": {
+					"title": "Biodiversity data journal",
+					"ISOAbbreviation": "Biodivers Data J",
+					"medlineAbbreviation": "Biodivers Data J",
+					"NLMid": "101619899",
+					"ISSN": "1314-2828",
+					"ESSN": "1314-2828"
+		"""
 
-            jnl_s = row.get(cls.JOURNAL)
-            if jnl_s is not None:
-                jnl_od = Util.read_ordered_dict_from_str(jnl_s)
-                keys = jnl_od.keys()
-                print(f"JNL {keys} {jnl_od}")
-        return jinfo
+    def __str__(self):
+        pass
 
+        s = ""
+        s = _add_str(s, self.pub_date)
+        s = _add_str(s, self.year_pub)
+        s = _add_str(s, self.journal_title)
+        s = _add_str(s, self.iso_abbrev)
+        s = _add_str(s, self.medline_abbrev)
+
+        return s
+
+    def add_spans(self, li):
+        self.add_volume_issue_span(li)
+        self.add_year_pub(li)
+        self.add_journal_title(li)
 
 
     def get_html_span(cls, row):
         pass
+
+    @classmethod
+    def read_json(cls, jinfo_value):
+        """
+        "journalInfo": {
+        "volume": "12",
+        "journalIssueId": "3697827",
+        "dateOfPublication": "2024",
+        "monthOfPublication": "0",
+        "yearOfPublication": "2024",
+        "printPublicationDate": "2024-01-01",
+        "journal": {
+            "title": "Biodiversity data journal",
+            "ISOAbbreviation": "Biodivers Data J",
+            "medlineAbbreviation": "Biodivers Data J",
+            "NLMid": "101619899",
+            "ISSN": "1314-2828",
+            "ESSN": "1314-2828"
+        }
+    },
+
+        """
+        if jinfo_value is not None:
+            j_info = JournalInfo()
+            j_info.value = jinfo_value
+            j_info.volume = jinfo_value.get(JournalInfo.VOLUME)
+            j_info.issue = jinfo_value.get(JournalInfo.ISSUE)
+            j_info.year_pub = jinfo_value.get(JournalInfo.YEAR_OF_PUBLICATION)
+            j_info.journal = jinfo_value.get(JournalInfo.JOURNAL)
+            if j_info.journal is not None:
+                j_info.journal_title = j_info.journal.get(JournalInfo.TITLE)
+                j_info.iso_abbrev = j_info.journal.get(JournalInfo.ISO_ABB)
+                j_info.medline_abbrev = j_info.journal.get(JournalInfo.MEDLINE_ABB)
+            return j_info
+
+
+    def add_volume_issue_span(self, li):
+        if self.vol is not None:
+            span = ET.SubElement(li, "span")
+            span.text = " " + str(self.vol)
+            if self.jissue_id is not None:
+                span.text += "(" + str(self.jissue_id) + ")"
+            span.text += " "
+
+
+    def add_year_pub(self, li):
+        if self.year_pub is not None:
+            span = ET.SubElement(li, "span")
+            span.text = " (" + str(self.year_pub) + ") "
+
+    def add_journal_title(self, li):
+        if self.journal_title is not None:
+            span = ET.SubElement(li, "span")
+            span.text = " " + str(self.journal_title) + " "
+
+
+
