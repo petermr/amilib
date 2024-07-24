@@ -42,6 +42,8 @@ class EPMCPaper:
             epmc_paper.title = paper.get(EPMCBib.TITLE)
             epmc_paper.author_string = paper.get(EPMCBib.AUTHOR_STRING)
             jinf = paper.get(EPMCBib.JOURNAL_INFO)
+            print(f"JINF {jinf}")
+            epmc_paper.page_info = paper.get(EPMCBib.PAGE_INFO)
             epmc_paper.journal_info = JournalInfo.read_json(jinf)
 
             return epmc_paper
@@ -63,12 +65,12 @@ class EPMCPaper:
     def add_author_span(self, li):
         if self.author_string is not None:
             span = ET.SubElement(li, "span")
-            span.text = " " + self.author_string + " "
+            span.text = " " + self.author_string + ", "
 
     def add_title_span(self, li):
         if self.title is not None:
             span = ET.SubElement(li, "span")
-            span.text = ' "' + self.title + '" '
+            span.text = ' "' + self.title + '", '
 
     def add_vol_issue_span(self, li):
         if self.journal_info is not None:
@@ -77,17 +79,17 @@ class EPMCPaper:
     def add_year_span(self, li):
         if self.pub_year is not None:
             span = ET.SubElement(li, "span")
-            span.text = " (" + self.pub_year + ") "
+            span.text = " (" + self.pub_year + "), "
 
     def add_page_span(self, li):
         if self.page_info is not None:
             span = ET.SubElement(li, "span")
-            span.text = " " + self.page_info + " "
+            span.text = " " + self.page_info + ", "
 
     def add_doi_span(self, li):
         if self.doi is not None:
             span = ET.SubElement(li, "span")
-            span.text = " DOI: " + self.doi + " "
+            span.text = " DOI: " + self.doi + ", "
 
     def add_journal_info_span(self, li):
         if self.journal_info is not None:
@@ -452,23 +454,25 @@ class JournalInfo:
 
 
     def add_volume_issue_span(self, li):
-        if self.vol is not None:
+        if self.volume is not None:
             span = ET.SubElement(li, "span")
-            span.text = " " + str(self.vol)
-            if self.jissue_id is not None:
-                span.text += "(" + str(self.jissue_id) + ")"
-            span.text += " "
+            b = ET.SubElement(span, "b")
+            b.text = " " + str(self.volume)
+            if self.issue is not None:
+                b.text += "(" + str(self.issue) + ")"
+            b.text += " "
 
 
     def add_year_pub(self, li):
         if self.year_pub is not None:
             span = ET.SubElement(li, "span")
-            span.text = " (" + str(self.year_pub) + ") "
+            span.text = " (" + str(self.year_pub) + "): "
 
     def add_journal_title(self, li):
         if self.journal_title is not None:
             span = ET.SubElement(li, "span")
-            span.text = " " + str(self.journal_title) + " "
+            ital = ET.SubElement(span, "i")
+            ital.text = " " + str(self.journal_title) + ", "
 
 
 
