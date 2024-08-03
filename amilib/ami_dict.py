@@ -485,6 +485,10 @@ class AmiEntry:
         id = None if name is None else name.strip().lower().replace("\\s+", "_")
         return id
 
+    def get_search_terms(self):
+        short_forms = self.element.xpath("short_form")
+        return [sf.text for sf in short_forms]
+
 
 class AmiDictionary:
     """wrapper for an ami dictionary including search flags
@@ -1564,7 +1568,7 @@ class AmiDictionary:
 
 
     @classmethod
-    def read_html_dictionary_and_markup_html_file(cls, chapter_file, chapter_outpath, html_dict_path):
+    def read_html_dictionary_and_markup_html_file(cls, chapter_file, chapter_outpath, html_dict_path, use_search_terms=False):
         """
         read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
         markup paras, and write marked  file
@@ -1578,15 +1582,23 @@ class AmiDictionary:
         assert html_dict_path.exists()
         dictionary = AmiDictionary.create_from_html_file(html_dict_path)
         assert dictionary is not None
-        phrases = dictionary.get_terms()
+
+        phrases = dictionary.get_search_terms() if use_search_terms else dictionary.get_terms()
+
         dictionary.location = html_dict_path
-        HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
+        HtmlLib.search_phrases_in_paragraphs(paras, phrases, href_markup=html_dict_path)
         # write marked_up html
         chapter_elem = paras[0].xpath("/html")[0]
         HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
         assert chapter_outpath.exists()
         return chapter_elem
 
+    def get_search_terms(self):
+        search_terms = []
+        for ami_entry in self.get_ami_entries():
+            s_terms = ami_entry.get_search_terms()
+            search_terms.extend(s_terms)
+        return search_terms
 
 
 class AmiSynonym:

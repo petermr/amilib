@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dictionary title="simple">
+
+  <entry wikidata="Q56298528)" name="carbon dioxide removal" term="carbon dioxide removal">
+    <wikipedia url="https://en.wikipedia.org/wiki/Carbon_dioxide_removal">
+      <definition>a process in which carbon dioxide (CO2) is removed from the atmosphere by
+        deliberate human activities and durably stored in geological, terrestrial,
+        or ocean reservoirs, or in products.</definition>
+    </wikipedia>
+    <synonym>negative emissions</synonym>
+    <shortform>CDR</shortform>
+  </entry>
+
+  <entry wikidata="Q17165387" name="solar radiation modification" term="solar radiation modification">
+    <wikipedia url="https://en.wikipedia.org/wiki/Solar_radiation_modification">
+      <definition>Solar radiation modification (SRM), or solar geoengineering, refers to a range of approaches to limit
+        global warming by increasing the amount of sunlight (solar radiation) that the atmosphere reflects back to space
+        or by reducing the trapping of outgoing thermal radiation. </definition>
+      <description></description>
+    </wikipedia>
+    <synonym>albedo modification</synonym>
+    <synonym>solar radiation management</synonym>
+    <shortform>SRM</shortform>
+  </entry>
+
+  <entry wikidata="Q427071" name="hydroxyl radical" term="hydroxyl radical">
+    <wikipedia url="https://en.wikipedia.org/wiki/Hydroxyl_radical">
+      <definition>the neutral form of the hydroxide ion (HO–)</definition>
+    </wikipedia>
+    <shortform>.OH</shortform>
+    <shortform>OH.</shortform>
+  </entry>
+
+  <entry wikidata="Q85763713" name="global surface temperature" term="global surface temperature">
+    <wikipedia url="https://en.wikipedia.org/wiki/Global_surface_temperature">
+      <definition>the average temperature of Earth's surface.</definition>
+    </wikipedia>
+    <synonym>global mean surface temperature</synonym>
+    <synonym>global average surface temperature</synonym>
+    <synonym>global mean surface air temperature</synonym>
+    <shortform>GMST</shortform>
+    <shortform>GST</shortform>
+
+  </entry>
+
+  <entry wikidata="Q67028624" name="Special Report on the Ocean and Cryosphere in a Changing Climate" term="SROCC">
+    <wikipedia url="https://en.wikipedia.org/wiki/Special_Report_on_the_Ocean_and_Cryosphere_in_a_Changing_Climate">
+      <definition>report about the effects of climate change on the world's seas, sea ice, icecaps and glaciers</definition>
+    </wikipedia>
+    <shortform>SROCC</shortform>
+  </entry>
+
+  <entry wikidata="Q4652675" name="Atlantic meridional overturning circulation" term="Atlantic meridional overturning circulation">
+    <wikipedia url="https://en.wikipedia.org/wiki/Atlantic_meridional_overturning_circulation">
+      <definition>the main ocean current system in the Atlantic Ocean</definition>
+    </wikipedia>
+    <short>AMOC</short>
+  </entry>
+
+  <entry wikidata="Q5570159" name="Global Carbon Project" term="Global Carbon Project">
+    <wikipedia url="https://en.wikipedia.org/wiki/Global_Carbon_Project">
+      <definition>an organisation that seeks to quantify global greenhouse gas emissions and their causes.</definition>
+    </wikipedia>
+    <shortform>GCP</shortform>
+  </entry>
+
+  <entry wikidata="Q2577671" name="Bioenergy with carbon capture and storage" term="BECCS">
+    <wikipedia url="https://en.wikipedia.org/wiki/Bioenergy_with_carbon_capture_and_storage">
+      <definition>the process of extracting bioenergy from biomass and capturing and storing
+        the carbon, thereby removing it from the atmosphere.</definition>
+    </wikipedia>
+    <shortform>BECCS</shortform>
+  </entry>
+
+  <entry wikidata="Q184624" name="peat" term="peat">
+    <wikipedia url="https://en.wikipedia.org/wiki/Peat">
+      <definition>an accumulation of partially decayed vegetation or organic matter.</definition>
+    </wikipedia>
+  </entry>
+</dictionary>

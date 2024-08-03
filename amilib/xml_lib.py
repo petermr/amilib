@@ -1254,25 +1254,26 @@ class HtmlLib:
         return paras
 
     @classmethod
-    def para_contains_phrase(cls, para, phrase, ignore_case=True, markup=None):
+    def para_contains_phrase(cls, para, search_phrase, ignore_case=True, use_regex=False, href_markup=None):
         """
         search paragraph with phrase. If markuip is not None add hyperlinks
 
         Parameters
         ----------
-        para paragraph to search
-        phrase search phrase
-        ignore_case if True lowercase text and phrase
-        markup if True search each itertext and insert hrefs, else just seatch concatenation
-
-        Returns
-        -------
-
+        :param para: paragraph to search
+        :param search_phrase: search phrase (if use_regex may be a regex)
+        :param ignore_case: if True lowercase text and phrase
+        :param href_markup: if True search each itertext and insert hrefs, else just search concatenation
+        :return: whether match found
         """
-        if ignore_case:
-            phrase = phrase.lower()
-        search_re = r'\b' + phrase + r'\b'
-        if not markup:
+        if not use_regex:
+            if ignore_case:
+                search_phrase = search_phrase.lower()
+            search_re = r'\b' + search_phrase + r'\b'
+        else:
+            search_re = search_phrase
+
+        if not href_markup:
             text = "".join(para.itertext())
             if ignore_case:
                 text = text.lower()
@@ -1283,22 +1284,33 @@ class HtmlLib:
             for text in texts:
                 match = re.search(search_re, text)
                 if match:
-                    cls._insert_ahref(markup, match, phrase, text)
+                    cls.insert_ahref(href_markup, match, search_phrase, text)
 
         return False
 
     @classmethod
-    def _insert_ahref(cls, url_base, match, phrase, text):
+    def insert_ahref(cls, url_base, match, phrase, text):
+        """
+        inserts <a href="href">text[match.start():match.end()]</a>
+        text is part of lxml text
+
+        :param url_base: base url to prepene to generated href
+        :param match: re.match from successfule match
+        :param phrase: for generating id (uses HtmlLib.generate_id())
+        :param text: to markup. *Must be part of lxml.tree* to find parent
+        """
         # id = AmiEntry.create_id(phrase)
-        id = HtmlLib.generate_id(phrase)
         lead = text.getparent()
+        if lead is None:
+            print("text should be part of lxml tree")
+            return
+        id = HtmlLib.generate_id(phrase)
         aelem = ET.SubElement(lead, "a")
         href = f"{url_base}#{id}"
         aelem.attrib["href"] = href
         lead.tail = text[0:match.start()]
         aelem.text = text[match.start():match.end()]
         aelem.tail = text[match.end():]
-        print(f"=== {ET.tostring(lead)}")
 
     @classmethod
     def generate_id(cls, phrase):
@@ -1308,21 +1320,22 @@ class HtmlLib:
         return phrase.strip().lower().replace("\\s+", "_")
 
     @classmethod
-    def search_phrases_in_paragraphs(cls, paras, phrases, markup=None):
+    def search_phrases_in_paragraphs(cls, paras, phrases, href_markup=None, require_id=True):
         """search for phrases in paragraphs
         :param paras: list of HTML elems with text (normally <p>), must have @id else ignored
         :param phrases: list of strings to search for (word boundary honoured)
-        :param markup:html dictionary with phrases
+        :param href_markup:html dictionary with phrases
         :return: dict() keyed on para_ids values are dict of search hits by phrase
         """
         para_phrase_dict = dict()
         for para in paras:
-            para_id = para.get("id")
-            if para_id is None:
-                continue
+            if require_id:
+                para_id = para.get("id")
+                if para_id is None:
+                    continue
             phrase_dict = dict()
             for phrase in phrases:
-                count = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True, markup=markup)
+                count = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True, href_markup=href_markup)
                 if count > 0:
                     phrase_dict[phrase] = count
                     para_phrase_dict[para_id] = phrase_dict

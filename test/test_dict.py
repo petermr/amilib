@@ -968,7 +968,7 @@ class AmiDictionaryTest(AmiAnyTest):
         dictionary.write_to_file(html_path, debug=True)
         dictionary.location = html_path
         assert len(phrases) == 11
-        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_path)
+        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, href_markup=html_path)
         chapter_elem = paras[0].xpath("/html")[0]
         chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "Chapter03", "marked_up.html", debug=True)
         HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
@@ -1006,7 +1006,7 @@ class AmiDictionaryTest(AmiAnyTest):
         phrases = dictionary.get_terms()
         dictionary.location = html_dict_path
         assert len(phrases) == 43
-        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
+        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, href_markup=html_dict_path)
 
         # write marked_up html
         chapter_elem = paras[0].xpath("/html")[0]
@@ -1014,7 +1014,7 @@ class AmiDictionaryTest(AmiAnyTest):
         HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
         assert  chapter_outpath.exists()
 
-    def test_search_with_dictionary_and_make_links_COMMANDLINE(self):
+    def test_search_with_dictionary_terms_and_make_links_COMMANDLINE(self):
         """
         uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids)
 
@@ -1031,6 +1031,68 @@ class AmiDictionaryTest(AmiAnyTest):
         html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
 
         AmiDictionary.read_html_dictionary_and_markup_html_file(chapter_file, chapter_outpath, html_dict_path=html_dict_path)
+        assert chapter_outpath.exists()
+
+    def test_search_syntax(self):
+        """tests case insensitivity and compile
+        """
+        RE_TEST = re.compile('test')
+        RE_TEST_I = re.compile('(?i)test')
+        tested = RE_TEST.match('TeSt')
+        print(f"RE_TEST {tested}")
+        assert not tested
+        tested = RE_TEST_I.match('TeSt')
+        assert tested
+        s = 'This is one Test, another TEST, and another test.'
+        testeds = RE_TEST.findall(s)
+        assert testeds == ['test']
+        testeds_i = RE_TEST_I.findall(s)
+        assert testeds_i == ['Test', 'TEST', 'test']
+
+    def test_get_search_terms_NEW(self):
+        """
+        extract search terms from dictionary
+        These may be:
+        * original term (term="foo")
+        * <short_form>
+        * <synonym>
+
+        """
+        stem = "simple"
+
+        # chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
+        # chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        # FileLib.delete_file(chapter_outpath)
+        xml_dict_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.xml")
+        assert xml_dict_path is not None and xml_dict_path.exists()
+        ami_dict = AmiDictionary.create_from_xml_file(xml_dict_path, title="simple")
+        assert ami_dict is not None
+        count = len(ami_dict.get_ami_entries())
+        print (f"entry count {count}")
+        assert 6 < count < 15, f"entry count {len}"
+        terms = ami_dict.get_terms()
+        print(f"terms: {terms}")
+
+
+
+    def test_search_with_dictionary_search_terms_and_make_links_COMMANDLINE(self):
+        """
+        uses a simple dictionary with search terms to search WG chapter (wg2/ch03) *html_with_ids)
+
+        Returns
+        -------
+
+
+        """
+        stem = "simple"
+
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        FileLib.delete_file(chapter_outpath)
+        html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
+
+        AmiDictionary.read_html_dictionary_and_markup_html_file(
+            chapter_file, chapter_outpath, use_search_terms=True, html_dict_path=html_dict_path)
         assert chapter_outpath.exists()
 
 

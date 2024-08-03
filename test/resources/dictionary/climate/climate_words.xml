@@ -1,13 +1,34 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!--
+self.RE_TEST = re.compile('(?i)test', re.IGNORECASE)
+if self.RE_TEST.match('TeSt'):
+
+>>> import re
+>>> s = 'This is one Test, another TEST, and another test.'
+>>> re.findall('(?i)test', s)
+['Test', 'TEST', 'test']
+-->
 <dictionary title="climate_words">
-  <entry name="UNFCCC" term="UNFCCC"/>
-  <entry name="greenhouse gas" term="greenhouse gas"/>
-  <entry name="AMOC" term="AMOC"/>
+  <entry wikidata="Q208645" name="United Nations Framework Convention on Climate Change" term="UNFCCC">
+    <shortform>UNFCCC</shortform>
+  </entry>
+
+  <entry name="greenhouse gas" term="greenhouse gas">
+    <regex>greenhouse gas(es)?</regex>
+    <shortform case="upper">GHG</shortform>
+  </entry>
+  <entry id="amoc" name="Atlantic Meridional Overturning Circulation" term="Atlantic Meridional Overturning Circulation" term="AMOC">
+    <shortform case="exact">AMOC</shortform>
+  </entry>
   <entry name="SIDS" term="SIDS"/>
   <entry name="LULUCF" term="LULUCF"/>
   <entry name="radiative forcing" term="radiative forcing"/>
-  <entry name="methane" term="methane"/>
-  <entry name="antimicrobial resistance" term="antimicrobial resistance"/>
+  <entry name="methane" term="methane">
+    <synonym>CH4</synonym>
+  </entry>
+  <entry name="antimicrobial resistance" term="antimicrobial resistance">
+    <shortform case="upper">AMR</shortform>
+  </entry>
   <entry name="Paleoclimate" term="Paleoclimate"/>
   <entry name="Spatial hotspot" term="Spatial hotspot"/>
   <entry name="permafrost" term="permafrost"/>

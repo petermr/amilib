@@ -1,20 +1,18 @@
 import json
 from pathlib import Path
-
-import pandas as pd
 import lxml.etree as ET
 
-from amilib.util import Util
 from amilib.xml_lib import HtmlLib
 
 
-class EPMCPaper:
+class EPMCMetadata:
     """
 
     """
 
 
     def __init__(self):
+        self.pmcid = None
         self.doi = None
         self.title = None
         self.author_string = None
@@ -25,7 +23,8 @@ class EPMCPaper:
 
     def __str__(self):
         s = ""
-        s = _add_str(s,  self.doi)
+        s = _add_str(s, self.pmcid)
+        s = _add_str(s, self.doi)
         s = _add_str(s, self.title)
         s = _add_str(s, self.author_string)
         s = _add_str(s, self.journal_info)
@@ -35,65 +34,91 @@ class EPMCPaper:
         return s
 
     @classmethod
-    def create_paper_from_json(cls, paper):
-        if paper is not None:
-            epmc_paper = EPMCPaper()
-            epmc_paper.doi = paper.get(EPMCBib.DOI)
-            epmc_paper.title = paper.get(EPMCBib.TITLE)
-            epmc_paper.author_string = paper.get(EPMCBib.AUTHOR_STRING)
-            jinf = paper.get(EPMCBib.JOURNAL_INFO)
-            print(f"JINF {jinf}")
-            epmc_paper.page_info = paper.get(EPMCBib.PAGE_INFO)
-            epmc_paper.journal_info = JournalInfo.read_json(jinf)
+    def create_metadata_from_json(cls, jsonx):
+        if jsonx is not None:
+            metadata = EPMCMetadata()
+            metadata.pmcid = jsonx.get(EPMCBib.PMCID)
+            metadata.doi = jsonx.get(EPMCBib.DOI)
+            metadata.title = jsonx.get(EPMCBib.TITLE)
+            metadata.author_string = jsonx.get(EPMCBib.AUTHOR_STRING)
+            metadata.abstract_text = jsonx.get(EPMCBib.ABSTRACT_TEXT)
+            jinf = jsonx.get(EPMCBib.JOURNAL_INFO)
+            metadata.page_info = jsonx.get(EPMCBib.PAGE_INFO)
+            metadata.journal_info = JournalInfo.read_json(jinf)
 
-            return epmc_paper
+            return metadata
 
 
-    def create_bib_span(self, ul):
+    def create_bib_list_element(self, ul):
         """
-
+        creates and adds a <li> with the bibliographic info
+        restylable through CSS
+        :param ul: parent ul
+        :return: the li
         """
+        if ul is None:
+            return None
         li = ET.SubElement(ul, "li")
+        self.add_pmcid_span(li)
         self.add_author_span(li)
         self.add_title_span(li)
 
         self.add_journal_info_span(li)
-        # self.add_year_span(li)
         self.add_page_span(li)
         self.add_doi_span(li)
+        self.add_abstract_span(li)
+
+        return li
+
+    def add_pmcid_span(self, li):
+        if self.pmcid is not None:
+            span = ET.SubElement(li, "span")
+            span.attrib["class"] = "pmcid"
+            span.text = " " + self.pmcid + ", "
 
     def add_author_span(self, li):
         if self.author_string is not None:
             span = ET.SubElement(li, "span")
+            span.attrib["class"] = "author_string"
             span.text = " " + self.author_string + ", "
 
     def add_title_span(self, li):
         if self.title is not None:
             span = ET.SubElement(li, "span")
+            span.attrib["class"] = "title"
             span.text = ' "' + self.title + '", '
-
-    def add_vol_issue_span(self, li):
-        if self.journal_info is not None:
-            span = ET.SubElement(li, "span")
 
     def add_year_span(self, li):
         if self.pub_year is not None:
             span = ET.SubElement(li, "span")
-            span.text = " (" + self.pub_year + "), "
+            span.attrib["class"] = "pub_year"
+            span.text = " YR (" + self.pub_year + "), "
 
     def add_page_span(self, li):
         if self.page_info is not None:
             span = ET.SubElement(li, "span")
-            span.text = " " + self.page_info + ", "
+            span.attrib["class"] = "page_info"
+            span.text = "PI " + self.page_info + ", "
+
+    def add_abstract_span(self, li):
+        if self.abstract_text is not None:
+            span = ET.SubElement(li, "span")
+            span.attrib["class"] = "abstract_text"
+            span.text = " " + f"Abstract: {len(self.abstract_text.split())} words" + ", "
+            span.attrib["title"] = self.abstract_text
 
     def add_doi_span(self, li):
         if self.doi is not None:
-            span = ET.SubElement(li, "span")
-            span.text = " DOI: " + self.doi + ", "
+            aa = ET.SubElement(li, "a")
+            aa.text = " DOI: " + self.doi + ", "
+            aa.attrib["href"] = f"https://doi.org/{self.doi}"
+
 
     def add_journal_info_span(self, li):
         if self.journal_info is not None:
             self.journal_info.add_spans(li)
+
+
 
 class EPMCBib:
     """
@@ -264,6 +289,7 @@ class EPMCBib:
     DOI = 'doi'
     TITLE = 'title'
     AUTHOR_STRING = 'authorString'
+    ABSTRACT_TEXT = 'abstractText'
     JOURNAL_INFO = 'journalInfo'
     PUB_YEAR = 'pubYear'
     PAGE_INFO = 'pageInfo'
@@ -310,7 +336,7 @@ class EPMCBib:
 
         for paper in papers:
             paper_value = papers.get(paper)
-            epmc_paper = EPMCPaper.create_paper_from_json(paper_value)
+            epmc_paper = EPMCMetadata.create_metadata_from_json(paper_value)
 
             self.papers.append(epmc_paper)
 
@@ -326,7 +352,7 @@ class EPMCBib:
         ul = ET.SubElement(body, "ul")
         for epmc_paper in self.papers:
             # print(f"paper {epmc_paper}")
-            epmc_paper.create_bib_span(ul)
+            epmc_paper.create_bib_list_element(ul)
 
         return htmlx
 
