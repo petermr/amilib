@@ -1033,7 +1033,7 @@ class AmiDictionaryTest(AmiAnyTest):
         AmiDictionary.read_html_dictionary_and_markup_html_file(chapter_file, chapter_outpath, html_dict_path=html_dict_path)
         assert chapter_outpath.exists()
 
-    def test_search_syntax(self):
+    def test_regex_search_syntax(self):
         """tests case insensitivity and compile
         """
         RE_TEST = re.compile('test')
