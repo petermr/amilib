@@ -15,6 +15,7 @@ import pandas as pd
 from lxml import etree
 from lxml import etree as ET
 from lxml.etree import _Element
+from lxml.html import HTMLParser
 
 from amilib.ami_html import HtmlUtil, CSSStyle, H_A, H_SPAN, H_BODY, H_DIV, H_UL, H_LI, A_ID, \
     A_HREF, A_NAME, A_TITLE, A_TERM
@@ -969,6 +970,9 @@ class AmiDictionary:
         is a lowercase match
 
         """
+        if termx is None:
+            print("term is None")
+            return None
         lcase = termx.lower()  # all keys are lowercase
         if self.entry_by_term is None or len(self.entry_by_term) == 0:
             self.create_entry_by_term()
@@ -1270,7 +1274,7 @@ class AmiDictionary:
             lookup.get_possible_wikidata_hits(string)
         return lookup
 
-    def markup_html_from_dictionary(self, target_path, output_path, background_color):
+    def markup_html_from_dictionary(self, target_path, output_path, background_color="pink", recurse=False):
         term_set = self.get_or_create_term_set()
         re_join = '|'.join(term_set)
         try:
@@ -1278,12 +1282,15 @@ class AmiDictionary:
         except Exception as e:
             logging.error(f"dictionary {self.title}: Cannot parse terms into regex: \\n{re_join}\\n please remove or escape characters")
             return None
-        target_elem = lxml.etree.parse(str(target_path))
+        target_elem = ET.parse(str(target_path), HTMLParser())
         div_spans = target_elem.xpath(f".//{H_DIV}/{H_SPAN}")
         for span in div_spans:
             text = span.text
+            id_root = span.attrib.get('id')
+            if id_root is not None:
+                id_root += "_"
             new_elems = HtmlUtil.split_span_at_match(span, rec, new_tags=[H_SPAN, H_A, H_SPAN],
-                                                     recurse=True, id_root=f"{span.attrib['id']}_", id_counter=0)
+                                                     recurse=recurse, id_root=id_root, id_counter=0)
         self.convert_matched_spans_to_a(target_elem)
 
         id_dict, multidict = self.write_annotated_html(background_color, output_path, target_elem)
@@ -1568,18 +1575,18 @@ class AmiDictionary:
 
 
     @classmethod
-    def read_html_dictionary_and_markup_html_file(cls, chapter_file, chapter_outpath, html_dict_path, use_search_terms=False):
+    def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path):
         """
         read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
         markup paras, and write marked  file
-        :param chapter_file: to be marked up
-        :param chapter_outpath: resulting marked file
+        :param inpath: to be marked up
+        :param outpath: resulting marked file
         :param html_dict_path: dictiomary in HTML format
         :return: HTML element marked_up
         """
-        assert chapter_file.exists()
-        paras = HtmlLib._extract_paras_with_ids(chapter_file)
-        assert html_dict_path.exists()
+        assert Path(inpath).exists()
+        paras = HtmlLib._extract_paras_with_ids(inpath)
+        assert Path(html_dict_path).exists()
         dictionary = AmiDictionary.create_from_html_file(html_dict_path)
         assert dictionary is not None
 
@@ -1589,8 +1596,8 @@ class AmiDictionary:
         HtmlLib.search_phrases_in_paragraphs(paras, phrases, href_markup=html_dict_path)
         # write marked_up html
         chapter_elem = paras[0].xpath("/html")[0]
-        HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
-        assert chapter_outpath.exists()
+        HtmlLib.write_html_file(chapter_elem, outpath, debug=True)
+        assert Path(outpath).exists()
         return chapter_elem
 
     def get_search_terms(self):

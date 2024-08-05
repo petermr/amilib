@@ -1305,19 +1305,74 @@ class HtmlLib:
             print("text should be part of lxml tree")
             return
         id = HtmlLib.generate_id(phrase)
-        aelem = ET.SubElement(lead, "a")
-        href = f"{url_base}#{id}"
+        href, title = cls._create_href_and_title(id, url_base)
+
+        # text before, inside and after <a> element
+        start_ = text[0:match.start()]
+        mid_ = text[match.start():match.end()]
+        end_ = text[match.end():]
+
+        # might be a text (contained within lead) or tail following it
+
+        # text contained in element
+        if text.is_text:
+            aelem = cls.add_href_for_lxml_text(start_, text)
+
+        # text following element
+        elif text.is_tail:
+            aelem = cls._add_href_for_lxml_tail(start_, text)
+        else:
+            print(f"ERROR??? (not text of tail) {start_}|{mid_}|{end_}")
+
+        # add content and attributes to aelem
         aelem.attrib["href"] = href
-        lead.tail = text[0:match.start()]
-        aelem.text = text[match.start():match.end()]
-        aelem.tail = text[match.end():]
+        aelem.text = mid_
+        aelem.tail = end_
+        if title:
+            aelem.attrib["title"] = title
+
+    @classmethod
+    def _add_href_for_lxml_tail(cls, start_, text):
+        # print(f"TAIL {start_}|{mid_}|{end_}")
+        prev = text.getparent()
+        aelem = ET.Element("a")
+        aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
+        prev.addnext(aelem)  # order metters1
+        prev.tail = start_ + " "
+        return aelem
+
+    @classmethod
+    def add_href_for_lxml_text(cls, start_, text):
+        # print(f"TEXT  {start_}|{mid_}|{end_}")
+        parent = text.getparent()
+        tail = parent.tail
+        aelem = ET.SubElement(parent, "a")
+        aelem.attrib["style"] = "border:solid 1px; background: #ffffbb;"
+        parent.text = start_
+        parent.tail = tail
+        return aelem
+
+    @classmethod
+    def _create_href_and_title(cls, id, url_base):
+        href = f"{url_base}"
+        href_elem = ET.parse(href, HTMLParser())
+        idelems = href_elem.xpath(f".//*[@id='{id}']")
+        title = id
+        if len(idelems) > 0:
+            ps = idelems[0].xpath("./p")
+            if len(ps) > 0:
+                p = ps[0] if len(ps) == 1 else ps[1]
+                if p is not None:
+                    title = "".join(p.itertext())
+        return href, title
 
     @classmethod
     def generate_id(cls, phrase):
         """
         strip, converts whitespace to single "-" and lowercase
         """
-        return phrase.strip().lower().replace("\\s+", "_")
+        phrase1 = re.sub(r"\s+", "_", phrase)
+        return phrase1
 
     @classmethod
     def search_phrases_in_paragraphs(cls, paras, phrases, href_markup=None, require_id=True):
@@ -1368,7 +1423,7 @@ class HtmlLib:
         -------
 
         """
-        assert infile.exists(), f"{infile} does not exist"
+        assert Path(infile).exists(), f"{infile} does not exist"
         html = ET.parse(str(infile), HTMLParser())
         paras = HtmlLib.find_paras_with_ids(html)
         if count >= 0:
@@ -1493,7 +1548,6 @@ class DataTable:
             for val in row:
                 td = ET.SubElement(tr, H_TD)
                 td.text = val
-                # print("td", td.text)
 
     def make_row(self):
         """
@@ -1525,10 +1579,6 @@ class DataTable:
             print("WROTE", data_table_file)
 
     def __str__(self):
-        # s = self.html.text
-        # print("s", s)
-        # return s
-        # ic("ichtml", self.html)
         htmltext = ET.tostring(self.html)
         print("SELF", htmltext)
         return htmltext

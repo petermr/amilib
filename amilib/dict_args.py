@@ -16,6 +16,7 @@ from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage
 DELETE = "delete"
 DICT = "dict"
 FILTER = "filter"
+INPATH = "inpath"
 LANGUAGE = "language"
 METADATA = "metadata"
 OUTPATH = "outpath"
@@ -64,6 +65,7 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
                                  help="path for dictionary (existing = edit; new = create (type depends on suffix *.xml or *.html)")
         self.parser.add_argument(f"--{FILTER}", type=str, nargs=1, help="path for filter py_dictionary")
+        self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
         self.parser.add_argument(f"--{LANGUAGE}", type=str, nargs="+",
                                  help="list of 2-character codes to consider (default = ['en'] (NYI)")
         self.parser.add_argument(f"--{METADATA}", type=str, nargs="+", help="metadata item/s to add (NYI)")
@@ -79,6 +81,12 @@ class AmiDictArgs(AbstractArgs):
                                  help="add Wikipedia link/s (forces --{WIKIDATA}) (NYI)")
         self.parser.add_argument(f"--{WORDS}", type=str, nargs=1,
                                  help="path/file with words to make or edit dictionary")
+        self.parser.epilog = """
+        Examples:
+        DICT --words wordsfile --dict dictfile --wikipedia   # creates dictionary from wordsfile and adds wikipedia info
+        DICT --inpath htmlfile --dict dictfile --outpath resultfile # reads htmlfile, marks up words in dict and write to outpath
+        
+        """
         # parser.add_argument(f"--{SORT}", type=str, nargs=1, help="sort by term, sort synonyms, sort by weight (NYI)")
         # parser.add_argument(f"--{CATEGORY}", type=str, nargs=1, help="annotate by category (NYI)")
 
@@ -109,6 +117,7 @@ class AmiDictArgs(AbstractArgs):
         self.delete = self.arg_dict.get(DELETE)
         self.dictfile = self.arg_dict.get(DICT)
         self.filter = self.arg_dict.get(FILTER)
+        self.inpath = self.arg_dict.get(INPATH)
         self.language = self.arg_dict.get(LANGUAGE)
         self.metadata = self.arg_dict.get(METADATA)
         self.replace = self.arg_dict.get(REPLACE)
@@ -119,7 +128,12 @@ class AmiDictArgs(AbstractArgs):
         self.wikipedia = self.arg_dict.get(WIKIPEDIA)
         self.words = self.arg_dict.get(WORDS)
 
+        if self.inpath and self.dictfile and self.outpath:
+            self.make_dictionary_markup_file(self.inpath, self.dictfile, self.outpath)
+            return
+
         if self.dictfile:
+
             print(f"writing to {self.dictfile}")
             # is this right??
             if self.ami_dict is not None:
@@ -171,6 +185,7 @@ class AmiDictArgs(AbstractArgs):
         return arg_dict
 
     def build_or_edit_dictionary(self):
+        # cyclic imports TODO
         from amilib.ami_dict import AmiDictionary
 
         if not self.dictfile:
@@ -285,6 +300,21 @@ class AmiDictArgs(AbstractArgs):
     def module_stem(self):
         """name of module"""
         return Path(__file__).stem
+
+    def make_dictionary_markup_file(self, inpath, dictfile, outpath):
+        from amilib.ami_dict import AmiDictionary
+
+        dictfile = str(dictfile)
+
+        if not dictfile.endswith(".html"):
+            print(f"dictionary for commandline must be HTML")
+            return None
+        # dictionary = AmiDictionary.create_from_html_file(dictfile)
+        # # print(f"terms: {len(dictionary.get_terms())} {dictionary.get_terms()[0]}")
+        # dictionary.markup_html_from_dictionary(inpath, outpath)
+        AmiDictionary.read_html_dictionary_and_markup_html_file(
+             str(inpath), str(outpath), html_dict_path=dictfile)
+
 
 # ====================
 
