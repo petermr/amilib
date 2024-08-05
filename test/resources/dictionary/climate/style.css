@@ -1,0 +1,24 @@
+		div[role=ami_entry] {
+		  border: solid 3px green;
+		  margin: 10px;
+		  background: #ffeeee;
+		}
+		*[role=term] {
+		  font-size: 14 px;
+		  font-weight: bold;
+		  background: #ffeeff;
+		}
+		*[role=shortform] {
+		  font-style: italic; 
+		  background: #eeeeff;
+		}
+		*[role=synonym] {
+		  font-style: italic;
+		  background: #ffeeee;
+		}
+		*[role=definition] {
+		  border: solid 2px blue;
+		  background: #eeeeff;
+		  width: 50%;
+		}
+
