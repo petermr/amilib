@@ -264,18 +264,18 @@ class WikipediaTest(unittest.TestCase):
         """
         create semanticHtml from XML dictionary (created by lookup wikipedia)
         """
-        xml_dict_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "xml", "breward_wikipedia.xml")
+        xml_dict_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "xml", "wg2_chap8.xml")
         assert xml_dict_file.exists()
         xml_ami_dict = AmiDictionary.create_from_xml_file(xml_dict_file)
         assert xml_ami_dict is not None
         entries = xml_ami_dict.get_ami_entries()
-        assert len(entries) == 30, f"{xml_dict_file} should have 30 entries"
+        assert len(entries) == 154, "wg2_chap8.xml should have 154 entries"
         ami_entry = entries[0]
         div = ami_entry.create_semantic_div()
         html_elem = HtmlLib.create_html_with_empty_head_body()
         body = HtmlLib.get_body(html_elem)
         body.append(div)
-        path = Path(Resources.TEMP_DIR, "words", "html", "covid.html")
+        path = Path(Resources.TEMP_DIR, "words", "html", "wg2_chap8.html")
         HtmlLib.write_html_file(
             html_elem, path, debug=True)
         assert path.exists()
@@ -284,14 +284,14 @@ class WikipediaTest(unittest.TestCase):
         """
         create semanticHtml from wordlist and lookup in Wikipedia
         """
-        stem = "small_10"
-        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        stem = "wg2_chap8"
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "wg2_chap8.txt")
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
-        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", f"{stem}.xml"))
+        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", "wg2_chap8.xml"))
         html_elem = xml_ami_dict.create_html_dictionary(title=stem)
-        path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html", debug="True")
+        path = Path(Resources.TEMP_DIR, "words", "html", "wg2_chap8.html", debug="True")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
 

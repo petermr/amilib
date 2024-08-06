@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dictionary title="carbon_cycle_edited">
+  <entry name="anthropogenic" term="anthropogenic"/>
+  <entry name="tropospheric" term="tropospheric"/>
+  <entry name="permafrost" term="permafrost"/>
+  <entry name="centennial" term="centennial"/>
+  <entry name="aerosols" term="aerosols"/>
+  <entry name="sequestration" term="sequestration"/>
+  <entry name="albedo" term="albedo"/>
+  <entry name="meridional" term="meridional"/>
+  <entry name="Paleoclimatic" term="Paleoclimatic"/>
+  <entry name="hydrography" term="hydrography"/>
+  <entry name="pCO2" term="pCO2"/>
+  <entry name="parametrization" term="parametrization"/>
+  <entry name="Holocene" term="Holocene"/>
+  <entry name="boreal" term="boreal"/>
+  <entry name="El NiÃ±o" term="El NiÃ±o"/>
+  <entry name="evapotranspiration" term="evapotranspiration"/>
+  <entry name="cement carbonation" term="cement carbonation"/>
+  <entry name="carbon dioxide removal" term="carbon dioxide removal"/>
+  <entry name="solar radiation modification" term="solar radiation modification"/>
+  <entry name="hydroxyl radical" term="hydroxyl radical"/>
+  <entry name="global mean surface air temperature" term="global mean surface air temperature"/>
+  <entry name="SROCC" term="SROCC"/>
+  <entry name="CMIP6" term="CMIP6"/>
+  <entry name="Earth system models" term="Earth system models"/>
+  <entry name="SRCCL" term="SRCCL"/>
+  <entry name="Paleoceneâ€“Eocene thermal maximum" term="Paleoceneâ€“Eocene thermal maximum"/>
+  <entry name="mid-Pliocene Warm Period" term="mid-Pliocene Warm Period"/>
+  <entry name="Last Glacial Maximum" term="Last Glacial Maximum"/>
+  <entry name="Intertropical Convergence Zone" term="Intertropical Convergence Zone"/>
+  <entry name="Atlantic meridional overturning circulation" term="Atlantic meridional overturning circulation"/>
+  <entry name="AMOC" term="AMOC"/>
+  <entry name="Earth models of intermediate complexity" term="Earth models of intermediate complexity"/>
+  <entry name="Global Vegetation Models" term="Global Vegetation Models"/>
+  <entry name="South Pole Observatory" term="South Pole Observatory"/>
+  <entry name="Mauna Loa Observatory" term="Mauna Loa Observatory"/>
+  <entry name="Global Ocean Data Analysis Project" term="Global Ocean Data Analysis Project"/>
+  <entry name="Surface Ocean CO2 Atlas" term="Surface Ocean CO2 Atlas"/>
+  <entry name="global ocean biogeochemicalmodels" term="global ocean biogeochemicalmodels"/>
+  <entry name="meridional overturning circulation" term="meridional overturning circulation"/>
+  <entry name="Global Carbon Project" term="Global Carbon Project"/>
+  <entry name="Bioenergy with carbon capture and storage" term="Bioenergy with carbon capture and storage"/>
+  <entry name="BECCS" term="BECCS"/>
+  <entry name="peat" term="peat"/>
+</dictionary>

@@ -17,9 +17,9 @@
   <entry name="Trade-off" term="Trade-off"/>
   <entry name="Adaptation" term="Adaptation"/>
   <entry name="Mitigation" term="Mitigation"/>
-  <entry name="Climate Resilient Development" term="Climate Resilient Development"/>
+  <entry name="Climate Resilience" term="Climate Resilience"/>
   <entry name="Adaptation finance" term="Adaptation finance"/>
-  <entry name="pro-poor" term="pro-poor"/>
+  <entry name="pro" term="pro"/>
   <entry name="global trend" term="global trend"/>
   <entry name="shock" term="shock"/>
   <entry name="Urbanisation" term="Urbanisation"/>
@@ -27,7 +27,7 @@
   <entry name="COVID-19" term="COVID-19"/>
   <entry name="Development deficit" term="Development deficit"/>
   <entry name="exacerbate" term="exacerbate"/>
-  <entry name="vulnerability" term="vulnerability"/>
+  <entry name="human vulnerability" term="human vulnerability"/>
   <entry name="high confidence" term="high confidence"/>
   <entry name="resilient" term="resilient"/>
   <entry name="emission" term="emission"/>
@@ -36,17 +36,18 @@
   <entry name="onset" term="onset"/>
   <entry name="poverty trap" term="poverty trap"/>
   <entry name="food insecurity" term="food insecurity"/>
-  <entry name="societal impact" term="societal impact"/>
+  <entry name="societal" term="societal"/>
+  <entry name="impact" term="impact"/>
   <entry name="climate change" term="climate change"/>
   <entry name="mortality" term="mortality"/>
   <entry name="low middle income countries" term="low middle income countries"/>
   <entry name="disproportionally" term="disproportionally"/>
-  <entry name="hazards" term="hazards"/>
+  <entry name="hazard" term="hazard"/>
   <entry name="migration" term="migration"/>
   <entry name="governance capacity" term="governance capacity"/>
   <entry name="colonialism" term="colonialism"/>
   <entry name="climate extremes" term="climate extremes"/>
-  <entry name="slow onset events" term="slow onset events"/>
+  <entry name="slow onset" term="slow onset"/>
   <entry name="residual risks" term="residual risks"/>
   <entry name="ethnic minorities" term="ethnic minorities"/>
   <entry name="religious minorities" term="religious minorities"/>
@@ -56,18 +57,101 @@
   <entry name="gender inequality" term="gender inequality"/>
   <entry name="discrimination" term="discrimination"/>
   <entry name="maladaptation" term="maladaptation"/>
-  <entry name="social tippping points" term="social tippping points"/>
+  <entry name="tipping points" term="tipping points"/>
   <entry name="erosion" term="erosion"/>
   <entry name="livelihood security" term="livelihood security"/>
   <entry name="humanitarian crises" term="humanitarian crises"/>
   <entry name="displacement" term="displacement"/>
   <entry name="forced migration" term="forced migration"/>
   <entry name="violent conflict" term="violent conflict"/>
-  <entry name="environmental tippping points" term="environmental tippping points"/>
   <entry name="vulnerable population groups" term="vulnerable population groups"/>
   <entry name="sanitation" term="sanitation"/>
   <entry name="transboundary regional clusters" term="transboundary regional clusters"/>
   <entry name="indigenous knowledge" term="indigenous knowledge"/>
   <entry name="local knowledge" term="local knowledge"/>
   <entry name="Relative Concentration Pathway" term="Relative Concentration Pathway"/>
+  <entry name="climate-sensitive" term="climate-sensitive"/>
+  <entry name="precarious" term="precarious"/>
+  <entry name="enabling" term="enabling"/>
+  <entry name="asset" term="asset"/>
+  <entry name="vertical integration" term="vertical integration"/>
+  <entry name="horizontal integration" term="horizontal integration"/>
+  <entry name="coherence" term="coherence"/>
+  <entry name="social groups" term="social groups"/>
+  <entry name="Carbon footprint" term="Carbon footprint"/>
+  <entry name="climate justice" term="climate justice"/>
+  <entry name="rights-based approaches" term="rights-based approaches"/>
+  <entry name="gender gaps" term="gender gaps"/>
+  <entry name="green infrastructure" term="green infrastructure"/>
+  <entry name="ecosystem-based management" term="ecosystem-based management"/>
+  <entry name="dynamics" term="dynamics"/>
+  <entry name="mainstreaming" term="mainstreaming"/>
+  <entry name="Policy coherence" term="Policy coherence"/>
+  <entry name="undermine" term="undermine"/>
+  <entry name="adverse" term="adverse"/>
+  <entry name="severe" term="severe"/>
+  <entry name="acute" term="acute"/>
+  <entry name="chronic" term="chronic"/>
+  <entry name="social relation" term="social relation"/>
+  <entry name="institutional" term="institutional"/>
+  <entry name="assessment" term="assessment"/>
+  <entry name="broad-based" term="broad-based"/>
+  <entry name="observed impacts" term="observed impacts"/>
+  <entry name="linkage" term="linkage"/>
+  <entry name="multidimensional" term="multidimensional"/>
+  <entry name="Fifth Assessment Report" term="Fifth Assessment Report"/>
+  <entry name="disadvantaged" term="disadvantaged"/>
+  <entry name="persistent" term="persistent"/>
+  <entry name="ethnicity" term="ethnicity"/>
+  <entry name="class" term="class"/>
+  <entry name="caste" term="caste"/>
+  <entry name="driver" term="driver"/>
+  <entry name="multiplier" term="multiplier"/>
+  <entry name="stressor" term="stressor"/>
+  <entry name="IPCC Special 1.5Â°C Report" term="IPCC Special 1.5Â°C Report"/>
+  <entry name="underscore" term="underscore"/>
+  <entry name="global mean temperature" term="global mean temperature"/>
+  <entry name="substantially" term="substantially"/>
+  <entry name="equitable development" term="equitable development"/>
+  <entry name="robust" term="robust"/>
+  <entry name="Loss and damage" term="Loss and damage"/>
+  <entry name="quantitative" term="quantitative"/>
+  <entry name="spatio-temporal" term="spatio-temporal"/>
+  <entry name="subregion" term="subregion"/>
+  <entry name="livelihood groups" term="livelihood groups"/>
+  <entry name="index system" term="index system"/>
+  <entry name="global hotspot" term="global hotspot"/>
+  <entry name="subsystems" term="subsystems"/>
+  <entry name="infrastructure" term="infrastructure"/>
+  <entry name="qualitative" term="qualitative"/>
+  <entry name="projections" term="projections"/>
+  <entry name="adaptive capacity" term="adaptive capacity"/>
+  <entry name="entry point" term="entry point"/>
+  <entry name="inequity" term="inequity"/>
+  <entry name="destabilising" term="destabilising"/>
+  <entry name="baseline" term="baseline"/>
+  <entry name="trajectory" term="trajectory"/>
+  <entry name="social networks" term="social networks"/>
+  <entry name="cultural values" term="cultural values"/>
+  <entry name="irreversible" term="irreversible"/>
+  <entry name="degradation" term="degradation"/>
+  <entry name="ecosystem" term="ecosystem"/>
+  <entry name="Amazon" term="Amazon"/>
+  <entry name="human health" term="human health"/>
+  <entry name="nutrition" term="nutrition"/>
+  <entry name="social stability" term="social stability"/>
+  <entry name="protection mechanism" term="protection mechanism"/>
+  <entry name="coping strategy" term="coping strategy"/>
+  <entry name="integrated" term="integrated"/>
+  <entry name="transition" term="transition"/>
+  <entry name="agriculture" term="agriculture"/>
+  <entry name="forestry" term="forestry"/>
+  <entry name="energy" term="energy"/>
+  <entry name="funding" term="funding"/>
+  <entry name="convergent" term="convergent"/>
+  <entry name="comprehensive" term="comprehensive"/>
+  <entry name="legal" term="legal"/>
+  <entry name="governance" term="governance"/>
+  <entry name="framework" term="framework"/>
+  <entry name="differential" term="differential"/>
 </dictionary>

@@ -1,7 +1,7 @@
 # Chapter 8: Poverty, Livelihoods and Sustainable Development
 ## Working Group II (Impacts, Adaptation and Vulnerability)
 
-The lens of Chapter 8 is to better understand the human dimension of climate change at the interface of climate change, climate hazards, and socio-economic development. Areas of focus include:
+This chapter aims to better understand and analyse the human dimension of climate change at the interface of climate change, climate hazards, and socio-economic development. Areas of focus include:
 
 ### Climate Change and Inequality
 
