@@ -372,6 +372,18 @@ class AmiDictionaryTest(AmiAnyTest):
         amidict.add_entries_from_words(terms, duplicates="replace")
         assert amidict.get_entry_count() == 4, f"'bar' should be present"
 
+    def test_add_list_of_entries_from_list_of_string_with_shortforms(self):
+        """
+        creates dictionary from list of words and force replacement of duplicates
+        """
+        terms = ["foobar (FB)", "barfoo (BF)", "plugh", "xyzzy", "bar"]
+        amidict = AmiDictionary.create_minimal_dictionary()
+        amidict.add_entries_from_words(terms, duplicates="replace", shortform=True)
+        assert amidict.get_entry_count() == 5, f"'bar' should be present"
+        ami_entries = amidict.get_ami_entries()
+        assert len(ami_entries) == 5
+        assert ET.tostring(ami_entries[0]) == b'<entry name="foobar"><span role="term">foobar</span><span role="shortform">FB</span></entry>'
+
     def test_add_list_of_entries_from_list_of_string_with_duplicates_and_no_replace(self):
         """
         add list of terms which contains duplicate and raise error
@@ -961,6 +973,7 @@ class AmiDictionaryTest(AmiAnyTest):
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", f"{self.HTML_WITH_IDS}.html")
         paras = HtmlLib._extract_paras_with_ids(chapter_file, count=1163)
         xml_dict_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "climate_words.xml")
+        assert xml_dict_path.exists(), f"{xml_dict_path} must exist"
         dictionary = AmiDictionary.create_from_xml_file(xml_dict_path)
         assert dictionary is not None
         phrases = dictionary.get_terms()
@@ -992,6 +1005,47 @@ class AmiDictionaryTest(AmiAnyTest):
         paras = HtmlLib._extract_paras_with_ids(chapter_file, count=1724)
 
         dictionary, outpath = AmiDictionary.create_dictionary_from_wordfile(words_path)
+        assert dictionary is not None
+        assert len(dictionary.get_terms()) == 43
+
+        xml_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.xml")
+        dictionary.write_to_file(xml_dict_path, debug=True)
+        assert xml_dict_path.exists()
+
+        html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
+        dictionary.write_to_file(html_dict_path, debug=True)
+        assert html_dict_path.exists()
+
+        phrases = dictionary.get_terms()
+        dictionary.location = html_dict_path
+        assert len(phrases) == 43
+        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, href_markup=html_dict_path)
+
+        # write marked_up html
+        chapter_elem = paras[0].xpath("/html")[0]
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
+        assert  chapter_outpath.exists()
+
+    def test_make_dict_abbreviations_search_with_dictionary_and_make_links_WORKFLOW(self):
+        """
+        uses a simple dictionary to search WG chapter (wg2/ch03) *html_with_ids)
+
+        Returns
+        -------
+
+
+        """
+        stem = "carbon_cycle"
+        words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        assert words_path.exists()
+
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
+        assert chapter_file.exists()
+
+        paras = HtmlLib._extract_paras_with_ids(chapter_file, count=1724)
+
+        dictionary, outpath = AmiDictionary.create_dictionary_from_wordfile(words_path, shortform=True)
         assert dictionary is not None
         assert len(dictionary.get_terms()) == 43
 
@@ -1088,7 +1142,7 @@ class AmiDictionaryTest(AmiAnyTest):
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
         chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
         FileLib.delete_file(chapter_outpath)
-        html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
+        html_dict_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.html")
 
         AmiDictionary.read_html_dictionary_and_markup_html_file(
             chapter_file, chapter_outpath, use_search_terms=True, html_dict_path=html_dict_path)
@@ -1115,6 +1169,16 @@ class AmiDictionaryTest(AmiAnyTest):
         print(f"cmd> {' '.join(args)}")
         AmiLib().run_command(args)
         assert Path(chapter_outpath).exists()
+
+    def test_read_short_form(self):
+        """read a wordlist with embedded short forms in parens
+        e.g. cabon dioxide removal (CDR)
+        """
+        file = Path(Resources.TEST_RESOURCES_DIR, "wordlists")
+        assert file.exists()
+
+        assert False, "not yet written"
+
 
 class AmiEntryTest(AmiAnyTest):
     """

@@ -782,8 +782,8 @@ class WikidataSparql:
         sparql_name = self.sparql_to_dictionary[SPQ_NAME]
         dict_name = self.sparql_to_dictionary[DICT_NAME]
         for wikidata_id in self.sparql_result_by_wikidata_id.keys():
-            if wikidata_id in self.dictionary.entry_by_wikidata_id.keys():
-                entry = self.dictionary.entry_by_wikidata_id[wikidata_id]
+            if wikidata_id in self.dictionary.html_entry_by_wikidata_id.keys():
+                entry = self.dictionary.html_entry_by_wikidata_id[wikidata_id]
                 result_list = self.sparql_result_by_wikidata_id[wikidata_id]
                 for result in result_list:
                     bindings = list(result.findall(SPQ_BINDING + "/" + f"[@name='{sparql_name}']", NS_MAP))

@@ -26,7 +26,7 @@ from amilib.file_lib import FileLib
 # from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util
 from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage
-from amilib.xml_lib import HtmlLib
+from amilib.xml_lib import HtmlLib, XmlLib
 
 # elements in amidict
 DICTIONARY = "dictionary"
@@ -35,10 +35,16 @@ IMAGE = "image"
 RAW = "raw"
 TITLE = "title"
 
+SPAN = "span"
+
 # attributes in amidict
 DESC = "desc"
 DESCRIPTION = "description"
 NAME = "name"
+ROLE = "role"
+SEARCH = "search"
+SHORTFORM = "shortform"
+SYNONYM = "synonym"
 TERM = "term"
 WIKIDATA_ID = "wikidataID"
 WIKIDATA_URL = "wikidataURL"
@@ -111,8 +117,13 @@ class AmiEntry:
         :param entry_element: directly constructed from dictionary files or constructed
         :return: AmiEntry
         """
-        ami_entry = AmiEntry()
-        ami_entry.element = entry_element
+        type1 = type(entry_element)
+        ami_entry = None
+        if entry_element is not None:
+            if not isinstance(entry_element, lxml.etree._Element):
+                raise Exception(f"Bad type {type1}")
+            ami_entry = AmiEntry()
+            ami_entry.element = entry_element
         return ami_entry
 
 # AmiEntry
@@ -162,8 +173,7 @@ class AmiEntry:
         self.element.attrib[TERM] = term
 
     def get_term(self):
-        term = self.element.attrib[TERM]
-        return term
+        return self._get_span_value_for_name(TERM)
 
     # AmiEntry
 
@@ -177,12 +187,22 @@ class AmiEntry:
     def set_name(self, name):
         AmiEntry.add_name(self.element, name)
 
-    # @classmethod
-    # def get_name(cls, entry):
-    #     return AmiEntry.get_attribute_value(entry, NAME)
-
     def get_name(self):
-        return AmiEntry.get_attribute_value(self.element, NAME)
+        """
+        get name from attribute (old) oe span[role=name] (new)
+        """
+        return self._get_span_value_for_name(NAME)
+
+    def _get_span_value_for_name(self, name):
+        """
+        get name from attribute (old) oe span[role=name] (new)
+        :param name: name of attribute
+        :return: value or None
+        """
+        value = self.get_span_value(role=name)
+        if value is None:
+            value = AmiEntry.get_attribute_value(self.element, name)
+        return value
 
     @classmethod
     def get_attribute_value(cls, element, attname):
@@ -486,9 +506,60 @@ class AmiEntry:
         id = None if name is None else name.strip().lower().replace("\\s+", "_")
         return id
 
-    def get_search_terms(self):
-        short_forms = self.element.xpath("short_form")
+    def get_short_form_values(self):
+        short_forms = self.element.xpath(f"*[@role='{SHORTFORM}']")
         return [sf.text for sf in short_forms]
+
+    def get_span_value(self, role):
+        spans = self.get_span_values_for_role(role)
+        text = spans[0] if len(spans) > 0 else None
+        return text
+
+    def get_span_values_for_role(self, role):
+        """
+        gets all values from <span role=role>
+        """
+        results = []
+        results1 = self.element.xpath(f"./span[@role='{role}']")
+        if len(results1) > 0:
+            results = [r.text for r in results1]
+        return results
+
+    def get_search_terms(self):
+        terms = self.get_span_values_for_role(SEARCH)
+        return terms
+
+    def set_term(self, term):
+        self.add_role(TERM, term, single=True)
+
+    def add_shortform(self, shortform):
+        if shortform is not None:
+            self.add_role(SHORTFORM, shortform)
+
+    def add_role(self, role, value, single=True):
+        """
+        adds "<span role="{role}">{value}</role>"
+        :param role:value of role
+        :param value:value of span
+        :param single: delete any previous <span role="{role}">...
+        """
+        if role is None:
+            print(f"role must not be None")
+            return
+        if value is None:
+            print(f"value must not be None")
+            return
+        if self.element is None:
+            print(f"ami_entry not initialised")
+            return None
+        if single:
+            xpath = f"./*[@role='{role}']"
+            XmlLib.remove_elements(self.element, xpath=xpath)
+
+        role_elem = ET.SubElement(self.element, SPAN)
+        role_elem.attrib[ROLE] = role
+        role_elem.text =  value
+
 
 
 class AmiDictionary:
@@ -516,9 +587,9 @@ class AmiDictionary:
         self.logger = logger
         self.xml_content = None
         self.entries = []
-        self.entry_by_id = dict()
-        self.entry_by_term = dict()
-        self.entry_by_wikidata_id = {}
+        self.html_entry_by_id = dict()
+        self.html_entry_by_term = dict()
+        self.html_entry_by_wikidata_id = {}
         self.file = None
         self.ignorecase = ignorecase
         self.title = title
@@ -613,7 +684,7 @@ class AmiDictionary:
             return
         dictionary_divs = html_root.xpath("./body/div[@role='ami_dictionary']")
         if len(dictionary_divs) == 0:
-            raise ValueError("HTML dictionary needs html/body/div[@role='ami_dictionary']")
+            raise ValueError(f"HTML dictionary {html_file} needs html/body/div[@role='ami_dictionary']")
         dictionary_div = dictionary_divs[0]
         title = dictionary_div.attrib.get(TITLE)
         if title is None:
@@ -624,32 +695,32 @@ class AmiDictionary:
         dictionary.file = None
         dictionary.location_html = html_file
 
-        cls.add_ami_entries_to_dict_and_create_entries_by_term(dictionary, dictionary_div)
+        dictionary.add_ami_entries_to_dict_and_create_entries_by_term(dictionary_div)
         return dictionary
 
-    @classmethod
-    def add_ami_entries_to_dict_and_create_entries_by_term(cls, dictionary, dictionary_div):
+
+    def add_ami_entries_to_dict_and_create_entries_by_term(self, dictionary_div):
         """
-        :param dictionary: AmiDidictionary
         :param dictionary_div: div in HTML with @role='ami_dictionary' and @title attributes
         """
         html_entries = dictionary_div.xpath("./div[@role='ami_entry']")
-        dictionary.entry_by_term = dict()
+        self.html_entry_by_term = dict()
         for html_entry in html_entries:
-            term = cls.get_term_from_html_entry(html_entry)
+            term = self.get_term_from_html_entry(html_entry)
             if term is None:
                 print(f" cannot find term for entry")
                 continue
             id = html_entry.attrib.get("id")
-            ami_entry = AmiEntry()
-            dictionary.entry_by_term[term] = ami_entry
+            ami_entry = AmiEntry.create_from_element(html_entry)
+            self.html_entry_by_term[term] = ami_entry
             ami_entry.element = ET.SubElement(dictionary_div, "entry")
 
-            ami_entry.element.attrib[TERM] = term
+            ami_entry.set_term(term)
             ami_entry.element.attrib["id"] = id
             contents = html_entry.xpath("*")
             for content in contents:
                 ami_entry.element.append(content)
+            pass
 
     @classmethod
     def get_term_from_html_entry(cls, html_entry_element):
@@ -664,6 +735,8 @@ class AmiDictionary:
         if html_entry_element is None:
             return None
         term = html_entry_element.attrib.get(TERM)
+        ami_entry = AmiEntry.create_from_element(html_entry_element)
+        term = ami_entry.get_term()
         if term is None:
             spans = html_entry_element.xpath("p[span='Term:']/span[2]")
             if len(spans) == 1:
@@ -671,7 +744,7 @@ class AmiDictionary:
         return term
     @classmethod
     def create_dictionary_from_words(cls, terms, title=None, desc=None, wikilangs=None, wikidata=False, outdir=None,
-                                     debug=True):
+                                     shortform=False, debug=True):
         """use raw list of words and optionally lookup each. choosing WD page and using languages
         :param terms: list of words/phrases,
         :param title: for dictionary object and file
@@ -679,6 +752,7 @@ class AmiDictionary:
         :param wikilangs: languages to use in Wikidata default EN)
         :param wikidata: if true lookup wikidata
         :param outdir: if not None write dictionary to outpath=<outdir>/<title>.xml
+        :param shortform: parse shortforms in parens
         :param debug: debug
         :return dictionary,outpath tuple (outpath may be None)
         """
@@ -687,7 +761,7 @@ class AmiDictionary:
         dictionary = cls.create_dictionary_with_root(title, wikilangs)
         if desc:
             dictionary.add_desc_element(desc)
-        dictionary.add_entries_from_words(terms)
+        dictionary.add_entries_from_words(terms, shortform=shortform)
         if wikidata:
             dictionary.add_wikidata_from_terms()
         outpath = None
@@ -732,18 +806,20 @@ class AmiDictionary:
 
     #    class AmiDictionary:
 
-    def add_entries_from_words(self, terms, duplicates="ignore"):
+    def add_entries_from_words(self, terms, duplicates="ignore", shortform=False):
         """add list of words as entry's
         :param terms:   list of terms
         :param duplicates: action if term is duplicate ("ignore", "replace", "error") NYI
+        :param shortform: parse shortforms in paren ("United Nations (UN)")
         """
         self.entries = self.entries if self.entries else []
-        for term in terms:
-            term = term.strip()
+        for rawterm in terms:
+            rawterm = rawterm.strip()
+            term, sf = AmiDictionary.parse_shortform(rawterm)
             if term:
                 dup_entry = self.get_lxml_entry(term)
                 if dup_entry is None:
-                    self._add_entry(term)
+                    self._add_entry(rawterm, shortform=shortform)
                 elif duplicates == "error":
                     raise AMIDictError("Duplicate entry")
                 elif duplicates == "ignore":
@@ -752,14 +828,16 @@ class AmiDictionary:
                     self.root.remove(dup_entry)
                     self._add_entry(term)
 
-    def _add_entry(self, term):
-        entry = self.add_entry_element(term=term)
+    def _add_entry(self, term, shortform=False):
+        entry = self.add_entry_element(term=term, use_shortform=shortform)
+        # print(f"add term {term}")
         self.entries.append(entry)
-        self.entry_by_term[term] = entry
+        self.html_entry_by_term[term] = entry
+        # print(f"entries: {len(self.html_entry_by_term)}")
 
     @classmethod
     def create_dictionary_from_wordfile(cls, wordfile=None, desc=None, wikidata=False, outdir=None, title=None,
-                                        max_entries=1000000, debug=True):
+                                        max_entries=1000000, shortform=False, debug=True):
         """
         :param wordfile: contains lists of words and file stem gives title
         :param desc: description of dictionary
@@ -769,6 +847,7 @@ class AmiDictionary:
         :param title: title (required to create outfile) max_lengh 30, no spaces, [a-z0-9] will be lowercased
             if absent taken from wordfile
         :param max_entries: maximum entries (default 1000000)
+        :param shortform: extract brackers as shortforms (e.g. "United Nations (UN)"
         :param debug: output debug
         :return dictionary,outpath tuple (outpath may be None)
 
@@ -786,7 +865,7 @@ class AmiDictionary:
 
         print(f"creating dictionary title = {title}")
         dictionary, outpath = cls.create_dictionary_from_words(terms=words, title=title, desc=desc, wikidata=wikidata,
-                                                               outdir=outdir, debug=debug)
+                                                               outdir=outdir, shortform=shortform, debug=debug)
         return dictionary, outpath
 
     #    class AmiDictionary:
@@ -803,17 +882,43 @@ class AmiDictionary:
 
     #    class AmiDictionary:
 
-    def add_entry_element(self, term):
+    def add_entry_element(self, term, use_shortform=False):
         """create and add antry with term/name
         :param term: term (will also set name attribute
-         :return entry"""
+        :param use_shortform: parse shortform in parens ("United Nations (UN)"
+        :return entry
+        """
         if not term:
             raise ValueError("must have term for new entry")
-        entry = ET.SubElement(self.root, ENTRY)
-        entry.attrib[NAME] = term
-        entry.attrib[TERM] = term
-        self.entry_by_term[term] = entry
-        return entry
+        entry_element = ET.SubElement(self.root, ENTRY)
+        ami_entry = AmiEntry.create_from_element(entry_element)
+        if use_shortform:
+            term, shortform = AmiDictionary.parse_shortform(term)
+        ami_entry.set_name(term)
+        ami_entry.set_term(term)
+        if use_shortform is not None:
+            ami_entry.add_shortform(shortform)
+
+        return entry_element
+
+    @classmethod
+    def parse_shortform(cls, term):
+        """
+        parses text with single following paren
+        example "United Nations (UN)" => term = "Unioted nations" shortform = "UN"
+        :param term: to parse
+        :return: (term, shortform)
+        """
+        re_sf = "(?P<term>.*?)\s*\((?P<sf>.*?)\)\s*"
+        sf = None
+        match = re.match(re_sf, term)
+        if match:
+            sf = match.group("sf")
+            term = match.group("term")
+        return term, sf
+
+
+
 
     def add_desc_element(self, desc):
         """create and add desc element to root element"""
@@ -974,9 +1079,9 @@ class AmiDictionary:
             print("term is None")
             return None
         lcase = termx.lower()  # all keys are lowercase
-        if self.entry_by_term is None or len(self.entry_by_term) == 0:
+        if self.html_entry_by_term is None or len(self.html_entry_by_term) == 0:
             self.create_entry_by_term()
-        entry = self.entry_by_term[lcase] if lcase in self.entry_by_term else None
+        entry = self.html_entry_by_term[lcase] if lcase in self.html_entry_by_term else None
         # if case-sensitive check whether term was different case
         if entry is not None:
             assert type(entry) is _Element, f"found {type(entry)}"
@@ -1000,16 +1105,16 @@ class AmiDictionary:
         pass
 
     def get_entry_count(self):
-        assert self.entry_by_term is not None
-        return len(self.entry_by_term)
+        assert self.html_entry_by_term is not None
+        return len(self.html_entry_by_term)
 
     def get_lxml_entries(self):
         """
         get lxml_entries from dictionary
         :return: list of lxml_entry's
         """
-        assert self.entry_by_term
-        return list(self.entry_by_term.values())
+        assert self.html_entry_by_term
+        return list(self.html_entry_by_term.values())
 
     @classmethod
     def get_term(cls, lxml_entry):
@@ -1023,31 +1128,30 @@ class AmiDictionary:
         """creates entriws from elements in self.entry_by_term
         TODO maybe index the AmiEntry's instead
         :return: list of AmiEntries"""
-        assert self.entry_by_term
+        assert self.html_entry_by_term is not None
         ami_entry_list = []
-        for entry_element in self.entry_by_term.values():
-            ami_entry = AmiEntry.create_from_element(entry_element)
+        for ami_entry in self.html_entry_by_term.values():
             ami_entry_list.append(ami_entry)
         return ami_entry_list
 
     def create_entry_by_term(self, lower=True):
-        self.entry_by_term = dict()
+        self.html_entry_by_term = dict()
         for entry in self.entries:
             term = self.term_from_entry(entry)
             # index by lowercase?
             if lower:
                 term = term.lower()
-            if term in self.entry_by_term:
+            if term in self.html_entry_by_term:
                 print(f"duplicate terms not allowed {term}")
             else:
-                self.entry_by_term[term] = entry
+                self.html_entry_by_term[term] = entry
 
     def delete_entry_by_term(self, term):
         """removes an entry with given term"""
         entry = self.get_lxml_entry(term)
         if entry is not None:
             self.root.remove(entry)
-            self.entry_by_term.pop(term)
+            self.html_entry_by_term.pop(term)
 
     def create_and_add_entry_with_term(self, term, replace=True):
         """creates lxml_entry element from term
@@ -1068,20 +1172,20 @@ class AmiDictionary:
         else:
             self.root.append(lxml_entry_new)
         if lxml_entry_new is not None:
-            self.entry_by_term[term] = lxml_entry_new
+            self.html_entry_by_term[term] = lxml_entry_new
         return lxml_entry_new
 
     def check_unique_wikidata_ids(self):
-        self.entry_by_wikidata_id = {}
+        self.html_entry_by_wikidata_id = {}
         for entry in self.entries:
             if WIKIDATA_ID not in entry.attrib:
                 print("No wikidata ID for", entry)
             else:
                 wikidata_id = entry.attrib[WIKIDATA_ID]
-                if wikidata_id in self.entry_by_wikidata_id.keys():
+                if wikidata_id in self.html_entry_by_wikidata_id.keys():
                     print("duplicate Wikidata ID:", wikidata_id, entry)
                 else:
-                    self.entry_by_wikidata_id[wikidata_id] = entry
+                    self.html_entry_by_wikidata_id[wikidata_id] = entry
 
 
     def write_to_dir(self, directory):
@@ -1466,8 +1570,8 @@ class AmiDictionary:
         return _entries
 
     def get_terms(self):
-        assert self.entry_by_term
-        return list(self.entry_by_term.keys())
+        assert self.html_entry_by_term
+        return list(self.html_entry_by_term.keys())
 
     @classmethod
     def is_valid_version_string(cls, version):
@@ -1575,7 +1679,8 @@ class AmiDictionary:
 
 
     @classmethod
-    def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path):
+    def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path,
+                                                  use_search_terms=False):
         """
         read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
         markup paras, and write marked  file
@@ -1586,7 +1691,7 @@ class AmiDictionary:
         """
         assert Path(inpath).exists()
         paras = HtmlLib._extract_paras_with_ids(inpath)
-        assert Path(html_dict_path).exists()
+        assert Path(html_dict_path).exists(), f"{html_dict_path} must exist"
         dictionary = AmiDictionary.create_from_html_file(html_dict_path)
         assert dictionary is not None
 

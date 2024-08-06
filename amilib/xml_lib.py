@@ -392,6 +392,10 @@ class XmlLib:
         :param new_parent: new parent for removed nodes
         :param debug: output debug (def = False)
         """
+        if elem is None:
+            if debug:
+                print(f"remove_elememts elem is None")
+            return
         elems = elem.xpath(xpath, debug=True)
         if debug:
             print(f"{xpath} removes {len(elems)} elems")

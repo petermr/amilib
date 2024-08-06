@@ -17,7 +17,7 @@ if self.RE_TEST.match('TeSt'):
     <regex>greenhouse gas(es)?</regex>
     <shortform case="upper">GHG</shortform>
   </entry>
-  <entry id="amoc" name="Atlantic Meridional Overturning Circulation" term="Atlantic Meridional Overturning Circulation" term="AMOC">
+  <entry id="amoc" name="Atlantic Meridional Overturning Circulation" term="Atlantic Meridional Overturning Circulation">
     <shortform case="exact">AMOC</shortform>
   </entry>
   <entry name="SIDS" term="SIDS"/>

@@ -365,6 +365,10 @@ class EPMCBib:
             el.text = start + str(val)
             el.tail = end
 
+    @classmethod
+    def make_bib_html_od(cls, infile):
+        print(f"make_bib_html_od NYI")
+
 
 def _add_str(s, value):
     if value is not None:
