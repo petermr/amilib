@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dictionary title="small_2">
-  <entry name="anthropogenic" term="anthropogenic">
+  <entry name="anthropogenic">
+    <span role="term">anthropogenic</span>
     <div qid="Q7942">
       <a href="wikidataURL/Q7942">Wikidata</a>
       <p role="title">climate change</p>
@@ -27,7 +28,8 @@
       <p role="description">observed or potential changes to biophysical environments and ecosystems caused directly or indirectly by humans, including global warming, environmental degradation, mass extinction and biodiversity loss, ecological crisis and collapse</p>
     </div>
   </entry>
-  <entry name="tropospheric" term="tropospheric">
+  <entry name="tropospheric">
+    <span role="term">tropospheric</span>
     <div qid="Q64767836">
       <a href="wikidataURL/Q64767836">Wikidata</a>
       <p role="title">Tropospheric Emissions: Monitoring of Pollution</p>

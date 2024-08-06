@@ -1,14 +1,36 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dictionary title="climate_words">
-  <entry name="UNFCCC" term="UNFCCC"/>
-  <entry name="greenhouse gas" term="greenhouse gas"/>
-  <entry name="AMOC" term="AMOC"/>
-  <entry name="SIDS" term="SIDS"/>
-  <entry name="LULUCF" term="LULUCF"/>
-  <entry name="radiative forcing" term="radiative forcing"/>
-  <entry name="methane" term="methane"/>
-  <entry name="antimicrobial resistance" term="antimicrobial resistance"/>
-  <entry name="Paleoclimate" term="Paleoclimate"/>
-  <entry name="Spatial hotspot" term="Spatial hotspot"/>
-  <entry name="permafrost" term="permafrost"/>
+  <entry name="UNFCCC">
+    <span role="term">UNFCCC</span>
+  </entry>
+  <entry name="greenhouse gas">
+    <span role="term">greenhouse gas</span>
+  </entry>
+  <entry name="AMOC">
+    <span role="term">AMOC</span>
+  </entry>
+  <entry name="SIDS">
+    <span role="term">SIDS</span>
+  </entry>
+  <entry name="LULUCF">
+    <span role="term">LULUCF</span>
+  </entry>
+  <entry name="radiative forcing">
+    <span role="term">radiative forcing</span>
+  </entry>
+  <entry name="methane">
+    <span role="term">methane</span>
+  </entry>
+  <entry name="antimicrobial resistance">
+    <span role="term">antimicrobial resistance</span>
+  </entry>
+  <entry name="Paleoclimate">
+    <span role="term">Paleoclimate</span>
+  </entry>
+  <entry name="Spatial hotspot">
+    <span role="term">Spatial hotspot</span>
+  </entry>
+  <entry name="permafrost">
+    <span role="term">permafrost</span>
+  </entry>
 </dictionary>

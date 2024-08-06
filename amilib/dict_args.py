@@ -253,7 +253,8 @@ class AmiDictArgs(AbstractArgs):
         # cyclic import
         from amilib.ami_dict import AmiEntry
         ami_entry = AmiEntry.create_from_element(entry)
-        term = entry.attrib["term"]
+        term = ami_entry.get_term()
+        ami_entry.set_term(term)
         term_dict = dict()
         hit_dict[term] = term_dict
         qitem0, desc, qitem_hits = wikidata_lookup.lookup_wikidata(term)

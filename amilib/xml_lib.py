@@ -558,6 +558,17 @@ class XmlLib:
                 parent.remove(elem)
 
     @classmethod
+    def remove_iterable_elements(cls, elems):
+        """cnvenience method to remove elements from tree
+        :param elems: elements to be removed
+        uses cls.remove_element()
+        may fail if elements are nested
+        """
+        for elem in elems:
+            cls.remove_element(elem)
+
+
+    @classmethod
     def get_next_element(cls, elem):
         """
         get next element after elem
@@ -1007,7 +1018,7 @@ class HtmlLib:
           <body/>
         </html>
         """
-        html_container = Html_Container()
+        # html_container = Html_Container()
         html_elem = lxml.etree.Element("html")
         html_elem.append(lxml.etree.Element("head"))
         html_elem.append(lxml.etree.Element("body"))

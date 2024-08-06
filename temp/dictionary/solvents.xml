@@ -1,1 +1,21 @@
-<dictionary title="solvents"><entry name="acetone" term="acetone"/><entry name="benzene" term="benzene"/><entry name="chloroform" term="chloroform"/><entry name="DMSO" term="DMSO"/><entry name="ethanol" term="ethanol"/></dictionary>
+<?xml version='1.0' encoding='UTF-8'?>
+<dictionary title="solvents">
+  <entry name="acetone">
+    <span role="term">acetone</span>
+    <a href="https://www.wikidata.org/entity/Q49546" role="wikidata">Q49546</a>
+    <div role="wikidata"/>
+    <wikidataHit type="wikidata_hits">Q1032873</wikidataHit>
+    <wikidataHit type="wikidata_hits">Q4673277</wikidataHit>
+    <wikidataHit type="wikidata_hits">Q63986955</wikidataHit>
+    <wikidataHit type="wikidata_hits">Q329022</wikidataHit>
+  </entry>
+  <entry name="chloroform">
+    <span role="term">chloroform</span>
+    <a href="https://www.wikidata.org/entity/Q172275" role="wikidata">Q172275</a>
+    <div role="wikidata"/>
+    <wikidataHit type="wikidata_hits">Q1032539</wikidataHit>
+    <wikidataHit type="wikidata_hits">Q21173565</wikidataHit>
+    <wikidataHit type="wikidata_hits">Q26379274</wikidataHit>
+    <wikidataHit type="wikidata_hits">Q112834413</wikidataHit>
+  </entry>
+</dictionary>

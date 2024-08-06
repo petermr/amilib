@@ -46,6 +46,7 @@ SEARCH = "search"
 SHORTFORM = "shortform"
 SYNONYM = "synonym"
 TERM = "term"
+WIKIDATA = "wikidata"
 WIKIDATA_ID = "wikidataID"
 WIKIDATA_URL = "wikidataURL"
 WIKIDATA_SITE = "https://www.wikidata.org/entity/"
@@ -108,8 +109,8 @@ class AmiEntry:
     ALLOWED_ATTS = REQUIRED_ATTS.union(OPTIONAL_ATTS)
     assert len(ALLOWED_ATTS) == 5
 
-    def __init__(self):
-        self.element = None
+    def __init__(self, element=None):
+        self.element = element if isinstance(element, ET._Element) else None
 
     @classmethod
     def create_from_element(cls, entry_element):
@@ -560,6 +561,111 @@ class AmiEntry:
         role_elem.attrib[ROLE] = role
         role_elem.text =  value
 
+    def get_shortforms(self):
+        """
+        returns <span role='shortform'>value s
+        """
+        shortform_elems = self.element.xpath(f"./span[@role='{SHORTFORM}']")
+        return shortform_elems
+
+    def set_wikidata_id(self, qid):
+        XmlLib.remove_elements(self.element, xpath=f"./a[@role='{WIKIDATA}']")
+        aelem = ET.SubElement(self.element, "a")
+        aelem.text = qid
+        aelem.attrib[A_HREF] = f"{WIKIDATA_SITE}{qid}"
+        aelem.attrib[ROLE] = WIKIDATA
+
+    def set_wikidata_desc(self, desc):
+        """
+        adds text as description for wikidata.
+        probably obsolete
+        wikidata calls this "description" , it's probably closer to "definiton"
+        """
+        self.ensure_wikidata_div()
+
+    def ensure_wikidata_div(self):
+        wikidata_div = self.get_wikidata_div()
+        if wikidata_div is None:
+            wikidata_div = self.set_wikidata_div()
+
+    def get_child_divs_with_role(self, role):
+        xpath = f"./div[@role='{role}']"
+        divs = self.element.xpath(xpath)
+        return divs
+
+    def get_wikipedia_div(self):
+        """
+    <div role="ami_entry">
+        <div role="wikipedia">
+            <span role="url"><a href="https://en.wikipedia.org/wiki/Global_Carbon_Project">Global_Carbon_Project</a></span>
+            <span role="definition">an organisation that seeks to quantify global greenhouse gas emissions and their causes.</span>
+        </div>
+
+        gets child wikidata div or None
+        """
+        role = WIKIPEDIA
+        return self.get_single_child_with_role(role)
+
+    def get_single_child_with_role(self, role):
+        divs = self.get_child_divs_with_role(role)
+        return divs[0] if len(divs) == 1 else None
+
+    def set_wikipedia_div(self):
+        """
+        <div role="ami_entry">
+            <div role="wikipedia">
+                <span role="url"><a href="https://en.wikipedia.org/wiki/Global_Carbon_Project">Global_Carbon_Project</a></span>
+                <span role="definition">an organisation that seeks to quantify global greenhouse gas emissions and their causes.</span>
+            </div>
+
+            gets child wikidata div or None
+        """
+        return self.create_child_div_with_role(WIKIPEDIA)
+
+    def set_wikidata_div(self):
+        """
+        <div role="ami_entry">
+            <div role="wikidata">
+               ...
+            </div>
+
+            gets child wikidata div or None
+        """
+        return self.create_child_div_with_role(WIKIDATA)
+
+    def create_child_div_with_role(self, role):
+        """
+        creates a single child div with role={role}
+        removes any previous child divs with same role
+        :param role: value of rols attribute
+        """
+        divs = self.get_child_divs_with_role(role)
+        XmlLib.remove_iterable_elements(divs)
+        div = ET.SubElement(self.element, H_DIV)
+        div.attrib[ROLE] = role
+        return div
+
+    def get_single_div_with_role(self, role):
+        """
+        gets single instance of child div with role={role}
+        """
+        divs = self.get_child_divs_with_role(role)
+        return divs[0] if len(divs) == 1 else None
+
+    def get_wikidata_div(self):
+        """
+    <div role="ami_entry">
+        <a role="wikidata" href="https://wikidata.org/wiki/Q5570159">Q5570159</a>
+        <span role="name">Global Carbon Project</span>
+        <span role="term">Global Carbon Project</span>
+        <div role="wikipedia">
+            <span role="url"><a href="https://en.wikipedia.org/wiki/Global_Carbon_Project">Global_Carbon_Project</a></span>
+            <span role="definition">an organisation that seeks to quantify global greenhouse gas emissions and their causes.</span>
+        </div>
+
+        gets child wikidata div or None
+        """
+        return self.get_single_div_with_role(WIKIDATA)
 
 
 class AmiDictionary:
@@ -892,11 +998,12 @@ class AmiDictionary:
             raise ValueError("must have term for new entry")
         entry_element = ET.SubElement(self.root, ENTRY)
         ami_entry = AmiEntry.create_from_element(entry_element)
+        shortform = None
         if use_shortform:
             term, shortform = AmiDictionary.parse_shortform(term)
         ami_entry.set_name(term)
         ami_entry.set_term(term)
-        if use_shortform is not None:
+        if use_shortform is not None and shortform is not None:
             ami_entry.add_shortform(shortform)
 
         return entry_element
@@ -1081,15 +1188,16 @@ class AmiDictionary:
         lcase = termx.lower()  # all keys are lowercase
         if self.html_entry_by_term is None or len(self.html_entry_by_term) == 0:
             self.create_entry_by_term()
-        entry = self.html_entry_by_term[lcase] if lcase in self.html_entry_by_term else None
+        html_entry = self.html_entry_by_term[lcase] if lcase in self.html_entry_by_term else None
         # if case-sensitive check whether term was different case
-        if entry is not None:
-            assert type(entry) is _Element, f"found {type(entry)}"
-            entry_term = entry.attrib[TERM]
+        if html_entry is not None:
+            assert type(html_entry) is _Element, f"found {type(html_entry)}"
+            ami_entry = AmiEntry(html_entry)
+            entry_term = ami_entry.get_term()
             # if the term is case sensitive, compare them
             if not ignorecase and entry_term != termx:
-                entry = None
-        return entry
+                html_entry = None
+        return html_entry
 
     #    class AmiDictionary:
 
@@ -1131,13 +1239,13 @@ class AmiDictionary:
         assert self.html_entry_by_term is not None
         ami_entry_list = []
         for ami_entry in self.html_entry_by_term.values():
-            ami_entry_list.append(ami_entry)
+            ami_entry_list.append(AmiEntry(ami_entry))
         return ami_entry_list
 
     def create_entry_by_term(self, lower=True):
         self.html_entry_by_term = dict()
         for entry in self.entries:
-            term = self.term_from_entry(entry)
+            ami_entry = AmiEntry(entry).get_term()
             # index by lowercase?
             if lower:
                 term = term.lower()
@@ -1233,7 +1341,8 @@ class AmiDictionary:
         """lookup term and  add wikidata Info to entry if desc fits required description
         :param entry: to add wikidata to
         :param allowed_descriptions: only add if the description fits (ANY overrides)"""
-        term = entry.attrib[TERM]
+        ami_entry = AmiEntry(entry)
+        term = ami_entry.get_term()
         qitem, desc, qitems = self.wikidata_lookup.lookup_wikidata(term)
         if not qitem:
             print(f"Wikidata lookup for {term} failed")
@@ -1241,10 +1350,9 @@ class AmiDictionary:
 
         if allowed_descriptions == ANY:
             if qitem:
-                entry.attrib[WIKIDATA_ID] = qitem
-                entry.attrib[WIKIDATA_URL] = WIKIDATA_SITE + qitem
+                ami_entry.set_wikidata_id(qitem)
             if desc:
-                entry.attrib[DESC] = desc
+                ami_entry.set_wikidata_desc(desc)
             for wid in qitems:
                 if wid != qitem:
                     wikidata_hit = ET.SubElement(entry, WIKIDATA_HIT)
@@ -1293,7 +1401,7 @@ class AmiDictionary:
 
         # refactor this - make entry a class
         wikidata_page = None
-        qitem = entry_element.attrib[WIKIDATA_ID]
+        qitem = AmiEntry(entry_element).get_wikidata_id()
         if qitem is not None:
             wikidata_page = WikidataPage(qitem)
 
