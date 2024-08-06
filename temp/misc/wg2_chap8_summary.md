@@ -6,7 +6,7 @@ This chapter aims to better understand and analyse the human dimension of climat
 ### Climate Change and Inequality
 
 - Climate change disproportionately affects marginalized groups
-- Exacerbates existing vulnerabilities and inequalities
+- Worsens existing vulnerabilities and inequalities
 - Undermines sustainable development
 
 ### Vulnerability and Impact
