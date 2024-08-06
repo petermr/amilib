@@ -1,24 +1,22 @@
-import argparse
 import ast
+import base64
 import codecs
+import csv
 import importlib
+import json
 import logging
 import os
-import sys
-import csv
 import re
+import sys
+import time
+from collections import OrderedDict
 from enum import Enum
+from pathlib import Path
 
-import lxml
 import pandas as pd
 import pyvis
-from lxml import html
-from pathlib import Path
-import time
-import urllib3
 import requests
-import json
-import base64
+from lxml import html
 
 from amilib.file_lib import FileLib
 
@@ -495,8 +493,8 @@ class Util:
         return clazz
 
     @classmethod
-    def get_classname(cls, object):
-        return object.__class__.__name__
+    def get_classname(cls, obj):
+        return obj.__class__.__name__
         pass
 
     @classmethod
@@ -508,6 +506,68 @@ class Util:
         """
         import getpass
         return getpass.getuser()
+
+    @classmethod
+    def read_ordered_dict_from_str(cls, txt):
+        """
+        reads text of form "OrderedDict([('a', 1), ('b', 2), ('c', 3)])" and
+        creates ordereddict.
+        str(od) creates this BUT generally
+        Shouldn't have been written like this
+        solution from https://stackoverflow.com/questions/10498822/string-to-ordereddict-conversion-in-python/27177986#27177986
+        doesn't work with nested dicts
+        :param txt: the OD in text form
+        :return: the orderedDict or None if fails
+
+        """
+        tempDict = OrderedDict()
+
+        od_start = "OrderedDict(["
+        od_end = '])'
+
+        first_index = txt.find(od_start)
+        if first_index == -1:
+            return None
+        last_index = txt.rfind(od_end)
+
+        new_txt = txt[first_index + len(od_start):last_index]
+
+        pattern = r"(\(\'\S+\'\,\ \'\S+\'\))"
+        all_variables = re.findall(pattern, new_txt)
+        if all_variables is None or len(all_variables) == 0:
+            return None
+
+        for str_variable in all_variables:
+            data = str_variable.split("', '")
+            key = data[0].replace("('", "")
+            value = data[1].replace("')", "")
+            tempDict[key] = value
+
+        return tempDict
+
+    @classmethod
+    def read_ordered_dict_from_str1(cls, txt):
+        """
+        reads text of form "OrderedDict([('a', 1), ('b', 2), ('c', 3)])" and
+        creates ordereddict.
+        str(od) creates this BUT generally
+        Shouldn't have been written like this
+        solution from https://stackoverflow.com/questions/10498822/string-to-ordereddict-conversion-in-python/27177986#27177986
+        doesn't work with nested dicts
+        :param txt: the OD in text form
+        :return: the orderedDict or None if fails
+
+        """
+        od_start = "OrderedDict(["
+        od_end = '])'
+        if od_start in txt:
+            txt.replace(od_start, "{")
+            txt.replace(od_end, "}")
+
+        tempDict = json.loads(txt)
+
+        return tempDict
+
 
 
 class GithubDownloader:

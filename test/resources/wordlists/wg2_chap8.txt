@@ -15,9 +15,9 @@ synergy
 Trade-off
 Adaptation
 Mitigation
-Climate Resilient Development
+Climate Resilience
 Adaptation finance
-pro-poor
+pro
 global trend
 shock
 Urbanisation
@@ -25,7 +25,7 @@ Economic globalisation
 COVID-19
 Development deficit
 exacerbate
-vulnerability
+human vulnerability
 high confidence
 resilient
 emission
@@ -34,17 +34,18 @@ Global warming
 onset
 poverty trap
 food insecurity
-societal impact
+societal 
+impact
 climate change
 mortality
 low middle income countries
 disproportionally
-hazards
+hazard
 migration
 governance capacity
 colonialism
 climate extremes
-slow onset events
+slow onset
 residual risks
 ethnic minorities
 religious minorities
@@ -54,21 +55,102 @@ Sustainable Development Goals
 gender inequality
 discrimination
 maladaptation
-social tippping points
+tipping points
 erosion
 livelihood security
 humanitarian crises
 displacement
 forced migration
 violent conflict
-environmental tippping points
 vulnerable population groups
 sanitation
 transboundary regional clusters
 indigenous knowledge
 local knowledge
 Relative Concentration Pathway
-
-
+climate-sensitive
+precarious
+enabling
+asset
+vertical integration
+horizontal integration
+coherence
+social groups
+Carbon footprint
+climate justice
+rights-based approaches
+gender gaps
+green infrastructure
+ecosystem-based management
+dynamics
+mainstreaming
+Policy coherence
+undermine
+adverse
+severe
+acute
+chronic
+social relation
+institutional
+assessment
+broad-based
+observed impacts
+linkage
+multidimensional
+Fifth Assessment Report
+disadvantaged
+persistent
+ethnicity
+class
+caste
+driver
+multiplier
+stressor
+IPCC Special 1.5°C Report
+underscore
+global mean temperature
+substantially
+equitable development
+robust
+Loss and damage
+quantitative
+spatio-temporal
+subregion
+livelihood groups
+index system
+global hotspot
+subsystems
+infrastructure
+qualitative
+projections
+adaptive capacity
+entry point
+inequity
+destabilising
+baseline
+trajectory
+social networks
+cultural values
+irreversible
+degradation
+ecosystem
+Amazon
+human health
+nutrition
+social stability
+protection mechanism
+coping strategy
+integrated
+transition
+agriculture
+forestry
+energy
+funding
+convergent
+comprehensive
+legal
+governance
+framework
+differential
 
  

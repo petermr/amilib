@@ -260,14 +260,10 @@ class SpanMarker:
             print(f"*************** regex fails {regex} {e} \n******************")
             raise e
         if match:
-            # components = ["", ("decision", "\d+"), "/", ("type", "CP|CMA|CMP"), "\.", ("session", "\d+"), ""]
             id = enhanced_regex.make_id(span0.text)
-            # if id is None:
-            # print(f">>ID {id}")
             clazz = span0.attrib["class"]
             if clazz:
                 pass
-                # print(f"clazz {clazz}")
             span0.attrib["class"] = f"{markup_dict.get(self.CLASS)}"
             span0.attrib["style"] = f"background : {markup_dict.get(self.BACKGROUND)}"
             if self.templater:

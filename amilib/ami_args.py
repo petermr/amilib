@@ -116,8 +116,8 @@ class AbstractArgs(ABC):
             self.parse_and_process1(argv_)
 
     def parse_and_process1(self, argv_):
-        print("running parse_and_process1 in util?")
-        logging.warning(f"********** args for parse_and_process1 {argv_}")
+        # print("running parse_and_process1 in util?")
+        # logging.warning(f"********** args for parse_and_process1 {argv_}")
         self.parsed_args = argv_ if self.parser is None else self.parser.parse_args(argv_)
         self.arg_dict = self.create_arg_dict()
         self.process_args()

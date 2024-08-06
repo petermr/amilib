@@ -833,8 +833,8 @@ class HtmlTest(AmiAnyTest):
     def test_para_contains_phrase(test):
 
         para = lxml.etree.Element("p")
-        para.text = "there is a greenhouse gas which"
-        phrase = "greenhouse gas"
+        para.text = "there are greenhouse gases which"
+        phrase = "greenhouse gases"
         contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True)
         assert contains
 
@@ -842,13 +842,34 @@ class HtmlTest(AmiAnyTest):
         contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True)
         assert not contains
 
-        phrase = "Greenhouse gas"
+        phrase = "Greenhouse gases"
         contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True)
         assert contains
+
+        phrase = "Greenhouse gases"
+        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=False)
+        assert not contains
 
         phrase = "Greenhouse gas"
         contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=False)
         assert not contains
+
+# regexes
+        phrase = "greenhouse gases"
+        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=False, use_regex=True)
+        assert contains
+
+        phrase = "greenhouse gas"
+        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=False, use_regex=True)
+        assert contains
+
+        phrase = "Greenhouse gas"
+        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=False, use_regex=True)
+        assert not contains
+
+        phrase = "[Gg]reenhouse gas(es)?"
+        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=False, use_regex=True)
+        assert  contains
 
 
     # outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, package)
