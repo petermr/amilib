@@ -1245,7 +1245,7 @@ class AmiDictionary:
     def create_entry_by_term(self, lower=True):
         self.html_entry_by_term = dict()
         for entry in self.entries:
-            ami_entry = AmiEntry(entry).get_term()
+            term = AmiEntry(entry).get_term()
             # index by lowercase?
             if lower:
                 term = term.lower()
