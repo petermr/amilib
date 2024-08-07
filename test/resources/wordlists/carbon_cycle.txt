@@ -1,6 +1,6 @@
 anthropogenic
-physical-biogeochemical
-peat drainage
+biogeochemical
+peat
 tropospheric
 permafrost
 centennial
@@ -13,9 +13,9 @@ Paleoclimatic
 hydrography
 pCO2
 parametrization
-Holocene Changes
-boreal sources
-El Niño events
+Holocene
+boreal
+El Nino events
 evapotranspiration
 cement carbonation
 remineralization
@@ -31,6 +31,21 @@ thermocline
 eutrophication
 isobath
 pteropods
+hypoxia
+mycorrhizal
+remineralization
+plankton
+zooplankton
+phytoplankton
+ocean fertilization
+savannas
+grasslands
+Biochar
+pyrolysis
+ancillary
+plant hydraulics
+Paris Agreement
+biodiversity
 carbon dioxide removal (CDR)
 solar radiation modification (SRM)
 hydroxyl radical (OH)
@@ -56,3 +71,11 @@ meridional overturning circulation (MOC)
 Global Carbon Project (GCP)
 Bioenergy with carbon capture and storage (BECCS)
 effective radiative forcing (ERF)
+dissolved inorganic carbon (DIC)
+international land model benchmarking (ILAMB)
+transient climate response to cumulative CO2 emissions (TCRE)
+Direct air carbon capture with carbon storage (DACCS)
+stratospheric aerosol injection (SAI)
+marine cloud brightening (MCB)
+cirrus cloud thinning (CCT)
+
