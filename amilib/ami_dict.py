@@ -38,6 +38,7 @@ TITLE = "title"
 SPAN = "span"
 
 # attributes in amidict
+AMI_ENTRY = "ami_entry"
 DESC = "desc"
 DESCRIPTION = "description"
 NAME = "name"
@@ -113,21 +114,19 @@ class AmiEntry:
         self.element = element if isinstance(element, ET._Element) else None
 
     @classmethod
-    def create_from_element(cls, entry_element):
+    def create_from_element(cls, entry_element, html_element=None):
         """create from raw XML element
         :param entry_element: directly constructed from dictionary files or constructed
         :return: AmiEntry
         """
-        type1 = type(entry_element)
-        ami_entry = None
-        if entry_element is not None:
-            if not isinstance(entry_element, lxml.etree._Element):
-                raise Exception(f"Bad type {type1}")
-            ami_entry = AmiEntry()
+        ami_entry = AmiEntry()
+        if isinstance(entry_element, lxml.etree._Element):
             ami_entry.element = entry_element
+        if html_element is not None:
+            ami_entry.html_element = html_element
+
         return ami_entry
 
-# AmiEntry
 
     @classmethod
     def create_lxml_entry_from_term(cls, term):
@@ -539,6 +538,7 @@ class AmiEntry:
 
     def add_role(self, role, value, single=True):
         """
+        works on HTML version
         adds "<span role="{role}">{value}</role>"
         :param role:value of role
         :param value:value of span
@@ -693,6 +693,8 @@ class AmiDictionary:
         self.logger = logger
         self.xml_content = None
         self.entries = []
+        self.html_root = HtmlUtil.create_skeleton_html()
+        self.html_body = HtmlLib.get_body(self.html_root)
         self.html_entry_by_id = dict()
         self.html_entry_by_term = dict()
         self.html_entry_by_wikidata_id = {}
@@ -997,7 +999,8 @@ class AmiDictionary:
         if not term:
             raise ValueError("must have term for new entry")
         entry_element = ET.SubElement(self.root, ENTRY)
-        ami_entry = AmiEntry.create_from_element(entry_element)
+        html_entry_element = self.create_html_entry()
+        ami_entry = AmiEntry.create_from_element(entry_element, html_element=html_entry_element)
         shortform = None
         if use_shortform:
             term, shortform = AmiDictionary.parse_shortform(term)
@@ -1008,6 +1011,12 @@ class AmiDictionary:
 
         return entry_element
 
+    def create_html_entry(self):
+        """create minimal entry with <div role='ami_entry'>
+        """
+        html_entry = ET.SubElement(self.html_body, H_DIV)
+        html_entry.attrib[ROLE] = AMI_ENTRY
+        return html_entry
     @classmethod
     def parse_shortform(cls, term):
         """

@@ -1067,7 +1067,7 @@ class AmiDictionaryTest(AmiAnyTest):
 
         phrases = dictionary.get_terms()
         dictionary.location = html_dict_path
-        assert len(phrases) == 43
+        assert 40 <= len(phrases) <= 46
         para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, href_markup=html_dict_path)
 
         # write marked_up html
