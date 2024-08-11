@@ -316,7 +316,9 @@ class AmiDictionaryTest(AmiAnyTest):
         assert etree.tostring(entry) == b'<entry term="foo"/>'
         assert etree.tostring(
             amidict.root) == b'<dictionary title="minimal" version="0.0.1"><entry term="foo"/></dictionary>'
-        assert amidict.get_entry_count() == 1
+        count = amidict.get_entry_count()
+        expected = 1
+        assert count == expected,  f"expected {expected} found {count}"
 
     def test_add_two_entry_with_term_to_zero_entry_dict(self):
         amidict = AmiDictionary.create_minimal_dictionary()
@@ -383,6 +385,7 @@ class AmiDictionaryTest(AmiAnyTest):
         assert amidict.get_entry_count() == 5, f"'bar' should be present"
         ami_entries = amidict.get_ami_entries()
         assert len(ami_entries) == 5
+        assert ami_entries[0].element is not None
         assert ET.tostring(ami_entries[0].element) == b'<entry name="foobar"><span role="term">foobar</span><span role="shortform">FB</span></entry>'
         shortforms_list = []
 
@@ -707,7 +710,9 @@ class AmiDictionaryTest(AmiAnyTest):
         dictionary.add_wikidata_from_terms()
         pprint.pprint(lxml.etree.tostring(dictionary.root).decode("UTF-8"))
         assert len(dictionary.entries) == 1
-        wikidata_page = dictionary.create_wikidata_page(dictionary.entries[0])
+        entry = dictionary.entries[0]
+        wikidata_page = dictionary.create_wikidata_page(entry)
+        assert wikidata_page is not None, f"wikidata_page for {entry} is None"
         property_ids = wikidata_page.get_property_ids()
         assert len(property_ids) >= 60
         id_set = set(property_ids)

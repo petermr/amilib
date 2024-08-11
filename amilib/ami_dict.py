@@ -34,12 +34,14 @@ ENTRY = "entry"
 IMAGE = "image"
 RAW = "raw"
 TITLE = "title"
+URL = "url"
 
 SPAN = "span"
 
 # attributes in amidict
 AMI_ENTRY = "ami_entry"
 DESC = "desc"
+DEFINITION = "definition"
 DESCRIPTION = "description"
 NAME = "name"
 ROLE = "role"
@@ -51,6 +53,8 @@ WIKIDATA = "wikidata"
 WIKIDATA_ID = "wikidataID"
 WIKIDATA_URL = "wikidataURL"
 WIKIDATA_SITE = "https://www.wikidata.org/entity/"
+
+WIKIPEDIA = "wikipedia"
 WIKIPEDIA_PAGE = "wikipediaPage"
 TYPE = "type"
 ANY = "ANY"
@@ -519,6 +523,7 @@ class AmiEntry:
         """
         gets all values from <span role=role>
         """
+        assert self.element is not None
         results = []
         results1 = self.element.xpath(f"./span[@role='{role}']")
         if len(results1) > 0:
@@ -710,6 +715,7 @@ class AmiDictionary:
         self.url = None
         self.wikilangs = wikilangs
         self.wikidata_lookup = WikidataLookup()
+        self.xml_entry_by_term = dict()
         self.location_xml = None # path where dictionary lives; maybe set on dictionary reading or writing
         self.options = {} if "options" not in kwargs else kwargs["options"]
 
@@ -914,7 +920,7 @@ class AmiDictionary:
 
     #    class AmiDictionary:
 
-    def add_entries_from_words(self, terms, duplicates="ignore", shortform=False):
+    def add_entries_from_words(self, terms, duplicates="error", shortform=False):
         """add list of words as entry's
         :param terms:   list of terms
         :param duplicates: action if term is duplicate ("ignore", "replace", "error") NYI
@@ -925,8 +931,9 @@ class AmiDictionary:
             rawterm = rawterm.strip()
             term, sf = AmiDictionary.parse_shortform(rawterm)
             if term:
-                dup_entry = self.get_lxml_entry(term)
-                if dup_entry is None:
+                dup_xml_entry = self.get_lxml_entry(term)
+                dup_html_entry = self.get_html_entry(term)
+                if dup_xml_entry is None and dup_html_entry is None:
                     self._add_entry(rawterm, shortform=shortform)
                 elif duplicates == "error":
                     raise AMIDictError("Duplicate entry")
@@ -940,8 +947,35 @@ class AmiDictionary:
         entry = self.add_entry_element(term=term, use_shortform=shortform)
         # print(f"add term {term}")
         self.entries.append(entry)
-        self.html_entry_by_term[term] = entry
+        self.html_entry_by_term[term] = self.create_html_entry_from_xml(entry)
         # print(f"entries: {len(self.html_entry_by_term)}")
+        pass
+
+    def create_html_entry_from_xml(self, xml_entry):
+        """
+converts (legacy) XML version to HTML
+  <entry wikidata="Q67028624" name="Special Report on the Ocean and Cryosphere in a Changing Climate" term="SROCC">
+    <wikipedia url="https://en.wikipedia.org/wiki/Special_Report_on_the_Ocean_and_Cryosphere_in_a_Changing_Climate">
+      <definition>report about the effects of climate change on the world's seas, sea ice, icecaps and glaciers</definition>
+    </wikipedia>
+    <shortform>SROCC</shortform>
+  </entry>
+
+        """
+        assert isinstance(xml_entry, ET._Element)
+        assert xml_entry.tag == "entry"
+        if self.html_body is None:
+            raise Exception("no html_body element")
+        name = xml_entry.attrib.get(NAME)
+        term = xml_entry.attrib.get(TERM)
+        wikidata_id = xml_entry.attrib.get(WIKIDATA)
+        wikipedia_divs = xml_entry.xpath(f"./{WIKIPEDIA}")
+        if len(wikipedia_divs) == 1:
+            wpedia_url = wikipedia_divs[0].attrib.get(URL)
+            wpedia_desc = wikipedia_divs[0].xpath(f"./{DEFINITION}")
+
+
+
 
     @classmethod
     def create_dictionary_from_wordfile(cls, wordfile=None, desc=None, wikidata=False, outdir=None, title=None,
@@ -999,8 +1033,9 @@ class AmiDictionary:
         if not term:
             raise ValueError("must have term for new entry")
         entry_element = ET.SubElement(self.root, ENTRY)
-        html_entry_element = self.create_html_entry()
+        html_entry_element = self.create_minimal_html_entry()
         ami_entry = AmiEntry.create_from_element(entry_element, html_element=html_entry_element)
+        self.html_entry_by_term[term] = html_entry_element
         shortform = None
         if use_shortform:
             term, shortform = AmiDictionary.parse_shortform(term)
@@ -1011,12 +1046,13 @@ class AmiDictionary:
 
         return entry_element
 
-    def create_html_entry(self):
+    def create_minimal_html_entry(self):
         """create minimal entry with <div role='ami_entry'>
         """
         html_entry = ET.SubElement(self.html_body, H_DIV)
         html_entry.attrib[ROLE] = AMI_ENTRY
         return html_entry
+
     @classmethod
     def parse_shortform(cls, term):
         """
@@ -1191,22 +1227,28 @@ class AmiDictionary:
         is a lowercase match
 
         """
+        return self._get_entry_from_entry_dict(self.xml_entry_by_term, termx)
+
+    def get_html_entry(self, termx, ignorecase=True):
+        """get entry if term attribute == term (case may matter
+        :param termx: term to search for
+        :param ignorecase: if true searches for any case variant
+        :return: the entry or None
+
+        all terms are keyed as lowercase in dictionary and case is checked if there
+        is a lowercase match
+
+        """
+        return self._get_entry_from_entry_dict(self.html_entry_by_term, termx)
+
+    def _get_entry_from_entry_dict(self, entry_by_term, termx):
         if termx is None:
             print("term is None")
             return None
         lcase = termx.lower()  # all keys are lowercase
-        if self.html_entry_by_term is None or len(self.html_entry_by_term) == 0:
-            self.create_entry_by_term()
-        html_entry = self.html_entry_by_term[lcase] if lcase in self.html_entry_by_term else None
-        # if case-sensitive check whether term was different case
-        if html_entry is not None:
-            assert type(html_entry) is _Element, f"found {type(html_entry)}"
-            ami_entry = AmiEntry(html_entry)
-            entry_term = ami_entry.get_term()
-            # if the term is case sensitive, compare them
-            if not ignorecase and entry_term != termx:
-                html_entry = None
-        return html_entry
+        if entry_by_term is None:
+            return None
+        return entry_by_term.get(lcase)
 
     #    class AmiDictionary:
 
@@ -1215,15 +1257,39 @@ class AmiDictionary:
         :param term: to search for
         :return: entry wrapped in AmiEntry
         """
-        entry = self.get_lxml_entry(term)
-        return None if entry is None else AmiEntry.create_from_element(entry)
+        xml_entry = self.get_lxml_entry(term)
+        html_entry = self.get_html_entry(term)
+
+        if xml_entry is None and html_entry is None:
+            return None
+        return AmiEntry.create_from_element(xml_entry, html_entry=html_entry)
 
     def get_ami_entry_by_id(self, id):
         pass
 
     def get_entry_count(self):
+        """
+        HORRIBLE until we fuse the data models
+        """
+        lx = self.get_xml_entry_count()
+        lh = self.get_html_entry_count()
+        if lx == 0:
+            return lh
+        if lh ==  0:
+            return lx
+        if lh != lx:
+            raise ValueError(f"inconsistent entrylists xml {lx} and html {lh}")
+        return lh
+
+    def get_html_entry_count(self):
         assert self.html_entry_by_term is not None
-        return len(self.html_entry_by_term)
+        length = len(self.html_entry_by_term)
+        return length
+
+    def get_xml_entry_count(self):
+        assert self.xml_entry_by_term is not None
+        length = len(self.xml_entry_by_term)
+        return length
 
     def get_lxml_entries(self):
         """
@@ -1269,6 +1335,7 @@ class AmiDictionary:
         if entry is not None:
             self.root.remove(entry)
             self.html_entry_by_term.pop(term)
+            self.xml_entry_by_term.pop(term)
 
     def create_and_add_entry_with_term(self, term, replace=True):
         """creates lxml_entry element from term
@@ -1289,7 +1356,7 @@ class AmiDictionary:
         else:
             self.root.append(lxml_entry_new)
         if lxml_entry_new is not None:
-            self.html_entry_by_term[term] = lxml_entry_new
+            self.xml_entry_by_term[term] = lxml_entry_new
         return lxml_entry_new
 
     def check_unique_wikidata_ids(self):
