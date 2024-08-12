@@ -1,6 +1,7 @@
 # Tests wikipedia and wikidata methods under pytest
 import pprint
 import unittest
+from html.parser import HTMLParser
 from pathlib import Path
 import lxml.etree as ET
 
@@ -13,7 +14,7 @@ from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage, \
-    Wikipedia, WikipediaPara
+    Wikipedia, WikipediaPara, WiktionaryPage
 from amilib.wikimedia import WikidataLookup
 from amilib.xml_lib import HtmlLib, XmlLib, HtmlEditor
 from test.resources import Resources
@@ -34,8 +35,10 @@ EO_COMPOUND_DIR = Path(Resources.TEST_RESOURCES_DIR, EO_COMPOUND)
 tests for Wikimedia routines for Wikipedia and Wikidata
 """
 
+base_test = unittest.TestCase
 
-class WikipediaTest(unittest.TestCase):
+
+class WikipediaTest(base_test):
     """
     tests Wikipedia lookup
     """
@@ -381,11 +384,7 @@ class WikipediaTest(unittest.TestCase):
         assert image_url == 'https://en.wikipedia.org//wiki/File:Jawaharlal_Nehru_University_Logo_vectorized.svg'
 
 
-
-
-
-
-class WikidataTest(unittest.TestCase):
+class WikidataTest(base_test):
     """
     lookup wikidata terms, Ids, Requires NET
     """
@@ -1011,6 +1010,23 @@ class WikidataTest(unittest.TestCase):
         assert filter.json['filter']['description'] == "chemical"
         assert filter.json['filter'][
                    'regex'] == "(chemical compound|chemical element)", f"found {filter.json['filter']['regex']}"
+
+
+
+class WiktionaryTest(AmiAnyTest):
+    pass
+
+    def test_lookup_wikiktionary(self):
+        terms = [
+            "nimby",
+            # "peanut",
+            # "woke"
+        ]
+        for term in terms:
+            wiktionary_page = WiktionaryPage.lookup(term)
+
+
+
 
 
 class SPARQLTests:

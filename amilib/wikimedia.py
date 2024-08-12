@@ -4,6 +4,7 @@ import os
 import re
 import sys
 from enum import Enum
+from html.parser import HTMLParser
 from pathlib import Path
 
 import requests
@@ -1496,5 +1497,79 @@ class WikipediaBasicInfo:
               data-file-height="744"
               ></a></td>"""
         return td.text
+
+class WiktionaryPage:
+    """page for wiktionary lookup
+    """
+    WIKTIONARY_BASE = "https://en.wiktionary.org/wiki/"
+
+    def __init__(self, html_element=None):
+        self.html_element = html_element
+
+    @classmethod
+    def lookup(cls, term):
+        url = f"{cls.WIKTIONARY_BASE}{term}"
+        print(f"term: {term}")
+        try:
+            res = requests.get(url)
+            html_element = HtmlLib.parse_html_string(res.content)
+        except Exception as e:
+            print(f"exception {e} // from {url}")
+            return None
+        body = HtmlLib.get_body(html_element)
+        content = body.xpath("./div[@id='content']")[0]
+        first_heading = content.xpath("./h1[@id='firstHeading']/span")[0]
+        print(f"first_head {first_heading.text}")
+        body_content = content.xpath("./div[@id='bodyContent']")[0]
+        mw_content_text = body_content.xpath("./div[@id='mw-content-text']")[0]
+
+        """<div class="mw-heading mw-heading3">
+              <h3 id="Phrase">Phrase</h3>
+                <span class="mw-editsection">
+                  <span class="mw-editsection-bracket">[</span>
+                  <a href="/w/index.php?title=nimby&amp;action=edit&amp;section=5" title="Edit section: Phrase"><span>edit
+                  </span>
+                  </a><
+                  span class="mw-editsection-bracket">]</span>
+                  </span>
+                  </div>"""
+
+        cls.lookup_pos("Phrase", mw_content_text)
+        cls.lookup_pos("Noun", mw_content_text)
+        cls.lookup_pos("Adjective", mw_content_text)
+        cls.lookup_pos("Verb", mw_content_text)
+
+        wiktionary_page = None
+        if html_element is not None:
+            wiktionary_page = WiktionaryPage(html_element)
+        return wiktionary_page
+
+    @classmethod
+    def lookup_pos(cls, heading, mw_content_text):
+        xp = f"./div/div[h3[@id='{heading}']]"
+        elems = mw_content_text.xpath(xp)
+        if len(elems) == 1:
+            elem = mw_content_text.xpath(xp)[0]
+            print(f"{heading}: {''.join(elem.itertext())}")
+
+            """
+            <li><span class="usage-label-sense"><span class="ib-brac">(</span><span class="ib-content">usually <a href="https://en.wiktionary.org/wiki/derogatory#English" title="derogatory">derogatory</a></span><span class="ib-brac">)</span></span> Someone who objects to the building of an undesirable structure in their neighborhood, especially in <a href="https://en.wiktionary.org/wiki/public_policy#English" title="public policy">public policy</a> <a href="https://en.wiktionary.org/wiki/debate#English" title="debate">debate</a>.
+    <dl><dd><i>politically correct green (as in vegetation) <b>nimbies</b> (may object to nuclear power plants, polluting factories, etc.)</i></dd>
+    <dd><i>socially conservative brown (as in shirts) <b>nimbies</b> (may object to the building of jails, prisons, housing for ex-convicts, drinking or adult entertainment establishments)</i></dd>
+    <dd><i>fiscally conservative green (as in money) <b>nimbies</b> (may object to the building of anything which may decrease preexisting property values)</i></dd></dl></li>"""
+            ol = elem.xpath("following-sibling::ol")[0]
+            for li in ol.xpath("./li"):
+                print(f"li {''.join(li.itertext())}")
+            """
+            <p>
+              <span class="headword-line">
+                <strong class="Latn headword" lang="en">nimby</strong>
+              </span>
+            </p>
+            """
+            p = elem.xpath("following-sibling::p")[0]
+            ptext = "".join(p.itertext())
+            print(f"{heading} {ptext}")
+
 
 
