@@ -1014,18 +1014,74 @@ class WikidataTest(base_test):
 
 
 class WiktionaryTest(AmiAnyTest):
-    pass
+    """
+    Tests WiktionaryPage routines
+    """
 
-    def test_lookup_wikiktionary(self):
+    def test_lookup_single_term(self):
+        """
+       test failure to find unkown terms
+        """
+        html_page = HtmlLib.create_html_with_empty_head_body()
+        base = ET.SubElement(html_page, "base")
+        base.attrib["href"] = WiktionaryPage.WIKTIONARY_BASE
+
+        term = "nimby"
+        html_div = self.create_div_for_term(term)
+
+        html_body = HtmlLib.get_body(html_page)
+        html_body.append(html_div)
+        html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{term}.html")
+        if html_page is not None:
+            print(f"wrote to {html_out}")
+            HtmlUtil.write_html_elem(html_page, html_out)
+
+    def test_lookup_terms(self):
+        """
+       test failure to find unkown terms
+        """
+        html_body, html_page = WiktionaryPage.create_html_page()
+
         terms = [
             "nimby",
-            # "peanut",
-            # "woke"
+            "fruitcake",
+            # "up to",
+            "KJABSDd",
+            # "at stake",
+            "crusty",
+            "xjhade",
+            "grockle",
         ]
         for term in terms:
-            wiktionary_page = WiktionaryPage.lookup(term)
+            html_div = self.create_div_for_term(term)
+            if html_div is not None:
+                html_body.append(html_div)
+
+        html_out = Path(Resources.TEMP_DIR, "wiktionary", f"terms.html")
+        print(f"wrote to {html_out}")
+        HtmlUtil.write_html_elem(html_page, html_out)
 
 
+    def create_div_for_term(self, term):
+        wiktionary_page = WiktionaryPage.create_wiktionary_page(term)
+        if wiktionary_page.has_term_not_found_message():
+            print(f" NO TERM")
+        assert wiktionary_page is not None  # missing terms return a page
+        # assert not wiktionary_page.has_term_not_found_message()
+        return wiktionary_page.html_div
+
+    def test_lookup_missing_term(self):
+        """
+       test failure to find unkown terms
+        """
+        terms = [
+            "gahsgdf",
+        ]
+        for term in terms:
+            wiktionary_page = WiktionaryPage.create_wiktionary_page(term)
+            assert wiktionary_page is not None # missing terms return a page
+            """There were no results matching the query"""
+            assert wiktionary_page.has_term_not_found_message()
 
 
 
