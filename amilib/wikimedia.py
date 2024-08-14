@@ -1525,9 +1525,11 @@ class WiktionaryPage:
     @classmethod
     def create_wiktionary_page(cls, term):
         """
-        lookup wiktionary page
+        lookup wiktionary page for term
         if present create WiktionaryPage and the transformed html_div with selected info
         save url in wiktionary_page
+        :param term: term to look up
+        :return: new WiktionaryPage object (if term is missing contains "missing" messages
         """
         url = cls.get_url(term)
         html_element, mw_content_text = cls.get_wiktionary_content(url)
@@ -1550,7 +1552,7 @@ class WiktionaryPage:
         """
         term = re.sub(r"\s+", "_", term)
         url = f"{cls.WIKTIONARY_BASE}{term}"
-        print(f"term: {term}")
+        # print(f"term: {term}")
         return url
 
     @classmethod
@@ -1638,7 +1640,7 @@ class WiktionaryPage:
             res = requests.get(url)
             html_element = HtmlLib.parse_html_string(res.content)
         except Exception as e:
-            print(f"exception {e} // from {url}")
+            # print(f"exception {e} // from {url}")
             raise e
         body = HtmlLib.get_body(html_element)
         content = body.xpath("./div[@id='content']")[0]
@@ -1687,10 +1689,11 @@ class WiktionaryPage:
             return False
         text = "".join(html_element.itertext())
         # text = ET.tostring(html_element)
-        print(f"TEXT {text}")
+        # print(f"TEXT {text}")
         not_found_message = WiktionaryPage.NOT_FOUND in text
         if not_found_message:
-            print("NOT FOUND MESSAGE")
+            # print("NOT FOUND MESSAGE")
+            pass
         return not_found_message
 
     def has_term_not_found_message(self):
@@ -1718,6 +1721,38 @@ class WiktionaryPage:
             style.text = cls.DEFAULT_STYLE
         html_body = HtmlLib.get_body(html_page)
         return html_body, html_page
+
+    @classmethod
+    def create_div_for_term(cls, term):
+        """
+        lookup term in Wiktionary and format results in an html div
+        :param term: to lookup
+        :return: html <div> element containing result of lookup
+        """
+        wiktionary_page = WiktionaryPage.create_wiktionary_page(term)
+        if wiktionary_page.has_term_not_found_message():
+            print(f" NO TERM")
+        assert wiktionary_page is not None  # missing terms return a page
+        # assert not wiktionary_page.has_term_not_found_message()
+        return wiktionary_page.html_div
+
+    @classmethod
+    def lookup_list_of_terms(cls, terms):
+        """
+        reads list of terms and generates an html object with divs for each
+        :param terms: list of terms as strings
+        :return: html document with div children os body
+        """
+        html_body, html_page = WiktionaryPage.create_html_page()
+        for term in terms:
+            print(f"==============={term}=================")
+            html_div = WiktionaryPage.create_div_for_term(term)
+            if html_div is not None:
+                html_body.append(html_div)
+            # print("================================")
+        return html_page
+
+
 
 
 
