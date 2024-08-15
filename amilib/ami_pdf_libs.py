@@ -13,9 +13,11 @@ from pathlib import Path
 from typing import Container
 
 import lxml
+import lxml.etree as ET
 import lxml.html
 import pandas as pd
 import pdfplumber
+import pdfplumber as pdfp
 from PIL import Image
 from lxml import etree
 from lxml.builder import E
@@ -34,7 +36,7 @@ from amilib.ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, C
 from amilib.ami_svg import AmiSVG, SVG_G
 from amilib.bbox import BBox
 from amilib.file_lib import FileLib
-from amilib.util import Util, AmiLogger
+from amilib.util import Util
 from amilib.xml_lib import XmlLib, HtmlLib
 
 # local
@@ -2081,6 +2083,91 @@ class PDFImage:
         compounded suffixes"""
         print(f"saving to {outfile}")
         Image.open(infile).save(outfile)
+
+
+class PDFSlide:
+
+    @classmethod
+    def add_lines_to_body(cls, page_text, body, title):
+        BULLET = chr(8226)
+
+        div = ET.SubElement(body, "div")
+        title_elem = ET.SubElement(div, "h2")
+        title_elem.text = title
+        lines = page_text.split("\n")
+        para, text_par = cls.create_new_para(div)
+        ul = None
+        for line in lines[1:-1]:  # remove header and footer
+            line = line.strip()
+            line0 = line[0]
+            # empty line
+            if line.strip() == "":
+                para, text_par = cls.create_new_para(div)
+            # bullet is new <li>
+            elif line0 == BULLET:
+                text_par = cls.create_li_for_bullet(line, para, text_par, ul)
+            # lowercase lines are appended to existing line text
+            elif line0.islower() or line0 in "&(":
+                cls.join_line_onto_previous(line, text_par)
+            # capitalised lines or quote are new paras
+            elif line0.isupper() or line0 == '"':
+                para = cls.make_para(div, line)
+                text_par = para
+            else:
+                para = cls.make_para(div, line)
+                text_par = para
+                print(f"made new para {line}")
+
+    @classmethod
+    def join_line_onto_previous(cls, line, text_par):
+        if text_par.text != "":
+            text_par.text += " " + line
+
+    @classmethod
+    def create_li_for_bullet(cls, line, para, text_par, ul):
+        if ul is None:
+            ul = ET.SubElement(para, "ul")
+        li = ET.SubElement(ul, "li")
+        li.text = line[1:]
+        text_par = li
+        return text_par
+
+    @classmethod
+    def create_new_para(cls, div):
+        para = cls.make_para(div)
+        text_par = para
+        return para, text_par
+
+    @classmethod
+    def make_para(cls, div, text=""):
+        """
+        make para from text
+        :param  div: parent div
+        :param text: text to add
+        :return: para
+        """
+        para = ET.SubElement(div, "p")
+        para.text = text
+        return para
+
+    @classmethod
+    def create_html_chapter(cls, chapno, infile):
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(htmlx)
+        top_div = ET.SubElement(body, "div")
+        top_div.attrib["class"] = "chapter"
+        chap_title = ET.SubElement(top_div, "h1")
+        chap_title.text = f"Chapter {chapno}"
+        assert infile.exists()
+        pdfToString = ""
+        with pdfp.open(infile) as pdf:
+            for i, page in enumerate(pdf.pages):
+                pdfToString += f"\n\npage ============ {i} ==========\n"
+                page_text = page.extract_text()
+                PDFSlide.add_lines_to_body(page_text, top_div, f"slide {i + 1}")
+                pdfToString += page_text
+        return htmlx, pdfToString
+
 
 
 class SvgText:

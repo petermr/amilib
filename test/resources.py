@@ -101,8 +101,8 @@ class Resources:
     # # TEST_IPCC_SRCCL = Path(TEST_IPCC_DIR, "srccl")
     # # assert TEST_IPCC_SRCCL.exists(), f"{TEST_IPCC_SRCCL} should exist"
     #
-    # # pdfs
-    TEST_PDFS_DIR = Path(TEST_RESOURCES_DIR, "pdfs")
+    # # pdf
+    TEST_PDFS_DIR = Path(TEST_RESOURCES_DIR, "pdf")
     assert TEST_PDFS_DIR.exists()
     # #
     # TEST_IPCC_WG2 = Path(TEST_IPCC_DIR, "wg2")

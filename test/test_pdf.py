@@ -21,6 +21,7 @@ import requests
 import test.test_all
 from amilib.ami_bib import Publication
 from amilib.pdf_args import PDFArgs
+from amilib.ami_pdf_libs import PDFSlide
 from amilib.ami_integrate import HtmlGenerator
 
 """NOTE REQUIRES LATEST pdfplumber"""
@@ -1803,6 +1804,13 @@ class PDFSVGTest(test.test_all.AmiAnyTest):
     MAX_ROW = 10
     MAX_IMAGE = 5
 
+
+def ensure_ul(para):
+
+    pass
+
+
+
 class PDFSlidesTest(AmiAnyTest):
     """
     for PDFs created as PPT dump
@@ -1812,15 +1820,12 @@ class PDFSlidesTest(AmiAnyTest):
         """(
         reads a slide deck and converts to running text
         """
-        pdfToString = ""
-        maxchar = 330
 
-        infile = Path(Resources.TEST_RESOURCES_DIR, "pdfs", "breward_1.pdf")
-        assert infile.exists()
-        with pdfp.open(infile) as pdf:
-            for i, page in enumerate(pdf.pages):
-                pdfToString += f"\n\npage ============ {i} ==========\n"
-                pdfToString += page.extract_text()
+        chapno = 1
+        infile = Path(Resources.TEST_RESOURCES_DIR, "pdf", f"breward_{chapno}.pdf")
+        outdir = Path(Resources.TEMP_DIR, "pdf", "ab_slides")
+
+        htmlx, pdfToString = PDFSlide.create_html_chapter(chapno, infile)
 
         expected = """
 
@@ -1833,30 +1838,33 @@ Climate Change – What to think and What to do – Alastair Breward – Autumn 
 
 page ============ 1 ==========
 Framing Climate Ch"""
+        maxchar = 330
         assert expected == pdfToString[:maxchar]
+        outfile = Path(Resources.TEMP_DIR, "pdf", "breward", f"chap_{chapno}.html")
+        HtmlUtil.write_html_elem(htmlx, outfile)
+
 
     def test_convert_multiple_slidedecks(self):
         """
         read 8 chapters from Alastair Breward
         """
-        pdfs_dir = Path(Resources.TEST_RESOURCES_DIR, "pdfs")
+        pdfs_dir = Path(Resources.TEST_RESOURCES_DIR, "pdf")
         outdir = Path(Resources.TEMP_DIR, "pdf", "ab_slides")
-        outdir.mkdir()
-        for i in range(1,9):
-            stem = f"breward_{i}"
+        outdir.mkdir(exist_ok=True)
+        prestem = "breward"
+        for chapno in range(1,9):
+            stem = f"{prestem}_{chapno}"
             infile = Path( pdfs_dir, f"{stem}.pdf")
             if not infile.exists():
-                print(f"files not available in {pdfs_dir}, text ignored")
+                print(f"file {infile} not available in {pdfs_dir}, text ignored")
                 return
-            pdfToString = ""
-            with pdfp.open(infile) as pdf:
-                for i, page in enumerate(pdf.pages):
-                    pdfToString += f"\n\npage ============ {i} ==========\n"
-                    pdfToString += page.extract_text()
+            htmlx, pdfToString = PDFSlide.create_html_chapter(chapno, infile)
+            html_out = Path(outdir, f"{stem}.html")
+            HtmlUtil.write_html_elem(htmlx, html_out)
             outfile = Path(outdir, f"{stem}.txt")
             with open(outfile, "w") as f:
                 f.write(pdfToString)
-                print(f"wrote {outfile}")
+                print(f"wrote text to {outfile}")
 
 
 
