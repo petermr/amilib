@@ -1080,6 +1080,44 @@ class WiktionaryTest(AmiAnyTest):
             assert wiktionary_page.has_term_not_found_message()
 
 
+    def test_lookup_plants_write_to_file(self):
+        """
+        lookup 2 plants
+        """
+        terms = [
+            "parijat",
+            "lemon verbena"
+        ]
+        stem = "plants"
+        html_page = WiktionaryPage.lookup_list_of_terms(terms, add_style=None)
+        html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
+        print(f"wrote to {html_out}")
+        HtmlUtil.write_html_elem(html_page, html_out)
+        assert html_out.exists()
+
+    def test_lookup_words_in_file(self):
+        """
+        read text file and lookup each line
+        """
+        wordfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "ab_chap_2.txt")
+        assert wordfile.exists()
+        with open(wordfile, "r") as f:
+            terms = f.readlines()
+        assert len(terms) == 63
+        terms1 = []
+        for term in terms:
+            # term = term.lower()
+            if len(term.strip()) > 0:
+                terms1.append(term)
+        assert len(terms1) == 60
+
+        stem = "chap_2"
+        html_page = WiktionaryPage.lookup_list_of_terms(terms1, add_style=WiktionaryPage.DEFAULT_STYLE)
+        html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
+        print(f"wrote to {html_out}")
+        HtmlUtil.write_html_elem(html_page, html_out)
+        assert html_out.exists()
+
 
 class SPARQLTests:
     @classmethod

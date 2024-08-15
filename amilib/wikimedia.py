@@ -1505,7 +1505,7 @@ class WiktionaryPage:
     NOT_FOUND = "Wiktionary does not yet have an entry for"
     DEFAULT_STYLE = """
     li {border : blue 1px dotted;}
-    div[class=wiktionary_pos] {border : red 2px solid; margin : 3px;}
+    div[class=wiktionary_pos] {border : #21618c 2px solid; margin : 3px;}
     div[class=citation-whole] {display : none;}
     """
 
@@ -1644,7 +1644,7 @@ class WiktionaryPage:
             raise e
         body = HtmlLib.get_body(html_element)
         content = body.xpath("./div[@id='content']")[0]
-        first_heading = content.xpath("./h1[@id='firstHeading']/span")[0]
+        # first_headings = content.xpath("./h1[@id='firstHeading']/span")
         # print(f"first_head {first_heading.text}")
         body_content = content.xpath("./div[@id='bodyContent']")[0]
         mw_content_text = body_content.xpath("./div[@id='mw-content-text']")[0]
@@ -1737,13 +1737,13 @@ class WiktionaryPage:
         return wiktionary_page.html_div
 
     @classmethod
-    def lookup_list_of_terms(cls, terms):
+    def lookup_list_of_terms(cls, terms, add_style):
         """
         reads list of terms and generates an html object with divs for each
         :param terms: list of terms as strings
         :return: html document with div children os body
         """
-        html_body, html_page = WiktionaryPage.create_html_page()
+        html_body, html_page = WiktionaryPage.create_html_page(add_style=add_style)
         for term in terms:
             print(f"==============={term}=================")
             html_div = WiktionaryPage.create_div_for_term(term)
