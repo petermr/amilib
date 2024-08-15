@@ -2099,6 +2099,7 @@ class PDFSlide:
         ul = None
         for line in lines[1:-1]:  # remove header and footer
             line = line.strip()
+            line = Util.normalize_chars(line)
             line0 = line[0]
             # empty line
             if line.strip() == "":
@@ -2164,7 +2165,7 @@ class PDFSlide:
             for i, page in enumerate(pdf.pages):
                 pdfToString += f"\n\npage ============ {i} ==========\n"
                 page_text = page.extract_text()
-                PDFSlide.add_lines_to_body(page_text, top_div, f"slide {i + 1}")
+                cls.add_lines_to_body(page_text, top_div, f"slide {i + 1}")
                 pdfToString += page_text
         return htmlx, pdfToString
 

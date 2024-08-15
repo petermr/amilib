@@ -509,6 +509,14 @@ class Util:
         import getpass
         return getpass.getuser()
 
+    @classmethod
+    def normalize_chars(cls, line):
+        """
+        reduce non-ANSI chars if possible
+        """
+        line = line.replace('“', '")')
+        return line
+
 
 class GithubDownloader:
     """Note: Github uses the old 'master' name but we have changed it to 'main'"""
