@@ -1730,11 +1730,26 @@ class WiktionaryPage:
             # print("================================")
         return html_page
 
-
-
-
-
-
+    @classmethod
+    def loookup_wordlist_file_write_html(cls, wordfile, outdir, html_stem):
+        """
+        :param wordfile: input list of words, one per line
+        :param outdir: output directory
+        :param html_stem: file stem of html output
+        :return: filename of html output
+        """
+        assert wordfile.exists()
+        with open(wordfile, "r") as f:
+            terms = f.readlines()
+        terms1 = []
+        for term in terms:
+            # term = term.lower()
+            if len(term.strip()) > 0:
+                terms1.append(term)
+        html_page = WiktionaryPage.lookup_list_of_terms(terms1, add_style=WiktionaryPage.DEFAULT_STYLE)
+        html_out = Path(outdir, f"{html_stem}.html")
+        HtmlUtil.write_html_elem(html_page, html_out)
+        return html_out
 
 
 class WikipediaInfoBox:

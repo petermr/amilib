@@ -9,7 +9,7 @@ sequestration
 albedo
 exacerbating
 meridional
-Paleoclimatic
+paleoclimatic
 hydrography
 pCO2
 parametrization

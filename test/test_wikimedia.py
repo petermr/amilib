@@ -14,7 +14,7 @@ from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage, \
-    Wikipedia, WikipediaPara, WiktionaryPage
+    WikipediaPara, WiktionaryPage
 from amilib.wikimedia import WikidataLookup
 from amilib.xml_lib import HtmlLib, XmlLib, HtmlEditor
 from test.resources import Resources
@@ -1118,6 +1118,19 @@ class WiktionaryTest(AmiAnyTest):
         print(f"wrote to {html_out}")
         HtmlUtil.write_html_elem(html_page, html_out)
         assert html_out.exists()
+
+    def test_lookup_wordfile_write_html(self):
+        """
+        read text file and lookup each line
+        """
+        html_stem = "carbon_cycle"
+        wordfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{html_stem}.txt")
+        outdir = Path(Resources.TEMP_DIR, "wiktionary")
+
+        html_out = WiktionaryPage.loookup_wordlist_file_write_html(wordfile, outdir, html_stem)
+        print(f"wrote to {html_out}")
+        assert html_out.exists()
+
 
 
 class SPARQLTests:
