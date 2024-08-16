@@ -1113,6 +1113,7 @@ class WiktionaryTest(AmiAnyTest):
 
         stem = "chap_2"
         html_page = WiktionaryPage.lookup_list_of_terms(terms1, add_style=WiktionaryPage.DEFAULT_STYLE)
+
         html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
         print(f"wrote to {html_out}")
         HtmlUtil.write_html_elem(html_page, html_out)
