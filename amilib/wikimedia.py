@@ -1235,6 +1235,34 @@ class WikipediaPage:
             is_disambig =  central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
         return is_disambig
 
+    @classmethod
+    def lookup_pages_for_words_in_file(cls, filestem, indir, suffix=".txt"):
+        """
+        from file of words/phrases lookup page in wikipedia
+        input file is {indir}/{filestem}{suffix}
+        :param filestem; stem of file
+        :param indir: input directory
+        :param suffix: of file including period
+        :return: dict of Wikipedia pages {phrase:page}, phrase has spaces replaced by "_"
+        """
+        path = Path(indir, f"{filestem}{suffix}")
+        return cls.create_page_dict_for_words_in_file(path)
+
+    @classmethod
+    def create_page_dict_for_words_in_file(cls, inpath):
+        """
+        from file/path of words/phrases lookup page in wikipedia
+        :param inpath:file/url with list of words
+        :return: dict of Wikipedia pages {phrase:page}, phrase has spaces replaced by "_"
+        """
+        with open(inpath) as f:
+            words = f.readlines()
+        page_by_word_dict = dict()
+        for word in words:
+            word = word.replace("\\s+", "_")
+            page = cls.lookup_wikipedia_page_for_term(word)
+            page_by_word_dict[word] = page
+        return page_by_word_dict
 
 
 class WikipediaPara:
@@ -1476,6 +1504,14 @@ class WikipediaBasicInfo:
               # ></a></td>"""
         return td.text
 
+
+class WiktionaryToc:
+    """
+    supports Wiktionary table of contents
+    """
+
+
+
 class WiktionaryPage:
     """page for wiktionary lookup
     """
@@ -1512,12 +1548,14 @@ class WiktionaryPage:
         url = cls.get_url(term)
         html_element, mw_content_text = cls.get_wiktionary_content(url)
         wiktionary_page = WiktionaryPage(html_element)
-        if not WiktionaryPage._has_term_not_found_message_(html_element):
-            html_div = ET.Element("div")
-            html_div.attrib["class"] = "wiktionary_pos"
-            cls.add_poss(html_div, mw_content_text)
-            wiktionary_page.html_div = html_div
-            wiktionary_page.url = url
+        language_chunks = cls.split_mw_content_text_by_language(mw_content_text)
+
+        html_div = ET.Element("div")
+        html_div.append(language_chunks)
+        cls.process_parts_of_speech(html_div, mw_content_text)
+        wiktionary_page.html_div = html_div
+        wiktionary_page.url = url
+
         return wiktionary_page
 
     @classmethod
@@ -1534,7 +1572,17 @@ class WiktionaryPage:
         return url
 
     @classmethod
-    def add_poss(cls, html_div, mw_content_text):
+    def split_into_language_chunks(cls):
+        """
+        divide WiktionaryPage at languages
+        experimental
+        """
+    @classmethod
+    def process_parts_of_speech(cls, html_div, mw_content_text):
+        """
+        looks for parts of speech and their immediate environment.
+        probably not optimal - use languages first
+        """
         for pos in cls.POS:
             pos_div = cls.lookup_part_of_speech_div(pos, mw_content_text)
             if pos_div is None:
@@ -1625,6 +1673,9 @@ class WiktionaryPage:
         # first_headings = content.xpath("./h1[@id='firstHeading']/span")
         # print(f"first_head {first_heading.text}")
         body_content = content.xpath("./div[@id='bodyContent']")[0]
+        h1_first_heading = content.xpath("./h1[@id='firstHeading']")[0]
+        # print(f"h111 {ET.tostring(h1_first_heading)}")
+        print(f"h1_first {''.join(h1_first_heading.itertext())}")
         mw_content_text = body_content.xpath("./div[@id='mw-content-text']")[0]
         """<div class="mw-heading mw-heading3">
                       <h3 id="Phrase">Phrase</h3>
@@ -1683,7 +1734,7 @@ class WiktionaryPage:
         return WiktionaryPage._has_term_not_found_message_(self.html_element)
 
     @classmethod
-    def create_html_page(cls, add_base=True, add_style=DEFAULT_STYLE):
+    def create_skeleton_html_page(cls, add_base=True, add_style=DEFAULT_STYLE):
         """
         create skeleton html_page for wiktionary
         adds HTML <base>
@@ -1721,7 +1772,7 @@ class WiktionaryPage:
         :param terms: list of terms as strings
         :return: html document with div children os body
         """
-        html_body, html_page = WiktionaryPage.create_html_page(add_style=add_style)
+        html_body, html_page = WiktionaryPage.create_skeleton_html_page(add_style=add_style)
         for term in terms:
             print(f"==============={term}=================")
             html_div = WiktionaryPage.create_div_for_term(term)
@@ -1750,6 +1801,69 @@ class WiktionaryPage:
         html_out = Path(outdir, f"{html_stem}.html")
         HtmlUtil.write_html_elem(html_page, html_out)
         return html_out
+
+    @classmethod
+    def split_mw_content_text_by_language(cls, mw_content_text):
+        """
+        <div class="mw-heading mw-heading2">
+          <h2 id="English">English</h2>
+          <span class="mw-editsection">
+            <span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=bread&amp;action=edit&amp;section=1" title="Edit section: English"><span>edit</span></a><span class="mw-editsection-bracket">]</span>
+          </span>
+        </div>
+        """
+        h2_with_ids = mw_content_text.xpath("./div/div/h2[@id]")
+        # get all ids
+        # id_list = [h2.attrib.get("id") for h2 in h2_with_ids]
+        # print (f"idlist {id_list}")
+        language_chunks = []
+        mw_grandchildren = mw_content_text.xpath("./div/*")
+
+        level_class_list = [
+            ("h2", "lang"),
+            ("h3", "etym"),
+            ("h4", "pos"),
+            ("h5", "xxx"),
+            ]
+
+        level = 0
+        chunklist_elem = cls.group_list(level, level_class_list, mw_grandchildren)
+        return chunklist_elem
+
+    @classmethod
+    def group_list(cls, level, level_class_list, elems):
+        if level >= len(level_class_list):
+            # print(f"exhausted headers")
+            return None
+        print(f"level {level} {type(elems)}")
+        level_class = level_class_list[level]
+        h_level = level_class[0]
+        clazz = level_class[1]
+        chunklist_elem = ET.Element("div")
+        chunklist_elem.attrib["class"] = f"{clazz}_{h_level}"
+        print(chunklist_elem.attrib["class"])
+        while len(elems) > 0:
+            elem = elems.pop()
+            headers = elem.xpath(h_level)
+            if len(headers) > 0:
+                # chunk_elem = ET.SubElement(chunklist_elem, "div")
+                # chunk_elem.attrib["class"] = clazz
+                # chunk_elem.append(headers[0])
+                chunklist_subelem = cls.group_list(level + 1, level_class_list, elems)
+                if chunklist_subelem is not None:
+                    chunklist_elem.append(chunklist_subelem)
+            else:
+                chunklist_elem.append(elem)
+        print(f"chunklist_elem {type(chunklist_elem)}")
+        return chunklist_elem
+
+    @classmethod
+    def create_toc(cls, mw_content_text):
+        toc_elem = mw_content_text.xpath(".//div[@id='toc']")[0]
+        wik_toc = WiktionaryToc()
+        wik_toc.elem = toc_elem
+        return wik_toc
+
 
 
 class WikipediaInfoBox:

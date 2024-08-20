@@ -1,0 +1,28 @@
+    div[class="language"] {
+    border:2px dashed; background : pink; margin:4px;}
+    div[class="prelanguage"] {display : none;}
+    h3 {background : cyan;}
+    h4 {background : gray;}
+    h5 {background : magenta;}
+    div[class*="derivedterms"] {background:black;}
+    div[class*="ac-hcoln"] {
+        background:cyan;
+        display:none;
+    }
+    div[data-toggle-category="derived terms"] {
+        background:red;
+        display:none;
+    }
+    div[class*="sister-wikipedia"] {
+      margin:3px;
+      background: red;
+      border : blue 3px dashed;
+      display:none;
+      }
+    table[class="translations"] {
+        background:green;
+        display:none;
+    }
+
+
+    div {border : solid 2px; margin : 3px; background: yellow;}

@@ -1417,6 +1417,20 @@ class HtmlLib:
             assert len(paras) == count
         return paras
 
+    @classmethod
+    def add_link_stylesheet(self, css_file, htmlx):
+        """
+        add stylesheet link to <head>
+        creates <link rel='stylesheet' href=<css_file/>
+        does not remove other links
+        :param htmlx: html element with existing <head> element
+        :param css_file:file path , absolute or relative to html file
+
+        """
+
+        link = ET.SubElement(HtmlLib.get_head(htmlx), "link")
+        link.attrib["rel"] = "stylesheet"
+        link.attrib["href"] = css_file
 
 
 class DataTable:

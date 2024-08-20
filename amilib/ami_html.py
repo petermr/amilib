@@ -1874,7 +1874,7 @@ class HtmlUtil:
         return html_elem
 
     @classmethod
-    def write_html_elem(cls, elem, out_html, pretty_print=False):
+    def write_html_elem(cls, elem, out_html, pretty_print=False, debug=False):
         """write HTML with optional pretty_print
         :param elem: HTML element
         :param out_html: either a file or sys.stdout
@@ -1888,6 +1888,8 @@ class HtmlUtil:
             Path(out_html).parent.mkdir(parents=True, exist_ok=True)
             with open(out_html, "wb") as f:
                 f.write(ss)
+        if debug:
+            print(f"wrote {out_html}")
 
     @classmethod
     def remove_style_attributes(cls, html_elem):

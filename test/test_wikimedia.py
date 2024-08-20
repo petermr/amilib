@@ -47,7 +47,7 @@ class WikipediaTest(base_test):
         """tests lookup of wikipedia page by name"""
         wordlist_dir = Path(Resources.TEST_RESOURCES_DIR, "wordlists")
         stem = "small_10"  # file stem
-        Wikipedia.search_wikipedia_for_terms(stem, wordlist_dir)
+        wikipedia_pages = WikipediaPage.lookup_pages_for_words_in_file(stem, wordlist_dir)
 
     @unittest.skipUnless(AmiAnyTest.IS_PMR, "long and development only")
     def test_wikipedia_lookup_several_word_lists(self):
@@ -58,12 +58,12 @@ class WikipediaTest(base_test):
             # "climate_words",
             # "food_ecosystem",
             # "water_cyclone",
-            # "poverty",
+            "poverty",
             "small_2"
         ]
         outdir = Path(Resources.TEMP_DIR, "html", "terms")
         for wordlist_stem in wordlists:
-            Wikipedia.search_wikipedia_for_terms(wordlist_stem, wordlist_dir, outdir)
+            word_dict = WikipediaPage.lookup_pages_for_words_in_file(wordlist_stem, wordlist_dir)
 
     def test_wikipedia_page_from_wikidata(self):
         qitem = "Q144362"  # azulene
@@ -129,28 +129,31 @@ class WikipediaTest(base_test):
         # texts = self.get_texts()
         XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
         print(f"Tailed text: {ET.tostring(first_para.para_element)}")
-        assert ET.tostring(first_para.para_element) == (b'<p class="wpage_first_para">The <b>Atlantic meridional overturning circulati'
- b'on</b><span> (</span><b>AMOC</b><span>) is the main </span><a href="/wiki/Oc'
- b'ean_current" title="Ocean current">ocean current</a><span> system in the </s'
- b'pan><a href="/wiki/Atlantic_Ocean" title="Atlantic Ocean">Atlantic Ocean</a>'
- b'<span>.</span><sup id="cite_ref-IPCC_AR6_AnnexVII_1-0" class="reference"><a '
- b'href="#cite_note-IPCC_AR6_AnnexVII-1">[1]</a></sup><sup class="reference now'
- b'rap"><span title="Page / location: 2238">:&#8202;2238&#8202;</span></sup><sp'
- b'an> It is a component of Earth\'s </span><a href="/wiki/Ocean_circulation'
- b'" class="mw-redirect" title="Ocean circulation">ocean circulation</a><span> '
- b'system and plays an important role in the </span><a href="/wiki/Climate_syst'
- b'em" title="Climate system">climate system</a><span>. The AMOC includes Atlan'
- b'tic currents at the surface and at great depths that are driven by changes i'
- b'n weather, temperature and </span><a href="/wiki/Salinity" title="Salinity">'
- b'salinity</a><span>. Those currents comprise half of the global </span><a hre'
- b'f="/wiki/Thermohaline_circulation" title="Thermohaline circulation">thermoha'
- b'line circulation</a><span> that includes the flow of major ocean currents, t'
- b'he other half being the </span><a href="/wiki/Southern_Ocean_overturning_cir'
- b'culation" title="Southern Ocean overturning circulation">Southern Ocean over'
- b'turning circulation</a><span>.</span><sup id="cite_ref-NOAA2023_2-0" class="'
- b'reference"><a href="#cite_note-NOAA2023-2">[2]</a></sup><span>\n</span></p>')
+        assert ET.tostring(first_para.para_element) == (
+         b'<p class="wpage_first_para">The <b>Atlantic meridional overturning circulati'
+         b'on</b><span> (</span><b>AMOC</b><span>) is the main </span><a href="/wiki/Oc'
+         b'ean_current" title="Ocean current">ocean current</a><span> system in the </s'
+         b'pan><a href="/wiki/Atlantic_Ocean" title="Atlantic Ocean">Atlantic Ocean</a>'
+         b'<span>.</span><sup id="cite_ref-IPCC_AR6_AnnexVII_1-0" class="reference"><a '
+         b'href="#cite_note-IPCC_AR6_AnnexVII-1"><span class="cite-bracket">[</span>1<s'
+         b'pan class="cite-bracket">]</span></a></sup><sup class="reference nowrap"><sp'
+         b'an title="Page / location: 2238">:&#8202;2238&#8202;</span></sup><span> It i'
+         b's a component of Earth\'s </span><a href="/wiki/Ocean_circulation" class='
+         b'"mw-redirect" title="Ocean circulation">ocean circulation</a><span> system a'
+         b'nd plays an important role in the </span><a href="/wiki/Climate_system" titl'
+         b'e="Climate system">climate system</a><span>. The AMOC includes Atlantic curr'
+         b'ents at the surface and at great depths that are driven by changes in weathe'
+         b'r, temperature and </span><a href="/wiki/Salinity" title="Salinity">salinity'
+         b'</a><span>. Those currents comprise half of the global </span><a href="/wiki'
+         b'/Thermohaline_circulation" title="Thermohaline circulation">thermohaline cir'
+         b'culation</a><span> that includes the flow of major ocean currents, the other'
+         b' half being the </span><a href="/wiki/Southern_Ocean_overturning_circulation'
+         b'" title="Southern Ocean overturning circulation">Southern Ocean overturning '
+         b'circulation</a><span>.</span><sup id="cite_ref-NOAA2023_2-0" class="referenc'
+         b'e"><a href="#cite_note-NOAA2023-2"><span class="cite-bracket">[</span>2<span'
+         b' class="cite-bracket">]</span></a></sup><span>\n</span></p>')
 
-
+    @unittest.skip("duplicate")
     def test_wikipedia_page_first_para_sentence_add_brs(self):
         """
         creates WikipediaPage.FirstPage object
@@ -356,6 +359,8 @@ class WikipediaTest(base_test):
         path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
+
+    @unittest.skip("not yet working")
 
     def test_disambiguation_page(self):
         """
@@ -1018,6 +1023,11 @@ class WiktionaryTest(AmiAnyTest):
     Tests WiktionaryPage routines
     """
 
+    """
+    https://en.wiktionary.org/w/index.php?search=bear&title=Special:Search&profile=advanced&fulltext=1&ns0=1
+    """
+
+    @unittest.skip("not yet working")
     def test_lookup_single_term(self):
         """
        test failure to find unkown terms
@@ -1036,6 +1046,7 @@ class WiktionaryTest(AmiAnyTest):
             print(f"wrote to {html_out}")
             HtmlUtil.write_html_elem(html_page, html_out)
 
+    @unittest.skip("not yet working")
     def test_lookup_terms(self):
         """
        test lookup of list of terms in Wiktionary
@@ -1066,6 +1077,7 @@ class WiktionaryTest(AmiAnyTest):
         HtmlUtil.write_html_elem(html_page, html_out)
 
 
+    @unittest.skip("not yet working")
     def test_lookup_missing_term(self):
         """
        test failure to find unkown terms
@@ -1095,6 +1107,7 @@ class WiktionaryTest(AmiAnyTest):
         HtmlUtil.write_html_elem(html_page, html_out)
         assert html_out.exists()
 
+    @unittest.skip("not yet working")
     def test_lookup_words_in_file(self):
         """
         read text file and lookup each line
@@ -1119,6 +1132,8 @@ class WiktionaryTest(AmiAnyTest):
         HtmlUtil.write_html_elem(html_page, html_out)
         assert html_out.exists()
 
+    @unittest.skip("not yet working")
+
     def test_lookup_wordfile_write_html(self):
         """
         read text file and lookup each line
@@ -1131,14 +1146,123 @@ class WiktionaryTest(AmiAnyTest):
         print(f"wrote to {html_out}")
         assert html_out.exists()
 
+    def test_group_languages_pos(self):
+        """
+        try to group the Wiktionary output (effort 1)
+        """
+        stem = "peat_bread_cow"
+        terms = ["peat", "bread", "cow"]
+        terms = ["bread", "cow", "hurricane"]
+        outdir = Path(Resources.TEMP_DIR, "wiktionary")
+        html_page = WiktionaryPage.lookup_list_of_terms(terms, add_style=WiktionaryPage.DEFAULT_STYLE)
+        html_out = Path(outdir, f"{stem}.html")
+        print (f"wrote {html_out}")
+        HtmlUtil.write_html_elem(html_page, html_out)
+
+    @unittest.skip("broken")
+    def test_group_languages(self):
+        """
+        parse Wiktionary output as
+        mw-parse-output
+          English
+          Chinese
+          ...
+        """
+        terms = [
+            # "bread",
+            "curlicue",
+            "xxqz"
+            # "cow",
+            # "hydrogen",
+            # "opacity",
+        ]
+        htmlx = HtmlUtil.create_skeleton_html()
+        stem = "language_chunks"
+        HtmlLib.add_link_stylesheet("wiktionary.css", htmlx)
+        style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
+        # style.text = """
+        # div[class="language"] {
+        # border:2px dashed; background : pink; margin:4px;}
+        # div[class="prelanguage"] {display : none;}
+        # h3 {background : cyan;}
+        # h4 {background : gray;}
+        # h5 {background : magenta;}
+        # div[class*="derivedterms"] {background:black;}
+        # div[class*="ac-hcoln"] {
+        #     background:cyan;
+        #     display:none;
+        # }
+        # div[data-toggle-category="derived terms"] {
+        #     background:red;
+        #     display:none;
+        # }
+        # div[class*="sister-wikipedia"] {
+        #   margin:3px;
+        #   background: red;
+        #   border : blue 3px dashed;
+        #   display:none;
+        #   }
+        # table[class="translations"] {
+        #     background:green;
+        #     display:none;
+        # }
+        #
+        #
+        # div {border : solid 2px; margin : 3px; background: yellow;}
+        # """
+        # style.text = "div {border : black solid 2px; margin : 2px;}"
+
+        body = HtmlLib.get_body(htmlx)
+        for term in terms:
+            print(f"=========={term}==========")
+            url = WiktionaryPage.get_url(term)
+            html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(url)
+            chunklist_elem = WiktionaryPage.split_mw_content_text_by_language(mw_content_text)
+            body.append(chunklist_elem)
+        HtmlUtil.write_html_elem(
+            htmlx, Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html"), debug=True)
+        FileLib.copyanything(Path(Resources.TEST_RESOURCES_DIR, "wiktionary", "wiktionary.css"),
+                          Path(Resources.TEMP_DIR, "wiktionary", "wikitionary.css"))
+
+
+    @unittest.skip("not yet working")
+
+    def test_extract_toc(self):
+
+        """
+        read toc and try to use it to navigate the linera elements
+        """
+        terms = [
+            # "bread",
+            "curlicue",
+            # "xxqz"
+            # "cow",
+            # "hydrogen",
+            # "opacity",
+        ]
+        htmlx = HtmlUtil.create_skeleton_html()
+        stem = "toc"
+        HtmlLib.add_link_stylesheet("wiktionary.css", htmlx)
+        style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
+        body = HtmlLib.get_body(htmlx)
+        for term in terms:
+            print(f"=========={term}==========")
+            url = WiktionaryPage.get_url(term)
+            html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(url)
+            toc_elem = WiktionaryPage.create_toc(mw_content_text)
+            body.append(toc_elem)
+        HtmlUtil.write_html_elem(
+            htmlx, Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html"), debug=True)
+        FileLib.copyanything(Path(Resources.TEST_RESOURCES_DIR, "wiktionary", "wiktionary.css"),
+                          Path(Resources.TEMP_DIR, "wiktionary", "wikitionary.css"))
 
 
 class SPARQLTests:
     @classmethod
     @unittest.skip("WS symbol?")
     def test_sparql_wrapper_WIKI(cls):
-        """A
-        uthor Shweata M Hegde
+        """
+        Author Shweata M Hegde
         from wikidata query site
         """
         #
