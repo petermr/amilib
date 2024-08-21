@@ -388,6 +388,7 @@ class AmiLib:
         version = '0.2.2a1'  # 2024-07-11 # wikipedia lookup and paragrah splitting
         version = '0.2.3a1'  # 2024-07-16 # markup html with dictionaries
         version = '0.2.3a2'  # 2024-07-17 # markup html with dictionaries
+        version = '0.2.4a1'  # 2024-07-17 # add Wiktionary
 
         # logging.warn(f"VERSION {version}")
         return version

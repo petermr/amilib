@@ -7,6 +7,7 @@ from enum import Enum
 from html.parser import HTMLParser
 from pathlib import Path
 
+import pylab as p
 import requests
 from lxml import etree as ET
 from lxml import etree, html
@@ -1858,12 +1859,331 @@ class WiktionaryPage:
         return chunklist_elem
 
     @classmethod
-    def create_toc(cls, mw_content_text):
-        toc_elem = mw_content_text.xpath(".//div[@id='toc']")[0]
-        wik_toc = WiktionaryToc()
-        wik_toc.elem = toc_elem
-        return wik_toc
+    def create_toc_and_main_content(cls, language, part_of_speech, mw_content_text):
 
+        """
+        reads medi_wiki_content_text and extracts ToC , and pos+defintions
+        Not finished. Safest to take the first definition which will be main English one
+        Horribly messay and fragile
+        :param language: language or list of languges 'English' and possibly others
+        :param part_of_speech: partOfSpeech wanted or list of Partsofspeech
+        :param mw_content_text: mediawiki content
+        :return: element with POS and definition/s
+        """
+        if language is None:
+            print(f"No language/s given")
+            return
+        languages = language if type(language) is list else [language]
+        if part_of_speech is None:
+            print(f"No parts of speec given")
+            return
+        pos_list = part_of_speech if type(part_of_speech) is list else [part_of_speech]
+        if memoryview is None:
+            print(f"no mediwiki given")
+            return None
+        """
+        NOTE: variable structure. Sometimes PoS are under languag with Etymology siblings
+        English
+          Etymology
+          Noun
+
+        sometimes its language with Etymology 1, Etymology 2 children and Noun, etc as grandchildren
+
+
+Contents
+1	English
+  1.1	Etymology
+  1.2	Pronunciation
+  1.3	Noun
+    1.3.1	Usage notes
+    1.3.2	Hyponyms
+    1.3.3	Derived terms
+    1.3.4	Descendants
+    1.3.5	Translations
+  1.4	Verb
+  1.5	Further reading
+  1.6	Anagrams
+2	Basque
+  2.1	Noun
+3	Irish
+  3.1	Pronunciation
+  3.2	Etymology 1
+    3.2.1	Noun
+      3.2.1.1	Declension
+      3.2.1.2	Derived terms
+    3.2.2	Pronoun
+    3.2.3	Further reading
+  3.3	Etymology 2
+    3.3.1	Verb
+      3.3.1.1	Inflection
+  3.4	Mutation
+  3.5	References
+
+
+        """
+
+        """
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <div id="mw-content-text" class="mw-body-content">
+      <div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr">
+        <div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading" data-nosnippet="">
+          <input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none">
+          <div class="toctitle" lang="en" dir="ltr">
+            <h2 id="mw-toc-heading">
+              Contents
+            </h2>
+          </div>
+          <ul>
+            <li class="toclevel-1 tocsection-1">
+              <a href="#English"><span class="tocnumber">1</span> <span class="toctext">English</span></a>
+              <ul>
+                <li class="toclevel-2 tocsection-2">
+                  <a href="#Alternative_forms"><span class="tocnumber">1.1</span> <span class="toctext">Alternative forms</span></a>
+                </li>
+                <li class="toclevel-2 tocsection-3">
+                  <a href="#Etymology"><span class="tocnumber">1.2</span> <span class="toctext">Etymology</span></a>
+                </li>
+                <li class="toclevel-2 tocsection-4">
+                  <a href="#Noun"><span class="tocnumber">1.3</span> <span class="toctext">Noun</span></a>
+                  <ul>
+                    <li class="toclevel-3 tocsection-5">
+                      <a href="#Derived_terms"><span class="tocnumber">1.3.1</span> <span class="toctext">Derived terms</span></a>
+                    </li>
+                    <li class="toclevel-3 tocsection-6">
+                      <a href="#Translations"><span class="tocnumber">1.3.2</span> <span class="toctext">Translations</span></a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="toclevel-2 tocsection-7">
+                  <a href="#Verb"><span class="tocnumber">1.4</span> <span class="toctext">Verb</span></a>
+                </li>
+                <li class="toclevel-2 tocsection-8">
+                  <a href="#Further_reading"><span class="tocnumber">1.5</span> <span class="toctext">Further reading</span></a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="mw-heading mw-heading2">
+          <h2 id="English">
+            English
+          </h2><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=1" title="Edit section: English"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
+        </div>
+        <figure class="mw-default-size" typeof="mw:File/Thumb">
+          <a href="/wiki/File:Initial_t_Paulus_Frank_1601.jpg" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Initial_t_Paulus_Frank_1601.jpg/220px-Initial_t_Paulus_Frank_1601.jpg" decoding="async" width="220" height="308" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Initial_t_Paulus_Frank_1601.jpg/330px-Initial_t_Paulus_Frank_1601.jpg 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Initial_t_Paulus_Frank_1601.jpg/440px-Initial_t_Paulus_Frank_1601.jpg 2x" data-file-width="547" data-file-height="765"></a>
+        </figure>
+        
+        <div class="mw-heading mw-heading3">
+          <h3 id="Alternative_forms">
+            Alternative forms
+          </h3><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=2" title="Edit section: Alternative forms"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
+        </div>
+        
+        <ul>
+          <li>
+            <span class="Latn" lang="en"><a href="/wiki/curlycue#English" title="curlycue">curlycue</a></span>
+          </li>
+        </ul>
+        
+        <div class="mw-heading mw-heading3">
+          <h3 id="Etymology">
+            Etymology
+          </h3><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=3" title="Edit section: Etymology"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
+        </div>
+        
+        <p>
+          From <i class="Latn mention" lang="en"><a href="/wiki/curly#English" title="curly">curly</a></i> +‎ <i class="Latn mention" lang="en"><a href="/wiki/cue#English" title="cue">cue</a></i>.
+        </p>
+        
+        <div class="mw-heading mw-heading3">
+          <h3 id="Noun">
+            Noun
+          </h3><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=4" title="Edit section: Noun"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
+        </div>
+        
+        <p>
+          <span class="headword-line"><strong class="Latn headword" lang="en">curlicue</strong> (<i>plural</i> <b class="Latn form-of lang-en p-form-of" lang="en"><a href="/wiki/curlicues#English" title="curlicues">curlicues</a></b>)</span>
+        </p>
+        <ol>
+          <li>A fancy <a href="https://en.wiktionary.org/wiki/twist#English" title="twist">twisting</a> or <a href="https://en.wiktionary.org/wiki/curl#English" title="curl">curling</a> shape usually made from a series of <a href="https://en.wiktionary.org/wiki/spiral#English" title="spiral">spirals</a> and <a href="https://en.wiktionary.org/wiki/loop#English" title="loop">loops</a>. <span class="HQToggle" data-nosnippet="" style="margin-left: 5px;"><a role="button" tabindex="0">quotations&nbsp;▼</a></span>
+            <ul style="display: none;">
+              <li>
+              <!-- citations removed-->
+              </li>
+            </ul>
+          </li>
+        </ol>
+        
+        <div class="mw-heading mw-heading4">
+          <h4 id="Derived_terms">
+            Derived terms
+          </h4><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=5" title="Edit section: Derived terms"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
+        </div>
+        
+        <ul>
+          <li>
+            <span class="Latn" lang="en"><a href="/wiki/curlicue_fractal#English" title="curlicue fractal">curlicue fractal</a></span>
+          </li>
+        </ul>
+        
+        <div class="mw-heading mw-heading4">
+          <h4 id="Translations">
+            Translations
+          </h4><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=6" title="Edit section: Translations"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
+        </div>
+        <div class="NavFrame" id="Translations-fancy_curling_shape">
+          <div class="NavHead" style="text-align:left;cursor:pointer">
+            <span class="NavToggle" data-nosnippet=""><a role="button" tabindex="0">show ▼</a></span><a href="#" title="Edit table heading" style="padding: 2px; margin-left: -5px;">±</a>fancy curling shape
+          </div>
+          <div class="NavContent" style="display: none;">
+            <div>
+              <a style="font-size: 85%;">Select preferred languages</a>
+            </div>
+            <table class="translations" role="presentation" data-gloss="fancy curling shape" style="width:100%">
+              <tbody>
+                <tr>
+                  <td class="translations-cell multicolumn-list" colspan="3" style="background-color:#ffffe0;vertical-align:top;text-align:left">
+                    <ul>
+                      <li>Bulgarian: <span class="Cyrl" lang="bg"><a href="/w/index.php?title=%D0%B7%D0%B0%D0%B2%D1%8A%D1%80%D1%82%D1%83%D0%BB%D0%BA%D0%B0&amp;action=edit&amp;redlink=1" class="new" title="завъртулка (page does not exist)">завъртулка</a></span><span class="tpos">&nbsp;<a href="https://bg.wiktionary.org/wiki/%D0%B7%D0%B0%D0%B2%D1%8A%D1%80%D1%82%D1%83%D0%BB%D0%BA%D0%B0" class="extiw" title="bg:завъртулка">(bg)</a></span>&nbsp;<span class="gender"><abbr title="feminine gender">f</abbr></span> <span class="mention-gloss-paren annotation-paren">(</span><span lang="bg-Latn" class="tr Latn">zavǎrtulka</span><span class="mention-gloss-paren annotation-paren">)</span>
+                      </li>
+                      <li>Finnish: <span class="Latn" lang="fi"><a href="/wiki/koukero#Finnish" title="koukero">koukero</a></span>
+                      </li>
+                      <li>German: <span class="Latn" lang="de"><a href="/wiki/Schn%C3%B6rkel#German" title="Schnörkel">Schnörkel</a></span><span class="tpos">&nbsp;<a href="https://de.wiktionary.org/wiki/Schn%C3%B6rkel" class="extiw" title="de:Schnörkel">(de)</a></span>&nbsp;<span class="gender"><abbr title="masculine gender">m</abbr></span>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td style="text-align: left;">
+                    <ul>
+                      <li>
+                      <!-- form removed -->
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="mw-heading mw-heading3">
+          <h3 id="Verb">
+            Verb
+          </h3><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=7" title="Edit section: Verb"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
+        </div>
+        <p>
+          <span class="headword-line"><strong class="Latn headword" lang="en">curlicue</strong> (<i>third-person singular simple present</i> <b class="Latn form-of lang-en s-verb-form-form-of" lang="en"><a href="/wiki/curlicues#English" title="curlicues">curlicues</a></b>, <i>present participle</i> <b class="Latn form-of lang-en ing-form-form-of" lang="en"><a href="/wiki/curlicuing#English" title="curlicuing">curlicuing</a></b>, <i>simple past and past participle</i> <b class="Latn form-of lang-en ed-form-form-of" lang="en"><a href="/wiki/curlicued#English" title="curlicued">curlicued</a></b>)</span>
+        </p>
+        <ol>
+          <li>
+            <span class="usage-label-sense"><span class="ib-brac">(</span><span class="ib-content"><a href="/wiki/Appendix:Glossary#transitive" title="Appendix:Glossary">transitive</a> and <a href="/wiki/Appendix:Glossary#intransitive" title="Appendix:Glossary">intransitive</a></span><span class="ib-brac">)</span></span> To make or adorn (something) with curlicues, or as if with curlicues. <span class="HQToggle" data-nosnippet="" style="margin-left: 5px;"><a role="button" tabindex="0">quotations&nbsp;▼</a></span>
+            <!-- ul citation removed -->
+          </li>
+        </ol>
+        <div class="mw-heading mw-heading3">
+          <h3 id="Further_reading">
+            Further reading
+          </h3><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=8" title="Edit section: Further reading"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
+        </div>
+        <ul>
+          <li>
+            <span typeof="mw:File"><a href="https://en.wikipedia.org/wiki/curlicue" title="w:curlicue"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/15px-Wikipedia-logo-v2.svg.png" decoding="async" width="15" height="14" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/23px-Wikipedia-logo-v2.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/30px-Wikipedia-logo-v2.svg.png 2x" data-file-width="103" data-file-height="94"></a></span> <b class="Latn" lang="en"><a href="https://en.wikipedia.org/wiki/curlicue" class="extiw" title="w:curlicue">curlicue</a></b> on Wikipedia.<span class="interProject"><a href="https://en.wikipedia.org/wiki/curlicue" class="extiw" title="w:curlicue">Wikipedia</a></span>
+          </li>
+        </ul>
+      </div><!--esi <esi:include src="/esitest-fa8a495983347898/content" /> --><noscript><img src="https://login.wikimedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" width="1" height="1" style="border: none; position: absolute;"></noscript>
+      <div class="printfooter" data-nosnippet="">
+        Retrieved from "<a dir="ltr" href="https://en.wiktionary.org/w/index.php?title=curlicue&amp;oldid=75896679">https://en.wiktionary.org/w/index.php?title=curlicue&amp;oldid=75896679</a>"
+      </div>
+    </div>
+  </body>
+</html>
+        """
+        """
+        <li>
+                <div class="citation-whole">
+        """
+        XmlLib.remove_all(mw_content_text, [
+            ".//form",
+            ".//input",
+            "ul[li[div[@class='citation-whole']]]"
+        ])
+        toc_elem = mw_content_text.xpath(".//div[@id='toc']")[0]
+        XmlLib.remove_all(toc_elem, [
+            "./input",
+            "./div/span[@class='toctogglespan']",
+            "./div/h2[@id='mw-toc-heading']"
+        ])
+
+        language_elems =  toc_elem.xpath("./ul/li[contains(@class,'toclevel-1')]")
+        languages = [elem.xpath("./a/@href")[0] for elem in language_elems]
+        if language not in languages:
+            print(f"no language for {language}")
+            return None
+
+        result_html = ET.Element("div")
+        result_html.attrib["class"] = "wiktionary_result"
+
+
+        print(f"langs {languages}")
+        # the ids for Nouns, Verbs, etc are Noun, Noun_2, Noun_3, etc.
+        # I bet they change every revision . We have to get the ID from the TOC
+        for pos in pos_list:
+            cls.get_pos_meanings_and_definitions(mw_content_text, pos, result_html)
+
+
+        return (toc_elem, result_html)
+
+    @classmethod
+    def get_pos_meanings_and_definitions(cls, mw_content_text, pos, result_html):
+
+        pos_elem = ET.SubElement(result_html, "div")
+        pos_elem.attrib["class"] = "parts_of_speech"
+        pos_xpath = f".//div[*[starts-with(@id,'{pos}')]]"
+        pos_divs = mw_content_text.xpath(pos_xpath)
+        print(f"content {pos} {len(pos_divs)}")
+        for pos_div in pos_divs:
+            pos_div_elem = ET.SubElement(pos_elem, "div")
+            pos_div_elem.attrib["class"] = "pos_div"
+
+            cls.add_words_p_element(pos_div, pos_elem)
+            cls.add_definition_li_elements(pos_div, pos_elem)
+        return pos_elem
+
+    @classmethod
+    def add_definition_li_elements(cls, pos_div, pos_elem):
+        following_ol = pos_div.xpath("./following-sibling::ol")[0]
+        ol_lis = following_ol.xpath("li")
+        ol = ET.SubElement(pos_elem, "ol")
+        for li in ol_lis:
+            li = ET.SubElement(ol, "li")
+            li.text = cls.extract_main_text_from_definition(li)
+
+    @classmethod
+    def add_words_p_element(cls, pos_div, pos_elem):
+        following_p = pos_div.xpath("./following-sibling::p")[0]
+        words_elem = ET.SubElement(pos_elem, "p")
+        words_elem.text = following_p.xpath("./span/strong/text()")[0]
+
+    @classmethod
+    def extract_main_text_from_definition(cls, li):
+        XmlLib.remove_all(li, ".//dl")
+        # ul><li><div class="citation-whole"
+        # remove citations
+        XmlLib.remove_all(li, ".//ul[li[div[@class='citation-whole']]]")
+        # concatenate text (removes some bold and italis but we can work on that later
+        text = "".join(li.itertext()).strip()
+        return text
+
+    @classmethod
+    def extract_from_content(cls, mw_content_text, wiki_toc, language_list, parts_of_speech_list):
+        pass
 
 
 class WikipediaInfoBox:

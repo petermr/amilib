@@ -1225,7 +1225,7 @@ class WiktionaryTest(AmiAnyTest):
                           Path(Resources.TEMP_DIR, "wiktionary", "wikitionary.css"))
 
 
-    @unittest.skip("not yet working")
+    # @unittest.skip("not yet working")
 
     def test_extract_toc(self):
 
@@ -1236,21 +1236,23 @@ class WiktionaryTest(AmiAnyTest):
             # "bread",
             "curlicue",
             # "xxqz"
-            # "cow",
+            "cow",
             # "hydrogen",
             # "opacity",
         ]
         htmlx = HtmlUtil.create_skeleton_html()
         stem = "toc"
         HtmlLib.add_link_stylesheet("wiktionary.css", htmlx)
-        style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
+        # style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
         body = HtmlLib.get_body(htmlx)
         for term in terms:
             print(f"=========={term}==========")
             url = WiktionaryPage.get_url(term)
+            # TODO fix this, maybe make wiktionayPage
             html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(url)
-            toc_elem = WiktionaryPage.create_toc(mw_content_text)
-            body.append(toc_elem)
+            toc_elem, body_elem = WiktionaryPage.create_toc_and_main_content(mw_content_text)
+            WiktionaryPage.extract_from_content(mw_content_text, toc_elem, ["English"], ["Noun", "Verb"])
+
         HtmlUtil.write_html_elem(
             htmlx, Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html"), debug=True)
         FileLib.copyanything(Path(Resources.TEST_RESOURCES_DIR, "wiktionary", "wiktionary.css"),
