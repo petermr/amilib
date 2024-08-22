@@ -1233,24 +1233,33 @@ class WiktionaryTest(AmiAnyTest):
         read toc and try to use it to navigate the linera elements
         """
         terms = [
-            # "bread",
+            "bread",
             "curlicue",
             # "xxqz"
             "cow",
-            # "hydrogen",
-            # "opacity",
+            "hydrogen",
+            "opacity",
+            "stubble",
         ]
         htmlx = HtmlUtil.create_skeleton_html()
-        stem = "toc"
+        stem = "test_words"
         HtmlLib.add_link_stylesheet("wiktionary.css", htmlx)
-        # style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
         body = HtmlLib.get_body(htmlx)
         for term in terms:
             print(f"=========={term}==========")
             url = WiktionaryPage.get_url(term)
             # TODO fix this, maybe make wiktionayPage
             html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(url)
-            toc_elem, body_elem = WiktionaryPage.create_toc_and_main_content(mw_content_text)
+            tuple = WiktionaryPage.create_toc_and_main_content("English", "Noun", mw_content_text)
+            if tuple is None:
+                print(f"tuple is None")
+                return
+            (toc_elem, content_elem) = tuple
+            body = HtmlLib.get_body(htmlx)
+            body.append(toc_elem)
+            body.append(content_elem)
+
+
             WiktionaryPage.extract_from_content(mw_content_text, toc_elem, ["English"], ["Noun", "Verb"])
 
         HtmlUtil.write_html_elem(

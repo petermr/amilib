@@ -1858,70 +1858,6 @@ class WiktionaryPage:
         print(f"chunklist_elem {type(chunklist_elem)}")
         return chunklist_elem
 
-    @classmethod
-    def create_toc_and_main_content(cls, language, part_of_speech, mw_content_text):
-
-        """
-        reads medi_wiki_content_text and extracts ToC , and pos+defintions
-        Not finished. Safest to take the first definition which will be main English one
-        Horribly messay and fragile
-        :param language: language or list of languges 'English' and possibly others
-        :param part_of_speech: partOfSpeech wanted or list of Partsofspeech
-        :param mw_content_text: mediawiki content
-        :return: element with POS and definition/s
-        """
-        if language is None:
-            print(f"No language/s given")
-            return
-        languages = language if type(language) is list else [language]
-        if part_of_speech is None:
-            print(f"No parts of speec given")
-            return
-        pos_list = part_of_speech if type(part_of_speech) is list else [part_of_speech]
-        if memoryview is None:
-            print(f"no mediwiki given")
-            return None
-        """
-        NOTE: variable structure. Sometimes PoS are under languag with Etymology siblings
-        English
-          Etymology
-          Noun
-
-        sometimes its language with Etymology 1, Etymology 2 children and Noun, etc as grandchildren
-
-
-Contents
-1	English
-  1.1	Etymology
-  1.2	Pronunciation
-  1.3	Noun
-    1.3.1	Usage notes
-    1.3.2	Hyponyms
-    1.3.3	Derived terms
-    1.3.4	Descendants
-    1.3.5	Translations
-  1.4	Verb
-  1.5	Further reading
-  1.6	Anagrams
-2	Basque
-  2.1	Noun
-3	Irish
-  3.1	Pronunciation
-  3.2	Etymology 1
-    3.2.1	Noun
-      3.2.1.1	Declension
-      3.2.1.2	Derived terms
-    3.2.2	Pronoun
-    3.2.3	Further reading
-  3.3	Etymology 2
-    3.3.1	Verb
-      3.3.1.1	Inflection
-  3.4	Mutation
-  3.5	References
-
-
-        """
-
         """
 <!DOCTYPE html>
 <html>
@@ -1977,35 +1913,35 @@ Contents
         <figure class="mw-default-size" typeof="mw:File/Thumb">
           <a href="/wiki/File:Initial_t_Paulus_Frank_1601.jpg" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Initial_t_Paulus_Frank_1601.jpg/220px-Initial_t_Paulus_Frank_1601.jpg" decoding="async" width="220" height="308" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Initial_t_Paulus_Frank_1601.jpg/330px-Initial_t_Paulus_Frank_1601.jpg 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Initial_t_Paulus_Frank_1601.jpg/440px-Initial_t_Paulus_Frank_1601.jpg 2x" data-file-width="547" data-file-height="765"></a>
         </figure>
-        
+
         <div class="mw-heading mw-heading3">
           <h3 id="Alternative_forms">
             Alternative forms
           </h3><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=2" title="Edit section: Alternative forms"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
         </div>
-        
+
         <ul>
           <li>
             <span class="Latn" lang="en"><a href="/wiki/curlycue#English" title="curlycue">curlycue</a></span>
           </li>
         </ul>
-        
+
         <div class="mw-heading mw-heading3">
           <h3 id="Etymology">
             Etymology
           </h3><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=3" title="Edit section: Etymology"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
         </div>
-        
+
         <p>
           From <i class="Latn mention" lang="en"><a href="/wiki/curly#English" title="curly">curly</a></i> +‎ <i class="Latn mention" lang="en"><a href="/wiki/cue#English" title="cue">cue</a></i>.
         </p>
-        
+
         <div class="mw-heading mw-heading3">
           <h3 id="Noun">
             Noun
           </h3><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=4" title="Edit section: Noun"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
         </div>
-        
+
         <p>
           <span class="headword-line"><strong class="Latn headword" lang="en">curlicue</strong> (<i>plural</i> <b class="Latn form-of lang-en p-form-of" lang="en"><a href="/wiki/curlicues#English" title="curlicues">curlicues</a></b>)</span>
         </p>
@@ -2018,19 +1954,19 @@ Contents
             </ul>
           </li>
         </ol>
-        
+
         <div class="mw-heading mw-heading4">
           <h4 id="Derived_terms">
             Derived terms
           </h4><span class="mw-editsection" data-nosnippet=""><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=curlicue&amp;action=edit&amp;section=5" title="Edit section: Derived terms"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span>
         </div>
-        
+
         <ul>
           <li>
             <span class="Latn" lang="en"><a href="/wiki/curlicue_fractal#English" title="curlicue fractal">curlicue fractal</a></span>
           </li>
         </ul>
-        
+
         <div class="mw-heading mw-heading4">
           <h4 id="Translations">
             Translations
@@ -2105,6 +2041,72 @@ Contents
   </body>
 </html>
         """
+
+    @classmethod
+    def create_toc_and_main_content(cls, language, part_of_speech, mw_content_text):
+
+        """
+        reads medi_wiki_content_text and extracts ToC , and pos+defintions
+        Not finished. Safest to take the first definition which will be main English one
+        Horribly messay and fragile
+        :param language: language or list of languges 'English' and possibly others
+        :param part_of_speech: partOfSpeech wanted or list of Partsofspeech
+        :param mw_content_text: mediawiki content
+        :return: element with POS and definition/s
+        """
+        if language is None:
+            print(f"No language/s given")
+            return
+        reqd_langs = language if type(language) is list else [language]
+        if part_of_speech is None:
+            print(f"No parts of speec given")
+            return
+        pos_list = part_of_speech if type(part_of_speech) is list else [part_of_speech]
+        if mw_content_text is None:
+            print(f"no mw_content_text given")
+            return None
+        print(f"lang: {reqd_langs} ppos: {pos_list}")
+        """
+        NOTE: variable structure. Sometimes PoS are under languag with Etymology siblings
+        English
+          Etymology
+          Noun
+
+        sometimes its language with Etymology 1, Etymology 2 children and Noun, etc as grandchildren
+
+
+Contents
+1	English
+  1.1	Etymology
+  1.2	Pronunciation
+  1.3	Noun
+    1.3.1	Usage notes
+    1.3.2	Hyponyms
+    1.3.3	Derived terms
+    1.3.4	Descendants
+    1.3.5	Translations
+  1.4	Verb
+  1.5	Further reading
+  1.6	Anagrams
+2	Basque
+  2.1	Noun
+3	Irish
+  3.1	Pronunciation
+  3.2	Etymology 1
+    3.2.1	Noun
+      3.2.1.1	Declension
+      3.2.1.2	Derived terms
+    3.2.2	Pronoun
+    3.2.3	Further reading
+  3.3	Etymology 2
+    3.3.1	Verb
+      3.3.1.1	Inflection
+  3.4	Mutation
+  3.5	References
+
+
+        """
+
         """
         <li>
                 <div class="citation-whole">
@@ -2114,17 +2116,24 @@ Contents
             ".//input",
             "ul[li[div[@class='citation-whole']]]"
         ])
-        toc_elem = mw_content_text.xpath(".//div[@id='toc']")[0]
+        toc_elems = mw_content_text.xpath(".//div[@id='toc']")
+        if len(toc_elems) == 0:
+            print(f"no toc...")
+            return None
+        toc_elem = toc_elems[0]
         XmlLib.remove_all(toc_elem, [
             "./input",
             "./div/span[@class='toctogglespan']",
             "./div/h2[@id='mw-toc-heading']"
         ])
 
+        # toclevel 1 is languages
         language_elems =  toc_elem.xpath("./ul/li[contains(@class,'toclevel-1')]")
-        languages = [elem.xpath("./a/@href")[0] for elem in language_elems]
-        if language not in languages:
-            print(f"no language for {language}")
+        # languages have prepended # at this stage
+        languages = [elem.xpath("./a/@href")[0][1:] for elem in language_elems]
+        possible_langs = set(reqd_langs).intersection(set(languages))
+        if len(possible_langs) == 0:
+            print(f"no required languages {reqd_langs} in {languages}")
             return None
 
         result_html = ET.Element("div")
@@ -2152,24 +2161,28 @@ Contents
             pos_div_elem = ET.SubElement(pos_elem, "div")
             pos_div_elem.attrib["class"] = "pos_div"
 
-            cls.add_words_p_element(pos_div, pos_elem)
-            cls.add_definition_li_elements(pos_div, pos_elem)
+            cls.add_words_p_element(pos_div, pos_div_elem)
+            cls.add_definition_li_elements(pos_div, pos_div_elem)
         return pos_elem
 
     @classmethod
-    def add_definition_li_elements(cls, pos_div, pos_elem):
+    def add_definition_li_elements(cls, pos_div, pos_div_elem):
         following_ol = pos_div.xpath("./following-sibling::ol")[0]
         ol_lis = following_ol.xpath("li")
-        ol = ET.SubElement(pos_elem, "ol")
+        ol = ET.SubElement(pos_div_elem, "ol")
         for li in ol_lis:
-            li = ET.SubElement(ol, "li")
-            li.text = cls.extract_main_text_from_definition(li)
+            text = cls.extract_main_text_from_definition(li).strip()
+            if text:
+                li_new = ET.SubElement(ol, "li")
+                li_new.text = text
+                print(f"li {li_new.text}")
 
     @classmethod
-    def add_words_p_element(cls, pos_div, pos_elem):
+    def add_words_p_element(cls, pos_div, pos_div_elem):
         following_p = pos_div.xpath("./following-sibling::p")[0]
-        words_elem = ET.SubElement(pos_elem, "p")
+        words_elem = ET.SubElement(pos_div_elem, "p")
         words_elem.text = following_p.xpath("./span/strong/text()")[0]
+        print(f"words {words_elem.text}")
 
     @classmethod
     def extract_main_text_from_definition(cls, li):
