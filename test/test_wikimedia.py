@@ -1227,7 +1227,7 @@ class WiktionaryTest(AmiAnyTest):
 
     # @unittest.skip("not yet working")
 
-    def test_extract_toc(self):
+    def test_create_html(self):
 
         """
         read toc and try to use it to navigate the linera elements
@@ -1235,38 +1235,30 @@ class WiktionaryTest(AmiAnyTest):
         terms = [
             "bread",
             "curlicue",
-            # "xxqz"
-            "cow",
+            # "xxqz",
+            "fish",
             "hydrogen",
             "opacity",
             "stubble",
         ]
-        htmlx = HtmlUtil.create_skeleton_html()
         stem = "test_words"
+        parts_of_speech = [
+            "Noun",
+            "Verb",
+            # "Adjective",
+
+        ]
+        languages = "English"
+        add_toc = True
+
+        htmlx = WiktionaryPage.search_terms_create_html(terms, languages, parts_of_speech, add_toc)
+
         HtmlLib.add_link_stylesheet("wiktionary.css", htmlx)
-        body = HtmlLib.get_body(htmlx)
-        for term in terms:
-            print(f"=========={term}==========")
-            url = WiktionaryPage.get_url(term)
-            # TODO fix this, maybe make wiktionayPage
-            html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(url)
-            tuple = WiktionaryPage.create_toc_and_main_content("English", "Noun", mw_content_text)
-            if tuple is None:
-                print(f"tuple is None")
-                return
-            (toc_elem, content_elem) = tuple
-            body = HtmlLib.get_body(htmlx)
-            body.append(toc_elem)
-            body.append(content_elem)
-
-
-            WiktionaryPage.extract_from_content(mw_content_text, toc_elem, ["English"], ["Noun", "Verb"])
-
-        HtmlUtil.write_html_elem(
-            htmlx, Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html"), debug=True)
+        outpath = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
+        HtmlUtil.write_html_elem(htmlx, outpath, debug=True)
+        assert outpath.exists(), f"output html should exist {outpath}"
         FileLib.copyanything(Path(Resources.TEST_RESOURCES_DIR, "wiktionary", "wiktionary.css"),
                           Path(Resources.TEMP_DIR, "wiktionary", "wikitionary.css"))
-
 
 class SPARQLTests:
     @classmethod

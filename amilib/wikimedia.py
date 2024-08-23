@@ -1859,6 +1859,47 @@ class WiktionaryPage:
         return chunklist_elem
 
         """
+        NOTE: variable structure. Sometimes PoS are under languag with Etymology siblings
+        English
+          Etymology
+          Noun
+
+        sometimes its language with Etymology 1, Etymology 2 children and Noun, etc as grandchildren
+
+
+Contents
+1	English
+  1.1	Etymology
+  1.2	Pronunciation
+  1.3	Noun
+    1.3.1	Usage notes
+    1.3.2	Hyponyms
+    1.3.3	Derived terms
+    1.3.4	Descendants
+    1.3.5	Translations
+  1.4	Verb
+  1.5	Further reading
+  1.6	Anagrams
+2	Basque
+  2.1	Noun
+3	Irish
+  3.1	Pronunciation
+  3.2	Etymology 1
+    3.2.1	Noun
+      3.2.1.1	Declension
+      3.2.1.2	Derived terms
+    3.2.2	Pronoun
+    3.2.3	Further reading
+  3.3	Etymology 2
+    3.3.1	Verb
+      3.3.1.1	Inflection
+  3.4	Mutation
+  3.5	References
+
+
+        """
+
+        """
 <!DOCTYPE html>
 <html>
   <head>
@@ -2066,46 +2107,6 @@ class WiktionaryPage:
             print(f"no mw_content_text given")
             return None
         print(f"lang: {reqd_langs} ppos: {pos_list}")
-        """
-        NOTE: variable structure. Sometimes PoS are under languag with Etymology siblings
-        English
-          Etymology
-          Noun
-
-        sometimes its language with Etymology 1, Etymology 2 children and Noun, etc as grandchildren
-
-
-Contents
-1	English
-  1.1	Etymology
-  1.2	Pronunciation
-  1.3	Noun
-    1.3.1	Usage notes
-    1.3.2	Hyponyms
-    1.3.3	Derived terms
-    1.3.4	Descendants
-    1.3.5	Translations
-  1.4	Verb
-  1.5	Further reading
-  1.6	Anagrams
-2	Basque
-  2.1	Noun
-3	Irish
-  3.1	Pronunciation
-  3.2	Etymology 1
-    3.2.1	Noun
-      3.2.1.1	Declension
-      3.2.1.2	Derived terms
-    3.2.2	Pronoun
-    3.2.3	Further reading
-  3.3	Etymology 2
-    3.3.1	Verb
-      3.3.1.1	Inflection
-  3.4	Mutation
-  3.5	References
-
-
-        """
 
         """
         <li>
@@ -2194,9 +2195,41 @@ Contents
         text = "".join(li.itertext()).strip()
         return text
 
+
     @classmethod
-    def extract_from_content(cls, mw_content_text, wiki_toc, language_list, parts_of_speech_list):
-        pass
+    def search_terms_create_html(cls, term, language="English", part_of_speech="Noun", add_toc=False):
+        """
+        search for terms and create Wiktionary-based HTML
+        :param terms: single term or list
+        :param language: str/list. defaults to ENGLISH
+        :param part_of_speech: str/list defaults to NOUN
+        :param add_toc: add Wiktionary ToC, default False
+        :return: HTML object
+        """
+        htmlx = HtmlUtil.create_skeleton_html()
+        body = HtmlLib.get_body(htmlx)
+        if term is None:
+            print(F"cannot search for None")
+            return None
+        terms = term if type(term) is list else [term]
+
+        for termx in terms:
+            print(f"=========={termx}==========")
+            url = WiktionaryPage.get_url(termx)
+            # TODO fix this, maybe make wiktionayPage
+            html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(url)
+            tuple = WiktionaryPage.create_toc_and_main_content(
+                language,
+                part_of_speech,
+                mw_content_text)
+            if tuple is not None:
+                (toc_elem, content_elem) = tuple
+                body = HtmlLib.get_body(htmlx)
+                if add_toc:
+                    body.append(toc_elem)
+                body.append(content_elem)
+        return htmlx
+
 
 
 class WikipediaInfoBox:
