@@ -10,7 +10,7 @@ from amilib.ami_args import AbstractArgs
 from amilib.ami_args import AbstractArgs
 # from amilib.ami_dict import AmiEntry
 from amilib.file_lib import FileLib
-from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage
+from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage, WiktionaryPage
 
 # commandline
 DELETE = "delete"
@@ -27,6 +27,7 @@ WORDS = "words"
 
 WIKIPEDIA = "wikipedia"
 WIKIDATA = "wikidata"
+WIKTIONARY = "wiktionary"
 
 
 logger = FileLib.get_logger(__file__)
@@ -79,6 +80,8 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{WIKIDATA}", type=str, nargs="*", help="add WikidataIDs (NYI)")
         self.parser.add_argument(f"--{WIKIPEDIA}", type=str, nargs="*",
                                  help="add Wikipedia link/s (forces --{WIKIDATA}) (NYI)")
+        self.parser.add_argument(f"--{WIKTIONARY}", type=str, nargs="*",
+                                 help="add Wiktionary output as html (may be messy)")
         self.parser.add_argument(f"--{WORDS}", type=str, nargs=1,
                                  help="path/file with words to make or edit dictionary")
         self.parser.epilog = """
@@ -126,11 +129,16 @@ class AmiDictArgs(AbstractArgs):
         self.validate = self.arg_dict.get(VALIDATE)
         self.wikidata = self.arg_dict.get(WIKIDATA)
         self.wikipedia = self.arg_dict.get(WIKIPEDIA)
-        self.words = self.arg_dict.get(WORDS)
+        self.wiktionary = self.arg_dict.get(WIKTIONARY)
+        self.words_in = self.arg_dict.get(WORDS)
+        self.wordlist = None
 
         if self.inpath and self.dictfile and self.outpath:
             self.make_dictionary_markup_file(self.inpath, self.dictfile, self.outpath)
             return
+
+        self.make_input_words()
+        print(f"words to be built into dictionation {self.words_in}")
 
         if self.dictfile:
 
@@ -155,7 +163,7 @@ class AmiDictArgs(AbstractArgs):
                 print(f"validation finished")
 
         # for argument --wikidata
-        print(f"wikidata: {self.wikidata}")
+        # print(f"wikidata: {self.wikidata}")
         if self.wikidata is not None:
             hit_dict = self.add_wikidata_to_dict()
             status = self.validate_dict()
@@ -165,6 +173,17 @@ class AmiDictArgs(AbstractArgs):
             print(f"Wikipedia lookup")
             hit_dict = self.add_wikipedia_to_dict()
             status = self.validate_dict()
+
+        # for argument --wikipedia
+        if self.wiktionary is not None:
+            print(f"Wiktionary lookup")
+            if len(self.wiktionary) > 0:
+                print(f"searching wiktionary for {self.wiktionary}")
+                WiktionaryPage.search_terms_create_html(self.wiktionary)
+            else:
+                print(f"add to dictionary NYI")
+                # hit_dict = self.add_wiktionary_to_dict()
+                # status = self.validate_dict()
 
         print(f"writing to {self}")
         if self.dictfile:
@@ -192,16 +211,9 @@ class AmiDictArgs(AbstractArgs):
             print("No dictionary file given")
             return None
 
-        if not self.words:
-            print(f"reading {self.dictfile} as dictionary")
-            self.ami_dict = AmiDictionary.create_from_xml_file(self.dictfile)
-        else:
-            if not Path(self.words).exists():
-                raise FileNotFoundError(f"wordfile {self.words} does not exist.")
-            title = Path(self.words).stem
-            print(f"creating {self.dictfile} from {self.words}")
-            word_path = Path(self.words)
-            self.ami_dict, _ = AmiDictionary.create_dictionary_from_wordfile(wordfile=word_path, title=None, desc=None)
+
+        if self.words:
+            self_ami_dict = AmiDictionary.create_dictionary_from_words(terms=self.words, title="unknown", wiktionary=True)
         return self.ami_dict
 
     def add_wikidata_to_dict(self, description_regex=None):
@@ -314,6 +326,9 @@ class AmiDictArgs(AbstractArgs):
         # dictionary.markup_html_from_dictionary(inpath, outpath)
         AmiDictionary.read_html_dictionary_and_markup_html_file(
              str(inpath), str(outpath), html_dict_path=dictfile)
+
+    def make_input_words(self):
+        self.words = FileLib.get_input_strings(self.words_in)
 
 
 # ====================

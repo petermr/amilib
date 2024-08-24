@@ -25,7 +25,7 @@ from amilib.file_lib import FileLib
 # local
 # from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util
-from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage
+from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage, WiktionaryPage
 from amilib.xml_lib import HtmlLib
 
 # elements in amidict
@@ -666,7 +666,8 @@ class AmiDictionary:
                 term = spans[0].text
         return term
     @classmethod
-    def create_dictionary_from_words(cls, terms, title=None, desc=None, wikilangs=None, wikidata=False, outdir=None,
+    def create_dictionary_from_words(cls, terms, title=None, desc=None, wikilangs=None,
+                                     wikidata=False, wiktionary=False, outdir=None,
                                      debug=True):
         """use raw list of words and optionally lookup each. choosing WD page and using languages
         :param terms: list of words/phrases,
@@ -686,6 +687,8 @@ class AmiDictionary:
         dictionary.add_entries_from_words(terms)
         if wikidata:
             dictionary.add_wikidata_from_terms()
+        if wiktionary:
+            dictionary.add_wiktionary_from_terms()
         outpath = None
         if outdir:
             outdir.mkdir(exist_ok=True)
@@ -1147,6 +1150,21 @@ class AmiDictionary:
             wikipedia_dict = wikidata_page.get_wikipedia_page_links(self.wikilangs)
             self.add_wikipedia_page_links(entry, wikipedia_dict)
 
+    def add_wiktionary_from_terms(self):
+
+        entries = self.root.findall(ENTRY)
+        for entry in entries:
+            self.lookup_and_add_wiktionary_to_entry(entry)
+
+    def lookup_and_add_wiktionary_to_entry(self, entry):
+        """lookup term and  add wikidata Info to entry if desc fits required description
+        :param entry: to add wikidata to
+        :param allowed_descriptions: only add if the description fits (ANY overrides)"""
+        term = entry.attrib[TERM]
+        wiktionary_page = WiktionaryPage.create_wiktionary_page(term)
+        desc = ET.tostring(wiktionary_page.html_div)
+        entry.attrib[DESC] = "not yet implemented"
+        print(f"entry {ET.tostring(entry)}")
     @classmethod
     def add_wikipedia_page_links(cls, entry, wikipedia_dict):
         """

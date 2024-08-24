@@ -1546,8 +1546,7 @@ class WiktionaryPage:
         :param term: term to look up
         :return: new WiktionaryPage object (if term is missing contains "missing" messages
         """
-        url = cls.get_url(term)
-        html_element, mw_content_text = cls.get_wiktionary_content(url)
+        html_element, mw_content_text = cls.get_wiktionary_content(term)
         wiktionary_page = WiktionaryPage(html_element)
         language_chunks = cls.split_mw_content_text_by_language(mw_content_text)
 
@@ -1555,7 +1554,8 @@ class WiktionaryPage:
         html_div.append(language_chunks)
         cls.process_parts_of_speech(html_div, mw_content_text)
         wiktionary_page.html_div = html_div
-        wiktionary_page.url = url
+        print(f"html_div {ET.tostring(html_div)}")
+        wiktionary_page.url = cls.get_url(term)
 
         return wiktionary_page
 
@@ -1652,22 +1652,26 @@ class WiktionaryPage:
 
 
     @classmethod
-    def get_wiktionary_content(cls, url):
+    def get_wiktionary_content(cls, term=None, url=None):
         """
-        gets Wiktionary content
+        gets Wiktionary raw Wiktionary content
         The page is unfortunately structured as a linear list of components, so we add
         structure. The most common mw_content with a linear list of
         h3[@id] part_of_speech
         p with more info
         ol with alternative definitions
         :param url: is complete wiktionary url
-        :return: html_element, mw_content
+        :return: (html_element, mw_content)
         """
+        if term is not None:
+            url = cls.get_url(term)
+        if url is None:
+            print(f"no term or url given")
+            return (None, None)
         try:
             res = requests.get(url)
             html_element = HtmlLib.parse_html_string(res.content)
         except Exception as e:
-            # print(f"exception {e} // from {url}")
             raise e
         body = HtmlLib.get_body(html_element)
         content = body.xpath("./div[@id='content']")[0]
@@ -1676,18 +1680,8 @@ class WiktionaryPage:
         body_content = content.xpath("./div[@id='bodyContent']")[0]
         h1_first_heading = content.xpath("./h1[@id='firstHeading']")[0]
         # print(f"h111 {ET.tostring(h1_first_heading)}")
-        print(f"h1_first {''.join(h1_first_heading.itertext())}")
+        print(f"\n\n>>>h1 {''.join(h1_first_heading.itertext())}")
         mw_content_text = body_content.xpath("./div[@id='mw-content-text']")[0]
-        """<div class="mw-heading mw-heading3">
-                      <h3 id="Phrase">Phrase</h3>
-                        <span class="mw-editsection">
-                          <span class="mw-editsection-bracket">[</span>
-                          <a href="/w/index.php?title=nimby&amp;action=edit&amp;section=5" title="Edit section: Phrase"><span>edit
-                          </span>
-                          </a><
-                          span class="mw-editsection-bracket">]</span>
-                          </span>
-                          </div>"""
         return html_element, mw_content_text
 
     @classmethod
@@ -2097,15 +2091,15 @@ Contents
         """
         if language is None:
             print(f"No language/s given")
-            return
+            return (None, None)
         reqd_langs = language if type(language) is list else [language]
         if part_of_speech is None:
             print(f"No parts of speec given")
-            return
+            return (None, None)
         pos_list = part_of_speech if type(part_of_speech) is list else [part_of_speech]
         if mw_content_text is None:
             print(f"no mw_content_text given")
-            return None
+            return (None, None)
         print(f"lang: {reqd_langs} ppos: {pos_list}")
 
         """
@@ -2120,7 +2114,7 @@ Contents
         toc_elems = mw_content_text.xpath(".//div[@id='toc']")
         if len(toc_elems) == 0:
             print(f"no toc...")
-            return None
+            return (None, None)
         toc_elem = toc_elems[0]
         XmlLib.remove_all(toc_elem, [
             "./input",
@@ -2135,7 +2129,7 @@ Contents
         possible_langs = set(reqd_langs).intersection(set(languages))
         if len(possible_langs) == 0:
             print(f"no required languages {reqd_langs} in {languages}")
-            return None
+            return (None, None)
 
         result_html = ET.Element("div")
         result_html.attrib["class"] = "wiktionary_result"
@@ -2157,14 +2151,19 @@ Contents
         pos_elem.attrib["class"] = "parts_of_speech"
         pos_xpath = f".//div[*[starts-with(@id,'{pos}')]]"
         pos_divs = mw_content_text.xpath(pos_xpath)
-        print(f"content {pos} {len(pos_divs)}")
+        print(f"\n === {pos} === ")
         for pos_div in pos_divs:
-            pos_div_elem = ET.SubElement(pos_elem, "div")
-            pos_div_elem.attrib["class"] = "pos_div"
-
-            cls.add_words_p_element(pos_div, pos_div_elem)
-            cls.add_definition_li_elements(pos_div, pos_div_elem)
+            # print(f"pos {ET.tostring(pos_div)}")
+            print(f"...")
+            cls.add_word_variants_and_defintions(pos_div, pos_elem)
         return pos_elem
+
+    @classmethod
+    def add_word_variants_and_defintions(cls, pos_div, pos_elem):
+        pos_div_elem = ET.SubElement(pos_elem, "div")
+        pos_div_elem.attrib["class"] = "pos_div"
+        cls.add_words_p_element(pos_div, pos_div_elem)
+        cls.add_definition_li_elements(pos_div, pos_div_elem)
 
     @classmethod
     def add_definition_li_elements(cls, pos_div, pos_div_elem):
@@ -2176,14 +2175,18 @@ Contents
             if text:
                 li_new = ET.SubElement(ol, "li")
                 li_new.text = text
-                print(f"li {li_new.text}")
+                print(f"def: {li_new.text}")
 
     @classmethod
     def add_words_p_element(cls, pos_div, pos_div_elem):
+        language_elem_div = pos_div.xpath("./preceding-sibling::div[h2][1]")[0]
+        # print(f"ID {id(language_elem_div)} {ET.tostring(language_elem_div)}")
+        lang = language_elem_div.xpath("./h2")[0].text
+        print(f"LANG {lang}")
         following_p = pos_div.xpath("./following-sibling::p")[0]
         words_elem = ET.SubElement(pos_div_elem, "p")
         words_elem.text = following_p.xpath("./span/strong/text()")[0]
-        print(f"words {words_elem.text}")
+        print(f"variant: {words_elem.text}")
 
     @classmethod
     def extract_main_text_from_definition(cls, li):
@@ -2214,22 +2217,30 @@ Contents
         terms = term if type(term) is list else [term]
 
         for termx in terms:
-            print(f"=========={termx}==========")
-            url = WiktionaryPage.get_url(termx)
-            # TODO fix this, maybe make wiktionayPage
-            html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(url)
-            tuple = WiktionaryPage.create_toc_and_main_content(
-                language,
-                part_of_speech,
-                mw_content_text)
-            if tuple is not None:
-                (toc_elem, content_elem) = tuple
-                body = HtmlLib.get_body(htmlx)
-                if add_toc:
-                    body.append(toc_elem)
-                body.append(content_elem)
+            cls.create_and_add_html_for_term(termx, htmlx, language, part_of_speech, add_toc)
         return htmlx
 
+    @classmethod
+    def create_and_add_html_for_term(cls, termx, htmlx, language="English", part_of_speech="Noun", add_toc=False):
+        """
+        create html object for term
+        :param termx: term to lookup
+        :param htmlx: existing html object
+        :param language: str/list default "English"
+        :param part_of_speech: str/list default "Noun"
+        :param add_toc: adds ToC, default False
+        :return: body
+        """
+        html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(termx)
+        (toc_elem, content_elem) = WiktionaryPage.create_toc_and_main_content(language, part_of_speech, mw_content_text)
+        if content_elem is None:
+            return None
+        body = HtmlLib.get_body(htmlx) if htmlx is not None else ET.Element("body")
+        div = ET.SubElement(body, "div")
+        if add_toc:
+            div.append(toc_elem)
+        div.append(content_elem)
+        return body
 
 
 class WikipediaInfoBox:

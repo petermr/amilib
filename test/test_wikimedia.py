@@ -1215,8 +1215,7 @@ class WiktionaryTest(AmiAnyTest):
         body = HtmlLib.get_body(htmlx)
         for term in terms:
             print(f"=========={term}==========")
-            url = WiktionaryPage.get_url(term)
-            html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(url)
+            html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(term)
             chunklist_elem = WiktionaryPage.split_mw_content_text_by_language(mw_content_text)
             body.append(chunklist_elem)
         HtmlUtil.write_html_elem(
@@ -1236,10 +1235,10 @@ class WiktionaryTest(AmiAnyTest):
             "bread",
             "curlicue",
             # "xxqz",
-            "fish",
-            "hydrogen",
-            "opacity",
-            "stubble",
+            # "fish",
+            # "hydrogen",
+            # "opacity",
+            # "stubble",
         ]
         stem = "test_words"
         parts_of_speech = [
@@ -1249,7 +1248,9 @@ class WiktionaryTest(AmiAnyTest):
 
         ]
         languages = "English"
+        languages = "Spanish"
         add_toc = True
+        add_toc = False
 
         htmlx = WiktionaryPage.search_terms_create_html(terms, languages, parts_of_speech, add_toc)
 
@@ -1259,6 +1260,31 @@ class WiktionaryTest(AmiAnyTest):
         assert outpath.exists(), f"output html should exist {outpath}"
         FileLib.copyanything(Path(Resources.TEST_RESOURCES_DIR, "wiktionary", "wiktionary.css"),
                           Path(Resources.TEMP_DIR, "wiktionary", "wikitionary.css"))
+
+    def test_get_ancestor_language(self):
+        termx = "curlicue"
+        html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(termx)
+
+    def test_lookup_wiktionary_command_line(self):
+        """
+        Looks up words in Wiktionary and creates HTML
+        """
+        stem = "small_5"
+        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        dict_xml = str(Path(Resources.TEMP_DIR, "words", f"{stem}_wiktionary.xml"))
+        # dict_html = str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikipedia.html"))
+
+        assert wordsfile.exists(), f"{wordsfile} should exist"
+        pyami = AmiLib()
+
+        args = ["DICT",
+                "--words", wordsfile,
+                "--dict", dict_xml,
+                "--wiktionary"]
+
+        # print(f"args {args}")
+        pyami.run_command(args)
+
 
 class SPARQLTests:
     @classmethod

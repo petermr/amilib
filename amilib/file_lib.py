@@ -468,6 +468,38 @@ class FileLib:
             print(f"created logger {module} {logger}")
             return logger
 
+    @classmethod
+    def get_input_strings(cls, strings_in, split=False):
+        """
+        reads strings from a varietyb of inputs, e.g
+        "foo"
+        "foo bar" (with/out split)
+        ["foo", "bar"]
+        ["foo bar", "plugh xyzzy"] (with/out split)
+        "/Users/my/file.txt"
+        "https://not.yet/implemented"
+        :param string_in: single word, list of words, or file/s with words (url not yet supported)
+        :param split: splist all strings by spaces (default False)
+        :return: list of strings or empty list
+        """
+        strings_out = []
+        if strings_in is None:
+            return strings_out
+        strings_in = strings_in if type(strings_in) is list else [strings_in]
+        for string_in in strings_in:
+            path_in = Path(string_in)
+            if path_in.exists():
+                with open(path_in, "r") as f:
+                    lines = [line.rstrip() for line in f]
+                strings_in = lines
+        if split:
+            sss = []
+            for string_in in strings_in:
+                sss.extend(string_in.strip().split())
+            strings_out = sss
+        else:
+            strings_out = strings_in
+        return strings_out
 
 
 

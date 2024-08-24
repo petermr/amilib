@@ -123,6 +123,52 @@ class File0Test(AmiAnyTest):
         # print("od", pics)
         # print("pics", bg.braced_glob(pics, recursive=True))
 
+    def test_get_input_strings(self):
+        """
+        reads lists of words with optional split
+        """
+        words = FileLib.get_input_strings("foo")
+        assert words == ["foo"]
+        words = FileLib.get_input_strings(["foo"])
+        assert words == ["foo"]
+        words = FileLib.get_input_strings(["foo", "bar"])
+        assert words == ["foo", "bar"]
+        words = FileLib.get_input_strings("foo bar")
+        assert words == ["foo bar"]
+        words = FileLib.get_input_strings("foo bar", split=True)
+        assert words == ["foo", "bar"]
+
+    def test_get_input_strings_from_file(self):
+        """
+        reads lists of words in file/s
+        """
+        words = FileLib.get_input_strings(Path(Resources.TEST_RESOURCES_DIR, "wordlists", "small_2.txt"))
+        assert words == ["anthropogenic", "tropospheric"]
+        words = FileLib.get_input_strings(Path(Resources.TEST_RESOURCES_DIR, "wordlists", "small_10.txt"))
+        assert words == [
+            'anthropogenic', 'physical-biogeochemical', 'peat drainage', 'tropospheric', 'permafrost',
+            'centennial', 'aerosols', 'sequestration', 'albedo', 'exacerbating'
+        ]
+        words = FileLib.get_input_strings(Path(Resources.TEST_RESOURCES_DIR, "wordlists", "small_10.txt"), split=True)
+        assert words == [
+            'anthropogenic', 'physical-biogeochemical', 'peat', 'drainage', 'tropospheric', 'permafrost',
+            'centennial', 'aerosols', 'sequestration', 'albedo', 'exacerbating'
+        ]
+        # list of files
+        words = FileLib.get_input_strings([
+            Path(Resources.TEST_RESOURCES_DIR, "wordlists", "small_5.txt"),
+            Path(Resources.TEST_RESOURCES_DIR, "wordlists", "small_10.txt")])
+
+        assert words == ['anthropogenic', 'physical-biogeochemical', 'peat drainage', 'tropospheric',
+            'permafrost', 'centennial', 'aerosols', 'sequestration', 'albedo', 'exacerbating']
+
+        # list of files
+        words = FileLib.get_input_strings([
+            Path(Resources.TEST_RESOURCES_DIR, "wordlists", "small_5.txt"),
+            Path(Resources.TEST_RESOURCES_DIR, "wordlists", "small_10.txt")], split=True)
+
+        assert words == ['anthropogenic', 'physical-biogeochemical', 'peat', 'drainage', 'tropospheric',
+            'permafrost', 'centennial', 'aerosols', 'sequestration', 'albedo', 'exacerbating']
 
 
 
