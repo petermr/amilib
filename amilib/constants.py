@@ -4,7 +4,11 @@ import logging
 import os
 from pathlib import Path
 
-logging.debug("loading constants.py")
+from amilib.file_lib import FileLib
+
+logger = FileLib.get_logger(__name__)
+
+# logging.debug("loading constants.py")
 
 HOME = os.path.expanduser("~")
 PYDIAG = "../../python/diagrams"

@@ -53,6 +53,7 @@ STARTING_VERSION = "0.0.1"
 HOME = os.path.expanduser("~")
 IPCC_DICT_ROOT = Path(HOME, "projects/semanticClimate/ipcc/ar6/wg3")  # needs resetting if tests are to be run
 
+logger = FileLib.get_logger(__name__, level=logging.DEBUG)
 
 # ===== helpers =====
 def _create_amidict_with_foo_bar_entries():
@@ -120,7 +121,7 @@ class AmiDictionaryTest(AmiAnyTest):
             ETHNOBOT_DICT: Path(AMIDICTS, ETHNOBOT_DICT + ".xml"),
             DUPLICATE_ENTRIES: Path(AMIDICTS, DUPLICATE_ENTRIES + ".xml"),
         }
-        print(f"setup_dict {setup_dict}")
+        logger.info(f"setup_dict {setup_dict}")
         return setup_dict
 
     @unittest.skipUnless("environment", ADMIN)
@@ -182,9 +183,8 @@ class AmiDictionaryTest(AmiAnyTest):
         """Checks dictionary has encoding of 'UTF-8' and XML Version 1.0
         USEFUL 2022-07"""
         dicts = [ETHNOBOT_DICT, DICTFILE1, ]
-        print()
         for dikt in dicts:
-            print(f"...{dikt}")
+            logger.debug(f"...{dikt}")
             root = etree.parse(str(self.create_file_dict()[dikt]))
             dictionary = AmiDictionary.create_from_xml_object(root)
             validator = AmiDictValidator(dictionary)
@@ -203,14 +203,14 @@ class AmiDictionaryTest(AmiAnyTest):
             COMPOUND_RAW_DICT_URL
         ]
         for url in urllist:
-            print(f"url: {url}")
+            logger.debug(f"url: {url}")
             # tree = XmlLib.parse_url_to_tree(url)
             # dictionary = AmiDictionary.create_from_xml_object(tree)
             dictionary = AmiDictionary.create_dictionary_from_url(url)
             validator = AmiDictValidator(dictionary)
             # validator.validate_title()
             error_list = validator.get_error_list()
-            print(f"error_list {error_list}")
+            logger.warning(f"error_list {error_list}")
 
     # AmiDictionary
 
@@ -312,6 +312,8 @@ class AmiDictionaryTest(AmiAnyTest):
         tests its components
         """
         amidict = AmiDictionary.create_minimal_dictionary()
+        print()
+        logger.info(f"amidict {amidict.get_entry_count()}")
         entry = amidict.create_and_add_entry_with_term("foo")
         assert etree.tostring(entry) == b'<entry term="foo"/>'
         assert etree.tostring(
@@ -414,9 +416,9 @@ class AmiDictionaryTest(AmiAnyTest):
 
     def test_delete_entry_by_term_foo(self):
         amidict = _create_amidict_with_foo_bar_entries()
-        print(f"amidict0 {lxml.etree.tostring(amidict.root)}")
+        logger.debug(f"amidict0 {lxml.etree.tostring(amidict.root)}")
         amidict.delete_entry_by_term("foo")
-        print(f"amidict1 {lxml.etree.tostring(amidict.root)}")
+        logger.debug(f"amidict1 {lxml.etree.tostring(amidict.root)}")
         assert amidict.get_entry_count() == 1
 
     def test_delete_entry_by_term_foo_and_re_add(self):
@@ -440,7 +442,7 @@ class AmiDictionaryTest(AmiAnyTest):
         amidict = AmiDictionary.create_minimal_dictionary()
         assert amidict.get_entry_count() == 0
         entry = amidict.create_and_add_entry_with_term(term)
-        print(f"entry: {type(entry)}")
+        logger.debug(f"entry: {type(entry)}")
         assert isinstance(entry, _Element)
         AmiEntry.add_name(entry, "foofoo")
         amidict.create_and_add_entry_with_term(term, replace=True)
@@ -539,7 +541,7 @@ class AmiDictionaryTest(AmiAnyTest):
         # assert ethnobot_dict.get_version() == "0.0.1"
 
     def test_ethnobot_dict_is_valid(self):
-        print(f" validating {ETHNOBOT_DICT}")
+        logger.info(f" validating {ETHNOBOT_DICT}")
         ethnobot_dict = AmiDictionary.create_from_xml_file(self.create_file_dict()[ETHNOBOT_DICT])
         ethnobot_dict.check_validity()
         # assert ethnobot_dict.get_version() == "0.0.1"
@@ -644,7 +646,7 @@ class AmiDictionaryTest(AmiAnyTest):
 
     @classmethod
     def debug_dict(cls, dict_path):
-        print(f"======={dict_path}=======")
+        logger.info(f"======={dict_path}=======")
         ami_dict = AmiDictionary.create_from_xml_file(dict_path)
         if ami_dict:
             lookup = ami_dict.lookup_missing_wikidata_ids()
@@ -820,7 +822,7 @@ class AmiDictionaryTest(AmiAnyTest):
         """
         # current dictionary does not need updating
 
-        print(f"***test_plant_part")
+        logger.debug(f"***test_plant_part")
         DICT_DIR = Path(LOCAL_CEV_OPEN_DICT_DIR, "eoPlantPart")
         DICT_DIR = Path(TEST_RESOURCE_DIR, "eoPlantPart")
         assert DICT_DIR.exists(), f"{DICT_DIR} should exist"
@@ -1048,7 +1050,7 @@ class AmiDictionaryTest(AmiAnyTest):
             "--outpath", chapter_outpath,
             "--dict", html_dict_path,
         ]
-        print(f"cmd> {' '.join(args)}")
+        logger.info(f"cmd> {' '.join(args)}")
         AmiLib().run_command(args)
         assert Path(chapter_outpath).exists()
 
@@ -1086,7 +1088,7 @@ class ValidateTest(AmiAnyTest):
         try:
             ami_dict = AmiDictionary.create_dictionary_from_xml_string(dict_str)
         except XMLSyntaxError as e:
-            print(f"xml error {e}")
+            logger.warning(f"xml error {e}")
 
     def test_one_entry_dict_is_ami_dictionary(self):
         """require the attribute to be present but does not check value"""
@@ -1142,7 +1144,7 @@ class ValidateTest(AmiAnyTest):
             raise AMIDictError("should catch bad version error")
         except AMIDictError as e:
             """should catch bad version"""
-            # print(f"caught expected error")
+            # logger.warning(f"caught expected error")
 
     def test_dict_has_xml_title(self):
         """has root dictionary element got title attribute?
@@ -1155,7 +1157,7 @@ class ValidateTest(AmiAnyTest):
         setup_dict = AmiDictionaryTest().create_file_dict()
         root = setup_dict[ROOT]
         last_path = setup_dict[DICTFILE1].stem
-        print(last_path)
+        logger.debug(last_path)
         assert root.attrib["title"] == last_path
 
 class DictionaryCreationTest(AmiAnyTest):
@@ -1185,7 +1187,7 @@ class DictionaryCreationTest(AmiAnyTest):
         try:
             ami_dict = AmiDictionary.create_dictionary_from_xml_string(dict_str)
         except XMLSyntaxError as e:
-            print(f"xml error {e}")
+            logger.warning(f"xml error {e}")
 
 
     def test_dictionary_creation(self):
@@ -1275,9 +1277,9 @@ class DictionaryCreationTest(AmiAnyTest):
         title_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{title}.txt")
         assert title_path.exists(), f"{title_path} should exist"
         title_txt = f"{title_path}"
-        print(f"words {title_txt}")
+        logger.debug(f"words {title_txt}")
         with open(title_txt, "r") as f:
-            print(f"words ==> {f.readlines()}")
+            logger.debug(f"words ==> {f.readlines()}")
         title_dict = Path(Resources.TEMP_DIR, "words", f"{title}_dict.xml")
         FileLib.delete_file(title_dict)
 
@@ -1287,7 +1289,7 @@ class DictionaryCreationTest(AmiAnyTest):
                 "--dict", f"{title_dict}",
                 "--wikidata"
                 ]
-        print(f" s2 {args}")
+        logger.debug(f" s2 {args}")
         amilib.run_command(args)
         assert Path(title_dict).exists(), f"should write dictionary {title_dict}"
         print(f"wrote {title_dict}")
@@ -1316,6 +1318,7 @@ class DictionaryCreationTest(AmiAnyTest):
         assert amidict.get_entry_count() == 5
 
     def test_make_dict_from_file_CMD_OK(self):
+
         amilib = AmiLib()
         words_file = Path(TEST_RESOURCE_DIR, "wordlists", "climate_words.txt")
         dictfile = Path(Resources.TEMP_DIR, "words", "climate_words.xml")
@@ -1323,6 +1326,21 @@ class DictionaryCreationTest(AmiAnyTest):
         FileLib.delete_file(dictfile)
         amilib.run_command(["DICT",
                             "--words", words_file,
+                            "--dict", dictfile
+                            ])
+        assert Path(dictfile).exists()
+        ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)
+        assert (c := ami_dictionary.get_entry_count()) == expected_count, \
+            f"dictionary should contain {expected_count} found {c}"
+
+    def test_make_dict_from_words_CMD_OK(self):
+        amilib = AmiLib()
+        words_file = Path(TEST_RESOURCE_DIR, "wordlists", "climate_words.txt")
+        dictfile = Path(Resources.TEMP_DIR, "words", "climate_words.xml")
+        expected_count = 11
+        FileLib.delete_file(dictfile)
+        amilib.run_command(["DICT",
+                            "--words", "curlicue", "bread",
                             "--dict", dictfile
                             ])
         assert Path(dictfile).exists()
@@ -1411,8 +1429,6 @@ class DictionaryCreationTest(AmiAnyTest):
         wikidata_sparql.update_from_sparql(sparql_file, sparql_to_dictionary)
         outdir = Path(AmiAnyTest.TEMP_DIR, "sparql")
         outdir.mkdir(exist_ok=True)
-        # ff = dictionary_file[:-(len(".xml"))] + "_update" + ".xml"
-        # print("saving to", ff)
         dictionary.write_to_dir(outdir)
         outpath = Path(outdir, "eoplant_part.xml")
         assert outpath.exists(), f"{outpath} should have been written"
@@ -1549,7 +1565,7 @@ class IPCCDictTest(AmiAnyTest):
             dict_file = Path(IPCC_DICT_ROOT, dictionary_name)
             print(f"reading {dict_file}")
             if not dict_file.exists():
-                print(f"dict file does not exist {dict_file}")
+                logger.warning(f"dict file does not exist {dict_file}")
                 continue
             try:
                 dictionary = AmiDictionary.read_dictionary(dict_file)

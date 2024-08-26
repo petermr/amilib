@@ -36,7 +36,7 @@ tests for Wikimedia routines for Wikipedia and Wikidata
 """
 
 base_test = unittest.TestCase
-
+logger = FileLib.get_logger(__name__)
 
 class WikipediaTest(base_test):
     """
@@ -89,7 +89,6 @@ class WikipediaTest(base_test):
         args = ["DICT", "--words", str(wordsfile),
                 "--dict", dict_xml,
                 "--wikipedia"]
-        # print(f"args {args}")
         pyami.run_command(args)
 
 
@@ -308,7 +307,7 @@ class WikipediaTest(base_test):
         stem = "small_10"
         input = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
         output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
-        print(f"output dict: {output_dict}")
+        logger.debug(f"output dict: {output_dict}")
         FileLib.delete_file(output_dict)
         args = ["DICT",
                 "--words", str(input),
@@ -448,10 +447,11 @@ class WikidataTest(base_test):
         # args = ["DICT", "--help"]
         # pyami.run_command(args)
 
-        args = ["DICT", "--words", str(wordsfile),
+        args = ["DICT",
+                "--words", str(wordsfile),
                 "--dict", str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikidata.xml")),
                 "--wikidata"]
-        print(f"args {args}")
+        logger.info(f"args {args}")
         pyami.run_command(args)
 
 
@@ -712,8 +712,8 @@ class WikidataTest(base_test):
         data_property_list = wikidata_page.get_data_property_list()
         property_set = set(data_property_list)
         assert 100 >= len(property_set) >= 70
-        expected = set([
-            'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054'])
+        expected = {[
+            'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054']}
         difference = expected.symmetric_difference(property_set)
         assert expected.issubset(property_set), f"not found in {property_set}"
         assert set(wikidata_page.get_property_id_list()[:10]).difference(expected) == set()
@@ -732,8 +732,6 @@ class WikidataTest(base_test):
 
         properties_dict = WikidataProperty.get_properties_dict(property_list)
         dict_str = pprint.pformat(properties_dict)
-        # print(f"\ndict: \n"
-        #       f"{dict_str}")
         assert properties_dict['P662'] == {'name': 'PubChem CID', 'value': '16666'}
 
     # all wikidata asserts are fragile
@@ -931,7 +929,6 @@ class WikidataTest(base_test):
         extractor = WikidataExtractor('en')
         id = extractor.search(query)
         id_dict = extractor.load(id)
-        # print(id_dict)
 
     def test_simple_wikidata_query(self):
         """get ID list for query results
@@ -945,7 +942,6 @@ class WikidataTest(base_test):
                   f"&format=json"
         response = requests.get(url_str)
         js = response.json()
-        # print(pprint.pformat(js))
 
     def test_wikidata_id_lookup(self):
         """test query wikidata by ID
@@ -958,7 +954,6 @@ class WikidataTest(base_test):
                   f"&format=json"
         response = requests.get(url_str)
         response_js = response.json()["entities"][ids]
-        # print(f"pages for {ids}\n", pprint.pformat(response_js))
         assert list(response_js.keys()) == ['pageid', 'ns', 'title', 'lastrevid', 'modified', 'type', 'id', 'labels',
                                             'descriptions', 'aliases', 'claims', 'sitelinks']
         assert response_js["id"] == ids
@@ -981,7 +976,6 @@ class WikidataTest(base_test):
                   f"&format=json"
         response = requests.get(url_str)
         response_js = response.json()["entities"][ids]
-        # print(f"pages for {ids}\n", pprint.pformat(response_js))
         assert list(response_js.keys()) == ['pageid', 'ns', 'title', 'lastrevid', 'modified', 'type', 'datatype', 'id',
                                             'labels', 'descriptions', 'aliases', 'claims']
         assert response_js["id"] == "P117"
@@ -1043,7 +1037,7 @@ class WiktionaryTest(AmiAnyTest):
         html_body.append(html_div)
         html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{term}.html")
         if html_page is not None:
-            print(f"wrote to {html_out}")
+            logger.info(f"wrote to {html_out}")
             HtmlUtil.write_html_elem(html_page, html_out)
 
     @unittest.skip("not yet working")
@@ -1073,7 +1067,7 @@ class WiktionaryTest(AmiAnyTest):
         assert terms[0].text == 'nimby'
 
         html_out = Path(Resources.TEMP_DIR, "wiktionary", f"terms.html")
-        print(f"wrote to {html_out}")
+        logger.info(f"wrote to {html_out}")
         HtmlUtil.write_html_elem(html_page, html_out)
 
 
@@ -1103,7 +1097,7 @@ class WiktionaryTest(AmiAnyTest):
         stem = "plants"
         html_page = WiktionaryPage.lookup_list_of_terms(terms, add_style=None)
         html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
-        print(f"wrote to {html_out}")
+        logger.info(f"wrote to {html_out}")
         HtmlUtil.write_html_elem(html_page, html_out)
         assert html_out.exists()
 
@@ -1128,7 +1122,7 @@ class WiktionaryTest(AmiAnyTest):
         html_page = WiktionaryPage.lookup_list_of_terms(terms1, add_style=WiktionaryPage.DEFAULT_STYLE)
 
         html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
-        print(f"wrote to {html_out}")
+        logger.info(f"wrote to {html_out}")
         HtmlUtil.write_html_elem(html_page, html_out)
         assert html_out.exists()
 
@@ -1143,7 +1137,7 @@ class WiktionaryTest(AmiAnyTest):
         outdir = Path(Resources.TEMP_DIR, "wiktionary")
 
         html_out = WiktionaryPage.loookup_wordlist_file_write_html(wordfile, outdir, html_stem)
-        print(f"wrote to {html_out}")
+        logger.info(f"wrote to {html_out}")
         assert html_out.exists()
 
     def test_group_languages_pos(self):
@@ -1214,7 +1208,7 @@ class WiktionaryTest(AmiAnyTest):
 
         body = HtmlLib.get_body(htmlx)
         for term in terms:
-            print(f"=========={term}==========")
+            logger.info(f"=========={term}==========")
             html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(term)
             chunklist_elem = WiktionaryPage.split_mw_content_text_by_language(mw_content_text)
             body.append(chunklist_elem)
@@ -1282,7 +1276,6 @@ class WiktionaryTest(AmiAnyTest):
                 "--dict", dict_xml,
                 "--wiktionary"]
 
-        # print(f"args {args}")
         pyami.run_command(args)
 
 
@@ -1291,7 +1284,7 @@ class SPARQLTests:
     @unittest.skip("WS symbol?")
     def test_sparql_wrapper_WIKI(cls):
         """
-        Author Shweata M Hegde
+        Author Shweata N Hegde
         from wikidata query site
         """
         #

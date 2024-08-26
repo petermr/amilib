@@ -1,6 +1,10 @@
 import re
 from collections import defaultdict, Counter
 
+from amilib.file_lib import FileLib
+
+logger = FileLib.get_logger(__name__)
+
 
 class HtmlExtra:
 
@@ -15,17 +19,17 @@ class HtmlExtra:
             subp_counter[value[subpackage]] += 1
             sect_counter[value[section]] += 1
         if debug:
-            print(f"package: {Counter(pck_counter)}")
-            print(f"subpack: {Counter(subp_counter)}")
-            print(f"section: {Counter(sect_counter)}")
+            logger.debug(f"package: {Counter(pck_counter)}")
+            logger.debug(f"subpack: {Counter(subp_counter)}")
+            logger.debug(f"section: {Counter(sect_counter)}")
 
         return (matched_dict.keys(), Counter(pck_counter), Counter(subp_counter), Counter(sect_counter))
 
     @classmethod
     def create_matched_dict_and_unmatched_keys(cls, def_dict, node_re):
-        print(f"def_dict {def_dict}")
+        logger.debug(f"def_dict {def_dict}")
         counter = Counter(def_dict)
-        print(f"counter {len(counter)}: {counter.most_common()}")
+        logger.debug(f"counter {len(counter)}: {counter.most_common()}")
 
         matched_dict = dict()
         unmatched_keys = set()

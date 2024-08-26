@@ -422,7 +422,6 @@ class HtmlTest(AmiAnyTest):
         HtmlUtil.split_span_at_match(span, regex, new_tags=["b", "a", "i"],
                                      recurse=False, id_root="ss", id_counter=0)
         assert len(div.getchildren()) == 3
-        # print(f"{lxml.etree.tostring(div)}")
         bb = b'<div><b style="font-size: 12; font-weight: bold;" class="re_pref"' \
              b' id="ss0">We believe the </b><a style="font-size: 12; font-weight: bold;"' \
              b' class="re_match" id="ss1">GHG</a><i style="font-size: 12; font-weight: bold;"' \
@@ -469,9 +468,9 @@ class HtmlTest(AmiAnyTest):
         # ami_dict = AmiDictionary.create_from_xml_file(dict_path, ignorecase=False)
         ami_dict = None
         input_path = Path(Resources.TEST_IPCC_CHAP06, "fulltext.flow.html")
-        print(f"reading pdf_html {input_path}")
+        logger.info(f"reading pdf_html {input_path}")
         html_output_dir = Path(AmiAnyTest.TEMP_HTML_IPCC_CHAP06)
-        print(f"output html {html_output_dir}")
+        logger.info(f"output html {html_output_dir}")
         chap6_marked_path = Path(html_output_dir, "raked.html")
 
         ami_dict.markup_html_from_dictionary(input_path, chap6_marked_path, "pink")
@@ -522,7 +521,7 @@ class HtmlTest(AmiAnyTest):
 
         CSSStyle.extract_bold_italic_from_font_family_for_styles(sorted_styles)
         for style in sorted_styles:
-            print(f"normalized style {style}")
+            logger.debug(f"normalized style {style}")
 
     def test_join_spans(self):
         """join sibling spans with the same styles
@@ -536,12 +535,9 @@ class HtmlTest(AmiAnyTest):
         last_style = None
         for div in divs:
             spans = div.xpath("./span")
-            # print(f"spans {len(spans)}")
             for span in spans:
                 style = CSSStyle.create_css_style_from_attribute_of_body_element(span)
-                # print(f"{style}")
                 if style == last_style:
-                    # print(f"styles match")
                     pass
                 last_span = span
                 last_style = style
@@ -590,7 +586,7 @@ class HtmlTest(AmiAnyTest):
                     nonb = p.xpath(".//text()[not(ancestor::b)]")
                     tstr = "".join(nonb)
                 file = Path(outdir, f"B_{i}.md")
-                print(f"writing {file}")
+                logger.info(f"writing {file}")
                 with open(file, "w") as f:
                     f.write(bstr)
                     f.write(tstr)
@@ -612,13 +608,13 @@ class HtmlTest(AmiAnyTest):
             TargetExtractor.TARGET_RE: "\\s*[,;]\\s*",   # semicolon/comma list ...; ...;
             TargetExtractor.TARGET_VALUE_RE: "(Table|Figure)\\s+(.*)", # (table, figure) value
         }
-        print(f"text_dict {target_dict_from_ipcc_para_text}")
+        logger.debug(f"text_dict {target_dict_from_ipcc_para_text}")
 
         node_extractor = TargetExtractor()
         HAS_CURLY = "//div[//text()[contains(., '{')]]"
         div_xp = HAS_CURLY
         paragraph_dict = node_extractor.extract_anchor_paragraphs(div_xp, file, target_dict_from_ipcc_para_text)
-        print(f"paragraph_dict {paragraph_dict.keys()}")
+        logger.debug(f"paragraph_dict {paragraph_dict.keys()}")
         PACKAGE = 'package'
         SECTION = 'section'
         SUBPACKAGE = 'subpackage'
@@ -652,63 +648,7 @@ class HtmlTest(AmiAnyTest):
 
         (matched_dict.keys(), Counter(pck_counter), Counter(subp_counter), Counter(sect_counter))
 
-        # print(f"counter {counter.most_common_values()}")
 
-
-    # @unittest.skip("climate specific")
-    # def test_create_target_node_dir_tree_from_ipcc_chapter_html_DEVELOP(self):
-    #     """reads a chapter in HTML, finds targets in {...'...} , uses div id as anchor
-    #     and builds directory tree of targets
-    #     """
-    #     file = Path(Resources.TEST_IPCC_DIR, "LongerReport", "fulltext.html")
-    #     assert file.exists(), f"{file} should exist"
-    #     table = TargetExtractor.extract_ipcc_fulltext_into_source_target_table(file)
-    #     # TODO make pandas object to manage columns
-    #     target_extractor = TargetExtractor.create_target_extractor(
-    #         ['id', 'source', 'target', 'package', 'section', 'object', 'subsection', 'source_text'])
-    #     df = pd.DataFrame(table, columns=target_extractor.column_dict.keys())
-    #     print(f"df {df}")
-    #     lr_path = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6", "kg", "LongReport")
-    #     lr_path.mkdir(exist_ok=True, parents=True)
-    #     path = Path(lr_path, "edges.csv")
-    #     print(f"writing CSV: {path}")
-    #     df.to_csv(path_or_buf=path)
-    #     # print(f"data frame {df}")
-    #     common_source_tuples = target_extractor.find_commonest_in_node_lists (table, node_name="source")
-    #     common_target_tuples = target_extractor.find_commonest_in_node_lists (table, node_name="target")
-    #     print(f"target {common_target_tuples}\nsource {common_source_tuples}")
-    #     temp_dir = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6", "LR_network")
-    #     temp_dir.mkdir(exist_ok=True)
-    #
-    #     IPCCTarget.make_dirs_from_targets(common_target_tuples, temp_dir)
-    #
-    # @unittest.skip("clime specific")
-    # def test_create_target_node_dir_trees_from_ipcc_chapters_DEVELOP_HACKATHON(self):
-    #     """reads a chapter in HTML, finds targets in {...'...} , uses div id as anchor
-    #     and builds directory tree of targets
-    #     """
-    #     packages = [
-    #         "LongerReport",
-    #         "wg2_spm",
-    #         "wg3_spm",
-    #     ]
-    #     target_extractor = TargetExtractor.create_target_extractor(
-    #         ['id', 'source', 'target', 'package', 'section', 'object', 'subsection', 'source_text'])
-    #
-    #     for package in packages:
-    #         file = Path(Resources.TEST_IPCC_DIR, package, "fulltext.html")
-    #         table = TargetExtractor.extract_ipcc_fulltext_into_source_target_table(file)
-    #         df = pd.DataFrame(table)
-    #         print(f"df {df}")
-    #         print(f"row0 /1 {table[:2]}")
-    #         common_source_tuples = target_extractor.find_commonest_in_node_lists(table, node_name="source")
-    #         common_target_tuples = target_extractor.find_commonest_in_node_lists(table, node_name="target")
-    #         ipcc_dir = Path(AmiAnyTest.TEMP_HTML_DIR, "ar6")
-    #         temp_dir = Path(ipcc_dir, f"{package}_network")
-    #         print(f"writing to {temp_dir}")
-    #         temp_dir.mkdir(exist_ok=True)
-    #
-    #         IPCCTarget.make_dirs_from_targets(common_target_tuples, temp_dir)
 
     def test_remove_floats_from_fulltext_html_DEVELOP(self):
         package = "LongerReport"
@@ -768,7 +708,7 @@ class HtmlTest(AmiAnyTest):
             HtmlTidy.concatenate_spans_with_identical_styles(div)
         outfile = Path(AmiAnyTest.TEMP_HTML_IPCC, "LongerReport", "fulltext_spaced.html")
         XmlLib.write_xml(html_elem, outfile)
-        print(f"write {outfile}")
+        logger.debug(f"write {outfile}")
 
     def test_remove_footnotes_and_floats_from_fulltext_html_DEVELOP(self):
         """
@@ -798,11 +738,11 @@ class HtmlTest(AmiAnyTest):
         html_elem = lxml.etree.parse(str(file)).getroot()
         xpath = "//div[span[@class='s1007']]"
         divs = html_elem.xpath(xpath)
-        print(f"paras {len(divs)}")
+        logger.debug(f"paras {len(divs)}")
         for div in divs:
             span = div.xpath("./span")
             text = span[0].text[:60]
-            print(f"text>> {text}")
+            logger.debug(f"text>> {text}")
             following_divs = list(div.xpath("following::div"))
             # following_divs.insert(0, div)
             following_sections = []
@@ -816,7 +756,7 @@ class HtmlTest(AmiAnyTest):
             if last_section is not None:
                 # following_divs.pop()
                 pass
-            print(f"{text} ==> {len(following_sections)}")
+            logger.info(f"{text} ==> {len(following_sections)}")
 
     def test_find_paras_with_ids(test):
         """
@@ -867,7 +807,7 @@ class HtmlTest(AmiAnyTest):
         copy = html.unescape('&copy; 2010')
         degrees = html.unescape('&#176; 2010')
         two = 2
-        print(f"\ncopy is {copy} on {two} December 18{degrees}")
+        logger.debug(f"\ncopy is {copy} on {two} December 18{degrees}")
         degrees = html.unescape('document &#169; PMR 2022 18&#176;')
         assert degrees == 'document © PMR 2022 18°'
 
@@ -882,7 +822,7 @@ class HtmlTest(AmiAnyTest):
         copy = html.unescape('&copy; 2010')
         degrees = html.unescape('&#176; 2010')
         two = 2
-        print(f"\ncopy is {copy} on {two} December 18{degrees}")
+        logger.info(f"\ncopy is {copy} on {two} December 18{degrees}")
         degrees = html.unescape('document &#169; PMR 2022 18&#176;')
         assert degrees == 'document © PMR 2022 18°'
 
@@ -910,7 +850,6 @@ class HtmlTest(AmiAnyTest):
         in_file = str(Path(Resources.TEST_IPCC_CHAP06, "fulltext.html"))
         html_entity = lxml.etree.parse(in_file)
         html_searcher.add_xpath("text_with_paren", descend_with_paren_in_text)
-        # print(f"XPATH... {html_searcher.xpath_dict.keys()}")
         html_searcher.add_chunk_re(balanced_brackets)
         html_searcher.add_splitter_re(comma_semicolon_chunks)
         html_searcher.add_subnode_key_re("ref", dates1920)
@@ -1015,7 +954,7 @@ class HtmlTest(AmiAnyTest):
         test_dir = Path(Resources.TEST_RESOURCES_DIR, "plant", "lantana_oil_india")
         filesx = FileLib.posix_glob(f"{test_dir}/PMC*/sections/1_body")
         if len(filesx) > 0:
-            print(f"intro {len(filesx)}")
+            logger.debug(f"intro {len(filesx)}")
         for filex in filesx:
             introductions = FileLib.posix_glob(f"{filex}/**/*introduction*/")
             if len(introductions) > 0:
@@ -1114,7 +1053,7 @@ class PDFHTMLTest(AmiAnyTest):
         input_html = Path(Resources.TEST_IPCC_DIR, "syr", "lr", "pages", "page_6.html")
         html_elem = lxml.etree.parse(str(input_html))
         divs = html_elem.xpath(".//div")
-        print(f"divs {len(divs)}")
+        logger.debug(f"divs {len(divs)}")
         section_regex = "(?P<pre>Section\\s*)(?P<body>\\d+)(?P<post>:.*)"
         subsection_regex = "(?P<pre>\\s*)(?P<body>\\d+(\\.\\d+)+)(?P<post>.*)"
         sections, subsections = HtmlGroup.extract_section_ids(
@@ -1847,7 +1786,6 @@ class CSSStyleTest(AmiAnyTest):
         html_elem = lxml.etree.fromstring(html_s)
         html_elem = HtmlTidy.ensure_html_head_body(html_elem)  # redundant as tidy already
         HtmlStyle.extract_all_style_attributes_to_head(html_elem)
-        # print(f"ss {lxml.etree.tostring(html_elem.xpath('/html/head')[0])} \n ... {lxml.etree.tostring(html_elem)}")
         html_dir = Path(AmiAnyTest.TEMP_DIR, "html")
         html_dir.mkdir(exist_ok=True)
         outpath = Path(html_dir, "styles.html")

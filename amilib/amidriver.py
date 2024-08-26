@@ -7,6 +7,8 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.remote.webelement import WebElement
 
+from amilib.file_lib import FileLib
+
 """This is a problem in PyCharm
 see https://stackoverflow.com/questions/64618538/cant-find-webdriver-manager-module-in-pycharm
 """
@@ -28,6 +30,7 @@ URL = "url"
 XPATH = "xpath"
 OUTFILE = "out_file"
 
+logger = FileLib().get_logger(__name__)
 
 
 class AmiDriver:
@@ -50,10 +53,10 @@ class AmiDriver:
 
     def set_sleep(self, sleep):
         if sleep is None or sleep < 1:
-            print(f"sleep must be >= 1")
+            logger.error(f"sleep must be >= 1")
             return
         if sleep > 20:
-            print(f"sleep must be <= 20")
+            logger.error(f"sleep must be <= 20")
             sleep = 20
         self.sleep = sleep
 
@@ -61,9 +64,9 @@ class AmiDriver:
 
     def quit(self):
         """quite the web_driver"""
-        print("Quitting the driver...")
+        logger.debug("Quitting the driver...")
         self.web_driver.quit()
-        print("DONE")
+        logger.debug("DONE")
 
     def safe_click_element(self, element):
         """
@@ -82,7 +85,7 @@ class AmiDriver:
             WebDriverWait(self, self.sleep).until(
                 EC.element_to_be_clickable((By.XPATH, element.get_attribute("outerHTML")))
             )
-            print(f"waiting... {self.sleep}")
+            logger.debug(f"waiting... {self.sleep}")
             element.click()
         except ElementClickInterceptedException:
             # If the element is not clickable, scroll to it and try again
@@ -102,18 +105,18 @@ class AmiDriver:
         :param sleep: sleep time
         :return: the page source of the website after the driver navigates to the specified URL.
         """
-        print(f"Fetching page source from URL: {url}")
+        logger.debug(f"Fetching page source from URL: {url}")
         self.web_driver.get(url)
         time.sleep(self.sleep)
         return self.web_driver.page_source
 
     def click_xpath_list(self, xpath_list):
         if not xpath_list or type(xpath_list) is not list:
-            print(f"no xpath_list {xpath_list}")
+            logger.debug(f"no xpath_list {xpath_list}")
             return
-        print(f"Clicking xpaths...{xpath_list}")
+        logger.debug(f"Clicking xpaths...{xpath_list}")
         for xpath in xpath_list:
-            print(f"xpath: {xpath}")
+            logger.debug(f"xpath: {xpath}")
             self.click_xpath(xpath)
 
     #    class AmiDriver:
@@ -124,18 +127,18 @@ class AmiDriver:
         :param xpath: xpath to click
         :param sleep: wait until click has been executed
         """
-        print(f">>>>before click {xpath} => {self.get_lxml_element_count()}")
+        logger.debug(f">>>>before click {xpath} => {self.get_lxml_element_count()}")
         # elements = self.get_lxml_root().xpath(xpath)
         elements = self.web_driver.find_elements(
             By.XPATH,
             xpath,
         )
-        print(f"click found WebElements {len(elements)}")
+        logger.debug(f"click found WebElements {len(elements)}")
         for element in elements:
             self.safe_click_element(element)
-            print(f"sleep {self.sleep}")
+            logger.debug(f"sleep {self.sleep}")
             time.sleep(self.sleep)  # Wait for the section to expand
-        print(f"<<<<element count after = {self.get_lxml_element_count()}")
+        logger.debug(f"<<<<element count after = {self.get_lxml_element_count()}")
 
     def get_lxml_element_count(self):
         elements = self.get_lxml_root_elem().xpath("//*")
@@ -154,18 +157,18 @@ class AmiDriver:
         :param sleep: seconds to sleep between download (default 3)
         """
         if url is None:
-            print(f"no url given")
+            logger.debug(f"no url given")
             return
         html_source = self.get_page_source(url)
         if xpath_list is None:
-            print(f"no xpath_list specified")
+            logger.debug(f"no xpath_list specified")
         else:
             self.click_xpath_list(xpath_list[:level])
 
         if html_out is None:
-            print(f"no output html")
+            logger.debug(f"no output html")
             return
-        print(f"writing ... {html_out}")
+        logger.debug(f"writing ... {html_out}")
 
     #    class AmiDriver:
 
@@ -181,7 +184,7 @@ class AmiDriver:
             html_elem = self.get_lxml_root_elem()
         ss = ET.tostring(html_elem, pretty_print=pretty_print)
         if debug:
-            print(f"writing {html_out}")
+            logger.debug(f"writing {html_out}")
 
         Path(html_out).parent.mkdir(exist_ok=True, parents=True)
         with open(html_out, 'wb') as f:
@@ -194,7 +197,7 @@ class AmiDriver:
         for key in keys:
             _dict = gloss_dict.get(key)
             if _dict is None:
-                print(f"cannot find key {key}")
+                logger.debug(f"cannot find key {key}")
                 continue
             self.download_expand_save(_dict.get(URL), _dict.get(XPATH), _dict.get(OUTFILE))
 
@@ -209,7 +212,7 @@ class AmiDriver:
             data = self.web_driver.page_source
             doc = ET.parse(StringIO(data), ET.HTMLParser())
             self.lxml_root_elem = doc.xpath("/*")[0]
-            print(f"elements in lxml_root: {len(self.lxml_root_elem.xpath('//*'))}")
+            logger.debug(f"elements in lxml_root: {len(self.lxml_root_elem.xpath('//*'))}")
         return self.lxml_root_elem
 
     #    class AmiDriver:

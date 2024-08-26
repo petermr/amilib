@@ -7,6 +7,7 @@ import csv
 
 from pytest import approx
 
+from amilib.file_lib import FileLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -15,6 +16,7 @@ from amilib.ami_nlp import AmiNLP
 import nltk
 nltk.download('stopwords')
 
+logger = FileLib.get_logger(__name__)
 
 class NLPTest(AmiAnyTest):
     """

@@ -188,13 +188,13 @@ class PDFPlumberTest(AmiAnyTest):
         ]
         for report_name in report_names:
             report_dict = Resources.WG_REPORTS[report_name]
-            print(f"\n==================== {report_name} ==================")
+            logger.info(f"\n==================== {report_name} ==================")
             input_pdf = report_dict["input_pdf"]
             if not input_pdf.exists():
                 logger.error(f"cannot find {input_pdf}")
                 continue
             output_page_dir = report_dict["output_page_dir"]
-            print(f"output dir {output_page_dir}")
+            logger.debug(f"output dir {output_page_dir}")
             output_page_dir.mkdir(exist_ok=True, parents=True)
             page_json_dir = output_page_dir
             ami_pdfplumber = AmiPDFPlumber(param_dict=report_dict)
@@ -206,7 +206,7 @@ class PDFPlumberTest(AmiAnyTest):
         """badly decoded characters default to #65533"""
         x = """Systems������������ 867"""
         for c in x:
-            print(f"c {c} {ord(c)}")
+            logger.debug(f"c {c} {ord(c)}")
 
     @unittest.skip("input file missing")
     def test_misc_pdf(self):
@@ -231,11 +231,11 @@ class PDFPlumberTest(AmiAnyTest):
             for i, page in enumerate(pdf.pages):
                 tables = page.extract_tables()
                 if tables:
-                    print(f"===========page {i + 1} {len(tables)}===========")
+                    logger.info(f"===========page {i + 1} {len(tables)}===========")
                     for j, table in enumerate(tables):
-                        print(f"table {j + 1} {table}")
+                        logger.debug(f"table {j + 1} {table}")
                         df = pd.DataFrame(table)
-                        print(f"df {df}")
+                        logger.debug(f"df {df}")
 
 
 class PDFTest(AmiAnyTest):
@@ -378,7 +378,7 @@ class PDFTest(AmiAnyTest):
         dirx = Path(Resources.TEST_IPCC_CHAP06, "image_bmp_jpg")
         outdir = TEMP_PNG_IPCC_CHAP06
         if not dirx.exists():
-            print(f"no directory {dirx}")
+            logger.info(f"no directory {dirx}")
             return
         pdf_image = PDFImage()
         pdf_image.convert_all_suffixed_files_to_target(dirx, [".bmp", ".jpg"], ".png", outdir=outdir)
@@ -397,7 +397,7 @@ class PDFTest(AmiAnyTest):
         png_dir = Path(Resources.TEST_IPCC_CHAP06, "images")
         bmp_jpg_dir = Path(Resources.TEST_IPCC_CHAP06, "image_bmp_jpg")
         coord_file = Path(Resources.TEST_IPCC_CHAP06, "image_coords.txt")
-        print(f"input {coord_file}")
+        logger.debug(f"input {coord_file}")
         outdir = Path(Resources.TEST_IPCC_CHAP06, "images_new")
         outdir.mkdir(exist_ok=True, parents=True)
         with open(coord_file, "r") as f:
@@ -412,25 +412,25 @@ class PDFTest(AmiAnyTest):
             coords = coord.split("_")
             assert len(coords) == 7
             bbox = BBox(xy_ranges=[[coords[3], coords[4]], [coords[5], coords[6]]])
-            print(f"coord {coord} {bbox} {bbox.width},{bbox.height}")
+            logger.debug(f"coord {coord} {bbox} {bbox.width},{bbox.height}")
             wh_tuple = bbox.width, bbox.height
-            print(f"wh {wh_tuple}")
+            logger.debug(f"wh {wh_tuple}")
             wh_counter[wh_tuple] += 1
             if coords_by_width_height.get(wh_tuple) is None:
                 coords_by_width_height[wh_tuple] = [coord]
             else:
                 coords_by_width_height.get(wh_tuple).append(coord)
-        print(f"counter {wh_counter}")
-        print(f"coords_by_wh {coords_by_width_height}")
+        logger.debug(f"counter {wh_counter}")
+        logger.debug(f"coords_by_wh {coords_by_width_height}")
 
         bmp_jpg_images = os.listdir(bmp_jpg_dir)
         for bmp_jpg_image in bmp_jpg_images:
             if Path(bmp_jpg_image).suffix == ".png":
-                print(f"png {bmp_jpg_image}")
+                logger.debug(f"png {bmp_jpg_image}")
                 with Image.open(str(Path(bmp_jpg_dir, bmp_jpg_image))) as image:
                     wh_tuple = image.width, image.height
-                    print(f"wh ... {wh_tuple}")
-                    print(f"coords {coords_by_width_height.get(wh_tuple)}")
+                    logger.debug(f"wh ... {wh_tuple}")
+                    logger.debug(f"coords {coords_by_width_height.get(wh_tuple)}")
 
     # See https://pypi.org/project/depdf/0.2.2/ for paragraphs?
 
@@ -514,7 +514,7 @@ class PDFTest(AmiAnyTest):
             }
         }
 
-        print(f"Converting chapter: {chapter}")
+        logger.info(f"Converting chapter: {chapter}")
         chapter_dir = Path(chapters_dir, chapter)
         outdir = Path(AmiAnyTest.TEMP_DIR, "html", "ar6", f"{chapter}")
 
@@ -563,7 +563,7 @@ class PDFChapterTest(test.test_all.AmiAnyTest):
         #        sem_clim_dir = Path("/users/pm286", "projects", "semanticClimate")
         sem_clim_dir = Path(Resources.TEST_IPCC_DIR)
         if not sem_clim_dir.exists():
-            print(f"no ar6 dir {sem_clim_dir}, so skipping")
+            logger.debug(f"no ar6 dir {sem_clim_dir}, so skipping")
             return
         ipcc_dir = Path(Resources.TEST_IPCC_DIR)
         assert ipcc_dir.exists(), f"ipcc_dir {ipcc_dir} does not exist"
@@ -577,7 +577,7 @@ class PDFChapterTest(test.test_all.AmiAnyTest):
             # "Chapter16",
         }
         for i, chapter in enumerate(chapter_dict.keys()):
-            print(f"Converting chapter: {chapter}")
+            logger.info(f"Converting chapter: {chapter}")
             pdf_args = PDFArgs()
             chapter_dir = Path(ipcc_dir, chapter)
             # pdf_args.arg_dict[INDIR] = chapter_dir
@@ -587,7 +587,7 @@ class PDFChapterTest(test.test_all.AmiAnyTest):
             # pdf_args.arg_dict[MAXPAGE] = chapter_dict[chapter]
             # pdf_args.arg_dict[OUTFORM] = "flow.html"
             # pdf_args.arg_dict[OUTDIR] = Path(AmiAnyTest.TEMP_HTML_IPCC, chapter.lower())
-            print(f"arg_dict {pdf_args.arg_dict}")
+            logger.debug(f"arg_dict {pdf_args.arg_dict}")
 
             pdf_args.convert_write(
                 indir=chapter_dir,
@@ -631,7 +631,7 @@ class PDFChapterTest(test.test_all.AmiAnyTest):
             os.remove(path)
         with codecs.open(path, "w", "UTF-8") as f:
             f.write(result)
-            print(f"wrote {f}")
+            logger.info(f"wrote {f}")
         assert path.exists(), f"should output html to {path}"
         assert 76000 < os.path.getsize(path) < 77000, f"size should be in range , was {os.path.getsize(path)}"
 
@@ -651,7 +651,7 @@ class PDFChapterTest(test.test_all.AmiAnyTest):
 <div style="top: 3721px;" id="id712"><span style="font-family: TimesNewRomanPS-BoldMT; font-size: 11px;" id="id713">Warming cannot be limited to well below 2&#176;C without rapid and deep reductions in energy system CO</span><span style="font-family: TimesNewRomanPS-BoldMT; font-size: 6px;" id="id715">2</span><span style="font-family: TimesNewRomanPS-BoldMT; font-size: 11px;" id="id716"> and GHG emissions. </span><span style="font-family: TimesNewRomanPSMT; font-size: 11px;" id="id717">In scenarios
         """
 
-        print(f" converting {Resources.TEST_IPCC_CHAP06_PDF}")
+        logger.info(f" converting {Resources.TEST_IPCC_CHAP06_PDF}")
         assert Resources.TEST_IPCC_CHAP06_PDF.exists(), f"chap6 {Resources.TEST_IPCC_CHAP06_PDF}"
         pdf_args = PDFArgs()
         pdf_args.arg_dict[INPATH] = Resources.TEST_IPCC_CHAP06_PDF
@@ -664,9 +664,9 @@ class PDFChapterTest(test.test_all.AmiAnyTest):
         print(f"arg_dict {pdf_args.arg_dict}")
         outfile, _ = pdf_args.convert_write()
         if not outfile:
-            print(f"no file written")
+            logger.info(f"no file written")
         else:
-            print(f"check {outfile} exists")
+            logger.info(f"check {outfile} exists")
             assert outfile.exists(), f"outfile {outfile} should exist"
 
     @unittest.skipUnless(PDFTest.HTML, "create running text")
@@ -690,7 +690,6 @@ Uses:
 
         """
 
-        # print(f" converting {IPCC_CHAP06_PDF}")
         assert Resources.TEST_IPCC_CHAP06_PDF.exists(), f"chap6 {Resources.TEST_IPCC_CHAP06_PDF}"
         pdf_args = PDFArgs()
         maxpage = 5
@@ -702,7 +701,7 @@ Uses:
         pprint.pprint(pdf_args.arg_dict)
         # pdf_args.arg_dict[PAGES] = [(1,3), (5,10)]
 
-        print(f"arg_dict {pdf_args.arg_dict}")
+        logger.debug(f"arg_dict {pdf_args.arg_dict}")
         outpath = Path(AmiAnyTest.TEMP_HTML_IPCC_CHAP06, f"flow.test{maxpage}.html")
         outfile, _ = pdf_args.convert_write(
             maxpage=5,
@@ -714,9 +713,9 @@ Uses:
         )  # all the conversion happens here
         assert outfile is not None and Path(outfile).exists(), f"{outfile} should exist"
         if not outfile:
-            print(f"no file written")
+            logger.info(f"no file written")
         else:
-            print(f"check {outfile.absolute()} exists")
+            logger.info(f"check {outfile.absolute()} exists")
             assert outfile.exists(), f"outfile {outfile} should exist"
             size = outfile.stat().st_size
             if maxpage == 4:
@@ -743,7 +742,7 @@ Uses:
         print(f"pdf file {pdf}")
         args = f"PDF --infile {pdf} --outdir {outdir} --pages 3_5 --flow True --outpath {outfile} --pdf2html pdfplumber"
         AmiLib().run_command(args)
-        print(f"created outfile {outfile}")
+        logger.info(f"created outfile {outfile}")
         logging.warning(f"DID NOT CREATE FILE {outfile}")
         # assert outfile.exists(), f"{outfile} should exist"
 
@@ -763,7 +762,7 @@ Uses:
         ]:
             pdf_debug = PDFDebug()
             with pdfplumber.open(pdf_file) as pdf:
-                print(f"file {pdf_file}")
+                logger.debug(f"file {pdf_file}")
                 pages = list(pdf.pages)
                 assert len(pages) == page_count
                 for page in pages[:max_page]:
@@ -851,7 +850,7 @@ class PDFCharacterTest(test.test_all.AmiAnyTest):
             # 10,
             13  # this has many graphics components and may be long
         ]:
-            print(f"=======page {page} 0-based=========")
+            logger.info(f"=======page {page} 0-based=========")
             pdf = pdfdebug.pdfplumber_debug(inpath, page_num=page)
 
     @unittest.skipUnless(PDFTest.DEBUG, "too much output")
@@ -881,7 +880,6 @@ LTPage
                 print('------------------------------ -------------------- -----')
 
             name = get_indented_name(o, depth)
-            # print(f"name: {name}")
             if debug or name.strip() == "LTTextLineHorizontal":
                 print(
                     f'{name :<30.30s} '
@@ -1047,7 +1045,6 @@ LTPage
         # 'hdistance', 'hoverlap', 'is_voverlap', 'vdistance', 'voverlap', 'analyze', ']
         with pdfplumber.open(PMC1421_PDF) as pdf:
             first_page = pdf.pages[0]
-            # print(type(first_page), first_page.__dir__())
             """
             dir: ['pdf', 'root_page', 'page_obj', 'page_number', 'rotation', 'initial_doctop', 'cropbox', 'mediabox', 
             'bbox', 'cached_properties', 'is_original', 'pages', 'width', 
@@ -1325,7 +1322,7 @@ LTPage
   'y1': 804.1703}]
             assert type(first_page.extract_text()) is str
             for ch in first_page.chars:  # prints all text as a single line
-                print(ch.get("text"), end="")
+                logger.debug(ch.get("text"), end="")
 
     def test_make_styled_text_chunks_PDFPlumber(self):
         """
@@ -1352,7 +1349,7 @@ LTPage
             for page in pages[:maxpage]:
                 pdf_debug.debug_page_properties(page, debug=[WORDS, IMAGES], outdir=outdir)
         pdf_debug.write_summary(outdir=outdir)
-        print(f"pdf_debug {pdf_debug.image_dict}\n outdir {outdir}")
+        logger.debug(f"pdf_debug {pdf_debug.image_dict}\n outdir {outdir}")
         assert maxpage != 9 or pdf_debug.image_dict == {
             ((1397, 779), 143448): (8, (72.0, 523.3), (412.99, 664.64)),
             ((1466, 655), 122016): (8, (72.0, 523.3), (203.73, 405.38)),
@@ -1370,11 +1367,11 @@ LTPage
 
         with pdfplumber.open(Resources.TEST_IPCC_WG2_CHAP03_PDF) as pdf:
             pages = list(pdf.pages)
-            print(f"PDF pages: {len(pages)}")
+            logger.debug(f"PDF pages: {len(pages)}")
             for page in pages[:maxpage]:
                 pdf_debug.debug_page_properties(page, debug=[WORDS, IMAGES], outdir=outdir)
         pdf_debug.write_summary(outdir=outdir)
-        print(f"pdf_debug {pdf_debug.image_dict}\n outdir {outdir}")
+        logger.debug(f"pdf_debug {pdf_debug.image_dict}\n outdir {outdir}")
 
         # assert maxpage != 9 or pdf_debug.image_dict == {
         #     ((1397, 779), 143448): (8, (72.0, 523.3), (412.99, 664.64)),
@@ -1432,18 +1429,18 @@ LTPage
         outdir = Path(UNHLAB_DIR, "downloads")
         outdir.mkdir(exist_ok=True)
         file = self.download_url(url, outdir=Path(UNHLAB_DIR, "downloads"))
-        print(f"{file}")
+        logger.debug(f"{file}")
 
     @unittest.skip("Not currently doing UNLibrary")
     def test_read_hlab_top(self):
         hlab_html = lxml.etree.parse(str(Path(UNHLAB_DIR, "hlab.html")), parser=lxml.html.HTMLParser())
         outdir = Path(UNHLAB_DIR, "downloads")
         tables = hlab_html.xpath("//table")
-        print(f"{len(tables)}")
+        logger.debug(f"{len(tables)}")
         ntr = 0
         for table in tables:
             trs = table.xpath(".//tr[td]")
-            print(f"trs: {len(trs)}")
+            logger.debug(f"trs: {len(trs)}")
 
             for tr in trs:
                 self.download_row(tr, outdir=outdir)
@@ -1468,7 +1465,7 @@ LTPage
                 outfile = Path(indir, stem, "out.html")
                 HtmlLib.write_html_file(html_elem, outfile)
             except Exception as e:
-                print(f"cannot parse {file}")
+                logger.warning(f"cannot parse {file}")
 
     @unittest.skip("Not supporting UNLibrary ATM")
     def test_download_convert_hlab_total_file(self):

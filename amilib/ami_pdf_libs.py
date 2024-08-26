@@ -41,7 +41,7 @@ from amilib.xml_lib import XmlLib, HtmlLib
 
 # local
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 FACT = 2.8
 SVG_NS = "http://www.w3.org/2000/svg"
@@ -180,7 +180,7 @@ class AmiPage:
         # dot_len = 10 # in case we need dots in output
         if not self.text_spans or self.text_spans is not list:
             if debug:
-                print(f"======== {self.page_path} =========")
+                logger.debug(f"======== {self.page_path} =========")
 
             if self.page_path:
                 self.page_element = lxml.etree.parse(str(self.page_path))
@@ -197,7 +197,7 @@ class AmiPage:
                 if axis == Y:
                     self.text_spans = sorted(self.text_spans, key=lambda span: span.y)
                 if debug:
-                    print(f"text_spans {axis}: {self.text_spans}")
+                    logger.debug(f"text_spans {axis}: {self.text_spans}")
 
         return self.text_spans
 
@@ -210,7 +210,7 @@ class AmiPage:
             svg_text = SvgText(text_element)
             text_span = svg_text.create_text_span()
             if not text_span:
-                print(f"cannot create TextSpan")
+                logger.debug(f"cannot create TextSpan")
                 continue
             bbox = text_span.create_bbox()
             if not bbox.intersect(content_box):
@@ -352,10 +352,10 @@ class AmiPage:
         """create text spans, including
 
         """
-        print(f"======== {self.page_path} =========")
+        logger.debug(f"======== {self.page_path} =========")
         page_element = lxml.etree.parse(str(self.page_path))
         text_elements = page_element.findall(f"//{{{SVG_NS}}}text")
-        print(f"no. texts {len(text_elements)}")
+        logger.debug(f"no. texts {len(text_elements)}")
         text_breaks_by_line_dict = dict()
         for text_index, text_element in enumerate(text_elements):
             ami_text = SvgText(text_element)
@@ -366,13 +366,13 @@ class AmiPage:
                 text_breaks_by_line_dict[text_index] = text_break_list
                 current = 0
                 offset = 0
-                print(f"{text_index}: ", end='')
+                logger.debug(f"{text_index}: ", end='')
                 for text_break in text_break_list:
                     current = text_break
                     offset += 1
                     # TODO
                     text_elements.append()
-                print(f"___ {text_content[current - offset:]}")
+                logger.debug(f"___ {text_content[current - offset:]}")
             else:
                 # TODO
                 new_text = TextSpan()
@@ -422,7 +422,7 @@ class AmiPage:
     def debug_span_changed(cls, span, text_style, y0):
         if span:
             if span.text_style != text_style:
-                print(f"{span.text_style.difference(text_style)} \n {span.string}")
+                logger.debug(f"{span.text_style.difference(text_style)} \n {span.string}")
 
             if span.y0 != y0:
                 print(f""
@@ -491,7 +491,7 @@ class AmiPage:
             output_html = Path(output_dir, f"{output_stem}_{page_no}.html")
             with open(output_html, "wb") as f:
                 f.write(lxml.etree.tostring(html))
-                print(f" wrote html {output_html}")
+                logger.info(f" wrote html {output_html}")
                 # assert output_html.exists()
 
 
@@ -582,7 +582,7 @@ class CompositeLine:
         """iterate over text_spans applying normalize_family_weight"""
         for text_span in self.text_spans:
             if Util.is_whitespace(text_span.text_content):
-                print(f"whitespace")
+                logger.debug(f"whitespace")
             text_span.normalize_family_weight()
 
     def merge(self, other_line):
@@ -625,7 +625,7 @@ class TextSpan:
         """
         last_width = self.ami_text.get_last_width()
         if last_width is None:
-            print(f"No widths???")
+            logger.warning(f"No widths???")
             last_width = 0.0
         font_size = self.text_style._font_size
         height = font_size
@@ -642,7 +642,7 @@ class TextSpan:
 
         family = self.text_style._font_family
         if not family:
-            print(f"no family: {self}")
+            logger.warning(f"no family: {self}")
             return
         family = family.lower()
         if family.find(ITALIC) != -1:
@@ -654,7 +654,7 @@ class TextSpan:
         if family.find(CALIBRI) != -1:
             self.text_style._font_family = CALIBRI
         if self.text_style._font_family not in FONT_FAMILIES:
-            print(f"new font_family {self.text_style._font_family}")
+            logger.info(f"new font_family {self.text_style._font_family}")
 
     def has_empty_text_content(self) -> bool:
         return len("".join(self.text_content.split())) == 0
@@ -714,22 +714,21 @@ class PDFDebug:
             raise FileNotFoundError(f"{inpath} does not exist")
         pdf = pdfplumber.open(inpath, laparams={})
         num_pages = len(pdf.pages)
-        print(f"read {inpath}; found {num_pages} pages")
+        logger.info(f"read {inpath}; found {num_pages} pages")
         if page_num < 0 or page_num >= num_pages:
             raise ValueError(f"bad page val {page_num}; should be in range 0-{num_pages - 1}")
-        print(f"")
         page_layout = pdf.pages[page_num].layout
         for element in page_layout:
             if isinstance(element, LTTextLineHorizontal):
                 # currently only seems to detect newline
-                print(f"textlinehorizontal: ({element.bbox}):{element.get_text()}:", end="")
+                logger.debug(f"textlinehorizontal: ({element.bbox}):{element.get_text()}:", end="")
             if isinstance(element, LTTextBoxHorizontal):
-                print(f">>start_text_box")
+                logger.debug(f">>start_text_box")
                 for text_line in element:
-                    # print(f"dir: {text_line.__dir__()}")
-                    print(f"....textboxhorizontal: ({text_line.bbox}): {text_line.get_text()}", end="")
+                    # logger.debug(f"dir: {text_line.__dir__()}")
+                    logger.debug(f"....textboxhorizontal: ({text_line.bbox}): {text_line.get_text()}", end="")
                     pass
-                print(f"<<end_text_box")
+                logger.debug(f"<<end_text_box")
         return pdf
 
     def debug_page_properties(self, page, debug=None, outdir=None):
@@ -738,10 +737,10 @@ class PDFDebug:
         """
         if not debug:
             debug = []
-            print(f"no options given, choose from: {DEBUG_OPTIONS}")
+            logger.info(f"no options given, choose from: {DEBUG_OPTIONS}")
         if DEBUG_ALL in debug:
             debug = DEBUG_OPTIONS
-        print(f"\n\n======page: {page.page_number} ===========")
+        logger.info(f"\n\n======page: {page.page_number} ===========")
         if LINES in debug:
             self.print_lines(page)
         if RECTS in debug:
@@ -769,7 +768,7 @@ class PDFDebug:
             coord_file = Path(outdir, "image_coords.txt")
             with Util.open_write_utf8(coord_file) as f:
                 f.write(f"{self.image_coords_list}")
-            print(f"wrote image coords to {coord_file}")
+            logger.info(f"wrote image coords to {coord_file}")
 
     def print_words(self, page):
         """
@@ -781,16 +780,16 @@ class PDFDebug:
         """
         words = page.extract_words()
         for word in words[:5]:
-            print(f"W: {word} {word.keys()} ")
-        print(f"words {len(words)} {[w['text'] for w in words][:5]} ... ", end=" | ")
+            logger.info(f"W: {word} {word.keys()} ")
+        logger.debug(f"words {len(words)} {[w['text'] for w in words][:5]} ... ", end=" | ")
 
     def print_text(self, page):
         """
         text is a string with no properties, so not v useful for us
         """
         text = page.extract_text()
-        print(f"T: {type(text)} {text[:50]} ")
-        print(f"chars {len(text)}", end=" | ")
+        logger.debug(f"T: {type(text)} {text[:50]} ")
+        logger.info(f"chars {len(text)}", end=" | ")
 
     def print_lines(self, page):
         """
@@ -801,7 +800,7 @@ class PDFDebug:
         """
         n_line = len(page.lines)
         if n_line > 0:
-            print(f"lines {n_line}", end=" | ")
+            logger.info(f"lines {n_line}", end=" | ")
 
     def print_rects(self, page, debug=False):
         """
@@ -811,10 +810,10 @@ class PDFDebug:
         """
         n_rect = len(page.rects)
         if n_rect > 0:
-            print(f"rects {n_rect}", end=" | ")
+            logger.info(f"rects {n_rect}", end=" | ")
             if debug:
                 for rect in page.rects[:self.max_rect]:
-                    print(f"rect (({rect['x0']},{rect['x1']}),({rect['y0']},{rect['y1']})) ")
+                    logger.info(f"rect (({rect['x0']},{rect['x1']}),({rect['y0']},{rect['y1']})) ")
 
     @classmethod
     def print_curves(cls, page, max_curve=1000, svg_dir=None, save_paths=None, page_no=None):
@@ -822,12 +821,12 @@ class PDFDebug:
         pdfplumber does NOT (yet) extract curve operators, only the points"""
         curves = page.get(CURVES)
         if curves and len(curves) > 0:
-            print(f"n_curves {len(curves)}", end=" | ")
+            logger.info(f"n_curves {len(curves)}", end=" | ")
             svg0 = AmiSVG.create_svg()
             for i, curve in enumerate(curves[:max_curve]):
-                # print(f"keys: {curve.keys()}")
+                # logger.info(f"keys: {curve.keys()}")
                 points_ = curve[PTS]
-                # print(f"curve: {points_}")
+                # logger.info(f"curve: {points_}")
                 if svg_dir:
                     svg = AmiSVG.create_svg()
                     svg_pts = [[p[0], p[1]] for p in points_]
@@ -847,24 +846,24 @@ class PDFDebug:
         # see https://github.com/euske/pdfminer/blob/master/pdfminer/pdftypes.py
         n_image = len(page.images)
         if n_image > 0:
-            print(f"images {n_image}", end=" |\n")
+            logger.info(f"images {n_image}", end=" |\n")
             for i, image in enumerate(page.images[:maximage]):
                 self.debug_image(i, image, outdir, page, resolution, write_image)
 
-        print(f"image_dict {self.image_dict}")
+        logger.debug(f"image_dict {self.image_dict}")
 
     def debug_image(self, i, image, outdir, page, resolution, write_image):
-        print(f"image: {type(image)}: {image.keys()} \n{image.values()}")
-        print(f"stream {image['stream']}")
-        print(f"keys {image.keys()}")
-        print(
+        logger.info(f"image: {type(image)}: {image.keys()} \n{image.values()}")
+        logger.info(f"stream {image['stream']}")
+        logger.info(f"keys {image.keys()}")
+        logger.debug(
             f"xxyy {(image['x0'], image['x1']), (image['y0'], image['y1']), image['srcsize'], image.get('name'), image.get('page_number')}")
         stream = image.get('stream')
         width_height_bytes = ((image['srcsize']), image['stream']['Length'])
         page_coords = (image['page_number'], (image['x0'], image['x1']), (image['y0'], image['y1']))
-        print(f"image:  {width_height_bytes} => {page_coords}")
+        logger.info(f"image:  {width_height_bytes} => {page_coords}")
         if (width_height_bytes) in self.image_dict:
-            print("clash: {(width_height_bytes)}")
+            logger.info("clash: {(width_height_bytes)}")
         self.image_dict[width_height_bytes] = page_coords
         if not outdir:
             logging.warning(f"no outdir")
@@ -874,7 +873,7 @@ class PDFDebug:
             imagewriter.export_image(image)
         page_height = page.height
         image_bbox = (image[PL_X0], page_height - image[PL_Y1], image[PL_X1], page_height - image[PL_Y0])
-        # print(f"image: {image_bbox}")
+        # logger.info(f"image: {image_bbox}")
         coord_stem = f"image_{page.page_number}_{i}_{self.format_bbox(image_bbox)}"
         self.image_coords_list.append(coord_stem)
         if outdir and write_image:  # I think this is slow
@@ -882,14 +881,14 @@ class PDFDebug:
             cropped_page = page.crop(image_bbox)  # crop screen display (may have overwriting text)
             image_obj = cropped_page.to_image(resolution=resolution)
             image_obj.save(coord_path)
-            print(f" wrote image {coord_path}")
+            logger.info(f" wrote image {coord_path}")
 
     def print_tables(self, page, odir=None):
         tables = page.find_tables()
         n_table = len(tables)
         if n_table > 0:
-            print(f"tables {n_table}", end=" | ")
-            print(f"table_dir {tables[0].__dir__()}")
+            logger.info(f"tables {n_table}", end=" | ")
+            logger.info(f"table_dir {tables[0].__dir__()}")
             for i, table in enumerate(tables[:self.max_table]):
                 h_table = self.create_table_element(table)
                 table_file = Path(odir, f"table_{i + 1}.html")
@@ -899,7 +898,7 @@ class PDFDebug:
         h_str = lxml.etree.tostring(h_table, encoding='UTF-8', xml_declaration=False)
         with open(table_file, "wb") as f:
             f.write(h_str)
-            print(f"wrote {table_file}")
+            logger.info(f"wrote {table_file}")
 
     def create_table_element(self, table):
         h_table = lxml.etree.Element(H_TABLE)
@@ -919,9 +918,9 @@ class PDFDebug:
     def print_hyperlinks(self, page):
         n_hyper = len(page.hyperlinks)
         if n_hyper > 0:
-            print(f"hyperlinks {n_hyper}", end=" | ")
+            logger.info(f"hyperlinks {n_hyper}", end=" | ")
             for hyperlink in page.hyperlinks:
-                print(f"hyperlink {hyperlink.values()}")
+                logger.info(f"hyperlink {hyperlink.values()}")
 
     def print_annots(self, page):
         """Prints annots
@@ -959,9 +958,9 @@ class PDFDebug:
         """
         n_annot = len(page.annots)
         if n_annot > 0:
-            print(f"annots {n_annot}", end=" | ")
+            logger.info(f"annots {n_annot}", end=" | ")
             for annot in page.annots:
-                print(f"annot: {annot.items()}")
+                logger.info(f"annot: {annot.items()}")
 
     @classmethod
     def debug_pdf(cls, infile, outdir, debug_options=None, page_len=999999):
@@ -972,7 +971,7 @@ class PDFDebug:
         if not debug_options:
             debug_options = [WORDS, IMAGES]
         if not outdir:  # is this used??
-            print(f"no output dir given")
+            logger.warning(f"no output dir given")
         else:
             outdir.mkdir(exist_ok=True, parents=True)
         with pdfplumber.open(infile) as pdf:
@@ -980,7 +979,7 @@ class PDFDebug:
             pdf_debug = PDFDebug()
             for page in pages[:page_len]:
                 pdf_debug.debug_page_properties(page, debug=debug_options)
-            print(f"images cumulative keys : {len(pdf_debug.image_dict.keys())} {pdf_debug.image_dict.keys()}")
+            logger.info(f"images cumulative keys : {len(pdf_debug.image_dict.keys())} {pdf_debug.image_dict.keys()}")
 
 
 class TextStyle:
@@ -1108,7 +1107,7 @@ class PDFParser:
     @classmethod
     def create_from_argparse(cls, parser):
         pdf_parser = PDFParser()
-        print(f"NYI, create from arg_parse")
+        logger.warning(f"NYI, create from arg_parse")
         return pdf_parser
 
     # class PDFParser:
@@ -1155,7 +1154,7 @@ class PDFParser:
         except FileNotFoundError as fnfe:
             raise Exception(f"No input file given {fnfe}")
 
-        print(f"maxpages: {maxpages}")
+        logger.debug(f"maxpages: {maxpages}")
         self.page_tops = [0]
         interpage_space = 50  # arbitrary space between pages (I had to guess this)
         for page in PDFPage.get_pages(
@@ -1321,7 +1320,6 @@ def curves_to_edges(curves, max_edges=10000):
         except KeyError as e:
             msg = str(e)
             if msg == "'y1'":
-                # print(f"curve may not have y1 coords")
                 pass
     return edges
 
@@ -1339,7 +1337,7 @@ class AmiPlumberJsonPage:
     def get_tables(self):
         tables = self.plumber_page.extract_tables() if self.plumber_page else None  # not working
         if tables:
-            print(f"TABLES: {len(tables)}")
+            logger.info(f"TABLES: {len(tables)}")
 
     # AmiPlumberJsonPage:
 
@@ -1392,8 +1390,8 @@ class AmiPlumberJsonPage:
             span.text += text
         except ValueError as e:
             chars = [ord(t) for t in text]
-            print(f"Cannot add text to XML [{text} {len(text)} {chars}]")
-            if span.text == None:
+            logger.warning(f"Cannot add text to XML [{text} {len(text)} {chars}]")
+            if span.text is None:
                 span.text = ""
             span.text += chr(127)  # block
 
@@ -1401,7 +1399,7 @@ class AmiPlumberJsonPage:
 
     def add_span_attributes(self, coords, css, css_style, span, text):
         if text is None:
-            print(f"null text...")
+            logger.warning(f"null text...")
             return
         css_s = css_style.get_css_value().strip()
         if css_s != "":
@@ -1414,7 +1412,7 @@ class AmiPlumberJsonPage:
             span.text = text
         except:
             span.text = "?"
-            print(f"Cannot add [{text}] to span")
+            logger.warning(f"Cannot add [{text}] to span")
 
     # AmiPlumberJsonPage:
 
@@ -1441,7 +1439,7 @@ class AmiPlumberJsonPage:
         rc = self.create_region_clipper(ami_plumber, debug=debug)
         tables = self.get_tables()
         if tables and len(tables):
-            print(f"tables: {len(tables)}")
+            logger.info(f"tables: {len(tables)}")
         html_page = HtmlLib.create_html_with_empty_head_body()
         HtmlLib.add_head_style(html_page, "div", [("border", "red solid 0.5px")])
         HtmlLib.add_head_style(html_page, "span", [("border", "blue dotted 0.5px")])
@@ -1533,7 +1531,6 @@ class AmiPlumberJsonPage:
         param_dict = ami_plumber.param_dict
         footer_height = Util.get_float_from_dict(param_dict, "footer_height")
         header_height = Util.get_float_from_dict(param_dict, "header_height")
-        # print(f"footer/header {footer_height} {header_height}")
         mediabox = self.plumber_page_dict.get('mediabox')
         region_clipper = RegionClipper(
             footer_height=footer_height,
@@ -1636,7 +1633,7 @@ class AmiPlumberJsonPage:
         if curves := self.plumber_page_dict.get(CURVES):
             logger.info(f"debug_curves: {len(curves)}")
             for curve in curves[:max_curves]:
-                print(f"-----------------\ndebug_curve: {curve}")
+                logger.info(f"-----------------\ndebug_curve: {curve}")
         return curves_g
 
     def process_lines(self, max_lines=99999999):
@@ -1685,10 +1682,10 @@ class AmiPlumberJsonPage:
                 print(f"-----------------\ndebug_rect: {rect}")
         return rect_g
 
-    def process_tables(self, curves_to_edges, max_edges):
+    def process_tables(self, curves_to_edgesx, max_edges):
         if tables := self.plumber_page_dict.get(TABLES):
             logger.info(f"debug_tables {len(tables)}")
-        table_div, svg = self.make_html_tables(curves_to_edges, max_edges=max_edges)
+        table_div, svg = self.make_html_tables(curves_to_edgesx, max_edges=max_edges)
         return svg, table_div
 
     def make_html_tables(self, curves_to_edges, max_edges=10000):
@@ -1842,26 +1839,26 @@ class AmiPDFPlumber:
             if key in [PLUMB_PAGE_NUMBER, PLUMB_INITIAL_DOCTOP, PLUMB_ROTATION, PLUMB_CROPBOX, PLUMB_MEDIABOX,
                        PLUMB_BBOX,
                        PLUMB_WIDTH, PLUMB_HEIGHT]:
-                print(f"{key} >> {value}")
+                logger.info(f"{key} >> {value}")
             elif key == PLUMB_LINES:
-                print(f"lines {len(value)}")
+                logger.info(f"lines {len(value)}")
             elif key == PLUMB_CHARS:
                 chars = value
-                print(f"char: {chars[0].keys()}")
+                logger.info(f"char: {chars[0].keys()}")
                 cc = [c['text'] for c in chars]
                 s = ''.join(cc)
-                print(f"string {s}")
+                logger.info(f"string {s}")
             elif key == PLUMB_RECTS:
-                print(f"rects {len(value)}")
+                logger.info(f"rects {len(value)}")
             elif key == PLUMB_IMAGES:
-                print(f"images {len(value)}")
+                logger.info(f"images {len(value)}")
                 if imagedir:
                     for im in value:
                         self.debug_image(im, imagedir)
             elif key == PLUMB_ANNOTS:
-                print(f"annots {len(value)}")
+                logger.info(f"annots {len(value)}")
             else:
-                print(f"unknown {key} {value}")
+                logger.info(f"unknown {key} {value}")
         print("\n-------------\n")
 
     # AmiPDFPlumber

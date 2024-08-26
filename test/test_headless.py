@@ -48,6 +48,7 @@ EXPAND_SECTION_PARAS = [
 run_test = False
 force = False
 
+logger = FileLib.get_logger(__name__)
 
 # force = True # uncomment to run tests with this keyword
 @unittest.skipUnless(AmiAnyTest.IS_PMR, "headless browsing still giving intermittent problems that PMR has to solve")
@@ -70,10 +71,10 @@ class DriverTest(AmiAnyTest):
 
         html_out = Path(SC_TEST_DIR, f"complete_text_{level}.html")
         driver.download_expand_save(url, click_list, html_out, level=level)
-        print(f"elem {driver.get_lxml_element_count()}")
+        logger.debug(f"elem {driver.get_lxml_element_count()}")
         XmlLib.remove_common_clutter(driver.lxml_root_elem)
 
-        print(f"elem {driver.get_lxml_element_count()}")
+        logger.debug(f"elem {driver.get_lxml_element_count()}")
         driver.write_html(Path(html_out))
         driver.quit()
 
@@ -115,7 +116,7 @@ class DriverTest(AmiAnyTest):
             if len(doc) == 3:
                 url = url + doc[2] + "/"
             url = url + "glossary" + "/"
-            print(f"url: {url}")
+            logger.debug(f"url: {url}")
             GLOSSARY_TOP = "glossary"
             rep_dict = {
                 GLOSSARY_TOP:
@@ -234,9 +235,9 @@ class DriverTest(AmiAnyTest):
         """
         CHAP_PREF = "Chapter"
         for wg in range(3, 4):
-            print(f"wg = {wg}")
+            logger.debug(f"wg = {wg}")
             wg_url = AR6_URL + f"wg{wg}/"
-            print(f"downloading from {wg_url}")
+            logger.info(f"downloading from {wg_url}")
             for ch in range(1, 18):
                 chs = str(ch)
                 if len(chs) == 1:
@@ -281,7 +282,7 @@ class DriverTest(AmiAnyTest):
         GLOSS_INPUT_DIR = Path(TOTAL_GLOSS_DIR, "input")
         assert GLOSS_INPUT_DIR.exists()
         dict_files = sorted(FileLib.posix_glob(f"{GLOSS_INPUT_DIR}/*.html"))
-        print(f"making glossary from {len(dict_files)} files in {GLOSS_INPUT_DIR}")
+        logger.info(f"making glossary from {len(dict_files)} files in {GLOSS_INPUT_DIR}")
         out_dir = Path(TOTAL_GLOSS_DIR, "output")
         HeadlessLib.make_glossary(dict_files, out_dir, total_glossary=TOTAL_GLOSS_DIR, debug=True)
 
@@ -300,11 +301,11 @@ class DriverTest(AmiAnyTest):
         for encoding in encodings_to_try:
             try:
                 decoded_text = text.encode(encoding).decode('utf-8')
-                print(f"Decoded with {encoding}: {decoded_text}")
+                logger.info(f"Decoded with {encoding}: {decoded_text}")
             except UnicodeDecodeError as e1:
-                print(f"Failed to decode with {encoding} goves {e1}")
+                logger.debug(f"Failed to decode with {encoding} goves {e1}")
             except UnicodeEncodeError as e2:
-                print(f"failed encode with {encoding} gives {e2}")
+                logger.warning(f"failed encode with {encoding} gives {e2}")
 
     def test_glossary_encoding_CHAR(self):
         """
@@ -313,7 +314,7 @@ class DriverTest(AmiAnyTest):
         input = Path(TOTAL_GLOSS_DIR, "input", "Adaptation_limits_A.html")
         with open(str(input), "r", encoding="UTF-8") as f:
             content = f.read()
-            print(f"content {content}")
+            logger.debug(f"content {content}")
 
     def test_make_input_output_table(self):
         """
@@ -336,7 +337,7 @@ class DriverTest(AmiAnyTest):
             # make output filename from input name
             output_file = Path(output_dir, str(input_file.stem)[:-2] + ".html")  # strip letter
             if not output_file.exists():
-                print(f"cannot read {output_file}")
+                logger.warning(f"cannot read {output_file}")
                 continue
             output_name = output_file.name
             tr = ET.SubElement(table, "tr")
@@ -362,7 +363,7 @@ class DriverTest(AmiAnyTest):
             assert glossary_file.exists(), f"file should exist {glossary_file}"
             gloss_html = ET.parse(str(glossary_file))
             elements = gloss_html.xpath("//*")
-            print(f"elements {len(elements)}")
+            logger.debug(f"elements {len(elements)}")
 
     def test_wikimedia_WIKI(self):
         """
@@ -372,10 +373,10 @@ class DriverTest(AmiAnyTest):
         entries = total_html.xpath(".//div/h4")
         start = 190
         end = 200
-        print(f"downloading {start} - {end} from {len(entries)} entries")
+        logger.info(f"downloading {start} - {end} from {len(entries)} entries")
         csvfile = Path(TOTAL_GLOSS_DIR, "wiki", f"{start}_{end}.csv")
         csvfile.parent.mkdir(parents=True, exist_ok=True)
-        print(f"writing to {csvfile}")
+        logger.info(f"writing to {csvfile}")
         with open(csvfile, "w") as f:
             wikiwriter = csv.writer(f, quoting=csv.QUOTE_ALL)
             wikiwriter.writerow(["term", "highestQid", "highest_desc", "list_of_others"])
@@ -383,10 +384,10 @@ class DriverTest(AmiAnyTest):
                 if i < start or i > end:
                     continue
                 term = entry.text
-                print(f"entry: {i}; term {term}")
+                logger.info(f"entry: {i}; term {term}")
                 wikidata_lookup = WikidataLookup()
                 qitem0, desc, wikidata_hits = wikidata_lookup.lookup_wikidata(term)
-                print(f"qitem {qitem0, desc}")
+                logger.debug(f"qitem {qitem0, desc}")
                 wikiwriter.writerow([term, qitem0, desc, wikidata_hits])
 
     @unittest.skip("no idea what this does - I only wrote it!")
@@ -396,7 +397,7 @@ class DriverTest(AmiAnyTest):
         TODO move elsewhere
         """
         abbrev_file = Path(TOTAL_GLOSS_DIR, "glossaries", "total", "acronyms.csv")
-        print(f"looking up acronym file {abbrev_file} in Wikidata")
+        logger.info(f"looking up acronym file {abbrev_file} in Wikidata")
         offset = 1000
         count = 0
         MAXCOUNT = 3
@@ -414,10 +415,10 @@ class DriverTest(AmiAnyTest):
                         term = row[1]
                         qitem0, desc, hits = lookup.lookup_wikidata(term)
                         if qitem0 is None:
-                            print(f"failed on text: {row}")
+                            logger.warning(f"failed on text: {row}")
                             # qitem0, desc, hits = lookup.lookup_wikidata(abb)
                             if qitem0 is None:
-                                print(f"failed on text {term} and abbreviation: {abb}")
+                                logger.warning(f"failed on text {term} and abbreviation: {abb}")
                                 out_row = [abb, term, "?", "?", "?"]
                             else:
                                 out_row = [abb, term, qitem0, desc, hits]
@@ -450,11 +451,11 @@ class DriverTest(AmiAnyTest):
                     desc = row[3]
                     hits = row[4]
                     if qid is None or not qid.startswith("Q"):
-                        print(f"no QID")
+                        logger.info(f"no QID")
                         continue
                     wikidata_page = WikidataPage(qid)
                     wikipedia_links = wikidata_page.get_wikipedia_page_links(["en"])
-                    print(f"wikipedia links {wikipedia_links}")
+                    logger.info(f"wikipedia links {wikipedia_links}")
                     out_row = [abb, term, qid, desc, hits, wikipedia_links]
                     csvwriter.writerow(out_row)
 

@@ -3,8 +3,12 @@
 import lxml
 import lxml.etree
 import re
+
+from amilib.file_lib import FileLib
 # local
 from amilib.util import Util
+
+logger = FileLib.get_logger(__name__)
 
 
 class Reference:
@@ -56,14 +60,14 @@ class Reference:
                     doi_txt = doi_txt.replace(self.DOI_PROTOCOL, self.HTTPS_DOI_ORG)
                     if doi_txt.startswith(self.DOI_PROTOCOL):
                         doi_txt = "https://" + doi_txt
-                    print(f"doi: {doi_txt}")
+                    logger.debug(f"doi: {doi_txt}")
                     a = lxml.etree.SubElement(span.getparent(), "a")  # to avoid circulkar import of H_A TODO
 
                     a.attrib["href"] = doi_txt
                     a.text = doi_txt
                     break
             else:
-                # print(f"no doi: {text}")
+                # logger.debug(f"no doi: {text}")
                 pass
 
     @classmethod
@@ -109,7 +113,7 @@ class Biblioref:
             bref = " ".join(brefstr.splitlines()).replace(r"\s+", " ")
             chunks = bref.split(";")
             for chunk in chunks:
-                # print(f" chunk {chunk}")
+                # logger.debug(f" chunk {chunk}")
                 brefx = Biblioref.create_bref(chunk.strip())
                 if brefx:
                     bibliorefs.append(brefx)

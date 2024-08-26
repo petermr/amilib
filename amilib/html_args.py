@@ -13,7 +13,7 @@ OUTDIR = "outdir"
 OUTPATH = "outpath"
 
 # logger = AmiLogger.create_named_logger(__file__)
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class HTMLArgs(AbstractArgs):
@@ -124,7 +124,7 @@ def main(argv=None):
     NYI
 
     """
-    print(f"running HTMLArgs main")
+    logger.debug(f"running HTMLArgs main")
     pdf_args = HTMLArgs()
 
 

@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 import traceback
 from collections import Counter
 from pathlib import Path
@@ -30,8 +31,8 @@ WIKIDATA = "wikidata"
 WIKTIONARY = "wiktionary"
 
 
-logger = FileLib.get_logger(__file__)
-
+logger = FileLib.get_logger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class AmiDictArgs(AbstractArgs):
     """Parse args to build and edit dictionary"""
@@ -82,8 +83,8 @@ class AmiDictArgs(AbstractArgs):
                                  help="add Wikipedia link/s (forces --{WIKIDATA}) (NYI)")
         self.parser.add_argument(f"--{WIKTIONARY}", type=str, nargs="*",
                                  help="add Wiktionary output as html (may be messy)")
-        self.parser.add_argument(f"--{WORDS}", type=str, nargs=1,
-                                 help="path/file with words to make or edit dictionary")
+        self.parser.add_argument(f"--{WORDS}", type=str, nargs="*",
+                                 help="path/file with words or list of words")
         self.parser.epilog = """
         Examples:
         DICT --words wordsfile --dict dictfile --wikipedia   # creates dictionary from wordsfile and adds wikipedia info
@@ -115,7 +116,7 @@ class AmiDictArgs(AbstractArgs):
         """
         logger.debug(f"DICT process_args {self.arg_dict}")
         if not self.arg_dict:
-            print(f"no arg_dict given, no actiom")
+            logger.debug(f"no arg_dict given, no actiom")
 
         self.delete = self.arg_dict.get(DELETE)
         self.dictfile = self.arg_dict.get(DICT)
@@ -138,54 +139,54 @@ class AmiDictArgs(AbstractArgs):
             return
 
         self.make_input_words()
-        print(f"words to be built into dictionation {self.words_in}")
+        logger.debug(f"words to be built into dictionation {self.words_in}")
 
         if self.dictfile:
 
-            print(f"writing to {self.dictfile}")
+            logger.debug(f"writing to {self.dictfile}")
             # is this right??
             if self.ami_dict is not None:
                 with open(self.dictfile, "w"):
                     self.ami_dict.write(self.dictfile)
-                    print(f"wrote dict: {self.dictfile}")
+                    logger.debug(f"wrote dict: {self.dictfile}")
             else:
-                # print(f"reading dictionary {self.dictfile}")
                 self.ami_dict = self.build_or_edit_dictionary()
                 if self.ami_dict is None:
-                    print(f"failed to read/compile dictionaty {self.dictfile}")
+
+                    logger.debug(f"failed to write dictionary {self.dictfile}")
 
         if self.validate:
             if self.ami_dict is None:
-                print(f"no dictionary givem")
+                logger.debug(f"no dictionary givem")
             else:
-                print(f"VALIDATING {self.ami_dict}")
+                logger.debug(f"VALIDATING {self.ami_dict}")
                 status = self.validate_dict()
-                print(f"validation finished")
+                logger.debug(f"validation finished")
 
         # for argument --wikidata
-        # print(f"wikidata: {self.wikidata}")
+        # logger.debug(f"wikidata: {self.wikidata}")
         if self.wikidata is not None:
             hit_dict = self.add_wikidata_to_dict()
             status = self.validate_dict()
 
         # for argument --wikipedia
         if self.wikipedia is not None:
-            print(f"Wikipedia lookup")
+            logger.debug(f"Wikipedia lookup")
             hit_dict = self.add_wikipedia_to_dict()
             status = self.validate_dict()
 
         # for argument --wikipedia
         if self.wiktionary is not None:
-            print(f"Wiktionary lookup")
+            logger.debug(f"Wiktionary lookup")
             if len(self.wiktionary) > 0:
-                print(f"searching wiktionary for {self.wiktionary}")
+                logger.debug(f"searching wiktionary for {self.wiktionary}")
                 WiktionaryPage.search_terms_create_html(self.wiktionary)
             else:
-                print(f"add to dictionary NYI")
+                logger.debug(f"add to dictionary NYI")
                 # hit_dict = self.add_wiktionary_to_dict()
                 # status = self.validate_dict()
 
-        print(f"writing to {self}")
+        logger.debug(f"writing to {self}")
         if self.dictfile:
             if self.ami_dict:
                 self.ami_dict.write_to_file(self.dictfile, debug=True)
@@ -208,7 +209,7 @@ class AmiDictArgs(AbstractArgs):
         from amilib.ami_dict import AmiDictionary
 
         if not self.dictfile:
-            print("No dictionary file given")
+            logger.debug("No dictionary file given")
             return None
 
 
@@ -224,13 +225,13 @@ class AmiDictArgs(AbstractArgs):
         desc_counter = Counter()
         hit_dict = dict()
         if self.dictfile is None or self.ami_dict is None:
-            print(f"add_wikidata_to_dict requires existing dictionary")
+            logger.debug(f"add_wikidata_to_dict requires existing dictionary")
             return
         wikidata_lookup = WikidataLookup()
         for entry in self.ami_dict.entries:
             self.add_wikidata_to_entry(entry, hit_dict, wikidata_lookup)
 
-        print(f"JSON DUMPS {json.dumps(hit_dict, sort_keys=False, indent=2)}")
+        logger.debug(f"JSON DUMPS {json.dumps(hit_dict, sort_keys=False, indent=2)}")
         counter = Counter()
 
         """
@@ -255,9 +256,9 @@ class AmiDictArgs(AbstractArgs):
         """
         for hit_dict_key in hit_dict.keys():
             subdict = hit_dict[hit_dict_key]
-            print(f"sub-title {subdict.keys()}")
+            logger.debug(f"sub-title {subdict.keys()}")
             for key, item in subdict.items():
-                print(f".....{key} item_title {item['title']}")
+                logger.debug(f".....{key} item_title {item['title']}")
 
         return hit_dict
 
@@ -270,7 +271,7 @@ class AmiDictArgs(AbstractArgs):
         hit_dict[term] = term_dict
         qitem0, desc, qitem_hits = wikidata_lookup.lookup_wikidata(term)
         if qitem_hits is None:
-            print(f"no qitem_hits {term} in add_wikidata_to_dict")
+            logger.error(f"no qitem_hits {term} in add_wikidata_to_dict")
             return
         for i, qid in enumerate(qitem_hits):
             qitem_hit_dict = self.create_hit_dict_for(i, qid)
@@ -305,7 +306,7 @@ class AmiDictArgs(AbstractArgs):
         if self.dictfile and Path(self.dictfile).exists():
             self.ami_dict.check_validity()
         else:
-            print(f"vallidate_dict requires existing dictionary; no validation")
+            logger.error(f"vallidate_dict requires existing dictionary; no validation")
         return status
 
     @property
@@ -319,10 +320,10 @@ class AmiDictArgs(AbstractArgs):
         dictfile = str(dictfile)
 
         if not dictfile.endswith(".html"):
-            print(f"dictionary for commandline must be HTML")
+            logger.error(f"dictionary for commandline must be HTML")
             return None
         # dictionary = AmiDictionary.create_from_html_file(dictfile)
-        # # print(f"terms: {len(dictionary.get_terms())} {dictionary.get_terms()[0]}")
+        # # logger.info(f"terms: {len(dictionary.get_terms())} {dictionary.get_terms()[0]}")
         # dictionary.markup_html_from_dictionary(inpath, outpath)
         AmiDictionary.read_html_dictionary_and_markup_html_file(
              str(inpath), str(outpath), html_dict_path=dictfile)
@@ -336,21 +337,21 @@ class AmiDictArgs(AbstractArgs):
 
 def main(argv=None):
     # AMIDict.debug_tdd()
-    print(f"running AmiDict main")
+    logger.info(f"running AmiDict main")
     dict_args = AmiDictArgs()
     try:
         dict_args.parse_and_process()
     except Exception as e:
-        print(traceback.format_exc())
-        print(f"***Cannot run amidict***; see output for errors: {e} ")
+        logger.debug(traceback.format_exc())
+        logger.error(f"***Cannot run amidict***; see output for errors: {e} ")
 
 
 
 if __name__ == "__main__":
-    print("running dict main")
+    logger.info("running dict main")
     main()
 else:
 
-    #    print("running dict main anyway")
+    #    logger.debug("running dict main anyway")
     #    main()
     pass

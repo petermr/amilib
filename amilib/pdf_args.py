@@ -13,7 +13,7 @@ import lxml.etree as ET
 from amilib.ami_args import AmiArgParser, AbstractArgs
 from amilib.ami_html import A_HREF, H_A, H_SPAN, HtmlTidy, HtmlStyle, CSSStyle
 from amilib.ami_pdf_libs import AmiPage, PDFParser, DEBUG_OPTIONS
-from amilib.util import Util, AmiLogger
+from amilib.util import Util
 from amilib.file_lib import FileLib
 
 INDIR = "indir"
@@ -41,7 +41,7 @@ HEADER = "header"
 DEFAULT_CONVERT = "html"
 DEFAULT_MAXPAGES = 100
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 
 class PDFArgs(AbstractArgs):
@@ -189,7 +189,7 @@ class PDFArgs(AbstractArgs):
             self.read_from_arg_dict()
 
         if not self.check_input():
-            print("for help, run 'pyamihtmlx PDF -h'")
+            logger.debug("for help, run 'pyamihtmlx PDF -h'")
             return
         self.create_consistent_output_filenames_and_dirs()
         self.calculate_headers_footers()
@@ -229,7 +229,7 @@ class PDFArgs(AbstractArgs):
 
     def check_input(self):
         if not self.inpath:
-            print(f"No input file, no action taken")
+            logger.debug(f"No input file, no action taken")
             return False
             # raise FileNotFoundError(f"input file not given")
         if not Path(self.inpath).exists():
@@ -406,12 +406,12 @@ class PDFArgs(AbstractArgs):
         if out_html is None:
             raise ValueError(f" out_html is None")
         if outpath is None:
-            print(f"no outpath given")
+            logger.debug(f"no outpath given")
             return None, None
         outpath1 = str(outpath)
         with Util.open_write_utf8(outpath1) as f:
             f.write(out_html)
-            print(f"wrote partially tidied html {outpath}")
+            logger.debug(f"wrote partially tidied html {outpath}")
         return outpath, out_html
     @classmethod
     def pdf_to_raw_then_raw_to_tidy(
@@ -516,7 +516,7 @@ class PDFArgs(AbstractArgs):
 
         result = re.compile(refregex).search(text)
         if result:
-            # print(f"matched: {result.group(1)} {result.group(2)}, {result.group(3)} {result.groups()}")
+            # logger.debug(f"matched: {result.group(1)} {result.group(2)}, {result.group(3)} {result.groups()}")
             elem0 = ET.SubElement(par, H_SPAN)
             elem0.text = result.group(1)
             for k, v in elem0.attrib.items():
@@ -624,7 +624,7 @@ class PDFArgs(AbstractArgs):
         pdf_args.arg_dict[INPATH] = inpath
         assert pdf_args.arg_dict[INPATH].exists(), f"file does not exist {inpath}"
         if chapter_dict is not None:
-            print(f"chapter_dict {chapter_dict}")
+            logger.debug(f"chapter_dict {chapter_dict}")
             maxpage = chapter_dict[chapter]["pages"]
             pdf_args.arg_dict[MAXPAGE] = int(maxpage)
         if outdir is not None:
@@ -632,7 +632,7 @@ class PDFArgs(AbstractArgs):
         pdf_args.arg_dict[OUTDIR] = outdir
         pdf_args.arg_dict[OUTPATH] = Path(outdir, "ipcc_spans.html")
         pdf_args.unwanteds = unwanteds
-        print(f"arg_dict {pdf_args.arg_dict}")
+        logger.debug(f"arg_dict {pdf_args.arg_dict}")
         return pdf_args
 
     def pdf_to_styled_html_CORE(
@@ -675,7 +675,7 @@ class PDFArgs(AbstractArgs):
         styles = CSSStyle.extract_styles_from_html_head_element(html_elem)
         with open(outpath1, "wb") as f:
             f.write(ET.tostring(html_elem, encoding="UTF-8"))
-        print(f"wrote styled html {outpath1}")
+        logger.info(f"wrote styled html {outpath1}")
         style_dict = CSSStyle.create_style_dict_from_styles(style_elems=styles)
         return style_dict
 
@@ -691,8 +691,8 @@ def parse_and_process_1(pdf_args):
         pdf_args.parse_and_process()
         pdf_args.convert_write()
     except Exception as e:
-        print(f"traceback: {traceback.format_exc()}")
-        print(f"******Cannot run pyami******; see output for errors: {e} ")
+        logger.debug(f"traceback: {traceback.format_exc()}")
+        logger.error(f"******Cannot run pyami******; see output for errors: {e} ")
 
 
 def main(argv=None):

@@ -10,9 +10,11 @@ import lxml.etree
 
 from amilib.ami_html import HtmlStyle
 from amilib.ami_integrate import HtmlGenerator
+from amilib.file_lib import FileLib
 from amilib.util import Util, EnhancedRegex, GENERATE
 from amilib.xml_lib import HtmlLib, Templater, XmlLib
 
+logger = FileLib.get_logger(__name__)
 
 def replace_parent(current_parents, div):
     pass
@@ -58,7 +60,7 @@ class SpanMarker:
         self.templater = None
         self.enhanced_regex = None if not regex else EnhancedRegex(regex=regex)
         if markup_dict is None:
-            print("WARNING no markup_dict given")
+            logger.debug("WARNING no markup_dict given")
         self.markup_dict = markup_dict
         self.templater = templater
 
@@ -67,7 +69,7 @@ class SpanMarker:
     # this is a mess
     def read_and_process_pdfs(self, pdf_list, debug=False):
         if len(pdf_list) == 0:
-            print(f"no PDF files given")
+            logger.debug(f"no PDF files given")
             return None
         self.outdir.mkdir(exist_ok=True)
         self.outcsv = str(Path(self.outdir, self.outfile))
@@ -78,10 +80,10 @@ class SpanMarker:
 
     def analyze_pdfhtml_and_write_links(self, pdfs, debug=False):
         if pdfs is None:
-            print(f'no pdfs')
+            logger.debug(f'no pdfs')
             return
         if self.outcsv is None:
-            print(f"no outfile")
+            logger.debug(f"no outfile")
         pdf_list = [pdfs] if type(pdfs) is not list else pdfs
         Path(self.outcsv).parent.mkdir(exist_ok=True)
         with open(self.outcsv, "w") as f:
@@ -89,7 +91,7 @@ class SpanMarker:
             self.csvwriter.writerow(["source", "link_type", self.TARGET, self.SECTION_ID, "para"])
             for i, pdf in enumerate(sorted(pdf_list)):
                 self.create_html_from_pdf_and_markup_spans_with_options(pdf, debug=debug)
-        print(f"wrote {self.outcsv}")
+        logger.debug(f"wrote {self.outcsv}")
 
     # class SpanMarker:
 
@@ -157,7 +159,7 @@ class SpanMarker:
         match = re.match(regex, text)
         if not match:
             return None
-        # print(f"{match.group('front'), match.group('dec_no'), match.group('body'), match.group('sess_no'), match.group('end')}")
+        # logger.debug(f"{match.group('front'), match.group('dec_no'), match.group('body'), match.group('sess_no'), match.group('end')}")
         front = match.group("front")
         dec_no = match.group('dec_no')
         body = match.group('body')
@@ -165,7 +167,7 @@ class SpanMarker:
         end = match.group("end")
         target = f"{dec_no}_{body}_{session}"
 
-        print(f"({front[:15]} || {front[-30:]} {target} || {end[:30]}")
+        logger.debug(f"({front[:15]} || {front[-30:]} {target} || {end[:30]}")
         # match end
         match_end = re.match(dec_end, end)
         annex = ""
@@ -173,7 +175,7 @@ class SpanMarker:
         if match_end:
             annex = match_end.group("annex")
             para = match_end.group("para")
-            print(f">>>(annex || {para}")
+            logger.debug(f">>>(annex || {para}")
 
         row = [self.stem, "refers", target, annex[:25], para]
         return row
@@ -200,7 +202,7 @@ class SpanMarker:
     def iterate_over_markup_dict_items(self, span, text):
         match = None
         if self.markup_dict is None:
-            print(f"need a markup dict in iterate_over_markup_dict_items")
+            logger.error(f"need a markup dict in iterate_over_markup_dict_items")
             return match
 
         for markup_item in self.markup_dict.items():
@@ -208,12 +210,12 @@ class SpanMarker:
             if match:
                 regex = markup_item[1].get(self.REGEX)
                 XmlLib.split_span_by_regex(span, regex, markup_dict=self.markup_dict, href=GENERATE)
-                print(f">>>span {span.text[0]}")
+                logger.debug(f">>>span {span.text[0][:200]}...")
                 break
         if not match:
             self.unmatched[text] += 1
         return match
-        # print(f"cannot match: {text}")
+        # logger.error(f"cannot match: {text}")
 
     #    class SpanMarker:
 
@@ -225,12 +227,11 @@ class SpanMarker:
                 }
                 markup = ("markup_key", markup_dict)
         if not markup:
-            print("NO markup given")
+            logger.error("NO markup given")
             return
 
         markup_key = markup[0]
         markup_dict = markup[1]
-        # print(f"markup_key {markup_key}, markup_dict {markup_dict}")
         return self.create_enhanced_regex_and_create_id(markup_dict, span0)
 
     #    class SpanMarker:
@@ -239,13 +240,13 @@ class SpanMarker:
 
         regex_list = markup_dict.get(self.REGEX)
         if regex_list is None:
-            print(f"no regex in {markup_dict}")
+            logger.error(f"no regex in {markup_dict}")
             return
         if type(regex_list) is not list:
             regex_list = [regex_list]
         for regex in regex_list:
             if regex is None:
-                print(f"bad regex_list {regex_list}")
+                logger.error(f"bad regex_list {regex_list}")
                 return
             self.search_text_with_regex(regex, markup_dict, span0)
 
@@ -257,7 +258,7 @@ class SpanMarker:
         try:
             match = re.match(regex, span0.text)
         except Exception as e:
-            print(f"*************** regex fails {regex} {e} \n******************")
+            logger.error(f"*************** regex fails {regex} {e} \n******************")
             raise e
         if match:
             id = enhanced_regex.make_id(span0.text)
@@ -298,14 +299,14 @@ class SpanMarker:
 
         # regex = self.get_regex()
         if regex_list is None:
-            print(f"no regex_list")
+            logger.error(f"no regex_list")
         if type(regex_list) is str:
             regex_list = [regex_list]
         if html_elem is None:
             if html_infile is not None:
                 html_elem = lxml.etree.parse(str(html_infile))
         if html_elem is None:
-            print(f"no file or html_elem given")
+            logger.error(f"no file or html_elem given")
             return
         if not templater_list:
             if targets and markup_dict:
@@ -314,7 +315,7 @@ class SpanMarker:
         if templater_list:
             span_range = markup_dict["decision"]["span_range"]
             repeat = span_range[1]
-            print(f"span_range {span_range} repeat {repeat}")
+            logger.debug(f"span_range {span_range} repeat {repeat}")
             self.markup_with_templates(html_elem, templater_list, repeat=repeat)
         if outfile is None:
             outfile = Path(str(html_infile).replace(".html", ".marked.html"))
@@ -324,27 +325,27 @@ class SpanMarker:
 
     def markup_with_regexes(self, clazz, html_elem, ids, regex_list):
         for regex in regex_list:
-            print(f">>regex {regex}")
+            logger.debug(f">>regex {regex}")
             # recalculate as more spans may be generated
             spans = html_elem.xpath("//span")
-            print(f"spans {len(spans)}")
+            logger.debug(f"spans {len(spans)}")
 
             for i, span in enumerate(spans):
                 match = XmlLib.split_span_by_regex(span, regex, ids=ids, clazz=clazz, href=GENERATE)
                 if match:
-                    print(f">match {match}")
+                    logger.debug(f">match {match}")
 
     def markup_with_templates(self, html_elem, templater_list, repeat=0):
         for templater in templater_list:
-            print(f">>templater {templater}")
+            logger.debug(f">>templater {templater}")
             # recalculate as more spans may be generated
             spans = html_elem.xpath("//span")
-            print(f"spans {len(spans)}")
+            logger.debug(f"spans {len(spans)}")
 
             for i, span in enumerate(spans):
                 match = templater.split_span_by_templater(span, repeat=repeat)
                 if match:
-                    print(f">>>match {match}")
+                    logger.debug(f">>>match {match}")
                     pass
 
     """
@@ -402,12 +403,12 @@ class SpanMarker:
 
         """
         if not self.infile:
-            print(f"infile is null")
+            logger.info(f"infile is null")
             return
         try:
             self.inhtml = lxml.etree.parse(str(self.infile))
         except FileNotFoundError as fnfe:
-            print(f"file not found {fnfe}")
+            logger.info(f"file not found {fnfe}")
             return
         if not splitter_re:
             return self.inhtml
@@ -428,7 +429,7 @@ class SpanMarker:
                     id = enhanced_regex.make_id(text)
                     id = SpanMarker.create_id
                     # id = make_id_from_match_and_idgen()
-                print(f"{match.group('decision')}:{match.group('type')}:{match.group('session')}")
+                logger.debug(f"{match.group('decision')}:{match.group('type')}:{match.group('session')}")
             div0.append(div)
         return self.inhtml
 
@@ -440,7 +441,7 @@ class SpanMarker:
         return div0
 
     def write_links(self, param):
-        print(f"write_links NYI")
+        logger.info(f"write_links NYI")
 
     #    class SpanMarker:
 
@@ -480,7 +481,7 @@ class SpanMarker:
         try:
             html_elem = lxml.etree.parse(str(infile))
         except Exception as e:
-            print(f"cannot parse html {infile}")
+            logger.info(f"cannot parse html {infile}")
             return
 
         """<div left="113.28" right="225.63" top="748.51">
@@ -494,12 +495,12 @@ class SpanMarker:
         body = HtmlLib.get_body(html_elem)
         head = HtmlLib.get_head(html_elem)
         divs = body.xpath("./div")
-        print(f"divs {len(divs)}")
+        logger.debug(f"divs {len(divs)}")
         body_new, html_new = cls.make_new_html_with_copied_head(head)
         assert len(html_new.xpath("head/style")) > 0
         # href0 = f"{Path(infile).stem}_start"
         if not output_dir:
-            print("no output_dir")
+            logger.info("no output_dir")
             return
         sub_dirs = []
         filestem = "split"
@@ -507,9 +508,9 @@ class SpanMarker:
             splitdivs = div.xpath(splitter)
             splitdiv = None if len(splitdivs) == 0 else splitdivs[0]
             if splitdiv is not None:
-                print(f"split before {splitdiv.text[:150]}")
+                logger.debug(f"split before {splitdiv.text[:150]}")
                 ndivs = len(body_new.xpath("div"))
-                print(f"ndivs {ndivs}")
+                logger.debug(f"ndivs {ndivs}")
                 if ndivs > 0:
                     id = cls.create_id_write_output_append_to_subdirs(_write_output_file, debug, filestem, html_new,
                                                                       id_regex, id_template, id_xpath, output_dir,
@@ -542,9 +543,9 @@ class SpanMarker:
         html_new, body_new = cls.make_new_html_body()
         head_new = HtmlLib.get_head(html_new)
         old_head = copy.deepcopy(head)
-        print(f">>styles {len(old_head.xpath('style'))}")
+        logger.debug(f">>styles {len(old_head.xpath('style'))}")
         html_new.replace(head_new, old_head)
-        print(f">>styles new {len(html_new.xpath('head/style'))}")
+        logger.debug(f">>styles new {len(html_new.xpath('head/style'))}")
         return body_new, html_new
 
     #    class SpanMarker:
@@ -603,7 +604,7 @@ class SpanMarker:
         for div in divs:
             clazz = cls.get_class_for_div(div)
             if clazz is None or clazz not in levels:
-                print(f" lenstack {len(stack)} {stack[-1]}")
+                logger.debug(f" lenstack {len(stack)} {stack[-1]}")
                 stack[-1].append(div)
                 continue
             stack_parent = cls.get_lowest_parent_in_stack_higher_than_div(stack, div, levels)
@@ -634,21 +635,21 @@ class SpanMarker:
         #    class SpanMarker:
 
         def delete_parent_level(current_parents, child_index, levels):
-            print(f"delete {child_index} from {current_parents}")
+            logger.info(f"delete {child_index} from {current_parents}")
             current_parent_index = len(current_parents) - 1
             delta = current_parent_index - child_index
             del current_parents[delta:]
-            print(f" >> {current_parents}")
+            logger.debug(f" >> {current_parents}")
 
         #    class SpanMarker:
 
         def add_parent_level(current_parents, child_index, levels):
-            print(f"add {child_index} to {current_parents}")
+            logger.info(f"add {child_index} to {current_parents}")
             current_parent_index = len(current_parents) - 1
             delta = child_index - current_parent_index - 1
             for i in range(delta):
                 current_parents.append(levels[current_parent_index + i + 1])
-            print(f" >> {current_parents}")
+            logger.debug(f" >> {current_parents}")
 
         self.html_elem = lxml.etree.parse(str(self.infile))
         divs = self.html_elem.xpath(".//div")
@@ -684,9 +685,9 @@ class SpanMarker:
         divs = self.html_elem.xpath("//div")
         last_div = None
         for div in divs:
-            print(f"current_parent {current_parent_stack[-1].attrib.get('class')}")
+            logger.info(f"current_parent {current_parent_stack[-1].attrib.get('class')}")
             clazz = self.get_class_from_div(div)
-            print(f"div.txt> {clazz} {get_div_text(div)}")
+            logger.debug(f"div.txt> {clazz} {get_div_text(div)}")
             if not clazz in levels:
                 current_parent_stack[-1].append(div)  # ordinary paragraphs
                 current_parent = current_parent  # to emphasize we aren't changing
@@ -695,15 +696,15 @@ class SpanMarker:
             else:
                 level_index = levels.index(clazz)
                 delta_level = last_parent_level_index - level_index
-                print(f"class>>> {clazz} {level_index} {delta_level}")
+                logger.debug(f"class>>> {clazz} {level_index} {delta_level}")
 
                 last_parent_level_index = -1 if len(current_parent_levels) == 0 else levels.index(
                     current_parent_levels[-1])
                 if delta_level == -1:  # consistent parent
-                    print(f"consistent {clazz} ")
+                    logger.debug(f"consistent {clazz} ")
                     current_parent_stack[-1].append(div)  # add to html document
                 elif delta_level < -1:  # make
-                    print(f"lower index {delta_level}")
+                    logger.info(f"lower index {delta_level}")
                     add_parent_level(current_parent_levels, level_index, levels)
                     delta = last_parent_level_index - level_index + 1
                     for i in range(delta):
@@ -711,7 +712,7 @@ class SpanMarker:
                     current_parent = div
                     current_parent_stack[-1].append(div)
                 elif delta_level >= 0:
-                    print(f"higher index {delta}")
+                    logger.info(f"higher index {delta}")
                     delete_parent_level(current_parent_levels, level_index, levels)
                     delta = level_index - last_parent_level_index
                     for i in range(delta):
@@ -720,17 +721,17 @@ class SpanMarker:
                             current_parent_stack[-1].append(div)
                             current_parent_stack.append(div)
                         except Exception as e:
-                            print(f"**** cannot add div {e}")
+                            logger.info(f"**** cannot add div {e}")
                             continue
                 else:
                     raise Exception(">>>impossible")
             last_div = div
 
-        print(f"div {len(self.html_elem.xpath('//div'))}")
-        print(f"div/div {len(self.html_elem.xpath('//div/div'))}")
-        print(f"div/div/div {len(self.html_elem.xpath('//div/div/div'))}")
-        print(f"div/div/div/div {len(self.html_elem.xpath('//div/div/div/div'))}")
-        print(f"div/div/div/div/div {len(self.html_elem.xpath('//div/div/div/div/div'))}")
+        logger.debug(f"div {len(self.html_elem.xpath('//div'))}")
+        logger.info(f"div/div {len(self.html_elem.xpath('//div/div'))}")
+        logger.info(f"div/div/div {len(self.html_elem.xpath('//div/div/div'))}")
+        logger.info(f"div/div/div/div {len(self.html_elem.xpath('//div/div/div/div'))}")
+        logger.info(f"div/div/div/div/div {len(self.html_elem.xpath('//div/div/div/div/div'))}")
 
     def add_span(self, preamble, text):
         span = lxml.etree.SubElement(preamble, "span")
@@ -747,7 +748,7 @@ class SpanMarker:
         if markup_dict:
             for (key, dict_elem) in markup_dict.items():
                 if dict_elem.get("level") is not None:
-                    print(f"elem {dict_elem}")
+                    logger.debug(f"elem {dict_elem}")
                     level_dict_elems.append(dict_elem)
         return level_dict_elems
 
@@ -756,7 +757,7 @@ class SpanMarker:
     @classmethod
     def create_dir_and_file(cls, subdir=None, stem=None, suffix=None):
         """create output directory from filename"""
-        print(f"create_dir_and_file NYI")
+        logger.warning(f"create_dir_and_file NYI")
 
     #    class SpanMarker:
 
@@ -776,13 +777,13 @@ class SpanMarker:
         """
         # .../htnl/1_4_CMA_3/presplit.html
         top_stem = Path(presplit_file).parent.stem
-        print(f"top stem {top_stem}")
+        logger.debug(f"top stem {top_stem}")
         html = lxml.etree.parse(str(presplit_file))
         section_divs = HtmlLib.get_body(html).xpath("div[@class='top']/div[@class='section']")
         assert len(section_divs) > 0, f"expected section divs in file"
         for section_div in section_divs:
             text = cls.get_text_of_first_div(section_div)
-            print(f"text {text}")
+            logger.debug(f"text {text}")
 
     #    class SpanMarker:
 
@@ -800,7 +801,7 @@ class SpanMarker:
         """
         bodydivs = HtmlLib.get_body(html).xpath("div")
         if len(bodydivs) >= 1:
-            print(f"NOT A splittable file {html}")
+            logger.warning(f"NOT A splittable file {html}")
             return
         assert len(bodydivs) == 1, "exactly one div on body"
         bodydiv = bodydivs[0]
@@ -866,11 +867,11 @@ class SpanMarker:
             if stack_index is None:
                 break
             if stack_index < div_index:
-                print("add new elem NYI")
-            print(f"stack_class {stack_clazz}")
+                logger.debug("add new elem NYI")
+            logger.debug(f"stack_class {stack_clazz}")
             position -= 1
             if div_clazz == stack_clazz:
-                print(f"matched ")
+                logger.debug(f"matched ")
 
     #    class SpanMarker:
 
@@ -884,7 +885,7 @@ class SpanMarker:
     @classmethod
     def get_index_for_element(cls, div, levels):
         clazz = cls.get_class_for_div(div)
-        return None if (clazz == None or clazz not in levels) else levels.index(clazz)
+        return None if (clazz is None or clazz not in levels) else levels.index(clazz)
 
     #    class SpanMarker:
 
@@ -899,7 +900,7 @@ class SpanMarker:
         "return" id or None
         """
         # TODO
-        print("ID calculation NYI")
+        logger.debug("ID calculation NYI")
         return None
 
     #    class SpanMarker:
@@ -909,7 +910,7 @@ class SpanMarker:
     @classmethod
     def assert_sections(cls, decisions, nlower):
         assert len(decisions) >= nlower
-        print(f"decisions {len(decisions)}")
+        logger.debug(f"decisions {len(decisions)}")
 
 
 class HtmlCleaner:
@@ -925,7 +926,7 @@ class HtmlCleaner:
                     self.options.extend(option)
                 else:
                     self.append(option)
-            print(f"atts to remove {self.options}")
+            logger.debug(f"atts to remove {self.options}")
 
     def clean_elems(self, html_elem, xpath):
         if html_elem is None:
@@ -1050,14 +1051,14 @@ class HtmlPipeline:
         if targets == "*" and markup_dict:
             targets = markup_dict.keys()
         if debug:
-            print(f"targets {targets}")
+            logger.debug(f"targets {targets}")
 
         print(f"=================\nparsing {instem}\n===============")
         if directory_maker is None:
-            print(f" cannot create directories using {directory_maker}")
+            logger.warning(f" cannot create directories using {directory_maker}")
             return
         if not markup_dict:
-            print(f"no markup_dict given, abort")
+            logger.warning(f"no markup_dict given, abort")
             return
 
         # STEP 1
@@ -1082,7 +1083,7 @@ class HtmlPipeline:
                     """
         # STEP 5 splitting
         filestem, subdirs = cls.run_step5_split_to_files(file_splitter, markup_dict, out_sub_dir, sectiontag_file)
-        print(f"subdirs {subdirs}")
+        logger.debug(f"subdirs {subdirs}")
         """
                     7 ) assemble nested hierarchical documents
                     """
@@ -1100,7 +1101,7 @@ class HtmlPipeline:
                                                 targets, outstem2="cleaned", outstem_final="final"):
         infile = Path(subdir, f"{filestem}.html")
         if not infile.exists():
-            print(f"cannot find {infile}")
+            logger.warning(f"cannot find {infile}")
         else:
             outfile = Path(subdir, f"{outstem}.html")
             cls.run_step7_make_nested_noop(filestem, outfile)
@@ -1130,7 +1131,7 @@ class HtmlPipeline:
                             force_make_pdf=True,
                             param_dict=None, svg_dir=None, page_json_dir=None, pipeline_data=None, debug=False):
         pdf_in = Path(in_sub_dir, f"{instem}.pdf")
-        print(f"parsing {pdf_in}")
+        logger.debug(f"parsing {pdf_in}")
         outsubsubdir, outfile = directory_maker.create_initial_directories(
             in_sub_dir, pdf_in, top_out_dir, out_stem="raw", out_suffix="html")
         # skip PDF conversion if already performed
@@ -1150,7 +1151,7 @@ class HtmlPipeline:
         cls.print_step(f"STEP2, STEP3 reading {outfile}")
         html_elem = HtmlLib.parse_html(outfile)
         html_outdir = outfile.parent
-        print(f"html_outdir {html_outdir}")
+        logger.debug(f"html_outdir {html_outdir}")
         HtmlStyle.extract_styles_and_normalize_classrefs(html_elem,
                                                          font_styles=True)  # TODO has minor bugs in joinig spans
         outfile_normalized = Path(html_outdir, "normalized.html")
@@ -1168,7 +1169,7 @@ class HtmlPipeline:
         cls.print_step("STEP4")
         infile = outfile_normalized
         dict_name = "sectiontag"
-        print(f"html_outdir {html_outdir}")
+        logger.debug(f"html_outdir {html_outdir}")
         sectiontag_file = Path(html_outdir, f"{dict_name}.html")
         # tags are defined in markup_dict
         html_elem_out = SpanMarker.markup_file_with_markup_dict(
@@ -1201,7 +1202,7 @@ class HtmlPipeline:
 
     @classmethod
     def run_step7_make_nested_noop(cls, infile, outfile):
-        print(f"nesting not yet written")
+        logger.debug(f"nesting not yet written")
         return
         html_elem = HtmlLib.parse_html(infile)
         SpanMarker.move_implicit_children_to_parents(html_elem)

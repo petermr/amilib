@@ -4,7 +4,6 @@ import os
 import re
 import sys
 from enum import Enum
-from html.parser import HTMLParser
 from pathlib import Path
 
 import pylab as p
@@ -20,10 +19,12 @@ from SPARQLWrapper import SPARQLWrapper
 
 # local
 from amilib.ami_html import HtmlUtil
+from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
 
-logging.debug("loading wikimedia.py")
+logger = FileLib.get_logger(__name__)
+
 
 WIKIDATA_QUERY_URI = "https://www.wikidata.org/w/index.php?search="
 WIKIDATA_SITE = "https://www.wikidata.org/wiki/"
@@ -112,7 +113,7 @@ class WikidataLookup:
         self.term = term
         MAX_ENTRIES = 5
         url = WIKIDATA_QUERY_URI + quote(term.encode('utf8'))
-        # print(f"url {url}")
+        # logger.debug(f"url {url}")
         self.root = ParserWrapper.parse_utf8_html_to_root(url)
         body = self.root.find(BODY)
         ul = body.find(".//ul[@class='" + MW_SEARCH_RESULTS + "']")
@@ -127,7 +128,7 @@ class WikidataLookup:
                 #  take the first
                 hit0 = sort_orders[0]
             else:
-                print(f"no wikidata hits for {term}")
+                logger.debug(f"no wikidata hits for {term}")
 
                 # TODO fix non-tuples
         if hit0 is None:
@@ -136,8 +137,8 @@ class WikidataLookup:
 
             hit0_id = hit0[0]
             hit0_description = hit0[1]["desc"]
-            if hit0_description == None:
-                print(f"NULL DESCRIPTION in WD {hit0[1]}")
+            if hit0_description is None:
+                logger.debug(f"NULL DESCRIPTION in WD {hit0[1]}")
             return hit0_id, hit0_description, wikidata_hits
 
     def lookup_items(self, terms):
@@ -158,14 +159,14 @@ class WikidataLookup:
         for li in ul:
             result_heading_a_elem = li.find("./div[@class='" + MW_SEARCH_RESULT_HEADING + "']/a")
             if result_heading_a_elem is None:
-                print(f"no result_heading_a_elem in {lxml.etree.tostring(li)}")
+                logger.debug(f"no result_heading_a_elem in {lxml.etree.tostring(li)}")
                 continue
             if not result_heading_a_elem.attrib.get(HREF):
-                print(f"no href in {result_heading_a_elem}")
+                logger.debug(f"no href in {result_heading_a_elem}")
                 continue
             qitem = result_heading_a_elem.attrib[HREF].split("/")[-1]
             if qitem in wikidata_dict:
-                print(f"duplicate wikidata entry {qitem}")
+                logger.debug(f"duplicate wikidata entry {qitem}")
             else:
                 self.add_subdict_title_desc_statements(li, qitem, result_heading_a_elem, wikidata_dict)
         return wikidata_dict
@@ -189,9 +190,9 @@ class WikidataLookup:
 
     def get_possible_wikidata_hits(self, name, blacklist=None):
         entry_hits = self.lookup_wikidata(name)
-        print(f"------{name}-------")
+        logger.debug(f"------{name}-------")
         if not entry_hits[0]:
-            # print(f" no hit for {name}")
+            # logger.debug(f" no hit for {name}")
             pass
         else:
             hits = dict()
@@ -215,13 +216,13 @@ class WikidataFilter:
         if not file:
             return None
         if not file.exists():
-            print(f"no file {file}")
+            logger.debug(f"no file {file}")
             return None
         filter = WikidataFilter()
         with open(file, "r") as f:
             text = f.read()
         filter.json = json.loads(text)
-        # print(f"dict {type(filter.json)} {filter.json}")
+        # logger.debug(f"dict {type(filter.json)} {filter.json}")
         return filter
 
 
@@ -233,7 +234,7 @@ class WikidataProperty:
     def __str__(self):
         s = "WikidataProperty: "
         if self.element is not None:
-            # print(f"type self.element {type(self.element)}")
+            # logger.debug(f"type self.element {type(self.element)}")
             s += f"{lxml.etree.tostring(self.element)}"
         return s
 
@@ -277,9 +278,9 @@ class WikidataProperty:
                 value = statement.text
                 if title:
                     statement_dict[title] = value
-                    # print(f"statement {id} {value}")
+                    # logger.debug(f"statement {id} {value}")
                 else:
-                    # print(f"value: {value}")
+                    # logger.debug(f"value: {value}")
                     property_dict["value"] = value
             if len(statement_dict) > 0:
                 property_dict["statements"] = statement_dict
@@ -423,7 +424,7 @@ class WikidataPage:
         # ul = root.find(".//ul[@class='" + "wikibase-sitelinklistview-listview" +"']")
         #     li_lang = ul.find("./li[@data-wb-siteid='" +f"{lang}wiki" + "']")
         #     ahref = li_lang.find(".//a[@hreflang]")
-        #     print(ahref.attrib["href"])
+        #     logger.error(ahref.attrib["href"])
 
         lang_pages = {}
         if lang_list:
@@ -634,7 +635,7 @@ class WikidataPage:
         :param trail: trailing string (e.g. "/li"
         """
         xpath = self.create_xpath_for_contains_whitespaced_attvals(attname, attval, lead=lead, trail=trail)
-        # print(f"{xpath}")
+        # logger.error(f"{xpath}")
         elems = self.root.xpath(xpath)
         return elems
 
@@ -705,7 +706,7 @@ class WikidataPage:
     def debug_page(self):
         """debug crude"""
         if self.root is None:
-            print(f"no root for wikidata")
+            logger.error(f"no root for wikidata")
         else:
             HtmlUtil.write_html_elem(self.root, sys.stdout, pretty_print=True)
 
@@ -749,11 +750,11 @@ class WikidataSparql:
 
     def create_sparql_result_list(self, sparql_file):
         assert (os.path.exists(sparql_file))
-        print("sparql path", sparql_file)
+        logger.info("sparql path", sparql_file)
         self.current_sparql = ET.parse(sparql_file, parser=ET.XMLParser(encoding="utf-8"))
         self.sparql_result_list = list(self.current_sparql.findall(SPQ_RESULTS + "/" + SPQ_RESULT, NS_MAP))
         assert (len(self.sparql_result_list) > 0)
-        print("results", len(self.sparql_result_list))
+        logger.info("results", len(self.sparql_result_list))
 
     def create_sparql_result_by_wikidata_id(self):
         self.sparql_result_by_wikidata_id = {}
@@ -780,7 +781,7 @@ class WikidataSparql:
 
     def update_dictionary_from_sparql(self):
 
-        print("sparql result by id", len(self.sparql_result_by_wikidata_id))
+        logger.info("sparql result by id", len(self.sparql_result_by_wikidata_id))
         sparql_name = self.sparql_to_dictionary[SPQ_NAME]
         dict_name = self.sparql_to_dictionary[DICT_NAME]
         for wikidata_id in self.sparql_result_by_wikidata_id.keys():
@@ -829,7 +830,7 @@ class ParserWrapper:
             with urlopen(url) as u:
                 content = u.read().decode("utf-8")
         except HTTPError as e:
-            print(f"cannout open {url} because {e}")
+            logger.info(f"cannout open {url} because {e}")
             raise URLError(f"failed to read {url} because {e}")
         tree = ET.parse(StringIO(content), ET.HTMLParser())
         root = tree.getroot()
@@ -998,7 +999,7 @@ class WikipediaPage:
                 wikipedia_page = WikipediaPage()
                 wikipedia_page.html_elem = html_content
             except Exception as e:
-                print(f"HTML exception {e}")
+                logger.info(f"HTML exception {e}")
         return wikipedia_page
 
     def get_main_element(self):
@@ -1009,7 +1010,7 @@ class WikipediaPage:
             main_contents = self.html_elem.xpath(".//main")
             main_content = main_contents[0]
         except Exception as e:
-            print(f"except {e}")
+            logger.debug(f"except {e}")
             return None
         XmlLib.remove_elements(main_content, xpath="//nav")
         XmlLib.remove_elements(main_content, xpath="//noscript")
@@ -1063,7 +1064,7 @@ class WikipediaPage:
         new_body = HtmlLib.get_body(html_out)
         for word in words:
             if debug:
-                print(f"\nword: {word}")
+                logger.info(f"\nword: {word}")
             cls.create_html_of_leading_wp_para(new_body, word, debug)
             first_wp_para = WikipediaPage.get_leading_paragraph_for_word(new_body, word)
             if first_wp_para is not None:
@@ -1185,7 +1186,7 @@ class WikipediaPage:
         info_xpath = ".//*[@id='Basic_information'][1]"
         h2_basics = t_info_page.html_elem.xpath(info_xpath)
         if len(h2_basics) != 1:
-            print(f"cannot find Basic Information section {info_xpath}")
+            logger.warning(f"cannot find Basic Information section {info_xpath}")
             return None
         h2_basic = h2_basics[0]
         parent = h2_basic.getparent()
@@ -1207,7 +1208,7 @@ class WikipediaPage:
         ahrefs = self.html_elem.xpath(f".//li[@id='{t_item}']/a[@href]")
         ahref = ahrefs[0] if len(ahrefs) == 1 else None
         if ahref is None:
-            print(f"cannot find {t_item} in drop-down tools")
+            logger.warning(f"cannot find {t_item} in drop-down tools")
             return None
         href = ahref.attrib.get("href")
         assert href is not None
@@ -1330,7 +1331,7 @@ class WikipediaPara:
         # find first full stop in normal text (not bold)
         texts = para.xpath("./text()")
         for text in texts:
-            # print(f"text> {text}")
+            # logger.debug(f"text> {text}")
             pass
 
         bolds = para.xpath("./b")
@@ -1342,17 +1343,17 @@ class WikipediaPara:
         for tb in para.xpath("./text()|*"):
             if debug:
                 try:
-                    print(f"<{tb.tag}>{HtmlUtil.get_text_content(tb)}</{tb.tag}>")
+                    logger.debug(f"<{tb.tag}>{HtmlUtil.get_text_content(tb)}</{tb.tag}>")
                 except Exception as e:
-                    print(f"{tb}")
+                    logger.debug(f"{tb}")
         for text in para.xpath("./text()|./b/text()"):
             if debug:
-                print(f"t> {text}")
+                logger.debug(f"t> {text}")
 
             match = rex.match(text)
             if match:
                 if debug:
-                    print(f">> {match.group(1)}")
+                    logger.debug(f">> {match.group(1)}")
 
         return (para, term, sentence, abbrev)
 
@@ -1470,7 +1471,7 @@ class WikipediaBasicInfo:
         for row in rows:
             name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
             if not name in self.KEYS:
-                print(f"unknown key {name} in Basic Information")
+                logger.warning(f"unknown key {name} in Basic Information")
             value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
             self.table_dict[name] = value
 
@@ -1554,7 +1555,7 @@ class WiktionaryPage:
         html_div.append(language_chunks)
         cls.process_parts_of_speech(html_div, mw_content_text)
         wiktionary_page.html_div = html_div
-        print(f"html_div {ET.tostring(html_div)}")
+        logger.debug(f"html_div {ET.tostring(html_div)[:200]}...")
         wiktionary_page.url = cls.get_url(term)
 
         return wiktionary_page
@@ -1666,7 +1667,7 @@ class WiktionaryPage:
         if term is not None:
             url = cls.get_url(term)
         if url is None:
-            print(f"no term or url given")
+            logger.debug(f"no term or url given")
             return (None, None)
         try:
             res = requests.get(url)
@@ -1680,7 +1681,7 @@ class WiktionaryPage:
         body_content = content.xpath("./div[@id='bodyContent']")[0]
         h1_first_heading = content.xpath("./h1[@id='firstHeading']")[0]
         # print(f"h111 {ET.tostring(h1_first_heading)}")
-        print(f"\n\n>>>h1 {''.join(h1_first_heading.itertext())}")
+        logger.debug(f"\n\n>>>h1 {''.join(h1_first_heading.itertext())}")
         mw_content_text = body_content.xpath("./div[@id='mw-content-text']")[0]
         return html_element, mw_content_text
 
@@ -1692,7 +1693,6 @@ class WiktionaryPage:
         :return: span of concatenated components
         """
         val = pos.value[0]
-        # print(f"pos {val}")
         xp = f"./div/div[h3[@id='{val}']]"
         elems = mw_content_text.xpath(xp)
         if len(elems) == 1:
@@ -1712,11 +1712,8 @@ class WiktionaryPage:
         if html_element is None:
             return False
         text = "".join(html_element.itertext())
-        # text = ET.tostring(html_element)
-        # print(f"TEXT {text}")
         not_found_message = WiktionaryPage.NOT_FOUND in text
         if not_found_message:
-            # print("NOT FOUND MESSAGE")
             pass
         return not_found_message
 
@@ -1755,7 +1752,7 @@ class WiktionaryPage:
         """
         wiktionary_page = WiktionaryPage.create_wiktionary_page(term)
         if wiktionary_page.has_term_not_found_message():
-            print(f" NO TERM")
+            logger.debug(f" NO TERM")
         assert wiktionary_page is not None  # missing terms return a page
         # assert not wiktionary_page.has_term_not_found_message()
         return wiktionary_page.html_div
@@ -1769,11 +1766,10 @@ class WiktionaryPage:
         """
         html_body, html_page = WiktionaryPage.create_skeleton_html_page(add_style=add_style)
         for term in terms:
-            print(f"==============={term}=================")
+            logger.info(f"==============={term}=================")
             html_div = WiktionaryPage.create_div_for_term(term)
             if html_div is not None:
                 html_body.append(html_div)
-            # print("================================")
         return html_page
 
     @classmethod
@@ -1828,28 +1824,24 @@ class WiktionaryPage:
     @classmethod
     def group_list(cls, level, level_class_list, elems):
         if level >= len(level_class_list):
-            # print(f"exhausted headers")
             return None
-        print(f"level {level} {type(elems)}")
+        logger.debug(f"level {level} {type(elems)}")
         level_class = level_class_list[level]
         h_level = level_class[0]
         clazz = level_class[1]
         chunklist_elem = ET.Element("div")
         chunklist_elem.attrib["class"] = f"{clazz}_{h_level}"
-        print(chunklist_elem.attrib["class"])
+        logger.debug(chunklist_elem.attrib["class"])
         while len(elems) > 0:
             elem = elems.pop()
             headers = elem.xpath(h_level)
             if len(headers) > 0:
-                # chunk_elem = ET.SubElement(chunklist_elem, "div")
-                # chunk_elem.attrib["class"] = clazz
-                # chunk_elem.append(headers[0])
                 chunklist_subelem = cls.group_list(level + 1, level_class_list, elems)
                 if chunklist_subelem is not None:
                     chunklist_elem.append(chunklist_subelem)
             else:
                 chunklist_elem.append(elem)
-        print(f"chunklist_elem {type(chunklist_elem)}")
+        logger.debug(f"chunklist_elem {type(chunklist_elem)}")
         return chunklist_elem
 
         """
@@ -2090,17 +2082,17 @@ Contents
         :return: element with POS and definition/s
         """
         if language is None:
-            print(f"No language/s given")
+            logger.warning("No language/s given")
             return (None, None)
         reqd_langs = language if type(language) is list else [language]
         if part_of_speech is None:
-            print(f"No parts of speec given")
+            logger.warning(f"No parts of speec given")
             return (None, None)
         pos_list = part_of_speech if type(part_of_speech) is list else [part_of_speech]
         if mw_content_text is None:
-            print(f"no mw_content_text given")
+            logger.warning(f"no mw_content_text given")
             return (None, None)
-        print(f"lang: {reqd_langs} ppos: {pos_list}")
+        logger.info(f"lang: {reqd_langs} ppos: {pos_list}")
 
         """
         <li>
@@ -2113,7 +2105,7 @@ Contents
         ])
         toc_elems = mw_content_text.xpath(".//div[@id='toc']")
         if len(toc_elems) == 0:
-            print(f"no toc...")
+            logger.info(f"no toc...")
             return (None, None)
         toc_elem = toc_elems[0]
         XmlLib.remove_all(toc_elem, [
@@ -2128,14 +2120,14 @@ Contents
         languages = [elem.xpath("./a/@href")[0][1:] for elem in language_elems]
         possible_langs = set(reqd_langs).intersection(set(languages))
         if len(possible_langs) == 0:
-            print(f"no required languages {reqd_langs} in {languages}")
+            logger.warning(f"no required languages {reqd_langs} in {languages}")
             return (None, None)
 
         result_html = ET.Element("div")
         result_html.attrib["class"] = "wiktionary_result"
 
 
-        print(f"langs {languages}")
+        logger.info(f"langs {languages}")
         # the ids for Nouns, Verbs, etc are Noun, Noun_2, Noun_3, etc.
         # I bet they change every revision . We have to get the ID from the TOC
         for pos in pos_list:
@@ -2151,10 +2143,8 @@ Contents
         pos_elem.attrib["class"] = "parts_of_speech"
         pos_xpath = f".//div[*[starts-with(@id,'{pos}')]]"
         pos_divs = mw_content_text.xpath(pos_xpath)
-        print(f"\n === {pos} === ")
+        logger.debug(f"\n === {pos} === ")
         for pos_div in pos_divs:
-            # print(f"pos {ET.tostring(pos_div)}")
-            print(f"...")
             cls.add_word_variants_and_defintions(pos_div, pos_elem)
         return pos_elem
 
@@ -2175,18 +2165,17 @@ Contents
             if text:
                 li_new = ET.SubElement(ol, "li")
                 li_new.text = text
-                print(f"def: {li_new.text}")
+                logger.info(f"def: {li_new.text}")
 
     @classmethod
     def add_words_p_element(cls, pos_div, pos_div_elem):
         language_elem_div = pos_div.xpath("./preceding-sibling::div[h2][1]")[0]
-        # print(f"ID {id(language_elem_div)} {ET.tostring(language_elem_div)}")
         lang = language_elem_div.xpath("./h2")[0].text
-        print(f"LANG {lang}")
+        logger.debug(f"LANG {lang}")
         following_p = pos_div.xpath("./following-sibling::p")[0]
         words_elem = ET.SubElement(pos_div_elem, "p")
         words_elem.text = following_p.xpath("./span/strong/text()")[0]
-        print(f"variant: {words_elem.text}")
+        logger.debug(f"variant: {words_elem.text}")
 
     @classmethod
     def extract_main_text_from_definition(cls, li):
@@ -2212,7 +2201,7 @@ Contents
         htmlx = HtmlUtil.create_skeleton_html()
         body = HtmlLib.get_body(htmlx)
         if term is None:
-            print(F"cannot search for None")
+            logger.warning(F"cannot search for None")
             return None
         terms = term if type(term) is list else [term]
 
@@ -2354,10 +2343,9 @@ class WikipediaBasicInfo:
         for row in rows:
             name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
             if not name in self.KEYS:
-                print(f"unknown key {name} in Basic Information")
+                logger.warning(f"unknown key {name} in Basic Information")
             value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
             self.table_dict[name] = value
-        # print(f"dict {self.table_dict}")
 
     def get_cell_value(self, td, idx):
         """
@@ -2503,10 +2491,9 @@ class WikipediaBasicInfo:
         for row in rows:
             name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
             if not name in self.KEYS:
-                print(f"unknown key {name} in Basic Information")
+                logger.warning(f"unknown key {name} in Basic Information")
             value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
             self.table_dict[name] = value
-        # print(f"dict {self.table_dict}")
 
     def get_cell_value(self, td, idx):
         """

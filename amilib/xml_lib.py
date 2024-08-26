@@ -20,7 +20,7 @@ from lxml.html import HTMLParser
 
 from amilib.file_lib import FileLib
 
-logging.debug("loading xml_lib")
+logger = FileLib.get_logger(__name__)
 
 # make leafnodes and copy remaning content as XML
 TERMINAL_COPY = {
@@ -245,7 +245,7 @@ class XmlLib:
         isect = 0
         for child in children:
             if "ProcessingInstruction" in str(type(child)):
-                # print("PI", child)
+                # logger.debug("PI", child)
                 continue
             if "Comment" in str(type(child)):
                 continue
@@ -274,7 +274,7 @@ class XmlLib:
                     with open(filename1, "wb") as f:
                         f.write(xml_string)
                 except Exception:
-                    print(f"cannot write {filename1}")
+                    logger.debug(f"cannot write {filename1}")
             else:
                 subdir = os.path.join(outdir, filename)
                 # creates empty dirx, may be bad idea
@@ -312,11 +312,11 @@ class XmlLib:
         :param xpaths: """
         xpaths = [xpaths] if type(xpaths) is str else xpaths
         if debug:
-            print(f"xpaths for removal {xpaths}")
+            logger.debug(f"xpaths for removal {xpaths}")
         for xpath in xpaths:
             elems = elem.xpath(xpath)
             if debug:
-                print(f"elems to remove {elems}")
+                logger.debug(f"elems to remove {elems}")
             for el in elems:
                 if el.getparent() is not None:
                     el.getparent().remove(el)
@@ -351,7 +351,7 @@ class XmlLib:
         """replace nodes with specific text
 
         """
-        print(data, xpath, replacement)
+        logger.debug(data, xpath, replacement)
         tree = ET.fromstring(data)
         for r in tree.xpath(xpath):
             XmlLib.replace_node_with_text(r, replacement)
@@ -359,7 +359,7 @@ class XmlLib:
 
     @classmethod
     def replace_node_with_text(cls, r, replacement):
-        print("r", r, replacement, r.tail)
+        logger.debug("r", r, replacement, r.tail)
         text = replacement
         if r.tail is not None:
             text += r.tail
@@ -394,7 +394,7 @@ class XmlLib:
         """
         elems = elem.xpath(xpath, debug=True)
         if debug:
-            print(f"{xpath} removes {len(elems)} elems")
+            logger.debug(f"{xpath} removes {len(elems)} elems")
         for elem in elems:
             XmlLib.remove_element(elem), debug
             if new_parent is not None:
@@ -422,7 +422,7 @@ class XmlLib:
 
         transform = ET.XSLT(xslt_root)
         if transform.error_log:
-            print("bad xsl? XSLT log", transform.error_log)
+            logger.debug("bad xsl? XSLT log", transform.error_log)
         result_tree = transform(xmlstring)
         assert (result_tree is not None)
         html_root = result_tree.getroot()
@@ -503,11 +503,11 @@ class XmlLib:
 
                 xmlstr = lxml.etree.tostring(elem).decode(encoding)
             except Exception as e:
-                print(f"****** cannot decode XML to {path}: {e} *******")
+                logger.debug(f"****** cannot decode XML to {path}: {e} *******")
                 return None
             try:
                 if debug:
-                    print(f"writing XML {path}")
+                    logger.debug(f"writing XML {path}")
                 f.write(xmlstr)
             except Exception as ee:
                 raise Exception(f"cannot write XMLString {ee}")
@@ -576,10 +576,10 @@ class XmlLib:
         pred_string = f"" if predicate is None else f"{predicate}"
         xp = f"following::*{pred_string}"
         xp = f"following::*"
-        print(f"xp: {xp} {lxml.etree.tostring(elem)}")
+        logger.debug(f"xp: {xp} {lxml.etree.tostring(elem)}")
         nexts = elem.xpath(xp)
         # next = None if len(nexts) == 0 else nexts[:count]
-        print(f"nexts {len(nexts)}")
+        logger.debug(f"nexts {len(nexts)}")
         return nexts
 
     @classmethod
@@ -588,7 +588,7 @@ class XmlLib:
             return None
         parent = elem.getparent()
         if parent is None and debug:
-            print(f" parent of {elem} is None")
+            logger.debug(f" parent of {elem} is None")
         return parent
 
     @classmethod
@@ -599,7 +599,7 @@ class XmlLib:
         """
         if not github_url:
             return None
-        # print(f"url: {github_url}")
+        # logger.debug(f"url: {github_url}")
         if url_cache:
             xml_elem = url_cache.read_xml_element_from_github(github_url)
         else:
@@ -623,7 +623,7 @@ class XmlLib:
         :param debug: print removed elements
         """
         if elem is None:
-            print(f"remove clutter : element is None")
+            logger.debug(f"remove clutter : element is None")
             return
         if declutter is None:
             declutter = DEFAULT_DECLUTTER
@@ -648,7 +648,7 @@ class XmlLib:
 
             if t2 != t1:
                 if debug:
-                    print(f"replaced {t1} by {t2}")
+                    logger.debug(f"replaced {t1} by {t2}")
                 text_elem.text = t2
                 return 1
         return 0
@@ -690,7 +690,7 @@ class XmlLib:
         :param repeat: repeats split on (new) rh span
         :return: None if no match, else first match in span
         """
-        print(f"USE TEMPLATES INSTEAD for HREF or ID generation")
+        logger.debug(f"USE TEMPLATES INSTEAD for HREF or ID generation")
         type_span = type(span)
         parent = span.getparent()
 
@@ -699,23 +699,23 @@ class XmlLib:
             return None
         text = span.text
         if text is None:
-            # print(f"text is None")
+            # logger.debug(f"text is None")
             return None
         if regex is None:
-            print("regex is None")
+            logger.debug("regex is None")
             return None
         match = None
         try:
             match = re.search(regex, text)
         except Exception as e:
-            print(f"bad match {regex} /{e} --> {text}")
+            logger.debug(f"bad match {regex} /{e} --> {text}")
             return
         idx = parent.index(span)
         dummy_templater = Templater()
         # enhanced_regex = EnhancedRegex(regex=regex)
         if match:
             anchor_text = match.group(0)
-            print(f"matched: {regex} {anchor_text}")
+            logger.info(f"matched: {regex} {anchor_text}")
             # href_new = enhanced_regex.get_href(href, text=anchor_text)
             # make 3 new spans
             # some may be empty
@@ -726,11 +726,6 @@ class XmlLib:
                                                                              href=href_new)
             offset += 1
             offset, span2 = cls.create_span(idx, match, offset, parent, span, text, "end")
-            # span_last_text = text[match.span()[1]:]
-            # if len(span_last_text) > 0 :
-            #     span2 = cls.new_span(parent, idx + offset, span, span_last_text)
-            # else:
-            #     print(f"zero-length span2 in {span.text}")
             if ids and type(ids) is str:
                 ids = [None, ids, None]
             if ids and len(ids) == 3:
@@ -749,12 +744,12 @@ class XmlLib:
             if clazz is not None:
                 mid.attrib["class"] = clazz
             if span2 is not None:
-                print(f"style {span2.attrib.get('style')}")
+                logger.debug(f"style {span2.attrib.get('style')}")
 
             parent.remove(span)
             # recurse in RH split
             if regex is None:
-                print("no regex")
+                logger.error("no regex")
                 return
             if repeat > 0:
                 repeat -= 1
@@ -785,7 +780,7 @@ class XmlLib:
             # new_span = XmlLib.create_and_add_anchor(href, span, span_text)
             offset += 1
         else:
-            print(f"zero-length span0 in {span.text}")
+            logger.error(f"zero-length span0 in {span.text}")
             pass
         return offset, new_span
 
@@ -827,11 +822,11 @@ class XmlLib:
         children = elem.xpath("*|text()")
         for child in children:
             if type(child) is _ElementUnicodeResult:
-                 print(f"T:{child}:Tail:{child.is_tail}, Text:{child.is_text}, Parent:{child.getparent().tag}")
+                 logger.info(f"T:{child}:Tail:{child.is_tail}, Text:{child.is_text}, Parent:{child.getparent().tag}")
             elif type(child) is _Element:
-                print(f"E:{child}|{child.tail}")
+                logger.debug(f"E:{child}|{child.tail}")
             else:
-                print(f"?:{child}")
+                logger.debug(f"?:{child}")
 
     @classmethod
     def replace_tail_text_with_span(cls, elem):
@@ -877,7 +872,6 @@ class XmlLib:
         for (idx, txt) in text_breaks:
             prec = '^' if idx == 0 else texts[idx - 1]
             foll = '$' if idx == len(texts) - 1 else texts[idx + 1]
-            # print(f"|{prec}|{txt}|{foll}|")
             splits.append(f"|{prec}|{txt}|{foll}|")
         return splits
 
@@ -891,10 +885,10 @@ class XmlLib:
         if len(texts) == 0:
             return
         parent = texts[0].getparent().getparent()
-        print(f"parent: {parent}")
+        logger.debug(f"parent: {parent}")
         for text in texts:
             head = text.getparent()
-            # print(f"head: {head.tag}")
+            # logger.debug(f"head: {head.tag}")
             if re.match(cls.SENTENCE_START_RE, text):
                 splits = text.split('.', 1)
                 prec_elem = text.getparent()
@@ -1051,7 +1045,7 @@ class HtmlLib:
         head = cls.get_head(html_elem)
         base = head.xpath("base")
         if len(base) > 1:
-            print(f"too many base_urls; probable error")
+            logger.info(f"too many base_urls; probable error")
             return
         if len(base) == 0:
             base = lxml.etree.SubElement(head, "base")
@@ -1111,11 +1105,11 @@ class HtmlLib:
         """
         if html_elem is None:
             if debug:
-                print("null html elem to write")
+                logger.info("null html elem to write")
             return
         if outfile is None:
             if debug:
-                print("no outfile given")
+                logger.error("no outfile given")
             return
         if type(html_elem) is _ElementTree:
             html_elem = html_elem.getroot()
@@ -1124,7 +1118,7 @@ class HtmlLib:
         if encoding and encoding.lower() == "utf-8":
             head = HtmlLib.get_or_create_head(html_elem)
             if head is None:
-                print(f"cannot create <head> on html elem; not written")
+                logger.error(f"cannot create <head> on html elem; not written")
                 return
 
         outdir = os.path.dirname(outfile)
@@ -1138,7 +1132,7 @@ class HtmlLib:
         with open(str(outfile), "w") as f:
             f.write(tostring)
         if debug:
-            print(f"wrote: {Path(outfile).absolute()}")
+            logger.info(f"wrote: {Path(outfile).absolute()}")
 
     @classmethod
     def create_rawgithub_url(cls, site=None, username=None, repository=None, branch=None, filepath=None,
@@ -1154,7 +1148,7 @@ class HtmlLib:
         if html_elem is None:
             return None
         if html_elem.tag.lower() != "html":
-            print(f"not a full html element")
+            logger.error(f"not a full html element")
             return None
         head = HtmlLib.get_head(html_elem)
         if head is None:
@@ -1167,7 +1161,7 @@ class HtmlLib:
         """adds <meta charset=charset" to <head>"""
         head = HtmlLib.get_or_create_head(html_elem)
         if head is None:
-            print(f"cannot create <head>")
+            logger.error(f"cannot create <head>")
             return
         cls.remove_charsets(head)
         meta = lxml.etree.SubElement(head, "meta")
@@ -1193,7 +1187,7 @@ class HtmlLib:
                 matchstr = regex.match(span.text)
                 if matchstr:
                     if debug:
-                        print(f"matched {matchstr.group(1)} {span.text[:50]}")
+                        logger.info(f"matched {matchstr.group(1)} {span.text[:50]}")
                     sectionlist.append(span)
         return sectionlist
 
@@ -1205,22 +1199,22 @@ class HtmlLib:
         :return: root element
         """
         if not infile:
-            print(f"infile is None")
+            logger.error(f"infile is None")
             return None
         if not str(infile).startswith("http"):
             path = Path(infile)
             if not path.exists():
-                print(f"file does not exist {infile}")
+                logger.error(f"file does not exist {infile}")
                 return None
         try:
             infile = "https://en.wikipedia.org"
-            print(f"infile {infile}")
+            logger.debug(f"infile {infile}")
             html_tree = lxml.html.parse(infile, HTMLParser())
             if html_tree is None:
-                print(f"Cannot parse {infile}, returned None")
+                logger.error(f"Cannot parse {infile}, returned None")
             return html_tree.getroot()
         except Exception as e:
-            print(f"cannot parse {infile} because {e}")
+            logger.error(f"cannot parse {infile} because {e}")
             return None
 
     @classmethod
@@ -1233,7 +1227,7 @@ class HtmlLib:
         try:
             html_element = lxml.html.fromstring(string)
         except Exception as e:
-            print(f"html error {e}")
+            logger.error(f"html error {e}")
             return None
 
         return html_element
@@ -1310,7 +1304,7 @@ class HtmlLib:
         elif text.is_tail:
             aelem = cls._add_href_for_lxml_tail(start_, text)
         else:
-            print(f"ERROR??? (not text of tail) {start_}|{mid_}|{end_}")
+            logger.error(f"ERROR??? (not text of tail) {start_}|{mid_}|{end_}")
 
         # add content and attributes to aelem
         aelem.attrib["href"] = href
@@ -1321,7 +1315,6 @@ class HtmlLib:
 
     @classmethod
     def _add_href_for_lxml_tail(cls, start_, text):
-        # print(f"TAIL {start_}|{mid_}|{end_}")
         prev = text.getparent()
         aelem = ET.Element("a")
         aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
@@ -1331,7 +1324,6 @@ class HtmlLib:
 
     @classmethod
     def add_href_for_lxml_text(cls, start_, text):
-        # print(f"TEXT  {start_}|{mid_}|{end_}")
         parent = text.getparent()
         tail = parent.tail
         aelem = ET.SubElement(parent, "a")
@@ -1577,11 +1569,11 @@ class DataTable:
         with open(data_table_file, "w") as f:
             text = bytes.decode(ET.tostring(self.html))
             f.write(text)
-            print("WROTE", data_table_file)
+            logger.info("WROTE", data_table_file)
 
     def __str__(self):
         htmltext = ET.tostring(self.html)
-        print("SELF", htmltext)
+        logger.info("SELF", htmltext)
         return htmltext
 
 
@@ -1613,7 +1605,7 @@ class Templater:
         elif template_type == ID_TEMPLATE:
             template = self.id_template
         else:
-            print(f"***Bad template type** {template_type}")
+            logger.error(f"***Bad template type** {template_type}")
             return None
         return Templater.get_matched_template(self.regex, strng, self.template)
 
@@ -1649,7 +1641,7 @@ class Templater:
         but more complex templates can include repeats. However these are NOT f-strings and do not use eval()
         """
         if regex is None:
-            print(f"**************regex is None")
+            logger.error(f"**************regex is None")
             return None
         if template is None:
             raise ValueError("template shuuld not be None")
@@ -1667,7 +1659,7 @@ class Templater:
     def create_template(cls, template=None, regex=None, href_template=None, id_template=None):
         templater = Templater()
         if not regex:
-            print(f"no regex in templater")
+            logger.error(f"no regex in templater")
             return None
         templater.regex = regex
         templater.template = template
@@ -1691,7 +1683,7 @@ class Templater:
         :return: None if no match, else first match in span
         """
         if span is None:
-            print(f"span is None")
+            logger.error(f"span is None")
             return None
         type_span = type(span)
         parent = span.getparent()
@@ -1705,19 +1697,19 @@ class Templater:
         match = None
         regex = self.regex
         if regex is None:
-            print(f"************no regex in templater")
+            logger.error(f"************no regex in templater")
             return
         try:
             match = re.search(regex, text)
         except Exception as e:
-            print(f"bad match {regex} /{e} => {text}")
+            logger.error(f"bad match {regex} /{e} => {text}")
             return
         idx = parent.index(span)
         # enhanced_regex = EnhancedRegex(regex=regex)
         if match:
             anchor_text = match.group(0)
             if debug:
-                print(f"matched: {regex} {anchor_text}")
+                logger.info(f"matched: {regex} {anchor_text}")
             # href_new = enhanced_regex.get_href(href, text=anchor_text)
             # make 3 new spans
             # some may be empty
@@ -1751,7 +1743,6 @@ class Templater:
 
         if self.href_template:
             href = self.match_href_template(textx)
-            # print(f">>>>  {href}..{self}")
             XmlLib.create_and_add_anchor(href, new_span, textx)
         elif href:
             XmlLib.create_and_add_anchor(href, new_span, textx)
@@ -1793,7 +1784,7 @@ class Templater:
         for template_ref in template_ref_list:
             sub_markup_dict = markup_dict.get(template_ref)
             if not sub_markup_dict:
-                print(f"cannot find template {template_ref}")
+                logger.error(f"cannot find template {template_ref}")
                 continue
             regex = sub_markup_dict.get("regex")
             target_template = sub_markup_dict.get("target_template")
@@ -1817,14 +1808,13 @@ class Templater:
         """
         divs = html_elem.xpath(id_xpath)
         if len(divs) == 0:
-            print(f"cannot find id {id_xpath}")
+            logger.error(f"cannot find id {id_xpath}")
             return
         div = divs[0]
         div_content = ''.join(html_elem.itertext())
-        # print(f" div_content {div_content[:maxchar]}")
         templater = Templater.create_template(template, regex)
         id = templater.match_template(div_content, template_type=ID_TEMPLATE)
-        print(f">>id {id}")
+        logger.debug(f">>id {id}")
         return id
 
 
@@ -1859,7 +1849,7 @@ def main():
 
 def test_xml():
     xml_string = "<a>foo <b>and</b> with <d/> bar</a>"
-    print(XmlLib.remove_all_tags(xml_string))
+    logger.debug(XmlLib.remove_all_tags(xml_string))
 
 
 def test_data_table():
@@ -1887,7 +1877,7 @@ def test_replace_strings_with_unknown_encodings():
     target = "âaerosol particlesâ."
     assert len(tuple_list[0][0]) == 3
     sout = XmlLib.iteratively_replace_strings(tuple_list, target)
-    print(sout)
+    logger.debug(sout)
     assert sout == "‘aerosol particles’."
 
 

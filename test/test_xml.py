@@ -5,12 +5,14 @@ from pathlib import Path
 import lxml.etree as ET
 
 from amilib.ami_html import HtmlStyle
+from amilib.file_lib import FileLib
 from amilib.xml_lib import XmlLib, HtmlLib, HtmlEditor
 from test.resources import Resources
 
 from test.test_all import AmiAnyTest
 # from test.test_wikimedia import WikidataTest
 
+logger = FileLib.get_logger(__name__)
 
 class Xml0Test(AmiAnyTest):
 
@@ -52,7 +54,7 @@ class Xml0Test(AmiAnyTest):
         XmlLib.split_span_by_regex(span, regex, ids=ids, clazz=clazz, href="https://google.com")
 
         file = os.path.expanduser('~') + "/junk.html"
-        print(file)
+        logger.debug(file)
         html = HtmlLib.create_html_with_empty_head_body()
         styles = [
             (".class0", [("color", "red;")]),
@@ -92,7 +94,7 @@ class XmlTest(AmiAnyTest):
     </everything>
     '''
         result = XmlLib.replace_nodes_with_text(data, "//r", "DELETED")
-        print(ET.tostring(result))
+        logger.debug(ET.tostring(result))
 
     @classmethod
     def test_replace_nodenames(cls):
@@ -105,7 +107,7 @@ class XmlTest(AmiAnyTest):
         italics = doc.findall("italic")
         for node in italics:
             node.tag = "i"
-        print(ET.tostring(doc))
+        logger.debug(ET.tostring(doc))
 
     """transform = etree.XSLT(xslt_tree)
 >>> result = transform(doc, a="'A'")
@@ -121,7 +123,7 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
  <italic>T. bovei</italic> activities ... activity.
 </p>'''
         assert XmlTest.XSLT_FILE.exists()
-        print("italic", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
+        logger.info("italic", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
 
     @classmethod
     @unittest.skip("no XSLT file")
@@ -142,11 +144,11 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
 """
         assert XmlTest.XSLT_FILE.exists()
 
-        print("copy", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
+        logger.info("copy", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
 
     @classmethod
     def test_jats2html(cls):
-        print("test_jats2html")
+        logger.debug("test_jats2html")
         data = '''<everything>
 <m>Some text before <r/></m>
 <m><r/> and some text after.</m>
@@ -156,7 +158,7 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
 </everything>
 '''
         result = XmlLib.replace_nodes_with_text(data, "//r", "DELETED")
-        print(ET.tostring(result))
+        logger.debug(ET.tostring(result))
 
     def test_debug_text_children(self):
         """
@@ -193,7 +195,7 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
 
 
 if __name__ == "__main__":
-    print(f"running {__name__} main")
+    logger.info(f"running {__name__} main")
 
     config_test = False
     wiki_test = False

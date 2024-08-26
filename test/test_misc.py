@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 from geopy.geocoders import Nominatim
 
+from amilib.file_lib import FileLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -22,6 +23,7 @@ subs = {
 
 }
 
+logger = FileLib.get_logger(__name__)
 
 def multiple_replace(replacements, text):
     # Create a regular expression from the dictionary keys
@@ -85,5 +87,5 @@ class MiscTest(AmiAnyTest):
         outfile = Path(transcript_dir, "transcript2.txt")
         with open(outfile, "w") as f:
             f.writelines(lines2)
-        print(f"lines2 {lines2}")
+        logger.debug(f"lines2 {lines2}")
 

@@ -28,7 +28,7 @@ from amilib.wikimedia import WikidataLookup
 AMIX_DIR = Path(__file__).parent
 REPO_DIR = AMIX_DIR.parent
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 class AmiLib:
     COPY = "copy"
@@ -55,7 +55,7 @@ class AmiLib:
         """creates adds the arguments for pyami commandline
         """
 
-        def run_dict(self):
+        def run_dict(selfx):
             logger.debug(f"run dict amilib")
 
         def run_pdf(args):
@@ -98,7 +98,7 @@ class AmiLib:
 
         subparsers = parser.add_subparsers(help='subcommands', dest="command")
         for choice in subparsers.choices:
-            print(f">>> {choice}")
+            logger.debug(f">>> {choice}")
 
         pdf_parser = AmiLibArgs.make_sub_parser(PDFArgs(), subparsers)
         logger.debug(f"pdf_parser {pdf_parser}")
@@ -255,7 +255,7 @@ class AmiLib:
             self.print_version()
 
     def print_version(self):
-        print(f"version {self.version()}")
+        logger.debug(f"version {self.version()}")
 
     #
     def replace_single_values_in_self_args_with_list(self, key):

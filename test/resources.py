@@ -4,7 +4,9 @@ This may develop into a dataclass"""
 import logging
 from pathlib import Path
 
-logger = logging.getLogger(__name__)
+from amilib.file_lib import FileLib
+
+logger = FileLib.get_logger(__name__)
 
 
 class Resources:

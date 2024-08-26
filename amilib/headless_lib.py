@@ -8,8 +8,11 @@ from pathlib import Path
 import lxml.etree as ET
 from lxml.html import HTMLParser
 
+from amilib.file_lib import FileLib
 from amilib.wikimedia import WikidataLookup
 from amilib.xml_lib import HtmlElement, HtmlLib, XmlLib
+
+logger = FileLib.get_logger(__name__)
 
 
 class HeadlessLib:
@@ -88,7 +91,7 @@ class HeadlessLib:
             phrase = span.text
             data_phrase = span.attrib["data-phrase"]
             if phrase != data_phrase:
-                print(f"phrase {phrase} != data_phrase {data_phrase}")
+                logger.info(f"phrase {phrase} != data_phrase {data_phrase}")
             phrase_id = span.attrib["data-phraseid"]
             id_phrases.append((phrase_id, phrase))
         return id_phrases
@@ -126,7 +129,7 @@ class HeadlessLib:
         ld = len(divs) > 1
         for div in divs:
             if ld:
-                # print(f" DIV: {lxml.etree.tostring(div, pretty_print=True)}")
+                # logger.info(f" DIV: {lxml.etree.tostring(div, pretty_print=True)}")
                 pass
             nodes = div.xpath("./node()")
             texts = []
@@ -142,13 +145,13 @@ class HeadlessLib:
                 elif type(node) is ET._ElementUnicodeResult:
                     text = str(node)
                 else:
-                    # print(f":text {node}")
+                    # logger.info(f":text {node}")
                     raise Exception(f" unknown node {type(node)}")
                 if len(texts) == 0:
-                    # print("NO TEXTS")
+                    # logger.info("NO TEXTS")
                     pass
                 else:
-                    print(f"texts: {len(texts)}:: {texts}")
+                    logger.info(f"texts: {len(texts)}:: {texts}")
 
     @classmethod
     def remove_styles(cls, entry_html):
@@ -173,7 +176,7 @@ class HeadlessLib:
             if p.text is None:
                 continue
             # if p.text.startswith("A change in functional or"):
-            #     print(f"CHANGE")
+            #     logger.info(f"CHANGE")
             clazz = p.attrib.get('class')
             if clazz == mainclass:
                 # this is crude; split first sentence into 2 paras
@@ -195,7 +198,7 @@ class HeadlessLib:
                         except Exception as e:
                             pass
                     if div is None:
-                        print(f"FAIL {ss}")
+                        logger.warning(f"FAIL {ss}")
                         continue
                     p.getparent().replace(p, div)
                     p0 = div.xpath("./p")[0]
@@ -213,7 +216,7 @@ class HeadlessLib:
         # h6s = entry_html.xpath(f".//div[@class='p-3 small']/h6")
         dh6s = entry_html.xpath(f".//div[h6]")
         if len(dh6s) == 0:
-            # print(f"No div/h6 found")
+            # logger.warning(f"No div/h6 found")
             return
         for dh6 in dh6s:
             h6 = dh6.xpath("./h6")[0]
@@ -292,18 +295,18 @@ class HeadlessLib:
     def find_wikidata(cls, entry_html):
         term = entry_html.xpath("//a/name")[0]
         term = term.replace("_", " ").strip()
-        print(f"term {term}")
+        logger.info(f"term {term}")
 
         wikidata_lookup = WikidataLookup()
         qitem0, desc, wikidata_hits = wikidata_lookup.lookup_wikidata(term)
-        print(f"qitem {qitem0}")
+        logger.info(f"qitem {qitem0}")
 
     @classmethod
     def match_target_in_dict(cls, em_target, entry_by_id):
         target_id = cls.make_title_id(em_target)
         match = entry_by_id.get(target_id)
         if match is not None:
-            # print(f"MATCHED {match}")
+            # logger.info(f"MATCHED {match}")
             pass
         return match is not None
 
@@ -357,7 +360,7 @@ class HeadlessLib:
                     # TODO move to earlier
                     for ref in refs:
                         if ref.text is None:
-                            print(f"Null text for name {name}")
+                            logger.info(f"Null text for name {name}")
                             continue
                         ref_id = cls.make_title_id(ref.text)
                         a = ET.SubElement(ref, "a")
@@ -389,7 +392,7 @@ class HeadlessLib:
             entry_a.attrib["name"] = title_id
             # are there duplicate titles after trimming and lowercasing
             if entry_by_id.get(title_id) is not None:
-                print(f"duplicate title_id {title_id}")
+                logger.info(f"duplicate title_id {title_id}")
                 continue
             entry_by_id[title_id] = entry_html
 
@@ -412,25 +415,25 @@ class HeadlessLib:
             if not path:
                 continue
             entry_html_list.append((html_out, path))
-        print(f"parent: {len(parent_id_set)} {parent_id_set}")
-        print(f"parent: {len(subterm_id_set)} {subterm_id_set}")
+        logger.info(f"parent: {len(parent_id_set)} {parent_id_set}")
+        logger.info(f"parent: {len(subterm_id_set)} {subterm_id_set}")
 
-        print(f"Must fix to write the modified HTML file")
+        logger.info(f"Must fix to write the modified HTML file")
 
         cls.extract_mention_links(entry_html_list, Path(total_glossary, "mentions.csv"))
         cls.extract_parent_subterms(entry_html_list, Path(total_glossary, "parents.csv"))
         missing_targets, em_counter = cls.markup_em_and_write_files(entry_html_list, entry_by_id)
         cls.write_missing(missing_targets, Path(total_glossary, "missing_em_targets.txt"))
-        print(f"entry_dict {len(entry_by_id)}")
+        logger.info(f"entry_dict {len(entry_by_id)}")
         gloss_ids_file = str(Path(total_glossary, "ids.txt"))
         with open(gloss_ids_file, "w") as f:
             for key in sorted(entry_by_id.keys()):
                 entry = entry_by_id.get(key)
                 f.write(f"{key} {entry.xpath('/html/body/a/@name')}\n")
         if debug:
-            print(f"wrote {gloss_ids_file}")
-        print(f"missing targets: {len(missing_targets)} {missing_targets}")
-        print(f"em_counter {len(em_counter)} {em_counter}")
+            logger.info(f"wrote {gloss_ids_file}")
+        logger.warning(f"missing targets: {len(missing_targets)} {missing_targets}")
+        logger.info(f"em_counter {len(em_counter)} {em_counter}")
 
     @classmethod
     def make_header(cls, tr):
@@ -452,7 +455,7 @@ class HeadlessLib:
         try:
             body = ET.parse(str(file), parser=HTMLParser()).xpath("//body")[0]
         except Exception as e:
-            print(f"failed to parse {file} giving {e}")
+            logger.warning(f"failed to parse {file} giving {e}")
             return
         a = body.xpath("./a")
         divtop = ET.parse(str(file), parser=HTMLParser()).xpath("//body/div")[0]

@@ -20,8 +20,7 @@ from test.test_all import AmiAnyTest
 # local
 
 
-logger = logging.getLogger("py4ami_test_util")
-
+logger = FileLib.get_logger(__name__)
 
 class Util0Test(AmiAnyTest):
     # def __init__(self):
@@ -226,7 +225,7 @@ class GithubDownloaderTest(AmiAnyTest):
         downloader = GithubDownloader(owner=owner, repo=repo, max_level=1)
         page = None
         downloader.make_get_main_url()
-        print(f"main page {downloader.main_url}")
+        logger.info(f"main page {downloader.main_url}")
         url = downloader.main_url
         if not url:
             print(f"no page {owner}/{repo}")
@@ -247,7 +246,7 @@ class AmiArgParserTest(AmiAnyTest):
 
         # this works
         arg_dict = ami_argparse.parse_args(["--flt", "3.2"])
-        print(f"arg_dict1 {arg_dict}")
+        logger.debug(f"arg_dict1 {arg_dict}")
         # this fails
         try:
             arg_dict = ami_argparse.parse_args(["--flt", "3.2", "str"])
@@ -257,7 +256,7 @@ class AmiArgParserTest(AmiAnyTest):
             print(f" error {e}")
 
         arg_dict = ami_argparse.parse_args(["--flt", "99.2"])
-        print(f"arg_dict2 {arg_dict}")
+        logger.debug(f"arg_dict2 {arg_dict}")
 
 
 class TemplateTest(AmiAnyTest):
@@ -288,4 +287,26 @@ class CommandlineTest:
 
     def test_command(self):
         command = "--help"
+
+class LoggingTest(AmiAnyTest):
+    import logging
+
+    def test_logger(self):
+        logger = FileLib.get_logger(__name__)
+
+        logger.info("Server started listening on port 8080")
+        logger.warning(
+            "Disk space on drive '/var/log' is running low. Consider freeing up space"
+        )
+        logger.info("")
+
+        try:
+            raise Exception("Failed to connect to database: 'my_db'")
+        except Exception as e:
+            logger.info(f"=========start Exception============")
+            # exc_info=True ensures that a Traceback is included
+            FileLib.log_exception(e, logger)
+            logger.info(f"=========end Exception============")
+
+        print(f"FINISHED")
 

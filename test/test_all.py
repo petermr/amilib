@@ -14,6 +14,7 @@ import idna
 import certifi
 import SPARQLWrapper
 
+from amilib.file_lib import FileLib
 # local
 from amilib.util import Util
 from amilib.wikimedia import WikidataSparql as WS
@@ -26,6 +27,8 @@ skip_config_test = True
 
 # TODO needs local config file
 # @unittest.skipIf(skip_config_test, "needs local config")
+
+logger = FileLib.get_logger(__name__)
 
 class AmiAnyTest(unittest.TestCase):
     # for marking and skipping unittests
@@ -76,9 +79,6 @@ class AmiAnyTest(unittest.TestCase):
         pass
 
     def tearDown(self) -> None:
-        # print(f"argv_copy {self.argv_copy}")
-        # print(f"argv {sys.argv}")
-        # self.argv = list(self.argv_copy)
         pass
 
     # used to control long tests. Crude but robust (other markers are more complex)

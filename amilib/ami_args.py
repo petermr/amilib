@@ -11,7 +11,7 @@ from amilib.util import Util
 Also includes ArgParseBuilder
 """
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 class AbstractArgs(ABC):
 
@@ -60,13 +60,11 @@ class AbstractArgs(ABC):
     def create_arg_dict(self, args=None):
         if args:
             self.parsed_args = args
-        # print(f"PARSED_ARGS {type(self.parsed_args)} {self.parsed_args}")
         if not self.parsed_args:
             return None
         try:
             arg_vars = vars(self.parsed_args)
         except TypeError:
-            # print(f" type args {type(self.parsed_args)} {self.parsed_args}")
             arg_vars = self.parsed_args
         self.arg_dict = dict()
         for item in arg_vars.items():
@@ -92,31 +90,31 @@ class AbstractArgs(ABC):
         """
         # strip all tokens including ".py" (will proably fail on some m/c)
         raise Exception("do we ever get here - test parse_and_process()")
-        print(f"parse_and_process() module_stem: {self.module_stem}\n sys.argv {sys.argv}")
+        logger.debug(f"parse_and_process() module_stem: {self.module_stem}\n sys.argv {sys.argv}")
         args_store = sys.argv.copy()
         while len(sys.argv) > 0 and self.module_stem not in str(sys.argv[0]):
-            print(f"trimming sys.argv {sys.argv}")
+            logger.debug(f"trimming sys.argv {sys.argv}")
             sys.argv = sys.argv[1:]
         if len(sys.argv) == 0:  # must have name of prog
             sys.argv = args_store.copy()
         try:
-            print(f"adding args")
+            logger.debug(f"adding args")
             self.add_arguments()
         except Exception as e:
-            print(f"failed to add args {e}")
+            logger.debug(f"failed to add args {e}")
             raise e
         logger.warning(f"AbstractArgs ADDED ARGS {sys.argv}")
-        # print(f"argv {sys.argv}")
+        # logger.debug(f"argv {sys.argv}")
         if len(sys.argv) == 1:  # no args, print help
             self.parser.print_help()
         else:
             logging.warning(f"sys.argv {sys.argv}")
             argv_ = sys.argv[1:]
-            print(f"argv: {argv_}")
+            logger.debug(f"argv: {argv_}")
             self.parse_and_process1(argv_)
 
     def parse_and_process1(self, argv_):
-        # print("running parse_and_process1 in util?")
+        # logger.debug("running parse_and_process1 in util?")
         # logging.warning(f"********** args for parse_and_process1 {argv_}")
         self.parsed_args = argv_ if self.parser is None else self.parser.parse_args(argv_)
         self.arg_dict = self.create_arg_dict()
@@ -174,8 +172,8 @@ class AbstractArgs(ABC):
         return indir
 
     def get_input(self):
-        input = self.arg_dict.get(AbstractArgs.INPUT)
-        return input
+        inputx = self.arg_dict.get(AbstractArgs.INPUT)
+        return inputx
 
     def get_outdir(self):
         outdir = self.arg_dict.get(AbstractArgs.OUTDIR)
@@ -190,7 +188,7 @@ class AbstractArgs(ABC):
         logger.info(f"args: {kwargs}")
         if not kwargs:
             if keys:
-                print(f"possible keys: {keys}")
+                logger.debug(f"possible keys: {keys}")
         else:
             if type(kwargs) is not list:
                 kwargs = [kwargs]
@@ -206,7 +204,7 @@ class AbstractArgs(ABC):
 
     def get_kwargs(self):
         kwargs = self.arg_dict.get(AbstractArgs.KWARGS)
-        print(f"kwargs {kwargs}")
+        logger.debug(f"kwargs {kwargs}")
         if kwargs is None:
             return None
         if len(kwargs) == 0:
@@ -217,13 +215,13 @@ class AbstractArgs(ABC):
         return
 
     def kwargs_help(self):
-        print(f"key value pairs separated by ':' ; normally explicitly offered by subclass ")
+        logger.debug(f"key value pairs separated by ':' ; normally explicitly offered by subclass ")
 
 
     def make_run_func(self):
         """probably obsolete"""
         func_name = self.module_stem.replace("ami_", "run_")
-        print(f"run_func_name {func_name}")
+        logger.debug(f"run_func_name {func_name}")
         return func_name
 
     @classmethod
@@ -256,11 +254,11 @@ class ArgParseBuilder:
             with open(arg_dict_file, 'r') as f:
                 data = f.read()
                 arg_dict = json.loads(data)
-                print(f"arg_dict {arg_dict}")
+                logger.debug(f"arg_dict {arg_dict}")
 
         if arg_dict is not None:
             desc = f'{arg_dict.get(self.DESCRIPTION)}'
-            print(f"\ndesc: '{desc}'")
+            logger.debug(f"\ndesc: '{desc}'")
             self.parser = argparse.ArgumentParser(description=desc)
             arg_list = arg_dict.get(self.ARG_LIST)
             if arg_list is None:
@@ -270,7 +268,7 @@ class ArgParseBuilder:
                     raise ValueError(f"arg_list_dict {arg_dict} is not a dict")
                 args = arg_dict.keys()
                 for arg in args:
-                    print(f"\n{arg}:")
+                    logger.debug(f"\n{arg}:")
                     param_dict = arg_dict.get(arg)
                     self.process_params(param_dict)
                 # self.parser.add_argument(f"--{ProjectArgs.PROJECT}", type=str, nargs=1, help="project directory")
@@ -279,7 +277,7 @@ class ArgParseBuilder:
 
     def process_params(self, param_dict):
         for param, param_val in param_dict.items():
-            print(f"  {param}='{param_val}'")
+            logger.debug(f"  {param}='{param_val}'")
 
 
 class AmiArgParseException(Exception):

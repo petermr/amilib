@@ -22,7 +22,7 @@ import base64
 
 from amilib.file_lib import FileLib
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 HREF = "href"
 
@@ -83,7 +83,7 @@ class Util:
         keys = Util.find_unique_keystart(the_dict, start)
         if len(keys) == 1:
             return the_dict[keys[0]]
-        print("matching keys:", keys)
+        logger.debug("matching keys:", keys)
         return None
 
     @classmethod
@@ -138,7 +138,7 @@ class Util:
             logger.warning(f"empty args, ignored")
             return
         if len(sys.argv) != 1:
-            print(f"should only extend default sys.argv (len=1), found {sys.argv}")
+            logger.debug(f"should only extend default sys.argv (len=1), found {sys.argv}")
         sys.argv.extend(args)
 
     @classmethod
@@ -252,7 +252,7 @@ class Util:
         if ex:
             traceback = ex.__traceback__
             while traceback:
-                print(f"{traceback.tb_frame.f_code.co_filename}: {traceback.tb_lineno}")
+                logger.debug(f"{traceback.tb_frame.f_code.co_filename}: {traceback.tb_lineno}")
                 traceback = traceback.tb_next
 
     @classmethod
@@ -279,12 +279,12 @@ class Util:
         :param sleep: seconds to wait  between downloads (default = 5)
         """
         if urls is None:
-            print(f"no url list to download")
+            logger.debug(f"no url list to download")
             return None
         if type(urls) is not list:
             urls = [urls]
         if target_dir is None:
-            print(f"no traget_dir to download into")
+            logger.debug(f"no traget_dir to download into")
             return None
         for url in urls[:maxsave]:
             stem = url.split("/")[-1]
@@ -292,16 +292,16 @@ class Util:
             path = Path(target_dir, stem)
             if skip_exists and path.exists():
                 if printfile:
-                    print(f"file exists, skipped {path}")
+                    logger.debug(f"file exists, skipped {path}")
             else:
                 try:
                     content = requests.get(url).content
                 except Exception as e:
-                    print(f"cannot get content from url {url}")
+                    logger.debug(f"cannot get content from url {url}")
                     continue
                 with open(path, "wb") as f:
                     if printfile:
-                        print(f"wrote url: {path}")
+                        logger.debug(f"wrote url: {path}")
                     f.write(content)
                 time.sleep(sleep)
         return None
@@ -364,7 +364,7 @@ class Util:
         try:
             return base64.b64encode(base64.b64decode(s)) == s
         except Exception:
-            print(f"not b64: {s}")
+            logger.debug(f"not b64: {s}")
             return False
 
     @classmethod
@@ -441,7 +441,7 @@ class Util:
             return True
         need_to_make = not outfile.exists() or os.path.getmtime(str(infile)) > os.path.getmtime(str(outfile))
         if debug and need_to_make:
-            print(f"need to make {outfile} from {infile}")
+            logger.debug(f"need to make {outfile} from {infile}")
         return need_to_make
 
     @classmethod
@@ -565,37 +565,37 @@ As github API has rate limit of 5000 requests / hour, this might not be good for
 
     def load_page(self, url, level=1, page=None, last_path=None):
         if level >= self.max_level:
-            print(f"maximum tree levels exceeded {level} >= {self.max_level}\n")
+            logger.debug(f"maximum tree levels exceeded {level} >= {self.max_level}\n")
             return
         time.sleep(self.sleep)
         response = requests.get(url)
         if str(response.status_code) != '200':
-            print(f"page response {response} {response.status_code} {response.content}")
+            logger.debug(f"page response {response} {response.status_code} {response.content}")
             return None
         page_dict_str = response.content.decode("UTF-8")
         json_page = json.loads(page_dict_str)
-        print(f"json page {json_page.keys()}")
+        logger.debug(f"json page {json_page.keys()}")
         path = json_page["path"] if "path" in json_page else last_path
         if "tree" in json_page:
             links = json_page['tree']
             for link in links:
-                print(f"link: {link.items()} ")
+                logger.debug(f"link: {link.items()} ")
                 typex = link["type"]
                 path = link["path"]  # relative (child) pathname
                 child_url = link["url"]
                 if typex == 'blob':
                     self.load_page(child_url, level=level, last_path=path)
                 elif typex == 'tree':
-                    print(f"\n============={path}===========")
+                    logger.debug(f"\n============={path}===========")
                     self.load_page(child_url, level=level + 1)
         elif "content" in json_page:
             content_str = json_page["content"]
             encoding = json_page["encoding"]
             if encoding == "base64":
                 content = base64.b64decode(content_str).decode("UTF-8")
-                print(f"\n===={path}====\n{content[:100]} ...\n")
+                logger.debug(f"\n===={path}====\n{content[:100]} ...\n")
         else:
-            print(f"unknown type {json_page.keys()}")
+            logger.debug(f"unknown type {json_page.keys()}")
 
     @classmethod
     def make_translate_mask_to_char(cls, punct, charx):
@@ -616,62 +616,65 @@ As github API has rate limit of 5000 requests / hour, this might not be good for
 
 """PUNCT: !\\"#$%&'()*+,/:;<=>?@[\\]^`{|}~"""
 
+"""
+PROBABLY A BAD IDEA
+"""
 
-class AmiLogger:
-    """wrapper for logger to limit or condense voluminous output
-
-    adds a dictionary of counts for each log level
-    """
-
-    def __init__(self, loggerx, initial=10, routine=100):
-        """create from an existing logger"""
-        self.logger = loggerx
-        self.func_dict = {
-            "debug": self.logger.debug,
-            "info": self.logger.info,
-            "warning": self.logger.warning,
-            "error": self.logger.error,
-
-        }
-        self.initial = initial
-        self.routine = routine
-        self.count = {
-        }
-        self.reset_counts()
-
-    def reset_counts(self):
-        for level in self.func_dict.keys():
-            self.count[level] = 0
-
-    # these will be called instead of logger
-    def debug(self, msg):
-        self._print_count(msg, "debug")
-
-    def info(self, msg):
-        self._print_count(msg, "info")
-
-    def warning(self, msg):
-        self._print_count(msg, "warning")
-
-    def error(self, msg):
-        self._print_count(msg, "error")
-
-    # =======
-
-    def _print_count(self, msg, level):
-        """called by the wrapper"""
-        logger_func = self.func_dict[level]
-        if level not in self.count:
-            self.count[level] = 0
-        if self.count[level] <= self.initial or self.count[level] % self.routine == 1:
-            logger_func(f"{self.count[level]}: {msg}")
-        else:
-            print(".", end="")
-        self.count[level] += 1
-
-    @classmethod
-    def create_named_logger(cls, file):
-        return logging.getLogger(os.path.basename(file))
+# class AmiLogger:
+#     """wrapper for logger to limit or condense voluminous output
+#
+#     adds a dictionary of counts for each log level
+#     """
+#
+#     def __init__(self, loggerx, initial=10, routine=100):
+#         """create from an existing logger"""
+#         self.logger = loggerx
+#         self.func_dict = {
+#             "debug": self.logger.debug,
+#             "info": self.logger.info,
+#             "warning": self.logger.warning,
+#             "error": self.logger.error,
+#
+#         }
+#         self.initial = initial
+#         self.routine = routine
+#         self.count = {
+#         }
+#         self.reset_counts()
+#
+#     def reset_counts(self):
+#         for level in self.func_dict.keys():
+#             self.count[level] = 0
+#
+#     # these will be called instead of logger
+#     def debug(self, msg):
+#         self._print_count(msg, "debug")
+#
+#     def info(self, msg):
+#         self._print_count(msg, "info")
+#
+#     def warning(self, msg):
+#         self._print_count(msg, "warning")
+#
+#     def error(self, msg):
+#         self._print_count(msg, "error")
+#
+#     # =======
+#
+#     def _print_count(self, msg, level):
+#         """called by the wrapper"""
+#         logger_func = self.func_dict[level]
+#         if level not in self.count:
+#             self.count[level] = 0
+#         if self.count[level] <= self.initial or self.count[level] % self.routine == 1:
+#             logger_func(f"{self.count[level]}: {msg}")
+#         else:
+#             logger.debug(".", end="")
+#         self.count[level] += 1
+#
+#     @classmethod
+#     def create_named_logger(cls, file):
+#         return logging.getLogger(os.path.basename(file))
 
 
 GENERATE = "_GENERATE"  # should we generate IDREF?
@@ -704,7 +707,7 @@ class EnhancedRegex:
         split = "(\\([^\\)]*\\))"
         self.components = None
         if regex is not None:
-            # print(f"regex {regex}")
+            # logger.debug(f"regex {regex}")
             self.components = re.split(split, regex)
         return self.components
 
@@ -755,14 +758,14 @@ class EnhancedRegex:
 
         names = make_list_of_names_in_capture_groups(capturegroup_name_regex, components)
         match = re.match(self.regex, target)
-        # print(f">>match {match}")
+        # logger.debug(f">>match {match}")
         # SEP = "_"
         id = None
         if match:
             id = ""
             for i, name in enumerate(names):
                 if match.group(name) is None:
-                    print(f"cannot match group {name}")
+                    logger.debug(f"cannot match group {name}")
                     continue
                 if i > 0:
                     id += sep
@@ -792,7 +795,7 @@ class EnhancedRegex:
             # elif isinstance(component, tuple) and (last_t is None or isinstance(last_t, str)):
             #     regex += f"(?P<{component[0]}>{component[1]})"
             # else:
-            #     print(f"bad component [{component}] in {components}")
+            #     logger.debug(f"bad component [{component}] in {components}")
             last_t = component
         return regex
 

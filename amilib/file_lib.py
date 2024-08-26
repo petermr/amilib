@@ -8,13 +8,14 @@ import logging
 import os
 import re
 import shutil
+import sys
 from pathlib import Path, PurePath, PurePosixPath
 
 import chardet
 import errno
 import requests
 
-logging.debug("loading file_lib")
+logger = logging.getLogger(__name__)
 
 # wildcards
 STARS = "**"
@@ -58,7 +59,6 @@ S_XML = "xml"
 
 class FileLib:
 
-    logger = logging.getLogger("file_lib")
 
     @classmethod
     def force_mkdir(cls, dirx):
@@ -72,7 +72,7 @@ class FileLib:
                 assert (f := path).exists(), f"dir {path} should now exist"
             except Exception as e:
                 cls.logger.error(f"cannot make dirx {dirx} , {e}")
-                print(f"cannot make dirx {dirx}, {e}")
+                logger.debug(f"cannot make dirx {dirx}, {e}")
 
 
 
@@ -189,15 +189,15 @@ class FileLib:
             raise Exception("null path")
 
         if os.path.isdir(file):
-            # print(path, "is directory")
+            # logger.debug(path, "is directory")
             pass
         elif os.path.isfile(file):
-            # print(path, "is path")
+            # logger.debug(path, "is path")
             pass
         else:
             try:
                 f = open(file, "r")
-                print("tried to open", file)
+                logger.debug("tried to open", file)
                 f.close()
             except Exception:
                 raise FileNotFoundError(str(file) + " should exist")
@@ -342,7 +342,7 @@ class FileLib:
         with open(str(path), "w") as f:
             json.dump(dikt, f, indent=indent)
         if debug:
-            print(f"wrote dictionary to {path}")
+            logger.debug(f"wrote dictionary to {path}")
 
     @classmethod
     def read_string_with_user_agent(self, url, user_agent='my-app/0.0.1', encoding="UTF-8", encoding_scheme="chardet", debug=False):
@@ -355,13 +355,13 @@ class FileLib:
         if not url:
             return None
         if debug:
-            print(f"reading {url}")
+            logger.debug(f"reading {url}")
         response = requests.get(url, headers={'user-agent': user_agent})
         if debug:
-            print(f"response: {response} content: {response.content[:400]}")
+            logger.debug(f"response: {response} content: {response.content[:400]}")
         content = response.content
         if debug:
-            print(f"apparent encoding: {response.apparent_encoding}")
+            logger.debug(f"apparent encoding: {response.apparent_encoding}")
         if encoding is None:
             encoding = chardet.detect(content)['encoding'] if encoding_scheme == "chardet" else response.apparent_encoding
         content = content.decode(encoding)
@@ -432,7 +432,7 @@ class FileLib:
         """
         path = Path(file)
         if debug:
-            print(f"checking {file}")
+            logger.debug(f"checking {file}")
         try:
             assert path.exists(), f"file {path} must exist"
             assert (s := path.stat().st_size) > minsize, f"file {file} size = {s} must be above {minsize}"
@@ -450,8 +450,8 @@ class FileLib:
         return home
 
     @classmethod
-    def get_logger(cls, filename, file_level=2, suffix=".py", level=logging.INFO):
-        """creates module syntax for logger
+    def get_logger_old(cls, filename, file_level=2, suffix=".py", level=logging.INFO):
+        """creates logger for module, uses modulae name
         removes .py
         retains level of hierarchy
         e.g. foo/bar/junk.py with levels = 2 => bar.junk
@@ -460,12 +460,46 @@ class FileLib:
         :param level: logging level (default INFO)
         :param suffix: suffix to remove, e.g. ".py"
         """
+        logger.debug(f"============= file {__file__} name {__name__} =============")
         if filename:
             if filename[-len(suffix):] == suffix:
                 filename = filename[:-len(suffix)]
             module = '.'.join(filename.split(os.path.sep)[-file_level:])
             logger = logging.getLogger(module)
-            print(f"created logger {module} {logger}")
+
+            # Create handlers for logging to the standard output and a file
+            stdoutHandler = logging.StreamHandler(stream=sys.stdout)
+            errHandler = logging.FileHandler("error.log")
+
+            # Set the log levels on the handlers
+            stdoutHandler.setLevel(logging.DEBUG)
+            errHandler.setLevel(logging.ERROR)
+
+            # Create a log format using Log Record attributes
+            fmt = logging.Formatter(
+                "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
+            )
+
+            # Set the log format on each handler
+            stdoutHandler.setFormatter(fmt)
+            errHandler.setFormatter(fmt)
+
+            # Add each handler to the Logger object
+            logger.addHandler(stdoutHandler)
+            logger.addHandler(errHandler)
+
+            logger.info("Server started listening on port 8080")
+            logger.warning(
+                "Disk space on drive '/var/log' is running low. Consider freeing up space"
+            )
+
+            try:
+                raise Exception("Failed to connect to database: 'my_db'")
+            except Exception as e:
+                # exc_info=True ensures that a Traceback is included
+                logger.error(e, exc_info=True)
+
+            logger.info(f"created logger {module} {logger}")
             return logger
 
     @classmethod
@@ -501,22 +535,73 @@ class FileLib:
             strings_out = strings_in
         return strings_out
 
+    @classmethod
+    def log_exception(self, e, logger):
+        """
+        formats exception message with hyperlinks and line_no
+        :param e: exceptiom
+        :param logger: standard logger
+        """
+        logger.error(e, exc_info=True)
+
+    @classmethod
+    def get_logger(cls,
+        name,
+        level=logging.WARNING,
+        err_level=logging.ERROR,
+        err_log="error.log",
+        format = "%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s",
+                       ):
+        """
+        replaces old get_logger
+
+        gets system logger with handlers set
+        hopefully works
+        :param name: name of logger (recommend __name__)
+        :param level: log level for stdout, default WARN
+        :param err_level: level for error (default ERROR)
+        :param err_log: file to write err_level to, None = no write (default None)
+        :param format: default '%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s'
+
+        Note for exceptions use FileLib.log_exception
+        """
+        logger = logging.getLogger(name)
+        logger.setLevel(level)
+        # Create handlers for logging to the standard output and a file
+        stdoutHandler = logging.StreamHandler(stream=sys.stdout)
+        errHandler = logging.FileHandler(err_log)
+        # Set the log levels on the handlers
+        stdoutHandler.setLevel(level)
+        err_level = logging.ERROR
+        errHandler.setLevel(err_level)
+        # Create a log format using Log Record attributes
+        format = "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
+        format = "%(levelname)s %(filename)s:%(lineno)s:%(message)s"
+        fmt = logging.Formatter(format)
+        # Set the log format on each handler
+        stdoutHandler.setFormatter(fmt)
+        errHandler.setFormatter(fmt)
+        # Add each handler to the Logger object
+        logger.addHandler(stdoutHandler)
+        logger.addHandler(errHandler)
+        return logger
+
 
 
 # see https://realpython.com/python-pathlib/
 
 def main():
-    print("started file_lib")
+    logger.debug("started file_lib")
     # test_templates()
 
-    print("finished file_lib")
+    logger.debug("finished file_lib")
 
 
 if __name__ == "__main__":
-    print("running file_lib main")
+    logger.debug("running file_lib main")
     main()
 else:
-    #    print("running file_lib main anyway")
+    #    logger.debug("running file_lib main anyway")
     #    main()
     pass
 

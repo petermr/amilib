@@ -2,7 +2,6 @@ import ast
 import logging
 import os
 import re
-import traceback
 import urllib.request
 from collections import Counter
 from enum import Enum
@@ -69,7 +68,9 @@ LANG_UR = "ur"
 
 # elements
 
-logger = logging.getLogger("ami_dict")
+# logger = logging.getLogger("ami_dict")
+logger = FileLib().get_logger(__name__)
+
 
 # class syntax
 class DictValue(Enum):
@@ -146,6 +147,7 @@ class AmiEntry:
 
     # AmiEntry
 
+    """not tested"""
     def get_synonyms(self):
         """list of child synonym objects"""
         synonyms = [] if self.element is None else self.element.xpath("./" + AmiSynonym.TAG)
@@ -284,7 +286,7 @@ class AmiEntry:
     def validate_wikidata_id(self, value):
         if not value:
             return None
-        mm = re.match("(Q|P)\\d{1,11}", value)
+        mm = re.match("([QP])\\d{1,11}", value)
         if not mm:
             logging.warning(f"{WIKIDATA_ID} bad value: {value}")
         return mm
@@ -431,7 +433,7 @@ class AmiEntry:
         output semantic html for dictionary
         :return: semantic HTML
         """
-        print(f"create_semantic_html NYI")
+        logger.debug(f"create_semantic_html NYI")
 
     def get_wikipedia_page_child_para(self, xpath="./p"):
         """
@@ -460,7 +462,7 @@ class AmiEntry:
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
         wp_para = wikipedia_page.create_first_wikipedia_para()
         if wp_para is None:
-            print(f"could not find page for term {term}")
+            logger.error(f"could not find page for term {term}")
             return None
         assert wp_para is not None
         pe = wp_para.para_element
@@ -531,9 +533,9 @@ class AmiDictionary:
         self.options = {} if "options" not in kwargs else kwargs["options"]
 
         if "synonyms" in self.options:
-            print("use synonyms")
+            logger.info("use synonyms")
         if "noignorecase" in self.options:
-            print("use case")
+            logger.info("use case")
         self.split_terms = True
         self.split_terms = False
 
@@ -558,7 +560,7 @@ class AmiDictionary:
             xml_tree = ET.parse(str(xml_file), parser=ET.XMLParser(encoding="utf-8"))
         except lxml.etree.XMLSyntaxError as e:
             logging.error(f"Cannot parse xml file {xml_file} because {e}")
-            print(f"cannot parse xml_file {xml_file}")
+            logging.error(f"cannot parse xml_file {xml_file}")
             return None
         except Exception as e:
             logging.warning(f"error parsing {xml_file} {e}")
@@ -598,14 +600,14 @@ class AmiDictionary:
             html_root = HtmlUtil.parse_html_file_to_xml(html_file)
             assert html_root is not None, f"cannot parse htnl dictionary from {html_file}"
         except lxml.etree.XMLSyntaxError as e:
-            logging.error(f"Cannot parse xml file {html_file} because {e}")
-            print(f"cannot parse xml_file {html_file}")
+            logging.error(f"Cannot parse xml file {html_file} becauslogging.errore {e}")
+            logging.error(f"cannot parse xml_file {html_file}")
             return None
         except Exception as e:
             logging.warning(f"error parsing {html_file} {e}")
 
         if html_root is None:
-            print(f"could not create dictionary from {html_file}")
+            logger.warning(f"could not create dictionary from {html_file}")
             return
         dictionary_divs = html_root.xpath("./body/div[@role='ami_dictionary']")
         if len(dictionary_divs) == 0:
@@ -634,7 +636,7 @@ class AmiDictionary:
         for html_entry in html_entries:
             term = cls.get_term_from_html_entry(html_entry)
             if term is None:
-                print(f" cannot find term for entry")
+                logger.warning(f" cannot find term for entry")
                 continue
             id = html_entry.attrib.get("id")
             ami_entry = AmiEntry()
@@ -697,7 +699,7 @@ class AmiDictionary:
             with open(outpath, "wb") as f:
                 f.write(lxml.etree.tostring(dictionary.root))
             if debug:
-                print(f"wrote dictionary {outpath}")
+                logger.info(f"wrote dictionary {outpath}")
 
         return dictionary, outpath
 
@@ -746,7 +748,7 @@ class AmiDictionary:
                 elif duplicates == "error":
                     raise AMIDictError("Duplicate entry")
                 elif duplicates == "ignore":
-                    print(f"duplicate term: {term} ignored ")
+                    logger.info(f"duplicate term: {term} ignored ")
                 elif duplicates == "replace":
                     self.root.remove(dup_entry)
                     self._add_entry(term)
@@ -783,7 +785,7 @@ class AmiDictionary:
             title = stem
         title = title.lower().replace(" ", "")
 
-        print(f"creating dictionary title = {title}")
+        logger.info(f"creating dictionary title = {title}")
         dictionary, outpath = cls.create_dictionary_from_words(terms=words, title=title, desc=desc, wikidata=wikidata,
                                                                outdir=outdir, debug=debug)
         return dictionary, outpath
@@ -916,7 +918,7 @@ class AmiDictionary:
 
     def term_from_entry(self, entry):
         if TERM not in entry.attrib:
-            print("missing term", ET.tostring(entry))
+            logger.warning("missing term", ET.tostring(entry))
             term = None
         else:
             term = entry.attrib[TERM].strip()
@@ -970,7 +972,7 @@ class AmiDictionary:
 
         """
         if termx is None:
-            print("term is None")
+            logger.warning("term is None")
             return None
         lcase = termx.lower()  # all keys are lowercase
         if self.entry_by_term is None or len(self.entry_by_term) == 0:
@@ -1037,7 +1039,7 @@ class AmiDictionary:
             if lower:
                 term = term.lower()
             if term in self.entry_by_term:
-                print(f"duplicate terms not allowed {term}")
+                logger.warning(f"duplicate terms not allowed {term}")
             else:
                 self.entry_by_term[term] = entry
 
@@ -1074,11 +1076,11 @@ class AmiDictionary:
         self.entry_by_wikidata_id = {}
         for entry in self.entries:
             if WIKIDATA_ID not in entry.attrib:
-                print("No wikidata ID for", entry)
+                logger.warning("No wikidata ID for", entry)
             else:
                 wikidata_id = entry.attrib[WIKIDATA_ID]
                 if wikidata_id in self.entry_by_wikidata_id.keys():
-                    print("duplicate Wikidata ID:", wikidata_id, entry)
+                    logger.warning("duplicate Wikidata ID:", wikidata_id, entry)
                 else:
                     self.entry_by_wikidata_id[wikidata_id] = entry
 
@@ -1087,7 +1089,7 @@ class AmiDictionary:
         """write dictionary to file based on title
         :param directory: directory which will contain <title>.xml"""
         if not directory:
-            print(f"None directory")
+            logger.warning(f"None directory")
         directory.mkdir(exist_ok=True)
         file = Path(directory, f"{self.root.attrib[TITLE]}.xml")
         self.write_to_file(file)
@@ -1106,17 +1108,17 @@ class AmiDictionary:
                 root.write(f, encoding="utf-8",
                          xml_declaration=True, pretty_print=True)
         elif file_str.endswith(".html"):
-            print(f"writing HTML to {file}")
+            logger.info(f"writing HTML to {file}")
             title = Path(file).stem
             sem_html = self.create_html_dictionary(title=title)
             HtmlLib.write_html_file(
                 sem_html, file, debug=True)
 
         else:
-            print(f"unknown output suffix in {file}")
+            logger.error(f"unknown output suffix in {file}")
 
         if debug:
-            print(f"wrote dictionary {self.title} to {file}")
+            logger.debug(f"wrote dictionary {self.title} to {file}")
 
     def add_wikidata_from_terms(self, allowed_descriptions=ANY):
 
@@ -1131,7 +1133,7 @@ class AmiDictionary:
         term = entry.attrib[TERM]
         qitem, desc, qitems = self.wikidata_lookup.lookup_wikidata(term)
         if not qitem:
-            print(f"Wikidata lookup for {term} failed")
+            logger.info(f"Wikidata lookup for {term} failed")
             return
 
         if allowed_descriptions == ANY:
@@ -1163,8 +1165,10 @@ class AmiDictionary:
         term = entry.attrib[TERM]
         wiktionary_page = WiktionaryPage.create_wiktionary_page(term)
         desc = ET.tostring(wiktionary_page.html_div)
-        entry.attrib[DESC] = "not yet implemented"
-        print(f"entry {ET.tostring(entry)}")
+        desc = HtmlUtil.get_text_content(wiktionary_page.html_div)
+        entry.attrib[DESC] = desc
+        logger.info(f"entry {ET.tostring(entry)}")
+        pass
     @classmethod
     def add_wikipedia_page_links(cls, entry, wikipedia_dict):
         """
@@ -1346,7 +1350,7 @@ class AmiDictionary:
                 pass
         with open(str(output_path), "wb") as f:
             f.write(lxml.etree.tostring(target_elem))
-            print(f"wrote {output_path}")
+            logger.info(f"wrote {output_path}")
 
         return id_dict, multidict
 
@@ -1376,7 +1380,7 @@ class AmiDictionary:
         list_path = Path(output_path.parent, "index.html")
         with open(str(list_path), "wb") as f:
             f.write(lxml.etree.tostring(html))
-            print(f"wrote {list_path}")
+            logger.info(f"wrote {list_path}")
 
     def convert_matched_spans_to_a(self, chap_elem):
         """some matches are complete span and need converting to <a>
@@ -1476,7 +1480,6 @@ class AmiDictionary:
                 if abort_multiple and len(_entries) > 0:
                     raise AMIDictError(f"multiple entries with term = {_term}")
                 _entries.append(entry)
-        print("================")
         return _entries
 
     def get_terms(self):
@@ -1524,7 +1527,7 @@ class AmiDictionary:
             if child.tag in AmiDictionary.ALLOWED_CHILDREN:
                 pass
             else:
-                print(f"forbidden child of {self.root.tag}: {child.tag} ; allowed = {AmiDictionary.ALLOWED_CHILDREN}")
+                logger.warning(f"forbidden child of {self.root.tag}: {child.tag} ; allowed = {AmiDictionary.ALLOWED_CHILDREN}")
 
     def get_lxml_entries_with_missing_wikidata_ids(self):
         """
@@ -1714,7 +1717,7 @@ class AmiDictionaries:
         return self.dictionary_dict
 
     def print_dicts(self):
-        print("DICTIONARIES LOADED")
+        logger.info("DICTIONARIES LOADED")
         dd = dir(self)
         for d in dd:
             if d[0].isupper():
@@ -1772,7 +1775,7 @@ class AmiDictionaries:
             dictionary = AmiDictionary.create_from_xml_file(file)
             self.dictionary_dict[key] = dictionary
         except Exception as ex:
-            print("Failed to read dictionary", file, ex)
+            logger.warning("Failed to read dictionary", file, ex)
         return
 
 
@@ -1809,7 +1812,7 @@ class AmiDictValidator:
         error_list = []
         error_list.extend(self.get_xml_declaration_error_list())
         error_list.extend(self.get_dictionary_element_error_list())
-        print (f"errors: {error_list}")
+        logger.info (f"errors: {error_list}")
         return error_list
 
     def get_xml_declaration_error_list(self):

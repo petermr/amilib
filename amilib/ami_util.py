@@ -7,8 +7,13 @@ import numpy as np
 import math
 import csv
 
+from amilib.file_lib import FileLib
+
 X = 0
 Y = 1
+
+logger = FileLib().get_logger(__name__)
+
 
 class AmiUtil:
 

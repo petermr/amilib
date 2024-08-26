@@ -21,12 +21,12 @@ from sklearn.linear_model import LinearRegression
 # local
 from amilib.bbox import BBox
 from amilib.file_lib import FileLib
-from amilib.util import SScript, Util, AmiLogger
+from amilib.util import SScript, Util
 from amilib.xml_lib import XmlLib, HtmlLib
 
 # no try-catch imports
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 # HTML elements
 H_HTML = "html"
@@ -132,7 +132,7 @@ s1  to mean class name (classname)
 .s1 to mean a reference to a classname (only used in <style> elements but involved in conversions
 """
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 class AmiSpan:
     def __init__(self):
@@ -393,7 +393,7 @@ class HtmlTidy:
                                     title="page number boxes under body/span", range=ranges[4])
 
     @classmethod
-    def debug_by_xpath(cls, elem, xpath, title=None, range=None) -> int:
+    def debug_by_xpath(cls, elem, xpath, title=None, rangex=None) -> int:
         """
         applies xpath and prints debug9
         assert
@@ -402,8 +402,8 @@ class HtmlTidy:
         :return: xpath count
         """
         spans = elem.xpath(xpath)
-        if range:
-            assert range[0] <= len(spans) <= range[1], f"{'' if not title else title}: found: {len(spans)}"
+        if rangex:
+            assert rangex[0] <= len(spans) <= rangex[1], f"{'' if not title else title}: found: {len(spans)}"
         return len(spans)
 
     def add_element(self, elem):
@@ -580,11 +580,11 @@ class HtmlGroup:
                 if follower in fenceposts:
                     id = follower.xpath("./span")[0].attrib.get("id")
                     if debug:
-                        print(f" id: {id}")
+                        logger.debug(f" id: {id}")
                     break
                 else:
                     if debug:
-                        print(f"moved follower {follower} to {container_div.attrib.get('title')}")
+                        logger.debug(f"moved follower {follower} to {container_div.attrib.get('title')}")
                     container_div.append(follower)
 
         """I'm working with lxml in Python and wish to group a flat set of <div> elements into a tree based on their class attributes
@@ -719,7 +719,7 @@ html = '''
 '''
 
 output_html = group_divs_into_tree(html)
-print(output_html)
+logger.debug(output_html)
 The code will parse the HTML, identify the title <div> elements based on their class attributes, create a new hierarchy of <div> elements, and add the title <div>s and their following non-title <div>s to the appropriate position in the hierarchy. Finally, it will return the modified HTML as a string.
 
 Please note that the code assumes that the class values for the title <div> elements follow the pattern "section_title", "subsection_title", "subsubsection_title", and so on. If your actual class names differ, you may need to modify the code accordingly.
@@ -778,10 +778,10 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                 parent = cls.process_ipcc_end(END, START, parent, start_ends, text)
 
             elif cls.skip_content(text, skip_res):
-                print(f"skipped {text[:50]}")
+                logger.debug(f"skipped {text[:50]}")
 
             # elif cls.is_footnote(span):
-            #     print(f"skipped {text[:50]}")
+            #     logger.debug(f"skipped {text[:50]}")
             #
             else:
                 parent.append(div)
@@ -859,7 +859,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                 id = match.group('id')
                 div.attrib["title"] = id
             except Exception as e:
-                print(f"failed to match id in {regex}")
+                logger.debug(f"failed to match id in {regex}")
             div.attrib["class"] = section_class
 
 
@@ -882,7 +882,7 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                 section_class = section_regex[0]
                 regex = None if not section_regex else section_regex[1]
                 if not regex:
-                    print(f"NO REGEX: regex in section_regex {section_regex}")
+                    logger.error(f"NO REGEX: regex in section_regex {section_regex}")
                     continue
                 cls.match_regex(div, regex, section_class, text)
 
@@ -1546,7 +1546,7 @@ class HtmlUtil:
             text = XmlLib.get_text(elem).strip()
             page_top_y = HtmlUtil.get_largest_coord_less_than(page_tops, ycoord0)
             if page_top_y is None:
-                print(f"cannot find page top {ycoord0}")
+                logger.warning(f"cannot find page top {ycoord0}")
                 continue
             page_top_y = float(page_top_y)
             ycoord = ycoord0 - page_top_y
@@ -1555,11 +1555,11 @@ class HtmlUtil:
             in_top = ycoord < header_height
             if in_top:
                 if debug:
-                    print(f"TOP  {text}")
+                    logger.info(f"TOP  {text}")
             in_bottom = ycoord > pagesize[0] - footer_height
             if in_bottom:
                 if debug:
-                    print(f"BOTTOM  {text}")
+                    logger.info(f"BOTTOM  {text}")
             if in_top or in_bottom:
                 if len(text.strip()) > 0:
                     logging.warning(f"removing top text {text}")
@@ -1778,9 +1778,9 @@ class HtmlUtil:
     @classmethod
     def analyze_styles(cls, elem):
         head_style_elems = HtmlStyle.get_head_styles(elem)
-        print(f"head style elems {len(head_style_elems)}")
+        logger.info(f"head style elems {len(head_style_elems)}")
         body_classrefs = HtmlStyle.get_body_classrefs(elem)
-        print(f"body classrefs {len(body_classrefs)}")
+        logger.debug(f"body classrefs {len(body_classrefs)}")
         font_size_dict = defaultdict(list)
         family_dict = defaultdict(list)
         for head_style_elem in head_style_elems:
@@ -1793,19 +1793,18 @@ class HtmlUtil:
 
             body_elems = cls.get_body_elements_by_class(elem, head_style)
             body_elems_str = '\n     '.join([elem.text for elem in body_elems[:3]])
-            print(f"{head_style}: {len(body_elems)} {cssstr}\n     {body_elems_str}")
+            logger.debug(f"{head_style}: {len(body_elems)} {cssstr}\n     {body_elems_str}")
         pprint(f"size {font_size_dict}")
-        print()
+
         for size in font_size_dict:
             fonts = font_size_dict[size]
             if type(fonts) is list:
-                print(f"size {len(fonts)} ")
+                logger.debug(f"size {len(fonts)} ")
                 fontsz = '\n'.join(fonts)
             else:
                 fontsz = fonts
-            print(f"  {size} =>  {fontsz}")
-        print()
-        pprint(f"family {family_dict}")
+            logger.debug(f"  {size} =>  {fontsz}")
+        logger.debug(f"family {family_dict}")
 
     @classmethod
     def analyze_coordinates(cls, elem):
@@ -1828,7 +1827,7 @@ class HtmlUtil:
             left = HtmlUtil.get_float(elem, direction)
             if left:
                 dictx[left].append(elem)
-        print(f"\n{direction}")
+        logger.debug(f"\n{direction}")
         rows = []
         for key in dictx.keys():
             elems = dictx[key]
@@ -1836,10 +1835,10 @@ class HtmlUtil:
             elemcount = len(elems)
             if elemcount > min_count:
                 texts_ = texts[:max_texts]
-                print(f"{key}: {elemcount} {texts_}")
+                logger.debug(f"{key}: {elemcount} {texts_}")
                 rows.append([key, elemcount, texts_])
         rows_ = sorted(rows, key=lambda c: c[col])
-        print(f"rows\n{rows_}")
+        logger.debug(f"rows\n{rows_}")
 
                 # sorted(student_tuples, key=lambda student: student[2])
 
@@ -1882,14 +1881,14 @@ class HtmlUtil:
         "return: None
         """
         if out_html == sys.stdout:
-            print (ET.tostring(elem, pretty_print=True, encoding="unicode"))
+            logger.info (ET.tostring(elem, pretty_print=True, encoding="unicode"))
         else:
             ss = ET.tostring(elem, pretty_print=pretty_print)
             Path(out_html).parent.mkdir(parents=True, exist_ok=True)
             with open(out_html, "wb") as f:
                 f.write(ss)
         if debug:
-            print(f"wrote {out_html}")
+            print(f"WROTE {out_html}")
 
     @classmethod
     def remove_style_attributes(cls, html_elem):
@@ -1936,7 +1935,7 @@ class HtmlUtil:
         """
         parent = elem.getparent()
         if parent is None:
-            print(f"elem has no parent")
+            logger.warning(f"elem has no parent")
             return
         idx = parent.index(elem)
         child_elems = elem.xpath("*")
@@ -2117,13 +2116,13 @@ class AnnotatorCommand:
     def run_regex(self, elem):
         text = elem.text
         if text is None:
-            print(f"regex: None text in {elem} {elem.tag}")
+            logger.warning(f"regex: None text in {elem} {elem.tag}")
             return
         match = None
         try:
             match = self.re.match(text)
         except Exception as e:
-            print(f"match fail {e}")
+            logger.warning(f"match fail {e}")
             return
         if match:
             if self.delete:
@@ -2167,7 +2166,7 @@ class AnnotatorCommand:
         is_sub = HtmlUtil.annotate_script_type(span, SScript.SUB, ydown=False)
         if is_sub:
             span.attrib["title"] = "subscript_{span.text}"
-            print(f"SUB {span.text}")
+            logger.debug(f"SUB {span.text}")
 
     # class AnnotatorCommand
 
@@ -2189,7 +2188,7 @@ class AnnotatorCommand:
             return None
         group_leads = parent_elem.xpath(self.group_xpath)
         if len(group_leads) > 0:
-            print(f"group lead count {len(group_leads)} {self.group_xpath}")
+            logger.info(f"group lead count {len(group_leads)} {self.group_xpath}")
         else:
             pass
         for i, group_lead in enumerate(group_leads):
@@ -2205,7 +2204,7 @@ class AnnotatorCommand:
             raise ValueError("null parent")
         siblings = group_lead.xpath("following-sibling::*")
         if len(siblings) == 0:
-            print(f"no siblings: {group_lead.text}")
+            logger.warning(f"no siblings: {group_lead.text}")
             pass
         else:
             print(f"siblings {len(siblings)}!!!")
@@ -2222,7 +2221,7 @@ class AnnotatorCommand:
             try:
                 end_sib = sibling.xpath(xp)
             except Exception as e:
-                print(f"failed xpath {xp} {e}")
+                logger.error(f"failed xpath {xp} {e}")
             if end_sib and len(end_sib) > 0:
             # if sibling != end_group:
             #     print(f"sibling {sibling}")
@@ -3462,13 +3461,13 @@ class CSSStyle:
         return False
 
 
-    def set_attribute(self, property, value):
+    def set_attribute(self, propertyx, value):
         """
         sets name-value pair in CSSStyle
         ignores empty values or None
         """
         if value and len(str(value)) > 0:
-            self.name_value_dict[property] = value
+            self.name_value_dict[propertyx] = value
 
     def set_family(self, family):
         if family:
@@ -4378,13 +4377,13 @@ class SectionHierarchy:
             parent_id = parent_dict.get(sect_id)
             missing = False
             if parent_id is None:
-                print(f" missing parent section {sect_id}")
+                logger.warning(f" missing parent section {sect_id}")
                 missing = True
                 spl = sect_id.split(self.DOT)
                 split_ = spl[:-1]
                 parent_id = self.DOT.join(split_)
             if parent_id == "":
-                print(f" skip root...")
+                logger.info(f" skip root...")
             elem = self.ensure_element(root, parent_id, parent_dict)
             if elem is not None:
                 sect_xml = ET.SubElement(elem, self.SECT)
@@ -4430,13 +4429,13 @@ class Footnote:
         """
         font size alone does not distinguish, so use neighbouring text
         """
-        next = XmlLib.get_next_element(footnote_number_elem)
+        nextx = XmlLib.get_next_element(footnote_number_elem)
         text = footnote_number_elem.text
-        if next is None:
+        if nextx is None:
             print(f"NO following elem")
             return False
         # folloed by small font?
-        next_class = next.attrib["class"]
+        next_class = nextx.attrib["class"]
         if next_class == "s1045":
             return True
         return False
@@ -4500,7 +4499,7 @@ class Footnote:
                 XmlLib.remove_element(follower)
             else:
                 if debug:
-                    print(f"broke out of footnote at {clazz}")
+                    logger.warning(f"broke out of footnote at {clazz}")
                 break
 
 

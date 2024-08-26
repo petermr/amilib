@@ -12,7 +12,7 @@ from amilib.ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber, PDFDe
 from amilib.file_lib import FileLib
 from amilib.xml_lib import HtmlLib, XmlLib
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 DICT_KEYSET = set([
     'annots',
@@ -67,7 +67,7 @@ class HtmlGenerator:
                 debug=debug,
                 svg_dir=svg_dir,
                 max_edges=5000)
-            print(f"debug divs: {len(html_elem.xpath('//div'))}")
+            logger.debug(f"debug divs: {len(html_elem.xpath('//div'))}")
             return html_elem
         except Exception as e:
             raise e
@@ -87,7 +87,7 @@ class HtmlGenerator:
             svg_dir = None
         else:
             input_pdf = Path(input_pdf)
-            print(f"\n==================== {input_pdf} ==================")
+            logger.debug(f"\n==================== {input_pdf} ==================")
             if not input_pdf.exists():
                 raise FileExistsError(f"cannot find {input_pdf}")
             stem = input_pdf.stem
@@ -97,18 +97,18 @@ class HtmlGenerator:
             ami_pdfplumber, input_pdf=input_pdf, outdir=outdir, debug=debug, outstem=total_pages,
             svg_dir=svg_dir, max_edges=max_edges, page_json_dir=page_json_dir, max_lines=max_lines)
         if total_html_elem is None:
-            print(f" null element in {input_pdf}")
+            logger.debug(f" null element in {input_pdf}")
             return None
-        print(f"total_pages elems: {len(total_html_elem.xpath('//div'))}")
+        logger.debug(f"total_pages elems: {len(total_html_elem.xpath('//div'))}")
         if outdir:
             input_html_path = str(Path(outdir, f"{total_pages}.html"))
             html_elem = lxml.etree.parse(input_html_path)
-            print(f"total_pages content {len(html_elem.xpath('//div'))}")
+            logger.debug(f"total_pages content {len(html_elem.xpath('//div'))}")
 
             if section_regexes:
                 HtmlGroup.make_hierarchical_sections_KEY(
                     html_elem, group_stem, section_regexes=section_regexes, outdir=outdir)
-                print(f"after sections: {len(html_elem.xpath('//div'))}")
+                logger.debug(f"after sections: {len(html_elem.xpath('//div'))}")
             HtmlStyle.extract_all_style_attributes_to_head(html_elem)
             return html_elem
         else:
@@ -127,7 +127,7 @@ class HtmlGenerator:
         pre_plumber = HtmlGenerator.pmr_time()
         ami_plumber_json = ami_pdfplumber.create_ami_plumber_json(input_pdf, pages=pages)
         if ami_plumber_json is None:
-            print(f" cannot create JSON {input_pdf}")
+            logger.debug(f" cannot create JSON {input_pdf}")
             return None
         assert (t := type(ami_plumber_json)) is AmiPlumberJson, f"expected {t}"
         total_html = HtmlLib.create_html_with_empty_head_body()
@@ -145,7 +145,7 @@ class HtmlGenerator:
             page_start_time = HtmlGenerator.pmr_time()
             page_no = i + 1
             if debug:
-                print(f"==============PAGE {page_no}================")
+                logger.debug(f"==============PAGE {page_no}================")
             html_page = cls.create_html_page(
                 ami_pdfplumber, ami_json_page, outdir, debug=debug, page_no=page_no,
                 svg_dir=svg_dir,
@@ -269,14 +269,14 @@ class HtmlGenerator:
         page_dict = ami_json_page.plumber_page_dict
         for key in page_dict.keys():
             if key not in DICT_KEYSET:
-                print(f" ***** unknown pdf key {key}")
+                logger.debug(f" ***** unknown pdf key {key}")
 
-        print(f"*** DICT {page_dict.get('mediabox')}")
-        print(f"*** LINES {ami_json_page.plumber_page.lines}")
+        logger.info(f"*** DICT {page_dict.get('mediabox')}")
+        logger.info(f"*** LINES {ami_json_page.plumber_page.lines}")
         rects = ami_json_page.plumber_page.rects
-        print(f"*** RECTS {len(rects)} {rects[:max_rects]}")
+        logger.info(f"*** RECTS {len(rects)} {rects[:max_rects]}")
         curves = ami_json_page.plumber_page.curves
-        print(f"*** CURVES {len(curves)} {curves[:max_curves]}")
+        logger.info(f"*** CURVES {len(curves)} {curves[:max_curves]}")
 
 
     @classmethod
@@ -284,7 +284,7 @@ class HtmlGenerator:
         FileLib.force_mkdir(page_json_dir)
         assert (f := page_json_dir).exists(), f"dir: {f} should exist"
         json_path = Path(page_json_dir, f"page_{page_no}.json")
-        print(f"writing ami_json_page.plumber_page_dict as JSON {json_path}")
+        logger.info(f"writing ami_json_page.plumber_page_dict as JSON {json_path}")
         FileLib.write_dict(ami_json_page.plumber_page_dict, json_path, debug=True)
 
     @classmethod
@@ -390,10 +390,10 @@ class HtmlGenerator:
     @classmethod
     def get_pdf_and_parse_to_html(cls, report_dict, report_name, debug=False):
 
-        print(f"\n==================== {report_name} ==================")
+        logger.info(f"\n==================== {report_name} ==================")
         input_pdf = report_dict[cls.INPUT_PDF]
         if not input_pdf.exists():
-            print(f"cannot find {input_pdf}")
+            logger.error(f"cannot find {input_pdf}")
             return
         output_page_dir = report_dict[cls.OUTPUT_PAGE_DIR]
         output_page_dir.mkdir(exist_ok=True, parents=True)

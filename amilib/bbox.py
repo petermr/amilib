@@ -3,7 +3,9 @@
 import math
 # this should be in a separate library
 from amilib.ami_util import AmiUtil
+from amilib.file_lib import FileLib
 
+logger = FileLib().get_logger(__name__)
 
 
 class BBox:
@@ -171,7 +173,7 @@ class BBox:
             xrange = self.intersect_range(self.get_xrange(), bbox.get_xrange())
             yrange = self.intersect_range(self.get_yrange(), bbox.get_yrange())
             bbox1 = BBox([xrange, yrange]) if xrange and yrange else None
-            # print(f"self {self} bbox {bbox} => {bbox1}")
+            # logger.debug(f"self {self} bbox {bbox} => {bbox1}")
         return bbox1
 
     def union(self, bbox):

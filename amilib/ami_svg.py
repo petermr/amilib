@@ -1,7 +1,7 @@
 import lxml.etree as ET
 
 from amilib.file_lib import FileLib
-from amilib.util import AmiLogger, Util
+from amilib.util import Util
 from amilib.xml_lib import NS_MAP, XML_NS, SVG_NS
 
 SVG_SVG = "svg"
@@ -38,7 +38,7 @@ FILL = "fill"
 STROKE = "stroke"
 STROKE_WIDTH = "stroke-width"
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 class AmiSVG:
     """for actually rendering SVG?"""

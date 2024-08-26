@@ -21,7 +21,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from amilib.file_lib import FileLib
 
-logger = FileLib.get_logger(__file__)
+logger = FileLib.get_logger(__name__)
 
 # anchor
 A_TEXT = "a_text"
@@ -91,18 +91,18 @@ class AmiNLP:
         :param list of texts
         """
         texts = [str(t) for t in texts[:maxt] if t]
-        print(f"texts:\n{texts}")
+        logger.debug(f"texts:\n{texts}")
         for i, t0 in enumerate(texts[:maxt]):
             for ii, t1 in enumerate(texts[i + 1: maxt]):
                 j = i + ii + 1
                 sim = self.cosine_sim(t0, t1)
                 if sim > min_sim:
                     sim = {round(sim, 3)}
-                    print(f"\n{i}=>{j}  s={sim}\n{t0}\n{t1}")
+                    logger.debug(f"\n{i}=>{j}  s={sim}\n{t0}\n{t1}")
 
     def find_text_similarities(self, csv_path, maxt=10000, min_sim=0.25, omit_dict=None):
 
-        print(f"============{csv_path}=============")
+        logger.debug(f"============{csv_path}=============")
 
         self.read_csv_remove_duplicates_and_unwanted_values(csv_path, omit_dict)
 
@@ -124,11 +124,11 @@ class AmiNLP:
     def calculate_distance_matrices(self, texts, omit_dict=None, n_clusters=2, random_state=42):
         if len(texts) == 0:
             logger.warning(f"No texts")
-            print(f"NO TEXTS")
+            logger.debug(f"NO TEXTS")
             return
         # n_clusters cannot be greater than number of data points
         n_clusters = min(n_clusters, len(texts))
-        print(f"n_clust {n_clusters}")
+        logger.debug(f"n_clust {n_clusters}")
 
         distance_matrix, similarity_matrix = self.create_distance_and_similarity_matrices(texts)
         self.calculate_and_display_agglom_clustering(distance_matrix, texts, ncases=50, n_clusters=n_clusters)
@@ -143,18 +143,18 @@ class AmiNLP:
         nn_cluster = AgglomerativeClustering(n_clusters=n_clusters, affinity='precomputed', linkage='average',
                                              distance_threshold=distance_threshold)
         nn_labels = nn_cluster.fit_predict(distance_matrix)
-        print("Nearest Neighbors clustering {ncases}:")
+        logger.debug("Nearest Neighbors clustering {ncases}:")
         clusters = defaultdict(list)
         for i, text in enumerate(texts[:ncases]):
             idx = nn_labels[i]
-            # print(f"Text: {text}\tCluster: {idx}")
+            # logger.debug(f"Text: {text}\tCluster: {idx}")
             clusters[str(idx)].append(text)
         for cluster in clusters.items():
-            print(f"{cluster[0]}: {len(cluster[1])}")
+            logger.debug(f"{cluster[0]}: {len(cluster[1])}")
             if (l := len(cluster[1])) > 1:
-                print(f"{l}: ")
+                logger.debug(f"{l}: ")
                 for text in cluster[1]:
-                    print(f"   > {text}")
+                    logger.debug(f"   > {text}")
 
         AmiNLP.plot_points_labels(distance_matrix, nn_labels)
 
@@ -163,13 +163,13 @@ class AmiNLP:
         # Perform clustering using k-means
         kmeans_cluster = KMeans(n_clusters=n_clusters, random_state=random_state)
         kmeans_labels = kmeans_cluster.fit_predict(distance_matrix)
-        print("\nK-means clustering:")
+        logger.debug("\nK-means clustering:")
         for i, text in enumerate(texts[:50]):
-            print(f"Text: {text}\tCluster: {kmeans_labels[i]}")
-        print(f"kml {kmeans_labels}")
+            logger.debug(f"Text: {text}\tCluster: {kmeans_labels[i]}")
+        logger.debug(f"kml {kmeans_labels}")
         # filter rows of original data
         filtered_label0 = self.data[kmeans_labels == 7]
-        print(f"filt {filtered_label0}")
+        logger.debug(f"filt {filtered_label0}")
         # plotting the results
         plt.scatter(filtered_label0[:, 0], filtered_label0[:, 1])
         plt.show()
@@ -207,7 +207,7 @@ class AmiNLP:
         if show_plot:
             plt.show()
         else:
-            print(f"No plot, use show_plot=True")
+            logger.debug(f"No plot, use show_plot=True")
 
 class WordTrieNode:
     def __init__(self):

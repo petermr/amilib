@@ -3,9 +3,11 @@ import unittest
 from pathlib import Path
 
 from amilib.ami_nlp import AmiNLP
+from amilib.file_lib import FileLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
+logger = FileLib.get_logger(__name__)
 
 class StatTest(AmiAnyTest):
     """
