@@ -572,6 +572,10 @@ class AmiDictionary:
         dictionary.location_xml = xml_file
 
         return dictionary
+
+    def check_validity(self):
+        logger.warning("ami_dict.check_validity() NYI ")
+
     @classmethod
     def create_from_html_file(cls, html_file,
                              title=None,

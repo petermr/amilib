@@ -1337,7 +1337,7 @@ class DictionaryCreationTest(AmiAnyTest):
         amilib = AmiLib()
         words_file = Path(TEST_RESOURCE_DIR, "wordlists", "climate_words.txt")
         dictfile = Path(Resources.TEMP_DIR, "words", "climate_words.xml")
-        expected_count = 11
+        expected_count = 2
         FileLib.delete_file(dictfile)
         amilib.run_command(["DICT",
                             "--words", "curlicue", "bread",

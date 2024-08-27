@@ -9,6 +9,7 @@ from amilib.ami_args import AbstractArgs
 
 # cyclic import
 from amilib.ami_args import AbstractArgs
+# from amilib.ami_dict import AmiDictionary # CYCLIC import
 # from amilib.ami_dict import AmiEntry
 from amilib.file_lib import FileLib
 from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage, WiktionaryPage
@@ -51,6 +52,7 @@ class AmiDictArgs(AbstractArgs):
         self.validate = None
         self.wikidata = None
         self.wikipedia = None
+        self.wiktionary = None
         self.ami_dict = None
         self.subparser_arg = "DICT"
 
@@ -131,7 +133,7 @@ class AmiDictArgs(AbstractArgs):
         self.wikidata = self.arg_dict.get(WIKIDATA)
         self.wikipedia = self.arg_dict.get(WIKIPEDIA)
         self.wiktionary = self.arg_dict.get(WIKTIONARY)
-        self.words_in = self.arg_dict.get(WORDS)
+        self.words = self.arg_dict.get(WORDS)
         self.wordlist = None
 
         if self.inpath and self.dictfile and self.outpath:
@@ -139,21 +141,24 @@ class AmiDictArgs(AbstractArgs):
             return
 
         self.make_input_words()
-        logger.debug(f"words to be built into dictionation {self.words_in}")
+        if (self.words is not None):
+            self.build_or_edit_dictionary()
+            assert self.ami_dict is not None
+            # self.ami_dict, _ = AmiDictionary.create_dictionary_from_words(self.words_in, title=None, desc=None, wikilangs=None,
+            #                                  wikidata=False, wiktionary=False, outdir=None,
+            #                                  debug=True)
 
         if self.dictfile:
 
-            logger.debug(f"writing to {self.dictfile}")
+            logger.info(f"writing to {self.dictfile}")
             # is this right??
             if self.ami_dict is not None:
-                with open(self.dictfile, "w"):
-                    self.ami_dict.write(self.dictfile)
-                    logger.debug(f"wrote dict: {self.dictfile}")
+                self.ami_dict.write_to_file(self.dictfile, debug=True)
             else:
                 self.ami_dict = self.build_or_edit_dictionary()
                 if self.ami_dict is None:
 
-                    logger.debug(f"failed to write dictionary {self.dictfile}")
+                    logger.error(f"no dictionary; failed to write dictionary {self.dictfile}")
 
         if self.validate:
             if self.ami_dict is None:
@@ -213,8 +218,8 @@ class AmiDictArgs(AbstractArgs):
             return None
 
 
-        if self.words:
-            self_ami_dict = AmiDictionary.create_dictionary_from_words(terms=self.words, title="unknown", wiktionary=True)
+        if self.words is not None:
+            self.ami_dict, _ = AmiDictionary.create_dictionary_from_words(terms=self.words, title="unknown", wiktionary=True)
         return self.ami_dict
 
     def add_wikidata_to_dict(self, description_regex=None):
@@ -284,6 +289,9 @@ class AmiDictArgs(AbstractArgs):
         """
         NYI
         """
+        if self.ami_dict.entries is None:
+            logger.error("No self.ami_dict.entries")
+            return
         for entry_elem in self.ami_dict.entries:
             ami_entry = AmiEntry.create_from_element(entry_elem)
             ami_entry.lookup_and_add_wikipedia_page()
@@ -329,7 +337,7 @@ class AmiDictArgs(AbstractArgs):
              str(inpath), str(outpath), html_dict_path=dictfile)
 
     def make_input_words(self):
-        self.words = FileLib.get_input_strings(self.words_in)
+        self.words = FileLib.get_input_strings(self.words)
 
 
 # ====================
