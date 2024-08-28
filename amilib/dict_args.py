@@ -213,13 +213,15 @@ class AmiDictArgs(AbstractArgs):
         # cyclic imports TODO
         from amilib.ami_dict import AmiDictionary
 
+        wiktionary = True
         if not self.dictfile:
-            logger.debug("No dictionary file given")
-            return None
+            logger.error("No dictionary file given")
+            # return None
 
 
         if self.words is not None:
-            self.ami_dict, _ = AmiDictionary.create_dictionary_from_words(terms=self.words, title="unknown", wiktionary=True)
+            self.ami_dict, _ = AmiDictionary.create_dictionary_from_words(
+                terms=self.words, title="unknown", wiktionary=wiktionary)
         return self.ami_dict
 
     def add_wikidata_to_dict(self, description_regex=None):

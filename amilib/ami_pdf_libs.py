@@ -721,12 +721,13 @@ class PDFDebug:
         for element in page_layout:
             if isinstance(element, LTTextLineHorizontal):
                 # currently only seems to detect newline
-                logger.debug(f"textlinehorizontal: ({element.bbox}):{element.get_text()}:", end="")
+                logger.debug(f"textlinehorizontal: ({element.bbox}):{element.get_text()}:")
             if isinstance(element, LTTextBoxHorizontal):
                 logger.debug(f">>start_text_box")
                 for text_line in element:
                     # logger.debug(f"dir: {text_line.__dir__()}")
-                    logger.debug(f"....textboxhorizontal: ({text_line.bbox}): {text_line.get_text()}", end="")
+                    # logger.debug(f"....textboxhorizontal: ({text_line.bbox}): {text_line.get_text()}", end="")
+                    logger.debug(f"....textboxhorizontal: ({text_line.bbox}): {text_line.get_text()}")
                     pass
                 logger.debug(f"<<end_text_box")
         return pdf
@@ -781,7 +782,8 @@ class PDFDebug:
         words = page.extract_words()
         for word in words[:5]:
             logger.info(f"W: {word} {word.keys()} ")
-        logger.debug(f"words {len(words)} {[w['text'] for w in words][:5]} ... ", end=" | ")
+        # logger.debug(f"words {len(words)} {[w['text'] for w in words][:5]} ... ", end=" | ")
+        logger.debug(f"words {len(words)} {[w['text'] for w in words][:5]} ... ")
 
     def print_text(self, page):
         """
@@ -846,7 +848,8 @@ class PDFDebug:
         # see https://github.com/euske/pdfminer/blob/master/pdfminer/pdftypes.py
         n_image = len(page.images)
         if n_image > 0:
-            logger.info(f"images {n_image}", end=" |\n")
+            # logger.info(f"images {n_image}", end=" |\n")
+            logger.info(f"images {n_image}")
             for i, image in enumerate(page.images[:maximage]):
                 self.debug_image(i, image, outdir, page, resolution, write_image)
 
@@ -958,7 +961,8 @@ class PDFDebug:
         """
         n_annot = len(page.annots)
         if n_annot > 0:
-            logger.info(f"annots {n_annot}", end=" | ")
+            # logger.info(f"annots {n_annot}", end=" | ")
+            logger.info(f"annots {n_annot}")
             for annot in page.annots:
                 logger.info(f"annot: {annot.items()}")
 

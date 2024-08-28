@@ -1029,7 +1029,10 @@ class WiktionaryTest(AmiAnyTest):
         outdir = Path(FileLib.get_home(), "junk")
         nchild = 3
 
-        WiktionaryPage.validate_mw_content(term, outdir=outdir, nchild=nchild)
+        html_element, mw_content_text = WiktionaryPage.lookup_wiktionary_content(term)
+
+        term = WiktionaryPage.get_term_from_html_element(html_element)
+        WiktionaryPage.validate_mw_content(mw_content_text, term=term, outdir=outdir, nchild=nchild)
 
     @unittest.skip("not yet working")
     def test_lookup_single_term(self):
@@ -1219,7 +1222,7 @@ class WiktionaryTest(AmiAnyTest):
         body = HtmlLib.get_body(htmlx)
         for term in terms:
             logger.info(f"=========={term}==========")
-            html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(term)
+            html_element, mw_content_text = WiktionaryPage.lookup_wiktionary_content(term)
             chunklist_elem = WiktionaryPage.split_mw_content_text_by_language(mw_content_text)
             body.append(chunklist_elem)
         HtmlUtil.write_html_elem(
@@ -1267,7 +1270,7 @@ class WiktionaryTest(AmiAnyTest):
 
     def test_get_ancestor_language(self):
         termx = "curlicue"
-        html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(termx)
+        html_element, mw_content_text = WiktionaryPage.lookup_wiktionary_content(termx)
 
     def test_lookup_wiktionary_command_line(self):
         """

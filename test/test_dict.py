@@ -1387,8 +1387,8 @@ class DictionaryCreationTest(AmiAnyTest):
         expected_count = 1
         FileLib.delete_file(dictfile)
         amilib.run_command(["DICT",
-                            "--words", "kangaroo"
-                            "--dict", dictfile
+                            "--words", "kangaroo",
+                            "--dict", dictfile,
                             ])
         assert Path(dictfile).exists()
         ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)

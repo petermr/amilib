@@ -37,8 +37,12 @@ MW_SEARCH_RESULTS = "mw-search-results"
 MW_SEARCH_RESULT_HEADING = "mw-search-result-heading"
 WB_SLLV_LV = "wikibase-sitelinklistview-listview"
 ID = "id"
+CLASS = "class"
 
 BODY = "body"
+DIV = "div"
+NOSCRIPT = "noscript"
+PRINTFOOTER = "printfooter"
 HREF = "href"
 TITLE = "title"
 DESC = "desc"
@@ -750,11 +754,11 @@ class WikidataSparql:
 
     def create_sparql_result_list(self, sparql_file):
         assert (os.path.exists(sparql_file))
-        logger.info("sparql path", sparql_file)
+        logger.info(f"sparql path {sparql_file}")
         self.current_sparql = ET.parse(sparql_file, parser=ET.XMLParser(encoding="utf-8"))
         self.sparql_result_list = list(self.current_sparql.findall(SPQ_RESULTS + "/" + SPQ_RESULT, NS_MAP))
         assert (len(self.sparql_result_list) > 0)
-        logger.info("results", len(self.sparql_result_list))
+        logger.info(f"results {len(self.sparql_result_list)}")
 
     def create_sparql_result_by_wikidata_id(self):
         self.sparql_result_by_wikidata_id = {}
@@ -781,7 +785,7 @@ class WikidataSparql:
 
     def update_dictionary_from_sparql(self):
 
-        logger.info("sparql result by id", len(self.sparql_result_by_wikidata_id))
+        logger.info("sparql result by id {len(self.sparql_result_by_wikidata_id)}")
         sparql_name = self.sparql_to_dictionary[SPQ_NAME]
         dict_name = self.sparql_to_dictionary[DICT_NAME]
         for wikidata_id in self.sparql_result_by_wikidata_id.keys():
@@ -1547,7 +1551,7 @@ class WiktionaryPage:
         :param term: term to look up
         :return: new WiktionaryPage object (if term is missing contains "missing" messages
         """
-        html_element, mw_content_text = cls.get_wiktionary_content(term)
+        html_element, mw_content_text = cls.lookup_wiktionary_content(term)
         assert mw_content_text is not None
         wiktionary_page = WiktionaryPage(html_element)
         language_chunks = cls.split_mw_content_text_by_language(mw_content_text)
@@ -1555,7 +1559,7 @@ class WiktionaryPage:
 
         html_div = ET.Element("div")
         html_div.append(language_chunks)
-        cls.process_parts_of_speech(html_div, mw_content_text)
+        cls.process_parts_of_speech(html_element, mw_content_text)
         wiktionary_page.html_div = html_div
         logger.debug(f"html_div {ET.tostring(html_div)[:200]}...")
         wiktionary_page.url = cls.get_url(term)
@@ -1570,6 +1574,7 @@ class WiktionaryPage:
         :param term: term to search for (not sure about case sensitivity), spaces are normalised to "_"
         :return: normalised term prepended with WIKTIONARY_BASE
         """
+        logger.error(f"{term} type {type(term)}")
         term = re.sub(r"\s+", "_", term)
         url = f"{cls.WIKTIONARY_BASE}{term}"
         # print(f"term: {term}")
@@ -1582,43 +1587,53 @@ class WiktionaryPage:
         experimental
         """
     @classmethod
-    def process_parts_of_speech(cls, html_div, mw_content_text):
+    def process_parts_of_speech(cls, html_element, mw_content_text):
         """
         looks for parts of speech and their immediate environment.
         probably not optimal - use languages first
         """
-        assert html_div is not None, "process_parts_of_speech arg html_div is None"
-        WiktionaryPage.validate_mw_content(mw_content_text)
+
+        stem = "junk1"
+        term = cls.get_term_from_html_element(html_element)
+        file = Path(FileLib.get_home(), "junk", f"{stem}.html")
+        HtmlLib.write_html_file(html_element, file, pretty_print=True, debug=True)
+        assert term is not None, f"term must not be None"
+        WiktionaryPage.validate_mw_content(mw_content_text, term, outdir=None)
+        # assert html_div is not None, "process_parts_of_speech arg html_div is None"
+        WiktionaryPage.validate_mw_content(mw_content_text, term)
+        pphtml = ET.tostring(mw_content_text, pretty_print=True).decode()
+        logger.debug(f"mw-content-text: {pphtml}")
         for i, pos in enumerate(cls.POS):
             pos_div = cls.lookup_part_of_speech_div(pos, mw_content_text)
-            assert pos_div is not None, f"no pos_div for {pos}"
+            # assert pos_div is not None, f"no pos_div for {pos}"
             if pos_div is None:
-                logger.error("no pos_div for {pos}")
+                logger.error(f"no pos_div for {pos}")
                 continue
             pos = pos_div.xpath("./h3/@id")[0]
-            xpath = ".//span[@class='mw-editsection']"
+            span_xpath = ".//span[@class='mw-editsection']"
             pos_div.attrib["class"] = pos
             pos_span = ET.Element("span")
             pos_span.text = f" ({pos[0]}) "
-            edit_sects = pos_div.xpath(xpath)
-            HtmlUtil.remove_elems(pos_div, xpath=xpath)
-
-            ol_elem = cls.get_following_ol(pos_div)
-            assert ol_elem is not None, f"no ol following div"
-            HtmlUtil.remove_elems(ol_elem, "./li/ul")
+            edit_sects = pos_div.xpath(span_xpath)
 
             p_elem = cls.get_following_p(pos_div, pos)
             assert p_elem is not None
             p_elem.insert(1, pos_span)
 
-            # html_div.append(pos_span)
+            ol_elem = cls.get_following_ol(pos_div)
+            assert ol_elem is not None, f"no ol following div"
+            # HtmlUtil.remove_elems(ol_elem, "./li/ul")
+
+            html_div.append(pos_span)
             html_div.append(p_elem)
             if ol_elem is not None:
                 html_div.append(ol_elem)
 
+            # HtmlUtil.remove_elems(pos_div, xpath=span_xpath)
+
     @classmethod
     def get_following_p(cls, elem, pos):
-        ps = elem.xpath("following-sibling::p")
+        ps = elem.xpath("following-sibling::p[1]")
         if len(ps) == 0:
             # print("no p follower")
             return None
@@ -1648,9 +1663,9 @@ class WiktionaryPage:
               </dl>
             </li>
             """
-        ols = div.xpath("following-sibling::ol")
+        ols = div.xpath("following-sibling::ol[1]")
         if len(ols) == 0:
-            # print("no ol follower")
+            logger.warning("no ol follower")
             return None
         # print(f"following ol")
         ol = ols[0]
@@ -1665,7 +1680,7 @@ class WiktionaryPage:
 
 
     @classmethod
-    def get_wiktionary_content(cls, term=None, url=None):
+    def lookup_wiktionary_content(cls, term=None, url=None):
         """
         gets Wiktionary raw Wiktionary content
         The page is unfortunately structured as a linear list of components, so we add
@@ -1677,6 +1692,7 @@ class WiktionaryPage:
         :return: (html_element, mw_content)
         """
         if term is not None:
+            assert type(term) is str, f"term should be str, not {type(term)}"
             url = cls.get_url(term)
         if url is None:
             logger.debug(f"no term or url given")
@@ -1687,7 +1703,7 @@ class WiktionaryPage:
         except Exception as e:
             raise e
         body = HtmlLib.get_body(html_element)
-        content = body.xpath("./div[@id='content']")[0]
+        content = cls.get_content(body)
         body_content = content.xpath("./div[@id='bodyContent']")[0]
         h1_first_heading = content.xpath("./h1[@id='firstHeading']")[0]
         logger.debug(f"\n\n>>>h1 {''.join(h1_first_heading.itertext())}")
@@ -1695,8 +1711,14 @@ class WiktionaryPage:
         return html_element, mw_content_text
 
     @classmethod
+    def get_content(cls, body):
+        content = body.xpath("./div[@id='content']")[0]
+        return content
+
+    @classmethod
     def lookup_part_of_speech_div(cls, pos, mw_content_text):
         """
+        NOT YET TESYED
         lookup part of speech (Noun, Adjective, Verb) in descendants of div[@id='mw_content_text']
         :param pos: part opf speech
         :return: span of concatenated components
@@ -1706,13 +1728,14 @@ class WiktionaryPage:
         val = pos.value[0]
         logger.info(f"looking for pos=={val}")
         # xps = [f"./div/div[h3[starts-with(@id,'{val}']]", f"./div/div/div[h4[@id='{val}']]"]
-        xp = f".//h3[starts-with(@id,'{val}')]"
-        elems = []
+        xp = f".//div[h3[starts-with(@id,'{val}')]]"
         elems = mw_content_text.xpath(xp)
 
         if len(elems) == 1:
             elem = mw_content_text.xpath(xp)[0]
-            assert elem.tag == "div"
+            assert elem.tag == "div", (f"expected <div> , found {elem.tag}")
+            pphtml = ET.tostring(elem, pretty_print=True).decode()
+            logger.debug(f"\ndiv for {val}:\n{pphtml}")
             return elem
         return None
 
@@ -2235,7 +2258,7 @@ Contents
         :param add_toc: adds ToC, default False
         :return: body
         """
-        html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(termx)
+        html_element, mw_content_text = WiktionaryPage.lookup_wiktionary_content(termx)
         (toc_elem, content_elem) = WiktionaryPage.create_toc_and_main_content(language, part_of_speech, mw_content_text)
         if content_elem is None:
             return None
@@ -2247,27 +2270,44 @@ Contents
         return body
 
     @classmethod
-    def validate_mw_content(cls, term, outdir=None, nchild=3):
+    def validate_mw_content(cls, mw_content_text, term, outdir=None, nchild=3):
         """
         search for term, return mw-content-text and validate it
         :param term: term to search for
         :param outdir: output dir for HTML (generally a temporary dir)
         :param nchild: number of children of mw-content-text (assumed 3)
         """
-        html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(term)
+        assert term is not None, f"must give term"
         assert mw_content_text is not None
-        tostring = etree.tostring(mw_content_text, pretty_print=True)
+        # tostring = etree.tostring(mw_content_text, pretty_print=True)
         if outdir is not None:
-            filename = str(Path(outdir, f"{term}.html"))
-            with open(filename, "w") as f:
-                f.write(tostring.decode())
-            logger.debug(f"wrote html to {filename}")
+            # filename = str(Path(outdir, f"{term}.html"))
+            # with open(filename, "w") as f:
+            #     f.write(tostring.decode())
+            # logger.debug(f"wrote html to {filename}")
             children_xpath = "*"
-            mw_content_children = mw_content_text.xpath(children_xpath)
-            assert len(mw_content_children) == nchild, f"mw_content_text should have 3 children"
-            first_child = mw_content_children[0]
-            logger.debug(f"first child of mw-content-text is {ET.tostring(first_child, pretty_print=True)}")
+            mw_content_text_children = mw_content_text.xpath(children_xpath)
+            assert len(mw_content_text_children) == nchild, f"mw_content_text should have 3 children"
+            mw_content_ltr = mw_content_text_children[0]
+            assert mw_content_ltr.tag == DIV and "mw-content-ltr" in mw_content_ltr.attrib.get(CLASS), f"first child should ne main content"
+            noscript = mw_content_text_children[1]
+            printfooter = mw_content_text_children[2]
+            assert noscript.tag == NOSCRIPT, f"{term}: second child should be <noscript>"
+            assert printfooter.tag == DIV and printfooter.attrib.get(CLASS) == PRINTFOOTER, \
+                f"third child should be Div[@class=printfooter]"
 
+
+    @classmethod
+    def get_term_from_html_element(cls, html_element):
+        """
+        gets term from main title
+        :param html_element: from Wiktionary search
+        :return: term text or None
+        """
+        if html_element is None:
+            return None
+        spans = html_element.xpath(".//span[@class='mw-page-title-main']")
+        return spans[0].text if len(spans) > 0 else None
 
 
 
