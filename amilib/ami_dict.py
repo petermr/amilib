@@ -31,34 +31,26 @@ from amilib.xml_lib import HtmlLib
 DICTIONARY = "dictionary"
 ENTRY = "entry"
 IMAGE = "image"
+LINK = "link"
 RAW = "raw"
 TITLE = "title"
 
 # attributes in amidict
-DESC = "desc"
-DESCRIPTION = "description"
-NAME = "name"
-TERM = "term"
-WIKIDATA_ID = "wikidataID"
-WIKIDATA_URL = "wikidataURL"
-WIKIDATA_SITE = "https://www.wikidata.org/entity/"
-WIKIPEDIA_PAGE = "wikipediaPage"
+DESC = "desc" # description attribute in <dictionary> or <entry>
+DEFINITION = "definition"  # one-sentence definition for entry
+DESCRIPTION = "description"  # description attribute in <dictionary> or <entry> (often paragraph)
+
+NAME = "name" # non-lexical name for entry (maybe obsolete
+TERM = "term" # exact term for entry (includes case and spaces)
+WIKIDATA_ID = "wikidataID" # primary ID for entry where it exists
+WIKIDATA_URL = "wikidataURL" # link to Wikidata entry
+WIKIDATA_SITE = "https://www.wikidata.org/entity/" # URL of Wikidata site
+WIKIPEDIA_PAGE = "wikipediaPage" # container for whole Wikipedia page??
 TYPE = "type"
 ANY = "ANY"
 VERSION = "version"
-WIKIDATA_HITS = "wikidata_hits"
-WIKIDATA_HIT = "wikidataHit"
-
-# commandline
-# DELETE = "delete"
-# DICT = "dict"
-# FILTER = "filter"
-# LANGUAGE = "language"
-# METADATA = "metadata"
-# REPLACE = "replace"
-# SYNONYM = "synonym"
-# VALIDATE = "validate"
-# WORDS = "words"
+WIKIDATA_HITS = "wikidata_hits" # container for Wikidata lookup hits
+WIKIDATA_HIT = "wikidataHit" # wikidata hit
 
 # constants
 UTF_8 = "UTF-8"
@@ -89,14 +81,13 @@ class AmiEntry:
     """
     wraps the HTML element  representing the entry and provides access and mutatiom
     """
-    TAG = "entry"
+    TAG = ENTRY
 
-    TERM_A = "term"
-    DESCRIPTION_A = "description"
-    NAME_A = "name"
-    WIKIDATA_A = "wikidataID"
-    WIKIPEDIA_A = "wikipediaPage"
-    LINK = "link"
+    TERM_A = TERM
+    DESCRIPTION_A = DESCRIPTION
+    NAME_A = NAME
+    WIKIDATA_A = WIKIDATA_ID
+    WIKIPEDIA_A = WIKIPEDIA_PAGE
 
     REQUIRED_ATTS = {TERM_A}
     OPTIONAL_ATTS = {DESCRIPTION_A, NAME_A, WIKIDATA_A, WIKIPEDIA_A}
@@ -494,7 +485,7 @@ class AmiDictionary:
 
     """
     # tries to avoid circular import
-    TAG = "dictionary"
+    TAG = DICTIONARY
     NOT_FOUND = "NOT_FOUND"
 
     TITLE_A = "title"
@@ -1168,9 +1159,9 @@ class AmiDictionary:
         :param allowed_descriptions: only add if the description fits (ANY overrides)"""
         term = entry.attrib[TERM]
         wiktionary_page = WiktionaryPage.create_wiktionary_page(term)
-        desc = ET.tostring(wiktionary_page.html_div)
+        desc = f"ET.tostring(wiktionary_page.html_div)[:200]..."
         desc = HtmlUtil.get_text_content(wiktionary_page.html_div)
-        entry.attrib[DESC] = desc
+        entry.attrib[DESC] = desc[:200]
         logger.info(f"entry {ET.tostring(entry)}")
         pass
     @classmethod
@@ -1204,7 +1195,7 @@ class AmiDictionary:
 
     # new
     def has_valid_root_tag(self):
-        return self.root.tag == "dictionary"
+        return self.root.tag == DICTIONARY
 
     def create_wikidata_page(self, entry_element):
         from amilib.wikimedia import WikidataPage
@@ -1799,15 +1790,28 @@ class AMIDictError(Exception):
 
 
 class AmiDictValidator:
-    def __init__(self, dictionary=None, path=None):
-        if not dictionary:
-            raise ValueError("no dictionary")
-        assert type(dictionary) is AmiDictionary
+    """
+    reads an AmiDictinary object and validates it
+    """
+    def __init__(self, dictionary, path=None):
+        """
+        constructs validator from existing dictionary
+        checks dictionary has XML root
+        :param dictionary: AmiDictionary to validate
+        :param path: ?path containing dictionary - validate title against filename
+        """
+        assert type(dictionary) is AmiDictionary, f"should be AmiDictionary, found {type(dictionary)}"
         self.ami_dictionary = dictionary
-        assert dictionary.root is not None
-        assert str(type(dictionary.root)) == "<class 'lxml.etree._Element'>", f"found: {type(dictionary.root)}"
+        self.validate_root(dictionary)
         self.path = path
 
+    def validate_root(self, dictionary):
+        """
+        validates that dictionary.root contains XML element
+        """
+        assert dictionary.root is not None
+        assert str(type(dictionary.root)) == "<class 'lxml.etree._Element'>", f"found: {type(dictionary.root)}"
+        assert dictionary.root.tag == DICTIONARY
 
     def get_error_list(self):
         """

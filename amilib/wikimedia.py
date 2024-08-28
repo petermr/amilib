@@ -1548,8 +1548,10 @@ class WiktionaryPage:
         :return: new WiktionaryPage object (if term is missing contains "missing" messages
         """
         html_element, mw_content_text = cls.get_wiktionary_content(term)
+        assert mw_content_text is not None
         wiktionary_page = WiktionaryPage(html_element)
         language_chunks = cls.split_mw_content_text_by_language(mw_content_text)
+        assert len(language_chunks) > 0, f"must have language chunks, found 0"
 
         html_div = ET.Element("div")
         html_div.append(language_chunks)
@@ -1585,10 +1587,13 @@ class WiktionaryPage:
         looks for parts of speech and their immediate environment.
         probably not optimal - use languages first
         """
-        for pos in cls.POS:
+        assert html_div is not None, "process_parts_of_speech arg html_div is None"
+        WiktionaryPage.validate_mw_content(mw_content_text)
+        for i, pos in enumerate(cls.POS):
             pos_div = cls.lookup_part_of_speech_div(pos, mw_content_text)
+            assert pos_div is not None, f"no pos_div for {pos}"
             if pos_div is None:
-                # print(f"no pos for {pos}")
+                logger.error("no pos_div for {pos}")
                 continue
             pos = pos_div.xpath("./h3/@id")[0]
             xpath = ".//span[@class='mw-editsection']"
@@ -1599,14 +1604,17 @@ class WiktionaryPage:
             HtmlUtil.remove_elems(pos_div, xpath=xpath)
 
             ol_elem = cls.get_following_ol(pos_div)
+            assert ol_elem is not None, f"no ol following div"
             HtmlUtil.remove_elems(ol_elem, "./li/ul")
 
             p_elem = cls.get_following_p(pos_div, pos)
+            assert p_elem is not None
             p_elem.insert(1, pos_span)
 
             # html_div.append(pos_span)
             html_div.append(p_elem)
-            html_div.append(ol_elem)
+            if ol_elem is not None:
+                html_div.append(ol_elem)
 
     @classmethod
     def get_following_p(cls, elem, pos):
@@ -1619,6 +1627,10 @@ class WiktionaryPage:
 
     @classmethod
     def get_following_ol(cls, div):
+        """
+        :param div: with following ol
+        :return: ol element or None
+        """
         """children of ol
 
             <li>
@@ -1676,11 +1688,8 @@ class WiktionaryPage:
             raise e
         body = HtmlLib.get_body(html_element)
         content = body.xpath("./div[@id='content']")[0]
-        # first_headings = content.xpath("./h1[@id='firstHeading']/span")
-        # print(f"first_head {first_heading.text}")
         body_content = content.xpath("./div[@id='bodyContent']")[0]
         h1_first_heading = content.xpath("./h1[@id='firstHeading']")[0]
-        # print(f"h111 {ET.tostring(h1_first_heading)}")
         logger.debug(f"\n\n>>>h1 {''.join(h1_first_heading.itertext())}")
         mw_content_text = body_content.xpath("./div[@id='mw-content-text']")[0]
         return html_element, mw_content_text
@@ -1692,15 +1701,21 @@ class WiktionaryPage:
         :param pos: part opf speech
         :return: span of concatenated components
         """
+        FileLib.write_temp_html(mw_content_text, Path(FileLib.get_home(), "junk"), "junk.html")
+
         val = pos.value[0]
-        xp = f"./div/div[h3[@id='{val}']]"
+        logger.info(f"looking for pos=={val}")
+        # xps = [f"./div/div[h3[starts-with(@id,'{val}']]", f"./div/div/div[h4[@id='{val}']]"]
+        xp = f".//h3[starts-with(@id,'{val}')]"
+        elems = []
         elems = mw_content_text.xpath(xp)
+
         if len(elems) == 1:
-            # print(f"found pos {pos.value}")
             elem = mw_content_text.xpath(xp)[0]
             assert elem.tag == "div"
             return elem
         return None
+
 
     @classmethod
     def _has_term_not_found_message_(cls, html_element):
@@ -2230,6 +2245,30 @@ Contents
             div.append(toc_elem)
         div.append(content_elem)
         return body
+
+    @classmethod
+    def validate_mw_content(cls, term, outdir=None, nchild=3):
+        """
+        search for term, return mw-content-text and validate it
+        :param term: term to search for
+        :param outdir: output dir for HTML (generally a temporary dir)
+        :param nchild: number of children of mw-content-text (assumed 3)
+        """
+        html_element, mw_content_text = WiktionaryPage.get_wiktionary_content(term)
+        assert mw_content_text is not None
+        tostring = etree.tostring(mw_content_text, pretty_print=True)
+        if outdir is not None:
+            filename = str(Path(outdir, f"{term}.html"))
+            with open(filename, "w") as f:
+                f.write(tostring.decode())
+            logger.debug(f"wrote html to {filename}")
+            children_xpath = "*"
+            mw_content_children = mw_content_text.xpath(children_xpath)
+            assert len(mw_content_children) == nchild, f"mw_content_text should have 3 children"
+            first_child = mw_content_children[0]
+            logger.debug(f"first child of mw-content-text is {ET.tostring(first_child, pretty_print=True)}")
+
+
 
 
 class WikipediaInfoBox:

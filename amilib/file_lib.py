@@ -5,6 +5,7 @@ import ast
 import glob
 import json
 import logging
+import lxml.etree as ET
 import os
 import re
 import shutil
@@ -547,7 +548,7 @@ class FileLib:
     @classmethod
     def get_logger(cls,
         name,
-        level=logging.WARNING,
+        level=logging.DEBUG,
         err_level=logging.ERROR,
         err_log="error.log",
         format = "%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s",
@@ -585,6 +586,24 @@ class FileLib:
         logger.addHandler(stdoutHandler)
         logger.addHandler(errHandler)
         return logger
+
+    @classmethod
+    def write_temp_html(cls, htmlx, temp_dir, temp_file="junk.html", pretty_print=True, debug=True):
+        """
+        writes a chunk of html to a temporary file
+
+        """
+        pptext = ET.tostring(htmlx, pretty_print=pretty_print)
+        path = Path(temp_dir, temp_file)
+        if path.exists():
+            FileLib.delete_file(path)
+        print(f"file exists {path.exists()}")
+        # path.parent.mkdir(exist_ok=False, parents=False)
+        print(f"file exists {path.exists()}")
+        with open(str(path), "w") as f:
+            f.write(pptext.decode())
+        if debug:
+            print(f"wrote {path}")
 
 
 

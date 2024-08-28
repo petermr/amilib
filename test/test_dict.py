@@ -1160,6 +1160,35 @@ class ValidateTest(AmiAnyTest):
         logger.debug(last_path)
         assert root.attrib["title"] == last_path
 
+    def test_validate_dictionary_created_from_words(self):
+        """
+        validate dictionary created from list of words
+        """
+        ami_dictionary, _ = AmiDictionary.create_dictionary_from_words(["curlicue", "bread"],
+                                                                    title="test",
+                                                                    desc="test dictionary")
+        validator = AmiDictValidator(ami_dictionary)
+
+    def test_validate_dictionary_created_from_wordfile(self):
+        """
+        validate dictionary created from list of words
+        """
+        file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle.txt")
+        ami_dictionary, _ = AmiDictionary.create_dictionary_from_wordfile(file,
+                                                                    title="test",
+                                                                    desc="test dictionary")
+        validator = AmiDictValidator(ami_dictionary)
+
+
+    def test_xml_dictionary(self):
+        """
+        reads previously created XML dictionary
+        """
+        file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "xml", "climate_words_dict.xml")
+        ami_dictionary = AmiDictionary.create_from_xml_file(file)
+        validator = AmiDictValidator(ami_dictionary)
+
+
 class DictionaryCreationTest(AmiAnyTest):
     """
     test methods which create dictionaries
@@ -1347,6 +1376,25 @@ class DictionaryCreationTest(AmiAnyTest):
         ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)
         assert (c := ami_dictionary.get_entry_count()) == expected_count, \
             f"dictionary should contain {expected_count} found {c}"
+
+    def test_make_dict_from_words_FAIL(self):
+        """
+        filas on "kangaroo"
+        Reason unknown
+        """
+        amilib = AmiLib()
+        dictfile = Path(Resources.TEMP_DIR, "words", "kangaroo.xml")
+        expected_count = 1
+        FileLib.delete_file(dictfile)
+        amilib.run_command(["DICT",
+                            "--words", "kangaroo"
+                            "--dict", dictfile
+                            ])
+        assert Path(dictfile).exists()
+        ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)
+        assert (c := ami_dictionary.get_entry_count()) >= expected_count, \
+            f"dictionary should contain {expected_count} found {c}"
+
 
     def test_create_dictionary_from_csv(self):
         """This does lookup, unfortunately Wikidata lookup changes as terms are added so this test is a mess"""

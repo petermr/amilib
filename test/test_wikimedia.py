@@ -1021,6 +1021,16 @@ class WiktionaryTest(AmiAnyTest):
     https://en.wiktionary.org/w/index.php?search=bear&title=Special:Search&profile=advanced&fulltext=1&ns0=1
     """
 
+    def test_validate_mw_content(self):
+        """
+        checks that mw_content_text div is correct
+        """
+        term = "curlicue"
+        outdir = Path(FileLib.get_home(), "junk")
+        nchild = 3
+
+        WiktionaryPage.validate_mw_content(term, outdir=outdir, nchild=nchild)
+
     @unittest.skip("not yet working")
     def test_lookup_single_term(self):
         """

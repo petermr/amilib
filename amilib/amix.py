@@ -156,7 +156,7 @@ class AmiLib:
 
         # convert all args to str
         args = [str(s) for s in args]
-        logger.warning(f"command: {args}")
+        logger.info(f"command: {args}")
         test_catch = False
         if test_catch:  # try to trap exception
             try:
@@ -241,7 +241,7 @@ class AmiLib:
         }
         abstract_args = subparser_dict.get(subparser_type)
 
-        logger.warning(f"abstract_args {abstract_args}")
+        logger.debug(f"abstract_args {abstract_args}")
         if abstract_args:
             abstract_args.parse_and_process1(self.args)
         else:
@@ -389,6 +389,7 @@ class AmiLib:
         version = '0.2.3a1'  # 2024-07-16 # markup html with dictionaries
         version = '0.2.3a2'  # 2024-07-17 # markup html with dictionaries
         version = '0.2.4a1'  # 2024-07-17 # add Wiktionary
+        version = '0.2.4a2'  # 2024-08-27 # build dictionaries from wordlists preparing for release
 
         # logging.warn(f"VERSION {version}")
         return version

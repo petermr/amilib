@@ -25,6 +25,7 @@ requirements = [
  'pyvis',
  'selenium',
  'tinycss',
+ 'SPARQLWrapper',
  'Tkinterweb',
  'webdriver-manager',
  'scikit-learn',
@@ -34,7 +35,7 @@ requirements = [
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.2.4a1',
+    version='0.2.4a2',
     description='document and dictionary download, cleaning, management',
     long_description_content_type='text/markdown',
     long_description=readme,
