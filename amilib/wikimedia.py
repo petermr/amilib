@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import os
@@ -1553,18 +1554,27 @@ class WiktionaryPage:
         """
         html_element, mw_content_text = cls.lookup_wiktionary_content(term)
         assert mw_content_text is not None
+        # cls.write_mw_content_text(mw_content_text, index=1)
         wiktionary_page = WiktionaryPage(html_element)
         language_chunks = cls.split_mw_content_text_by_language(mw_content_text)
         assert len(language_chunks) > 0, f"must have language chunks, found 0"
+        # cls.write_mw_content_text(mw_content_text, index=2)
 
         html_div = ET.Element("div")
-        html_div.append(language_chunks)
-        cls.process_parts_of_speech(html_element, mw_content_text)
+        html_div.append(copy.deepcopy(language_chunks))
+        cls.process_parts_of_speech(html_element, mw_content_text, html_div)
+        # cls.write_mw_content_text(mw_content_text, index=3)
         wiktionary_page.html_div = html_div
         logger.debug(f"html_div {ET.tostring(html_div)[:200]}...")
         wiktionary_page.url = cls.get_url(term)
 
         return wiktionary_page
+
+    @classmethod
+    def write_mw_content_text(cls, mw_content_text, index):
+        ss = XmlLib.element_to_string(mw_content_text, pretty_print=True)
+        with open((Path(FileLib.get_home(), "junk", f"junk{index}.xml")), "w") as f:
+            f.write(ss)
 
     @classmethod
     def get_url(cls, term):
@@ -1587,7 +1597,7 @@ class WiktionaryPage:
         experimental
         """
     @classmethod
-    def process_parts_of_speech(cls, html_element, mw_content_text):
+    def process_parts_of_speech(cls, html_element, mw_content_text_elem, html_div):
         """
         looks for parts of speech and their immediate environment.
         probably not optimal - use languages first
@@ -1598,13 +1608,14 @@ class WiktionaryPage:
         file = Path(FileLib.get_home(), "junk", f"{stem}.html")
         HtmlLib.write_html_file(html_element, file, pretty_print=True, debug=True)
         assert term is not None, f"term must not be None"
-        WiktionaryPage.validate_mw_content(mw_content_text, term, outdir=None)
+        WiktionaryPage.validate_mw_content(mw_content_text_elem, term, outdir=None)
+        logger.debug(f"mw_content {XmlLib.element_to_string(mw_content_text_elem)}")
         # assert html_div is not None, "process_parts_of_speech arg html_div is None"
-        WiktionaryPage.validate_mw_content(mw_content_text, term)
-        pphtml = ET.tostring(mw_content_text, pretty_print=True).decode()
+        WiktionaryPage.validate_mw_content(mw_content_text_elem, term)
+        pphtml = ET.tostring(mw_content_text_elem, pretty_print=True).decode()
         logger.debug(f"mw-content-text: {pphtml}")
         for i, pos in enumerate(cls.POS):
-            pos_div = cls.lookup_part_of_speech_div(pos, mw_content_text)
+            pos_div = cls.lookup_part_of_speech_div(pos, mw_content_text_elem)
             # assert pos_div is not None, f"no pos_div for {pos}"
             if pos_div is None:
                 logger.error(f"no pos_div for {pos}")
@@ -1624,10 +1635,10 @@ class WiktionaryPage:
             assert ol_elem is not None, f"no ol following div"
             # HtmlUtil.remove_elems(ol_elem, "./li/ul")
 
-            html_div.append(pos_span)
-            html_div.append(p_elem)
+            html_div.append(copy.deepcopy(pos_span))
+            html_div.append(copy.deepcopy(p_elem))
             if ol_elem is not None:
-                html_div.append(ol_elem)
+                html_div.append(copy.deepcopy(ol_elem))
 
             # HtmlUtil.remove_elems(pos_div, xpath=span_xpath)
 
@@ -1876,9 +1887,9 @@ class WiktionaryPage:
             if len(headers) > 0:
                 chunklist_subelem = cls.group_list(level + 1, level_class_list, elems)
                 if chunklist_subelem is not None:
-                    chunklist_elem.append(chunklist_subelem)
+                    chunklist_elem.append(copy.deepcopy(chunklist_subelem))
             else:
-                chunklist_elem.append(elem)
+                chunklist_elem.append(copy.deepcopy(elem))
         logger.debug(f"chunklist_elem {type(chunklist_elem)}")
         return chunklist_elem
 

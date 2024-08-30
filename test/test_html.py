@@ -11,10 +11,9 @@ from pathlib import Path
 
 import lxml.etree
 import lxml.etree as ET
-import pandas as pd
 
 # local
-from lxml.etree import HTMLParser
+from lxml.etree import HTMLParser, _Element
 
 from amilib.ami_bib import Reference, Biblioref
 from amilib.file_lib import FileLib
@@ -975,6 +974,20 @@ class HtmlTest(AmiAnyTest):
             # # add_children(body, bodyh)
             # # add_children(back, backh)
 
+    def test_element_to_string(self):
+        """
+        checks pretty-printing in XmlLib.element_to_string()
+        Note we cannot display it here without '\n'
+        """
+        p_elem = ET.Element("p")
+        span = ET.SubElement(p_elem, "span")
+        span.text = "text"
+
+        pretty_string = XmlLib.element_to_string(p_elem)
+        assert pretty_string == """<p>\n  <span>text</span>\n</p>\n"""
+
+        ugly_string = XmlLib.element_to_string(p_elem, pretty_print=False)
+        assert ugly_string == """<p><span>text</span></p>"""
 
 
 class PDFHTMLTest(AmiAnyTest):

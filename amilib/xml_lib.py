@@ -898,6 +898,19 @@ class XmlLib:
                 prec_elem.addnext(br_elem)
         return
 
+    @classmethod
+    def element_to_string(cls, element, method="xml", pretty_print=True, encoding="UTF-8"):
+        """
+        converts element to string
+        :param element: to render
+        :param method: "html" or "xml",default "xml"
+        :param pretty_print: pretty print , default True
+        :param encoding: default UTF-8
+
+        """
+        return None if element is None else lxml.etree.tostring(
+            element, method=method, pretty_print=pretty_print).decode(encoding)
+
 
 
 class HtmlElement:
@@ -1126,8 +1139,7 @@ class HtmlLib:
             Path(outdir).mkdir(exist_ok=True, parents=True)
 
         # cannot get this to output pretty_printed, (nor the encoding)
-        tobytes = lxml.etree.tostring(html_elem, method="html", pretty_print=pretty_print)
-        tostring = tobytes.decode("UTF-8")
+        tostring = lxml.etree.tostring(html_elem, method="html", pretty_print=pretty_print).decode("UTF-8")
 
         with open(str(outfile), "w") as f:
             f.write(tostring)
