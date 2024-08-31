@@ -58,6 +58,7 @@ class AbstractArgs(ABC):
         self.subparser_arg = "UNKNOWN"
 
     def create_arg_dict(self, args=None):
+        logger.debug(f"arg_dict args: f{args}")
         if args:
             self.parsed_args = args
         if not self.parsed_args:

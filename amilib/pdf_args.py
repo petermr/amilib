@@ -42,6 +42,7 @@ DEFAULT_CONVERT = "html"
 DEFAULT_MAXPAGES = 100
 
 logger = FileLib.get_logger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class PDFArgs(AbstractArgs):
@@ -78,7 +79,7 @@ class PDFArgs(AbstractArgs):
 
     def __init__(self):
         """arg_dict is set to default"""
-        # logger.warning("creating PDFArgs")
+        logger.debug("creating PDFArgs")
 
         super().__init__()
         self.convert = DEFAULT_CONVERT

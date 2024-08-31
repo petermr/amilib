@@ -1054,6 +1054,13 @@ class AmiDictionaryTest(AmiAnyTest):
         AmiLib().run_command(args)
         assert Path(chapter_outpath).exists()
 
+    def test_args_help(self):
+        args = [
+            "DICT",
+            "--help"
+        ]
+        AmiLib().run_command(args)
+
 class AmiEntryTest(AmiAnyTest):
     """
     test functionality of AmiEntry

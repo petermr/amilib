@@ -29,6 +29,7 @@ AMIX_DIR = Path(__file__).parent
 REPO_DIR = AMIX_DIR.parent
 
 logger = FileLib.get_logger(__name__)
+logger.setLevel(logging.INFO)
 
 class AmiLib:
     COPY = "copy"
@@ -57,9 +58,11 @@ class AmiLib:
 
         def run_dict(selfx):
             logger.debug(f"run dict amilib")
+            pass
 
         def run_pdf(args):
             logger.debug(f"run pdf")
+            pass
 
 
         version = self.version()
@@ -99,6 +102,7 @@ class AmiLib:
         subparsers = parser.add_subparsers(help='subcommands', dest="command")
         for choice in subparsers.choices:
             logger.debug(f">>> {choice}")
+            pass
 
         pdf_parser = AmiLibArgs.make_sub_parser(PDFArgs(), subparsers)
         logger.debug(f"pdf_parser {pdf_parser}")
@@ -196,7 +200,6 @@ class AmiLib:
         May duplicates
         """
         new_items = {}
-        # self.logger.debug(f"SYMBOLS1 {self.symbol_ini.symbols}")
         for item in self.args.items():
             new_item = self.make_substitutions(item)
             logger.debug(f"++++++++{item} ==> {new_item}")
@@ -249,13 +252,14 @@ class AmiLib:
 
     #
     def run_core_mathods(self):
-        logging.debug(f"run_core")
+        # logging.debug(f"run_core")
         # mainly obsolete
         if self.VERSION in self.args and self.args[self.VERSION] is not None:
             self.print_version()
 
     def print_version(self):
-        logger.debug(f"version {self.version()}")
+        print(f"version {self.version()}")
+
 
     #
     def replace_single_values_in_self_args_with_list(self, key):
@@ -390,6 +394,7 @@ class AmiLib:
         version = '0.2.3a2'  # 2024-07-17 # markup html with dictionaries
         version = '0.2.4a1'  # 2024-07-17 # add Wiktionary
         version = '0.2.4a2'  # 2024-08-27 # build dictionaries from wordlists preparing for release
+        version = '0.2.5a1'  # 2024-08-30 # fixed Wiktionary bug
 
         # logging.warn(f"VERSION {version}")
         return version

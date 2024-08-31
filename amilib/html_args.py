@@ -14,14 +14,14 @@ OUTPATH = "outpath"
 
 # logger = AmiLogger.create_named_logger(__file__)
 logger = FileLib.get_logger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 
 class HTMLArgs(AbstractArgs):
     """Parse args to analyze, edit and annotate HTML"""
 
     def __init__(self):
         """arg_dict is set to default"""
-        # logger.debug("creating HTML Args")
+        logger.debug("creating HTML Args")
         super().__init__()
         self.dictfile = None
         self.inpath = None
@@ -101,23 +101,6 @@ class HTMLArgs(AbstractArgs):
     def annotate_with_dict(self):
         """uses dictionary to annotate words and phrases in HTML file"""
         logger.warning("Dictionaries not supported")
-
-        # if not self.dictfile:
-        #     logging.error(f"no dictionary given")
-        #     return
-        # if not self.inpath:
-        #     logging.error(f"no input file to annotate given")
-        #     return
-        # if not self.outpath:
-        #     logging.error(f"no output file given")
-        #     return
-        # if not self.outdir:
-        #     self.outdir = Path(self.outpath).parent
-        # self.outdir = Path(self.outdir)
-        # self.outdir.mkdir(exist_ok=True)
-        #
-        # self.ami_dict = AmiDictionary.create_from_xml_file(self.dictfile)
-        # self.ami_dict.markup_html_from_dictionary(self.inpath, self.outpath, self.color)
 
 def main(argv=None):
     """entry point for HTML conversiom

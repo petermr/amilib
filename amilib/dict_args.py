@@ -15,25 +15,29 @@ from amilib.file_lib import FileLib
 from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage, WiktionaryPage
 
 # commandline
-DELETE = "delete"
+DESCRIPTION = "description"
 DICT = "dict"
-FILTER = "filter"
 INPATH = "inpath"
-LANGUAGE = "language"
-METADATA = "metadata"
+OPERATION = "operation"
 OUTPATH = "outpath"
-REPLACE = "replace"
 SYNONYM = "synonym"
 VALIDATE = "validate"
 WORDS = "words"
 
+# operations
+CREATE_DICT = "create"
+EDIT_DICT = "edit"
+MARKUP_FILE = "markup"
+VALIDATE_DICT = "validate"
+
+# description sources
 WIKIPEDIA = "wikipedia"
 WIKIDATA = "wikidata"
 WIKTIONARY = "wiktionary"
 
-
 logger = FileLib.get_logger(__name__)
 logger.setLevel(logging.DEBUG)
+
 
 class AmiDictArgs(AbstractArgs):
     """Parse args to build and edit dictionary"""
@@ -42,17 +46,15 @@ class AmiDictArgs(AbstractArgs):
         """arg_dict is set to default"""
         super().__init__()
         self.dictfile = None
-        self.metadata = None
-        self.filter = None
-        self.language = None
-        self.words = None
-        self.delete = None
-        self.replace = None
+        self.description = None
+        self.operation = None
         self.synonym = None
         self.validate = None
         self.wikidata = None
         self.wikipedia = None
         self.wiktionary = None
+        self.words = None
+
         self.ami_dict = None
         self.subparser_arg = "DICT"
 
@@ -64,19 +66,24 @@ class AmiDictArgs(AbstractArgs):
             self.parser = argparse.ArgumentParser()
         """adds arguments to a parser or subparser"""
         self.parser.description = 'AMI dictionary creation, validation, editing'
-        self.parser.add_argument(f"--{DELETE}", type=str, nargs="+",
-                                 help="list of entries (terms) to delete ? duplicates (NYI)")
+        self.parser.add_argument(f"--{DESCRIPTION}", type=str, nargs="+",
+                                 choices=[WIKIPEDIA, WIKTIONARY, WIKIDATA],
+                                 help="add extended description from one or more of these")
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
                                  help="path for dictionary (existing = edit; new = create (type depends on suffix *.xml or *.html)")
-        self.parser.add_argument(f"--{FILTER}", type=str, nargs=1, help="path for filter py_dictionary")
         self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
-        self.parser.add_argument(f"--{LANGUAGE}", type=str, nargs="+",
-                                 help="list of 2-character codes to consider (default = ['en'] (NYI)")
-        self.parser.add_argument(f"--{METADATA}", type=str, nargs="+", help="metadata item/s to add (NYI)")
+        self.parser.add_argument(f"--{OPERATION}", type=str,
+                                 default=CREATE_DICT,
+                                 choices=[CREATE_DICT, EDIT_DICT, MARKUP_FILE, VALIDATE_DICT],
+                                 help=f"operation: "
+                                      f"'{CREATE_DICT}' needs '{WORDS}'\n"
+                                      f" '{EDIT_DICT}' needs '{INPATH}'\n"
+                                      f" '{MARKUP_FILE}' need '{INPATH}' and '{OUTPATH}`\n"
+                                      f" '{VALIDATE}' requires '{INPATH}'\n"
+                                      f" default = '{CREATE_DICT}"
+                                 )
         self.parser.add_argument(f"--{OUTPATH}", type=str, nargs="+",
                                  help="output file ")
-        self.parser.add_argument(f"--{REPLACE}", type=str, nargs="+",
-                                 help="replace any existing entries/attributes (default preserve) (NYI)")
         self.parser.add_argument(f"--{SYNONYM}", type=str, nargs="+",
                                  help="add sysnonyms (from Wikidata) for terms (NYI)")
         self.parser.add_argument(f"--{VALIDATE}", action="store_true", help="validate dictionary")
@@ -86,7 +93,7 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{WIKTIONARY}", type=str, nargs="*",
                                  help="add Wiktionary output as html (may be messy)")
         self.parser.add_argument(f"--{WORDS}", type=str, nargs="*",
-                                 help="path/file with words or list of words")
+                                 help="path/file with words or list of words to create dictionaray")
         self.parser.epilog = """
         Examples:
         DICT --words wordsfile --dict dictfile --wikipedia   # creates dictionary from wordsfile and adds wikipedia info
@@ -101,52 +108,38 @@ class AmiDictArgs(AbstractArgs):
         """runs parsed args
         :return:
         """
-        # from amilib.ami_dict import DELETE, DICT, FILTER, LANGUAGE, METADATA, REPLACE, SYNONYM
-        # from amilib.ami_dict import VALIDATE, WIKIDATA, WIKIPEDIA, WORDS
-
-        """
-        self.parser.add_argument(f"--dict", type=str, nargs=1, help="path for dictionary (existing = edit; new = create")
-        self.parser.add_argument(f"--metadata", type=str, nargs="+", help="metadata item/s to add")
-        self.parser.add_argument(f"--language", type=str, nargs="+", help="list of 2-character codes to consider (default = ['en']")
-        self.parser.add_argument(f"--words", type=str, nargs=1, help="path/file with words to make or edit dictionary")
-        self.parser.add_argument(f"--delete", type=str, nargs="+", help="list of entries (terms) to delete")
-        self.parser.add_argument(f"--replace", type=str, help="replace any existing entries/attributes (default preserve)")
-        self.parser.add_argument(f"--synonym", type=str, help="add sysnonyms (from Wikidata) for terms")
-        self.parser.add_argument(f"--validate", type=str, nargs="*", help="validate dictionary")
-        self.parser.add_argument(f"--wikidata", type=str, nargs="*", help="add WikidataIDs")
-        self.parser.add_argument(f"--wikipedia", type=str, nargs="*", help="add Wikipedia link/s")
-        """
         logger.debug(f"DICT process_args {self.arg_dict}")
         if not self.arg_dict:
             logger.debug(f"no arg_dict given, no actiom")
 
-        self.delete = self.arg_dict.get(DELETE)
         self.dictfile = self.arg_dict.get(DICT)
-        self.filter = self.arg_dict.get(FILTER)
         self.inpath = self.arg_dict.get(INPATH)
-        self.language = self.arg_dict.get(LANGUAGE)
-        self.metadata = self.arg_dict.get(METADATA)
-        self.replace = self.arg_dict.get(REPLACE)
         self.outpath = self.arg_dict.get(OUTPATH)
+        self.operation = self.arg_dict.get(OPERATION)
         self.synonym = self.arg_dict.get(SYNONYM)
         self.validate = self.arg_dict.get(VALIDATE)
         self.wikidata = self.arg_dict.get(WIKIDATA)
         self.wikipedia = self.arg_dict.get(WIKIPEDIA)
         self.wiktionary = self.arg_dict.get(WIKTIONARY)
-        self.words = self.arg_dict.get(WORDS)
-        self.wordlist = None
+        self.words = self.make_input_words(WORDS)
+        # self.wordlist = None
 
-        if self.inpath and self.dictfile and self.outpath:
-            self.make_dictionary_markup_file(self.inpath, self.dictfile, self.outpath)
-            return
+        # rationalise arguments
 
-        self.make_input_words()
-        if (self.words is not None):
-            self.build_or_edit_dictionary()
-            assert self.ami_dict is not None
-            # self.ami_dict, _ = AmiDictionary.create_dictionary_from_words(self.words_in, title=None, desc=None, wikilangs=None,
-            #                                  wikidata=False, wiktionary=False, outdir=None,
-            #                                  debug=True)
+        if self.operation is None:
+            raise ValueError("No operatin given")
+        elif self.operation == CREATE_DICT:
+            self.create_dictionary_from_words()
+        elif self.operation == EDIT_DICT:
+            self.edit_dictionary()
+        elif self.operation == MARKUP_FILE:
+            self.markup_file_with_dict()
+        elif self.operation == VALIDATE:
+            self.validate_dict()
+        else:
+            raise ValueError(f"unknown oeration {self.operation}")
+
+
 
         if self.dictfile:
 
@@ -157,16 +150,10 @@ class AmiDictArgs(AbstractArgs):
             else:
                 self.ami_dict = self.build_or_edit_dictionary()
                 if self.ami_dict is None:
-
                     logger.error(f"no dictionary; failed to write dictionary {self.dictfile}")
 
-        if self.validate:
-            if self.ami_dict is None:
-                logger.debug(f"no dictionary givem")
-            else:
-                logger.debug(f"VALIDATING {self.ami_dict}")
-                status = self.validate_dict()
-                logger.debug(f"validation finished")
+        if self.validate and self.ami_dict is None:
+            status = self.validate_dict()
 
         # for argument --wikidata
         # logger.debug(f"wikidata: {self.wikidata}")
@@ -196,11 +183,19 @@ class AmiDictArgs(AbstractArgs):
             if self.ami_dict:
                 self.ami_dict.write_to_file(self.dictfile, debug=True)
 
+    def create_dictionary_from_words(self):
+        if (self.words is not None):
+            self.build_or_edit_dictionary()
+            assert self.ami_dict is not None
+
     # class AmiDictArgs:
 
     @classmethod
     def create_default_arg_dict(cls):
         """returns a new COPY of the default dictionary"""
+        """
+        is this used?
+        """
         # from amilib.dict_args import DICT, VALIDATE, WIKIDATA, WORDS
         arg_dict = dict()
         arg_dict[DICT] = None
@@ -213,15 +208,10 @@ class AmiDictArgs(AbstractArgs):
         # cyclic imports TODO
         from amilib.ami_dict import AmiDictionary
 
-        wiktionary = True
-        if not self.dictfile:
-            logger.error("No dictionary file given")
-            # return None
-
-
         if self.words is not None:
+            logger.info(f"creating dictionary from {self.words[:3]}...")
             self.ami_dict, _ = AmiDictionary.create_dictionary_from_words(
-                terms=self.words, title="unknown", wiktionary=wiktionary)
+                terms=self.words, title="unknown", wiktionary=False)
         return self.ami_dict
 
     def add_wikidata_to_dict(self, description_regex=None):
@@ -298,8 +288,6 @@ class AmiDictArgs(AbstractArgs):
             ami_entry = AmiEntry.create_from_element(entry_elem)
             ami_entry.lookup_and_add_wikipedia_page()
 
-
-
     def create_hit_dict_for(self, serial, qitem_hit):
         qitem_hit_dict = dict()
         page = WikidataPage(pqitem=qitem_hit)
@@ -311,18 +299,26 @@ class AmiDictArgs(AbstractArgs):
 
         return qitem_hit_dict
 
-    def validate_dict(self):
-        status = False
-        if self.dictfile and Path(self.dictfile).exists():
-            self.ami_dict.check_validity()
-        else:
-            logger.error(f"vallidate_dict requires existing dictionary; no validation")
-        return status
-
     @property
     def module_stem(self):
         """name of module"""
         return Path(__file__).stem
+
+    def make_input_words(self, words):
+        self.words = FileLib.get_input_strings(words)
+        return self.words
+
+    # ========== create=======
+
+    # ========== eiit ========
+    def edit_dictionary(self):
+        pass
+
+
+# ========== markup ========
+    def markup_file_with_dict(self):
+        if self.inpath and self.dictfile and self.outpath:
+            self.make_dictionary_markup_file(self.inpath, self.dictfile, self.outpath)
 
     def make_dictionary_markup_file(self, inpath, dictfile, outpath):
         from amilib.ami_dict import AmiDictionary
@@ -336,10 +332,20 @@ class AmiDictArgs(AbstractArgs):
         # # logger.info(f"terms: {len(dictionary.get_terms())} {dictionary.get_terms()[0]}")
         # dictionary.markup_html_from_dictionary(inpath, outpath)
         AmiDictionary.read_html_dictionary_and_markup_html_file(
-             str(inpath), str(outpath), html_dict_path=dictfile)
+            str(inpath), str(outpath), html_dict_path=dictfile)
 
-    def make_input_words(self):
-        self.words = FileLib.get_input_strings(self.words)
+    # ========== validate ========
+    def validate_dict(self):
+        logger.debug(f"VALIDATING {self.ami_dict}")
+        status = False
+        if self.dictfile and Path(self.dictfile).exists():
+            self.ami_dict.check_validity()
+        else:
+            logger.error(f"vallidate_dict requires existing dictionary; no validation")
+        logger.debug(f"validation finished")
+        return status
+
+# =============================
 
 
 # ====================
@@ -354,7 +360,6 @@ def main(argv=None):
     except Exception as e:
         logger.debug(traceback.format_exc())
         logger.error(f"***Cannot run amidict***; see output for errors: {e} ")
-
 
 
 if __name__ == "__main__":
