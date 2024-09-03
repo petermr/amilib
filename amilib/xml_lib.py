@@ -1145,7 +1145,7 @@ class HtmlLib:
         with open(str(outfile), "w") as f:
             f.write(tostring)
         if debug:
-            logger.info(f"wrote: {Path(outfile).absolute()}")
+            print(f"wrote: {Path(outfile).absolute()}")
 
     @classmethod
     def create_rawgithub_url(cls, site=None, username=None, repository=None, branch=None, filepath=None,
@@ -1436,6 +1436,29 @@ class HtmlLib:
         link = ET.SubElement(HtmlLib.get_head(htmlx), "link")
         link.attrib["rel"] = "stylesheet"
         link.attrib["href"] = css_file
+
+    @classmethod
+    def add_base_to_head(self, htmlx, base_href):
+        """
+        create or reuse a single <base> child of <head> and add self.base as href value
+        :param: html root element
+        :param base_href: value for @href on <base>
+        """
+        if htmlx is None:
+            logger.error("no HTML element")
+            return
+        if base_href is None:
+            logger.error("no base_href")
+            return
+        head = HtmlLib.get_head(htmlx)
+        bases = head.xpath("./base")
+        if len(bases) == 1:
+            base = bases[0]
+        else:
+            # create base
+            base = ET.SubElement(HtmlLib.get_head(htmlx), "base")
+        base.attrib["href"] = base_href
+
 
 
 class DataTable:

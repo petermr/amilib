@@ -278,7 +278,7 @@ class WikipediaTest(base_test):
         entries = xml_ami_dict.get_ami_entries()
         assert len(entries) == 30, f"{xml_dict_file} should have 30 entries"
         ami_entry = entries[0]
-        div = ami_entry.create_semantic_div()
+        div = ami_entry.create_semantic_div_from_term()
         html_elem = HtmlLib.create_html_with_empty_head_body()
         body = HtmlLib.get_body(html_elem)
         body.append(div)
@@ -296,8 +296,8 @@ class WikipediaTest(base_test):
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
-        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", "xml", f"{stem}.xml"))
-        html_elem = xml_ami_dict.create_html_dictionary(title=stem)
+        xml_ami_dict.create_html_write_to_file(Path(Resources.TEMP_DIR, "words", "xml", f"{stem}.xml"))
+        html_elem = xml_ami_dict.create_html_dictionary(create_default_entry=True, title=stem)
         path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html", debug="True")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
@@ -312,8 +312,8 @@ class WikipediaTest(base_test):
         logger.debug(f"output dict: {output_dict}")
         FileLib.delete_file(output_dict)
         args = ["DICT",
-                "--words", str(input),
-                "--dict", str(output_dict),
+                "--words", input,
+                "--dict", output_dict,
                 "--wikipedia",
                 ]
         amilib = AmiLib()
@@ -355,8 +355,8 @@ class WikipediaTest(base_test):
         assert words_file.exists()
         xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
         assert xml_ami_dict is not None
-        xml_ami_dict.write_to_file(Path(Resources.TEMP_DIR, "words", f"{stem}.html"))
-        html_elem = xml_ami_dict.create_html_dictionary()
+        xml_ami_dict.create_html_write_to_file(Path(Resources.TEMP_DIR, "words", f"{stem}.html"))
+        html_elem = xml_ami_dict.create_html_dictionary(create_default_entry=True)
         path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()

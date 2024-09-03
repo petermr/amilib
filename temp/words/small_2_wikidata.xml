@@ -1,32 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dictionary title="unknown">
-  <entry name="anthropogenic" term="anthropogenic">
-    <div qid="Q7942">
-      <a href="wikidataURL/Q7942">Wikidata</a>
-      <p role="title">climate change</p>
-      <p role="description">current rise in Earth's average temperature and related large-scale shifts in weather patterns</p>
-    </div>
-    <div qid="Q180644">
-      <a href="wikidataURL/Q180644">Wikidata</a>
-      <p role="title">light pollution</p>
-      <p role="description">anthropogenic light in the night environment, caused by excess or misdirected lighting</p>
-    </div>
-    <div qid="Q271669">
-      <a href="wikidataURL/Q271669">Wikidata</a>
-      <p role="title">landform</p>
-      <p role="description">a natural or anthropogenic land feature on the solid surface of the Earth or other planetary body; geomorphological unit in the Earth sciences</p>
-    </div>
-    <div qid="Q1780867">
-      <a href="wikidataURL/Q1780867">Wikidata</a>
-      <p role="title">litter</p>
-      <p role="description">waste products that have been disposed improperly, without consent, at an inappropriate location</p>
-    </div>
-    <div qid="Q574376">
-      <a href="wikidataURL/Q574376">Wikidata</a>
-      <p role="title">human impact on the environment</p>
-      <p role="description">observed or potential changes to biophysical environments and ecosystems caused directly or indirectly by humans, including global warming, environmental degradation, mass extinction and biodiversity loss, ecological crisis and collapse</p>
-    </div>
-  </entry>
+  <entry name="anthropogenic" term="anthropogenic"><div qid="Q7942"><a href="wikidataURL/Q7942">Wikidata</a><p role="title">climate change</p><p role="description">current rise in Earth's average temperature and related large-scale shifts in weather patterns</p></div><div qid="Q180644"><a href="wikidataURL/Q180644">Wikidata</a><p role="title">light pollution</p><p role="description">anthropogenic light in the night environment, caused by excess or misdirected lighting</p></div><div qid="Q271669"><a href="wikidataURL/Q271669">Wikidata</a><p role="title">landform</p><p role="description">a natural or anthropogenic land feature on the solid surface of the Earth or other planetary body; geomorphological unit in the Earth sciences</p></div><div qid="Q1780867"><a href="wikidataURL/Q1780867">Wikidata</a><p role="title">litter</p><p role="description">waste products that have been disposed improperly, without consent, at an inappropriate location</p></div><div qid="Q574376"><a href="wikidataURL/Q574376">Wikidata</a><p role="title">human impact on the environment</p><p role="description">observed or potential changes to biophysical environments and ecosystems caused directly or indirectly by humans, including global warming, environmental degradation, mass extinction and biodiversity loss, ecological crisis and collapse</p></div><p class="wpage_first_para"><b>Anthropogenic</b> ("human" + "generating") is an adjective that may refer to:
+</p>
+</entry>
   <entry name="tropospheric" term="tropospheric">
     <div qid="Q64767836">
       <a href="wikidataURL/Q64767836">Wikidata</a>
@@ -53,5 +29,9 @@
       <p role="title">Time-resolved absorption spectroscopy applied to tropospheric chemistry</p>
       <p role="description">doctoral thesis by Thomas Robert Lewis</p>
     </div>
+    <p class="wpage_first_para">The <b>troposphere</b> is the lowest layer of the <a href="/wiki/Atmosphere_of_Earth" title="Atmosphere of Earth">atmosphere of Earth</a>. It contains 80% of the total mass of the <a href="/wiki/Atmosphere" title="Atmosphere">planetary atmosphere</a> and 99% of the total mass of <a href="/wiki/Water_vapor" title="Water vapor">water vapor</a> and <a href="/wiki/Aerosol" title="Aerosol">aerosols</a>, and is where most <a href="/wiki/Weather" title="Weather">weather</a> phenomena occur.<sup id="cite_ref-1" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup> From the planetary surface of the Earth, the average height of the troposphere is 18 km (11 mi; 59,000 ft) in the <a href="/wiki/Tropics" title="Tropics">tropics</a>; 17 km (11 mi; 56,000 ft) in the <a href="/wiki/Middle_latitudes" title="Middle latitudes">middle latitudes</a>; and 6 km (3.7 mi; 20,000 ft) in the high latitudes of the <a href="/wiki/Polar_regions" class="mw-redirect" title="Polar regions">polar regions</a> in winter; thus the average height of the troposphere is 13 km (8.1 mi; 43,000 ft).
+</p>
+    <div title="figure"><figure class="mw-default-size" typeof="mw:File/Thumb"><a href="/wiki/File:ISS-47_Islands_In_The_Sky,_Indonesia.jpg" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/f/f6/ISS-47_Islands_In_The_Sky%2C_Indonesia.jpg/330px-ISS-47_Islands_In_The_Sky%2C_Indonesia.jpg" decoding="async" width="330" height="220" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/f/f6/ISS-47_Islands_In_The_Sky%2C_Indonesia.jpg/495px-ISS-47_Islands_In_The_Sky%2C_Indonesia.jpg 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/f/f6/ISS-47_Islands_In_The_Sky%2C_Indonesia.jpg/660px-ISS-47_Islands_In_The_Sky%2C_Indonesia.jpg 2x" data-file-width="4928" data-file-height="3280"/></a><figcaption>A picture of Earth's troposphere with its different <a href="/wiki/Cloud_types" class="mw-redirect" title="Cloud types">cloud types</a> of low to <a href="/wiki/High_altitude" class="mw-redirect" title="High altitude">high altitudes</a> casting shadows. Sunlight is reflected off the ocean, after it was filtered into a reddish light by passing through much of the troposphere at sunset. The above lying <a href="/wiki/Stratosphere" title="Stratosphere">stratosphere</a> can be seen at the <a href="/wiki/Horizon" title="Horizon">horizon</a> as a band of its characteristic glow of <a href="/wiki/Rayleigh_scattering" title="Rayleigh scattering">blue scattered</a> sunlight.</figcaption></figure>
+</div>
   </entry>
 </dictionary>

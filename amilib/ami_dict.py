@@ -1,4 +1,5 @@
 import ast
+import copy
 import logging
 import os
 import re
@@ -13,7 +14,7 @@ import lxml
 import pandas as pd
 from lxml import etree
 from lxml import etree as ET
-from lxml.etree import _Element
+from lxml.etree import _Element, Element
 from lxml.html import HTMLParser
 
 from amilib.ami_html import HtmlUtil, CSSStyle, H_A, H_SPAN, H_BODY, H_DIV, H_UL, H_LI, A_ID, \
@@ -26,6 +27,7 @@ from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage, WiktionaryPage
 from amilib.xml_lib import HtmlLib
+from test.resources import Resources
 
 # elements in amidict
 DICTIONARY = "dictionary"
@@ -36,15 +38,18 @@ RAW = "raw"
 TITLE = "title"
 
 # attributes in amidict
+AMI_ENTRY = "ami_entry"
 DESC = "desc" # description attribute in <dictionary> or <entry>
 DEFINITION = "definition"  # one-sentence definition for entry
 DESCRIPTION = "description"  # description attribute in <dictionary> or <entry> (often paragraph)
 
 NAME = "name" # non-lexical name for entry (maybe obsolete
+ROLE = "role"
 TERM = "term" # exact term for entry (includes case and spaces)
 WIKIDATA_ID = "wikidataID" # primary ID for entry where it exists
 WIKIDATA_URL = "wikidataURL" # link to Wikidata entry
 WIKIDATA_SITE = "https://www.wikidata.org/entity/" # URL of Wikidata site
+WIKIPEDIA_URL = "https://en.wikipedia.org/wiki/" # bases of English Wikipedia
 WIKIPEDIA_PAGE = "wikipediaPage" # container for whole Wikipedia page??
 TYPE = "type"
 ANY = "ANY"
@@ -99,7 +104,7 @@ class AmiEntry:
 
     @classmethod
     def create_from_element(cls, entry_element):
-        """create from raw XML element
+        """create from raw XML element (wraps element)
         :param entry_element: directly constructed from dictionary files or constructed
         :return: AmiEntry
         """
@@ -435,14 +440,15 @@ class AmiEntry:
         child_paras  = self.element.xpath(xpath)
         return None if len(child_paras) == 0 else child_paras[0]
 
-    def create_semantic_div(self, parent_elem=None):
+    def create_semantic_div_from_term(self, entry_elem=None, add_figures=False):
         """
         create html div for term with wikipedia page para
         :param ami_entry: ami entry with wikipedia page paragraph
+
         :return: div with term and para
         """
         html_div = ET.Element("div")
-        html_div.attrib["role"] = "ami_entry"
+        html_div.attrib[ROLE] = AMI_ENTRY
         term = self.get_term()
         name = self.get_name()
         id = self.create_id(name)
@@ -451,6 +457,7 @@ class AmiEntry:
         self._add_raw_term(html_div)
 
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        wikipedia_page.get_infobox()
         wp_para = wikipedia_page.create_first_wikipedia_para()
         if wp_para is None:
             logger.error(f"could not find page for term {term}")
@@ -478,6 +485,49 @@ class AmiEntry:
         """
         id = None if name is None else name.strip().lower().replace("\\s+", "_")
         return id
+
+    def add_figures_to_entry(self):
+        term = self.get_term()
+        if term is None:
+            logger.warning(f"element has no term")
+            return
+        dictionary = self.element.xpath('parent::*')[0]
+        # gparent = dictionary.xpath('parent::*')
+        outfile = Path(Resources.TEMP_DIR, 'figures', f"dictionary_{term}.html")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        logger.debug(wikipedia_page)
+        if wikipedia_page is None:
+            logger.warning(f"Cannot find wikipedia page for {term}")
+            return
+        a_elem = wikipedia_page.extract_a_elem_with_image_from_infobox()
+        logger.debug(f"{term}: {a_elem}")
+        figures = wikipedia_page.html_elem.xpath(".//figure")
+        if a_elem is None and len(figures) == 0:
+            logger.info(f"NO FIGURES for {term}")
+            return
+        figure_div = ET.SubElement(self.element, "div")
+        figure_div.attrib["title"] = "figure"
+        if a_elem is not None:
+            figure_div.append(copy.deepcopy(a_elem))
+            logger.info(f"added figure {a_elem} for {term} to {outfile}")
+            # logger.warning(f"A_ELEM.. {ET.tostring(dictionary, pretty_print=True).decode()}")
+
+            # x_elem = Element("no_element") if len(xs) == 0 else xs[0]
+            # logger.warning(f"HTMLXX.. {ET.tostring(x_elem, pretty_print=True).decode()}")
+        elif len(figures) > 0:
+            figure_div.append(copy.deepcopy(figures[0]))
+            # logger.warning(f"FIG_ELEM.. {ET.tostring(dictionary, pretty_print=True).decode()}")
+
+    def create_semantic_div(self):
+        html_div = Element("div")
+        # copy attributes
+        for (k, v) in self.element.attrib.items():
+            html_div.attrib[k] = v
+        # copy children
+        for child in self.element.xpath("./*"):
+            html_div.append(copy.deepcopy(child))
+        html_div.attrib[ROLE] = AMI_ENTRY
+        return html_div
 
 
 class AmiDictionary:
@@ -521,6 +571,7 @@ class AmiDictionary:
         self.wikilangs = wikilangs
         self.wikidata_lookup = WikidataLookup()
         self.location_xml = None # path where dictionary lives; maybe set on dictionary reading or writing
+        self.html_base = WIKIPEDIA_URL
         self.options = {} if "options" not in kwargs else kwargs["options"]
 
         if "synonyms" in self.options:
@@ -1087,13 +1138,14 @@ class AmiDictionary:
             logger.warning(f"None directory")
         directory.mkdir(exist_ok=True)
         file = Path(directory, f"{self.root.attrib[TITLE]}.xml")
-        self.write_to_file(file)
+        self.create_html_write_to_file(file)
         return file
 
-    def write_to_file(self, file, debug=True):
+    def create_html_write_to_file(self, file, debug=True):
         """write dictionary to file
         :param file: to write to (type is determined by suffix (.xml) or (.html)
         :param debug: debug output
+        :param has_figures: Figures and desciptions already added
         """
         root = etree.ElementTree(self.root)
         FileLib.force_mkparent(file)
@@ -1103,11 +1155,13 @@ class AmiDictionary:
                 root.write(f, encoding="utf-8",
                          xml_declaration=True, pretty_print=True)
         elif file_str.endswith(".html"):
-            logger.info(f"writing HTML to {file}")
+            if debug:
+                logger.info(f"writing HTML to {file}")
             title = Path(file).stem
-            sem_html = self.create_html_dictionary(title=title)
-            HtmlLib.write_html_file(
-                sem_html, file, debug=True)
+            sem_html = self.create_html_dictionary(create_default_entry=False, title=title)
+            HtmlLib.add_base_to_head(sem_html, self.html_base)
+
+            HtmlLib.write_html_file(sem_html, file, debug=True)
 
         else:
             logger.error(f"unknown output suffix in {file}")
@@ -1391,7 +1445,7 @@ class AmiDictionary:
         wikidata_sparql = WikidataSparql(dictionary)
         wikidata_sparql.update_from_sparql(sparql_file, sparq2dict)
         dictionary_file = f"{dictionary_root}{keystring}_{i + 1}.xml"
-        dictionary.write_to_file(dictionary_file)
+        dictionary.create_html_write_to_file(dictionary_file)
         return dictionary_file
 
     @classmethod
@@ -1563,15 +1617,13 @@ class AmiDictionary:
                 id_list.append(id)
         return id_list
 
-    def create_html_dictionary(self, title=None):
+    def create_html_dictionary(self, create_default_entry=False, title=None):
         """
         output semantic html for dictionary
         :return: semantic HTML
         """
         html_dict = HtmlLib.create_html_with_empty_head_body()
-        head = HtmlLib.get_head(html_dict)
-        style = ET.SubElement(head, "style")
-        style.text = ("div[role] {border:solid 1px;margin:1px;}")
+        self.add_style(html_dict)
         body = HtmlLib.get_body(html_dict)
         dictionary_div = ET.SubElement(body, "div")
         dictionary_div.attrib["role"] = "ami_dictionary"
@@ -1579,12 +1631,20 @@ class AmiDictionary:
             dictionary_div.attrib[TITLE] = title
         entries = self.get_ami_entries()
         for ami_entry in entries:
-            entry_div = ami_entry.create_semantic_div()
-            if entry_div is not None:
-                assert type(entry_div) is _Element
-                dictionary_div.append(entry_div)
+            if create_default_entry:
+                entry_div = ami_entry.create_semantic_div_from_term()
+            else:
+                entry_div = ami_entry.create_semantic_div()
+            if len(entry_div.xpath("*")) == 0:
+                p = ET.SubElement(entry_div, "p")
+                p.text = f"Cannot find Wikimedia for {entry_div.attrib.get(TERM)}"
+            dictionary_div.append(entry_div)
         return html_dict
 
+    def add_style(self, html_dict):
+        head = HtmlLib.get_head(html_dict)
+        style = ET.SubElement(head, "style")
+        style.text = ("div[role] {border:solid 1px;margin:1px;}")
 
     @classmethod
     def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path):

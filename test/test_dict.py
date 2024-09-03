@@ -970,7 +970,7 @@ class AmiDictionaryTest(AmiAnyTest):
         assert dictionary is not None
         phrases = dictionary.get_terms()
         html_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", "climate_words.html")
-        dictionary.write_to_file(html_path, debug=True)
+        dictionary.create_html_write_to_file(html_path, debug=True)
         dictionary.location = html_path
         assert len(phrases) == 11
         para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_path)
@@ -1001,11 +1001,11 @@ class AmiDictionaryTest(AmiAnyTest):
         assert len(dictionary.get_terms()) == 43
 
         xml_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.xml")
-        dictionary.write_to_file(xml_dict_path, debug=True)
+        dictionary.create_html_write_to_file(xml_dict_path, debug=True)
         assert xml_dict_path.exists()
 
         html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
-        dictionary.write_to_file(html_dict_path, debug=True)
+        dictionary.create_html_write_to_file(html_dict_path, debug=True)
         assert html_dict_path.exists()
 
         phrases = dictionary.get_terms()
@@ -1598,23 +1598,24 @@ class DictionaryCreationTest(AmiAnyTest):
         assert (c := ami_dictionary.get_entry_count()) >= expected_count, \
             f"dictionary should contain {expected_count} found {c}"
 
-    def test_make_dict_with_images(self):
-        stem = "with_images"
+    def test_make_dict_with_figures(self):
+        stem = "with_figures"
         output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
 
         words = [
-            "Bay of Bengal",
+
+        ]
+        args = [
+            "DICT",
+            "--words", "Bay of Bengal",
             "JNU",
             "troposphere",
             "Permafrost",
             "centennial",
             "aerosol",
             "Albedo",
-        ]
-        args = [
-            "DICT",
-            "--words", words,
             "--dict", output_dict,
+            "--figures",
         ]
         AmiLib().run_command(args)
         assert Path(output_dict).exists()

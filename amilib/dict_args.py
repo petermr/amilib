@@ -18,6 +18,7 @@ from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage, Wiktio
 # commandline
 DESCRIPTION = "description"
 DICT = "dict"
+FIGURES = "figures"
 IMAGE = "image"
 INPATH = "inpath"
 OPERATION = "operation"
@@ -74,10 +75,11 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
                                  help="path for dictionary (existing = edit; new = create (type depends on suffix *.xml or *.html)")
         self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
-        self.parser.add_argument(f"--{IMAGE}", type=str,
+        self.parser.add_argument(f"--{FIGURES}", type=str,
+                                 nargs="*",
                                  default=WIKIPEDIA,
                                  choices=[WIKIPEDIA],
-                                 help=f"sources for images: "
+                                 help=f"sources for figures: "
                                       f"'{WIKIPEDIA}' uses infobox or first thumbnail,"
                                       f" default={WIKIPEDIA}")
         self.parser.add_argument(f"--{OPERATION}", type=str,
@@ -119,6 +121,7 @@ class AmiDictArgs(AbstractArgs):
             logger.debug(f"no arg_dict given, no actiom")
 
         self.dictfile = self.arg_dict.get(DICT)
+        self.figures = self.arg_dict.get(FIGURES)
         self.inpath = self.arg_dict.get(INPATH)
         self.outpath = self.arg_dict.get(OUTPATH)
         self.operation = self.arg_dict.get(OPERATION)
@@ -163,7 +166,7 @@ class AmiDictArgs(AbstractArgs):
         logger.debug(f"writing to {self}")
         if self.dictfile:
             if self.ami_dict:
-                self.ami_dict.write_to_file(self.dictfile, debug=True)
+                self.ami_dict.create_html_write_to_file(self.dictfile, debug=True)
 
     def add_descriptions(self):
         if self.wikidata is not None:
@@ -186,14 +189,16 @@ class AmiDictArgs(AbstractArgs):
                 # status = self.validate_dict()
 
     def create_dictionary_from_words(self):
-        if (self.words is not None):
+        if self.words is not None:
             self.build_or_edit_dictionary()
             assert self.ami_dict is not None
 
             self.add_descriptions()
+            if self.figures is not None:
+                self.add_figures()
 
             if self.dictfile is not None:
-                self.ami_dict.write_to_file(self.dictfile, debug=True)
+                self.ami_dict.create_html_write_to_file(self.dictfile, debug=True)
 
     # class AmiDictArgs:
 
@@ -320,9 +325,21 @@ class AmiDictArgs(AbstractArgs):
 
 # ========== create=======
 
-# ========== eiit ========
+    def add_figures(self):
+        # TODO CYCLIC import
+        from amilib.ami_dict import AmiEntry
+        """
+        """
+        if self.ami_dict.entries is None:
+            logger.warning("No self.ami_dict.entries")
+            return
+        for entry_elem in self.ami_dict.entries:
+            ami_entry = AmiEntry.create_from_element(entry_elem)
+            ami_entry.lookup_and_add_wikipedia_page()
+            ami_entry.add_figures_to_entry()
+
+    # ========== eiit ========
     def edit_dictionary(self):
-        pass
         self.add_descriptions()
 
 
@@ -355,6 +372,8 @@ class AmiDictArgs(AbstractArgs):
             logger.error(f"vallidate_dict requires existing dictionary; no validation")
         logger.debug(f"validation finished")
         return status
+
+
 
 # =============================
 
