@@ -1,12 +1,10 @@
 """Resources such as data used by other modules
 This may develop into a dataclass"""
 
-import logging
 from pathlib import Path
+from amilib.util import Util
 
-from amilib.file_lib import FileLib
-
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 
 class Resources:
@@ -124,129 +122,129 @@ class Resources:
     TEMP_DIR = Path(Path(__file__).parent.parent, "temp")
 
     WG_REPORTS = {
-    #     "default": {
-    #         "footer_height": 70,
-    #         "header_height": 70,
-    #     },
-    #     "SYR_LR": {
-    #         "name": "SYR_LR",
-    #         "input_pdf": Path(TEST_IPCC_SYR, "lr", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "syr", "lr", "pages"),
-    #         "footer_height": 50,
-    #         "header_height": 50
-    #     },
-    #     "SYR_SPM": {
-    #         "name": "SYR_SPM",
-    #         "input_pdf": Path(TEST_IPCC_SYR, "spm", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "syr", "spm", "pages"),
-    #         "footer_height": 50,
-    #         "header_height": 50
-    #     },
-    #     "SROCC_TS": {
-    #         "name": "SROCC_TS",
-    #         "input_pdf": Path(TEST_IPCC_SROCC, "ts", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "srocc", "ts", "pages"),
-    #         "footer_height": 70,
-    #         "header_height": 70
-    #     },
-    #     "SROCC_SPM": {
-    #         "name": "SROCC_SPM",
-    #         "input_pdf": Path(TEST_IPCC_SROCC, "spm", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "srocc", "spm", "pages"),
-    #         "footer_height": 70,
-    #         "header_height": 70
-    #     },
-    #
-    #     "SRCCL_TS": {
-    #         "name": "SRCCL_TS",
-    #         "input_pdf": Path(TEST_IPCC_SRCCL, "ts", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "srccl", "ts", "pages"),
-    #         "footer_height": 70,
-    #         "header_height": 70
-    #     },
-    #
-    #     "SRCCL_SPM": {
-    #         "name": "SRCCL_SPM",
-    #         "input_pdf": Path(TEST_IPCC_SRCCL, "spm", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "srccl", "spm", "pages"),
-    #         "footer_height": 70,
-    #         "header_height": 70
-    #     },
-    #
-    #     "SR15_TS": {
-    #         "name": "SR15_TS",
-    #         "input_pdf": Path(TEST_IPCC_SR15, "ts", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "sr15", "ts", "pages"),
-    #         "footer_height": 70,
-    #         "header_height": 70
-    #     },
-    #
-    #     "SR15_SPM": {
-    #         "name": "SR15_SPM",
-    #         "input_pdf": Path(TEST_IPCC_SR15, "spm", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "sr15", "spm", "pages"),
-    #         "footer_height": 70,
-    #         "header_height": 70
-    #     },
-    #
-    #     "WG1_TS": {
-    #         "name": "WG1_TS",
-    #         "input_pdf": Path(TEST_IPCC_DIR, "wg1", "ts", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg1", "ts", "pages"),
-    #         "footer_height": 30,
-    #         "header_height": 50
-    #     },
-    #
-    #     "WG1_SPM": {
-    #         "name": "WG1_SPM",
-    #         "input_pdf": Path(TEST_IPCC_DIR, "wg1", "spm", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg1", "spm", "pages"),
-    #         "footer_height": 30,
-    #         "header_height": 50
-    #     },
-    #
-    #     "WG2_TS": {
-    #         "name": "WG2_TS",
-    #         "input_pdf": Path(TEST_IPCC_DIR, "wg2", "ts", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg2", "ts", "pages"),
-    #         "footer_height": 30,
-    #         "header_height": 50,
-    #         "left_col_left": 54,
-    #         "right_col_left": 318.2,
-    #     },
-    #
-    #     "WG2_SPM": {
-    #         "name": "WG2_SPM",
-    #         "input_pdf": Path(TEST_IPCC_DIR, "wg2", "spm", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg2", "spm", "pages"),
-    #         "footer_height": 30,
-    #         "header_height": 50
-    #     },
-    #
-    #     "WG3_TS": {
-    #         "name": "WG3_TS",
-    #         "input_pdf": Path(TEST_IPCC_DIR, "wg3", "ts", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg3", "ts", "pages"),
-    #         "footer_height": 30,
-    #         "header_height": 50
-    #     },
-    #
-    #     "WG3_SPM": {
-    #         "name": "WG3_SPM",
-    #         "input_pdf": Path(TEST_IPCC_DIR, "wg3", "spm", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg3", "spm", "pages"),
-    #         "footer_height": 30,
-    #         "header_height": 50
-    #     },
-    #
-    #     "WG3_CHAP07": {
-    #         "name": "WG3_Chapter07",
-    #         "input_pdf": Path(TEST_IPCC_DIR, "wg3", "Chapter07", "fulltext.pdf"),
-    #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg3", "Chapter07", "pages"),
-    #         "footer_height": 30,
-    #         "header_height": 50
-    #     },
-    #
+        #     "default": {
+        #         "footer_height": 70,
+        #         "header_height": 70,
+        #     },
+        #     "SYR_LR": {
+        #         "name": "SYR_LR",
+        #         "input_pdf": Path(TEST_IPCC_SYR, "lr", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "syr", "lr", "pages"),
+        #         "footer_height": 50,
+        #         "header_height": 50
+        #     },
+        #     "SYR_SPM": {
+        #         "name": "SYR_SPM",
+        #         "input_pdf": Path(TEST_IPCC_SYR, "spm", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "syr", "spm", "pages"),
+        #         "footer_height": 50,
+        #         "header_height": 50
+        #     },
+        #     "SROCC_TS": {
+        #         "name": "SROCC_TS",
+        #         "input_pdf": Path(TEST_IPCC_SROCC, "ts", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "srocc", "ts", "pages"),
+        #         "footer_height": 70,
+        #         "header_height": 70
+        #     },
+        #     "SROCC_SPM": {
+        #         "name": "SROCC_SPM",
+        #         "input_pdf": Path(TEST_IPCC_SROCC, "spm", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "srocc", "spm", "pages"),
+        #         "footer_height": 70,
+        #         "header_height": 70
+        #     },
+        #
+        #     "SRCCL_TS": {
+        #         "name": "SRCCL_TS",
+        #         "input_pdf": Path(TEST_IPCC_SRCCL, "ts", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "srccl", "ts", "pages"),
+        #         "footer_height": 70,
+        #         "header_height": 70
+        #     },
+        #
+        #     "SRCCL_SPM": {
+        #         "name": "SRCCL_SPM",
+        #         "input_pdf": Path(TEST_IPCC_SRCCL, "spm", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "srccl", "spm", "pages"),
+        #         "footer_height": 70,
+        #         "header_height": 70
+        #     },
+        #
+        #     "SR15_TS": {
+        #         "name": "SR15_TS",
+        #         "input_pdf": Path(TEST_IPCC_SR15, "ts", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "sr15", "ts", "pages"),
+        #         "footer_height": 70,
+        #         "header_height": 70
+        #     },
+        #
+        #     "SR15_SPM": {
+        #         "name": "SR15_SPM",
+        #         "input_pdf": Path(TEST_IPCC_SR15, "spm", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "sr15", "spm", "pages"),
+        #         "footer_height": 70,
+        #         "header_height": 70
+        #     },
+        #
+        #     "WG1_TS": {
+        #         "name": "WG1_TS",
+        #         "input_pdf": Path(TEST_IPCC_DIR, "wg1", "ts", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg1", "ts", "pages"),
+        #         "footer_height": 30,
+        #         "header_height": 50
+        #     },
+        #
+        #     "WG1_SPM": {
+        #         "name": "WG1_SPM",
+        #         "input_pdf": Path(TEST_IPCC_DIR, "wg1", "spm", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg1", "spm", "pages"),
+        #         "footer_height": 30,
+        #         "header_height": 50
+        #     },
+        #
+        #     "WG2_TS": {
+        #         "name": "WG2_TS",
+        #         "input_pdf": Path(TEST_IPCC_DIR, "wg2", "ts", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg2", "ts", "pages"),
+        #         "footer_height": 30,
+        #         "header_height": 50,
+        #         "left_col_left": 54,
+        #         "right_col_left": 318.2,
+        #     },
+        #
+        #     "WG2_SPM": {
+        #         "name": "WG2_SPM",
+        #         "input_pdf": Path(TEST_IPCC_DIR, "wg2", "spm", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg2", "spm", "pages"),
+        #         "footer_height": 30,
+        #         "header_height": 50
+        #     },
+        #
+        #     "WG3_TS": {
+        #         "name": "WG3_TS",
+        #         "input_pdf": Path(TEST_IPCC_DIR, "wg3", "ts", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg3", "ts", "pages"),
+        #         "footer_height": 30,
+        #         "header_height": 50
+        #     },
+        #
+        #     "WG3_SPM": {
+        #         "name": "WG3_SPM",
+        #         "input_pdf": Path(TEST_IPCC_DIR, "wg3", "spm", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg3", "spm", "pages"),
+        #         "footer_height": 30,
+        #         "header_height": 50
+        #     },
+        #
+        #     "WG3_CHAP07": {
+        #         "name": "WG3_Chapter07",
+        #         "input_pdf": Path(TEST_IPCC_DIR, "wg3", "Chapter07", "fulltext.pdf"),
+        #         "output_page_dir": Path(TEMP_DIR, "html", "ar6", "wg3", "Chapter07", "pages"),
+        #         "footer_height": 30,
+        #         "header_height": 50
+        #     },
+        #
         "WG3_CHAP08": {
             "name": "WG3_Chapter08",
             "input_pdf": Path(TEST_IPCC_DIR, "wg3", "Chapter08", "fulltext.pdf"),
@@ -254,8 +252,9 @@ class Resources:
             "footer_height": 30,
             "header_height": 50
         },
-    #
+        #
     }
+
     #
     def __init__(self):
         pass

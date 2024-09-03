@@ -6,13 +6,14 @@ import lxml.etree as ET
 
 from amilib.ami_html import HtmlStyle
 from amilib.file_lib import FileLib
+from amilib.util import Util
 from amilib.xml_lib import XmlLib, HtmlLib, HtmlEditor
 from test.resources import Resources
 
 from test.test_all import AmiAnyTest
 # from test.test_wikimedia import WikidataTest
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 class Xml0Test(AmiAnyTest):
 

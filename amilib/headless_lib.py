@@ -9,10 +9,11 @@ import lxml.etree as ET
 from lxml.html import HTMLParser
 
 from amilib.file_lib import FileLib
+from amilib.util import Util
 from amilib.wikimedia import WikidataLookup
 from amilib.xml_lib import HtmlElement, HtmlLib, XmlLib
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 
 class HeadlessLib:

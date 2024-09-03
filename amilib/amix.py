@@ -13,6 +13,8 @@ from pathlib import Path
 from amilib.file_lib import FileLib
 
 from amilib.dict_args import AmiDictArgs
+from amilib.util import Util
+
 try:
     from html_args import HTMLArgs
 except ModuleNotFoundError as e:
@@ -28,7 +30,7 @@ from amilib.wikimedia import WikidataLookup
 AMIX_DIR = Path(__file__).parent
 REPO_DIR = AMIX_DIR.parent
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 logger.setLevel(logging.INFO)
 
 class AmiLib:

@@ -5,8 +5,9 @@ import os
 from pathlib import Path
 
 from amilib.file_lib import FileLib
+from amilib.util import Util
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 # logging.debug("loading constants.py")
 

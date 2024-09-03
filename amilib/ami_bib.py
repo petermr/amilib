@@ -8,7 +8,7 @@ from amilib.file_lib import FileLib
 # local
 from amilib.util import Util
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 
 class Reference:

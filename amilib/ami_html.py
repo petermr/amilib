@@ -26,7 +26,7 @@ from amilib.xml_lib import XmlLib, HtmlLib
 
 # no try-catch imports
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 # HTML elements
 H_HTML = "html"
@@ -132,7 +132,7 @@ s1  to mean class name (classname)
 .s1 to mean a reference to a classname (only used in <style> elements but involved in conversions
 """
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 class AmiSpan:
     def __init__(self):

@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.remote.webelement import WebElement
 
 from amilib.file_lib import FileLib
+from amilib.util import Util
 
 """This is a problem in PyCharm
 see https://stackoverflow.com/questions/64618538/cant-find-webdriver-manager-module-in-pycharm
@@ -30,7 +31,7 @@ URL = "url"
 XPATH = "xpath"
 OUTFILE = "out_file"
 
-logger = FileLib().get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 
 class AmiDriver:

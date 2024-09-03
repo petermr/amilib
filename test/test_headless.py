@@ -8,6 +8,7 @@ from lxml.html import HTMLParser, Element, HtmlElement
 from amilib.amidriver import AmiDriver, URL, XPATH, OUTFILE  # EXPAND_SECTION_PARAS
 from amilib.file_lib import FileLib
 from amilib.headless_lib import HeadlessLib
+from amilib.util import Util
 from amilib.wikimedia import WikidataLookup, WikidataPage
 from amilib.xml_lib import XmlLib, HtmlLib, DECLUTTER_BASIC
 from test.resources import Resources
@@ -48,7 +49,7 @@ EXPAND_SECTION_PARAS = [
 run_test = False
 force = False
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 # force = True # uncomment to run tests with this keyword
 @unittest.skipUnless(AmiAnyTest.IS_PMR, "headless browsing still giving intermittent problems that PMR has to solve")

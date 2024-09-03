@@ -12,11 +12,13 @@ from amilib.ami_args import AbstractArgs
 # from amilib.ami_dict import AmiDictionary # CYCLIC import
 # from amilib.ami_dict import AmiEntry
 from amilib.file_lib import FileLib
+from amilib.util import Util
 from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage, WiktionaryPage
 
 # commandline
 DESCRIPTION = "description"
 DICT = "dict"
+IMAGE = "image"
 INPATH = "inpath"
 OPERATION = "operation"
 OUTPATH = "outpath"
@@ -35,7 +37,7 @@ WIKIPEDIA = "wikipedia"
 WIKIDATA = "wikidata"
 WIKTIONARY = "wiktionary"
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
@@ -72,6 +74,12 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
                                  help="path for dictionary (existing = edit; new = create (type depends on suffix *.xml or *.html)")
         self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
+        self.parser.add_argument(f"--{IMAGE}", type=str,
+                                 default=WIKIPEDIA,
+                                 choices=[WIKIPEDIA],
+                                 help=f"sources for images: "
+                                      f"'{WIKIPEDIA}' uses infobox or first thumbnail,"
+                                      f" default={WIKIPEDIA}")
         self.parser.add_argument(f"--{OPERATION}", type=str,
                                  default=CREATE_DICT,
                                  choices=[CREATE_DICT, EDIT_DICT, MARKUP_FILE, VALIDATE_DICT],
@@ -86,22 +94,20 @@ class AmiDictArgs(AbstractArgs):
                                  help="output file ")
         self.parser.add_argument(f"--{SYNONYM}", type=str, nargs="+",
                                  help="add sysnonyms (from Wikidata) for terms (NYI)")
-        self.parser.add_argument(f"--{VALIDATE}", action="store_true", help="validate dictionary")
+        self.parser.add_argument(f"--{VALIDATE}", action="store_true", help="validate dictionary; DEPRECATED use '--operation validate'")
         self.parser.add_argument(f"--{WIKIDATA}", type=str, nargs="*", help="add WikidataIDs (NYI)")
         self.parser.add_argument(f"--{WIKIPEDIA}", type=str, nargs="*",
-                                 help="add Wikipedia link/s (forces --{WIKIDATA}) (NYI)")
+                                 help="add Wikipedia link/s; DEPRECATED use '--description wikipedia'")
         self.parser.add_argument(f"--{WIKTIONARY}", type=str, nargs="*",
-                                 help="add Wiktionary output as html (may be messy)")
+                                 help="add Wiktionary output as html (may be messy); DEPRECATED use '--description wiktionary'")
         self.parser.add_argument(f"--{WORDS}", type=str, nargs="*",
                                  help="path/file with words or list of words to create dictionaray")
         self.parser.epilog = """
         Examples:
-        DICT --words wordsfile --dict dictfile --wikipedia   # creates dictionary from wordsfile and adds wikipedia info
+        DICT --words wordsfile --dict dictfile --wikipedia   # creates dictionary from wordsfile and adds wikipedia info\n
         DICT --inpath htmlfile --dict dictfile --outpath resultfile # reads htmlfile, marks up words in dict and write to outpath
         
         """
-        # parser.add_argument(f"--{SORT}", type=str, nargs=1, help="sort by term, sort synonyms, sort by weight (NYI)")
-        # parser.add_argument(f"--{CATEGORY}", type=str, nargs=1, help="annotate by category (NYI)")
 
     # class AmiDictArgs:
     def process_args(self):
@@ -121,10 +127,8 @@ class AmiDictArgs(AbstractArgs):
         self.wikidata = self.arg_dict.get(WIKIDATA)
         self.wikipedia = self.arg_dict.get(WIKIPEDIA)
         self.wiktionary = self.arg_dict.get(WIKTIONARY)
-        self.words = self.make_input_words(WORDS)
+        self.words = self.make_input_words( self.arg_dict.get(WORDS))
         # self.wordlist = None
-
-        # rationalise arguments
 
         if self.operation is None:
             raise ValueError("No operatin given")
@@ -141,35 +145,38 @@ class AmiDictArgs(AbstractArgs):
 
 
 
-        if self.dictfile:
-
-            logger.info(f"writing to {self.dictfile}")
-            # is this right??
-            if self.ami_dict is not None:
-                self.ami_dict.write_to_file(self.dictfile, debug=True)
-            else:
-                self.ami_dict = self.build_or_edit_dictionary()
-                if self.ami_dict is None:
-                    logger.error(f"no dictionary; failed to write dictionary {self.dictfile}")
-
-        if self.validate and self.ami_dict is None:
-            status = self.validate_dict()
+        # if self.dictfile:
+        #
+        #     logger.info(f"writing to {self.dictfile}")
+        #     # is this right??
+        #     if self.ami_dict is not None:
+        #         self.ami_dict.write_to_file(self.dictfile, debug=True)
+        #     else:
+        #         self.ami_dict = self.build_or_edit_dictionary()
+        #         if self.ami_dict is None:
+        #             logger.error(f"no dictionary; failed to write dictionary {self.dictfile}")
 
         # for argument --wikidata
         # logger.debug(f"wikidata: {self.wikidata}")
+
+
+        logger.debug(f"writing to {self}")
+        if self.dictfile:
+            if self.ami_dict:
+                self.ami_dict.write_to_file(self.dictfile, debug=True)
+
+    def add_descriptions(self):
         if self.wikidata is not None:
             hit_dict = self.add_wikidata_to_dict()
             status = self.validate_dict()
-
         # for argument --wikipedia
         if self.wikipedia is not None:
             logger.debug(f"Wikipedia lookup")
             hit_dict = self.add_wikipedia_to_dict()
             status = self.validate_dict()
-
         # for argument --wikipedia
         if self.wiktionary is not None:
-            logger.debug(f"Wiktionary lookup")
+            logger.debug(f"Wiktionary lookup {self.wiktionary}")
             if len(self.wiktionary) > 0:
                 logger.debug(f"searching wiktionary for {self.wiktionary}")
                 WiktionaryPage.search_terms_create_html(self.wiktionary)
@@ -178,15 +185,15 @@ class AmiDictArgs(AbstractArgs):
                 # hit_dict = self.add_wiktionary_to_dict()
                 # status = self.validate_dict()
 
-        logger.debug(f"writing to {self}")
-        if self.dictfile:
-            if self.ami_dict:
-                self.ami_dict.write_to_file(self.dictfile, debug=True)
-
     def create_dictionary_from_words(self):
         if (self.words is not None):
             self.build_or_edit_dictionary()
             assert self.ami_dict is not None
+
+            self.add_descriptions()
+
+            if self.dictfile is not None:
+                self.ami_dict.write_to_file(self.dictfile, debug=True)
 
     # class AmiDictArgs:
 
@@ -305,14 +312,18 @@ class AmiDictArgs(AbstractArgs):
         return Path(__file__).stem
 
     def make_input_words(self, words):
-        self.words = FileLib.get_input_strings(words)
+        if words is None:
+            self.words  = None
+        else:
+            self.words = FileLib.get_input_strings(words)
         return self.words
 
-    # ========== create=======
+# ========== create=======
 
-    # ========== eiit ========
+# ========== eiit ========
     def edit_dictionary(self):
         pass
+        self.add_descriptions()
 
 
 # ========== markup ========

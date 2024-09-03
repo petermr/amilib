@@ -14,7 +14,7 @@ from amilib.file_lib import FileLib
 from amilib.util import Util, EnhancedRegex, GENERATE
 from amilib.xml_lib import HtmlLib, Templater, XmlLib
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 def replace_parent(current_parents, div):
     pass

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dictionary title="unknown">
-  <entry name="anthropogenic" term="anthropogenic" desc="https://en.wiktionary.org/w/index.php?title=anthropogenic&amp;oldid=81163253&quot;Translations to be checked&#10;Italian: (please verify) antropogenico, (please verify) antropogeno&#10;&#10;&#10;The translations below need to">
+  <entry name="anthropogenic" term="anthropogenic">
     <div qid="Q7942">
       <a href="wikidataURL/Q7942">Wikidata</a>
       <p role="title">climate change</p>
@@ -27,7 +27,7 @@
       <p role="description">observed or potential changes to biophysical environments and ecosystems caused directly or indirectly by humans, including global warming, environmental degradation, mass extinction and biodiversity loss, ecological crisis and collapse</p>
     </div>
   </entry>
-  <entry name="tropospheric" term="tropospheric" desc="https://en.wiktionary.org/w/index.php?title=tropospheric&amp;oldid=81291006&quot;Translations&#10;Gujarati: અધોમંડળીય (adhomaṇḍaḷīya)&#10;Russian: тропосфе́рный (ru) (troposférnyj)&#10;&#10;Translations[edit]&#10;tropospheric sca">
+  <entry name="tropospheric" term="tropospheric">
     <div qid="Q64767836">
       <a href="wikidataURL/Q64767836">Wikidata</a>
       <p role="title">Tropospheric Emissions: Monitoring of Pollution</p>

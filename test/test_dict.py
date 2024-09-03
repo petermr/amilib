@@ -23,10 +23,13 @@ from amilib.file_lib import FileLib
 from amilib.amix import AmiLib
 from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
+from amilib.util import Util
 from amilib.wikimedia import WikidataSparql, WikidataPage
 from amilib.xml_lib import XmlLib, HtmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
+
+from amilib.dict_args import CREATE_DICT, EDIT_DICT, VALIDATE_DICT, MARKUP_FILE
 
 # MUST use RAW content , not HTML
 CEV_OPEN_RAW_DICT_URL = "https://raw.githubusercontent.com/petermr/CEVOpen/master/dictionary/"
@@ -53,7 +56,7 @@ STARTING_VERSION = "0.0.1"
 HOME = os.path.expanduser("~")
 IPCC_DICT_ROOT = Path(HOME, "projects/semanticClimate/ipcc/ar6/wg3")  # needs resetting if tests are to be run
 
-logger = FileLib.get_logger(__name__, level=logging.DEBUG)
+logger = Util.get_logger(__name__, level=logging.DEBUG)
 
 # ===== helpers =====
 def _create_amidict_with_foo_bar_entries():
@@ -1049,6 +1052,7 @@ class AmiDictionaryTest(AmiAnyTest):
             "--inpath", chapter_file,
             "--outpath", chapter_outpath,
             "--dict", html_dict_path,
+            "--operation", MARKUP_FILE,
         ]
         logger.info(f"cmd> {' '.join(args)}")
         AmiLib().run_command(args)
@@ -1384,7 +1388,7 @@ class DictionaryCreationTest(AmiAnyTest):
         assert (c := ami_dictionary.get_entry_count()) == expected_count, \
             f"dictionary should contain {expected_count} found {c}"
 
-    def test_make_dict_from_words_FAIL(self):
+    def test_make_dict_from_words(self):
         """
         filas on "kangaroo"
         Reason unknown
@@ -1576,6 +1580,44 @@ class DictionaryCreationTest(AmiAnyTest):
         assert len(mentha_dict.get_lxml_entries()) == 1
         assert mentha_dict.get_first_ami_entry().get_term() == "1,8-cineole synthase"
         assert mentha_dict.get_version() == "0.0.3"
+
+    def test_make_dict_from_words_and_add_wikimedia_image(self):
+        """
+        Reason unknown
+        """
+        amilib = AmiLib()
+        dictfile = Path(Resources.TEMP_DIR, "words", "kangaroo.xml")
+        expected_count = 1
+        FileLib.delete_file(dictfile)
+        amilib.run_command(["DICT",
+                            "--words", "kangaroo",
+                            "--dict", dictfile,
+                            ])
+        assert Path(dictfile).exists()
+        ami_dictionary = AmiDictionary.create_from_xml_file(dictfile)
+        assert (c := ami_dictionary.get_entry_count()) >= expected_count, \
+            f"dictionary should contain {expected_count} found {c}"
+
+    def test_make_dict_with_images(self):
+        stem = "with_images"
+        output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
+
+        words = [
+            "Bay of Bengal",
+            "JNU",
+            "troposphere",
+            "Permafrost",
+            "centennial",
+            "aerosol",
+            "Albedo",
+        ]
+        args = [
+            "DICT",
+            "--words", words,
+            "--dict", output_dict,
+        ]
+        AmiLib().run_command(args)
+        assert Path(output_dict).exists()
 
 
 

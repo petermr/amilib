@@ -11,7 +11,7 @@ from amilib.util import Util
 Also includes ArgParseBuilder
 """
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 class AbstractArgs(ABC):
 

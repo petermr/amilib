@@ -7,14 +7,16 @@ import lxml.etree as ET
 
 import requests
 from lxml import etree, html
+from mwparserfromhtml import HTMLDump, Article
 
 from amilib.ami_dict import AmiDictionary
 from amilib.ami_html import HtmlUtil
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
+from amilib.util import Util
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage, \
-    WikipediaPara, WiktionaryPage
+    WikipediaPara, WiktionaryPage, WikipediaInfoBox
 from amilib.wikimedia import WikidataLookup
 from amilib.xml_lib import HtmlLib, XmlLib, HtmlEditor
 from test.resources import Resources
@@ -36,7 +38,7 @@ tests for Wikimedia routines for Wikipedia and Wikidata
 """
 
 base_test = unittest.TestCase
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 class WikipediaTest(base_test):
     """
@@ -386,6 +388,153 @@ class WikipediaTest(base_test):
         assert href_id == ('https://www.wikidata.org/wiki/Special:EntityPage/Q1147063', 'Q1147063')
         image_url = basic_info.get_image_url()
         assert image_url == 'https://en.wikipedia.org//wiki/File:Jawaharlal_Nehru_University_Logo_vectorized.svg'
+
+    def test_get_leading_image_in_page(self):
+        """
+from    "https://en.wikipedia.org/wiki/Jawaharlal_Nehru_University
+
+    <div class="thumb tmulti tright">
+      <div class="thumbinner multiimageinner" style="width:234px;max-width:234px">
+        <div class="trow">
+          <div class="tsingle" style="width:232px;max-width:232px">
+            <div class="thumbimage">
+              <span typeof="mw:File">
+                <a href="/wiki/File:JNU_Admin.JPG" class="mw-file-description">
+                  <img alt="Administration building at JNU campus" src="//upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/230px-JNU_Admin.JPG" decoding="async" width="230" height="173" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/345px-JNU_Admin.JPG 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/460px-JNU_Admin.JPG 2x" data-file-width="2048" data-file-height="1536">
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="trow" style="display:flex">
+          <div class="thumbcaption">Administration building at JNU</div>
+        </div>
+      </div>
+    </div>
+
+    OR
+
+THIS SEEMS TO BE THE BEST
+<figure class="mw-default-size" typeof="mw:File/Thumb">
+	<a href="/wiki/File:Stubble_field_in_Brastad.jpg" class="mw-file-description">
+	  <img src="//upload.wikimedia.org/wikipedia/commons/thumb/9/96/Stubble_field_in_Brastad.jpg/220px-Stubble_field_in_Brastad.jpg" decoding="async" width="220" height="147" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/9/96/Stubble_field_in_Brastad.jpg/330px-Stubble_field_in_Brastad.jpg 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/9/96/Stubble_field_in_Brastad.jpg/440px-Stubble_field_in_Brastad.jpg 2x" data-file-width="5472" data-file-height="3648">
+	</a>
+	<figcaption>
+		Stubble field in <a href="/wiki/Brastad" title="Brastad">Brastad</a>, Sweden
+	</figcaption>
+</figure>
+        """
+
+    def test_get_thumb_image(self):
+        """
+        look for first div[@class='thumbimage']
+        """
+        """
+        <div class="thumbimage">
+          <span typeof="mw:File">
+            <a href="/wiki/File:JNU_Admin.JPG" class="mw-file-description">
+              <img alt="Administration building at JNU campus" src="//upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/230px-JNU_Admin.JPG" decoding="async" width="230" height="173" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/345px-JNU_Admin.JPG 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/460px-JNU_Admin.JPG 2x" data-file-width="2048" data-file-height="1536">
+            </a>
+          </span><
+        /div>
+        """
+        """
+        <div class="thumb tmulti tright">
+          <div class="thumbinner multiimageinner" style="width:234px;max-width:234px">
+            <div class="trow">
+              <div class="tsingle" style="width:232px;max-width:232px">
+                <div class="thumbimage">
+                  <span typeof="mw:File">
+                    <a href="/wiki/File:JNU_Admin.JPG" class="mw-file-description">
+                      <img alt="Administration building at JNU campus" src="//upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/230px-JNU_Admin.JPG" decoding="async" width="230" height="173" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/345px-JNU_Admin.JPG 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/c/c6/JNU_Admin.JPG/460px-JNU_Admin.JPG 2x" data-file-width="2048" data-file-height="1536">
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="trow" style="display:flex">
+              <div class="thumbcaption">Administration building at JNU</div>
+            </div>
+          </div>
+        </div>"""
+        url = "https://en.wikipedia.org/wiki/Jawaharlal_Nehru_University"
+        wpage = WikipediaPage.lookup_wikipedia_page_for_url(url)
+        assert wpage is not None
+        content = wpage.html_elem
+        # thumb_multis = content.xpath(".//div[contains(@class,'thumb ')][div[contains(@class,'thumbinner')][div[@class='troe']]")
+        thumb_multis = content.xpath(".//div[contains(@class,'thumb ') and div[contains(@class,'thumbinner') and div[@class='trow']]]")
+        logger.debug(f"thumb images {len(thumb_multis)}")
+
+    def test_get_table_from_info_box(self):
+        """
+        <body>
+  		  <table class="infobox vcard">
+		    <tbody>
+            <tr>
+              <th colspan="2" class="infobox-above fn org" style="background-color: #cedeff; font-size: 125%;">
+                Bay of Bengal
+              </th>
+            </tr>
+            <tr>
+              <td colspan="2" class="infobox-image" style="line-height: 1.2; border-bottom: 1px solid #cedeff;">
+                <span class="mw-image-border" typeof="mw:File">
+                  <a href="/wiki/File:Bay_of_Bengal_map.png" class="mw-file-description">
+                    <img alt="Map of the Bay of Bengal" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/264px-Bay_of_Bengal_map.png" decoding="async" width="264" height="269" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/396px-Bay_of_Bengal_map.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/528px-Bay_of_Bengal_map.png 2x" data-file-width="1000" data-file-height="1019">
+                  </a>
+                </span>
+                <div class="infobox-caption">Map of Bay of Bengal</div>
+              </td>
+            </tr>
+            ...
+            </body>
+        """
+        url = "https://en.wikipedia.org/wiki/Bay_of_Bengal"
+        wpage = WikipediaPage.lookup_wikipedia_page_for_url(url)
+        assert wpage is not None
+        infobox = wpage.get_infobox()
+        assert infobox is not None
+        assert type(infobox) is WikipediaInfoBox
+
+        table = infobox.get_table()
+        table_html = XmlLib.element_to_string(table, pretty_print=True)
+        logger.debug(f"infobox {table_html} ")
+
+    def test_get_figure_from_info_box(self):
+        """
+        This is messy. The image and caption are not systematic
+        """
+        """
+        <body>
+  		  <table class="infobox vcard">
+		    <tbody>
+             <tr>
+              <th colspan="2" class="infobox-above fn org" style="background-color: #cedeff; font-size: 125%;">
+                Bay of Bengal
+              </th>
+            </tr>
+            <tr>
+              <td colspan="2" class="infobox-image" style="line-height: 1.2; border-bottom: 1px solid #cedeff;">
+                <span class="mw-image-border" typeof="mw:File">
+                  <a href="/wiki/File:Bay_of_Bengal_map.png" class="mw-file-description">
+                    <img alt="Map of the Bay of Bengal" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/264px-Bay_of_Bengal_map.png" decoding="async" width="264" height="269" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/396px-Bay_of_Bengal_map.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/528px-Bay_of_Bengal_map.png 2x" data-file-width="1000" data-file-height="1019">
+                  </a>
+                </span>
+                <div class="infobox-caption">Map of Bay of Bengal</div>
+              </td>
+            </tr>
+            ...
+            </body>
+        """
+        url = "https://en.wikipedia.org/wiki/Bay_of_Bengal"
+        wpage = WikipediaPage.lookup_wikipedia_page_for_url(url)
+        assert wpage is not None
+        a_elem = wpage.extract_a_elem_with_image_from_infobox()
+        assert a_elem is not None
+        img_elems = a_elem.xpath("img")
+        assert len(img_elems) > 0
+        assert XmlLib.element_to_string(img_elems[0]) == \
+            '<img alt="Map of the Bay of Bengal" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/264px-Bay_of_Bengal_map.png" decoding="async" width="264" height="269" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/396px-Bay_of_Bengal_map.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/528px-Bay_of_Bengal_map.png 2x" data-file-width="1000" data-file-height="1019"/>\n'
+
 
 
 class WikidataTest(base_test):
@@ -1290,6 +1439,61 @@ class WiktionaryTest(AmiAnyTest):
                 "--wiktionary"]
 
         pyami.run_command(args)
+
+class MWParserTest(AmiAnyTest):
+    from mwparserfromhtml import HTMLDump
+    from mwparserfromhtml import Article
+    import requests
+
+    @unittest.skip("cannotb read data")
+    def test_mwparser(self):
+        html_file_path = "TARGZ_FILE_PATH"
+        html_dump = HTMLDump(html_file_path)
+
+        for article in html_dump:
+            print(article.get_title())
+        for article in html_dump:
+            print(article.get_title())
+            prev_heading = "_Lead"
+            for heading, paragraph in article.html.wikistew.get_plaintext(exclude_transcluded_paragraphs=True,
+                                                                          exclude_para_context=None,
+                                                                          # set to {"pre-first-para", "between-paras", "post-last-para"} for more conservative approach
+                                                                          exclude_elements={"Heading", "Math", "Citation",
+                                                                                            "List", "Wikitable",
+                                                                                            "Reference"}):
+                if heading != prev_heading:
+                    print(f"\n{heading}:")
+                    prev_heading = heading
+                print(paragraph)
+        for article in html_dump:
+            print(f"Number of Sections: {len(article.wikistew.get_sections())}")
+            print(f"Number of Comments: {len(article.wikistew.get_comments())}")
+            print(f"Number of Headings: {len(article.wikistew.get_headings())}")
+            print(f"Number of Wikilinks: {len(article.wikistew.get_wikilinks())}")
+            print(f"Number of Categories: {len(article.wikistew.get_categories())}")
+            print(f"Number of Text Formatting Elements: {len(article.wikistew.get_text_formatting())}")
+            print(f"Number of External Links: {len(article.wikistew.get_externallinks())}")
+            print(f"Number of Templates: {len(article.wikistew.get_templates())}")
+            print(f"Number of References: {len(article.wikistew.get_references())}")
+            print(f"Number of Citations: {len(article.wikistew.get_citations())}")
+            print(f"Number of Images: {len(article.wikistew.get_images())}")
+            print(f"Number of Audio: {len(article.wikistew.get_audio())}")
+            print(f"Number of Video: {len(article.wikistew.get_video())}")
+            print(f"Number of Lists: {len(article.wikistew.get_lists())}")
+            print(f"Number of Math Elements: {len(article.wikistew.get_math())}")
+            print(f"Number of Infoboxes: {len(article.wikistew.get_infobox())}")
+            print(f"Number of Wikitables: {len(article.wikistew.get_wikitables())}")
+            print(f"Number of Navigational Boxes: {len(article.wikistew.get_nav_boxes())}")
+            print(f"Number of Message Boxes: {len(article.wikistew.get_message_boxes())}")
+            print(f"Number of Notes: {len(article.wikistew.get_notes())}")
+    
+    
+            lang = "en"
+            title = "Both Sides, Now"
+            r = requests.get(f'https://{lang}.wikipedia.org/api/rest_v1/page/html/{title}')
+            article = Article(r.text)
+            print(f"Article Name: {article.get_title()}")
+            print(f"Abstract: {article.wikistew.get_first_paragraph()}")
 
 
 class SPARQLTests:

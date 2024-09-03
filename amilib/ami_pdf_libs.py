@@ -35,13 +35,12 @@ from amilib.ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, C
     H_TR, H_TD, AmiFont
 from amilib.ami_svg import AmiSVG, SVG_G
 from amilib.bbox import BBox
-from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.xml_lib import XmlLib, HtmlLib
 
 # local
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 FACT = 2.8
 SVG_NS = "http://www.w3.org/2000/svg"

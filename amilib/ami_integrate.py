@@ -10,9 +10,10 @@ from amilib.ami_html import HtmlUtil, P_FONTNAME, P_HEIGHT, P_STROKING_COLOR, P_
     HtmlGroup, HtmlStyle, H_BODY, H_DIV
 from amilib.ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber, PDFDebug, AmiPage, TextStyle, AmiPlumberJson
 from amilib.file_lib import FileLib
+from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 DICT_KEYSET = set([
     'annots',

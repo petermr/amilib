@@ -20,7 +20,7 @@ from test.test_all import AmiAnyTest
 # local
 
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 class Util0Test(AmiAnyTest):
     # def __init__(self):
@@ -292,7 +292,7 @@ class LoggingTest(AmiAnyTest):
     import logging
 
     def test_logger(self):
-        logger = FileLib.get_logger(__name__)
+        logger = Util.get_logger(__name__)
 
         logger.info("Server started listening on port 8080")
         logger.warning(

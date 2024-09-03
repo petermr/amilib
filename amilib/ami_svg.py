@@ -38,7 +38,7 @@ FILL = "fill"
 STROKE = "stroke"
 STROKE_WIDTH = "stroke-width"
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 class AmiSVG:
     """for actually rendering SVG?"""

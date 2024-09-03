@@ -4,12 +4,13 @@ import lxml.etree
 
 from amilib.ami_svg import AmiSVG
 from amilib.file_lib import FileLib
+from amilib.util import Util
 from amilib.xml_lib import XmlLib
 
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 class SvgTest(AmiAnyTest):
 

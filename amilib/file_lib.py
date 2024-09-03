@@ -16,7 +16,7 @@ import chardet
 import errno
 import requests
 
-logger = logging.getLogger(__name__)
+from amilib.util import TextUtil, Util
 
 # wildcards
 STARS = "**"
@@ -57,9 +57,62 @@ S_XML = "xml"
 
 
 
+# def get_logger_old(cls, filename, file_level=2, suffix=".py", level=logging.INFO):
+#     """creates logger for module, uses modulae name
+#     removes .py
+#     retains level of hierarchy
+#     e.g. foo/bar/junk.py with levels = 2 => bar.junk
+#     :param filename: to act as logger name
+#     :param file_level: to include in hierarchy
+#     :param level: logging level (default INFO)
+#     :param suffix: suffix to remove, e.g. ".py"
+#     """
+#     # logger.debug(f"============= file {__file__} name {__name__} =============")
+#     if filename:
+#         if filename[-len(suffix):] == suffix:
+#             filename = filename[:-len(suffix)]
+#         module = '.'.join(filename.split(os.path.sep)[-file_level:])
+#         logger = logging.getLogger(module)
+#
+#         # Create handlers for logging to the standard output and a file
+#         stdoutHandler = logging.StreamHandler(stream=sys.stdout)
+#         errHandler = logging.FileHandler("error.log")
+#
+#         # Set the log levels on the handlers
+#         stdoutHandler.setLevel(logging.DEBUG)
+#         errHandler.setLevel(logging.ERROR)
+#
+#         # Create a log format using Log Record attributes
+#         fmt = logging.Formatter(
+#             "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
+#         )
+#
+#         # Set the log format on each handler
+#         stdoutHandler.setFormatter(fmt)
+#         errHandler.setFormatter(fmt)
+#
+#         # Add each handler to the Logger object
+#         logger.addHandler(stdoutHandler)
+#         logger.addHandler(errHandler)
+#
+#         logger.info("Server started listening on port 8080")
+#         logger.warning(
+#             "Disk space on drive '/var/log' is running low. Consider freeing up space"
+#         )
+#
+#         try:
+#             raise Exception("Failed to connect to database: 'my_db'")
+#         except Exception as e:
+#             # exc_info=True ensures that a Traceback is included
+#             logger.error(e, exc_info=True)
+#
+#         logger.info(f"created logger {module} {logger}")
+#         return logger
+#
+logger = Util.get_logger( __name__)
+
 
 class FileLib:
-
 
     @classmethod
     def force_mkdir(cls, dirx):
@@ -72,7 +125,7 @@ class FileLib:
                 path.mkdir(parents=True, exist_ok=True)
                 assert (f := path).exists(), f"dir {path} should now exist"
             except Exception as e:
-                cls.logger.error(f"cannot make dirx {dirx} , {e}")
+                logger.error(f"cannot make dirx {dirx} , {e}")
                 logger.debug(f"cannot make dirx {dirx}, {e}")
 
 
@@ -113,20 +166,20 @@ class FileLib:
 
         else:
             # assume directory
-            cls.logger.warning(f"create directory {dest_path}")
+            logger.warning(f"create directory {dest_path}")
             dest_path.mkdir(parents=True, exist_ok=True)
-            cls.logger.info(f"created directory {dest_path}")
+            logger.info(f"created directory {dest_path}")
         if src_path.is_dir():
             if os.path.exists(dest_path):
                 shutil.rmtree(dest_path)
             shutil.copytree(src_path, dest_path)
-            cls.logger.info(f"copied directory {src_path} to {dest_path}")
+            logger.info(f"copied directory {src_path} to {dest_path}")
         else:
             try:
                 shutil.copy(src_path, dest_path)  # will overwrite
-                cls.logger.info(f"copied path {src_path} to {dest_path}")
+                logger.info(f"copied path {src_path} to {dest_path}")
             except Exception as e:
-                cls.logger.fatal(f"Cannot copy direcctory {src_path} to {dest_path} because {e}")
+                logger.fatal(f"Cannot copy direcctory {src_path} to {dest_path} because {e}")
 
     @staticmethod
     def create_absolute_name(file):
@@ -450,58 +503,58 @@ class FileLib:
         home = os.path.expanduser("~")
         return home
 
-    @classmethod
-    def get_logger_old(cls, filename, file_level=2, suffix=".py", level=logging.INFO):
-        """creates logger for module, uses modulae name
-        removes .py
-        retains level of hierarchy
-        e.g. foo/bar/junk.py with levels = 2 => bar.junk
-        :param filename: to act as logger name
-        :param file_level: to include in hierarchy
-        :param level: logging level (default INFO)
-        :param suffix: suffix to remove, e.g. ".py"
-        """
-        logger.debug(f"============= file {__file__} name {__name__} =============")
-        if filename:
-            if filename[-len(suffix):] == suffix:
-                filename = filename[:-len(suffix)]
-            module = '.'.join(filename.split(os.path.sep)[-file_level:])
-            logger = logging.getLogger(module)
-
-            # Create handlers for logging to the standard output and a file
-            stdoutHandler = logging.StreamHandler(stream=sys.stdout)
-            errHandler = logging.FileHandler("error.log")
-
-            # Set the log levels on the handlers
-            stdoutHandler.setLevel(logging.DEBUG)
-            errHandler.setLevel(logging.ERROR)
-
-            # Create a log format using Log Record attributes
-            fmt = logging.Formatter(
-                "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
-            )
-
-            # Set the log format on each handler
-            stdoutHandler.setFormatter(fmt)
-            errHandler.setFormatter(fmt)
-
-            # Add each handler to the Logger object
-            logger.addHandler(stdoutHandler)
-            logger.addHandler(errHandler)
-
-            logger.info("Server started listening on port 8080")
-            logger.warning(
-                "Disk space on drive '/var/log' is running low. Consider freeing up space"
-            )
-
-            try:
-                raise Exception("Failed to connect to database: 'my_db'")
-            except Exception as e:
-                # exc_info=True ensures that a Traceback is included
-                logger.error(e, exc_info=True)
-
-            logger.info(f"created logger {module} {logger}")
-            return logger
+    # @classmethod
+    # def get_logger_old(cls, filename, file_level=2, suffix=".py", level=logging.INFO):
+    #     """creates logger for module, uses modulae name
+    #     removes .py
+    #     retains level of hierarchy
+    #     e.g. foo/bar/junk.py with levels = 2 => bar.junk
+    #     :param filename: to act as logger name
+    #     :param file_level: to include in hierarchy
+    #     :param level: logging level (default INFO)
+    #     :param suffix: suffix to remove, e.g. ".py"
+    #     """
+    #     # logger.debug(f"============= file {__file__} name {__name__} =============")
+    #     if filename:
+    #         if filename[-len(suffix):] == suffix:
+    #             filename = filename[:-len(suffix)]
+    #         module = '.'.join(filename.split(os.path.sep)[-file_level:])
+    #         logger = logging.getLogger(module)
+    #
+    #         # Create handlers for logging to the standard output and a file
+    #         stdoutHandler = logging.StreamHandler(stream=sys.stdout)
+    #         errHandler = logging.FileHandler("error.log")
+    #
+    #         # Set the log levels on the handlers
+    #         stdoutHandler.setLevel(logging.DEBUG)
+    #         errHandler.setLevel(logging.ERROR)
+    #
+    #         # Create a log format using Log Record attributes
+    #         fmt = logging.Formatter(
+    #             "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
+    #         )
+    #
+    #         # Set the log format on each handler
+    #         stdoutHandler.setFormatter(fmt)
+    #         errHandler.setFormatter(fmt)
+    #
+    #         # Add each handler to the Logger object
+    #         logger.addHandler(stdoutHandler)
+    #         logger.addHandler(errHandler)
+    #
+    #         logger.info("Server started listening on port 8080")
+    #         logger.warning(
+    #             "Disk space on drive '/var/log' is running low. Consider freeing up space"
+    #         )
+    #
+    #         try:
+    #             raise Exception("Failed to connect to database: 'my_db'")
+    #         except Exception as e:
+    #             # exc_info=True ensures that a Traceback is included
+    #             logger.error(e, exc_info=True)
+    #
+    #         logger.info(f"created logger {module} {logger}")
+    #         return logger
 
     @classmethod
     def get_input_strings(cls, strings_in, split=False):
@@ -518,23 +571,49 @@ class FileLib:
         :return: list of strings or empty list
         """
         strings_out = []
-        if strings_in is None:
+        if strings_in is None or strings_in == []:
             return strings_out
+        # ensure a list
         strings_in = strings_in if type(strings_in) is list else [strings_in]
         for string_in in strings_in:
-            path_in = Path(string_in)
-            if path_in.exists():
-                with open(path_in, "r") as f:
-                    lines = [line.rstrip() for line in f]
-                strings_in = lines
-        if split:
-            sss = []
-            for string_in in strings_in:
-                sss.extend(string_in.strip().split())
-            strings_out = sss
-        else:
-            strings_out = strings_in
+            # is it a file
+            strings_read = cls.read_strings_from_path(string_in)
+            if strings_read is None:
+                # not a file
+                strings_read = [string_in]
+            if split:
+                sss = []
+                for string_read in strings_read:
+                    sss.extend(string_read.strip().split())
+                strings_read = sss
+            strings_out.extend(strings_read)
+
+
+        # else:
+        #     strings_out = strings_in
         return strings_out
+
+    @classmethod
+    def read_strings_from_path(cls, file_with_strings, strip=True, ignore_blank=True):
+        """
+        reads a file with list of strings. Lines can be stripped and blank lines ignored
+        :param file_with_strings: file with list of strimgs , one per line
+        :return: list of strings (may be empty) or None (file not exists)
+        """
+        if file_with_strings is None:
+            return None
+        path_in = Path(file_with_strings)
+        if not path_in.exists():
+            return None
+        lines = []
+        with open(path_in, "r") as f:
+            for line in f:
+                if strip:
+                    line = line.rstrip()
+                if ignore_blank and line == "":
+                    continue
+                lines.append(line)
+        return lines
 
     @classmethod
     def log_exception(self, e, logger):
@@ -545,47 +624,7 @@ class FileLib:
         """
         logger.error(e, exc_info=True)
 
-    @classmethod
-    def get_logger(cls,
-        name,
-        level=logging.DEBUG,
-        err_level=logging.ERROR,
-        err_log="error.log",
-        format = "%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s",
-                       ):
-        """
-        replaces old get_logger
 
-        gets system logger with handlers set
-        hopefully works
-        :param name: name of logger (recommend __name__)
-        :param level: log level for stdout, default WARN
-        :param err_level: level for error (default ERROR)
-        :param err_log: file to write err_level to, None = no write (default None)
-        :param format: default '%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s'
-
-        Note for exceptions use FileLib.log_exception
-        """
-        logger = logging.getLogger(name)
-        logger.setLevel(level)
-        # Create handlers for logging to the standard output and a file
-        stdoutHandler = logging.StreamHandler(stream=sys.stdout)
-        errHandler = logging.FileHandler(err_log)
-        # Set the log levels on the handlers
-        stdoutHandler.setLevel(level)
-        err_level = logging.ERROR
-        errHandler.setLevel(err_level)
-        # Create a log format using Log Record attributes
-        format = "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
-        format = "%(levelname)s %(filename)s:%(lineno)s:%(message)s"
-        fmt = logging.Formatter(format)
-        # Set the log format on each handler
-        stdoutHandler.setFormatter(fmt)
-        errHandler.setFormatter(fmt)
-        # Add each handler to the Logger object
-        logger.addHandler(stdoutHandler)
-        logger.addHandler(errHandler)
-        return logger
 
     @classmethod
     def write_temp_html(cls, htmlx, temp_dir, temp_file="junk.html", pretty_print=True, debug=True):

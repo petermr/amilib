@@ -5,18 +5,17 @@ import os
 import re
 import sys
 from enum import Enum
-from pathlib import Path
-
-import pylab as p
-import requests
-from lxml import etree as ET
-from lxml import etree, html
-import lxml.etree
-from urllib.parse import quote
 from io import StringIO
-from urllib.request import urlopen
+from pathlib import Path
 from urllib.error import HTTPError, URLError
+from urllib.parse import quote
+from urllib.request import urlopen
+
+import lxml.etree
+import requests
 from SPARQLWrapper import SPARQLWrapper
+from lxml import etree as ET
+from lxml import html
 
 # local
 from amilib.ami_html import HtmlUtil
@@ -24,8 +23,7 @@ from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
 
-logger = FileLib.get_logger(__name__)
-
+logger = Util.get_logger(__name__)
 
 WIKIDATA_QUERY_URI = "https://www.wikidata.org/w/index.php?search="
 WIKIDATA_SITE = "https://www.wikidata.org/wiki/"
@@ -452,7 +450,6 @@ class WikidataPage:
         lang = lang.lower()
         url_dict = self.get_wikipedia_page_links([lang])
         return url_dict.get(lang)
-
 
     def get_image(self):
         pass
@@ -969,12 +966,10 @@ class WikidataExtractor:
 
 
 class WikipediaPage:
-
     WM_DISAMBIGUATION_PAGE = "Wikimedia disambiguation page"
 
     FIRST_PARA = "wpage_first_para"
     FIRST_PARA = "wpage_first_para"
-    from requests import request
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
 
     def __init__(self):
@@ -1239,7 +1234,7 @@ class WikipediaPage:
         basic_info = self.get_basic_information()
         if basic_info is not None:
             central_desc = basic_info.get_central_description()
-            is_disambig =  central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
+            is_disambig = central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
         return is_disambig
 
     @classmethod
@@ -1270,6 +1265,35 @@ class WikipediaPage:
             page = cls.lookup_wikipedia_page_for_term(word)
             page_by_word_dict[word] = page
         return page_by_word_dict
+
+    def extract_a_elem_with_image_from_infobox(self):
+        """
+
+        """
+        infobox = self.get_infobox()
+        if infobox is None:
+            logger.warning("no infobox")
+            return None
+        table = infobox.get_table()
+        if table is None:
+           logger.warning("no table in infobox")
+
+        figure_td_xpath = "tbody/tr/td[span[a[img]]]"
+        figure_tds = table.xpath(figure_td_xpath)
+        if len(figure_tds) == 0:
+            logger.warning("no a elems with img in infobox table")
+            return None
+        td0 = figure_tds[0]
+        a_elem = self.get_a_with_image_and_caption(td0)
+        return a_elem
+
+    def get_a_with_image_and_caption(self, td0):
+        """
+        gets a elem with child img
+        """
+        a_elems = td0.xpath("span/a[img]")
+        return a_elems[0] if len(a_elems) > 0 else None
+
 
 
 class WikipediaPara:
@@ -1325,7 +1349,7 @@ class WikipediaPara:
           """
         if not para:
             return None
-        sentence =None
+        sentence = None
         term = None
         abbrev = None
 
@@ -1374,149 +1398,152 @@ class WikipediaInfoBox:
         """
         self.table = table
 
-class WikipediaBasicInfo:
-    """
-    wrapper for wikipedia basic information tabls
-    """
+    def get_table(self):
+        return self.table
 
-    """
-    Display title	MV Arctic Sea
-    Default sort key	Arctic Sea, Mv
-    Page length (in bytes)	40,084
-    Namespace ID	0
-    Page ID	23947896
-    Page content language	en - English
-    Page content model	wikitext
-    Indexing by robots	Allowed
-    Number of page watchers	91
-    Number of page watchers who visited in the last 30 days	2
-    Number of redirects to this page	4
-    Counted as a content page	Yes
-    Wikidata item ID	Q615783
-    Local description	Ship
-    Central description	ship built in 1992
-    Page image	MV Arctic sea.svg
-    Page views in the past 30 days	273
-    """
-    DISPLAY_TITLE = "Display title"
-    SORT_KEY = "Default sort key"
-    PAGE_LENGTH = "Page length (in bytes)"
-    NAMESPACE_ID = "Namespace ID"
-    PAGE_ID = "Page ID"
-    PAGE_LANGAUGE = "Page content language"
-    CONTENT_MODEL = "Page content model"
-    INDEXING_BY_ROBOTS = "Indexing by robots"
-    PAGE_WATCHERS = "Number of page watchers"
-    PAGE_WATCHERS_30 = "Number of page watchers who visited in the last 30 days"
-    REDIRECTS = "Number of redirects to this page"
-    IS_CONTENT_PAGE = "Counted as a content page"
-    WIKIDATA_ITEM = "Wikidata item ID"
-    LOCAL_DESCRIPTION = "Local description"
-    CENTRAL_DESCRIPTION = "Central description"
-    PAGE_IMAGE = "Page image"
-    PAGE_VIEWS_30 = "Page views in the past 30 days"
 
-    KEYS = [
-        DISPLAY_TITLE,
-        SORT_KEY,
-        PAGE_LENGTH,
-        NAMESPACE_ID,
-        PAGE_ID,
-        PAGE_LANGAUGE,
-        CONTENT_MODEL,
-        INDEXING_BY_ROBOTS,
-        PAGE_WATCHERS,
-        PAGE_WATCHERS_30,
-        REDIRECTS,
-        IS_CONTENT_PAGE,
-        WIKIDATA_ITEM,
-        LOCAL_DESCRIPTION,
-        CENTRAL_DESCRIPTION,
-        PAGE_IMAGE,
-        PAGE_VIEWS_30,
-    ]
-
-    def __init__(self, table=None):
-        """
-        Wrapper for Wikipedia basic information
-        """
-        self.table = table
-        self.table_dict = dict()
-        self.create_table_dict()
-
-    def get_wikidata_href_id(self):
-        """
-        return wikidate href and id (Note
-        :return: (href, id) tuplpe or None
-        """
-        value = self.get_value_for_key(self.WIKIDATA_ITEM)
-        id = value.split("/")[-1]
-        return None if value is None else (value, id)
-
-    def get_local_description(self):
-        return self.get_value_for_key(self.LOCAL_DESCRIPTION)
-
-    def get_central_description(self):
-        return self.get_value_for_key(self.CENTRAL_DESCRIPTION)
-
-    def get_value_for_key(self, key):
-        return self.table_dict[key]
-
-    def get_image_url(self):
-        url_tail = self.get_value_for_key(self.PAGE_IMAGE)
-        url = f"{WikipediaPage.get_default_wikipedia_url()}{url_tail}"
-        return url
-
-    def create_table_dict(self):
-        """
-        creates name-value table, where value can be text or XML element
-        """
-        self.table_dict = dict()
-        rows = self.table.xpath(".//tr")
-        for row in rows:
-            name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
-            if not name in self.KEYS:
-                logger.warning(f"unknown key {name} in Basic Information")
-            value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
-            self.table_dict[name] = value
-
-    def get_cell_value(self, td, idx):
-        """
-        HYPERLINK
-        <td>
-          <a
-            class="extiw wb-entity-link external"
-            href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783"
-            >Q615783</a>
-        </td>
-        """
-        tda = td.xpath("a")  # might be a hyperlink
-        if len(tda) > 0:
-            href = tda[0].attrib.get("href")
-            aval = tda[0].text
-            href = aval if idx == 0 else href
-            return href
-        """
-        IMAGE
-        <td>
-          <a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description">
-            <img 
-              alt="MV Arctic sea.svg" 
-              src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png" 
-              decoding="async" 
-              width="220" 
-              height="156" 
-              data-file-width="1052"
-              data-file-height="744"
-              # ></a></td>"""
-        return td.text
+# class WikipediaBasicInfo:
+#     """
+#     wrapper for wikipedia basic information tabls
+#     """
+#
+#     """
+#     Display title	MV Arctic Sea
+#     Default sort key	Arctic Sea, Mv
+#     Page length (in bytes)	40,084
+#     Namespace ID	0
+#     Page ID	23947896
+#     Page content language	en - English
+#     Page content model	wikitext
+#     Indexing by robots	Allowed
+#     Number of page watchers	91
+#     Number of page watchers who visited in the last 30 days	2
+#     Number of redirects to this page	4
+#     Counted as a content page	Yes
+#     Wikidata item ID	Q615783
+#     Local description	Ship
+#     Central description	ship built in 1992
+#     Page image	MV Arctic sea.svg
+#     Page views in the past 30 days	273
+#     """
+#     DISPLAY_TITLE = "Display title"
+#     SORT_KEY = "Default sort key"
+#     PAGE_LENGTH = "Page length (in bytes)"
+#     NAMESPACE_ID = "Namespace ID"
+#     PAGE_ID = "Page ID"
+#     PAGE_LANGAUGE = "Page content language"
+#     CONTENT_MODEL = "Page content model"
+#     INDEXING_BY_ROBOTS = "Indexing by robots"
+#     PAGE_WATCHERS = "Number of page watchers"
+#     PAGE_WATCHERS_30 = "Number of page watchers who visited in the last 30 days"
+#     REDIRECTS = "Number of redirects to this page"
+#     IS_CONTENT_PAGE = "Counted as a content page"
+#     WIKIDATA_ITEM = "Wikidata item ID"
+#     LOCAL_DESCRIPTION = "Local description"
+#     CENTRAL_DESCRIPTION = "Central description"
+#     PAGE_IMAGE = "Page image"
+#     PAGE_VIEWS_30 = "Page views in the past 30 days"
+#
+#     KEYS = [
+#         DISPLAY_TITLE,
+#         SORT_KEY,
+#         PAGE_LENGTH,
+#         NAMESPACE_ID,
+#         PAGE_ID,
+#         PAGE_LANGAUGE,
+#         CONTENT_MODEL,
+#         INDEXING_BY_ROBOTS,
+#         PAGE_WATCHERS,
+#         PAGE_WATCHERS_30,
+#         REDIRECTS,
+#         IS_CONTENT_PAGE,
+#         WIKIDATA_ITEM,
+#         LOCAL_DESCRIPTION,
+#         CENTRAL_DESCRIPTION,
+#         PAGE_IMAGE,
+#         PAGE_VIEWS_30,
+#     ]
+#
+#     def __init__(self, table=None):
+#         """
+#         Wrapper for Wikipedia basic information
+#         """
+#         self.table = table
+#         self.table_dict = dict()
+#         self.create_table_dict()
+#
+#     def get_wikidata_href_id(self):
+#         """
+#         return wikidate href and id (Note
+#         :return: (href, id) tuplpe or None
+#         """
+#         value = self.get_value_for_key(self.WIKIDATA_ITEM)
+#         id = value.split("/")[-1]
+#         return None if value is None else (value, id)
+#
+#     def get_local_description(self):
+#         return self.get_value_for_key(self.LOCAL_DESCRIPTION)
+#
+#     def get_central_description(self):
+#         return self.get_value_for_key(self.CENTRAL_DESCRIPTION)
+#
+#     def get_value_for_key(self, key):
+#         return self.table_dict[key]
+#
+#     def get_image_url(self):
+#         url_tail = self.get_value_for_key(self.PAGE_IMAGE)
+#         url = f"{WikipediaPage.get_default_wikipedia_url()}{url_tail}"
+#         return url
+#
+#     def create_table_dict(self):
+#         """
+#         creates name-value table, where value can be text or XML element
+#         """
+#         self.table_dict = dict()
+#         rows = self.table.xpath(".//tr")
+#         for row in rows:
+#             name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
+#             if not name in self.KEYS:
+#                 logger.warning(f"unknown key {name} in Basic Information")
+#             value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
+#             self.table_dict[name] = value
+#
+#     def get_cell_value(self, td, idx):
+#         """
+#         HYPERLINK
+#         <td>
+#           <a
+#             class="extiw wb-entity-link external"
+#             href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783"
+#             >Q615783</a>
+#         </td>
+#         """
+#         tda = td.xpath("a")  # might be a hyperlink
+#         if len(tda) > 0:
+#             href = tda[0].attrib.get("href")
+#             aval = tda[0].text
+#             href = aval if idx == 0 else href
+#             return href
+#         """
+#         IMAGE
+#         <td>
+#           <a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description">
+#             <img
+#               alt="MV Arctic sea.svg"
+#               src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png"
+#               decoding="async"
+#               width="220"
+#               height="156"
+#               data-file-width="1052"
+#               data-file-height="744"
+#               # ></a></td>"""
+#         return td.text
 
 
 class WiktionaryToc:
     """
     supports Wiktionary table of contents
     """
-
 
 
 class WiktionaryPage:
@@ -1596,6 +1623,7 @@ class WiktionaryPage:
         divide WiktionaryPage at languages
         experimental
         """
+
     @classmethod
     def process_parts_of_speech(cls, html_element, mw_content_text_elem, html_div):
         """
@@ -1689,7 +1717,6 @@ class WiktionaryPage:
             </p>
             """
 
-
     @classmethod
     def lookup_wiktionary_content(cls, term=None, url=None):
         """
@@ -1749,7 +1776,6 @@ class WiktionaryPage:
             logger.debug(f"\ndiv for {val}:\n{pphtml}")
             return elem
         return None
-
 
     @classmethod
     def _has_term_not_found_message_(cls, html_element):
@@ -1864,7 +1890,7 @@ class WiktionaryPage:
             ("h3", "etym"),
             ("h4", "pos"),
             ("h5", "xxx"),
-            ]
+        ]
 
         level = 0
         chunklist_elem = cls.group_list(level, level_class_list, mw_grandchildren)
@@ -2164,7 +2190,7 @@ Contents
         ])
 
         # toclevel 1 is languages
-        language_elems =  toc_elem.xpath("./ul/li[contains(@class,'toclevel-1')]")
+        language_elems = toc_elem.xpath("./ul/li[contains(@class,'toclevel-1')]")
         # languages have prepended # at this stage
         languages = [elem.xpath("./a/@href")[0][1:] for elem in language_elems]
         possible_langs = set(reqd_langs).intersection(set(languages))
@@ -2175,13 +2201,11 @@ Contents
         result_html = ET.Element("div")
         result_html.attrib["class"] = "wiktionary_result"
 
-
         logger.info(f"langs {languages}")
         # the ids for Nouns, Verbs, etc are Noun, Noun_2, Noun_3, etc.
         # I bet they change every revision . We have to get the ID from the TOC
         for pos in pos_list:
             cls.get_pos_meanings_and_definitions(mw_content_text, pos, result_html)
-
 
         return (toc_elem, result_html)
 
@@ -2235,7 +2259,6 @@ Contents
         # concatenate text (removes some bold and italis but we can work on that later
         text = "".join(li.itertext()).strip()
         return text
-
 
     @classmethod
     def search_terms_create_html(cls, term, language="English", part_of_speech="Noun", add_toc=False):
@@ -2300,13 +2323,13 @@ Contents
             mw_content_text_children = mw_content_text.xpath(children_xpath)
             assert len(mw_content_text_children) == nchild, f"mw_content_text should have 3 children"
             mw_content_ltr = mw_content_text_children[0]
-            assert mw_content_ltr.tag == DIV and "mw-content-ltr" in mw_content_ltr.attrib.get(CLASS), f"first child should ne main content"
+            assert mw_content_ltr.tag == DIV and "mw-content-ltr" in mw_content_ltr.attrib.get(
+                CLASS), f"first child should ne main content"
             noscript = mw_content_text_children[1]
             printfooter = mw_content_text_children[2]
             assert noscript.tag == NOSCRIPT, f"{term}: second child should be <noscript>"
             assert printfooter.tag == DIV and printfooter.attrib.get(CLASS) == PRINTFOOTER, \
                 f"third child should be Div[@class=printfooter]"
-
 
     @classmethod
     def get_term_from_html_element(cls, html_element):
@@ -2321,17 +2344,152 @@ Contents
         return spans[0].text if len(spans) > 0 else None
 
 
+# class WikipediaInfoBox:
+#     """
+#     wrapper for wikipedia infobox HTML <table>
+#     """
+#
+#     def __init__(self, table=None):
+#         """
+#         Wrapper for Wikipedia InfoBox
+#         """
+#         self.table = table
 
-class WikipediaInfoBox:
-    """
-    wrapper for wikipedia infobox HTML <table>
-    """
+# class WikipediaBasicInfo:
+#     """
+#     wrapper for wikipedia basic information tabls
+#     """
+#
+#     """
+#     Display title	MV Arctic Sea
+#     Default sort key	Arctic Sea, Mv
+#     Page length (in bytes)	40,084
+#     Namespace ID	0
+#     Page ID	23947896
+#     Page content language	en - English
+#     Page content model	wikitext
+#     Indexing by robots	Allowed
+#     Number of page watchers	91
+#     Number of page watchers who visited in the last 30 days	2
+#     Number of redirects to this page	4
+#     Counted as a content page	Yes
+#     Wikidata item ID	Q615783
+#     Local description	Ship
+#     Central description	ship built in 1992
+#     Page image	MV Arctic sea.svg
+#     Page views in the past 30 days	273
+#     """
+#     DISPLAY_TITLE = "Display title"
+#     SORT_KEY = "Default sort key"
+#     PAGE_LENGTH = "Page length (in bytes)"
+#     NAMESPACE_ID = "Namespace ID"
+#     PAGE_ID = "Page ID"
+#     PAGE_LANGAUGE = "Page content language"
+#     CONTENT_MODEL = "Page content model"
+#     INDEXING_BY_ROBOTS = "Indexing by robots"
+#     PAGE_WATCHERS = "Number of page watchers"
+#     PAGE_WATCHERS_30 = "Number of page watchers who visited in the last 30 days"
+#     REDIRECTS = "Number of redirects to this page"
+#     IS_CONTENT_PAGE = "Counted as a content page"
+#     WIKIDATA_ITEM = "Wikidata item ID"
+#     LOCAL_DESCRIPTION = "Local description"
+#     CENTRAL_DESCRIPTION = "Central description"
+#     PAGE_IMAGE = "Page image"
+#     PAGE_VIEWS_30 = "Page views in the past 30 days"
+#
+#     KEYS = [
+#         DISPLAY_TITLE,
+#         SORT_KEY,
+#         PAGE_LENGTH,
+#         NAMESPACE_ID,
+#         PAGE_ID,
+#         PAGE_LANGAUGE,
+#         CONTENT_MODEL,
+#         INDEXING_BY_ROBOTS,
+#         PAGE_WATCHERS,
+#         PAGE_WATCHERS_30,
+#         REDIRECTS,
+#         IS_CONTENT_PAGE,
+#         WIKIDATA_ITEM,
+#         LOCAL_DESCRIPTION,
+#         CENTRAL_DESCRIPTION,
+#         PAGE_IMAGE,
+#         PAGE_VIEWS_30,
+#     ]
+#
+#     def __init__(self, table=None):
+#         """
+#         Wrapper for Wikipedia basic information
+#         """
+#         self.table = table
+#         self.table_dict = dict()
+#         self.create_table_dict()
+#
+#     def get_wikidata_href_id(self):
+#         """
+#         return wikidate href and id (Note
+#         :return: (href, id) tuplpe or None
+#         """
+#         value = self.get_value_for_key(self.WIKIDATA_ITEM)
+#         id = value.split("/")[-1]
+#         return None if value is None else (value, id)
+#
+#     def get_local_description(self):
+#         key = self.LOCAL_DESCRIPTION
+#         return self.get_value_for_key(key)
+#
+#     def get_value_for_key(self, key):
+#         return self.table_dict[key]
+#
+#     def get_image_url(self):
+#         url_tail = self.get_value_for_key(self.PAGE_IMAGE)
+#         url = f"{WikipediaPage.get_default_wikipedia_url()}{url_tail}"
+#         return url
+#
+#     def create_table_dict(self):
+#         """
+#         creates name-value table, where value can be text or XML element
+#         """
+#         self.table_dict = dict()
+#         rows = self.table.xpath(".//tr")
+#         for row in rows:
+#             name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
+#             if not name in self.KEYS:
+#                 logger.warning(f"unknown key {name} in Basic Information")
+#             value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
+#             self.table_dict[name] = value
+#
+#     def get_cell_value(self, td, idx):
+#         """
+#         HYPERLINK
+#         <td>
+#           <a
+#             class="extiw wb-entity-link external"
+#             href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783"
+#             >Q615783</a>
+#         </td>
+#         """
+#         tda = td.xpath("a")  # might be a hyperlink
+#         if len(tda) > 0:
+#             href = tda[0].attrib.get("href")
+#             aval = tda[0].text
+#             href = aval if idx == 0 else href
+#             return href
+#         """
+#         IMAGE
+#         <td>
+#           <a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description">
+#             <img
+#               alt="MV Arctic sea.svg"
+#               src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png"
+#               decoding="async"
+#               width="220"
+#               height="156"
+#               data-file-width="1052"
+#               data-file-height="744"
+#               ></a></td>"""
+#         return td.text
 
-    def __init__(self, table=None):
-        """
-        Wrapper for Wikipedia InfoBox
-        """
-        self.table = table
 
 class WikipediaBasicInfo:
     """
@@ -2467,153 +2625,3 @@ class WikipediaBasicInfo:
               data-file-height="744"
               ></a></td>"""
         return td.text
-
-
-
-class WikipediaInfoBox:
-    """
-    wrapper for wikipedia infobox HTML <table>
-    """
-
-    def __init__(self, table=None):
-        """
-        Wrapper for Wikipedia InfoBox
-        """
-        self.table = table
-
-class WikipediaBasicInfo:
-    """
-    wrapper for wikipedia basic information tabls
-    """
-
-    """
-    Display title	MV Arctic Sea
-    Default sort key	Arctic Sea, Mv
-    Page length (in bytes)	40,084
-    Namespace ID	0
-    Page ID	23947896
-    Page content language	en - English
-    Page content model	wikitext
-    Indexing by robots	Allowed
-    Number of page watchers	91
-    Number of page watchers who visited in the last 30 days	2
-    Number of redirects to this page	4
-    Counted as a content page	Yes
-    Wikidata item ID	Q615783
-    Local description	Ship
-    Central description	ship built in 1992
-    Page image	MV Arctic sea.svg
-    Page views in the past 30 days	273
-    """
-    DISPLAY_TITLE = "Display title"
-    SORT_KEY = "Default sort key"
-    PAGE_LENGTH = "Page length (in bytes)"
-    NAMESPACE_ID = "Namespace ID"
-    PAGE_ID = "Page ID"
-    PAGE_LANGAUGE = "Page content language"
-    CONTENT_MODEL = "Page content model"
-    INDEXING_BY_ROBOTS = "Indexing by robots"
-    PAGE_WATCHERS = "Number of page watchers"
-    PAGE_WATCHERS_30 = "Number of page watchers who visited in the last 30 days"
-    REDIRECTS = "Number of redirects to this page"
-    IS_CONTENT_PAGE = "Counted as a content page"
-    WIKIDATA_ITEM = "Wikidata item ID"
-    LOCAL_DESCRIPTION = "Local description"
-    CENTRAL_DESCRIPTION = "Central description"
-    PAGE_IMAGE = "Page image"
-    PAGE_VIEWS_30 = "Page views in the past 30 days"
-
-    KEYS = [
-        DISPLAY_TITLE,
-        SORT_KEY,
-        PAGE_LENGTH,
-        NAMESPACE_ID,
-        PAGE_ID,
-        PAGE_LANGAUGE,
-        CONTENT_MODEL,
-        INDEXING_BY_ROBOTS,
-        PAGE_WATCHERS,
-        PAGE_WATCHERS_30,
-        REDIRECTS,
-        IS_CONTENT_PAGE,
-        WIKIDATA_ITEM,
-        LOCAL_DESCRIPTION,
-        CENTRAL_DESCRIPTION,
-        PAGE_IMAGE,
-        PAGE_VIEWS_30,
-    ]
-
-    def __init__(self, table=None):
-        """
-        Wrapper for Wikipedia basic information
-        """
-        self.table = table
-        self.table_dict = dict()
-        self.create_table_dict()
-
-    def get_wikidata_href_id(self):
-        """
-        return wikidate href and id (Note
-        :return: (href, id) tuplpe or None
-        """
-        value = self.get_value_for_key(self.WIKIDATA_ITEM)
-        id = value.split("/")[-1]
-        return None if value is None else (value, id)
-
-    def get_local_description(self):
-        key = self.LOCAL_DESCRIPTION
-        return self.get_value_for_key(key)
-
-    def get_value_for_key(self, key):
-        return self.table_dict[key]
-
-    def get_image_url(self):
-        url_tail = self.get_value_for_key(self.PAGE_IMAGE)
-        url = f"{WikipediaPage.get_default_wikipedia_url()}{url_tail}"
-        return url
-
-    def create_table_dict(self):
-        """
-        creates name-value table, where value can be text or XML element
-        """
-        self.table_dict = dict()
-        rows = self.table.xpath(".//tr")
-        for row in rows:
-            name = self.get_cell_value(row.xpath("./td[1]")[0], 0)
-            if not name in self.KEYS:
-                logger.warning(f"unknown key {name} in Basic Information")
-            value = self.get_cell_value(row.xpath("./td[2]")[0], 1)
-            self.table_dict[name] = value
-
-    def get_cell_value(self, td, idx):
-        """
-        HYPERLINK
-        <td>
-          <a
-            class="extiw wb-entity-link external"
-            href="https://www.wikidata.org/wiki/Special:EntityPage/Q615783"
-            >Q615783</a>
-        </td>
-        """
-        tda = td.xpath("a")  # might be a hyperlink
-        if len(tda) > 0:
-            href = tda[0].attrib.get("href")
-            aval = tda[0].text
-            href = aval if idx == 0 else href
-            return href
-        """
-        IMAGE
-        <td>
-          <a href="/wiki/File:MV_Arctic_sea.svg" class="mw-file-description">
-            <img 
-              alt="MV Arctic sea.svg" 
-              src="//upload.wikimedia.org/wikipedia/commons/thumb/7/7f/MV_Arctic_sea.svg/220px-MV_Arctic_sea.svg.png" 
-              decoding="async" 
-              width="220" 
-              height="156" 
-              data-file-width="1052"
-              data-file-height="744"
-              ></a></td>"""
-        return td.text
-
-

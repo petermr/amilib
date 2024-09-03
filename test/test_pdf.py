@@ -47,7 +47,7 @@ from test.test_all import AmiAnyTest
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 # class PDFTest:
 

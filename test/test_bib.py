@@ -1,7 +1,8 @@
 from amilib.file_lib import FileLib
+from amilib.util import Util
 from test.test_all import AmiAnyTest
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 class AmiBibliographyTest(AmiAnyTest):
     """
 

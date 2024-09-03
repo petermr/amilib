@@ -6,6 +6,7 @@ import pytest
 from geopy.geocoders import Nominatim
 
 from amilib.file_lib import FileLib
+from amilib.util import Util
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -23,7 +24,7 @@ subs = {
 
 }
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 def multiple_replace(replacements, text):
     # Create a regular expression from the dictionary keys

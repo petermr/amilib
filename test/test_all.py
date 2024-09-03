@@ -28,7 +28,7 @@ skip_config_test = True
 # TODO needs local config file
 # @unittest.skipIf(skip_config_test, "needs local config")
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 class AmiAnyTest(unittest.TestCase):
     # for marking and skipping unittests

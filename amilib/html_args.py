@@ -3,6 +3,7 @@ import logging
 
 from amilib.ami_args import AbstractArgs, AmiArgParser
 from amilib.file_lib import FileLib
+from amilib.util import Util
 
 # commandline
 ANNOTATE = "annotate"
@@ -13,7 +14,7 @@ OUTDIR = "outdir"
 OUTPATH = "outpath"
 
 # logger = AmiLogger.create_named_logger(__file__)
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 logger.setLevel(logging.WARNING)
 
 class HTMLArgs(AbstractArgs):

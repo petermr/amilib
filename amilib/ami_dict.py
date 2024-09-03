@@ -61,7 +61,7 @@ LANG_UR = "ur"
 # elements
 
 # logger = logging.getLogger("ami_dict")
-logger = FileLib().get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 
 # class syntax

@@ -8,11 +8,12 @@ import math
 import csv
 
 from amilib.file_lib import FileLib
+from amilib.util import Util
 
 X = 0
 Y = 1
 
-logger = FileLib().get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 
 class AmiUtil:

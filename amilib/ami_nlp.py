@@ -20,8 +20,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from amilib.file_lib import FileLib
+from amilib.util import Util
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 # anchor
 A_TEXT = "a_text"

@@ -1,6 +1,7 @@
 import argparse
 import ast
 import codecs
+import getpass
 import importlib
 import logging
 import os
@@ -20,15 +21,75 @@ import requests
 import json
 import base64
 
-from amilib.file_lib import FileLib
+# THIS FILE HAS NO amilib IMPORTS TO AVOID CYCLIC DEPENDENCIES
+def _get_logger(name,
+                level=logging.DEBUG,
+                err_level=logging.ERROR,
+                err_log="error.log",
+                format="%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s",
+                ):
+    """
+    DO NOT CALL THIS
+    """
+    # this gets called in Util,get_logger(__name) everywhere except this file
+    """
+    replaces old get_logger
 
-logger = FileLib.get_logger(__name__)
+    gets system logger with handlers set
+    hopefully works
+    :param name: name of logger (recommend __name__)
+    :param level: log level for stdout, default WARN
+    :param err_level: level for error (default ERROR)
+    :param err_log: file to write err_level to, None = no write (default None)
+    :param format: default '%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s'
+
+    Note for exceptions use FileLib.log_exception
+    """
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    # Create handlers for logging to the standard output and a file
+    stdoutHandler = logging.StreamHandler(stream=sys.stdout)
+    errHandler = logging.FileHandler(err_log)
+    # Set the log levels on the handlers
+    stdoutHandler.setLevel(level)
+    err_level = logging.ERROR
+    errHandler.setLevel(err_level)
+    # Create a log format using Log Record attributes
+    format = "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
+    format = "%(levelname)s %(filename)s:%(lineno)s:%(message)s"
+    fmt = logging.Formatter(format)
+    # Set the log format on each handler
+    stdoutHandler.setFormatter(fmt)
+    errHandler.setFormatter(fmt)
+    # Add each handler to the Logger object
+    logger.addHandler(stdoutHandler)
+    logger.addHandler(errHandler)
+    return logger
+
+
+logger = _get_logger(__name__)
 
 HREF = "href"
 
 
 class Util:
     """Utilities, mainly staticmethod or classmethod and not tightly linked to AMI"""
+
+
+    @classmethod
+    def get_logger(cls,
+                    name,
+                    level=logging.DEBUG,
+                    err_level=logging.ERROR,
+                    err_log="error.log",
+                    format="%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s",
+                    ):
+        """
+        creates logger with name == __name__
+        """
+        return _get_logger(name, level, err_level, err_log, format)
+
+
 
     @classmethod
     def set_logger(cls, module,
@@ -506,7 +567,6 @@ class Util:
         https://stackoverflow.com/questions/842059/is-there-a-portable-way-to-get-the-current-username-in-python
         some possibility of spoofing , biut doesn't matter for us
         """
-        import getpass
         return getpass.getuser()
 
     @classmethod

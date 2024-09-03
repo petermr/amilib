@@ -41,7 +41,7 @@ HEADER = "header"
 DEFAULT_CONVERT = "html"
 DEFAULT_MAXPAGES = 100
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 logger.setLevel(logging.INFO)
 
 

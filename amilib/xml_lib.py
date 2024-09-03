@@ -19,8 +19,9 @@ from lxml.html import HTMLParser
 # import tkinter as tk
 
 from amilib.file_lib import FileLib
+from amilib.util import Util
 
-logger = FileLib.get_logger(__name__)
+logger = Util.get_logger(__name__)
 
 # make leafnodes and copy remaning content as XML
 TERMINAL_COPY = {
