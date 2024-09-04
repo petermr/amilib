@@ -1598,6 +1598,41 @@ class DictionaryCreationTest(AmiAnyTest):
         assert (c := ami_dictionary.get_entry_count()) >= expected_count, \
             f"dictionary should contain {expected_count} found {c}"
 
+    def test_make_dict_from_wordlist_add_figures(self):
+        stems = [
+            # "carbon_cycle_noabb",
+            # "chap5",
+            "chap6_7_8",
+            # "ab_chap2",
+            ]
+
+        for stem in stems:
+            logger.info(f"creating figure entries for {stem}")
+            self.create_dict_for_word_file(stem)
+
+    def create_dict_for_word_file(self, stem, input_file=None, output_dict=None):
+        """
+        Reads a wordlist file and creates output dictionary with figures
+        :param stem: stem of files
+        :param input_file: if None, defaults to TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt"
+        :param output_dict: if None, defaults to TEMP_DIR, "words", "html", f"{stem}.html"
+
+        """
+        if input_file is None:
+            input_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        if output_dict is None:
+            output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
+
+
+        args = [
+            "DICT",
+            "--words", input_file,
+            "--dict", output_dict,
+            "--figures",
+        ]
+        AmiLib().run_command(args)
+        assert Path(output_dict).exists()
+
     def test_make_dict_with_figures(self):
         stem = "with_figures"
         output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
@@ -1607,15 +1642,25 @@ class DictionaryCreationTest(AmiAnyTest):
         ]
         args = [
             "DICT",
-            "--words", "Bay of Bengal",
-            "JNU",
-            "troposphere",
-            "Permafrost",
-            "centennial",
-            "aerosol",
-            "Albedo",
+            "--words",
             "--dict", output_dict,
             "--figures",
+        ]
+        AmiLib().run_command(args)
+        assert Path(output_dict).exists()
+
+    def test_disambiguation(self):
+        stem = ("disambiguation")
+        output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
+
+        parijat
+        args = [
+            "DICT",
+            "--words",
+            "stubble",
+            "anthropogenic",
+            "--dict", output_dict,
+            # "--figures",
         ]
         AmiLib().run_command(args)
         assert Path(output_dict).exists()

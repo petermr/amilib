@@ -84,6 +84,10 @@ class DriverTest(AmiAnyTest):
         """
         A potential multiclick download
         """
+        """
+        fails with:
+         OSError: [Errno 8] Exec format error:
+         """
         url = SYR_URL + "annexes-and-index/"
         driver = AmiDriver(sleep=SLEEP)
         click_list = EXPAND_SECTION_PARAS
