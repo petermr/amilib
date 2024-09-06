@@ -1600,24 +1600,40 @@ class DictionaryCreationTest(AmiAnyTest):
 
     def test_make_dict_from_wordlist_add_figures(self):
         stems = [
-            # "carbon_cycle_noabb",
+            # "breward",
+            "carbon_cycle_noabb",
+            # "chap2",
             # "chap5",
-            "chap6_7_8",
-            # "ab_chap2",
+            # "chap6_7_8",
+            # "food_ecosystem",
+            # "human_influence",
+            # "inews15",
+            # "non_wikipedia",
+            # "poverty",
+            # "small_2",
+            # "water_cyclone"
+            ""
+
             ]
 
         for stem in stems:
             logger.info(f"creating figure entries for {stem}")
-            self.create_dict_for_word_file(stem)
+            self.create_dict_for_word_file(stem, wiktionary=True)
 
-    def create_dict_for_word_file(self, stem, input_file=None, output_dict=None):
+    def test_more_words(self):
+        pass
+
+    def create_dict_for_word_file(self, stem, wiktionary=True, input_file=None, output_dict=None):
         """
         Reads a wordlist file and creates output dictionary with figures
-        :param stem: stem of files
+        :param stem: stem of files, also used as title
         :param input_file: if None, defaults to TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt"
         :param output_dict: if None, defaults to TEMP_DIR, "words", "html", f"{stem}.html"
 
         """
+        if stem is None or stem.strip() == "":
+            logger.error("no title given for dictionary")
+            return None
         if input_file is None:
             input_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
         if output_dict is None:
@@ -1628,23 +1644,29 @@ class DictionaryCreationTest(AmiAnyTest):
             "DICT",
             "--words", input_file,
             "--dict", output_dict,
-            "--figures",
+            "--figures", "wikipedia",
+            "--title", stem,
         ]
+        if wiktionary:
+            args.append("--wiktionary")
+
         AmiLib().run_command(args)
         assert Path(output_dict).exists()
 
     def test_make_dict_with_figures(self):
-        stem = "with_figures"
+        stem = "with_figures1"
         output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
 
         words = [
-
+            "albedo",
+            "ablation",
         ]
         args = [
             "DICT",
-            "--words",
+            "--words", words,
             "--dict", output_dict,
-            "--figures",
+            "--title", stem,
+            "--figures", "wikipedia",
         ]
         AmiLib().run_command(args)
         assert Path(output_dict).exists()
@@ -1653,7 +1675,6 @@ class DictionaryCreationTest(AmiAnyTest):
         stem = ("disambiguation")
         output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
 
-        parijat
         args = [
             "DICT",
             "--words",

@@ -974,6 +974,8 @@ class WikipediaPage:
 
     def __init__(self):
         self.html_elem = None
+        self.search_term = None
+        self.search_url = None
 
     @classmethod
     def lookup_wikipedia_page_for_term(cls, search_term):
@@ -986,10 +988,18 @@ class WikipediaPage:
 
         "https://en.wikipedia.org/w/index.php?search=lulucx&title=Special%3ASearch&ns0=1"
         url = f"{WikipediaPage.WIKIPEDIA_PHP}search={search_term}"
-        return cls.lookup_wikipedia_page_for_url(url)
+        wikipedia_page = cls.lookup_wikipedia_page_for_url(url)
+        wikipedia_page.search_term = search_term
+        return wikipedia_page
 
     @classmethod
     def lookup_wikipedia_page_for_url(cls, url):
+        """
+        lookup wikipedia page by url
+        The url may not be the final address of the page
+        :param url: url to search with
+        :return: WikipediaPage or None
+        """
         wikipedia_page = None
         if url is not None:
             try:
@@ -998,6 +1008,7 @@ class WikipediaPage:
                 html_content = HtmlLib.parse_html_string(decode)
                 wikipedia_page = WikipediaPage()
                 wikipedia_page.html_elem = html_content
+                wikipedia_page.search_url = url
             except Exception as e:
                 logger.info(f"HTML exception {e}")
         return wikipedia_page

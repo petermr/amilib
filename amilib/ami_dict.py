@@ -447,6 +447,7 @@ class AmiEntry:
 
         :return: div with term and para
         """
+        logger.warning("Dont create default entry at this stage")
         html_div = ET.Element("div")
         html_div.attrib[ROLE] = AMI_ENTRY
         term = self.get_term()
@@ -486,19 +487,52 @@ class AmiEntry:
         id = None if name is None else name.strip().lower().replace("\\s+", "_")
         return id
 
-    def add_figures_to_entry(self):
+    def add_figures_to_entry_old(self):
+        """
+
+        """
         term = self.get_term()
         if term is None:
             logger.warning(f"element has no term")
             return
-        dictionary = self.element.xpath('parent::*')[0]
-        # gparent = dictionary.xpath('parent::*')
+        # dictionary = self.element.xpath('parent::*')[0]
         outfile = Path(Resources.TEMP_DIR, 'figures', f"dictionary_{term}.html")
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
-        logger.debug(wikipedia_page)
-        if wikipedia_page is None:
-            logger.warning(f"Cannot find wikipedia page for {term}")
+        wikipedia_page = self.lookup_wikipedia_page(term)
+        if wikipedia_page is not None:
+            logger.warning(f"no wikipedia page for {term}")
+            wiktionary_page = self.lookup_wiktionary(term)
+            if wiktionary_page is not None:
+                self.add_figures_from_wiktionary(term, wiktionary_page)
+        else:
+            self.add_figures_from_wikipedia(term, wikipedia_page)
+
+    def add_figures_to_entry(self, wikipedia_page):
+        """
+        extracts figures from Wikipedia page and returns the first
+        Currently (2024-09) we look at:
+        * infobox
+        * first <figure> thumbnail
+
+
+        """
+        term = self.get_term()
+        if term is None:
+            logger.warning(f"element has no term")
             return
+        # dictionary = self.element.xpath('parent::*')[0]
+        # wikipedia_page = self.lookup_wikipedia_page(term)
+        if wikipedia_page is None:
+            logger.warning(f"no wikipedia page for {term}")
+            return
+            # wiktionary_page = self.lookup_wiktionary(term)
+            # if wiktionary_page is not None:
+            #     self.add_figures_from_wiktionary(term, wiktionary_page)
+        self.add_figures_from_wikipedia(term, wikipedia_page)
+
+    def add_figures_from_wikipedia(self, term, wikipedia_page):
+        """
+        extract figures from Wikipedia page, either infobox or first thumbnail
+        """
         a_elem = wikipedia_page.extract_a_elem_with_image_from_infobox()
         logger.debug(f"{term}: {a_elem}")
         figures = wikipedia_page.html_elem.xpath(".//figure")
@@ -509,14 +543,16 @@ class AmiEntry:
         figure_div.attrib["title"] = "figure"
         if a_elem is not None:
             figure_div.append(copy.deepcopy(a_elem))
-            logger.info(f"added figure {a_elem} for {term} to {outfile}")
-            # logger.warning(f"A_ELEM.. {ET.tostring(dictionary, pretty_print=True).decode()}")
-
-            # x_elem = Element("no_element") if len(xs) == 0 else xs[0]
-            # logger.warning(f"HTMLXX.. {ET.tostring(x_elem, pretty_print=True).decode()}")
+            logger.info(f"added figure {a_elem} for {term} ")
         elif len(figures) > 0:
             figure_div.append(copy.deepcopy(figures[0]))
-            # logger.warning(f"FIG_ELEM.. {ET.tostring(dictionary, pretty_print=True).decode()}")
+
+    def lookup_wikipedia_page(self, term):
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        if wikipedia_page is None:
+            logger.warning(f"Cannot find wikipedia page for {term}")
+        logger.debug(f"WP page for {term}: {wikipedia_page.search_url}")
+        return wikipedia_page
 
     def create_semantic_div(self):
         html_div = Element("div")
@@ -526,8 +562,36 @@ class AmiEntry:
         # copy children
         for child in self.element.xpath("./*"):
             html_div.append(copy.deepcopy(child))
+        term = self.get_term()
         html_div.attrib[ROLE] = AMI_ENTRY
+        p = ET.SubElement(html_div, "p")
         return html_div
+
+    def lookup_wiktionary(self, term):
+        """
+        lookup term in Wiktionary
+        currently will take the first
+        """
+        logger.warning(f"Wiktionary lookup NYI")
+        return None
+
+    def add_figures_from_wiktionary(self, term, wiktionary_page):
+        """
+        extract figures from Wiktionary page first thumbnail
+        by default add all figures to help readers disambiguate
+        needs deeper parsing of wikitionary
+        :param term:
+        :param wiktionary_page: page to extract figures from
+        """
+        figures = wiktionary_page.html_elem.xpath(".//figure")
+        if len(figures) == 0:
+            logger.info(f"NO FIGURES for {term}")
+            return
+        figure_div = ET.SubElement(self.element, "div")
+        figure_div.attrib["title"] = "figure"
+        if len(figures) > 0:
+            for figure in figures:
+                figure_div.append(copy.deepcopy(figures))
 
 
 class AmiDictionary:
@@ -1070,7 +1134,7 @@ class AmiDictionary:
         """creates entriws from elements in self.entry_by_term
         TODO maybe index the AmiEntry's instead
         :return: list of AmiEntries"""
-        assert self.entry_by_term
+        assert self.entry_by_term is not None
         ami_entry_list = []
         for entry_element in self.entry_by_term.values():
             ami_entry = AmiEntry.create_from_element(entry_element)
@@ -1151,23 +1215,27 @@ class AmiDictionary:
         FileLib.force_mkparent(file)
         file_str = str(file)
         if file_str.endswith(".xml"):
-            with open(file, 'wb') as f:
-                root.write(f, encoding="utf-8",
-                         xml_declaration=True, pretty_print=True)
+            self.write_xml_dictionary(file, root)
         elif file_str.endswith(".html"):
-            if debug:
-                logger.info(f"writing HTML to {file}")
             title = Path(file).stem
-            sem_html = self.create_html_dictionary(create_default_entry=False, title=title)
-            HtmlLib.add_base_to_head(sem_html, self.html_base)
-
-            HtmlLib.write_html_file(sem_html, file, debug=True)
+            sem_html = self.create_html_dictionary_and_format(title)
+            HtmlLib.write_html_file(sem_html, file, debug=debug)
 
         else:
             logger.error(f"unknown output suffix in {file}")
 
         if debug:
             logger.debug(f"wrote dictionary {self.title} to {file}")
+
+    def create_html_dictionary_and_format(self, title):
+        sem_html = self.create_html_dictionary(create_default_entry=False, title=title)
+        HtmlLib.add_base_to_head(sem_html, self.html_base)
+        return sem_html
+
+    def write_xml_dictionary(self, file, root):
+        with open(file, 'wb') as f:
+            root.write(f, encoding="utf-8",
+                       xml_declaration=True, pretty_print=True)
 
     def add_wikidata_from_terms(self, allowed_descriptions=ANY):
 
@@ -1629,17 +1697,37 @@ class AmiDictionary:
         dictionary_div.attrib["role"] = "ami_dictionary"
         if title is not None:
             dictionary_div.attrib[TITLE] = title
+        self.add_html_entries(dictionary_div, create_default_entry=False)
+        return html_dict
+
+    def add_html_entries(self, dictionary_div, create_default_entry=False):
+        """
+        add html entries to html dictionary
+        :param dictionary_div:to add html entries to
+        :param create_default_entry: Obsolete (don't create dictionary at this stage
+        """
         entries = self.get_ami_entries()
         for ami_entry in entries:
+            term = ami_entry.get_term()
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
             if create_default_entry:
                 entry_div = ami_entry.create_semantic_div_from_term()
             else:
                 entry_div = ami_entry.create_semantic_div()
+                p = ET.Element("p")
+                wp_info = "None" if wikipedia_page is None else wikipedia_page.search_url
+                p.text = f"search term:  {ami_entry.get_term()} "
+                if wikipedia_page.search_url is not None:
+                    a = ET.SubElement(p, "a")
+                    a.attrib[A_HREF] = wikipedia_page.search_url
+                    a.text = "Wikipedia Page"
+                entry_div.insert(0, p)
             if len(entry_div.xpath("*")) == 0:
-                p = ET.SubElement(entry_div, "p")
-                p.text = f"Cannot find Wikimedia for {entry_div.attrib.get(TERM)}"
+
+                p = ET.Element( "p")
+                p.text = f"Cannot find Wikimedia for {ami_entry.get_term()}: {entry_div.attrib.get(TERM)}"
+                entry_div.insert(0, p)
             dictionary_div.append(entry_div)
-        return html_dict
 
     def add_style(self, html_dict):
         head = HtmlLib.get_head(html_dict)

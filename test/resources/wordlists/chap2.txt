@@ -1,4 +1,3 @@
-
 capitalism
 H2O
 ecosystem
@@ -9,7 +8,7 @@ biosphere
 precipitation
 CERES
 infrared radiation
-fluxes in wm2
+# fluxes in wm2
 evapotranspiration
 NASA
 back radiation
@@ -28,7 +27,6 @@ anthropogenic
 halocarbon
 irradiance
 permafrost
-
 containment
 acidification
 climate action tracker
@@ -37,7 +35,6 @@ biodiversity
 tipping point
 climate breakdown
 sacrifice zone
-
 AMOC
 Gulf stream
 AGW

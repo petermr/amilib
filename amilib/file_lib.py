@@ -574,6 +574,10 @@ class FileLib:
         if strings_in is None or strings_in == []:
             return strings_out
         # ensure a list
+        logger.debug(f"strings_in {type(strings_in)} .. {strings_in}")
+        if strings_in.startswith("["):
+            strings_in = ast.literal_eval(strings_in)
+        logger.debug(f"after literal eval strings_in {type(strings_in)} .. {strings_in}")
         strings_in = strings_in if type(strings_in) is list else [strings_in]
         for string_in in strings_in:
             # is it a file

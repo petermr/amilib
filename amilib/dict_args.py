@@ -14,6 +14,7 @@ from amilib.ami_args import AbstractArgs
 from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage, WiktionaryPage
+from amilib.xml_lib import HtmlLib
 
 # commandline
 DESCRIPTION = "description"
@@ -24,8 +25,11 @@ INPATH = "inpath"
 OPERATION = "operation"
 OUTPATH = "outpath"
 SYNONYM = "synonym"
+TITLE = "title"
 VALIDATE = "validate"
 WORDS = "words"
+
+UNKNOWN = "unknown"
 
 # operations
 CREATE_DICT = "create"
@@ -53,6 +57,7 @@ class AmiDictArgs(AbstractArgs):
         self.operation = None
         self.synonym = None
         self.validate = None
+        self.title = UNKNOWN
         self.wikidata = None
         self.wikipedia = None
         self.wiktionary = None
@@ -77,11 +82,11 @@ class AmiDictArgs(AbstractArgs):
         self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
         self.parser.add_argument(f"--{FIGURES}", type=str,
                                  nargs="*",
-                                 default=WIKIPEDIA,
-                                 choices=[WIKIPEDIA],
+                                 default="None",
+                                 choices=["None", WIKIPEDIA],
                                  help=f"sources for figures: "
                                       f"'{WIKIPEDIA}' uses infobox or first thumbnail,"
-                                      f" default={WIKIPEDIA}")
+                                 )
         self.parser.add_argument(f"--{OPERATION}", type=str,
                                  default=CREATE_DICT,
                                  choices=[CREATE_DICT, EDIT_DICT, MARKUP_FILE, VALIDATE_DICT],
@@ -96,6 +101,9 @@ class AmiDictArgs(AbstractArgs):
                                  help="output file ")
         self.parser.add_argument(f"--{SYNONYM}", type=str, nargs="+",
                                  help="add sysnonyms (from Wikidata) for terms (NYI)")
+        self.parser.add_argument(f"--{TITLE}", type=str,
+                                 default="unknown",
+                                 help="internal title for dictionary, normally same as stem of dictionary file")
         self.parser.add_argument(f"--{VALIDATE}", action="store_true", help="validate dictionary; DEPRECATED use '--operation validate'")
         self.parser.add_argument(f"--{WIKIDATA}", type=str, nargs="*", help="add WikidataIDs (NYI)")
         self.parser.add_argument(f"--{WIKIPEDIA}", type=str, nargs="*",
@@ -122,21 +130,24 @@ class AmiDictArgs(AbstractArgs):
 
         self.dictfile = self.arg_dict.get(DICT)
         self.figures = self.arg_dict.get(FIGURES)
+        if self.figures == "None":
+            self.figures = None
         self.inpath = self.arg_dict.get(INPATH)
         self.outpath = self.arg_dict.get(OUTPATH)
         self.operation = self.arg_dict.get(OPERATION)
         self.synonym = self.arg_dict.get(SYNONYM)
+        self.title = self.arg_dict.get(TITLE)
         self.validate = self.arg_dict.get(VALIDATE)
         self.wikidata = self.arg_dict.get(WIKIDATA)
         self.wikipedia = self.arg_dict.get(WIKIPEDIA)
         self.wiktionary = self.arg_dict.get(WIKTIONARY)
         self.words = self.make_input_words( self.arg_dict.get(WORDS))
-        # self.wordlist = None
+
 
         if self.operation is None:
             raise ValueError("No operatin given")
         elif self.operation == CREATE_DICT:
-            self.create_dictionary_from_words()
+            self.create_dictionary_from_words(self.title)
         elif self.operation == EDIT_DICT:
             self.edit_dictionary()
         elif self.operation == MARKUP_FILE:
@@ -182,23 +193,36 @@ class AmiDictArgs(AbstractArgs):
             logger.debug(f"Wiktionary lookup {self.wiktionary}")
             if len(self.wiktionary) > 0:
                 logger.debug(f"searching wiktionary for {self.wiktionary}")
-                WiktionaryPage.search_terms_create_html(self.wiktionary)
+                htmlx = WiktionaryPage.search_terms_create_html(self.wiktionary)
+                temp = Path(Path(__file__).parent.parent, "temp")
+                logger.info(f"temp dir {temp}")
+                HtmlLib.write_html_file(htmlx, Path(temp, "wiktionary", f"{self.title}.html"))
+                body = htmlx
             else:
                 logger.debug(f"add to dictionary NYI")
-                # hit_dict = self.add_wiktionary_to_dict()
-                # status = self.validate_dict()
 
-    def create_dictionary_from_words(self):
-        if self.words is not None:
-            self.build_or_edit_dictionary()
-            assert self.ami_dict is not None
+    def create_dictionary_from_words(self, title):
+        """
+        use self.words to create a dictionary
+        potentially add decriptions and figures
+        :param title: mandatory title
+        """
+        if title is None:
+            logger.error("must give title")
+            return
+        if self.words is None:
+            logger.warning("no words given in args")
+            return
 
-            self.add_descriptions()
-            if self.figures is not None:
-                self.add_figures()
+        self.build_or_edit_dictionary()
+        assert self.ami_dict is not None
 
-            if self.dictfile is not None:
-                self.ami_dict.create_html_write_to_file(self.dictfile, debug=True)
+        self.add_descriptions()
+        if self.figures is not None:
+            self.add_figures()
+
+        if self.dictfile is not None:
+            self.ami_dict.create_html_write_to_file(self.dictfile, debug=True)
 
     # class AmiDictArgs:
 
@@ -223,7 +247,7 @@ class AmiDictArgs(AbstractArgs):
         if self.words is not None:
             logger.info(f"creating dictionary from {self.words[:3]}...")
             self.ami_dict, _ = AmiDictionary.create_dictionary_from_words(
-                terms=self.words, title="unknown", wiktionary=False)
+                terms=self.words, title=self.title, wiktionary=False)
         return self.ami_dict
 
     def add_wikidata_to_dict(self, description_regex=None):
@@ -317,10 +341,7 @@ class AmiDictArgs(AbstractArgs):
         return Path(__file__).stem
 
     def make_input_words(self, words):
-        if words is None:
-            self.words  = None
-        else:
-            self.words = FileLib.get_input_strings(words)
+        self.words = None if words is None else FileLib.get_input_strings(words)
         return self.words
 
 # ========== create=======
@@ -329,14 +350,19 @@ class AmiDictArgs(AbstractArgs):
         # TODO CYCLIC import
         from amilib.ami_dict import AmiEntry
         """
+        iterate over all entries, and find the WikipediaPage. 
+        extract figure/s from the page and add to the entry 
+        calls ami_entry.add_figures_to_entry
         """
         if self.ami_dict.entries is None:
             logger.warning("No self.ami_dict.entries")
             return
         for entry_elem in self.ami_dict.entries:
             ami_entry = AmiEntry.create_from_element(entry_elem)
-            ami_entry.lookup_and_add_wikipedia_page()
-            ami_entry.add_figures_to_entry()
+            wikipedia_page = ami_entry.lookup_and_add_wikipedia_page()
+            # ami_entry.add_figures_to_entry_old()
+            if wikipedia_page is not None:
+                ami_entry.add_figures_to_entry(wikipedia_page)
 
     # ========== eiit ========
     def edit_dictionary(self):

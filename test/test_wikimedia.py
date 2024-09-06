@@ -1268,7 +1268,7 @@ class WiktionaryTest(AmiAnyTest):
         """
         read text file and lookup each line
         """
-        wordfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "ab_chap_2.txt")
+        wordfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "chap2.txt")
         assert wordfile.exists()
         with open(wordfile, "r") as f:
             terms = f.readlines()
