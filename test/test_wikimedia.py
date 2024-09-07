@@ -1,10 +1,9 @@
 # Tests wikipedia and wikidata methods under pytest
 import pprint
 import unittest
-from html.parser import HTMLParser
 from pathlib import Path
-import lxml.etree as ET
 
+import lxml.etree as ET
 import requests
 from lxml import etree, html
 from mwparserfromhtml import HTMLDump, Article
@@ -14,10 +13,10 @@ from amilib.ami_html import HtmlUtil
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 from amilib.util import Util
+from amilib.wikimedia import WikidataLookup
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage, \
     WikipediaPara, WiktionaryPage, WikipediaInfoBox
-from amilib.wikimedia import WikidataLookup
 from amilib.xml_lib import HtmlLib, XmlLib, HtmlEditor
 from test.resources import Resources
 from test.test_all import AmiAnyTest
@@ -1440,10 +1439,111 @@ class WiktionaryTest(AmiAnyTest):
 
         pyami.run_command(args)
 
+
+class MediawikiParser:
+
+    def __init__(self):
+        self.stem = None
+
+    def parse_nest_write_entry(self, stem, input_file):
+        """
+        reads a wiktionary file, nests the elements and writes to temp
+        :param stem: wiktionary word
+        """
+        inputx = HtmlUtil.parse_html_file_to_xml(input_file)
+        body = HtmlLib.get_body(inputx)
+        mw_contents = body.xpath(".//div[div[@id='toc']]")
+        mw_content_ltr = mw_contents[0]
+        self.add_h1_header(body, mw_content_ltr)
+        self.remove_non_content(mw_content_ltr)
+        child_elems = mw_content_ltr.xpath("./*")
+        logger.debug(f"child_elems: {len(child_elems)}")
+        levels = [5, 4, 3, 2]
+        parent_elem = mw_content_ltr
+        for lev in levels:
+            logger.debug(f"level {lev}")
+            xpath = f"./div[@class='mw-heading mw-heading{lev}']"
+            logger.debug(f"xpath is {xpath}")
+            header_divs = parent_elem.xpath(xpath)
+            logger.debug(f"level {lev}: xpath{xpath} found {len(header_divs)}")
+            for header_div in header_divs:
+                self.group_elems_of_same_level(lev, header_div)
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(htmlx)
+        body.append(mw_content_ltr)
+        self.add_div_style(htmlx)
+        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{levels}.html"), debug=True)
+
+    def add_h1_header(self, body, mw_content_ltr):
+        h1_headings = body.xpath(".//h1[@id='firstHeading']")
+        logger.debug(f"h1_headings {h1_headings}")
+        for h1_heading in h1_headings[:1]:
+            logger.debug(f"added h1 {h1_heading.xpath('.//text()')}")
+            mw_content_ltr.insert(0, h1_heading)
+
+    def remove_non_content(self, content):
+        """
+        remove edit boxes, style, etc.
+        :param mw_content_ltr: parent element
+        """
+        remove_xpaths = [
+            ".//div[contains(@class,'interproject-box')]",
+            ".//style[@data-mw-deduplicate]",
+            ".//span[@class='mw-editsection']",
+            ".//comment()",
+            ".//input",
+            ".//div[@id='mw-navigation']",
+            ".//"
+            # ".//footer",
+            # ".//script",
+
+        ]
+        XmlLib.remove_all(content, remove_xpaths, debug=True)
+
+    def group_elems_of_same_level(self, lev, header_div):
+
+        BREAK_CLASSES = [
+            "mw-heading mw-heading2",
+            "mw-heading mw-heading3",
+            "mw-heading mw-heading4",
+            "mw-heading mw-heading5",
+        ]
+
+        header_label = header_div.attrib.get("class")
+        if header_label is None:
+            header_label = header_div.tag
+        following_siblings = list(header_div.xpath("following-sibling::*"))
+        logger.debug(f"level {lev}: following-siblings {len(following_siblings)}")
+        count = 0
+        break_class = f"mw-heading mw-heading{lev}"
+        break_class1 = f"mw-heading mw-heading{lev - 1}"
+        logger.debug(f"break_class {break_class}")
+        for sibling in following_siblings:
+            clazz = sibling.attrib.get("class")
+            logger.debug(f"class {clazz}:::{break_class}")
+            if clazz in BREAK_CLASSES[:lev - 1]:
+            # if clazz == break_class or clazz == break_class1:
+                logger.debug(f"broke grouping on {clazz}")
+                break
+            count += 1
+            logger.debug(f"moved {sibling.tag} to {header_label}")
+            header_div.append(sibling)
+        logger.debug(f"following {count}")
+
+    def add_div_style(self, htmlx):
+        style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
+        style_txt = """
+        div {border:1px solid red; margin: 2px;}
+        div.mw-heading2 {border:5px solid red; margin: 5px; background: #eee;}
+        div.mw-heading3 {border:4px solid orange; margin: 4px; background: #ddd;}
+        div.mw-heading4 {border:3px solid yellow; margin: 3px; background: #ccc;}
+        div.mw-heading5 {border:2px solid green; margin: 2px; background: #bbb;}
+        """
+        style.text = style_txt
+
+
+
 class MWParserTest(AmiAnyTest):
-    from mwparserfromhtml import HTMLDump
-    from mwparserfromhtml import Article
-    import requests
 
     @unittest.skip("cannotb read data")
     def test_mwparser(self):
@@ -1494,6 +1594,20 @@ class MWParserTest(AmiAnyTest):
             article = Article(r.text)
             print(f"Article Name: {article.get_title()}")
             print(f"Abstract: {article.wikistew.get_first_paragraph()}")
+
+    def test_wiktionary_mw_parser_complex(self):
+        """
+        parse complex output
+        """
+        stems = [
+            "bread",
+            "curlicue",
+            "xyzzy"
+        ]
+        mw_parser = MediawikiParser()
+        for stem in stems:
+            input_file = Path(Resources.TEST_RESOURCES_DIR, "wiktionary", f"{stem}.html")
+            mw_parser.parse_nest_write_entry(stem, input_file)
 
 
 class SPARQLTests:

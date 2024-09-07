@@ -14,7 +14,7 @@ import lxml.etree
 import requests
 # import tkinterweb
 from lxml import etree as ET
-from lxml.etree import _Element, _ElementTree, _ElementUnicodeResult
+from lxml.etree import _Element, _ElementTree, _ElementUnicodeResult, XPathEvalError
 from lxml.html import HTMLParser
 # import tkinter as tk
 
@@ -315,7 +315,12 @@ class XmlLib:
         if debug:
             logger.debug(f"xpaths for removal {xpaths}")
         for xpath in xpaths:
-            elems = elem.xpath(xpath)
+            try:
+                elems = elem.xpath(xpath)
+            except XPathEvalError as e:
+                logger.error(f"bad Xpath: {xpath}")
+                continue
+
             if debug:
                 logger.debug(f"elems to remove {elems}")
             for el in elems:
