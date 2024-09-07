@@ -1443,7 +1443,11 @@ class WiktionaryTest(AmiAnyTest):
 class MediawikiParser:
 
     def __init__(self):
+        self.remove_xpaths = None
         self.stem = None
+        self.style_txt = None
+        self.break_classes = None
+        self.levels = None
 
     def parse_nest_write_entry(self, stem, input_file):
         """
@@ -1458,9 +1462,8 @@ class MediawikiParser:
         self.remove_non_content(mw_content_ltr)
         child_elems = mw_content_ltr.xpath("./*")
         logger.debug(f"child_elems: {len(child_elems)}")
-        levels = [5, 4, 3, 2]
         parent_elem = mw_content_ltr
-        for lev in levels:
+        for lev in self.levels:
             logger.debug(f"level {lev}")
             xpath = f"./div[@class='mw-heading mw-heading{lev}']"
             logger.debug(f"xpath is {xpath}")
@@ -1471,8 +1474,8 @@ class MediawikiParser:
         htmlx = HtmlLib.create_html_with_empty_head_body()
         body = HtmlLib.get_body(htmlx)
         body.append(mw_content_ltr)
-        self.add_div_style(htmlx)
-        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{levels}.html"), debug=True)
+        self.add_div_style(htmlx, self.style_txt)
+        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{self.levels}.html"), debug=True)
 
     def add_h1_header(self, body, mw_content_ltr):
         h1_headings = body.xpath(".//h1[@id='firstHeading']")
@@ -1486,28 +1489,16 @@ class MediawikiParser:
         remove edit boxes, style, etc.
         :param mw_content_ltr: parent element
         """
-        remove_xpaths = [
-            ".//div[contains(@class,'interproject-box')]",
-            ".//style[@data-mw-deduplicate]",
-            ".//span[@class='mw-editsection']",
-            ".//comment()",
-            ".//input",
-            ".//div[@id='mw-navigation']",
-            ".//"
-            # ".//footer",
-            # ".//script",
-
-        ]
-        XmlLib.remove_all(content, remove_xpaths, debug=True)
+        if not self.remove_xpaths:
+            logger.info(f"No remove_xpaths given")
+            return
+        XmlLib.remove_all(content, self.remove_xpaths, debug=True)
 
     def group_elems_of_same_level(self, lev, header_div):
 
-        BREAK_CLASSES = [
-            "mw-heading mw-heading2",
-            "mw-heading mw-heading3",
-            "mw-heading mw-heading4",
-            "mw-heading mw-heading5",
-        ]
+        if self.break_classes is None or len(self.break_classes) == 0:
+            logger.warning(f"no break_classes in group elements")
+            return
 
         header_label = header_div.attrib.get("class")
         if header_label is None:
@@ -1515,31 +1506,21 @@ class MediawikiParser:
         following_siblings = list(header_div.xpath("following-sibling::*"))
         logger.debug(f"level {lev}: following-siblings {len(following_siblings)}")
         count = 0
-        break_class = f"mw-heading mw-heading{lev}"
-        break_class1 = f"mw-heading mw-heading{lev - 1}"
-        logger.debug(f"break_class {break_class}")
+        # break_class = f"mw-heading mw-heading{lev}"
         for sibling in following_siblings:
             clazz = sibling.attrib.get("class")
-            logger.debug(f"class {clazz}:::{break_class}")
-            if clazz in BREAK_CLASSES[:lev - 1]:
-            # if clazz == break_class or clazz == break_class1:
+            if clazz in self.break_classes[:lev - 1]:
                 logger.debug(f"broke grouping on {clazz}")
                 break
             count += 1
             logger.debug(f"moved {sibling.tag} to {header_label}")
             header_div.append(sibling)
-        logger.debug(f"following {count}")
+        logger.debug(f"following siblings {count}")
 
-    def add_div_style(self, htmlx):
-        style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
-        style_txt = """
-        div {border:1px solid red; margin: 2px;}
-        div.mw-heading2 {border:5px solid red; margin: 5px; background: #eee;}
-        div.mw-heading3 {border:4px solid orange; margin: 4px; background: #ddd;}
-        div.mw-heading4 {border:3px solid yellow; margin: 3px; background: #ccc;}
-        div.mw-heading5 {border:2px solid green; margin: 2px; background: #bbb;}
-        """
-        style.text = style_txt
+    def add_div_style(self, htmlx, style_txt):
+        if self.style_txt is not None:
+            style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
+            style.text = self.style_txt
 
 
 
@@ -1604,7 +1585,40 @@ class MWParserTest(AmiAnyTest):
             "curlicue",
             "xyzzy"
         ]
+
         mw_parser = MediawikiParser()
+
+        mw_parser.style_txt = """
+        div {border:1px solid red; margin: 2px;}
+        div.mw-heading2 {border:5px solid red; margin: 5px; background: #eee;}
+        div.mw-heading3 {border:4px solid orange; margin: 4px; background: #ddd;}
+        div.mw-heading4 {border:3px solid yellow; margin: 3px; background: #ccc;}
+        div.mw-heading5 {border:2px solid green; margin: 2px; background: #bbb;}
+        """
+
+        mw_parser.break_classes = [
+            "mw-heading mw-heading2",
+            "mw-heading mw-heading3",
+            "mw-heading mw-heading4",
+            "mw-heading mw-heading5",
+        ]
+
+        mw_parser.levels = [5, 4, 3, 2]
+
+        self.remove_xpaths = [
+            ".//div[contains(@class,'interproject-box')]",
+            ".//style[@data-mw-deduplicate]",
+            ".//span[@class='mw-editsection']",
+            ".//comment()",
+            ".//input",
+            ".//div[@id='mw-navigation']",
+            ".//"
+            # ".//footer",
+            # ".//script",
+
+        ]
+
+
         for stem in stems:
             input_file = Path(Resources.TEST_RESOURCES_DIR, "wiktionary", f"{stem}.html")
             mw_parser.parse_nest_write_entry(stem, input_file)

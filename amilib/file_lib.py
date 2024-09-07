@@ -575,7 +575,7 @@ class FileLib:
             return strings_out
         # ensure a list
         logger.debug(f"strings_in {type(strings_in)} .. {strings_in}")
-        if strings_in.startswith("["):
+        if type(strings_in) is str and strings_in[:1] == "[":
             strings_in = ast.literal_eval(strings_in)
         logger.debug(f"after literal eval strings_in {type(strings_in)} .. {strings_in}")
         strings_in = strings_in if type(strings_in) is list else [strings_in]
