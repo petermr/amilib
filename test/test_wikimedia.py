@@ -6,7 +6,6 @@ from pathlib import Path
 import lxml.etree as ET
 import requests
 from lxml import etree, html
-from mwparserfromhtml import HTMLDump, Article
 
 from amilib.ami_dict import AmiDictionary
 from amilib.ami_html import HtmlUtil
@@ -1454,10 +1453,13 @@ class MediawikiParser:
         reads a wiktionary file, nests the elements and writes to temp
         :param stem: wiktionary word
         """
-        inputx = HtmlUtil.parse_html_file_to_xml(input_file)
-        body = HtmlLib.get_body(inputx)
-        mw_contents = body.xpath(".//div[div[@id='toc']]")
-        mw_content_ltr = mw_contents[0]
+        htmlx = self.read_file_and_make_nested_divs(input_file)
+        self.add_div_style(htmlx, self.style_txt)
+        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{self.levels}.html"), debug=True)
+
+    def read_file_and_make_nested_divs(self, input_file):
+        body, mw_content_ltr = self.get_mw_content_ltr(input_file)
+
         self.add_h1_header(body, mw_content_ltr)
         self.remove_non_content(mw_content_ltr)
         child_elems = mw_content_ltr.xpath("./*")
@@ -1472,10 +1474,20 @@ class MediawikiParser:
             for header_div in header_divs:
                 self.group_elems_of_same_level(lev, header_div)
         htmlx = HtmlLib.create_html_with_empty_head_body()
+        self.add_div_style(htmlx, self.style_txt)
+
         body = HtmlLib.get_body(htmlx)
         body.append(mw_content_ltr)
-        self.add_div_style(htmlx, self.style_txt)
-        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{self.levels}.html"), debug=True)
+        return htmlx
+
+    def get_mw_content_ltr(self, input_file):
+        inputx = HtmlUtil.parse_html_file_to_xml(input_file)
+        body = HtmlLib.get_body(inputx)
+        # mw_contents = body.xpath(".//div[div[@id='toc']]")
+        mw_contents = body.xpath(".//div[contains(@class,'mw-content-ltr')]")
+        mw_content_ltr = None if len(mw_contents) == 0 else mw_contents[0]
+        assert mw_content_ltr is not None
+        return body, mw_content_ltr
 
     def add_h1_header(self, body, mw_content_ltr):
         h1_headings = body.xpath(".//h1[@id='firstHeading']")
@@ -1526,56 +1538,56 @@ class MediawikiParser:
 
 class MWParserTest(AmiAnyTest):
 
-    @unittest.skip("cannotb read data")
-    def test_mwparser(self):
-        html_file_path = "TARGZ_FILE_PATH"
-        html_dump = HTMLDump(html_file_path)
-
-        for article in html_dump:
-            print(article.get_title())
-        for article in html_dump:
-            print(article.get_title())
-            prev_heading = "_Lead"
-            for heading, paragraph in article.html.wikistew.get_plaintext(exclude_transcluded_paragraphs=True,
-                                                                          exclude_para_context=None,
-                                                                          # set to {"pre-first-para", "between-paras", "post-last-para"} for more conservative approach
-                                                                          exclude_elements={"Heading", "Math", "Citation",
-                                                                                            "List", "Wikitable",
-                                                                                            "Reference"}):
-                if heading != prev_heading:
-                    print(f"\n{heading}:")
-                    prev_heading = heading
-                print(paragraph)
-        for article in html_dump:
-            print(f"Number of Sections: {len(article.wikistew.get_sections())}")
-            print(f"Number of Comments: {len(article.wikistew.get_comments())}")
-            print(f"Number of Headings: {len(article.wikistew.get_headings())}")
-            print(f"Number of Wikilinks: {len(article.wikistew.get_wikilinks())}")
-            print(f"Number of Categories: {len(article.wikistew.get_categories())}")
-            print(f"Number of Text Formatting Elements: {len(article.wikistew.get_text_formatting())}")
-            print(f"Number of External Links: {len(article.wikistew.get_externallinks())}")
-            print(f"Number of Templates: {len(article.wikistew.get_templates())}")
-            print(f"Number of References: {len(article.wikistew.get_references())}")
-            print(f"Number of Citations: {len(article.wikistew.get_citations())}")
-            print(f"Number of Images: {len(article.wikistew.get_images())}")
-            print(f"Number of Audio: {len(article.wikistew.get_audio())}")
-            print(f"Number of Video: {len(article.wikistew.get_video())}")
-            print(f"Number of Lists: {len(article.wikistew.get_lists())}")
-            print(f"Number of Math Elements: {len(article.wikistew.get_math())}")
-            print(f"Number of Infoboxes: {len(article.wikistew.get_infobox())}")
-            print(f"Number of Wikitables: {len(article.wikistew.get_wikitables())}")
-            print(f"Number of Navigational Boxes: {len(article.wikistew.get_nav_boxes())}")
-            print(f"Number of Message Boxes: {len(article.wikistew.get_message_boxes())}")
-            print(f"Number of Notes: {len(article.wikistew.get_notes())}")
-    
-    
-            lang = "en"
-            title = "Both Sides, Now"
-            r = requests.get(f'https://{lang}.wikipedia.org/api/rest_v1/page/html/{title}')
-            article = Article(r.text)
-            print(f"Article Name: {article.get_title()}")
-            print(f"Abstract: {article.wikistew.get_first_paragraph()}")
-
+    @unittest.skip("cannot read data")
+    # def test_mwparser(self):
+    #     html_file_path = "TARGZ_FILE_PATH"
+    #     html_dump = HTMLDump(html_file_path)
+    #
+    #     for article in html_dump:
+    #         print(article.get_title())
+    #     for article in html_dump:
+    #         print(article.get_title())
+    #         prev_heading = "_Lead"
+    #         for heading, paragraph in article.html.wikistew.get_plaintext(exclude_transcluded_paragraphs=True,
+    #                                                                       exclude_para_context=None,
+    #                                                                       # set to {"pre-first-para", "between-paras", "post-last-para"} for more conservative approach
+    #                                                                       exclude_elements={"Heading", "Math", "Citation",
+    #                                                                                         "List", "Wikitable",
+    #                                                                                         "Reference"}):
+    #             if heading != prev_heading:
+    #                 print(f"\n{heading}:")
+    #                 prev_heading = heading
+    #             print(paragraph)
+    #     for article in html_dump:
+    #         print(f"Number of Sections: {len(article.wikistew.get_sections())}")
+    #         print(f"Number of Comments: {len(article.wikistew.get_comments())}")
+    #         print(f"Number of Headings: {len(article.wikistew.get_headings())}")
+    #         print(f"Number of Wikilinks: {len(article.wikistew.get_wikilinks())}")
+    #         print(f"Number of Categories: {len(article.wikistew.get_categories())}")
+    #         print(f"Number of Text Formatting Elements: {len(article.wikistew.get_text_formatting())}")
+    #         print(f"Number of External Links: {len(article.wikistew.get_externallinks())}")
+    #         print(f"Number of Templates: {len(article.wikistew.get_templates())}")
+    #         print(f"Number of References: {len(article.wikistew.get_references())}")
+    #         print(f"Number of Citations: {len(article.wikistew.get_citations())}")
+    #         print(f"Number of Images: {len(article.wikistew.get_images())}")
+    #         print(f"Number of Audio: {len(article.wikistew.get_audio())}")
+    #         print(f"Number of Video: {len(article.wikistew.get_video())}")
+    #         print(f"Number of Lists: {len(article.wikistew.get_lists())}")
+    #         print(f"Number of Math Elements: {len(article.wikistew.get_math())}")
+    #         print(f"Number of Infoboxes: {len(article.wikistew.get_infobox())}")
+    #         print(f"Number of Wikitables: {len(article.wikistew.get_wikitables())}")
+    #         print(f"Number of Navigational Boxes: {len(article.wikistew.get_nav_boxes())}")
+    #         print(f"Number of Message Boxes: {len(article.wikistew.get_message_boxes())}")
+    #         print(f"Number of Notes: {len(article.wikistew.get_notes())}")
+    #
+    #
+    #         lang = "en"
+    #         title = "Both Sides, Now"
+    #         r = requests.get(f'https://{lang}.wikipedia.org/api/rest_v1/page/html/{title}')
+    #         article = Article(r.text)
+    #         print(f"Article Name: {article.get_title()}")
+    #         print(f"Abstract: {article.wikistew.get_first_paragraph()}")
+    #
     def test_wiktionary_mw_parser_complex(self):
         """
         parse complex output
@@ -1622,6 +1634,42 @@ class MWParserTest(AmiAnyTest):
         for stem in stems:
             input_file = Path(Resources.TEST_RESOURCES_DIR, "wiktionary", f"{stem}.html")
             mw_parser.parse_nest_write_entry(stem, input_file)
+
+    def test_wikipedia_mw_parser(self):
+        """
+        parse Wikpedia page with MWParser
+        """
+        stem = "Net_zero_emissions"
+        input_file = Path(Resources.TEST_RESOURCES_DIR, "wikipedia", f"{stem}.html")
+        assert input_file.exists(), f"Wikipedia file should exist {input_file}"
+
+        # wikipedia_html = HtmlUtil.parse_html_file_to_xml(input_file)
+        # assert wikipedia_html is not None
+        #
+        mw_parser = MediawikiParser()
+        mw_parser.break_classes = [
+            "mw-heading mw-heading2",
+            "mw-heading mw-heading3",
+            "mw-heading mw-heading4",
+            "mw-heading mw-heading5",
+        ]
+
+        mw_parser.levels = [5, 4, 3, 2]
+        mw_parser.style_txt = """
+        div {border:1px solid red; margin: 2px;}
+        div.mw-heading2 {border:5px solid red; margin: 5px; background: #eee;}
+        div.mw-heading3 {border:4px solid orange; margin: 4px; background: #ddd;}
+        div.mw-heading4 {border:3px solid yellow; margin: 3px; background: #ccc;}
+        div.mw-heading5 {border:2px solid green; margin: 2px; background: #bbb;}
+        """
+
+
+
+        htmlx = mw_parser.read_file_and_make_nested_divs(input_file)
+
+        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html"))
+
+
 
 
 class SPARQLTests:

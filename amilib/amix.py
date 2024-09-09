@@ -397,6 +397,7 @@ class AmiLib:
         version = '0.2.4a1'  # 2024-07-17 # add Wiktionary
         version = '0.2.4a2'  # 2024-08-27 # build dictionaries from wordlists preparing for release
         version = '0.2.5a1'  # 2024-08-30 # fixed Wiktionary bug
+        version = '0.2.5'    # 2024-09-09 # testing as library usable by amiclimate
 
         # logging.warn(f"VERSION {version}")
         return version

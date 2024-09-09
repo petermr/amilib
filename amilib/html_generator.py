@@ -20,7 +20,7 @@ from amilib.ami_html import H_BODY, H_DIV
 # logger = AmiLogger.create_named_logger(__file__)
 logger = Util.get_logger(__name__)
 
-DICT_KEYSET = {[
+DICT_KEYSET = {
     'annots',
     'bbox',
     'chars',
@@ -34,7 +34,7 @@ DICT_KEYSET = {[
     'rects',
     'rotation',
     'width',
-]}
+}
 
 
 class HtmlGenerator:
