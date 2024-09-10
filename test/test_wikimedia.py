@@ -12,7 +12,7 @@ from amilib.ami_html import HtmlUtil
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 from amilib.util import Util
-from amilib.wikimedia import WikidataLookup
+from amilib.wikimedia import WikidataLookup, MediawikiParser
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage, \
     WikipediaPara, WiktionaryPage, WikipediaInfoBox
@@ -1439,101 +1439,6 @@ class WiktionaryTest(AmiAnyTest):
         pyami.run_command(args)
 
 
-class MediawikiParser:
-
-    def __init__(self):
-        self.remove_xpaths = None
-        self.stem = None
-        self.style_txt = None
-        self.break_classes = None
-        self.levels = None
-
-    def parse_nest_write_entry(self, stem, input_file):
-        """
-        reads a wiktionary file, nests the elements and writes to temp
-        :param stem: wiktionary word
-        """
-        htmlx = self.read_file_and_make_nested_divs(input_file)
-        self.add_div_style(htmlx, self.style_txt)
-        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{self.levels}.html"), debug=True)
-
-    def read_file_and_make_nested_divs(self, input_file):
-        body, mw_content_ltr = self.get_mw_content_ltr(input_file)
-
-        self.add_h1_header(body, mw_content_ltr)
-        self.remove_non_content(mw_content_ltr)
-        child_elems = mw_content_ltr.xpath("./*")
-        logger.debug(f"child_elems: {len(child_elems)}")
-        parent_elem = mw_content_ltr
-        for lev in self.levels:
-            logger.debug(f"level {lev}")
-            xpath = f"./div[@class='mw-heading mw-heading{lev}']"
-            logger.debug(f"xpath is {xpath}")
-            header_divs = parent_elem.xpath(xpath)
-            logger.debug(f"level {lev}: xpath{xpath} found {len(header_divs)}")
-            for header_div in header_divs:
-                self.group_elems_of_same_level(lev, header_div)
-        htmlx = HtmlLib.create_html_with_empty_head_body()
-        self.add_div_style(htmlx, self.style_txt)
-
-        body = HtmlLib.get_body(htmlx)
-        body.append(mw_content_ltr)
-        return htmlx
-
-    def get_mw_content_ltr(self, input_file):
-        inputx = HtmlUtil.parse_html_file_to_xml(input_file)
-        body = HtmlLib.get_body(inputx)
-        # mw_contents = body.xpath(".//div[div[@id='toc']]")
-        mw_contents = body.xpath(".//div[contains(@class,'mw-content-ltr')]")
-        mw_content_ltr = None if len(mw_contents) == 0 else mw_contents[0]
-        assert mw_content_ltr is not None
-        return body, mw_content_ltr
-
-    def add_h1_header(self, body, mw_content_ltr):
-        h1_headings = body.xpath(".//h1[@id='firstHeading']")
-        logger.debug(f"h1_headings {h1_headings}")
-        for h1_heading in h1_headings[:1]:
-            logger.debug(f"added h1 {h1_heading.xpath('.//text()')}")
-            mw_content_ltr.insert(0, h1_heading)
-
-    def remove_non_content(self, content):
-        """
-        remove edit boxes, style, etc.
-        :param mw_content_ltr: parent element
-        """
-        if not self.remove_xpaths:
-            logger.info(f"No remove_xpaths given")
-            return
-        XmlLib.remove_all(content, self.remove_xpaths, debug=True)
-
-    def group_elems_of_same_level(self, lev, header_div):
-
-        if self.break_classes is None or len(self.break_classes) == 0:
-            logger.warning(f"no break_classes in group elements")
-            return
-
-        header_label = header_div.attrib.get("class")
-        if header_label is None:
-            header_label = header_div.tag
-        following_siblings = list(header_div.xpath("following-sibling::*"))
-        logger.debug(f"level {lev}: following-siblings {len(following_siblings)}")
-        count = 0
-        # break_class = f"mw-heading mw-heading{lev}"
-        for sibling in following_siblings:
-            clazz = sibling.attrib.get("class")
-            if clazz in self.break_classes[:lev - 1]:
-                logger.debug(f"broke grouping on {clazz}")
-                break
-            count += 1
-            logger.debug(f"moved {sibling.tag} to {header_label}")
-            header_div.append(sibling)
-        logger.debug(f"following siblings {count}")
-
-    def add_div_style(self, htmlx, style_txt):
-        if self.style_txt is not None:
-            style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
-            style.text = self.style_txt
-
 
 
 class MWParserTest(AmiAnyTest):
@@ -1617,18 +1522,6 @@ class MWParserTest(AmiAnyTest):
 
         mw_parser.levels = [5, 4, 3, 2]
 
-        self.remove_xpaths = [
-            ".//div[contains(@class,'interproject-box')]",
-            ".//style[@data-mw-deduplicate]",
-            ".//span[@class='mw-editsection']",
-            ".//comment()",
-            ".//input",
-            ".//div[@id='mw-navigation']",
-            ".//"
-            # ".//footer",
-            # ".//script",
-
-        ]
 
 
         for stem in stems:
@@ -1647,29 +1540,27 @@ class MWParserTest(AmiAnyTest):
         # assert wikipedia_html is not None
         #
         mw_parser = MediawikiParser()
-        mw_parser.break_classes = [
-            "mw-heading mw-heading2",
-            "mw-heading mw-heading3",
-            "mw-heading mw-heading4",
-            "mw-heading mw-heading5",
-        ]
-
-        mw_parser.levels = [5, 4, 3, 2]
-        mw_parser.style_txt = """
-        div {border:1px solid red; margin: 2px;}
-        div.mw-heading2 {border:5px solid red; margin: 5px; background: #eee;}
-        div.mw-heading3 {border:4px solid orange; margin: 4px; background: #ddd;}
-        div.mw-heading4 {border:3px solid yellow; margin: 3px; background: #ccc;}
-        div.mw-heading5 {border:2px solid green; margin: 2px; background: #bbb;}
-        """
-
-
-
         htmlx = mw_parser.read_file_and_make_nested_divs(input_file)
 
         HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html"))
 
+    def test_wikimedia_remove_non_content_and_empty(self):
+        """
+        Parses an arbitrary wikipedia page and removes all elements whih do not hole content
+        my be recursi
+        """
+        stem = "Net_zero_emissions"
+        input_file = Path(Resources.TEST_RESOURCES_DIR, "wikipedia", f"{stem}.html")
+        assert input_file.exists()
+        # htmlx = HtmlUtil.parse_html_file_to_xml(input_file)
+        # assert htmlx is not None
+        # body = HtmlLib.get_body(htmlx)
 
+        mw_parser = MediawikiParser()
+        input_html, body = mw_parser.read_html_path(input_file, remove_non_content=True, remove_head=True, remove_empty_elements=False)
+        assert input_html is not None and body is not None
+
+        HtmlUtil.write_html_elem(input_html, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html"))
 
 
 class SPARQLTests:

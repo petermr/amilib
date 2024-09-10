@@ -22,6 +22,7 @@ from amilib.ami_html import HtmlUtil
 from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
+from test.resources import Resources
 
 logger = Util.get_logger(__name__)
 
@@ -67,6 +68,211 @@ ARTICLEs = [
     ".*((scientific|academic)\\s+)?journal.*"
 ]
 ARTS = [".*(film|song|album)"]
+
+class MediawikiParser:
+
+    def __init__(self):
+        self.remove_xpaths = None
+        self.stem = None
+        self.style_txt = None
+        self.break_classes = None
+        self.levels = None
+        self.remove_head_xpaths = None
+        self.add_defaults()
+
+    def add_defaults(self):
+        self.break_classes = [
+            "mw-heading mw-heading2",
+            "mw-heading mw-heading3",
+            "mw-heading mw-heading4",
+            "mw-heading mw-heading5",
+        ]
+
+        self.levels = [5, 4, 3, 2, 1]
+
+        self.style_txt = """
+        div {border:1px solid red; margin: 2px;}
+        div.mw-heading2 {border:5px solid red; margin: 5px; background: #eee;}
+        div.mw-heading3 {border:4px solid orange; margin: 4px; background: #ddd;}
+        div.mw-heading4 {border:3px solid yellow; margin: 3px; background: #ccc;}
+        div.mw-heading5 {border:2px solid green; margin: 2px; background: #bbb;}
+        """
+
+        self.remove_head_xpaths = [
+            "/html/head/style",
+            "/html/head/script",
+            "/html/head/link",
+            "/html/head/meta",
+            ]
+
+        self.remove_xpaths = [
+            # ".//style[@data-mw-deduplicate]",
+            ".//comment()",
+
+            ".//button",
+            ".//footer",
+            ".//form",
+            ".//input",
+            ".//label",
+            ".//nav",
+            ".//script",
+            ".//style",
+
+            """
+            "//a[@class='mw-jump-link' and @href='#bodyContent' and .='Jump to content']
+            """
+            ".//span[@class='mw-editsection']",
+            ".//div[@id='mw-navigation']",
+            ".//div[contains(@class,'interproject-box')]", # interwiki projects
+
+        ]
+
+
+
+
+    def parse_nest_write_entry(self, stem, input_file):
+        """
+        reads a wiktionary file, nests the elements and writes to temp
+        :param stem: wiktionary word
+        """
+        htmlx = self.read_file_and_make_nested_divs(input_file)
+        self.add_div_style(htmlx, self.style_txt)
+        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{self.levels}.html"), debug=True)
+
+    def read_file_and_make_nested_divs(self, input_file):
+        body, mw_content_ltr = self.get_mw_content_ltr(input_file)
+
+        self.add_h1_header(body, mw_content_ltr)
+        self.remove_non_content(mw_content_ltr)
+        child_elems = mw_content_ltr.xpath("./*")
+        logger.debug(f"child_elems: {len(child_elems)}")
+        parent_elem = mw_content_ltr
+        for lev in self.levels:
+            logger.debug(f"level {lev}")
+            xpath = f"./div[@class='mw-heading mw-heading{lev}']"
+            logger.debug(f"xpath is {xpath}")
+            header_divs = parent_elem.xpath(xpath)
+            logger.debug(f"level {lev}: xpath{xpath} found {len(header_divs)}")
+            for header_div in header_divs:
+                self.group_elems_of_same_level(lev, header_div)
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        self.add_div_style(htmlx, self.style_txt)
+
+        body = HtmlLib.get_body(htmlx)
+        body.append(mw_content_ltr)
+        return htmlx
+
+    def read_file_and_make_nested_divs_old(self, input_file):
+        body, mw_content_ltr = self.get_mw_content_ltr(input_file)
+
+        self.add_h1_header(body, mw_content_ltr)
+        self.remove_non_content(mw_content_ltr)
+        child_elems = mw_content_ltr.xpath("./*")
+        logger.debug(f"child_elems: {len(child_elems)}")
+        parent_elem = mw_content_ltr
+        for lev in self.levels:
+            logger.debug(f"level {lev}")
+            xpath = f"./div[@class='mw-heading mw-heading{lev}']"
+            logger.debug(f"xpath is {xpath}")
+            header_divs = parent_elem.xpath(xpath)
+            logger.debug(f"level {lev}: xpath{xpath} found {len(header_divs)}")
+            for header_div in header_divs:
+                self.group_elems_of_same_level(lev, header_div)
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        self.add_div_style(htmlx, self.style_txt)
+
+        body = HtmlLib.get_body(htmlx)
+        body.append(mw_content_ltr)
+        return htmlx
+
+    def get_mw_content_ltr(self, input_file):
+        body = self.read_html_path()
+        # mw_contents = body.xpath(".//div[div[@id='toc']]")
+        mw_contents = body.xpath(".//div[contains(@class,'mw-content-ltr')]")
+        mw_content_ltr = None if len(mw_contents) == 0 else mw_contents[0]
+        assert mw_content_ltr is not None
+        return body, mw_content_ltr
+
+    def read_html_path(self, input_file, remove_non_content=True, remove_head=True, remove_empty_elements=True):
+        """
+        reads Wikimedia file , parses to heml and optionally reonves non-content elements
+        :param input_file:
+        :param remove_non_content: removes non-content elements (nav, input, buttom, etc.) default True
+        :param remove_empty_elements:recursively remove empty elements
+
+        """
+        htmlx = HtmlUtil.parse_html_file_to_xml(input_file)
+        body = HtmlLib.get_body(htmlx)
+        if remove_head:
+            self.remove_head(body)
+        if remove_non_content:
+            self.remove_non_content(body)
+        if remove_empty_elements:
+            self.remove_empty_elements(body)
+        return htmlx, body
+
+    def add_h1_header(self, body, mw_content_ltr):
+        h1_headings = body.xpath(".//h1[@id='firstHeading']")
+        logger.debug(f"h1_headings {h1_headings}")
+        for h1_heading in h1_headings[:1]:
+            logger.debug(f"added h1 {h1_heading.xpath('.//text()')}")
+            mw_content_ltr.insert(0, h1_heading)
+
+    def remove_head(self, content):
+        """
+        remove script, style, link from head
+        :param content: parent element
+        """
+        XmlLib.remove_all(content, self.remove_head_xpaths, debug=True)
+
+    def remove_non_content(self, content):
+        """
+        remove edit boxes, style, etc.
+        :param mw_content_ltr: parent element
+        """
+        XmlLib.remove_all(content, self.remove_xpaths, debug=True)
+
+
+    def remove_empty_elements(self, content):
+        """
+        recursively remove empty elements
+        :param mw_content_ltr: parent element
+        """
+        xpath = ".//*[count(*)=0 and text()='']"
+
+        empty_elements = content.xpath(xpath)
+        if len(empty_elements) != 0:
+            XmlLib.remove_all(empty_elements)
+            self.remove_empty_elements()
+
+    def group_elems_of_same_level(self, lev, header_div):
+
+        if self.break_classes is None or len(self.break_classes) == 0:
+            logger.warning(f"no break_classes in group elements")
+            return
+
+        header_label = header_div.attrib.get("class")
+        if header_label is None:
+            header_label = header_div.tag
+        following_siblings = list(header_div.xpath("following-sibling::*"))
+        logger.debug(f"level {lev}: following-siblings {len(following_siblings)}")
+        count = 0
+        # break_class = f"mw-heading mw-heading{lev}"
+        for sibling in following_siblings:
+            clazz = sibling.attrib.get("class")
+            if clazz in self.break_classes[:lev - 1]:
+                logger.debug(f"broke grouping on {clazz}")
+                break
+            count += 1
+            logger.debug(f"moved {sibling.tag} to {header_label}")
+            header_div.append(sibling)
+        logger.debug(f"following siblings {count}")
+
+    def add_div_style(self, htmlx, style_txt):
+        if self.style_txt is not None:
+            style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
+            style.text = self.style_txt
+
 
 
 # this should go in config files
