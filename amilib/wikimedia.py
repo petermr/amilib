@@ -11,6 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import urlopen
 
+import html5lib.html5parser
 import lxml.etree
 import requests
 from SPARQLWrapper import SPARQLWrapper
@@ -72,13 +73,18 @@ ARTS = [".*(film|song|album)"]
 class MediawikiParser:
 
     def __init__(self):
-        self.remove_xpaths = None
+        self.remove_body_xpaths = None
         self.stem = None
         self.style_txt = None
         self.break_classes = None
         self.levels = None
         self.remove_head_xpaths = None
         self.add_defaults()
+        # parsed compponents
+        self.htmlx = None
+        self.body = None
+        self.main = None
+        self.firstHeading = None
 
     def add_defaults(self):
         self.break_classes = [
@@ -102,13 +108,11 @@ class MediawikiParser:
             "/html/head/style",
             "/html/head/script",
             "/html/head/link",
-            "/html/head/meta",
+            # "/html/head/meta",
             ]
 
-        self.remove_xpaths = [
-            # ".//style[@data-mw-deduplicate]",
+        self.remove_body_xpaths = [
             ".//comment()",
-
             ".//button",
             ".//footer",
             ".//form",
@@ -136,17 +140,83 @@ class MediawikiParser:
         :param stem: wiktionary word
         """
         htmlx = self.read_file_and_make_nested_divs(input_file)
-        self.add_div_style(htmlx, self.style_txt)
+        self.add_div_style(htmlx)
+
         HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{self.levels}.html"), debug=True)
 
     def read_file_and_make_nested_divs(self, input_file):
-        body, mw_content_ltr = self.get_mw_content_ltr(input_file)
+        self.htmlx = HtmlUtil.parse_html_file_to_xml(input_file)
+        self.body = self.get_body_and_remove_unwanted_children()
 
-        self.add_h1_header(body, mw_content_ltr)
-        self.remove_non_content(mw_content_ltr)
-        child_elems = mw_content_ltr.xpath("./*")
+        mw_page_container_inner = XmlLib.get_single_element(
+            self.body, "./div[@class='mw-page-container']/div[@class='mw-page-container-inner']")
+        XmlLib.remove_elements(mw_page_container_inner, [
+            "./div[@class='vector-sitenotice-container']",
+            "./div[@class='vector-column-start']",
+            "./div[@class='mw-footer-container']",
+        ])
+        assert mw_page_container_inner is not None
+
+        mw_content_container = XmlLib.get_single_element(
+            mw_page_container_inner, "./div[@class='mw-content-container']")
+        assert mw_content_container is not None
+
+        self.main = XmlLib.get_single_element(mw_content_container, "./main[@id='content']")
+        assert self.main is not None
+        XmlLib.remove_elements(self.main, [
+            "./div[@id='siteNotice']",
+            "./div[@class='vector-page-toolbar']",
+            "./div[@class='vector-column-end']",
+        ])
+
+        self.header = XmlLib.get_single_element(self.main, "./header")
+        assert self.header is not None
+        XmlLib.remove_elements(self.header,  [
+            "./nav",
+            "./div[@id='p-lang-btn']",
+        ])
+
+        self.firstHeading = XmlLib.get_single_element(self.header, "./h1[@id='firstHeading']")
+        assert self.firstHeading is not None
+
+        self.body_content = XmlLib.get_single_element(self.main, "./div[@id='bodyContent']")
+        assert self.body_content is not None
+        XmlLib.remove_elements(self.body_content, [
+            "./div[@class='vector-body-before-content']",
+            "./div[@id='catlinks']",
+        ])
+
+        self.mw_content_text = XmlLib.get_single_element(self.body_content, "./div[@id='mw-content-text']")
+        assert self.mw_content_text is not None
+        XmlLib.remove_elements(self.mw_content_text, [
+            "./noscript",
+            "./div[@class='printfooter']",
+        ])
+
+        self.mw_content_ltr = XmlLib.get_single_element(self.mw_content_text, "./div[@class='mw-content-ltr mw-parser-output']")
+        assert self.mw_content_ltr is not None
+        # after this we grouo by headings
+
+        self.group_by_headings()
+
+        # htmlx = HtmlLib.create_html_with_empty_head_body()
+        # self.add_div_style(htmlx, self.style_txt)
+        #
+        # body = HtmlLib.get_body(htmlx)
+        # body.append(self.mw_content_ltr)
+
+        return self.htmlx
+
+    def group_by_headings(self):
+        # self.add_h1_header(body, mw_content_ltr)
+        # self.remove_non_content(mw_content_ltr)
+        if self.mw_content_ltr is None:
+            logger.warning("mw_content_ltr is None")
+            return
+        self.add_initial_break()
+        child_elems = self.mw_content_ltr.xpath("./*")
         logger.debug(f"child_elems: {len(child_elems)}")
-        parent_elem = mw_content_ltr
+        parent_elem = self.mw_content_ltr
         for lev in self.levels:
             logger.debug(f"level {lev}")
             xpath = f"./div[@class='mw-heading mw-heading{lev}']"
@@ -155,12 +225,17 @@ class MediawikiParser:
             logger.debug(f"level {lev}: xpath{xpath} found {len(header_divs)}")
             for header_div in header_divs:
                 self.group_elems_of_same_level(lev, header_div)
-        htmlx = HtmlLib.create_html_with_empty_head_body()
-        self.add_div_style(htmlx, self.style_txt)
 
-        body = HtmlLib.get_body(htmlx)
-        body.append(mw_content_ltr)
-        return htmlx
+    def get_body_and_remove_unwanted_children(self):
+        self.body = HtmlLib.get_body(self.htmlx)
+        unwanted_body_mw_xpaths = [
+            "./a[@class='mx-jump-link']",
+            "./div[@class='vector-header-container']",
+
+            "./div[@class='vector-settings']",
+        ]
+        XmlLib.remove_elements(self.body, unwanted_body_mw_xpaths)
+        return self.body
 
     def read_file_and_make_nested_divs_old(self, input_file):
         body, mw_content_ltr = self.get_mw_content_ltr(input_file)
@@ -178,6 +253,7 @@ class MediawikiParser:
             logger.debug(f"level {lev}: xpath{xpath} found {len(header_divs)}")
             for header_div in header_divs:
                 self.group_elems_of_same_level(lev, header_div)
+
         htmlx = HtmlLib.create_html_with_empty_head_body()
         self.add_div_style(htmlx, self.style_txt)
 
@@ -188,8 +264,7 @@ class MediawikiParser:
     def get_mw_content_ltr(self, input_file):
         body = self.read_html_path()
         # mw_contents = body.xpath(".//div[div[@id='toc']]")
-        mw_contents = body.xpath(".//div[contains(@class,'mw-content-ltr')]")
-        mw_content_ltr = None if len(mw_contents) == 0 else mw_contents[0]
+        mw_content_ltr = XmlLib.get_single_element(body, ".//div[contains(@class,'mw-content-ltr')]")
         assert mw_content_ltr is not None
         return body, mw_content_ltr
 
@@ -230,7 +305,7 @@ class MediawikiParser:
         remove edit boxes, style, etc.
         :param mw_content_ltr: parent element
         """
-        XmlLib.remove_all(content, self.remove_xpaths, debug=True)
+        XmlLib.remove_all(content, self.remove_body_xpaths, debug=True)
 
 
     def remove_empty_elements(self, content):
@@ -268,11 +343,20 @@ class MediawikiParser:
             header_div.append(sibling)
         logger.debug(f"following siblings {count}")
 
-    def add_div_style(self, htmlx, style_txt):
+    def add_div_style(self, htmlx):
         if self.style_txt is not None:
             style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
             style.text = self.style_txt
 
+    def add_initial_break(self):
+        """
+        adds empty high-level container to capture the material before first top-level header (currently h2)
+        """
+        top_level_break = ET.Element("div")
+        top_level_break.attrib["class"] = "mw-heading mw-heading2"
+        h2 = ET.SubElement(top_level_break, "h2")
+        h2.text = ("Initial Content")
+        self.mw_content_ltr.insert(0, top_level_break)
 
 
 # this should go in config files

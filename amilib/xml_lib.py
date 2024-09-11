@@ -398,6 +398,12 @@ class XmlLib:
         :param new_parent: new parent for removed nodes
         :param debug: output debug (def = False)
         """
+        if elem is None or xpath is None:
+            return None
+        if type(xpath) is list:
+            for xp in xpath:
+                cls.remove_elements(elem, xp)
+            return
         elems = elem.xpath(xpath, debug=True)
         if debug:
             logger.debug(f"{xpath} removes {len(elems)} elems")
@@ -917,6 +923,26 @@ class XmlLib:
         return None if element is None else lxml.etree.tostring(
             element, method=method, pretty_print=pretty_print).decode(encoding)
 
+    @classmethod
+    def get_single_element(cls, xmlx, xpath):
+        """
+        Convenience method to avoid testing for len()
+        gets a single element from xpath or returns None
+        :param xmlx: lxml element to query
+        :param xpath:
+        :return: single element or None
+        """
+        if xmlx is None:
+            logger.debug("xmlx is None")
+            return None
+        if xpath is None:
+            logger.debug("xpath is None ")
+            return None
+        results = xmlx.xpath(xpath)
+        if len(results) == 1:
+            return results[0]
+        else:
+            return None
 
 
 class HtmlElement:
@@ -1056,8 +1082,8 @@ class HtmlLib:
         """
         if html_elem is None:
             html_elem = HtmlLib.create_html_with_empty_head_body()
-        heads = html_elem.xpath("/html/head")
-        return heads[0] if len(heads) == 1 else None
+        head = XmlLib.get_single_element(html_elem, "/html/head")
+        return head
 
     @classmethod
     def add_base_url(cls, html_elem, base_url):

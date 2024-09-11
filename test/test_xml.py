@@ -193,6 +193,27 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
         """
 
         """
+        logger.info("NYI")
+
+    def test_get_single_element_from_xpath(self):
+        """
+        get a single expected element by xpath or None
+        Convenience method
+        """
+        # no hits
+        foo = ET.Element("foo")
+        barx = XmlLib.get_single_element(foo, "./bar")
+        assert barx is None
+        # 1 hit
+        bar = ET.SubElement(foo, "bar")
+        assert len(foo.xpath("bar")) == 1
+        barx = XmlLib.get_single_element(foo, "./bar")
+        assert barx is not None
+        # 2 hits, returns None
+        bar2 = ET.SubElement(foo, "bar")
+        assert len(foo.xpath("bar")) == 2
+        barx = XmlLib.get_single_element(foo, "./bar")
+        assert barx is None
 
 
 if __name__ == "__main__":
