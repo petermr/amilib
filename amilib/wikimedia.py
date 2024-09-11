@@ -70,9 +70,42 @@ ARTICLEs = [
 ]
 ARTS = [".*(film|song|album)"]
 
+"""
+<header class="vector-header mw-header">
+    <div class="vector-header-start">
+        <a href="/wiki/Main_Page" class="mw-logo">
+            <img class="mw-logo-icon" src="/static/images/icons/wikipedia.png" alt="" aria-hidden="true" height="50" width="50">
+            <span class="mw-logo-container skin-invert">
+                <img class="mw-logo-wordmark" alt="Wikipedia" src="/static/images/mobile/copyright/wikipedia-wordmark-en.svg" style="width: 7.5em; height: 1.125em;">
+                <img class="mw-logo-tagline" alt="The Free Encyclopedia" src="/static/images/mobile/copyright/wikipedia-tagline-en.svg" width="117" height="13" style="width: 7.3125em; height: 0.8125em;">
+            </span>
+        </a>
+
+    </div>
+<div class="vector-header-end">
+
+    <div id="p-search" role="search" class="vector-search-box-vue  vector-search-box-collapses vector-search-box-show-thumbnail vector-search-box-auto-expand-width vector-search-box">
+        <a href="/wiki/Special:Search" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only search-toggle" title="Search Wikipedia [f]" accesskey="f"><span class="vector-icon mw-ui-icon-search mw-ui-icon-wikimedia-search">
+            <span>Search</span>
+            </span>
+        </a>
+        <div class="vector-typeahead-search-container">
+            <div class="cdx-typeahead-search cdx-typeahead-search--show-thumbnail cdx-typeahead-search--auto-expand-width">
+            </div>
+        </div>
+    </div>
+
+</div>
+</header>
+"""
+
+
 class MediawikiParser:
 
-    def __init__(self):
+    WIKIPEDIA_PAGE = "wikipedia_page"
+    WIKTIONARY = "wiktionary"
+
+    def __init__(self, target=None):
         self.remove_body_xpaths = None
         self.stem = None
         self.style_txt = None
@@ -80,6 +113,8 @@ class MediawikiParser:
         self.levels = None
         self.remove_head_xpaths = None
         self.add_defaults()
+        if target is not None:
+            self.target = target
         # parsed compponents
         self.htmlx = None
         self.body = None
@@ -87,6 +122,7 @@ class MediawikiParser:
         self.firstHeading = None
 
     def add_defaults(self):
+        self.target = self.WIKIPEDIA_PAGE
         self.break_classes = [
             "mw-heading mw-heading2",
             "mw-heading mw-heading3",
@@ -148,38 +184,12 @@ class MediawikiParser:
         self.htmlx = HtmlUtil.parse_html_file_to_xml(input_file)
         self.body = self.get_body_and_remove_unwanted_children()
 
-        mw_page_container_inner = XmlLib.get_single_element(
-            self.body, "./div[@class='mw-page-container']/div[@class='mw-page-container-inner']")
-        XmlLib.remove_elements(mw_page_container_inner, [
-            "./div[@class='vector-sitenotice-container']",
-            "./div[@class='vector-column-start']",
-            "./div[@class='mw-footer-container']",
-        ])
-        assert mw_page_container_inner is not None
+        # TODO make polymorphic with Target
+        if self.target == self.WIKIPEDIA_PAGE:
+            self.body_content = self.get_wikipedia_page_body_content()
+        elif self.target == self.WIKTIONARY:
+            self.body_content = self.get_wiktionary_body_content()
 
-        mw_content_container = XmlLib.get_single_element(
-            mw_page_container_inner, "./div[@class='mw-content-container']")
-        assert mw_content_container is not None
-
-        self.main = XmlLib.get_single_element(mw_content_container, "./main[@id='content']")
-        assert self.main is not None
-        XmlLib.remove_elements(self.main, [
-            "./div[@id='siteNotice']",
-            "./div[@class='vector-page-toolbar']",
-            "./div[@class='vector-column-end']",
-        ])
-
-        self.header = XmlLib.get_single_element(self.main, "./header")
-        assert self.header is not None
-        XmlLib.remove_elements(self.header,  [
-            "./nav",
-            "./div[@id='p-lang-btn']",
-        ])
-
-        self.firstHeading = XmlLib.get_single_element(self.header, "./h1[@id='firstHeading']")
-        assert self.firstHeading is not None
-
-        self.body_content = XmlLib.get_single_element(self.main, "./div[@id='bodyContent']")
         assert self.body_content is not None
         XmlLib.remove_elements(self.body_content, [
             "./div[@class='vector-body-before-content']",
@@ -206,6 +216,35 @@ class MediawikiParser:
         # body.append(self.mw_content_ltr)
 
         return self.htmlx
+
+    def get_wikipedia_page_body_content(self):
+        mw_page_container_inner = XmlLib.get_single_element(
+            self.body, "./div[@class='mw-page-container']/div[@class='mw-page-container-inner']")
+        XmlLib.remove_elements(mw_page_container_inner, [
+            "./div[@class='vector-sitenotice-container']",
+            "./div[@class='vector-column-start']",
+            "./div[@class='mw-footer-container']",
+        ])
+        assert mw_page_container_inner is not None
+        mw_content_container = XmlLib.get_single_element(
+            mw_page_container_inner, "./div[@class='mw-content-container']")
+        assert mw_content_container is not None
+        self.main = XmlLib.get_single_element(mw_content_container, "./main[@id='content']")
+        assert self.main is not None
+        XmlLib.remove_elements(self.main, [
+            "./div[@id='siteNotice']",
+            "./div[@class='vector-page-toolbar']",
+            "./div[@class='vector-column-end']",
+        ])
+        self.header = XmlLib.get_single_element(self.main, "./header")
+        assert self.header is not None
+        XmlLib.remove_elements(self.header, [
+            "./nav",
+            "./div[@id='p-lang-btn']",
+        ])
+        self.firstHeading = XmlLib.get_single_element(self.header, "./h1[@id='firstHeading']")
+        assert self.firstHeading is not None
+        self.body_content = XmlLib.get_single_element(self.main, "./div[@id='bodyContent']")
 
     def group_by_headings(self):
         # self.add_h1_header(body, mw_content_ltr)
@@ -357,6 +396,13 @@ class MediawikiParser:
         h2 = ET.SubElement(top_level_break, "h2")
         h2.text = ("Initial Content")
         self.mw_content_ltr.insert(0, top_level_break)
+
+    def get_wiktionary_body_content(self):
+        self.body_content = XmlLib.get_single_element(
+            self.body, "./div[@id='content']/div[@id='bodyContent']")
+        return self.body_content
+
+
 
 
 # this should go in config files

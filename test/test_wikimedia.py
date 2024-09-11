@@ -1528,28 +1528,39 @@ class MWParserTest(AmiAnyTest):
             input_file = Path(Resources.TEST_RESOURCES_DIR, "wiktionary", f"{stem}.html")
             mw_parser.parse_nest_write_entry(stem, input_file)
 
+    def test_wiktionary_new_parser(self):
+        stems = [
+            "bread",
+            "curlicue",
+            "xyzzy",
+        ]
+        mw_parser = MediawikiParser(target=MediawikiParser.WIKTIONARY)
+        for stem in stems:
+            input_file = Path(Resources.TEST_RESOURCES_DIR, "wiktionary", f"{stem}.html")
+            mw_parser.parse_nest_write_entry(stem, input_file)
+
     def test_wikipedia_mw_parser(self):
         """
         parse Wikpedia page with MWParser
         """
-        stem = "Net_zero_emissions"
-        # stem = "parijat"
-        input_file = Path(Resources.TEST_RESOURCES_DIR, "wikipedia", f"{stem}.html")
-        assert input_file.exists(), f"Wikipedia file should exist {input_file}"
+        stems = [
+            "Net_zero_emissions",
+            "parijat",
+            ]
+        for stem in stems:
+            input_file = Path(Resources.TEST_RESOURCES_DIR, "wikipedia", f"{stem}.html")
+            assert input_file.exists(), f"Wikipedia file should exist {input_file}"
 
-        # wikipedia_html = HtmlUtil.parse_html_file_to_xml(input_file)
-        # assert wikipedia_html is not None
-        #
-        mw_parser = MediawikiParser()
-        # mw_parser.add_div_style(mw_parser.htmlx)
-        mw_parser.read_file_and_make_nested_divs(input_file)
-        mw_parser.add_div_style(mw_parser.htmlx)
+            mw_parser = MediawikiParser()
+            # mw_parser.add_div_style(mw_parser.htmlx)
+            mw_parser.read_file_and_make_nested_divs(input_file)
+            mw_parser.add_div_style(mw_parser.htmlx)
 
-        assert mw_parser.htmlx is not None
+            assert mw_parser.htmlx is not None
 
-        path = Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html")
-        logger.debug(f"writing {path}")
-        HtmlLib.write_html_file(mw_parser.htmlx, path)
+            path = Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html")
+            logger.debug(f"writing {path}")
+            HtmlLib.write_html_file(mw_parser.htmlx, path)
 
     def test_wikimedia_remove_non_content_and_empty(self):
         """
@@ -1567,35 +1578,6 @@ class MWParserTest(AmiAnyTest):
         input_html, body = mw_parser.read_html_path(
             input_file, remove_non_content=True, remove_head=True, remove_empty_elements=False)
         assert input_html is not None and body is not None
-        """
-        <header class="vector-header mw-header">
-            <div class="vector-header-start">
-                <a href="/wiki/Main_Page" class="mw-logo">
-                    <img class="mw-logo-icon" src="/static/images/icons/wikipedia.png" alt="" aria-hidden="true" height="50" width="50">
-                    <span class="mw-logo-container skin-invert">
-                        <img class="mw-logo-wordmark" alt="Wikipedia" src="/static/images/mobile/copyright/wikipedia-wordmark-en.svg" style="width: 7.5em; height: 1.125em;">
-                        <img class="mw-logo-tagline" alt="The Free Encyclopedia" src="/static/images/mobile/copyright/wikipedia-tagline-en.svg" width="117" height="13" style="width: 7.3125em; height: 0.8125em;">
-                    </span>
-                </a>
-            
-            </div>
-        <div class="vector-header-end">
-        
-            <div id="p-search" role="search" class="vector-search-box-vue  vector-search-box-collapses vector-search-box-show-thumbnail vector-search-box-auto-expand-width vector-search-box">
-                <a href="/wiki/Special:Search" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only search-toggle" title="Search Wikipedia [f]" accesskey="f"><span class="vector-icon mw-ui-icon-search mw-ui-icon-wikimedia-search">
-                    <span>Search</span>
-                    </span>
-                </a>
-                <div class="vector-typeahead-search-container">
-                    <div class="cdx-typeahead-search cdx-typeahead-search--show-thumbnail cdx-typeahead-search--auto-expand-width">
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        </header>
-        """
-
         HtmlUtil.write_html_elem(input_html, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html"))
 
 
