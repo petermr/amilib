@@ -1,10 +1,10 @@
 import argparse
+import json
 from abc import ABC, abstractmethod
 from collections import Counter
 import logging
 from pathlib import Path
 
-from amilib.file_lib import FileLib
 from amilib.util import Util
 
 """Base class for specialist sub_parsers .
@@ -58,7 +58,7 @@ class AbstractArgs(ABC):
         self.subparser_arg = "UNKNOWN"
 
     def create_arg_dict(self, args=None):
-        logger.debug(f"arg_dict args: f{args}")
+        logger.debug(f"arg_dict args: {args}")
         if args:
             self.parsed_args = args
         if not self.parsed_args:
@@ -158,6 +158,10 @@ class AbstractArgs(ABC):
     def create_default_arg_dict(self):
         pass
 
+    @abstractmethod
+    def add_arguments(self):
+        pass
+
     @property
     def module_stem(self):
         """name of module"""
@@ -233,6 +237,7 @@ class AbstractArgs(ABC):
         :param subparsers: subparser generator
         :return: new subparser"""
         subclass.parser = subparsers.add_parser(subclass.subparser_arg)
+        logger.info(f"subclass_parser for {subclass} is {subclass.parser}")
         subclass.add_arguments()
         return subclass.parser
 

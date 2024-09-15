@@ -55,6 +55,7 @@ class AmiDictArgs(AbstractArgs):
         self.dictfile = None
         self.description = None
         self.operation = None
+        self.parser = None
         self.synonym = None
         self.validate = None
         self.title = UNKNOWN
@@ -67,8 +68,9 @@ class AmiDictArgs(AbstractArgs):
         self.subparser_arg = "DICT"
 
     def add_arguments(self):
-        # from amilib.ami_dict import DELETE, DICT, FILTER, LANGUAGE, METADATA, REPLACE, SYNONYM
-        # from amilib.ami_dict import VALIDATE, WIKIDATA, WIKIPEDIA, WORDS
+        """
+        add arguments into self.parser
+        """
 
         if self.parser is None:
             self.parser = argparse.ArgumentParser()
@@ -76,16 +78,16 @@ class AmiDictArgs(AbstractArgs):
         self.parser.description = 'AMI dictionary creation, validation, editing'
         self.parser.add_argument(f"--{DESCRIPTION}", type=str, nargs="+",
                                  choices=[WIKIPEDIA, WIKTIONARY, WIKIDATA],
-                                 help="add extended description from one or more of these")
+                                 help="add extended description tp dict from one or more of these")
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
                                  help="path for dictionary (existing = edit; new = create (type depends on suffix *.xml or *.html)")
         self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
         self.parser.add_argument(f"--{FIGURES}", type=str,
                                  nargs="*",
                                  default="None",
-                                 choices=["None", WIKIPEDIA],
+                                 choices=["None", WIKIPEDIA, WIKIDATA],
                                  help=f"sources for figures: "
-                                      f"'{WIKIPEDIA}' uses infobox or first thumbnail,"
+                                      f"'{WIKIPEDIA}' uses infobox or first thumbnail, {WIKIDATA} uses first figure"
                                  )
         self.parser.add_argument(f"--{OPERATION}", type=str,
                                  default=CREATE_DICT,
@@ -93,7 +95,7 @@ class AmiDictArgs(AbstractArgs):
                                  help=f"operation: "
                                       f"'{CREATE_DICT}' needs '{WORDS}'\n"
                                       f" '{EDIT_DICT}' needs '{INPATH}'\n"
-                                      f" '{MARKUP_FILE}' need '{INPATH}' and '{OUTPATH}`\n"
+                                      f" '{MARKUP_FILE}' need '{INPATH}' and '{OUTPATH}` (move to search?)\n"
                                       f" '{VALIDATE}' requires '{INPATH}'\n"
                                       f" default = '{CREATE_DICT}"
                                  )
@@ -105,7 +107,7 @@ class AmiDictArgs(AbstractArgs):
                                  default="unknown",
                                  help="internal title for dictionary, normally same as stem of dictionary file")
         self.parser.add_argument(f"--{VALIDATE}", action="store_true", help="validate dictionary; DEPRECATED use '--operation validate'")
-        self.parser.add_argument(f"--{WIKIDATA}", type=str, nargs="*", help="add WikidataIDs (NYI)")
+        self.parser.add_argument(f"--{WIKIDATA}", type=str, nargs="*", help=f"DEPRECATED use --description {WIKIDATA} add WikidataIDs (NYI)")
         self.parser.add_argument(f"--{WIKIPEDIA}", type=str, nargs="*",
                                  help="add Wikipedia link/s; DEPRECATED use '--description wikipedia'")
         self.parser.add_argument(f"--{WIKTIONARY}", type=str, nargs="*",
@@ -114,8 +116,8 @@ class AmiDictArgs(AbstractArgs):
                                  help="path/file with words or list of words to create dictionaray")
         self.parser.epilog = """
         Examples:
-        DICT --words wordsfile --dict dictfile --wikipedia   # creates dictionary from wordsfile and adds wikipedia info\n
-        DICT --inpath htmlfile --dict dictfile --outpath resultfile # reads htmlfile, marks up words in dict and write to outpath
+        DICT --words wordsfile --dict dictfile --description wikipedia   # creates dictionary from wordsfile and adds wikipedia info\n
+        
         
         """
 
@@ -128,6 +130,7 @@ class AmiDictArgs(AbstractArgs):
         if not self.arg_dict:
             logger.debug(f"no arg_dict given, no actiom")
 
+        self.description = self.arg_dict.get(DESCRIPTION)
         self.dictfile = self.arg_dict.get(DICT)
         self.figures = self.arg_dict.get(FIGURES)
         if self.figures == "None":
@@ -145,41 +148,24 @@ class AmiDictArgs(AbstractArgs):
 
 
         if self.operation is None:
-            raise ValueError("No operatin given")
+            raise ValueError("No operation given")
         elif self.operation == CREATE_DICT:
             self.create_dictionary_from_words(self.title)
         elif self.operation == EDIT_DICT:
             self.edit_dictionary()
         elif self.operation == MARKUP_FILE:
+            logger.warning(f"DEPRECATED; use 'amilib SEARCH'")
             self.markup_file_with_dict()
         elif self.operation == VALIDATE:
             self.validate_dict()
         else:
             raise ValueError(f"unknown oeration {self.operation}")
 
-
-
-        # if self.dictfile:
-        #
-        #     logger.info(f"writing to {self.dictfile}")
-        #     # is this right??
-        #     if self.ami_dict is not None:
-        #         self.ami_dict.write_to_file(self.dictfile, debug=True)
-        #     else:
-        #         self.ami_dict = self.build_or_edit_dictionary()
-        #         if self.ami_dict is None:
-        #             logger.error(f"no dictionary; failed to write dictionary {self.dictfile}")
-
-        # for argument --wikidata
-        # logger.debug(f"wikidata: {self.wikidata}")
-
-
-        logger.debug(f"writing to {self}")
         if self.dictfile:
             if self.ami_dict:
                 self.ami_dict.create_html_write_to_file(self.dictfile, debug=True)
 
-    def add_descriptions(self):
+    def add_descriptions_old(self):
         if self.wikidata is not None:
             hit_dict = self.add_wikidata_to_dict()
             status = self.validate_dict()
@@ -200,6 +186,30 @@ class AmiDictArgs(AbstractArgs):
                 body = htmlx
             else:
                 logger.debug(f"add to dictionary NYI")
+
+    def add_descriptions(self):
+        """
+        add 1 or more descriptons from WIKIPEDIA, WIKIDATA or WIKTIONARY
+        """
+        if self.description is None:
+            logger.warning("No entry description given")
+            return
+        for entry_description in self.description:
+            if entry_description == WIKIDATA:
+                hit_dict = self.add_wikidata_to_dict()
+                status = self.validate_dict()
+            elif entry_description == WIKIPEDIA:
+                logger.debug(f"Wikipedia lookup")
+                hit_dict = self.add_wikipedia_to_dict()
+                status = self.validate_dict()
+            elif entry_description == WIKTIONARY:
+                logger.debug(f"Wiktionary lookup {self.wiktionary}")
+                logger.debug(f"searching wiktionary for {self.wiktionary}")
+                htmlx = WiktionaryPage.search_terms_create_html(self.wiktionary)
+                temp = Path(Path(__file__).parent.parent, "temp")
+                logger.info(f"temp dir {temp}")
+                HtmlLib.write_html_file(htmlx, Path(temp, "wiktionary", f"{self.title}.html"))
+                body = htmlx
 
     def create_dictionary_from_words(self, title):
         """
@@ -371,10 +381,22 @@ class AmiDictArgs(AbstractArgs):
 
 # ========== markup ========
     def markup_file_with_dict(self):
+        """
+        uses dictionary from self.dictfile to markup self.inpath and write to self.outpath:
+        """
+        logger.warning("DEPRECATED markup_file will be moved to SEARCH")
         if self.inpath and self.dictfile and self.outpath:
             self.make_dictionary_markup_file(self.inpath, self.dictfile, self.outpath)
 
     def make_dictionary_markup_file(self, inpath, dictfile, outpath):
+        """
+        create dictionary and annotate file
+        :param inpath: HTML file to annotate
+        :param dictfile: file containing dictionary
+        :param outpath: output for annotated file
+        TODO allow for more dictionaries
+        """
+        logger.warning("DEPRECATED: use 'amilib SEARCH'")
         from amilib.ami_dict import AmiDictionary
 
         dictfile = str(dictfile)

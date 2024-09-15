@@ -23,7 +23,6 @@ from amilib.ami_html import HtmlUtil
 from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.xml_lib import HtmlLib, XmlLib
-from test.resources import Resources
 
 logger = Util.get_logger(__name__)
 
@@ -106,6 +105,10 @@ class MediawikiParser:
     WIKTIONARY = "wiktionary"
 
     def __init__(self, target=None):
+        """
+        construct Mediawiki parser
+        :param target: type of wikimedia page , default WIKIPEDIA_PAGE
+        """
         self.remove_body_xpaths = None
         self.stem = None
         self.style_txt = None
@@ -170,15 +173,17 @@ class MediawikiParser:
 
 
 
-    def parse_nest_write_entry(self, stem, input_file):
+    def parse_nest_write_entry(self, input_file, output):
         """
         reads a wiktionary file, nests the elements and writes to temp
         :param stem: wiktionary word
+        :param input_file:
+        :param output:
         """
         htmlx = self.read_file_and_make_nested_divs(input_file)
         self.add_div_style(htmlx)
 
-        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}_{self.levels}.html"), debug=True)
+        HtmlLib.write_html_file(htmlx, output, debug=True)
 
     def read_file_and_make_nested_divs(self, input_file):
         self.htmlx = HtmlUtil.parse_html_file_to_xml(input_file)
@@ -245,6 +250,7 @@ class MediawikiParser:
         self.firstHeading = XmlLib.get_single_element(self.header, "./h1[@id='firstHeading']")
         assert self.firstHeading is not None
         self.body_content = XmlLib.get_single_element(self.main, "./div[@id='bodyContent']")
+        return self.body_content
 
     def group_by_headings(self):
         # self.add_h1_header(body, mw_content_ltr)

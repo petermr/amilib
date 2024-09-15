@@ -1686,6 +1686,25 @@ class DictionaryCreationTest(AmiAnyTest):
         AmiLib().run_command(args)
         assert Path(output_dict).exists()
 
+    def test_create_dict_with_wikimedia_descriptions(self):
+        """
+        from commandline add descriptions to ditionary entries from wikimedia sources
+        """
+        stem = "parijat"
+        output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.xml")
+
+        args = [
+            "DICT",
+            "--words",
+            stem,
+            "--description",
+            "wikipedia",
+            "wikidata",
+            "wiktionary",
+            "--dict", output_dict,
+        ]
+        AmiLib().run_command(args)
+        assert Path(output_dict).exists()
 
 
 class IPCCDictTest(AmiAnyTest):

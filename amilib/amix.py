@@ -13,6 +13,7 @@ from pathlib import Path
 from amilib.file_lib import FileLib
 
 from amilib.dict_args import AmiDictArgs
+from amilib.search_args import SearchArgs
 from amilib.util import Util
 
 try:
@@ -72,7 +73,7 @@ class AmiLib:
             # what does this do?
             sys.argv = [AmiLib.AmiLib]
         parser = argparse.ArgumentParser(
-            description=f'amilib: V{version} call with ONE of subcommands (DICT, HTML,PDF), e.g. amilib DICT --help'
+            description=f'amilib: V{version} call with ONE of subcommands (DICT, HTML,PDF, SEARCH), e.g. amilib DICT --help'
         )
 
         parser.add_argument('-v', '--version', action="store_true",
@@ -84,8 +85,10 @@ class AmiLib:
             'amilib is a set of problem-independent methods to support document retrieval and analysis'
             '\n'
             'The subcommands:\n\n'
+            '  DICT <options>      # create and edit Ami Dictionaries\n'
             '  HTML <options>      # create/edit HTML\n'
             '  PDF <options>       # convert PDF into HTML and images\n'
+            '  SEARCH <options>    # search and index documents\n'
             '\n'
             'After installation, run \n'
             '  amilib <subcommand> <options>\n'
@@ -106,17 +109,20 @@ class AmiLib:
             logger.debug(f">>> {choice}")
             pass
 
+        dict_parser = AmiLibArgs.make_sub_parser(AmiDictArgs(), subparsers)
+        logger.debug(f"dict_parser {dict_parser}")
         pdf_parser = AmiLibArgs.make_sub_parser(PDFArgs(), subparsers)
         logger.debug(f"pdf_parser {pdf_parser}")
         html_parser = AmiLibArgs.make_sub_parser(HTMLArgs(), subparsers)
         logger.debug(f"html_parser {html_parser}")
-        dict_parser = AmiLibArgs.make_sub_parser(AmiDictArgs(), subparsers)
-        logger.debug(f"dict_parser {dict_parser}")
+        search_parser = AmiLibArgs.make_sub_parser(SearchArgs(), subparsers)
+        logger.debug(f"search_parser {search_parser}")
+        print(f"subparsers {subparsers}")
 
         parser.epilog = "other entry points run as 'python -m amilib.amix <args>'"
         parser.epilog = """run:
         pyamihtmlx <subcommand> <args>
-          where subcommand is in   {DICT, HTML,PDF} and args depend on subcommand
+          where subcommand is in   {DICT, HTML,PDF, SEARCH} and args depend on subcommand
         """
 
         return parser
@@ -240,7 +246,7 @@ class AmiLib:
 
         subparser_dict = {
             "DICT": AmiDictArgs(),
-            # "GUI":  GUIArgs(),
+            "SEARCH": SearchArgs(),
             "HTML": HTMLArgs(),
             "PDF": PDFArgs(),
         }
@@ -398,6 +404,8 @@ class AmiLib:
         version = '0.2.4a2'  # 2024-08-27 # build dictionaries from wordlists preparing for release
         version = '0.2.5a1'  # 2024-08-30 # fixed Wiktionary bug
         version = '0.2.5'    # 2024-09-09 # testing as library usable by amiclimate
+        version = '0.2.6'    # 2024-09-12 # added medisawiki parser
+        version = '0.2.7'    # 2024-09-12 # corrected bug
 
         # logging.warn(f"VERSION {version}")
         return version

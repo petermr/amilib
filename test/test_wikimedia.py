@@ -1503,7 +1503,7 @@ class MWParserTest(AmiAnyTest):
             "xyzzy"
         ]
 
-        mw_parser = MediawikiParser()
+        mw_parser = MediawikiParser(MediawikiParser.WIKTIONARY)
 
         mw_parser.style_txt = """
         div {border:1px solid red; margin: 2px;}
@@ -1526,7 +1526,9 @@ class MWParserTest(AmiAnyTest):
 
         for stem in stems:
             input_file = Path(Resources.TEST_RESOURCES_DIR, "wiktionary", f"{stem}.html")
-            mw_parser.parse_nest_write_entry(stem, input_file)
+            output = Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html")
+
+            mw_parser.parse_nest_write_entry(input_file, output)
 
     def test_wiktionary_new_parser(self):
         stems = [
@@ -1537,7 +1539,8 @@ class MWParserTest(AmiAnyTest):
         mw_parser = MediawikiParser(target=MediawikiParser.WIKTIONARY)
         for stem in stems:
             input_file = Path(Resources.TEST_RESOURCES_DIR, "wiktionary", f"{stem}.html")
-            mw_parser.parse_nest_write_entry(stem, input_file)
+            output = Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html")
+            mw_parser.parse_nest_write_entry(input_file, output)
 
     def test_wikipedia_mw_parser(self):
         """
