@@ -237,7 +237,7 @@ class AbstractArgs(ABC):
         :param subparsers: subparser generator
         :return: new subparser"""
         subclass.parser = subparsers.add_parser(subclass.subparser_arg)
-        logger.info(f"subclass_parser for {subclass} is {subclass.parser}")
+        # logger.info(f"subclass_parser for {subclass} is {subclass.parser}")
         subclass.add_arguments()
         return subclass.parser
 

@@ -117,7 +117,6 @@ class AmiLib:
         logger.debug(f"html_parser {html_parser}")
         search_parser = AmiLibArgs.make_sub_parser(SearchArgs(), subparsers)
         logger.debug(f"search_parser {search_parser}")
-        print(f"subparsers {subparsers}")
 
         parser.epilog = "other entry points run as 'python -m amilib.amix <args>'"
         parser.epilog = """run:
@@ -348,6 +347,7 @@ class AmiLib:
                 parsed_args = self.SYSTEM_EXIT_FAIL + str(se)
         except Exception as e:
             parsed_args = None
+            raise e
             logger.error(f"Cannot parse {arglist} , {e}")
         return parsed_args
 

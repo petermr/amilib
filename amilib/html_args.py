@@ -15,7 +15,7 @@ OUTPATH = "outpath"
 
 # logger = AmiLogger.create_named_logger(__file__)
 logger = Util.get_logger(__name__)
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.INFO)
 
 class HTMLArgs(AbstractArgs):
     """Parse args to analyze, edit and annotate HTML"""

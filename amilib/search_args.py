@@ -1,4 +1,5 @@
 import argparse
+import logging
 import textwrap
 from pathlib import Path
 
@@ -19,6 +20,7 @@ TITLE = "title"
 UNKNOWN = "unknown"
 
 logger = Util.get_logger(__name__)
+logger.setLevel(logging.INFO)
 
 class SearchArgs(AbstractArgs):
     pass
@@ -53,6 +55,7 @@ class SearchArgs(AbstractArgs):
             '  * SEARCH --help\n'
         )
         self.parser.formatter_class = argparse.RawDescriptionHelpFormatter
+
         self.parser.add_argument("--debug", type=str,
                                  help="debug these during parsing (NYI)")
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
@@ -64,7 +67,7 @@ class SearchArgs(AbstractArgs):
                                  help=f"operation: "
                                       f"'{ANNOTATE}' needs '{INPATH} and {DICT}'; annotates words/phrases\n"
                                       f"'{INDEX}' needs '{INPATH}' optionally {OUTPATH} (NYI)\n"
-                                      f" default = (%default)s"
+                                      f" default = {ANNOTATE}"
                                  )
         self.parser.add_argument(f"--{OUTPATH}", type=str, nargs="+",
                                  help="output file ")
