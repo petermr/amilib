@@ -36,7 +36,8 @@ from amilib.ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, C
 from amilib.ami_svg import AmiSVG, SVG_G
 from amilib.bbox import BBox
 from amilib.util import Util
-from amilib.xml_lib import XmlLib, HtmlLib
+from amilib.xml_lib import XmlLib
+from amilib.ami_html import HtmlLib
 
 # local
 

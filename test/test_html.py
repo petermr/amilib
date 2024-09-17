@@ -26,7 +26,8 @@ from amilib.ami_pdf_libs import AmiPDFPlumber
 # from pyamihtmlx.ar6 import TargetExtractor, IPCCTarget, LinkFactory, IPCCTargetLink
 from amilib.amix import AmiLib
 from amilib.util import Util
-from amilib.xml_lib import HtmlLib, XmlLib
+from amilib.ami_html import (HtmlLib)
+from amilib.xml_lib import XmlLib
 from amilib.ami_integrate import HtmlGenerator
 
 from test.resources import Resources

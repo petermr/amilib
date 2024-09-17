@@ -6,7 +6,7 @@ from pathlib import Path
 from amilib.ami_args import AbstractArgs, AmiArgParser
 from amilib.ami_dict import AmiDictionary
 from amilib.util import Util
-from amilib.xml_lib import HtmlLib
+from amilib.ami_html import (HtmlLib)
 
 ANNOTATE = "annotate"
 DICT = "dict"

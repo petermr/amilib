@@ -19,10 +19,10 @@ from lxml import etree as ET
 from lxml import html
 
 # local
-from amilib.ami_html import HtmlUtil
+from amilib.ami_html import HtmlUtil, HtmlLib
 from amilib.file_lib import FileLib
 from amilib.util import Util
-from amilib.xml_lib import HtmlLib, XmlLib
+from amilib.xml_lib import XmlLib
 
 logger = Util.get_logger(__name__)
 

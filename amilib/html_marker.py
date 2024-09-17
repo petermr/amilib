@@ -12,7 +12,8 @@ from amilib.ami_html import HtmlStyle
 from amilib.ami_integrate import HtmlGenerator
 from amilib.file_lib import FileLib
 from amilib.util import Util, EnhancedRegex, GENERATE
-from amilib.xml_lib import HtmlLib, Templater, XmlLib
+from amilib.xml_lib import Templater, XmlLib
+from amilib.ami_html import HtmlLib
 
 logger = Util.get_logger(__name__)
 

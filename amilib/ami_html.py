@@ -2,7 +2,9 @@
 Should have relatively few dependencies"""
 import argparse
 import copy
+import html
 import logging
+import os
 import re
 import sys
 import time
@@ -12,6 +14,7 @@ from io import StringIO
 from pathlib import Path
 from pprint import pprint
 
+import lxml
 import numpy as np
 import lxml.etree as ET
 from lxml.etree import Element, _Element, _ElementTree
@@ -22,7 +25,7 @@ from sklearn.linear_model import LinearRegression
 from amilib.bbox import BBox
 from amilib.file_lib import FileLib
 from amilib.util import SScript, Util
-from amilib.xml_lib import XmlLib, HtmlLib
+from amilib.xml_lib import XmlLib
 
 # no try-catch imports
 
@@ -1151,6 +1154,545 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                 if i == len(spans) - 1:
                     spans = []
 
+
+class HtmlLib:
+
+    CLASS_ATTNAME = "class"
+
+    @classmethod
+    def convert_character_entities_in_lxml_element_to_unicode_string(cls, element, encoding="UTF-8") -> str:
+        """
+        converts character entities in lxml element to Unicode
+        1) extract string as bytes
+        2) converts bytes to unicode with html.unescape()
+        (NOTE: may be able to use tostring to do this)
+
+
+        :param element: lxml element
+        :return: unicode string representation of element
+        """
+        stringx = lxml.etree.tostring(element)
+        string_unicode = html.unescape(stringx.decode(encoding))
+        return string_unicode
+
+    @classmethod
+    def create_html_with_empty_head_body(cls):
+        """
+        creates
+        <html>
+          <head/>
+          <body/>
+        </html>
+        """
+        html_elem = lxml.etree.Element("html")
+        html_elem.append(lxml.etree.Element("head"))
+        html_elem.append(lxml.etree.Element("body"))
+        return html_elem
+
+    # def create_html_container_with_head_style_body(cls):
+    #     """
+    #     creates
+    #     <html>
+    #       <head/>
+    #       <body/>
+    #     </html>
+    #     """
+    #     html_container = Html_Container()
+    #     html_elem = lxml.etree.Element("html")
+    #     html_elem.append(lxml.etree.Element("head"))
+    #     html_elem.append(lxml.etree.Element("body"))
+    #     return html_elem
+
+    @classmethod
+    def add_copies_to_head(cls, html_elem, elems):
+        """copies elems and adds them to <head> of html_elem
+        no checks made for duplicates
+        :param html_elem: elemnt to copy into
+        :param elems: list of elements to copy (or single elemnt
+        """
+        if html_elem is None or elems is None:
+            raise ValueError("Null arguments in HtmlLib.add_copies_to_head")
+        head = html_elem.xpath("./head")[0]
+        if type(elems) is not list:
+            elems = [elems]
+        for elem in elems:
+            head.append(copy.deepcopy(elem))
+
+    @classmethod
+    def get_body(cls, html_elem):
+        """
+        :oaram html_elem: if None, creates new Html element; if not must have a body
+        :return: body element
+        """
+        if html_elem is None:
+            html_elem = HtmlLib.create_html_with_empty_head_body()
+        bodys = html_elem.xpath("./body")
+        return bodys[0] if len(bodys) == 1 else None
+
+    @classmethod
+    def get_head(cls, html_elem=None):
+        """
+        :oaram html_elem: if None, creates new Html element; if not must have a head
+        :return: the head element
+        """
+        if html_elem is None:
+            html_elem = HtmlLib.create_html_with_empty_head_body()
+        head = XmlLib.get_single_element(html_elem, "/html/head")
+        return head
+
+    @classmethod
+    def add_base_url(cls, html_elem, base_url):
+        head = cls.get_head(html_elem)
+        base = head.xpath("base")
+        if len(base) > 1:
+            logger.info(f"too many base_urls; probable error")
+            return
+        if len(base) == 0:
+            base = lxml.etree.SubElement(head, "base")
+            base.attrib["href"] = base_url
+
+    @classmethod
+    def create_new_html_with_old_styles(cls, html_elem):
+        """
+        creates new HTML element with empty body and copies styles from html_elem
+        """
+        new_html_elem = HtmlLib.create_html_with_empty_head_body()
+        HtmlLib.add_copies_to_head(new_html_elem, html_elem.xpath(".//style"))
+        return new_html_elem
+
+    @classmethod
+    def add_head_style(cls, html, target, css_value_pairs):
+        """This might duplicate things in HtmlStyle
+        """
+
+        if html is None or not target or not css_value_pairs:
+            raise ValueError(f"None params in add_head_style")
+        head = HtmlLib.get_head(html)
+        style = lxml.etree.Element("style")
+        head.append(style)
+        style.text = target + " {"
+        for css_value_pair in css_value_pairs:
+            if len(css_value_pair) != 2:
+                raise ValueError(f"bad css_value_pair {css_value_pair}")
+            style.text += css_value_pair[0] + " : " + css_value_pair[1] + ";"
+        style.text += "}"
+
+    @classmethod
+    def add_explicit_head_style(cls, html_page, target, css_string):
+        """
+        :param html_page: element receiving styles in head
+        :param target: the reference (e.g. 'div', '.foo')
+        """
+
+        if html_page is None or not target or not css_string:
+            raise ValueError(f"None params in add_head_style")
+        if not css_string.startswith("{") or not css_string.endswith("}"):
+            raise ValueError(f"css string must include {...}")
+        head = HtmlLib.get_head(html_page)
+        style = lxml.etree.Element("style")
+        head.append(style)
+        style.text = target + " " + css_string
+
+    @classmethod
+    def write_html_file(self, html_elem, outfile, debug=False, mkdir=True, pretty_print=False, encoding="UTF-8"):
+        """writes XML element (or tree) to file, making directory if needed .
+        adds method=True to ensure end tags
+        :param html_elem: element to write
+        :param outfile: file to write
+        :param mkdir: make directory if not exists (def True)
+        :param debug: output debug (def False)
+        :param pretty_print: pretty print output (def False)
+        """
+        if html_elem is None:
+            if debug:
+                logger.info("null html elem to write")
+            return
+        if outfile is None:
+            if debug:
+                logger.error("no outfile given")
+            return
+        if type(html_elem) is _ElementTree:
+            html_elem = html_elem.getroot()
+        if not (type(html_elem) is _Element or type(html_elem) is lxml.html.HtmlElement):
+            raise ValueError(f"type(html_elem) should be _Element or lxml.html.HtmlElement not {type(html_elem)}")
+        if encoding and encoding.lower() == "utf-8":
+            head = HtmlLib.get_or_create_head(html_elem)
+            if head is None:
+                logger.error(f"cannot create <head> on html elem; not written")
+                return
+
+        outdir = os.path.dirname(outfile)
+        if mkdir:
+            Path(outdir).mkdir(exist_ok=True, parents=True)
+
+        # cannot get this to output pretty_printed, (nor the encoding)
+        tostring = lxml.etree.tostring(html_elem, method="html", pretty_print=pretty_print).decode("UTF-8")
+
+        with open(str(outfile), "w") as f:
+            f.write(tostring)
+        if debug:
+            print(f"wrote: {Path(outfile).absolute()}")
+
+    @classmethod
+    def create_rawgithub_url(cls, site=None, username=None, repository=None, branch=None, filepath=None,
+                             rawgithubuser="https://raw.githubusercontent.com"):
+        """creates rawgithub url for programmatic HTTPS access to repository"""
+        site = "https://raw.githubusercontent.com"
+        url = f"{site}/{username}/{repository}/{branch}/{filepath}" if site and username and repository and branch and filepath else None
+        return url
+
+    @classmethod
+    def get_or_create_head(cls, html_elem):
+        """ensures html_elem is <html> and first child is <head>"""
+        if html_elem is None:
+            return None
+        if html_elem.tag.lower() != "html":
+            logger.error(f"not a full html element")
+            return None
+        head = HtmlLib.get_head(html_elem)
+        if head is None:
+            head = lxml.etree.SubElement(html_elem, "head")
+            html_elem.insert(0, head)
+        return head
+
+    @classmethod
+    def add_charset(cls, html_elem, charset="utf-8"):
+        """adds <meta charset=charset" to <head>"""
+        head = HtmlLib.get_or_create_head(html_elem)
+        if head is None:
+            logger.error(f"cannot create <head>")
+            return
+        cls.remove_charsets(head)
+        meta = lxml.etree.SubElement(head, "meta")
+        meta.attrib["charset"] = charset
+
+    @classmethod
+    def remove_charsets(cls, head):
+        XmlLib.remove_elements(head, ".//meta[@charset]")
+
+    @classmethod
+    def extract_ids_from_html_page(cls, input_html_path, regex_str=None, debug=False):
+        """
+        finds possible IDs in PDF HTML pages
+        must lead the text in a span
+        """
+        elem = lxml.etree.parse(str(input_html_path))
+        div_with_spans = elem.xpath(".//div[span]")
+        regex = re.compile(regex_str)
+        sectionlist = []
+        for div in div_with_spans:
+            spans = div.xpath(".//span")
+            for span in spans:
+                matchstr = regex.match(span.text)
+                if matchstr:
+                    if debug:
+                        logger.info(f"matched {matchstr.group(1)} {span.text[:50]}")
+                    sectionlist.append(span)
+        return sectionlist
+
+    @classmethod
+    def parse_html(cls, infile):
+        """
+        parse html file as checks for file existence
+        :param infile: file to parse or url (checks prefix)
+        :return: root element
+        """
+        if not infile:
+            logger.error(f"infile is None")
+            return None
+        if not str(infile).startswith("http"):
+            path = Path(infile)
+            if not path.exists():
+                logger.error(f"file does not exist {infile}")
+                return None
+        try:
+            infile = "https://en.wikipedia.org"
+            logger.debug(f"infile {infile}")
+            html_tree = lxml.html.parse(infile, HTMLParser())
+            if html_tree is None:
+                logger.error(f"Cannot parse {infile}, returned None")
+            return html_tree.getroot()
+        except Exception as e:
+            logger.error(f"cannot parse {infile} because {e}")
+            return None
+
+    @classmethod
+    def parse_html_string(cls, string):
+        """
+        parse string
+        :param string: html
+        :return: html element or None
+        """
+        try:
+            html_element = lxml.html.fromstring(string)
+        except Exception as e:
+            logger.error(f"html error {e}")
+            return None
+
+        return html_element
+
+    @classmethod
+    def find_paras_with_ids(cls, html, xpath=None):
+        """
+        find all p's with @id and return ordered list
+        :param html: parsed html DOM
+        """
+        if not xpath:
+            xpath = ".//p[@id]"
+        paras = []
+        if html is None:
+            return paras
+        body = HtmlLib.get_body(html)
+        paras = body.xpath(xpath)
+        return paras
+
+    @classmethod
+    def para_contains_phrase(cls, para, phrase, ignore_case=True, markup=None):
+        """
+        search paragraph with phrase. If markuip is not None add hyperlinks
+
+        Parameters
+        ----------
+        para paragraph to search
+        phrase search phrase
+        ignore_case if True lowercase text and phrase
+        markup if True search each itertext and insert hrefs, else just seatch concatenation
+
+        Returns
+        -------
+
+        """
+        if ignore_case:
+            phrase = phrase.lower()
+        search_re = r'\b' + phrase + r'\b'
+        if not markup:
+            text = "".join(para.itertext())
+            if ignore_case:
+                text = text.lower()
+            if re.search(search_re, text):
+                return True
+        else:
+            texts = para.xpath(".//text()")
+            for text in texts:
+                match = re.search(search_re, text)
+                if match:
+                    cls._insert_ahref(markup, match, phrase, text)
+
+        return False
+
+    @classmethod
+    def _insert_ahref(cls, url_base, match, phrase, text):
+        """
+        Add hyperlinks to text. The order of opratyations matters
+        """
+        id = HtmlLib.generate_id(phrase)
+        href, title = cls._create_href_and_title(id, url_base)
+
+        # text before, inside and after <a> element
+        start_ = text[0:match.start()]
+        mid_ = text[match.start():match.end()]
+        end_ = text[match.end():]
+
+        # might be a text (contained within lead) or tail following it
+
+        # text contained in element
+        if text.is_text:
+            aelem = cls.add_href_for_lxml_text(start_, text)
+
+        # text following element
+        elif text.is_tail:
+            aelem = cls._add_href_for_lxml_tail(start_, text)
+        else:
+            logger.error(f"ERROR??? (not text of tail) {start_}|{mid_}|{end_}")
+
+        # add content and attributes to aelem
+        aelem.attrib["href"] = href
+        aelem.text = mid_
+        aelem.tail = end_
+        if title:
+            aelem.attrib["title"] = title
+
+    @classmethod
+    def _add_href_for_lxml_tail(cls, start_, text):
+        prev = text.getparent()
+        aelem = ET.Element("a")
+        aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
+        prev.addnext(aelem)  # order metters1
+        prev.tail = start_ + " "
+        return aelem
+
+    @classmethod
+    def add_href_for_lxml_text(cls, start_, text):
+        parent = text.getparent()
+        tail = parent.tail
+        aelem = ET.SubElement(parent, "a")
+        aelem.attrib["style"] = "border:solid 1px; background: #ffffbb;"
+        parent.text = start_
+        parent.tail = tail
+        return aelem
+
+    @classmethod
+    def _create_href_and_title(cls, id, url_base):
+        href = f"{url_base}"
+        href_elem = ET.parse(href, HTMLParser())
+        idelems = href_elem.xpath(f".//*[@id='{id}']")
+        title = id
+        if len(idelems) > 0:
+            ps = idelems[0].xpath("./p")
+            if len(ps) > 0:
+                p = ps[0] if len(ps) == 1 else ps[1]
+                if p is not None:
+                    title = "".join(p.itertext())
+        return href, title
+
+    @classmethod
+    def generate_id(cls, phrase):
+        """
+        strip, converts whitespace to single "-" and lowercase
+        """
+        phrase1 = re.sub(r"\s+", "_", phrase)
+        return phrase1
+
+    @classmethod
+    def search_phrases_in_paragraphs(cls, paras, phrases, markup=None):
+        """search for phrases in paragraphs
+        :param paras: list of HTML elems with text (normally <p>), must have @id else ignored
+        :param phrases: list of strings to search for (word boundary honoured)
+        :param markup:html dictionary with phrases
+        :return: dict() keyed on para_ids values are dict of search hits by phrase
+        """
+        para_phrase_dict = dict()
+        for para in paras:
+            para_id = para.get("id")
+            if para_id is None:
+                continue
+            phrase_dict = dict()
+            for phrase in phrases:
+                count = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True, markup=markup)
+                if count > 0:
+                    phrase_dict[phrase] = count
+                    para_phrase_dict[para_id] = phrase_dict
+        return para_phrase_dict
+
+    @classmethod
+    def retrieve_with_useragent_parse_html(cls, url, user_agent='my-app/0.0.1', encoding="UTF-8", debug=False):
+
+        """
+        Some servers give an Error 403 unless they have a user_agent.
+        This provides a dummy one and allows users to add the true one
+        """
+        content, encoding = FileLib.read_string_with_user_agent(url, user_agent=user_agent, encoding=encoding,
+                                                                debug=debug)
+        assert type(content) is str
+        html = lxml.html.fromstring(content, base_url=url, parser=HTMLParser())
+
+        return html
+
+    @classmethod
+    def _extract_paras_with_ids(cls, infile, count=-1):
+        """
+
+        Parameters
+        ----------
+        infile html file with p[@id]
+        count number of paragraphs with @id (default -1) . if count >= 0, asserts number flound == count
+
+        Returns
+        -------
+
+        """
+        assert Path(infile).exists(), f"{infile} does not exist"
+        html = ET.parse(str(infile), HTMLParser())
+        paras = HtmlLib.find_paras_with_ids(html)
+        if count >= 0:
+            assert len(paras) == count
+        return paras
+
+    @classmethod
+    def add_link_stylesheet(self, css_file, htmlx):
+        """
+        add stylesheet link to <head>
+        creates <link rel='stylesheet' href=<css_file/>
+        does not remove other links
+        :param htmlx: html element with existing <head> element
+        :param css_file:file path , absolute or relative to html file
+
+        """
+
+        link = ET.SubElement(HtmlLib.get_head(htmlx), "link")
+        link.attrib["rel"] = "stylesheet"
+        link.attrib["href"] = css_file
+
+    @classmethod
+    def add_base_to_head(self, htmlx, base_href):
+        """
+        create or reuse a single <base> child of <head> and add self.base as href value
+        :param: html root element
+        :param base_href: value for @href on <base>
+        """
+        if htmlx is None:
+            logger.error("no HTML element")
+            return
+        if base_href is None:
+            logger.error("no base_href")
+            return
+        head = HtmlLib.get_head(htmlx)
+        bases = head.xpath("./base")
+        if len(bases) == 1:
+            base = bases[0]
+        else:
+            # create base
+            base = ET.SubElement(HtmlLib.get_head(htmlx), "base")
+        base.attrib["href"] = base_href
+
+class HtmlEditor:
+    """
+    Convenience method for creating HTML tree
+    skeleton html with attributes for head, style, body
+    hardcoded attributes (Html elements) are:
+    .html - the whole document
+    .head - the head
+    .style - a style stub in head (add others with SubElement)
+    .body - a stub body
+    (To create other elemnts you have to use SubElement or append)
+
+    example:
+    skel = HtmlSkeleton()
+    skel.style.text = "p {background: pink;}"
+    p = ET.SubElement(skel.body, "p")
+    p.text = "foo"
+    p = ET.SubElement(skel.body, "p")
+    p.text = "bar"
+    skel.write(myfile, debug=True)
+
+
+
+    """
+
+    def __init__(self):
+        """
+        creates elements self.html, self.head, self.body
+        """
+        self.html = lxml.etree.Element("html")
+        self.head = ET.SubElement(self.html, "head")
+        self.body = ET.SubElement(self.html, "body")
+
+    def write(self, file, debug=True):
+        HtmlLib.write_html_file(self.html, file, debug=debug)
+
+    def add_style(self, selector, value):
+        """
+        at present just use HTML style content,
+        content includes the "{...}'
+        e.g.
+        selector ="span"
+        value = "{background, pink; border: solid 1px blue;}
+        htmlx.add_style(selector, value)
+
+        """
+
+        style = ET.SubElement(self.head, "style")
+        style.text = f"{selector} {value}"
 
 
 class HtmlUtil:

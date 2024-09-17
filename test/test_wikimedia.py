@@ -8,7 +8,7 @@ import requests
 from lxml import etree, html
 
 from amilib.ami_dict import AmiDictionary
-from amilib.ami_html import HtmlUtil
+from amilib.ami_html import HtmlUtil, HtmlLib
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 from amilib.util import Util
@@ -16,7 +16,8 @@ from amilib.wikimedia import WikidataLookup, MediawikiParser
 # local
 from amilib.wikimedia import WikidataPage, WikidataExtractor, WikidataProperty, WikidataFilter, WikipediaPage, \
     WikipediaPara, WiktionaryPage, WikipediaInfoBox
-from amilib.xml_lib import HtmlLib, XmlLib, HtmlEditor
+from amilib.xml_lib import XmlLib
+from amilib.ami_html import HtmlEditor
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 

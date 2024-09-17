@@ -13,8 +13,8 @@ from amilib.ami_pdf_libs import create_thin_line_from_rect, AmiPDFPlumber, AmiPl
 from amilib.ami_pdf_libs import AmiPDFPlumber,AmiPage, TextStyle
 from amilib.file_lib import FileLib
 from amilib.util import Util
-# from amilib.util import AmiLogger
-from amilib.xml_lib import HtmlLib, XmlLib
+from amilib.xml_lib import XmlLib
+from amilib.ami_html import HtmlLib
 from amilib.ami_html import H_BODY, H_DIV
 
 # logger = AmiLogger.create_named_logger(__file__)

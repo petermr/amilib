@@ -8,10 +8,11 @@ from pathlib import Path
 import lxml.etree as ET
 from lxml.html import HTMLParser
 
+from amilib.ami_html import HtmlLib
 from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.wikimedia import WikidataLookup
-from amilib.xml_lib import HtmlElement, HtmlLib, XmlLib
+from amilib.xml_lib import HtmlElement, XmlLib
 
 logger = Util.get_logger(__name__)
 

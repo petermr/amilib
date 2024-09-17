@@ -4,14 +4,12 @@ from pathlib import Path
 
 import lxml.etree as ET
 
-from amilib.ami_html import HtmlStyle
-from amilib.file_lib import FileLib
+from amilib.ami_html import HtmlStyle, HtmlLib, HtmlEditor
 from amilib.util import Util
-from amilib.xml_lib import XmlLib, HtmlLib, HtmlEditor
+from amilib.xml_lib import XmlLib
 from test.resources import Resources
 
 from test.test_all import AmiAnyTest
-# from test.test_wikimedia import WikidataTest
 
 logger = Util.get_logger(__name__)
 

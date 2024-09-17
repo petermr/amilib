@@ -406,6 +406,9 @@ class AmiLib:
         version = '0.2.5'    # 2024-09-09 # testing as library usable by amiclimate
         version = '0.2.6'    # 2024-09-12 # added medisawiki parser
         version = '0.2.7'    # 2024-09-12 # corrected bug
+        version = '0.3.0a1'  # 2024-09-17 # added SEARCH option
+        version = '0.3.0a2'  # 2024-09-17 # removed import bug
+        version = '0.3.0a3'  # 2024-09-17 # rensure compatibility with amiclimate
 
         # logging.warn(f"VERSION {version}")
         return version

@@ -5,12 +5,13 @@ from pathlib import Path
 import lxml.etree as ET
 from lxml.html import HTMLParser, Element, HtmlElement
 
+from amilib.ami_html import HtmlLib
 from amilib.amidriver import AmiDriver, URL, XPATH, OUTFILE  # EXPAND_SECTION_PARAS
 from amilib.file_lib import FileLib
 from amilib.headless_lib import HeadlessLib
 from amilib.util import Util
 from amilib.wikimedia import WikidataLookup, WikidataPage
-from amilib.xml_lib import XmlLib, HtmlLib, DECLUTTER_BASIC
+from amilib.xml_lib import XmlLib, DECLUTTER_BASIC
 from test.resources import Resources
 
 from test.test_all import AmiAnyTest

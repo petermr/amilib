@@ -1,7 +1,6 @@
 import logging
 import unittest
 
-import amilib
 from amilib.amix import AmiLib
 
 from amilib.util import Util

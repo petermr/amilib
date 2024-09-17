@@ -7,18 +7,7 @@ import unittest
 from glob import glob
 from pathlib import Path
 
-from lxml import etree
-
-# problems with Python loader
-import idna
-import certifi
-import SPARQLWrapper
-
-from amilib.file_lib import FileLib
-# local
 from amilib.util import Util
-from amilib.wikimedia import WikidataSparql as WS
-from amilib.xml_lib import XmlLib
 
 from test.resources import Resources
 

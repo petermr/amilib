@@ -14,7 +14,7 @@ from amilib.ami_args import AbstractArgs
 from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage, WiktionaryPage
-from amilib.xml_lib import HtmlLib
+from amilib.ami_html import HtmlLib
 
 # commandline
 DESCRIPTION = "description"

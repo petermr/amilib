@@ -5,31 +5,28 @@ import pprint
 import re
 import traceback
 import unittest
-from lxml.html import HTMLParser
 from pathlib import Path
-
-# from parametrized import parametrized
 
 import lxml
 from lxml import etree
-import lxml.etree as ET
 from lxml.etree import XMLSyntaxError, _Element
-import pytest
 
 # local
 from amilib.ami_dict import AmiDictionary, AmiEntry, AMIDictError, \
     AmiDictValidator, NAME, TITLE, TERM, LANG_UR, VERSION, WIKIDATA_ID
-from amilib.file_lib import FileLib
 from amilib.amix import AmiLib
 from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
+from amilib.dict_args import MARKUP_FILE
+from amilib.file_lib import FileLib
 from amilib.util import Util
-from amilib.wikimedia import WikidataSparql, WikidataPage
-from amilib.xml_lib import XmlLib, HtmlLib
+from amilib.wikimedia import WikidataSparql
+from amilib.xml_lib import XmlLib
+from amilib.ami_html import HtmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
-from amilib.dict_args import CREATE_DICT, EDIT_DICT, VALIDATE_DICT, MARKUP_FILE
+# from parametrized import parametrized
 
 # MUST use RAW content , not HTML
 CEV_OPEN_RAW_DICT_URL = "https://raw.githubusercontent.com/petermr/CEVOpen/master/dictionary/"

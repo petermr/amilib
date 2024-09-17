@@ -23,11 +23,9 @@ from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR, LOCAL_OV21_DIR, LOCAL_DICT
 from amilib.dict_args import AmiDictArgs, SYNONYM, WIKIPEDIA
 from amilib.file_lib import FileLib
 # local
-# from py4ami.wikimedia import WikidataLookup, WikidataPage
 from amilib.util import Util
 from amilib.wikimedia import WikidataSparql, WikidataLookup, WikidataPage, WikipediaPage, WiktionaryPage
-from amilib.xml_lib import HtmlLib
-from test.resources import Resources
+from amilib.ami_html import HtmlLib
 
 # elements in amidict
 DICTIONARY = "dictionary"
@@ -495,8 +493,6 @@ class AmiEntry:
         if term is None:
             logger.warning(f"element has no term")
             return
-        # dictionary = self.element.xpath('parent::*')[0]
-        outfile = Path(Resources.TEMP_DIR, 'figures', f"dictionary_{term}.html")
         wikipedia_page = self.lookup_wikipedia_page(term)
         if wikipedia_page is not None:
             logger.warning(f"no wikipedia page for {term}")
@@ -1754,7 +1750,7 @@ class AmiDictionary:
         phrases = dictionary.get_terms()
         dictionary.location = html_dict_path
         HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
-        # write marked_up html
+        # write marked_up html. The 'paras' are views on the original file
         chapter_elem = paras[0].xpath("/html")[0]
         HtmlLib.write_html_file(chapter_elem, outpath, debug=True)
         assert Path(outpath).exists()
