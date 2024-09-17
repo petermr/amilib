@@ -253,7 +253,7 @@ class AmiLib:
 
         logger.debug(f"abstract_args {abstract_args}")
         if abstract_args:
-            abstract_args.parse_and_process1(self.args)
+            abstract_args._parse_and_process1(self.args)
         else:
             self.run_core_mathods()
 

@@ -12,6 +12,7 @@ ANNOTATE = "annotate"
 DICT = "dict"
 INDEX = "index"
 INPATH = "inpath"
+NOINPUTSTYLES = "no_input_styles"
 OPERATION = "operation"
 OUTPATH = "outpath"
 SEARCH = "SEARCH"
@@ -61,10 +62,11 @@ class SearchArgs(AbstractArgs):
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
                                  help="path for dictionary  *.xml or *.html)")
         self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
-        self.parser.add_argument(f"--{OPERATION}", type=str,
+        self.parser.add_argument(f"--{OPERATION}", type=str, nargs="+",
                                  default=ANNOTATE,
-                                 choices=[ANNOTATE, INDEX],
+                                 choices=[ANNOTATE, INDEX, NOINPUTSTYLES],
                                  help=f"operation: "
+                                      f"'{NOINPUTSTYLES}' needs '{INPATH} ; remove styles from inpath\n"
                                       f"'{ANNOTATE}' needs '{INPATH} and {DICT}'; annotates words/phrases\n"
                                       f"'{INDEX}' needs '{INPATH}' optionally {OUTPATH} (NYI)\n"
                                       f" default = {ANNOTATE}"
@@ -86,6 +88,37 @@ class SearchArgs(AbstractArgs):
         """runs parsed args
         pass
         """
+        logger.debug(f"SEARCH process_args {self.arg_dict}")
+        if not self.arg_dict:
+            logger.debug(f"no arg_dict given, no actiom")
+
+        self.dictfile = self.arg_dict.get(DICT)
+        self.inpath = self.arg_dict.get(INPATH)
+        self.outpath = self.arg_dict.get(OUTPATH)
+        self.operation = self.arg_dict.get(OPERATION)
+        self.title = self.arg_dict.get(TITLE)
+        logger.info(f"read arguments\n"
+                    f"inpath: {self.inpath}\n"
+                    f"dictfile: {self.dictfile}\n"
+                    f"outpath: {self.outpath}\n"
+                    f"operation: {self.operation}\n"
+                    f"title: {self.title}\n"
+                    )
+        if self.operation is None:
+            logger.warning("No operation given")
+            return
+        self.remove_input_styles = NOINPUTSTYLES in self.operation
+
+        if ANNOTATE in self.operation:
+            self.markup_file_with_dict()
+
+        if self.operation == INDEX:
+            self.make_index()
+
+# output goes here
+        pass
+
+
 
     @classmethod
     def create_default_arg_dict(cls):
@@ -110,7 +143,6 @@ class SearchArgs(AbstractArgs):
         :param outpath: output for annotated file
         TODO allow for more dictionaries
         """
-        logger.warning("DEPRECATED: use 'amilib SEARCH'")
         from amilib.ami_dict import AmiDictionary
 
         dictfile = str(dictfile)
@@ -120,7 +152,8 @@ class SearchArgs(AbstractArgs):
             return None
         # TODO this should not be in AmiDictionary
         AmiDictionary.read_html_dictionary_and_markup_html_file(
-            str(inpath), str(outpath), html_dict_path=dictfile)
+            str(inpath), str(outpath), remove_styles=self.remove_input_styles,  html_dict_path=dictfile)
+        # logger.info(f"wrote annotated file {outpath}")
 
     @classmethod
     def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path):

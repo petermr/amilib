@@ -12,6 +12,7 @@ Also includes ArgParseBuilder
 """
 
 logger = Util.get_logger(__name__)
+logger.setLevel(logging.INFO)
 
 class AbstractArgs(ABC):
 
@@ -58,7 +59,12 @@ class AbstractArgs(ABC):
         self.subparser_arg = "UNKNOWN"
 
     def create_arg_dict(self, args=None):
-        logger.debug(f"arg_dict args: {args}")
+        """
+        takes args or self.parsed_args as a list of items(tuples) and creates a dictionary (self.arg_dict)
+        :param args: list of key-values
+        :return: dict() created form this
+        """
+        logger.debug(f"create_arg_dict args: {args}")
         if args:
             self.parsed_args = args
         if not self.parsed_args:
@@ -79,54 +85,41 @@ class AbstractArgs(ABC):
 
         return self.arg_dict
 
-    def parse_and_process(self):
-        """Parse args after program name.
-        If running in IDE there may be 2 names.
-        All names should contain name of module (e.g. ami_dict)
+    # def parse_and_process_args1(self):
+    #     """Parse args after program name.
+    #     If running in IDE there may be 2 names.
+    #     All names should contain name of module (e.g. ami_dict)
+    #
+    #     '/Applications/PyCharm CE.app/Contents/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py', 'ami_dict.py::test_process_args']
+    #     or
+    #     '/Users/pm286/workspace/pyami/pyamihtmlx/ami_dict.py', '--dict', 'foo', '--words', 'bar'
+    #
+    #     """
+    #     # strip all tokens including ".py" (will proably fail on some m/c)
+    #     raise Exception("do we ever get here - test parse_and_process()")
 
-        '/Applications/PyCharm CE.app/Contents/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py', 'ami_dict.py::test_process_args']
-        or
-        '/Users/pm286/workspace/pyami/pyamihtmlx/ami_dict.py', '--dict', 'foo', '--words', 'bar'
+    def _parse_and_process1(self, argv_):
+        """
+        Takes args from CLI , creates self.arg_dict, and passes to self.process_args()
+        :param argv_: name-value pairs usually from CLI
 
         """
-        # strip all tokens including ".py" (will proably fail on some m/c)
-        raise Exception("do we ever get here - test parse_and_process()")
-        logger.debug(f"parse_and_process() module_stem: {self.module_stem}\n sys.argv {sys.argv}")
-        args_store = sys.argv.copy()
-        while len(sys.argv) > 0 and self.module_stem not in str(sys.argv[0]):
-            logger.debug(f"trimming sys.argv {sys.argv}")
-            sys.argv = sys.argv[1:]
-        if len(sys.argv) == 0:  # must have name of prog
-            sys.argv = args_store.copy()
-        try:
-            logger.debug(f"adding args")
-            self.add_arguments()
-        except Exception as e:
-            logger.debug(f"failed to add args {e}")
-            raise e
-        logger.warning(f"AbstractArgs ADDED ARGS {sys.argv}")
-        # logger.debug(f"argv {sys.argv}")
-        if len(sys.argv) == 1:  # no args, print help
-            self.parser.print_help()
-        else:
-            logging.warning(f"sys.argv {sys.argv}")
-            argv_ = sys.argv[1:]
-            logger.debug(f"argv: {argv_}")
-            self.parse_and_process1(argv_)
-
-    def parse_and_process1(self, argv_):
         # logger.debug("running parse_and_process1 in util?")
         # logging.warning(f"********** args for parse_and_process1 {argv_}")
         self.parsed_args = argv_ if self.parser is None else self.parser.parse_args(argv_)
         self.arg_dict = self.create_arg_dict()
         self.process_args()
 
-    @property
-    # @abstractmethod  # I don't know why this doesn't work
-    def subparser_name(self):
-        pass
+    # @property
+    # # @abstractmethod  # I don't know why this doesn't work
+    # def subparser_name(self):
+    #     pass
 
     def add_argumants(self):
+        """
+        Not used
+        maybe this should be called by subclasses
+        """
 
         self.parser.add_argument(f"--{self.DEBUG}",
                                  action='store_true',
@@ -162,13 +155,16 @@ class AbstractArgs(ABC):
     def add_arguments(self):
         pass
 
-    @property
-    def module_stem(self):
-        """name of module"""
-        return Path(__file__).stem
-
+    # @property
+    # def module_stem(self):
+    #     """name of module"""
+    #     return Path(__file__).stem
+    #
     def get_operation(self):
-        """The operation to run (makes this explicit)"""
+        """
+        NOT USED, maybe it should be
+        The operation to run (makes this explicit)
+        """
         operation = self.arg_dict.get(AbstractArgs.OPERATION)
         return operation
 
@@ -176,6 +172,7 @@ class AbstractArgs(ABC):
         indir = self.arg_dict.get(AbstractArgs.INDIR)
         return indir
 
+    # are these used?
     def get_input(self):
         inputx = self.arg_dict.get(AbstractArgs.INPUT)
         return inputx
@@ -188,66 +185,79 @@ class AbstractArgs(ABC):
         output = self.arg_dict.get(AbstractArgs.OUTPUT)
         return output
 
-    def parse_kwargs_to_string(self, kwargs, keys=None):
-        kwargs_dict = {}
-        logger.info(f"args: {kwargs}")
-        if not kwargs:
-            if keys:
-                logger.debug(f"possible keys: {keys}")
-        else:
-            if type(kwargs) is not list:
-                kwargs = [kwargs]
-            for arg in kwargs:
-                logger.debug(f"pair {arg}")
-                argz = arg.split(':')
-                key = argz[0].strip()
-                value = argz[1].strip()
-                kwargs_dict[key] = value
-            logger.warning(f"kwargs_dict {kwargs_dict}")
-        return kwargs_dict
+    # def parse_kwargs_to_string(self, kwargs, keys=None):
+    #
+    #     kwargs_dict = {}
+    #     logger.info(f"args: {kwargs}")
+    #     if not kwargs:
+    #         if keys:
+    #             logger.debug(f"possible keys: {keys}")
+    #     else:
+    #         if type(kwargs) is not list:
+    #             kwargs = [kwargs]
+    #         for arg in kwargs:
+    #             logger.debug(f"pair {arg}")
+    #             argz = arg.split(':')
+    #             key = argz[0].strip()
+    #             value = argz[1].strip()
+    #             kwargs_dict[key] = value
+    #         logger.warning(f"kwargs_dict {kwargs_dict}")
+    #     return kwargs_dict
 
 
-    def get_kwargs(self):
-        kwargs = self.arg_dict.get(AbstractArgs.KWARGS)
-        logger.debug(f"kwargs {kwargs}")
-        if kwargs is None:
-            return None
-        if len(kwargs) == 0:
-            self.kwargs_help()
-        else:
-            pass
+    # def get_kwargs(self):
+    #     """
+    #     used if we ever start using **kwargs,
+    #     currently not used
+    #     """
+    #     kwargs = self.arg_dict.get(AbstractArgs.KWARGS)
+    #     logger.debug(f"kwargs {kwargs}")
+    #     if kwargs is None:
+    #         return None
+    #     if len(kwargs) == 0:
+    #         self.kwargs_help()
+    #     else:
+    #         pass
+    #
+    #     return
+    #
+    #
+    # def kwargs_help(self):
+    #     """
+    #     only used by **kwargs options
+    #     """
+    #     logger.debug(f"key value pairs separated by ':' ; normally explicitly offered by subclass ")
+    #
 
-        return
-
-    def kwargs_help(self):
-        logger.debug(f"key value pairs separated by ':' ; normally explicitly offered by subclass ")
-
-
-    def make_run_func(self):
-        """probably obsolete"""
-        func_name = self.module_stem.replace("ami_", "run_")
-        logger.debug(f"run_func_name {func_name}")
-        return func_name
+    # def make_run_func(self):
+    #     """probably obsolete"""
+    #     func_name = self.module_stem.replace("ami_", "run_")
+    #     logger.debug(f"run_func_name {func_name}")
+    #     return func_name
 
     @classmethod
     def make_sub_parser(cls, subclass, subparsers):
         """make subparser from subparsers
         requires self.subparser_arg (probably should be argument
-        ALSO adds arguments through `self.add_arguments`
-        :param subparsers: subparser generator
+        ALSO adds arguments through `self.add_arguments
+        :param subclass: name of the subclass`
+        :param subparsers: list of subparsers (to append subparser to)
         :return: new subparser"""
         subclass.parser = subparsers.add_parser(subclass.subparser_arg)
-        # logger.info(f"subclass_parser for {subclass} is {subclass.parser}")
+        logger.debug(f"subclass_parser for {subclass} is {subclass.parser}")
         subclass.add_arguments()
         return subclass.parser
 
-    @property
-    def module_stem(self):
-        """name of module"""
-        return Path(__file__).stem
+    # @property
+    # def module_stem(self):
+    #     """name of module"""
+    #     return Path(__file__).stem
 
 
 class ArgParseBuilder:
+    """
+    Not sure whether this is necessary but there is a test using it
+    """
     ARG_LIST = "arg_list"
     DESCRIPTION = "description"
 

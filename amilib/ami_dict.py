@@ -1735,7 +1735,7 @@ class AmiDictionary:
         style.text = ("div[role] {border:solid 1px;margin:1px;}")
 
     @classmethod
-    def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path):
+    def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path, remove_styles=False):
         """
         read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
         markup paras, and write marked  file
@@ -1746,6 +1746,8 @@ class AmiDictionary:
         """
         assert Path(inpath).exists()
         paras = HtmlLib._extract_paras_with_ids(inpath)
+        if remove_styles:
+            HtmlUtil.remove_elems(paras[0], "/html/head/style")
         assert Path(html_dict_path).exists()
         dictionary = AmiDictionary.create_from_html_file(html_dict_path)
         assert dictionary is not None
