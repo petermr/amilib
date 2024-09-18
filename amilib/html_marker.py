@@ -567,7 +567,7 @@ class SpanMarker:
         # outfile contains markup
         span_marker.markup_html_element_with_markup_dict(html_elem, html_out=outfile, debug=debug)
         """creates 
-        <pyamihtmlx>/test/resources/unfccc/unfcccdocuments/1_CMA_3_section/normalized.sections.html
+        <amilib>/test/resources/unfccc/unfcccdocuments/1_CMA_3_section/normalized.sections.html
         """
         assert outfile.exists()
         return html_elem

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import lxml
 import pdfplumber
-from pyamihtml.ami_pdf import PDFDebug
+from amilib.ami_pdf_libs import PDFDebug
 
 from amilib.ami_html import HtmlUtil, P_FONTNAME, P_HEIGHT, P_STROKING_COLOR, P_NON_STROKING_COLOR, AmiSpan, P_TEXT, \
     HtmlGroup, HtmlStyle

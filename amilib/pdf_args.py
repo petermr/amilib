@@ -190,7 +190,7 @@ class PDFArgs(AbstractArgs):
             self.read_from_arg_dict()
 
         if not self.check_input():
-            logger.debug("for help, run 'pyamihtmlx PDF -h'")
+            logger.debug("for help, run 'amilib.amix PDF -h'")
             return
         self.create_consistent_output_filenames_and_dirs()
         self.calculate_headers_footers()

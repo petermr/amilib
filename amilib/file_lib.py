@@ -1,5 +1,5 @@
 """
-standalone library from pyamihtml
+library for file opertations
 """
 import ast
 import glob
@@ -9,7 +9,6 @@ import lxml.etree as ET
 import os
 import re
 import shutil
-import sys
 from pathlib import Path, PurePath, PurePosixPath
 
 import chardet
@@ -183,7 +182,7 @@ class FileLib:
 
     @staticmethod
     def create_absolute_name(file):
-        """create absolute/relative name for a path relative to pyamihtmlx
+        """create absolute/relative name for a path relative to amilib
 
         TODO this is messy
         """

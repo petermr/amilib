@@ -23,7 +23,6 @@ from amilib.ami_html import HtmlUtil, H_SPAN, CSSStyle, HtmlTidy, HtmlStyle, Htm
 from amilib.html_extra import HtmlExtra
 from amilib.pdf_args import PDFArgs
 from amilib.ami_pdf_libs import AmiPDFPlumber
-# from pyamihtmlx.ar6 import TargetExtractor, IPCCTarget, LinkFactory, IPCCTargetLink
 from amilib.amix import AmiLib
 from amilib.util import Util
 from amilib.ami_html import (HtmlLib)

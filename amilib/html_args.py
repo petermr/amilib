@@ -64,7 +64,7 @@ class HTMLArgs(AbstractArgs):
         self.parser.epilog = "====== epilog ========="
         return self.parser
 
-    """python -m pyamihtmlx.pyamix HTML --annotate 
+    """python -m amilib.amix HTML --annotate 
      --dict /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
      --inpath /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/fulltext.html
      --outpsth /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/annotated/fulltext_emissions.html

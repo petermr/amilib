@@ -80,7 +80,7 @@ class AmiLib:
                             help=f"show version {version}")
         parser.formatter_class = argparse.RawDescriptionHelpFormatter
         parser.description = textwrap.dedent(
-            'pyamihtml: create, manipulate, use CProject \n'
+            'amilib: create, manipulate, use CProject \n'
             '----------------------------------------\n\n'
             'amilib is a set of problem-independent methods to support document retrieval and analysis'
             '\n'
@@ -408,7 +408,13 @@ class AmiLib:
         version = '0.2.7'    # 2024-09-12 # corrected bug
         version = '0.3.0a1'  # 2024-09-17 # added SEARCH option
         version = '0.3.0a2'  # 2024-09-17 # removed import bug
-        version = '0.3.0a3'  # 2024-09-17 # rensure compatibility with amiclimate
+        version = '0.3.0a3'  # 2024-09-17 # ensure compatibility with amiclimate
+        version = '0.3.0'    # 2024-09-18 # 
+        version = '0.3.1'    # 2024-09-18 # correct import bugs 
+        version = '0.3.2'    # 2024-09-18 # correct import bugs
+        version = '0.3.3'    # 2024-09-18 # correct import bugs
+        version = '0.3.4'    # 2024-09-18 # correct import bugs and libraries
+        version = '0.3.5'    # 2024-09-18 # correct import bugs and libraries
 
         # logging.warn(f"VERSION {version}")
         return version
@@ -450,7 +456,7 @@ class AmiLibArgs(AbstractArgs):
         #                          help="output directory")
         self.parser.epilog = "======= ========"
 
-    """python -m pyamihtmlx.pyamix HTML --annotate 
+    """python -m amilib.amix HTML --annotate 
      --dict /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/dict/emissions_abbreviations.xml
      --inpath /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/fulltext.html
      --outpsth /Users/pm286/projects/semanticClimate/ipcc/ar6/wg3/Chapter02/annotated/fulltext_emissions.html

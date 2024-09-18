@@ -1406,8 +1406,6 @@ class HtmlLib:
                 logger.error(f"file does not exist {infile}")
                 return None
         try:
-            infile = "https://en.wikipedia.org"
-            logger.debug(f"infile {infile}")
             html_tree = lxml.html.parse(infile, HTMLParser())
             if html_tree is None:
                 logger.error(f"Cannot parse {infile}, returned None")
@@ -2990,6 +2988,8 @@ Some spans are not joined, x1 on one span and x0 on following are equal
         classed_elems = html_elem.xpath("//*[@class]")
         for classed_elem in classed_elems:
             html_class = HtmlClass.create_from_classed_element(classed_elem)
+            if html_class is None:
+                continue
             classref = html_class.create_classref()
             normalized_classref = HtmlClass.remove_dot(classref_index.get(classref))
             classref = HtmlClass.remove_dot(classref)

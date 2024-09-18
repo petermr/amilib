@@ -4,7 +4,6 @@ import os
 import logging
 import unittest
 
-# from pyamihtmlx.file_lib import AmiPath, PROJ, FILE
 from pathlib import Path
 
 from amilib.file_lib import FileLib

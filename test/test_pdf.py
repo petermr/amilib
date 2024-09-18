@@ -445,7 +445,7 @@ class PDFTest(AmiAnyTest):
         'maxpage': 10, 'outdir': None, 'outform': 'html', 'outstem': 'fulltext'}
 
         Tried to run:
-        python -m pyamihtmlx.ami_pdf
+        python -m amilib.ami_pdf
         --inpath /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/fulltext.pdf
         --maxpage 88 --outdir /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter02/
 
@@ -458,7 +458,7 @@ class PDFTest(AmiAnyTest):
          outform='html', outstem='fulltext.flow', resolution=400, template=None)"""
 
         """
-        python -m pyamihtmlx.pyamix PDF --inpath /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter17.pdf --outdir /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter17/raw/"""
+        python -m amilib.amix PDF --inpath /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter17.pdf --outdir /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter17/raw/"""
         args = " PDF --inpath /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter17.pdf" \
                " --outdir /Users/pm286/projects/semanticClimate/ar6/ar6/wg3/Chapter17/raw/" \
                " --pages 1_4"
@@ -612,7 +612,7 @@ class PDFChapterTest(test.test_all.AmiAnyTest):
         """
         # Use `pip3 install pdfminer.six` for python3
 
-        """reading pyamihtmlx/resources/projects/liion4/PMC4391421/fulltext.pdf"""
+        """reading amilib/resources/projects/liion4/PMC4391421/fulltext.pdf"""
         pathx = Path(PMC1421_PDF)
 
         # convert PDF to html

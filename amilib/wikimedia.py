@@ -11,7 +11,6 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import urlopen
 
-import html5lib.html5parser
 import lxml.etree
 import requests
 from SPARQLWrapper import SPARQLWrapper
