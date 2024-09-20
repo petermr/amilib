@@ -1,6 +1,7 @@
 """Supports parsing, editing, markup, restructing of HTML
 Should have relatively few dependencies"""
 import argparse
+import collections
 import copy
 import html
 import logging
@@ -1642,6 +1643,95 @@ class HtmlLib:
             # create base
             base = ET.SubElement(HtmlLib.get_head(htmlx), "base")
         base.attrib["href"] = base_href
+
+    @classmethod
+    def create_html_table(cls, dict_by_id, transform_dict=None):
+        """
+        creates HTML table from Json implicit table
+        see AmiJson.create_json_table()
+        assumes ordered dicts
+        """
+        if type(dict_by_id) is not collections.OrderedDict:
+            logger.warning(f"not an OrderedDict {type(dict_by_id)}")
+            return None
+        row_keys = list(dict_by_id.keys())
+        if len(row_keys) == 0:
+            logger.warning(f"empty JSON table")
+            return None
+        row0 = dict_by_id.get(row_keys[0])
+        logger.info(f"row_0 {type(row0)}")
+        items = row0.items()
+        logger.info(f"row0 items {type(items)} {len(items)} {items}")
+        col_keys = [item[0] for item in items]
+        col_values = [item[1] for item in items]
+        logger.info(f"col_keys {col_keys}")
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        style = ET.SubElement(HtmlLib.get_body(htmlx), "style")
+        style.text = "td {border:solid 1px black;}"
+        body = HtmlLib.get_body(htmlx)
+        table = ET.SubElement(body, "table")
+        tr = ET.SubElement(table, "tr")
+        for col_key in col_keys:
+            th = ET.SubElement(tr, "th")
+            th.text = col_key
+        for row_key in row_keys:
+            tr = ET.SubElement(table, "tr")
+            row_item_dict = dict_by_id.get(row_key)
+            logger.info(f"row_key {row_key} {row_item_dict}")
+            for (key, cell_data) in row_item_dict.items():
+                transform_subdict = transform_dict.get(key)
+                td = ET.SubElement(tr, "td")
+                content = cls.transform_string_to_html(cell_data, transform_subdict)
+                td.text = content if type(content) is str else td.append(content)
+        return htmlx
+
+    @classmethod
+    def transform_string_to_html(cls, string, transform_subdict):
+        """
+        transforms json text to HTML object or text
+        :param cell_data: string data ffrom JSON
+        :param transform: instructions and optional data to transform. Maybe in HTML
+        :return: original string, or transformed element
+        """
+        if transform_subdict is None:
+            return string
+        if type(transform_subdict) is not dict:
+            logger.error(f"bad html: {transform_subdict}")
+            return string
+
+        instruction = list(transform_subdict.keys())[0]
+        logger.info(f"instruction: {instruction}")
+        if instruction is None:
+            logger.error(f"must have an instruction")
+            return string
+        subdict = transform_subdict.get(instruction)
+        if subdict is None:
+            logger.error(f"no sintruction {instruction}")
+            return string
+        if "url" == instruction:
+            a = ET.Element("a")
+            prefix = subdict.get("prefix")
+            if prefix is None:
+                logger.error("'url' requires 'prefix'")
+                return string
+            href = f"{prefix}{string}"
+            a.attrib["href"] = href
+            a.text  = string
+            return a
+        if "text" == instruction:
+            truncate = subdict.get("truncate")
+            if truncate is not None:
+                string = string[:truncate]
+            return string
+        if "split" == instruction:
+            logger.error("split NVI")
+            return string
+        logger.error(f"unknown instruction {instruction}")
+        return string
+
+
+
+
 
 class HtmlEditor:
     """

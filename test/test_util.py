@@ -8,6 +8,7 @@ import sys
 import unittest
 from pathlib import Path
 
+from amilib.ami_util import AmiJson
 from amilib.file_lib import FileLib
 from amilib.util import EnhancedRegex
 from amilib.util import Util, GithubDownloader
@@ -309,4 +310,35 @@ class LoggingTest(AmiAnyTest):
             logger.info(f"=========end Exception============")
 
         print(f"FINISHED")
+
+class AmiJsonTest(AmiAnyTest):
+    """
+    tricky JSON stuff (e.g. nested dicts)
+    """
+
+    def test_nested_dicts(self):
+        """
+        access values in nested dict by dot-separated strings
+        """
+        dikt = {
+            "key1" : "value1",
+            "key2" :
+                {
+                    "subkey1": "subvalue21",
+                    "subkey2": "subvalue22",
+
+                },
+            "key3":
+                {
+                    "subkey1":
+                        {
+                            "subsubkey1": "subsubvalue311",
+                            "subsubkey2": "subsubvalue312",
+                        },
+                }
+
+        }
+        assert "value1" == AmiJson.read_nested_dicts(dikt, "key1")
+        assert "subvalue21" == AmiJson.read_nested_dicts(dikt, "key2.subkey1")
+        assert "subsubvalue312" == AmiJson.read_nested_dicts(dikt, "key3.subkey1.subsubkey2")
 

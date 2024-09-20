@@ -1,13 +1,12 @@
 """
 Utilities (mainly classmethods)
 """
+import collections
 from pathlib import Path
 import numpy as np
-# import numpy.linalg as LA
 import math
 import csv
 
-from amilib.file_lib import FileLib
 from amilib.util import Util
 
 X = 0
@@ -340,6 +339,58 @@ class AmiUtil:
             if header:
                 writer.writerow(header)
             writer.writerows(xy_array)
+
+class AmiJson:
+    """
+    parses and writes JSON
+
+    """
+    @classmethod
+    def read_nested_dicts(cls, dict1, key_string, separator="."):
+        """
+        reads nested dictionary values
+        developed for reading rows in tables
+        e.g.
+        {"key1:
+            {"foo" :
+                {"bar":"plugh"}
+            }
+        can be addressed a "key1.foo.bar"
+        None values anywhere return None so no Exceptions
+        :param dict1: JSON dictionary  may have values as subdictionaries
+        :param key_string: key (may include separators)
+        :param separator: default = "."
+        TODO use JsonPath
+        """
+        if dict1 is None or key_string is None:
+            logger.warning("None arguments")
+            return None
+        keys = key_string.strip().split(separator)
+        next_val = dict1
+        for key in keys:
+            value = next_val.get(key)
+            if type(value) is not dict: # include None
+                return value
+            next_val = value
+
+    @classmethod
+    def create_json_table(cls, data_items, wanted_keys):
+        """
+        iterates over an implicit json table of dicts
+        developed for EuriopePMC output
+        Not guaranteed to work elsewhere
+        :param data_items: a dict of key:dict items
+        :param wanted_keys: keys to extract - assumed toplevel in each dict (may use AmiJson notations a.b.c
+        :return: dictionary corresponding to a ?rectangular table
+        TODO use JsonPath
+        """
+        dict_by_id = collections.OrderedDict()
+        for key, data in data_items.items():
+            dict_row = {k: AmiJson.read_nested_dicts(data, k) for k in wanted_keys}
+            dict_by_id.update({key: dict_row})
+        return dict_by_id
+
+
 
 class Vector2:
 
