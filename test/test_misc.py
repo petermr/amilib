@@ -1,10 +1,12 @@
 import re
 import unittest
+from collections import Counter
 from pathlib import Path
 
 import pytest
 from geopy.geocoders import Nominatim
 
+from amilib.ami_html import HtmlUtil
 from amilib.file_lib import FileLib
 from amilib.util import Util
 from test.resources import Resources
@@ -90,3 +92,37 @@ class MiscTest(AmiAnyTest):
             f.writelines(lines2)
         logger.debug(f"lines2 {lines2}")
 
+    def test_word_counter(self):
+        """
+        illustratiue exercise
+        reads a ChAPTER of IPCC, tokenize, lowercase ans count words in Counter
+
+        """
+        min_len = 5
+        infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", "html_with_ids.html")
+        assert infile.exists()
+        container_xpath = ".//div[@id='executive-summary']"
+        text_xpath = "div/p//text()"
+
+        p_counter = self.count_words_crude(infile, container_xpath, min_len, text_xpath)
+        logger.debug(f"counter {p_counter}")
+
+    def count_words_crude(self, infile, container_xpath, min_len, text_xpath):
+        """
+        reads html file, extracts <p> objects , and counts lowercase text tokens
+        :param container_xpath: top_level container
+        ;param infile: html file
+        :param min_len: of text chunks
+        :param text_xpath;to find text chunks
+        """
+        htmlx = HtmlUtil.parse_html_file_to_xml(infile)
+        exec_summ = htmlx.xpath(container_xpath)
+        p_texts = exec_summ[0].xpath(text_xpath)
+        p_counter = Counter()
+        for p_text in p_texts:
+            if len(p_text) >= min_len:
+                p_text = p_text.lower().strip()
+                splits = p_text.split()
+                for split in splits:
+                    p_counter[split] += 1
+        return p_counter

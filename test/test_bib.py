@@ -1,11 +1,13 @@
 import ast
 import collections
 import json
+import logging
 from pathlib import Path
 import pandas as pd
 
 from amilib.ami_html import HtmlUtil, HtmlLib
 from amilib.ami_util import AmiJson
+from amilib.ami_corpus import AmiCorpus
 from amilib.file_lib import FileLib
 from amilib.util import Util
 from test.resources import Resources
@@ -114,46 +116,49 @@ class PygetpapersTest(AmiAnyTest):
         """
         assume JSON is an implicit table
         """
-        transform_dict = {
-            "doi": {
-                "url": {
-                   "prefix" : "https://www.doi.org/",
-                }
-            },
-            "authorString": {
-                "text": {
-                    "split": ",",
-                }
-            },
-            "abstractText": {
-                "text": {
-                    "truncate":200,
-                }
-            },
-            "pmcid": {
-                "url": {
-                    "prefix": "https://europepmc.org/betaSearch?query=",
-                }
+        effective_level = logger.getEffectiveLevel()
+        logger.setLevel(logging.INFO)
 
-            }
-
-        }
-        infile = Path(Resources.TEST_RESOURCES_DIR, "json", "frictionless", "eupmc_results.json")
-        assert infile.exists()
-        outdir = Path(Resources.TEMP_DIR, "json", "frictionless")
+        project_name = "frictionless"
+        infile = Path(Resources.TEST_RESOURCES_DIR, "json", project_name, "eupmc_results.json")
+        outdir = Path(Resources.TEMP_DIR, "json", project_name)
+        wanted_keys = ["pmcid", "doi", "title", "authorString", "journalInfo.journal.title", "abstractText"]
         outdir.mkdir(parents=True, exist_ok=True)
-        outfile = Path(outdir, "europe_pmc.csv")
         outfile_h = Path(outdir, "europe_pmc.html")
+        datatables = True
+
+        self.read_json_create_write_html_table(infile, outfile_h, wanted_keys, datatables=datatables, table_id=None)
+        logger.setLevel(effective_level)
+
+    @classmethod
+    def read_json_create_write_html_table(
+            cls, infile, outfile_h, wanted_keys,
+            styles=None, datatables=None, table_id=None):
+        """
+        read pygetpapers output, select columns and create HTML table
+        :param infile: eumpc_results from pygetpapers
+        :param outfile_h: HTML table to write
+        :param wanted_keys: column headings to select
+        :return:html table
+        """
+        if styles is None:
+            styles=["td {border:solid 1px black;}"]
+        if table_id is None:
+            table_id = "my_table"
+            # raise ValueError("must give table_id")
+
+        assert infile.exists()
         with open(infile, "r") as f:
             jsonx = json.load(f)
-        logger.info(jsonx.keys())
+        # look for all papers
         papers = jsonx.get("papers")
         assert papers is not None, f"cannot find papers"
-        print(f"papers {len(papers)}")
-        wanted_keys = ["pmcid", "doi", "title", "authorString", "journalInfo.journal.title", "abstractText"]
+        # specific keys we want
         dict_by_id = AmiJson.create_json_table(papers, wanted_keys)
-        print(f"dikt {dict_by_id}")
-        html_table = HtmlLib.create_html_table(dict_by_id, transform_dict=transform_dict)
+        html_table = HtmlLib.create_html_table(
+            dict_by_id, transform_dict=AmiCorpus.EUPMC_TRANSFORM,
+            styles=styles, datatables=datatables, table_id=table_id
+        )
         HtmlUtil.write_html_elem(html_table, outfile_h, debug=True)
 
 

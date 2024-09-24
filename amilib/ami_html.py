@@ -1159,6 +1159,10 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
 class HtmlLib:
 
     CLASS_ATTNAME = "class"
+    HREF = "href"
+    REL = "rel"
+    SRC = "src"
+    TYPE = "type"
 
     @classmethod
     def convert_character_entities_in_lxml_element_to_unicode_string(cls, element, encoding="UTF-8") -> str:
@@ -1645,12 +1649,14 @@ class HtmlLib:
         base.attrib["href"] = base_href
 
     @classmethod
-    def create_html_table(cls, dict_by_id, transform_dict=None):
+    def create_html_table(cls, dict_by_id, transform_dict=None, styles=None, datatables=None, table_id=None):
         """
         creates HTML table from Json implicit table
         see AmiJson.create_json_table()
         assumes ordered dicts
         """
+        if table_id is None:
+            table_id = "table999"
         if type(dict_by_id) is not collections.OrderedDict:
             logger.warning(f"not an OrderedDict {type(dict_by_id)}")
             return None
@@ -1658,32 +1664,141 @@ class HtmlLib:
         if len(row_keys) == 0:
             logger.warning(f"empty JSON table")
             return None
-        row0 = dict_by_id.get(row_keys[0])
-        logger.info(f"row_0 {type(row0)}")
-        items = row0.items()
-        logger.info(f"row0 items {type(items)} {len(items)} {items}")
-        col_keys = [item[0] for item in items]
-        col_values = [item[1] for item in items]
-        logger.info(f"col_keys {col_keys}")
-        htmlx = HtmlLib.create_html_with_empty_head_body()
-        style = ET.SubElement(HtmlLib.get_body(htmlx), "style")
-        style.text = "td {border:solid 1px black;}"
-        body = HtmlLib.get_body(htmlx)
+        body, htmlx = cls.create_html_with_body(styles=styles, datatables=datatables, table_id=table_id)
         table = ET.SubElement(body, "table")
-        tr = ET.SubElement(table, "tr")
+        table.attrib["id"] = table_id
+
+        row0 = dict_by_id.get(row_keys[0])
+        cls.add_column_headings(row0, table)
+
+        cls.add_rows(dict_by_id, row_keys, table, transform_dict)
+        return htmlx
+
+    """
+    <head>
+      <meta charset="UTF-8">
+      <title>Zika</title>
+      <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+      <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js" charset="UTF-8" type="text/javascript"> </script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"> </script>
+      <script charset="UTF-8" type="text/javascript">$(function(){ $("#results").dataTable(); }) </script>
+     </head>
+    """
+    @classmethod
+    def create_html_with_body(cls, styles = None, datatables=None, table_id=None):
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        head = HtmlLib.get_or_create_head(htmlx)
+        if datatables is not None:
+            """
+<head>
+  <meta charset="UTF-8">
+  <title>Zika</title>
+  <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js" charset="UTF-8" type="text/javascript"> </script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"> </script>
+  <script charset="UTF-8" type="text/javascript">$(function(){ $("#results").dataTable(); }) </script>
+ </head>
+            """
+            meta = ET.SubElement(head, "meta")
+            meta.attrib["charset"] = "UTF-8"
+
+            title = ET.SubElement(head, "title")
+            title.text = "new title"
+
+            cls.add_element(head, "link", {
+                "rel": "stylesheet", "type": "text/css",
+                "href": "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"})
+
+            """
+              <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js" charset="UTF-8" type="text/javascript"> </script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"> </script>
+  <script charset="UTF-8" type="text/javascript">$(function(){ $("#results").dataTable(); }) </script>
+"""
+            cls.add_element(head, "script", {
+                "charset": "UTF-8", "type": "text/javascript",
+                "src": "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"})
+            cls.add_element(head, "script", {
+                "charset": "UTF-8", "type": "text/javascript",
+                "src": "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"})
+            script = cls.add_element(head, "script", {
+                "charset": "UTF-8", "type": "text/javascript"})
+            script.text = f"$(document).ready(function () {{$('#{table_id}').DataTable();}});"
+
+            logger.warning(f"scripts {len(head.xpath('script'))}")
+
+        # if False and datatables is not None:
+        #     if table_id is None:
+        #         logger.error("must give table_id")
+        #     script = ET.SubElement(head, "script")
+        #     script.attrib['src'] = "https://code.jquery.com/jquery-3.7.1.min.js"
+        #     script.attrib[cls.TYPE] = "text/javascript"
+        #
+        #     script1 = ET.SubElement(head, "script")
+        #     script1.attrib[cls.SRC] = "https://cdn.datatables.net/2.1.7/js/dataTables.js"
+        #     script1.attrib[cls.TYPE] = "text/javascript"
+        #
+        #     link = ET.SubElement(head, "link")
+        #     link.attrib[cls.REL] = "stylesheet"
+        #     link.attrib[cls.TYPE] = "text/css"
+        #     link.attrib[cls.HREF] = "https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css"
+        #
+        #     script2 = ET.SubElement(head, "script")
+        #     # table_id = "table1"
+        #     script2.text = f"$(document).ready(function () {{$('#{table_id}').DataTable();}});"
+        #     logger.info(f"*********script2 {script2.text}")
+        """
+        <script>
+            $(document).ready(function () {
+                $('#table1').DataTable();
+            });
+        </script>
+        """
+
+
+        if len(styles) > 0:
+            for style_t in styles:
+                style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
+                style.text = style_t
+        body = HtmlLib.get_body(htmlx)
+
+        return body, htmlx
+
+    @classmethod
+    def add_column_headings(cls, row0, table):
+        effective = logger.getEffectiveLevel()
+        logger.setLevel(logging.WARNING)
+        thead = ET.SubElement(table, "thead")
+        col_items = row0.items()
+        col_keys = [col_item[0] for col_item in col_items]
+        logger.warning(f"keys {col_keys}")
+        logger.debug(f"col_keys {col_keys}")
+        tr = ET.SubElement(thead, "tr")
         for col_key in col_keys:
             th = ET.SubElement(tr, "th")
             th.text = col_key
+        logger.setLevel(effective)
+
+    @classmethod
+    def add_rows(cls, dict_by_id, row_keys, table, transform_dict):
+        new_level = logging.WARNING
+        effective = logger.getEffectiveLevel()
+        logger.setLevel(new_level)
         for row_key in row_keys:
             tr = ET.SubElement(table, "tr")
             row_item_dict = dict_by_id.get(row_key)
-            logger.info(f"row_key {row_key} {row_item_dict}")
+            logger.debug(f"row_key {row_key} {row_item_dict}")
             for (key, cell_data) in row_item_dict.items():
                 transform_subdict = transform_dict.get(key)
                 td = ET.SubElement(tr, "td")
                 content = cls.transform_string_to_html(cell_data, transform_subdict)
-                td.text = content if type(content) is str else td.append(content)
-        return htmlx
+                if type(content) is list:
+                    ul = ET.SubElement(td, "ul")
+                    for item in content:
+                        li = ET.SubElement(ul, "li")
+                        li.text = str(item)
+                else:
+                    td.text = content if type(content) is str else td.append(content)
+        logger.setLevel(effective)
 
     @classmethod
     def transform_string_to_html(cls, string, transform_subdict):
@@ -1700,7 +1815,6 @@ class HtmlLib:
             return string
 
         instruction = list(transform_subdict.keys())[0]
-        logger.info(f"instruction: {instruction}")
         if instruction is None:
             logger.error(f"must have an instruction")
             return string
@@ -1719,17 +1833,59 @@ class HtmlLib:
             a.text  = string
             return a
         if "text" == instruction:
+            split = subdict.get("split")
+            if split is not None:
+                start = subdict.get("start")
+                if not start:
+                    start = 3
+                end = subdict.get("end")
+                if not end:
+                    end = 2
+                strings = string.split(split)
+                strings = cls._add_ellipsis(strings, start, end)
+
+                return strings
+
             truncate = subdict.get("truncate")
             if truncate is not None:
                 string = string[:truncate]
             return string
-        if "split" == instruction:
-            logger.error("split NVI")
-            return string
         logger.error(f"unknown instruction {instruction}")
         return string
 
+    @classmethod
+    def _add_ellipsis(cls, strings, start, end):
+        """
+        for a long list reoves all but first 'start' and end 'end' and replaces those by ellipsis
+        :param strings: to process
+        :param start: number of leading elements to keep
+        :param end: number of traing elements to keep
+        :return: modified list
+        """
+        if strings and start and end and (start + end) < len(strings) - 1:
+            strings1 = []
+            strings1.extend(strings[:start])
+            strings1.extend(["..."])
+            strings1.extend(strings[-end:])
+            strings = strings1
+        return strings
 
+    @classmethod
+    def add_element(cls, parent, tag, attribs=None, text=None):
+        """
+        creates new element and adds attributes
+        :param parent: of new element
+        :param tag: new element tag
+        :param attribs: attribute name/value pairs
+        :param text:text
+        """
+        elem = ET.SubElement(parent, tag)
+        if attribs:
+            for attrib in attribs:
+                elem.attrib[attrib] = attribs.get(attrib)
+        if text:
+            elem.text = text
+        return elem
 
 
 
@@ -2887,6 +3043,7 @@ class HtmlStyle:
     methods to process style attributes and <style> elements
     no instance data
     """
+
 
     def __init__(self,css_string=None):
         self.css_string = css_string
