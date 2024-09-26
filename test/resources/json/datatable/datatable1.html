@@ -1,0 +1,100 @@
+<html>
+<head>
+    <!-- Importation des règles de mise en page basique de DataTables -->
+	<!--
+    <link rel="stylesheet" href="https://cdn.datatables.net/w/dt/dt-1.10.19/datatables.min.css">
+		-->
+	<link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+</head>
+<body>
+<table id="example">
+    <thead> <!-- Définition de l'en-tête (nom des colonnes) -->
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Office</th> 
+            <th>Age</th>
+            <th>Start date</th>
+            <th>Salary</th>
+        </tr>
+    </thead>
+    <tbody> <!-- Données du tableau -->
+        <tr>
+            <td>Tiger Nixon</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td> 
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+        <tr>
+            <td>Tiger Nixon2</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td> 
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+        <tr>
+            <td>Tiger Nixon3</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td> 
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+        <tr>
+            <td>Tiger Nixon3.1</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td> 
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+        <tr>
+            <td>Tiger Nixon4</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td> 
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+        <tr>
+            <td>Tiger Nixon5</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td> 
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+        <tr>
+            <td>Tiger Nixon6</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td> 
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+        <tr>
+            <td>Tiger Nixon7</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td> 
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+        </tr>
+    </tbody>
+</table>
+    <!-- Importation de la bibliothèque jQuery (sur laquelle DataTables se base) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+    <!-- Importation du plug-in DataTables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/w/dt/dt-1.10.19/datatables.min.js"></script>
+    
+    <!-- Script pour appliquer DataTables au tableau ci-dessus -->
+    <script>
+        $('#example').DataTable();
+    </script>
+</body>
+</html>
+

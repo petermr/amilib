@@ -1,19 +1,23 @@
 import ast
 import collections
+import configparser
 import json
 import logging
 from pathlib import Path
 import pandas as pd
 
+from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, QUERY, STARTDATE, XML, \
+                            EUPMC_RESULTS_JSON, PMCID, ABS_TEXT, EPMC_KEYS, JOURNAL_INFO, DOI, TITLE, AUTHOR_STRING,
+                            PUB_YEAR, JOURNAL_INFO_TITLE, Pygetpapers)
 from amilib.ami_html import HtmlUtil, HtmlLib
-from amilib.ami_util import AmiJson
+from amilib.ami_util import AmiJson, AmiUtil
 from amilib.ami_corpus import AmiCorpus
-from amilib.file_lib import FileLib
 from amilib.util import Util
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
 logger = Util.get_logger(__name__)
+
 class AmiBibliographyTest(AmiAnyTest):
     """
 
@@ -76,36 +80,13 @@ class PygetpapersTest(AmiAnyTest):
         assert infile.exists()
         df = pd.read_csv(infile)
 
-        # idx = pd.Index(['a', 'b', 'c'])
-        # idx.drop(['a'])
-        # print(f"\n{df}")
         keys = df.keys()
         key_list = keys.to_list()
-        # print(f"type keys {type(keys)} {key_list}")
-        ABS_TEXT = 'abstractText'
-        PMCID = 'pmcid'
-        assert ['Unnamed: 0', 'id', 'source', 'pmid', PMCID, 'fullTextIdList', 'doi',
-       'title', 'authorString', 'authorList', 'authorIdList',
-       'dataLinksTagsList', 'journalInfo', 'pubYear', 'pageInfo',
-                ABS_TEXT, 'affiliation', 'publicationStatus', 'language',
-       'pubModel', 'pubTypeList', 'keywordList', 'fullTextUrlList',
-       'isOpenAccess', 'inEPMC', 'inPMC', 'hasPDF', 'hasBook', 'hasSuppl',
-       'citedByCount', 'hasData', 'hasReferences', 'hasTextMinedTerms',
-       'hasDbCrossReferences', 'hasLabsLinks', 'license', 'hasEvaluations',
-       'authMan', 'epmcAuthMan', 'nihAuthMan', 'hasTMAccessionNumbers',
-       'tmAccessionTypeList', 'dateOfCreation', 'firstIndexDate',
-       'fullTextReceivedDate', 'dateOfRevision', 'electronicPublicationDate',
-                'firstPublicationDate', 'grantsList', 'commentCorrectionList',
-                'meshHeadingList', 'subsetList', 'dateOfCompletion', 'chemicalList',
-                'investigatorList', 'embargoDate', 'manuscriptId'] == keys.to_list()
-        # print(f"df\n{df}")
-        # df2 = df.drop(columns=['id', 'source', 'pmid', 'pmcid'])
+        assert EPMC_KEYS == keys.to_list()
         df[PMCID] = df[PMCID].apply(df_toupper)
         df[ABS_TEXT] = df[ABS_TEXT].apply(df_truncate)
-        JOURNAL_INFO = "journalInfo"
         df[JOURNAL_INFO] = df[JOURNAL_INFO].apply(df_unpack_dict)
-        df2 = df[["pmcid", "doi", "title", "authorString", JOURNAL_INFO, "pubYear", ABS_TEXT]]
-        # print(f"df2\n{df2}")
+        df2 = df[[PMCID, DOI, TITLE, AUTHOR_STRING, JOURNAL_INFO, PUB_YEAR, ABS_TEXT]]
 
         with open(outfile, "w") as f:
             f.write(df2.to_csv())
@@ -119,47 +100,40 @@ class PygetpapersTest(AmiAnyTest):
         effective_level = logger.getEffectiveLevel()
         logger.setLevel(logging.INFO)
 
-        project_name = "frictionless"
-        infile = Path(Resources.TEST_RESOURCES_DIR, "json", project_name, "eupmc_results.json")
+        project_name = "district_heating"
+        wanted_keys = [PMCID, DOI, TITLE, AUTHOR_STRING, JOURNAL_INFO_TITLE, PUB_YEAR, ABS_TEXT]
+
+        project_dir = Path(Resources.TEST_RESOURCES_DIR, "json", project_name)
+        config_ini = Path(project_dir, SAVED_CONFIG_INI)
+        infile = Path(project_dir, EUPMC_RESULTS_JSON)
         outdir = Path(Resources.TEMP_DIR, "json", project_name)
-        wanted_keys = ["pmcid", "doi", "title", "authorString", "journalInfo.journal.title", "abstractText"]
+
         outdir.mkdir(parents=True, exist_ok=True)
         outfile_h = Path(outdir, "europe_pmc.html")
         datatables = True
 
-        self.read_json_create_write_html_table(infile, outfile_h, wanted_keys, datatables=datatables, table_id=None)
+        Pygetpapers.read_json_create_write_html_table(
+            infile, outfile_h, wanted_keys, datatables=datatables, table_id=None, config_ini=config_ini)
         logger.setLevel(effective_level)
 
-    @classmethod
-    def read_json_create_write_html_table(
-            cls, infile, outfile_h, wanted_keys,
-            styles=None, datatables=None, table_id=None):
-        """
-        read pygetpapers output, select columns and create HTML table
-        :param infile: eumpc_results from pygetpapers
-        :param outfile_h: HTML table to write
-        :param wanted_keys: column headings to select
-        :return:html table
-        """
-        if styles is None:
-            styles=["td {border:solid 1px black;}"]
-        if table_id is None:
-            table_id = "my_table"
-            # raise ValueError("must give table_id")
 
-        assert infile.exists()
-        with open(infile, "r") as f:
-            jsonx = json.load(f)
-        # look for all papers
-        papers = jsonx.get("papers")
-        assert papers is not None, f"cannot find papers"
-        # specific keys we want
-        dict_by_id = AmiJson.create_json_table(papers, wanted_keys)
-        html_table = HtmlLib.create_html_table(
-            dict_by_id, transform_dict=AmiCorpus.EUPMC_TRANSFORM,
-            styles=styles, datatables=datatables, table_id=table_id
-        )
-        HtmlUtil.write_html_elem(html_table, outfile_h, debug=True)
+    def test_read_pygetpapers_config(self):
+        """
+        reads pygetpapers saved_config.ini and extracts meta/data
+        """
+        inpath = Path(Resources.TEST_RESOURCES_DIR, "pygetpapers", SAVED_CONFIG_INI)
+        assert inpath.exists()
+        saved_section, section_names = Pygetpapers.get_saved_section(inpath)
 
+        assert type(section_names) is list
+        assert section_names == [SAVED]
+        assert type(saved_section) is configparser.SectionProxy
+
+        assert SECTION_KEYS == saved_section.keys()
+        assert saved_section.get(API) == "europe_pmc"
+        assert saved_section.get(LIMIT) == '20'
+        assert saved_section.get(QUERY) == "'district heating'"
+        assert saved_section.get(STARTDATE) == "False"
+        assert saved_section.get(XML) == "True"
 
 

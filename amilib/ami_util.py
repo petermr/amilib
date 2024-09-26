@@ -3,6 +3,8 @@ Utilities (mainly classmethods)
 """
 import collections
 from pathlib import Path
+
+import configparser
 import numpy as np
 import math
 import csv
@@ -332,13 +334,34 @@ class AmiUtil:
     @classmethod
     def write_xy_to_csv(cls, xy_array, path, header=None):
 
+        if path is None:
+            logger.error("no path given")
+            return
         AmiUtil.assert_is_coord_array(xy_array)
-        assert path is not None, "no path given"
         with open(path, "w", encoding="UTF-8", newline='') as f:
             writer = csv.writer(f)
             if header:
                 writer.writerow(header)
             writer.writerows(xy_array)
+
+    @classmethod
+    def get_config_and_section_names(cls, inpath):
+        """
+        read a config(.ini) file and get the sections
+        :param inpath: input
+        :return: sections (name-values under e.g. [SAVED])
+        """
+        logger.debug(f"inpath config.ini {inpath}")
+        config = configparser.ConfigParser()
+        config.read(inpath)
+
+        sections = config.sections()
+        assert len(sections) > 0, f"section names in {inpath} must not be empty"
+        logger.debug(f"sections {sections}")
+        logger.debug(f"confif {config} {config.keys()}")
+        return config, sections
+
+
 
 class AmiJson:
     """
@@ -391,7 +414,6 @@ class AmiJson:
         return dict_by_id
 
 
-
 class Vector2:
 
     def __init__(self, v2):
@@ -415,3 +437,4 @@ class Vector2:
     #     cos = inner / norms
     #     rad = np.arccos(np.clip(cos, -1.0, 1.0))
     #     return rad
+

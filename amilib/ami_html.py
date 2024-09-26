@@ -1672,7 +1672,8 @@ class HtmlLib:
         cls.add_column_headings(row0, table)
 
         cls.add_rows(dict_by_id, row_keys, table, transform_dict)
-        return htmlx
+        cls.add_body_scripts(body, table_id)
+        return htmlx, table
 
     """
     <head>
@@ -1714,15 +1715,8 @@ class HtmlLib:
   <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"> </script>
   <script charset="UTF-8" type="text/javascript">$(function(){ $("#results").dataTable(); }) </script>
 """
-            cls.add_element(head, "script", {
-                "charset": "UTF-8", "type": "text/javascript",
-                "src": "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"})
-            cls.add_element(head, "script", {
-                "charset": "UTF-8", "type": "text/javascript",
-                "src": "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"})
-            script = cls.add_element(head, "script", {
-                "charset": "UTF-8", "type": "text/javascript"})
-            script.text = f"$(document).ready(function () {{$('#{table_id}').DataTable();}});"
+            body = HtmlLib.get_body(htmlx)
+            # cls.add_body_scripts(body, table_id)
 
             logger.warning(f"scripts {len(head.xpath('script'))}")
 
@@ -1764,6 +1758,25 @@ class HtmlLib:
         return body, htmlx
 
     @classmethod
+    def add_body_scripts(cls, body, table_id):
+        """
+        ARGH! It seems as if we have to force a closing </script> so we add a text content of " "
+        """
+        script = cls.add_element(body, "script", {
+            "charset": "UTF-8", "type": "text/javascript",
+            "src": "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"})
+        script.text = " "
+        script = cls.add_element(body, "script", {
+            "charset": "UTF-8", "type": "text/javascript",
+            "src": "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"})
+        script.text = " "
+        script = cls.add_element(body, "script", {
+            "charset": "UTF-8", "type": "text/javascript"})
+        # script.text = f"$(document).ready(function () {{$('#{table_id}').DataTable();}});"
+        """		$(document).ready(function () {$('#my_table').DataTable();});"""
+        script.text = f"$(document).ready(function(){{$('#{table_id}').DataTable();}});"
+
+    @classmethod
     def add_column_headings(cls, row0, table):
         effective = logger.getEffectiveLevel()
         logger.setLevel(logging.WARNING)
@@ -1783,22 +1796,31 @@ class HtmlLib:
         new_level = logging.WARNING
         effective = logger.getEffectiveLevel()
         logger.setLevel(new_level)
+        tbody = ET.SubElement(table, "tbody")
         for row_key in row_keys:
-            tr = ET.SubElement(table, "tr")
-            row_item_dict = dict_by_id.get(row_key)
-            logger.debug(f"row_key {row_key} {row_item_dict}")
-            for (key, cell_data) in row_item_dict.items():
-                transform_subdict = transform_dict.get(key)
-                td = ET.SubElement(tr, "td")
-                content = cls.transform_string_to_html(cell_data, transform_subdict)
-                if type(content) is list:
-                    ul = ET.SubElement(td, "ul")
-                    for item in content:
-                        li = ET.SubElement(ul, "li")
-                        li.text = str(item)
-                else:
-                    td.text = content if type(content) is str else td.append(content)
+            cls._add_row(dict_by_id, row_key, tbody, transform_dict)
         logger.setLevel(effective)
+
+    @classmethod
+    def _add_row(cls, dict_by_id, row_key, tbody, transform_dict):
+        tr = ET.SubElement(tbody, "tr")
+        row_item_dict = dict_by_id.get(row_key)
+        logger.debug(f"row_key {row_key} {row_item_dict}")
+        for (key, cell_data) in row_item_dict.items():
+            cls._add_cell(cell_data, key, tr, transform_dict)
+
+    @classmethod
+    def _add_cell(cls, cell_data, key, tr, transform_dict):
+        transform_subdict = transform_dict.get(key)
+        td = ET.SubElement(tr, "td")
+        content = cls.transform_string_to_html(cell_data, transform_subdict)
+        if type(content) is list:
+            ul = ET.SubElement(td, "ul")
+            for item in content:
+                li = ET.SubElement(ul, "li")
+                li.text = str(item)
+        else:
+            td.text = content if type(content) is str else td.append(content)
 
     @classmethod
     def transform_string_to_html(cls, string, transform_subdict):
