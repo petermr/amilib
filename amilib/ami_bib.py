@@ -274,7 +274,7 @@ class Pygetpapers:
             dict_by_id, transform_dict=AmiCorpus.EUPMC_TRANSFORM,
             styles=styles, datatables=datatables, table_id=table_id
         )
-        cls.add_query_as_caption(config_ini, table)
+        Pygetpapers.add_query_as_caption(config_ini, table)
 
 
         HtmlUtil.write_html_elem(htmlx, outfile_h, debug=True)

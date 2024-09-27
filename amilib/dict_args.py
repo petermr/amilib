@@ -5,15 +5,13 @@ import traceback
 from collections import Counter
 from pathlib import Path
 
-from amilib.ami_args import AbstractArgs
-
 # cyclic import
 from amilib.ami_args import AbstractArgs
 # from amilib.ami_dict import AmiDictionary # CYCLIC import
 # from amilib.ami_dict import AmiEntry
 from amilib.file_lib import FileLib
 from amilib.util import Util
-from amilib.wikimedia import WikidataPage, WikidataLookup, WikipediaPage, WiktionaryPage
+from amilib.wikimedia import WikidataPage, WikidataLookup, WiktionaryPage
 from amilib.ami_html import HtmlLib
 
 # commandline
@@ -48,24 +46,6 @@ logger.setLevel(logging.DEBUG)
 
 class AmiDictArgs(AbstractArgs):
     """Parse args to build and edit dictionary"""
-
-    def __init__(self):
-        """arg_dict is set to default"""
-        super().__init__()
-        self.dictfile = None
-        self.description = None
-        self.operation = None
-        self.parser = None
-        self.synonym = None
-        self.validate = None
-        self.title = UNKNOWN
-        self.wikidata = None
-        self.wikipedia = None
-        self.wiktionary = None
-        self.words = None
-
-        self.ami_dict = None
-        self.subparser_arg = "DICT"
 
     def add_arguments(self):
         """
@@ -263,7 +243,6 @@ class AmiDictArgs(AbstractArgs):
     def add_wikidata_to_dict(self, description_regex=None):
 
         # TODO fix circular imports
-        from amilib.ami_dict import AmiEntry
 
         desc_counter = Counter()
         hit_dict = dict()

@@ -12,6 +12,7 @@ from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, Q
 from amilib.ami_html import HtmlUtil, HtmlLib
 from amilib.ami_util import AmiJson, AmiUtil
 from amilib.ami_corpus import AmiCorpus
+from amilib.amix import AmiLib
 from amilib.util import Util
 from test.resources import Resources
 from test.test_all import AmiAnyTest
@@ -101,21 +102,21 @@ class PygetpapersTest(AmiAnyTest):
         logger.setLevel(logging.INFO)
 
         project_name = "district_heating"
-        wanted_keys = [PMCID, DOI, TITLE, AUTHOR_STRING, JOURNAL_INFO_TITLE, PUB_YEAR, ABS_TEXT]
-
-        project_dir = Path(Resources.TEST_RESOURCES_DIR, "json", project_name)
-        config_ini = Path(project_dir, SAVED_CONFIG_INI)
-        infile = Path(project_dir, EUPMC_RESULTS_JSON)
+        indir = Path(Resources.TEST_RESOURCES_DIR, "json", project_name)
         outdir = Path(Resources.TEMP_DIR, "json", project_name)
-
-        outdir.mkdir(parents=True, exist_ok=True)
         outfile_h = Path(outdir, "europe_pmc.html")
-        datatables = True
 
-        Pygetpapers.read_json_create_write_html_table(
-            infile, outfile_h, wanted_keys, datatables=datatables, table_id=None, config_ini=config_ini)
+        AmiCorpus.make_datatables(indir, outdir, outfile_h)
         logger.setLevel(effective_level)
 
+    def test_make_datatables_cli(self):
+        """
+
+        """
+        indir = Path(Resources.TEST_RESOURCES_DIR, "json", "district_heating")
+        args = ["HTML", "--indir", str(indir), "--operation", "DATATABLES"]
+        amilib = AmiLib()
+        amilib.run_command(args)
 
     def test_read_pygetpapers_config(self):
         """

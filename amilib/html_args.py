@@ -1,14 +1,17 @@
 import argparse
 import logging
+from pathlib import Path
 
-from amilib.ami_args import AbstractArgs, AmiArgParser
-from amilib.file_lib import FileLib
+from amilib.ami_args import AbstractArgs, AmiArgParser, OPERATION
 from amilib.util import Util
 
 # commandline
 ANNOTATE = "annotate"
+ANNOTATE_FILE = "ANNOTATE_FILE"
 COLOR = "color"
+DATATABLES = "DATATABLES"
 DICT = "dict"
+INDIR = "indir"
 INPATH = "inpath"
 OUTDIR = "outdir"
 OUTPATH = "outpath"
@@ -25,6 +28,7 @@ class HTMLArgs(AbstractArgs):
         logger.debug("creating HTML Args")
         super().__init__()
         self.dictfile = None
+        self.indir = None
         self.inpath = None
         self.outpath = None
         self.outstem = None
@@ -43,6 +47,7 @@ class HTMLArgs(AbstractArgs):
                 usage="HTML amilib always uses subcommands (HTML,PDF)\n e.g. amilib PDF --help"
             )
 
+        super().add_arguments();
 
         """adds arguments to a parser or subparser"""
 
@@ -55,8 +60,19 @@ class HTMLArgs(AbstractArgs):
                                  help="colour for annotation")
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
                                  help="dictionary for annotation")
+        self.parser.add_argument(f"--{INDIR}", type=str, nargs=1,
+                                 help="input directory (CProject)")
         self.parser.add_argument(f"--{INPATH}", type=str, nargs=1,
                                  help="input html file")
+        self.parser.add_argument(f"--{OPERATION}", type=str,
+                                 default=ANNOTATE_FILE,
+                                 choices=[ANNOTATE_FILE, DATATABLES],
+                                 help=f"operation: "
+                                      f"'{ANNOTATE_FILE}' needs '{INPATH}, {DICT}, {OUTPATH} '\n"
+                                      f" '{DATATABLES}' needs '{INDIR}, optional {OUTPATH}'\n"
+                                      f" default = '{ANNOTATE_FILE}"
+                                 )
+
         self.parser.add_argument(f"--{OUTPATH}", type=str, nargs=1,
                                  help="output html file")
         self.parser.add_argument(f"--{OUTDIR}", type=str, nargs=1,
@@ -81,15 +97,24 @@ class HTMLArgs(AbstractArgs):
             logger.warning(f"no arg_dict given, no action")
             return
 
+        super().process_args()
         self.annotate = self.arg_dict.get(ANNOTATE)
         self.color = self.arg_dict.get(COLOR)
         self.dictfile = self.arg_dict.get(DICT)
+        self.indir = self.arg_dict.get(INDIR)
         self.inpath = self.arg_dict.get(INPATH)
         self.outdir = self.arg_dict.get(OUTDIR)
         self.outpath = self.arg_dict.get(OUTPATH)
+        self.operation = self.arg_dict.get(OPERATION)
 
-        if self.annotate:
+        if self.annotate or self.operation == ANNOTATE_FILE:
             self.annotate_with_dict()
+            return
+        if self.operation == DATATABLES:
+            self.make_datatables()
+            return
+        logger.error("No explicit operation given")
+
 
 
     @classmethod
@@ -102,6 +127,24 @@ class HTMLArgs(AbstractArgs):
     def annotate_with_dict(self):
         """uses dictionary to annotate words and phrases in HTML file"""
         logger.warning("Dictionaries not supported")
+
+    def make_datatables(self):
+        """
+        makes JQuery.datatables for a CProject/corpus
+        at present requires Pygetpapers output
+        """
+        from amilib.ami_corpus import AmiCorpus
+        if self.indir is None:
+            logger.error(f"Datables needs input directory {INDIR}")
+            return None
+        self.indir = Path(self.indir)
+        if not self.indir.is_dir():
+            logger.error(f"datatables needs existing directory {self.indir}")
+            return None
+
+        AmiCorpus.make_datatables(self.indir)
+
+
 
 def main(argv=None):
     """entry point for HTML conversiom
