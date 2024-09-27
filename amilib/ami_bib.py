@@ -298,7 +298,11 @@ class Pygetpapers:
                 enddate = datetime.date.today()
 
             caption = ET.SubElement(table, "caption")
-            caption.text = f"*** QUERY: {query}; start {startdate}; end {enddate} ***"
+            caption.text = f"query: {query}"
+            if startdate:
+                caption.text += f"; start: {startdate}"
+            if enddate:
+                caption.text += f"; end: {enddate}"
 
 
 class Publication:

@@ -1156,6 +1156,27 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                     spans = []
 
 
+# datatables stuff
+JQ182 = "JQ182"
+JQ217 = "JQ217"
+
+JSDTable = JQ182
+# JSDTable = JQ217
+
+if JSDTable == JQ182:
+    JQUERY_JS = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"
+    DATATABLES_JS = "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"
+    DATATABLES_CSS = "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"
+
+if JSDTable == JQ217:
+    JQUERY_JS = None
+    DATATABLES_JS = "https://cdn.datatables.net/2.1.7/js/dataTables.js"
+    DATATABLES_CSS = "https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css"
+
+PRE_TEXT = "$(document).ready(function(){$('#"
+POST_TEXT = "').DataTable();});"
+
+
 class HtmlLib:
 
     CLASS_ATTNAME = "class"
@@ -1708,7 +1729,7 @@ class HtmlLib:
 
             cls.add_element(head, "link", {
                 "rel": "stylesheet", "type": "text/css",
-                "href": "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"})
+                "href": DATATABLES_CSS})
 
             """
               <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js" charset="UTF-8" type="text/javascript"> </script>
@@ -1720,26 +1741,6 @@ class HtmlLib:
 
             logger.warning(f"scripts {len(head.xpath('script'))}")
 
-        # if False and datatables is not None:
-        #     if table_id is None:
-        #         logger.error("must give table_id")
-        #     script = ET.SubElement(head, "script")
-        #     script.attrib['src'] = "https://code.jquery.com/jquery-3.7.1.min.js"
-        #     script.attrib[cls.TYPE] = "text/javascript"
-        #
-        #     script1 = ET.SubElement(head, "script")
-        #     script1.attrib[cls.SRC] = "https://cdn.datatables.net/2.1.7/js/dataTables.js"
-        #     script1.attrib[cls.TYPE] = "text/javascript"
-        #
-        #     link = ET.SubElement(head, "link")
-        #     link.attrib[cls.REL] = "stylesheet"
-        #     link.attrib[cls.TYPE] = "text/css"
-        #     link.attrib[cls.HREF] = "https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css"
-        #
-        #     script2 = ET.SubElement(head, "script")
-        #     # table_id = "table1"
-        #     script2.text = f"$(document).ready(function () {{$('#{table_id}').DataTable();}});"
-        #     logger.info(f"*********script2 {script2.text}")
         """
         <script>
             $(document).ready(function () {
@@ -1762,19 +1763,20 @@ class HtmlLib:
         """
         ARGH! It seems as if we have to force a closing </script> so we add a text content of " "
         """
+
+
+        if JQUERY_JS is not None:
+            script = cls.add_element(body, "script", {
+                "charset": "UTF-8", "type": "text/javascript",
+                "src": JQUERY_JS}, text=" ")
+
         script = cls.add_element(body, "script", {
             "charset": "UTF-8", "type": "text/javascript",
-            "src": "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"})
-        script.text = " "
+            "src": DATATABLES_JS}, text=" ")
+
         script = cls.add_element(body, "script", {
-            "charset": "UTF-8", "type": "text/javascript",
-            "src": "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"})
-        script.text = " "
-        script = cls.add_element(body, "script", {
-            "charset": "UTF-8", "type": "text/javascript"})
-        # script.text = f"$(document).ready(function () {{$('#{table_id}').DataTable();}});"
-        """		$(document).ready(function () {$('#my_table').DataTable();});"""
-        script.text = f"$(document).ready(function(){{$('#{table_id}').DataTable();}});"
+            "charset": "UTF-8", "type": "text/javascript"},
+            text =  PRE_TEXT + table_id + POST_TEXT)
 
     @classmethod
     def add_column_headings(cls, row0, table):
