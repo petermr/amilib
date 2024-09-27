@@ -1160,8 +1160,8 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
 JQ182 = "JQ182"
 JQ217 = "JQ217"
 
-JSDTable = JQ182
-# JSDTable = JQ217
+# JSDTable = JQ182
+JSDTable = JQ217
 
 if JSDTable == JQ182:
     JQUERY_JS = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"
@@ -1169,13 +1169,20 @@ if JSDTable == JQ182:
     DATATABLES_CSS = "http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"
 
 if JSDTable == JQ217:
-    JQUERY_JS = None
+    JQUERY_JS = "https://code.jquery.com/jquery-3.7.1.js"
     DATATABLES_JS = "https://cdn.datatables.net/2.1.7/js/dataTables.js"
     DATATABLES_CSS = "https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css"
-
 PRE_TEXT = "$(document).ready(function(){$('#"
 POST_TEXT = "').DataTable();});"
 
+"""
+new DataTable('#example', {
+    paging: false,
+    scrollCollapse: true,
+    scrollY: '200px'
+});"""
+# PRE_TEXT = "new DataTable('#"
+# POST_TEXT = "', {paging: false, scrollCollapse: true, scrollY: '200px'});"
 
 class HtmlLib:
 
