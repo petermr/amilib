@@ -1034,7 +1034,7 @@ class AmiDictionaryTest(AmiAnyTest):
 
     def test_search_with_dictionary_and_make_links_COMMANDLINE(self):
         """
-        same logice and files as test_search_with_dictionary_and_make_links_CODE. Check that that runs
+        same logic and files as test_search_with_dictionary_and_make_links_CODE. Check that that runs
         """
 
         stem = "carbon_cycle"

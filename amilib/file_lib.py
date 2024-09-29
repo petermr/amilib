@@ -5,7 +5,6 @@ import ast
 import glob
 import json
 import logging
-import lxml.etree as ET
 import os
 import re
 import shutil
@@ -13,6 +12,8 @@ from pathlib import Path, PurePath, PurePosixPath
 
 import chardet
 import errno
+
+import lxml
 import requests
 
 from amilib.util import TextUtil, Util
@@ -635,7 +636,7 @@ class FileLib:
         writes a chunk of html to a temporary file
 
         """
-        pptext = ET.tostring(htmlx, pretty_print=pretty_print)
+        pptext = lxml.etree.tostring(htmlx, pretty_print=pretty_print)
         path = Path(temp_dir, temp_file)
         if path.exists():
             FileLib.delete_file(path)

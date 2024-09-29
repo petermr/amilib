@@ -109,12 +109,12 @@ class AmiLib:
             logger.debug(f">>> {choice}")
             pass
 
+        html_parser = AmiLibArgs.make_sub_parser(HTMLArgs(), subparsers)
+        logger.debug(f"html_parser {html_parser}")
         dict_parser = AmiLibArgs.make_sub_parser(AmiDictArgs(), subparsers)
         logger.debug(f"dict_parser {dict_parser}")
         pdf_parser = AmiLibArgs.make_sub_parser(PDFArgs(), subparsers)
         logger.debug(f"pdf_parser {pdf_parser}")
-        html_parser = AmiLibArgs.make_sub_parser(HTMLArgs(), subparsers)
-        logger.debug(f"html_parser {html_parser}")
         search_parser = AmiLibArgs.make_sub_parser(SearchArgs(), subparsers)
         logger.debug(f"search_parser {search_parser}")
 
@@ -415,6 +415,8 @@ class AmiLib:
         version = '0.3.3'    # 2024-09-18 # correct import bugs
         version = '0.3.4'    # 2024-09-18 # correct import bugs and libraries
         version = '0.3.5'    # 2024-09-18 # correct import bugs and libraries
+        version = '0.3.6'    # 2024-09-29 # add search command
+        version = '0.3.7'    # 2024-09-29 # add search command
 
         # logging.warn(f"VERSION {version}")
         return version

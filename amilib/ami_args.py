@@ -221,12 +221,6 @@ class AbstractArgs(ABC):
         logger.debug(f"key value pairs separated by ':' ; normally explicitly offered by subclass ")
 
 
-    # def make_run_func(self):
-    #     """probably obsolete"""
-    #     func_name = self.module_stem.replace("ami_", "run_")
-    #     logger.debug(f"run_func_name {func_name}")
-    #     return func_name
-
     @classmethod
     def make_sub_parser(cls, subclass, subparsers):
         """make subparser from subparsers

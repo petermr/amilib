@@ -47,6 +47,20 @@ logger.setLevel(logging.DEBUG)
 class AmiDictArgs(AbstractArgs):
     """Parse args to build and edit dictionary"""
 
+    def __init__(self):
+        """arg_dict is set to default"""
+        logger.debug("creating HTML Args")
+        super().__init__()
+        self.dictfile = None
+        self.indir = None
+        self.inpath = None
+        self.outpath = None
+        self.outstem = None
+        self.outdir = None
+        self.arg_dict = None
+        self.subparser_arg = "DICT"
+        self.ami_dict = None
+
     def add_arguments(self):
         """
         add arguments into self.parser
