@@ -1,25 +1,24 @@
-import argparse
 import ast
+import ast
+import base64
 import codecs
+import csv
 import getpass
 import importlib
+import json
 import logging
 import os
-import sys
-import csv
 import re
+import sys
+import time
 from enum import Enum
+from pathlib import Path
 
-import lxml
 import pandas as pd
 import pyvis
-from lxml import html
-from pathlib import Path
-import time
-import urllib3
 import requests
-import json
-import base64
+from lxml import html
+
 
 # THIS FILE HAS NO amilib IMPORTS TO AVOID CYCLIC DEPENDENCIES
 def _get_logger(name,
@@ -55,13 +54,14 @@ def _get_logger(name,
     err_level = logging.ERROR
     errHandler.setLevel(err_level)
     # Create a log format using Log Record attributes
-    format = "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
-    format = "%(levelname)s %(filename)s:%(lineno)s:%(message)s"
-    fmt = logging.Formatter(format)
+    formatx = "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
+    formatx = "%(levelname)s %(filename)s:%(lineno)s:%(message)s"
+    fmt = logging.Formatter(formatx)
     # Set the log format on each handler
     stdoutHandler.setFormatter(fmt)
     errHandler.setFormatter(fmt)
     # Add each handler to the Logger object
+    # I get 2 logger message every time - not sure why
     logger.addHandler(stdoutHandler)
     logger.addHandler(errHandler)
     return logger
@@ -75,21 +75,18 @@ HREF = "href"
 class Util:
     """Utilities, mainly staticmethod or classmethod and not tightly linked to AMI"""
 
-
     @classmethod
     def get_logger(cls,
-                    name,
-                    level=logging.DEBUG,
-                    err_level=logging.ERROR,
-                    err_log="error.log",
-                    format="%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s",
-                    ):
+                   name,
+                   level=logging.DEBUG,
+                   err_level=logging.ERROR,
+                   err_log="error.log",
+                   formatx="%(name)s | %(levelname)s | %(filename)s:%(lineno)s |>>> %(message)s",
+                   ):
         """
         creates logger with name == __name__
         """
-        return _get_logger(name, level, err_level, err_log, format)
-
-
+        return _get_logger(name, level, err_level, err_log, formatx)
 
     @classmethod
     def set_logger(cls, module,
@@ -572,10 +569,32 @@ class Util:
     @classmethod
     def normalize_chars(cls, line):
         """
-        reduce non-ANSI chars if possible
+        normalize non-ANSI chars if possible
         """
         line = line.replace('“', '")')
         return line
+
+    @classmethod
+    def input_list_of_words(cls, words):
+        """
+        create list of words/phrases, maybe from argumment
+        ignores blank lines or lines starting with #
+        :param words: single word, list of words or file with words/phrases (one per line)
+        :return: list of words/phrases
+
+        """
+        if type(words) is not list:
+            wordpath = Path(words)
+            if not wordpath.exists():
+                words = [words]
+            else:
+                with open(wordpath, "r") as f:
+                    words = []
+                    for line in f.readlines():
+                        line = line.strip()
+                        if line != "" and not line.startswith("#"):
+                            words.append(line)
+        return words
 
 
 class GithubDownloader:

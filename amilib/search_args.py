@@ -17,6 +17,7 @@ OPERATION = "operation"
 OUTPATH = "outpath"
 SEARCH = "SEARCH"
 TITLE = "title"
+WORDS = "words"
 
 UNKNOWN = "unknown"
 
@@ -60,7 +61,7 @@ class SearchArgs(AbstractArgs):
         self.parser.add_argument("--debug", type=str,
                                  help="debug these during parsing (NYI)")
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
-                                 help="path for dictionary  *.xml or *.html)")
+                                 help="path for dictionary input *.xml or *.html)")
         self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
         self.parser.add_argument(f"--{OPERATION}", type=str, nargs="+",
                                  default=ANNOTATE,
@@ -75,6 +76,9 @@ class SearchArgs(AbstractArgs):
                                  help="output file ")
         self.parser.add_argument(f"--{TITLE}", type=str,
                                  default="unknown",
+                                 help="internal title for dictionary, normally same as stem of dictionary file")
+        self.parser.add_argument(f"--{WORDS}", type=str,
+                                 default=None,
                                  help="internal title for dictionary, normally same as stem of dictionary file")
         self.parser.epilog = """
         Examples:
@@ -97,27 +101,32 @@ class SearchArgs(AbstractArgs):
         self.outpath = self.arg_dict.get(OUTPATH)
         self.operation = self.arg_dict.get(OPERATION)
         self.title = self.arg_dict.get(TITLE)
+        self.words = self.arg_dict.get(WORDS)
         logger.info(f"read arguments\n"
                     f"inpath: {self.inpath}\n"
                     f"dictfile: {self.dictfile}\n"
                     f"outpath: {self.outpath}\n"
                     f"operation: {self.operation}\n"
                     f"title: {self.title}\n"
+                    f"words: {self.words}\n"
                     )
         if self.operation is None:
             logger.warning("No operation given")
             return
         self.remove_input_styles = NOINPUTSTYLES in self.operation
 
+        if self.words is not None:
+            self.words = Util.input_list_of_words(self.words)
+
+
         if ANNOTATE in self.operation:
-            self.markup_file_with_dict()
+            self.markup_file_with_dict_or_words()
 
         if self.operation == INDEX:
             self.make_index()
 
 # output goes here
         pass
-
 
 
     @classmethod
@@ -127,12 +136,12 @@ class SearchArgs(AbstractArgs):
         arg_dict = dict()
         return arg_dict
 
-    def markup_file_with_dict(self):
+    def markup_file_with_dict_or_words(self):
         """
-        uses dictionary from self.dictfile to markup self.inpath and write to self.outpath:
+        uses dictionary from self.dictfile, or list of words, to markup self.inpath and write to self.outpath:
         """
-        logger.debug(f"search {self.inpath} with {self.dictfile} and output to {self.outpath}")
-        if self.inpath and self.dictfile and self.outpath:
+        logger.debug(f"search {self.inpath} with {self.dictfile} or {len(self.words)} words and output to {self.outpath}")
+        if self.inpath and (self.words or self.dictfile) and self.outpath:
             self.make_dictionary_markup_file(self.inpath, self.dictfile, self.outpath)
 
     def make_dictionary_markup_file(self, inpath, dictfile, outpath):
@@ -145,14 +154,19 @@ class SearchArgs(AbstractArgs):
         """
         from amilib.ami_dict import AmiDictionary
 
-        dictfile = str(dictfile)
+        if self.words:
+            pass
+        elif dictfile:
+            dictfile = str(dictfile)
+            if not dictfile.endswith(".html"):
+                logger.error(f"dictionary for commandline must be HTML")
+                return None
+        else:
+            logger.error("Must give dictfile or words")
 
-        if not dictfile.endswith(".html"):
-            logger.error(f"dictionary for commandline must be HTML")
-            return None
         # TODO this should not be in AmiDictionary
-        AmiDictionary.read_html_dictionary_and_markup_html_file(
-            str(inpath), str(outpath), remove_styles=self.remove_input_styles,  html_dict_path=dictfile)
+        AmiDictionary.markup_html_file_with_words_or_dictionary(
+            str(inpath), str(outpath), remove_styles=self.remove_input_styles,  html_dict_path=dictfile, phrases=self.words)
         # logger.info(f"wrote annotated file {outpath}")
 
     @classmethod

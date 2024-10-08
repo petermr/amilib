@@ -1,0 +1,55 @@
+digraph G {
+        subgraph cluster_win {
+                style=filled;
+                color=lightgrey;
+                label = "Windows                  "
+
+                subgraph cluster_extra_enabled {
+                    fillcolor = "#EDF1F2";
+                    color = "#028d35";
+                    label="Subdirectory extra included";
+
+                    node [style=filled,color=white];
+                    config_debug1 [label = "Configure Debug"];
+                    config_release1 [label = "Configure Release"];
+                    build_debug1 [label = "Build"];
+                    build_release1 [label = "Build"];
+
+                    config_debug1 -> build_debug1;
+                    config_release1 -> build_release1;
+
+                    shape=rect;
+                    fillcolor = "#ffff77";
+                    color = "#ffffdd";
+                    width=5;
+                    style=rounded;
+                }
+
+                subgraph cluster_extra_disabled {
+                    URL="https://en.wikipedia.org/wiki/Portraits_of_Vincent_van_Gogh"
+                    label="Self-portraits"
+                    tooltip="SELF PORTRAITS"
+
+                    config_debug2 [label = "Configure Debug"];
+                    config_release2 [label = "Configure Release"];
+                    build_debug2 [label = "Build"];
+                    build_release2 [label = "Build"];
+                    config_debug2 -> build_debug2;
+                    config_release2 -> build_release2;
+
+
+                    "Self-Portrait with Grey Felt Hat" [URL="https://www.vangoghmuseum.nl/en/collection/s0016V1962"]
+                    "Self-Portrait as a Painter" [URL="https://www.vangoghmuseum.nl/en/collection/s0022V1962"]
+                    shape = rect
+                    color = "pink"
+                }
+
+                checkout [style=filled, color=white];
+                checkout -> config_debug1;
+                checkout -> config_release2;
+        }
+
+        start -> checkout;
+
+        start [label="git push"; shape=Mdiamond];
+}

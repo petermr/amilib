@@ -3,8 +3,12 @@ downstream parser for pygetpapers
 """
 import datetime
 import json
+from collections import defaultdict
 from pathlib import Path
+
+import lxml
 import lxml.etree as ET
+from lxml.html import HTMLParser
 
 # from amilib.ami_bib import SAVED, QUERY, STARTDATE, ENDDATE
 from amilib.ami_html import HtmlLib, HtmlUtil
@@ -167,3 +171,102 @@ class AmiCorpus():
                 caption.text += f"; start: {startdate}"
             if enddate:
                 caption.text += f"; end: {enddate}"
+
+    @classmethod
+    def create_hit_html(cls, infiles, phrases=None, outfile=None, xpath=None, debug=False):
+        all_paras = []
+        all_dict = dict()
+        hit_dict = defaultdict(list)
+        if type(phrases) is not list:
+            phrases = [phrases]
+        for infile in infiles:
+            assert Path(infile).exists(), f"{infile} does not exist"
+            html_tree = lxml.etree.parse(str(infile), HTMLParser())
+            paras = HtmlLib.find_paras_with_ids(html_tree, xpath=xpath)
+            all_paras.extend(paras)
+
+            # this does the search
+            para_id_by_phrase_dict = HtmlLib.create_para_ohrase_dict(paras, phrases)
+            if len(para_id_by_phrase_dict) > 0:
+                if debug:
+                    print(f"para_phrase_dict {para_id_by_phrase_dict}")
+                cls.add_hit_with_filename_and_para_id(all_dict, hit_dict, infile, para_id_by_phrase_dict)
+        if debug:
+            print(f"para count~: {len(all_paras)}")
+        outfile = Path(outfile)
+        outfile.parent.mkdir(exist_ok=True, parents=True)
+        html1 = cls.create_html_from_hit_dict(hit_dict)
+        if outfile:
+            with open(outfile, "w") as f:
+                if debug:
+                    print(f" hitdict {hit_dict}")
+                HtmlLib.write_html_file(html1, outfile, debug=True)
+        return html1
+
+    @classmethod
+    def add_hit_with_filename_and_para_id(cls, all_dict, hit_dict, infile, phrase_by_para_id_dict):
+        """adds non-empty hits in hit_dict and all to all_dict
+        :param all_dict: accumulates para_phrase_dict by infile
+
+        TODO - move to amilib
+        """
+        item_paras = [item for item in phrase_by_para_id_dict.items() if len(item[1]) > 0]
+        if len(item_paras) > 0:
+            all_dict[infile] = phrase_by_para_id_dict
+            for para_id, hits in phrase_by_para_id_dict.items():
+                for hit in hits:
+                    # TODO should write file with slashes (on Windows we get %5C)
+                    infile_s = f"{infile}"
+                    infile_s = infile_s.replace("\\", "/")
+                    infile_s = infile_s.replace("%5C", "/")
+                    url = f"{infile_s}#{para_id}"
+                    hit_dict[hit].append(url)
+
+
+    @classmethod
+    def add_hit_with_filename_and_para_id(cls, all_dict, hit_dict, infile, para_phrase_dict):
+        """adds non-empty hits in hit_dict and all to all_dict
+        :param all_dict: accumulates para_phrase_dict by infile
+
+        TODO - move to amilib
+        """
+        item_paras = [item for item in para_phrase_dict.items() if len(item[1]) > 0]
+        if len(item_paras) > 0:
+            all_dict[infile] = para_phrase_dict
+            for para_id, hits in para_phrase_dict.items():
+                for hit in hits:
+                    # TODO should write file with slashes (on Windows we get %5C)
+                    infile_s = f"{infile}"
+                    infile_s = infile_s.replace("\\", "/")
+                    infile_s = infile_s.replace("%5C", "/")
+                    url = f"{infile_s}#{para_id}"
+                    hit_dict[hit].append(url)
+
+    @classmethod
+    def create_html_from_hit_dict(cls, hit_dict):
+        html = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(html)
+        ul = ET.SubElement(body, "ul")
+        for term, hits in hit_dict.items():
+            li = ET.SubElement(ul, "li")
+            p = ET.SubElement(li, "p")
+            p.text = term
+            ul1 = ET.SubElement(li, "ul")
+            for hit in hits:
+                # TODO manage hits with Paths
+                # on windows some hits have "%5C' instead of "/"
+                hit = str(hit).replace("%5C", "/")
+                li1 = ET.SubElement(ul1, "li")
+                a = ET.SubElement(li1, "a")
+                a.text = hit.replace("/html_with_ids.html", "")
+                ss = "ipcc/"
+                try:
+                    idx = a.text.index(ss)
+                except Exception as e:
+                    print(f"cannot find substring {ss} in {a}")
+                    continue
+                a.text = a.text[idx + len(ss):]
+                a.attrib["href"] = hit
+        return html
+
+

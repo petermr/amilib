@@ -13,6 +13,7 @@ from amilib.ami_html import HtmlUtil, HtmlLib
 from amilib.ami_util import AmiJson, AmiUtil
 from amilib.ami_corpus import AmiCorpus
 from amilib.amix import AmiLib
+from amilib.file_lib import FileLib
 from amilib.util import Util
 from test.resources import Resources
 from test.test_all import AmiAnyTest
@@ -62,6 +63,8 @@ def df_unpack_dict(json_string):
     print(f"dikt {type(dikt)} {dikt.keys()}")
     title = dikt.get("journal").get("title")
     return title
+
+HTML_WITH_IDS = "html_with_ids"
 
 class PygetpapersTest(AmiAnyTest):
     """
@@ -136,5 +139,74 @@ class PygetpapersTest(AmiAnyTest):
         assert saved_section.get(QUERY) == "'district heating'"
         assert saved_section.get(STARTDATE) == "False"
         assert saved_section.get(XML) == "True"
+
+    def test_search_all_chapters_with_query_words(self, outfile=None):
+        """
+        read chapter, search for words and return list of paragraphs/ids in which they occur
+        simple, but requires no server
+        """
+        query = "south_asia"
+        indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        outfile = Path(indir, f"{query}.html")
+        debug = False
+        globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
+        infiles = FileLib.posix_glob(globstr, recursive=True)
+        assert 2 == len(infiles)
+        phrases = [
+            "bananas",
+            "South Asia",
+        ]
+        html1 = AmiCorpus.create_hit_html(infiles, phrases=phrases, outfile=outfile, debug=debug)
+        assert html1 is not None
+        assert len(html1.xpath("//p")) > 0
+
+    def test_search_all_chapters_with_query_words_commandline(self, outfile=None):
+        """
+        read chapter, search for words and return list of paragraphs/ids in which they occur
+        simple, but requires no server
+        """
+        query = "south_asia"
+        path = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        outfile = Path(path, f"{query}.html")
+        debug = False
+        infiles = FileLib.posix_glob(f"{str(path)}/**/{HTML_WITH_IDS}.html", recursive=True)
+        phrases = [
+            "bananas",
+            "South Asia"
+        ]
+        html1 = AmiCorpus.create_hit_html(infiles, phrases=phrases, outfile=outfile, debug=debug)
+
+class AmiCorpusTest(AmiAnyTest):
+
+    def test_create_corpus_from_ipcc(self):
+        """
+        reads all IPCC htmls and creates a corpus/datatables
+        """
+        """https://github.com/semanticClimate/ipcc/tree/main/cleaned_content"""
+        ipcc_dir =  Path(Path(Path(Resources.TEST_RESOURCES_DIR).parent.parent.parent.parent), "projects", "ipcc", "cleaned_content")
+        ipcc_dir =  Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc", "cleaned_content").resolve()
+        logger.info(f"ipcc_dir {ipcc_dir}")
+        assert ipcc_dir.exists(), f"{ipcc_dir} should exist"
+        glob_str = f"{str(ipcc_dir)}/*"
+        logger.info(f"glob {glob_str}")
+        child_dirs = FileLib.posix_glob(glob_str, recursive=False)
+        assert len(child_dirs) == 7, f"child files are {child_dirs}"
+        chapter_count = 0
+        all_files = []
+        for child_dir in child_dirs:
+            chapter = Path(child_dir).stem
+            chapter_str = f"{str(child_dir)}/Chapter*"
+            chapter_dirs = FileLib.posix_glob(chapter_str, recursive=False)
+            chapter_count += len(chapter_dirs)
+            logger.info(f"chapter {chapter}: {chapter_count}")
+            for chapter_dir in chapter_dirs:
+                file_str = f"{str(chapter_dir)}/de_*.html"
+                files =  FileLib.posix_glob(file_str, recursive=False)
+                for file in files:
+                    stem = Path(file).stem
+                    if stem == "de_wordpress" or stem == "de_gatsby":
+                        logger.info(f">> {Path(file).stem}")
+                        all_files.append(file)
+            logger.info(f"files {len(all_files)}")
 
 

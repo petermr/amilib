@@ -1589,21 +1589,22 @@ class HtmlLib:
         """search for phrases in paragraphs
         :param paras: list of HTML elems with text (normally <p>), must have @id else ignored
         :param phrases: list of strings to search for (word boundary honoured)
-        :param markup:html dictionary with phrases
+        :param markup: html dictionary with phrases
         :return: dict() keyed on para_ids values are dict of search hits by phrase
         """
-        para_phrase_dict = dict()
+        phrase_counter_by_para_id = dict()
         for para in paras:
             para_id = para.get("id")
             if para_id is None:
                 continue
-            phrase_dict = dict()
+            phrase_counter = Counter()
             for phrase in phrases:
-                count = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True, markup=markup)
-                if count > 0:
-                    phrase_dict[phrase] = count
-                    para_phrase_dict[para_id] = phrase_dict
-        return para_phrase_dict
+                matched = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True, markup=markup)
+                if matched:
+                    phrase_counter[phrase] += 1
+                    phrase_counter_by_para_id[para_id] = phrase_counter
+                    # logger.info(f"phrase counter by para_id {phrase_counter_by_para_id}")
+        return phrase_counter_by_para_id
 
     @classmethod
     def retrieve_with_useragent_parse_html(cls, url, user_agent='my-app/0.0.1', encoding="UTF-8", debug=False):
@@ -1802,6 +1803,13 @@ class HtmlLib:
 
     @classmethod
     def add_rows(cls, dict_by_id, row_keys, table, transform_dict):
+        """
+        adds rows by extracting data from transform_dict. Needs more doc
+        :param dict_by_id: dict holding rows , with keys
+        :param row_keys: keys for each row
+        :param table: preformed empty table (will be filled by add_rows)
+        :param transform_dict: ??? TODO document this
+        """
         new_level = logging.WARNING
         effective = logger.getEffectiveLevel()
         logger.setLevel(new_level)
@@ -1820,6 +1828,13 @@ class HtmlLib:
 
     @classmethod
     def _add_cell(cls, cell_data, key, tr, transform_dict):
+        """
+        adds content to a table cell
+        :param cell_data: Html content of cell; if None adds ""
+        :param key: gets subdict transform_dict.get(key)
+        :param tr: table roe
+        :param transform_dict:
+        """
         transform_subdict = transform_dict.get(key)
         td = ET.SubElement(tr, "td")
         content = cls.transform_string_to_html(cell_data, transform_subdict)
@@ -1828,6 +1843,8 @@ class HtmlLib:
             for item in content:
                 li = ET.SubElement(ul, "li")
                 li.text = str(item)
+        elif content is None:
+            td.text = ""
         else:
             td.text = content if type(content) is str else td.append(content)
 
@@ -1839,6 +1856,9 @@ class HtmlLib:
         :param transform: instructions and optional data to transform. Maybe in HTML
         :return: original string, or transformed element
         """
+        if string is None:
+            logger.warning("string is None")
+            return string
         if transform_subdict is None:
             return string
         if type(transform_subdict) is not dict:
@@ -1918,6 +1938,23 @@ class HtmlLib:
             elem.text = text
         return elem
 
+    @classmethod
+    def create_para_ohrase_dict(cls, paras, phrases):
+        """
+
+        """
+        para_id_by_phrase_dict = defaultdict(list)
+        for phrase in phrases:
+            phrase = phrase.lower()
+            for para in paras:
+                text = " ".join(para.itertext())
+                if phrase in text.lower():
+                    id = para.get("id")
+                    para_id_by_phrase_dict[phrase] = id
+                    logger.info(f"{phrase} : {id} // {text[:50]} ")
+        if len(para_id_by_phrase_dict) > 0:
+            logger.info(f"** {para_id_by_phrase_dict}")
+        return para_id_by_phrase_dict
 
 
 class HtmlEditor:

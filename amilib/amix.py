@@ -417,6 +417,8 @@ class AmiLib:
         version = '0.3.5'    # 2024-09-18 # correct import bugs and libraries
         version = '0.3.6'    # 2024-09-29 # add search command
         version = '0.3.7'    # 2024-09-29 # add search command
+        version = '0.3.8'    # 2024-09-29 # add search command
+        version = '0.3.9'    # 2024-09-29 # fixed bugs and brought search from amiclimate
 
         # logging.warn(f"VERSION {version}")
         return version

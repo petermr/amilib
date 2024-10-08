@@ -400,7 +400,7 @@ class AmiDictArgs(AbstractArgs):
         # dictionary = AmiDictionary.create_from_html_file(dictfile)
         # # logger.info(f"terms: {len(dictionary.get_terms())} {dictionary.get_terms()[0]}")
         # dictionary.markup_html_from_dictionary(inpath, outpath)
-        AmiDictionary.read_html_dictionary_and_markup_html_file(
+        AmiDictionary.markup_html_file_with_words_or_dictionary(
             str(inpath), str(outpath), html_dict_path=dictfile)
 
     # ========== validate ========

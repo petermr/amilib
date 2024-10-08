@@ -881,7 +881,7 @@ class AmiDictionary:
 
         """
         if not wordfile:
-            raise ValueError(f"must gove wordfile to create dictionary")
+            raise ValueError(f"must give wordfile to create dictionary")
         wordpath = Path(wordfile)
         with open(wordpath, "r") as f:
             words = [line.strip() for line in f.readlines()]
@@ -1731,31 +1731,41 @@ class AmiDictionary:
         style.text = ("div[role] {border:solid 1px;margin:1px;}")
 
     @classmethod
-    def read_html_dictionary_and_markup_html_file(cls, inpath, outpath, html_dict_path, remove_styles=False):
+    def markup_html_file_with_words_or_dictionary(cls, inpath, outpath, html_dict_path=None, phrases=None, remove_styles=False):
         """
         read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
         markup paras, and write marked  file
         :param inpath: to be marked up
         :param outpath: resulting marked file
-        :param html_dict_path: dictiomary in HTML format
+        :param html_dict_path: dictiomary in HTML format; if None, requires phrases
+        :param phrases: avoid AmiDictionary by giving list of phrasee, default None requires dictionary
         :return: HTML element marked_up
         """
         assert Path(inpath).exists()
         paras = HtmlLib._extract_paras_with_ids(inpath)
         if remove_styles:
             HtmlUtil.remove_elems(paras[0], "/html/head/style")
+
+        if not phrases:
+            phrases = cls._read_phrases_from_dictionary(html_dict_path)
+        phrase_counter_by_para_id = HtmlLib.search_phrases_in_paragraphs(
+            paras, phrases, markup=html_dict_path)
+        logger.info(f"phrase_counter_by_para_id {phrase_counter_by_para_id}")
+        logger.info(f"keys: {len(phrase_counter_by_para_id)}")
+        # write marked_up html. The 'paras' are views on the original file
+        html_elem = paras[0].xpath("/html")[0]
+        HtmlLib.write_html_file(html_elem, outpath, debug=True)
+        assert Path(outpath).exists()
+        return html_elem
+
+    @classmethod
+    def _read_phrases_from_dictionary(cls, html_dict_path):
         assert Path(html_dict_path).exists()
         dictionary = AmiDictionary.create_from_html_file(html_dict_path)
         assert dictionary is not None
         phrases = dictionary.get_terms()
         dictionary.location = html_dict_path
-        HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
-        # write marked_up html. The 'paras' are views on the original file
-        chapter_elem = paras[0].xpath("/html")[0]
-        HtmlLib.write_html_file(chapter_elem, outpath, debug=True)
-        assert Path(outpath).exists()
-        return chapter_elem
-
+        return phrases
 
 
 class AmiSynonym:

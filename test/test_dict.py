@@ -1028,7 +1028,7 @@ class AmiDictionaryTest(AmiAnyTest):
         FileLib.delete_file(chapter_outpath)
         html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
 
-        AmiDictionary.read_html_dictionary_and_markup_html_file(
+        AmiDictionary.markup_html_file_with_words_or_dictionary(
             chapter_file, chapter_outpath, html_dict_path=html_dict_path)
         assert chapter_outpath.exists()
 
