@@ -206,6 +206,24 @@ class AmiCorpusTest(AmiAnyTest):
             Resources.TEMP_DIR, "corpus", "report2", "chapter22", "text.html")
         assert html22.exists()
 
+    def test_unfccc_corpus(self):
+        """
+        only works if unfccc material is on PMR
+        """
+        unfccc_dir = Path(Resources.TEST_RESOURCES_DIR, "unfccc", "unfcccdocuments1")
+        assert unfccc_dir.exists()
+        corpus = AmiCorpus(unfccc_dir, mkdir=False, make_descendants=True)
+        html_files = FileLib.list_files(corpus.source_dir, globstr="./**/*.html")
+
+        table_id = "table1"
+        # labels = [REPORT, REMOTE_CHAPTER, REMOTE_PDF, CLEANED_CHAPTER, CHAP_WITH_IDS]
+        labels = ["file", "total_pages"]
+        htmlx, tbody = Datatables.create_html_datatables(labels, table_id)
+        for html_file in html_files:
+            tr = ET.SubElement(tbody, "tr")
+            HtmlLib.add_cell_content(tr, text=html_file, href=f"file://{html_file}")
+
+        HtmlLib.write_html_file(htmlx, Path(unfccc_dir, "datatables.html").resolve(), debug=True)
 
     def test_list_files_from_ipcc(self):
         """
@@ -308,16 +326,17 @@ class AmiCorpusTest(AmiAnyTest):
 
         HtmlLib.write_html_file(htmlx, Path(ipcc_top, "cleaned_content", "datatables.html").resolve(), debug=True)
 
-    def create_table(self, cls, labels, table_id):
-        htmlx = HtmlLib.create_html_with_empty_head_body()
-        body = HtmlLib.get_body(htmlx)
-        table = ET.SubElement(body, "table")
-        table.attrib["id"] = table_id
-        cls.create_thead_and_labels(cls, labels, table)
-        tbody = ET.SubElement(table, "tbody")
-        return htmlx, tbody
+    # def create_table(self, cls, labels, table_id):
+    #     htmlx = HtmlLib.create_html_with_empty_head_body()
+    #     body = HtmlLib.get_body(htmlx)
+    #     table = ET.SubElement(body, "table")
+    #     table.attrib["id"] = table_id
+    #     cls.create_thead_and_labels(cls, labels, table)
+    #     tbody = ET.SubElement(table, "tbody")
+    #     return htmlx, tbody
 
     def output_chapter_row(cls, IPCC_CH, arx, chapter_dir, report, roman, tbody):
+        cls = AmiCorpus
         stem = Path(chapter_dir).stem
         chap_no = stem[-2:]
         if chap_no.startswith("0"):
@@ -342,11 +361,11 @@ class AmiCorpusTest(AmiAnyTest):
         html_id_files = FileLib.posix_glob(html_id_glob, recursive=False)
         cls.add_content_for_files(html_id_files, tr)
 
-    def create_thead_and_labels(self, cls, labels, table):
-        thead = ET.SubElement(table, "thead")
-        tr = ET.SubElement(thead, "tr")
-        for label in labels:
-            cls.add_cell_content(tr, cell_type="th", text=label)
+    # def create_thead_and_labels(self, cls, labels, table):
+    #     thead = ET.SubElement(table, "thead")
+    #     tr = ET.SubElement(thead, "tr")
+    #     for label in labels:
+    #         cls.add_cell_content(tr, cell_type="th", text=label)
 
     @classmethod
     def add_content_for_files(cls, files, tr):
@@ -354,30 +373,4 @@ class AmiCorpusTest(AmiAnyTest):
             cls.add_cell_content(tr, text=Path(files[0]).stem, href=f"file://{files[0]}")
         else:
             cls.add_cell_content(tr, text="?")
-
-    @classmethod
-    def add_cell_content(cls, tr, cell_type="td", text=None, title=None, href=None):
-        """
-        creates cell content
-        :param tr: parent row elemnt
-        :param cell_type: "td" or "th" (td by default)
-        :param text: text content or <a>content.
-        :param title: cell title (will be tooltip)
-        :param href: target for hyperlink. content is text or 'LINK'
-        :return: the cell
-        """
-
-        tcell = ET.SubElement(tr, cell_type)
-        if href is not None:
-            if text is None:
-                text = "LINK"
-            a = ET.SubElement(tcell, "a")
-            a.attrib["href"] = href
-            a.text = text
-        elif text is not None:
-            tcell.text = text
-        if title is not None:
-            tcell.title = title
-
-        return tcell
 

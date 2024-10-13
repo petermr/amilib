@@ -11,8 +11,9 @@ import lxml.etree as ET
 from lxml.html import HTMLParser
 
 # from amilib.ami_bib import SAVED, QUERY, STARTDATE, ENDDATE
-from amilib.ami_html import HtmlLib, HtmlUtil
+from amilib.ami_html import HtmlLib, HtmlUtil, Datatables
 from amilib.ami_util import AmiJson, AmiUtil
+from amilib.file_lib import FileLib
 # from amilib.ami_bib import DOI, AUTHOR_STRING, JOURNAL_INFO_TITLE, PUB_YEAR, ABS_TEXT, SAVED_CONFIG_INI, Pygetpapers
 from amilib.util import Util
 
@@ -52,7 +53,7 @@ class AmiCorpus():
 
     }
 
-    def __init__(self, indir=None, mkdir=False):
+    def __init__(self, indir=None, mkdir=False, make_descendants=False):
         """
 
         """
@@ -60,7 +61,8 @@ class AmiCorpus():
         if mkdir and self.source_dir:
             if not Path(self.source_dir).is_dir():
                 Path(self.source_dir).mkdir()
-
+        if make_descendants:
+            self.make_descendants()
         self.eupmc_results = None
 
     def get_datatables(self):
@@ -290,32 +292,56 @@ class AmiCorpus():
             # logger.debug(f"container exists {path}")
             return container
 
-# class AmiCorpusText:
-#     """
-#     holds a single work, report, book, scholarly article, etc.
-#     probably standalone.
-#     based on hierarchical directories initially (this may change)
-#     corpus
-#         corpus_texts
-#             chapters
-#     Contained within an AmiCorpus and may/may_not contain chapters, sections and may other document
-#     components
-#     """
-#
-#     def __init__(self, source_dir):
-#         self.source_dir = source_dir
-#         self.chapter_list = []
-#
-#     def create_chapter(self, source_dir, title=None, mkdir=False):
-#         """
-#         create a chapter (maybe child dir of corpus text)
-#         """
-#         if source_dir.parent != self:
-#             logger.error(f"cannot add child {source_dir}")
-#             return None
-#         chapter = AmiChapter(source_dir, mkdir=mkdir)
-#         self.chapter_list.append(chapter)
-#
+    def make_descendants(self):
+        self._make_descendants(self, self.source_dir)
+
+    @classmethod
+    def _make_descendants(cls, parent, source_dir):
+        files = FileLib.get_children(source_dir, dirx=False)
+        for file in files:
+            logger.debug(f"file: {file}")
+        dirs = FileLib.get_children(source_dir, dirx=True)
+        for dirx in dirs:
+            logger.debug(f"dir: {dirx}")
+            container = AmiCorpusContainer(parent, Path(dirx).stem)
+            container.make_descendants()
+
+    # @classmethod
+    # def add_cell_content(cls, tr, cell_type="td", text=None, title=None, href=None):
+    #     """
+    #     creates cell content
+    #     :param tr: parent row elemnt
+    #     :param cell_type: "td" or "th" (td by default)
+    #     :param text: text content or <a>content.
+    #     :param title: cell title (will be tooltip)
+    #     :param href: target for hyperlink. content is text or 'LINK'
+    #     :return: the cell
+    #     """
+    #
+    #     tcell = ET.SubElement(tr, cell_type)
+    #     if href is not None:
+    #         if text is None:
+    #             text = "LINK"
+    #         a = ET.SubElement(tcell, "a")
+    #         a.attrib["href"] = href
+    #         a.text = text
+    #     elif text is not None:
+    #         tcell.text = text
+    #     if title is not None:
+    #         tcell.title = title
+    #
+    #     return tcell
+    #
+    @classmethod
+    def add_content_for_files(cls, files, tr):
+        if files:
+            HtmlLib.add_cell_content(tr, text=Path(files[0]).stem, href=f"file://{files[0]}")
+        else:
+            HtmlLib.add_cell_content(tr, text="?")
+
+
+
+
 class AmiCorpusContainer:
     def __init__(self, parent_container, dir_name, type="unknown", mkdir=False, exist_ok=True):
         """
@@ -367,6 +393,5 @@ class AmiCorpusContainer:
         self.child_document_list.append(document_file)
         return document_file
 
-
-
-
+    def make_descendants(self):
+        AmiCorpus._make_descendants(self, self.source_dir)

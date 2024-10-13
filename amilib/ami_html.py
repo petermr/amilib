@@ -1908,6 +1908,33 @@ class HtmlLib:
             logger.info(f"** {para_id_by_phrase_dict}")
         return para_id_by_phrase_dict
 
+    @classmethod
+    def add_cell_content(cls, tr, cell_type="td", text=None, title=None, href=None):
+        """
+        creates cell content
+        :param tr: parent row elemnt
+        :param cell_type: "td" or "th" (td by default)
+        :param text: text content or <a>content.
+        :param title: cell title (will be tooltip)
+        :param href: target for hyperlink. content is text or 'LINK'
+        :return: the cell
+        """
+
+        tcell = ET.SubElement(tr, cell_type)
+        if href is not None:
+            if text is None:
+                text = "LINK"
+            a = ET.SubElement(tcell, "a")
+            a.attrib["href"] = href
+            a.text = str(text)
+        elif text is not None:
+            tcell.text = text
+        if title is not None:
+            tcell.title = title
+
+        return tcell
+
+
 class Datatables:
 
     @classmethod
@@ -1957,6 +1984,33 @@ class Datatables:
         body = HtmlLib.get_body(htmlx)
         # cls.add_body_scripts(body, table_id)
         logger.warning(f"scripts {len(head.xpath('script'))}")
+
+
+    @classmethod
+    def create_table(cls, labels, table_id):
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(htmlx)
+        table = ET.SubElement(body, "table")
+        table.attrib["id"] = table_id
+        cls.create_thead_and_labels(labels, table)
+        tbody = ET.SubElement(table, "tbody")
+        return htmlx, tbody
+
+    @classmethod
+    def create_html_datatables(cls, labels, table_id):
+        htmlx, tbody = Datatables.create_table(labels, table_id)
+        Datatables.add_head_info(HtmlLib.get_head(htmlx), htmlx)
+        Datatables.add_body_scripts(HtmlLib.get_body(htmlx), table_id=table_id)
+        return htmlx, tbody
+
+    @classmethod
+    def create_thead_and_labels(cls, labels, table):
+        thead = ET.SubElement(table, "thead")
+        tr = ET.SubElement(thead, "tr")
+        for label in labels:
+            HtmlLib.add_cell_content(tr, cell_type="th", text=label)
+
+
 
 
 class HtmlEditor:
