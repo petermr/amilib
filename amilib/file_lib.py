@@ -319,7 +319,7 @@ class FileLib:
     @classmethod
     def list_files(cls, dirx, globstr):
         """
-        list files in directory
+        list files (not dirs) in directory
         :param dirx: directory containing files
         :param globstr: glob string, e.g. "*.html"
         :return: list of files (Paths)
@@ -458,6 +458,27 @@ class FileLib:
                     posix = PurePosixPath(indir, input_item)
                     outputs.append(str(posix))
             return outputs
+
+    @classmethod
+    def get_children(cls, parent, dirx=None, hidden=None):
+        """
+        convenience method
+        gets some or all child files
+        :param file: parent dir
+        :param dirx:  True=include only directories, False=ignore directories, None=no action
+        :param hidden:  True=include only hidden files, False=ignore hidden, None=no action (NYI)
+        :return:list of files (may be empty)
+        """
+        files = []
+        if parent is None or not Path(parent).is_dir():
+            return files
+        parent = Path(parent)
+        files = list(parent.iterdir())
+        if dirx is not None:
+            files = [f for f in files if dirx==f.is_dir()]
+        if hidden is not None:
+            logger.warning(f"hidden option {hidden} is NYI")
+        return files
 
     @classmethod
     def posix_glob(cls, glob_str, recursive = True):

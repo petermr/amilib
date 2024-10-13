@@ -1701,7 +1701,7 @@ class HtmlLib:
         cls.add_column_headings(row0, table)
 
         cls.add_rows(dict_by_id, row_keys, table, transform_dict)
-        cls.add_body_scripts(body, table_id)
+        Datatables.add_body_scripts(body, table_id)
         return htmlx, table
 
     """
@@ -1719,35 +1719,7 @@ class HtmlLib:
         htmlx = HtmlLib.create_html_with_empty_head_body()
         head = HtmlLib.get_or_create_head(htmlx)
         if datatables is not None:
-            """
-<head>
-  <meta charset="UTF-8">
-  <title>Zika</title>
-  <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
-  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js" charset="UTF-8" type="text/javascript"> </script>
-  <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"> </script>
-  <script charset="UTF-8" type="text/javascript">$(function(){ $("#results").dataTable(); }) </script>
- </head>
-            """
-            meta = ET.SubElement(head, "meta")
-            meta.attrib["charset"] = "UTF-8"
-
-            title = ET.SubElement(head, "title")
-            title.text = "new title"
-
-            cls.add_element(head, "link", {
-                "rel": "stylesheet", "type": "text/css",
-                "href": DATATABLES_CSS})
-
-            """
-              <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js" charset="UTF-8" type="text/javascript"> </script>
-  <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"> </script>
-  <script charset="UTF-8" type="text/javascript">$(function(){ $("#results").dataTable(); }) </script>
-"""
-            body = HtmlLib.get_body(htmlx)
-            # cls.add_body_scripts(body, table_id)
-
-            logger.warning(f"scripts {len(head.xpath('script'))}")
+            Datatables.add_head_info(head, htmlx)
 
         """
         <script>
@@ -1765,26 +1737,6 @@ class HtmlLib:
         body = HtmlLib.get_body(htmlx)
 
         return body, htmlx
-
-    @classmethod
-    def add_body_scripts(cls, body, table_id):
-        """
-        ARGH! It seems as if we have to force a closing </script> so we add a text content of " "
-        """
-
-
-        if JQUERY_JS is not None:
-            script = cls.add_element(body, "script", {
-                "charset": "UTF-8", "type": "text/javascript",
-                "src": JQUERY_JS}, text=" ")
-
-        script = cls.add_element(body, "script", {
-            "charset": "UTF-8", "type": "text/javascript",
-            "src": DATATABLES_JS}, text=" ")
-
-        script = cls.add_element(body, "script", {
-            "charset": "UTF-8", "type": "text/javascript"},
-            text =  PRE_TEXT + table_id + POST_TEXT)
 
     @classmethod
     def add_column_headings(cls, row0, table):
@@ -1955,6 +1907,56 @@ class HtmlLib:
         if len(para_id_by_phrase_dict) > 0:
             logger.info(f"** {para_id_by_phrase_dict}")
         return para_id_by_phrase_dict
+
+class Datatables:
+
+    @classmethod
+    def add_body_scripts(cls, body, table_id):
+        """
+        ARGH! It seems as if we have to force a closing </script> so we add a text content of " "
+        """
+
+
+        if JQUERY_JS is not None:
+            script = HtmlLib.add_element(body, "script", {
+                "charset": "UTF-8", "type": "text/javascript",
+                "src": JQUERY_JS}, text=" ")
+
+        script = HtmlLib.add_element(body, "script", {
+            "charset": "UTF-8", "type": "text/javascript",
+            "src": DATATABLES_JS}, text=" ")
+
+        script = HtmlLib.add_element(body, "script", {
+            "charset": "UTF-8", "type": "text/javascript"},
+            text =  PRE_TEXT + table_id + POST_TEXT)
+
+    @classmethod
+    def add_head_info(cls, head, htmlx):
+        """
+    <head>
+      <meta charset="UTF-8">
+      <title>Zika</title>
+      <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+      <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js" charset="UTF-8" type="text/javascript"> </script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"> </script>
+      <script charset="UTF-8" type="text/javascript">$(function(){ $("#results").dataTable(); }) </script>
+     </head>
+                """
+        meta = ET.SubElement(head, "meta")
+        meta.attrib["charset"] = "UTF-8"
+        title = ET.SubElement(head, "title")
+        title.text = "new title"
+        HtmlLib.add_element(head, "link", {
+            "rel": "stylesheet", "type": "text/css",
+            "href": DATATABLES_CSS})
+        """
+                  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js" charset="UTF-8" type="text/javascript"> </script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js" charset="UTF-8" type="text/javascript"> </script>
+      <script charset="UTF-8" type="text/javascript">$(function(){ $("#results").dataTable(); }) </script>
+    """
+        body = HtmlLib.get_body(htmlx)
+        # cls.add_body_scripts(body, table_id)
+        logger.warning(f"scripts {len(head.xpath('script'))}")
 
 
 class HtmlEditor:

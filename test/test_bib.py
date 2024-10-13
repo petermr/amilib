@@ -1,17 +1,17 @@
 import ast
 import collections
 import configparser
-import json
 import logging
+import lxml.etree as ET
 from pathlib import Path
 import pandas as pd
 
 from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, QUERY, STARTDATE, XML, \
                             EUPMC_RESULTS_JSON, PMCID, ABS_TEXT, EPMC_KEYS, JOURNAL_INFO, DOI, TITLE, AUTHOR_STRING,
                             PUB_YEAR, JOURNAL_INFO_TITLE, Pygetpapers)
-from amilib.ami_html import HtmlUtil, HtmlLib
+from amilib.ami_html import HtmlUtil, HtmlLib, Datatables
 from amilib.ami_util import AmiJson, AmiUtil
-from amilib.ami_corpus import AmiCorpus
+from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 from amilib.util import Util
@@ -176,37 +176,208 @@ class PygetpapersTest(AmiAnyTest):
         ]
         html1 = AmiCorpus.create_hit_html(infiles, phrases=phrases, outfile=outfile, debug=debug)
 
+
+
 class AmiCorpusTest(AmiAnyTest):
+
+    def test_simple_corpus(self):
+        """
+        creates a simple tree of containers and documents with token content
+        """
+        corpus_dir = Path(Resources.TEMP_DIR, "corpus")
+
+        corpus = AmiCorpus(corpus_dir, mkdir=True)
+
+        report1 = corpus.create_corpus_container(
+            Path(corpus_dir, "report1"), type="report", mkdir=True)
+
+        chapter11 = report1.create_corpus_container("chapter11", type="chapter", mkdir=True)
+        html11 = chapter11.create_document("text.html", text="chapter11")
+
+        chapter12 = report1.create_corpus_container("chapter12", type="chapter", mkdir=True)
+        html12 = chapter12.create_document("text.html", text="chapter12")
+
+        report2 = corpus.create_corpus_container(Path(corpus_dir, "report2"), mkdir=True)
+        chapter21 = report2.create_corpus_container("chapter21", type="chapter", mkdir=True)
+        html21 = chapter21.create_document("text.html", text="chapter21")
+        chapter22 = report2.create_corpus_container("chapter22", type="chapter", mkdir=True)
+        html22 = chapter22.create_document("text.html", text="chapter22")
+        assert Path(html22) == Path(
+            Resources.TEMP_DIR, "corpus", "report2", "chapter22", "text.html")
+        assert html22.exists()
+
+
+    def test_list_files_from_ipcc(self):
+        """
+        reads all IPCC htmls and creates a corpus/datatables
+        """
+        """https://github.com/semanticClimate/ipcc/tree/main/cleaned_content"""
+        # Github repository is https://github.com/semanticClimate/ipcc
+        # clone tnis
+        # *****top director on PMR's machine = needs altering for youu implementation*****
+        ipcc_top = Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc")
+
+        assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
+        cleaned_content_dir =  Path(ipcc_top, "cleaned_content").resolve() # cleans the filename (removes "..")
+        logger.info(f"ipcc_dir {cleaned_content_dir}")
+        assert cleaned_content_dir.exists(), f"{cleaned_content_dir} should exist"
+
+        report_glob_str = f"{str(cleaned_content_dir)}/*"
+        logger.info(f"glob {report_glob_str}")
+        report_dirs = FileLib.posix_glob(report_glob_str, recursive=False)
+        assert len(report_dirs) == 7, f"child files are {report_dirs}"
+        total_chapter_count = 0
+        all_cleaned_files = []
+        all_html_id_files = []
+        for report_dir in sorted(report_dirs):
+            report = Path(report_dir).stem
+            chapter_str = f"{str(report_dir)}/Chapter*"
+            chapter_dirs = FileLib.posix_glob(chapter_str, recursive=False)
+            total_chapter_count += len(chapter_dirs)
+            logger.info(f"chapter {report}: {total_chapter_count}")
+            for chapter_dir in sorted(chapter_dirs):
+                html_str = f"{str(chapter_dir)}/*.html"
+                html_files =  FileLib.posix_glob(html_str, recursive=False)
+                for html_file in html_files:
+                    stem = Path(html_file).stem
+                    if stem == "de_wordpress" or stem == "de_gatsby":
+                        logger.info(f">> {stem}")
+                        all_cleaned_files.append(html_file)
+                    elif stem == "html_with_ids":
+                        all_html_id_files.append(html_file)
+                    else:
+                        logger.info(f"skipped {html_file}")
+
+            logger.info(f"cleaned files {len(all_cleaned_files)} html_with_ids {len(all_html_id_files)}")
 
     def test_create_corpus_from_ipcc(self):
         """
         reads all IPCC htmls and creates a corpus/datatables
         """
         """https://github.com/semanticClimate/ipcc/tree/main/cleaned_content"""
-        ipcc_dir =  Path(Path(Path(Resources.TEST_RESOURCES_DIR).parent.parent.parent.parent), "projects", "ipcc", "cleaned_content")
-        ipcc_dir =  Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc", "cleaned_content").resolve()
-        logger.info(f"ipcc_dir {ipcc_dir}")
-        assert ipcc_dir.exists(), f"{ipcc_dir} should exist"
-        glob_str = f"{str(ipcc_dir)}/*"
-        logger.info(f"glob {glob_str}")
-        child_dirs = FileLib.posix_glob(glob_str, recursive=False)
-        assert len(child_dirs) == 7, f"child files are {child_dirs}"
-        chapter_count = 0
-        all_files = []
-        for child_dir in child_dirs:
-            chapter = Path(child_dir).stem
-            chapter_str = f"{str(child_dir)}/Chapter*"
-            chapter_dirs = FileLib.posix_glob(chapter_str, recursive=False)
-            chapter_count += len(chapter_dirs)
-            logger.info(f"chapter {chapter}: {chapter_count}")
-            for chapter_dir in chapter_dirs:
-                file_str = f"{str(chapter_dir)}/de_*.html"
-                files =  FileLib.posix_glob(file_str, recursive=False)
-                for file in files:
-                    stem = Path(file).stem
-                    if stem == "de_wordpress" or stem == "de_gatsby":
-                        logger.info(f">> {Path(file).stem}")
-                        all_files.append(file)
-            logger.info(f"files {len(all_files)}")
+        # Github repository is https://github.com/semanticClimate/ipcc
+        # clone tnis
+        # *****top director on PMR's machine = needs altering for youu implementation*****
 
+        CLEAN_WORDPRESS_STEM = "de_wordpress"
+        CLEAN_GATSBY_STEM = "de_gatsby"
+        REPORT = "report"
+        REMOTE_CHAPTER = "remote_chapter"
+        REMOTE_PDF= "remote_PDF"
+        CHAPTER_ANY = "Chapter*"
+        ANY_HTML = "*.html"
+        CLEANED_CHAPTER = "cleaned_chapter"
+        CHAP_WITH_IDS = "chapter_with_ids"
+        HTML_WITH_IDS = "html_with_ids"
+        IPCC_CH = "https://www.ipcc.ch"
+        ROMAN_DICT = {"1": "I", "2": "II", "3": "III", }
+
+        cls = AmiCorpusTest
+
+        ipcc_top = Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc")
+
+        assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
+        corpus_dir =  Path(ipcc_top, "cleaned_content").resolve() # cleans the filename (removes "..")
+
+        corpus_files = FileLib.get_children(corpus_dir, dirx=True)
+        labels = [REPORT, REMOTE_CHAPTER, REMOTE_PDF, CLEANED_CHAPTER, CHAP_WITH_IDS]
+
+        datatables = True
+        table_id = "table1"
+        htmlx, tbody = self.create_table(cls, labels, table_id)
+
+        for corpus_file in sorted(corpus_files):
+            corpus_text = AmiCorpusContainer(corpus_file)
+            report = Path(work).stem
+            arx = "report/ar6/" if report.startswith("wg") else ""
+            work = f"{IPCC_CH}/{arx}{report}"
+            roman = None
+            if report.startswith("wg"):
+                wg_no = report[2:]
+                roman = ROMAN_DICT.get(wg_no)
+
+            chapter_glob = f"{str(work)}/{CHAPTER_ANY}"
+            chapter_dirs = FileLib.posix_glob(chapter_glob, recursive=False)
+            for chapter_dir in sorted(chapter_dirs):
+                cls.output_chapter_row(work, chapter_dir, tbody)
+
+        if datatables:
+            Datatables.add_head_info(HtmlLib.get_head(htmlx), htmlx)
+            Datatables.add_body_scripts(HtmlLib.get_body(htmlx), table_id=table_id)
+
+
+        HtmlLib.write_html_file(htmlx, Path(ipcc_top, "cleaned_content", "datatables.html").resolve(), debug=True)
+
+    def create_table(self, cls, labels, table_id):
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(htmlx)
+        table = ET.SubElement(body, "table")
+        table.attrib["id"] = table_id
+        cls.create_thead_and_labels(cls, labels, table)
+        tbody = ET.SubElement(table, "tbody")
+        return htmlx, tbody
+
+    def output_chapter_row(cls, IPCC_CH, arx, chapter_dir, report, roman, tbody):
+        stem = Path(chapter_dir).stem
+        chap_no = stem[-2:]
+        if chap_no.startswith("0"):
+            chap_no = chap_no[1:]
+        # html_glob = f"{chapter_dir}/{ANY_HTML}"
+        # html_files = FileLib.posix_glob(html_glob, recursive=False)
+        tr = ET.SubElement(tbody, "tr")
+        cls.add_cell_content(tr, text=report, href=f"{IPCC_CH}/{report}/")
+        cls.add_cell_content(tr, text=chapter_dir.stem, href=f"{report}/chapter/chapter-{chap_no}")
+        pdf_name = f"{chapter_dir.stem}.PDF"
+        if roman:
+            cls.add_cell_content(tr, text=pdf_name,
+                                 href=f"{report}/downloads/report/IPCC_AR6_WG{roman}_{stem}.pdf")
+        else:
+            cls.add_cell_content(tr, text=pdf_name)
+        gatsby_glob = f"{str(chapter_dir)}/de_gatsby.html"
+        wordpress_glob = f"{str(chapter_dir)}/de_wordpress.html"
+        cleaned_files = FileLib.posix_glob(gatsby_glob, recursive=False) + \
+                        FileLib.posix_glob(wordpress_glob, recursive=False)
+        cls.add_content_for_files(cleaned_files, tr)
+        html_id_glob = f"{str(chapter_dir)}/html_with_ids.html"
+        html_id_files = FileLib.posix_glob(html_id_glob, recursive=False)
+        cls.add_content_for_files(html_id_files, tr)
+
+    def create_thead_and_labels(self, cls, labels, table):
+        thead = ET.SubElement(table, "thead")
+        tr = ET.SubElement(thead, "tr")
+        for label in labels:
+            cls.add_cell_content(tr, cell_type="th", text=label)
+
+    @classmethod
+    def add_content_for_files(cls, files, tr):
+        if files:
+            cls.add_cell_content(tr, text=Path(files[0]).stem, href=f"file://{files[0]}")
+        else:
+            cls.add_cell_content(tr, text="?")
+
+    @classmethod
+    def add_cell_content(cls, tr, cell_type="td", text=None, title=None, href=None):
+        """
+        creates cell content
+        :param tr: parent row elemnt
+        :param cell_type: "td" or "th" (td by default)
+        :param text: text content or <a>content.
+        :param title: cell title (will be tooltip)
+        :param href: target for hyperlink. content is text or 'LINK'
+        :return: the cell
+        """
+
+        tcell = ET.SubElement(tr, cell_type)
+        if href is not None:
+            if text is None:
+                text = "LINK"
+            a = ET.SubElement(tcell, "a")
+            a.attrib["href"] = href
+            a.text = text
+        elif text is not None:
+            tcell.text = text
+        if title is not None:
+            tcell.title = title
+
+        return tcell
 

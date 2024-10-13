@@ -52,11 +52,15 @@ class AmiCorpus():
 
     }
 
-    def __init__(self, indir=None):
+    def __init__(self, indir=None, mkdir=False):
         """
 
         """
-        self.indir = indir
+        self.source_dir = indir
+        if mkdir and self.source_dir:
+            if not Path(self.source_dir).is_dir():
+                Path(self.source_dir).mkdir()
+
         self.eupmc_results = None
 
     def get_datatables(self):
@@ -74,8 +78,8 @@ class AmiCorpus():
         :return: {EUPMC_RESULTS_JSON} from directory or None if not exists
         """
         if self.eumpc_results is None:
-            if not Path(self.indir).is_dir():
-                logger.error(f"not a directory {self.indir}")
+            if not Path(self.source_dir).is_dir():
+                logger.error(f"not a directory {self.source_dir}")
                 return None
             self.eupmc_results = Path(self.eupmc_results, EUPMC_RESULTS_JSON)
             if not self.eupmc_results.exists():
@@ -93,6 +97,9 @@ class AmiCorpus():
         """
         from amilib.ami_bib import SAVED_CONFIG_INI
 
+        if indir is None:
+            logger.warning("No indir")
+            return
         if outdir is None:
             outdir = indir
         if outfile_h is None:
@@ -268,5 +275,98 @@ class AmiCorpus():
                 a.text = a.text[idx + len(ss):]
                 a.attrib["href"] = hit
         return html
+
+    def create_corpus_container(self, container_dir, mkdir=False, type="unknown"):
+        """
+        create container as child of self
+        :param container_dir: new container
+        """
+        if container_dir is not None:
+            container = AmiCorpusContainer(self, container_dir)
+            # logger.debug(f"container_dir: {container_dir}")
+            path = Path(container_dir)
+            if not path.exists():
+                path.mkdir()
+            # logger.debug(f"container exists {path}")
+            return container
+
+# class AmiCorpusText:
+#     """
+#     holds a single work, report, book, scholarly article, etc.
+#     probably standalone.
+#     based on hierarchical directories initially (this may change)
+#     corpus
+#         corpus_texts
+#             chapters
+#     Contained within an AmiCorpus and may/may_not contain chapters, sections and may other document
+#     components
+#     """
+#
+#     def __init__(self, source_dir):
+#         self.source_dir = source_dir
+#         self.chapter_list = []
+#
+#     def create_chapter(self, source_dir, title=None, mkdir=False):
+#         """
+#         create a chapter (maybe child dir of corpus text)
+#         """
+#         if source_dir.parent != self:
+#             logger.error(f"cannot add child {source_dir}")
+#             return None
+#         chapter = AmiChapter(source_dir, mkdir=mkdir)
+#         self.chapter_list.append(chapter)
+#
+class AmiCorpusContainer:
+    def __init__(self, parent_container, dir_name, type="unknown", mkdir=False, exist_ok=True):
+        """
+        create corpusContainer with parent and child dir name
+        :param parent_container:
+        :param dir_name: name relative to self.source_dir
+        """
+        if not parent_container or not dir_name:
+            logger.error(f"None arbguments")
+            return None
+        self.parent_container = parent_container
+        self.source_dir = Path(parent_container.source_dir, dir_name)
+        if mkdir and self.source_dir:
+            Path(self.source_dir).mkdir(exist_ok=exist_ok)
+        self.type = type
+        self.child_container_list = []
+        self.child_document_list = []
+
+    def create_corpus_container(self, filename, type="unknown", mkdir=False):
+        """
+        creates a child container and optionally its actual directory
+        """
+        if not filename :
+            logger.error("filename is None")
+            return None
+        path = Path(self.source_dir, filename)
+        if not path.exists():
+            if mkdir:
+                path.mkdir()
+        else:
+            if not path.is_dir():
+                logger.error(f"{path} exists but is not a directory")
+                return None
+        corpus_container = AmiCorpusContainer(self, path, type=type, mkdir=mkdir)
+        self.child_container_list.append(corpus_container)
+        return corpus_container
+
+    def create_document(self, name, text=None, type="unknown"):
+        """
+        creates document file with name and self as parent
+        """
+        document_file = Path(self.source_dir, name)
+        # logger.debug(f"created {document_file}")
+        document_file.touch()
+        if text:
+            with open(document_file, "w") as f:
+                f.write(text)
+
+        self.child_document_list.append(document_file)
+        return document_file
+
+
 
 

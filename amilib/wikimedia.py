@@ -1442,9 +1442,9 @@ class WikipediaPage:
             first_wp_para = wikipedia_page.create_first_wikipedia_para()
         return first_wp_para
 
-    @classmethod
-    def get_page_for_url(cls, url):
-        pass
+    # @classmethod
+    # def get_page_for_url(cls, url):
+    #     pass
 
     def get_qitem_from_wikipedia_page(self):
         """
