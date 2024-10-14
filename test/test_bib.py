@@ -233,7 +233,7 @@ class AmiCorpusTest(AmiAnyTest):
         # Github repository is https://github.com/semanticClimate/ipcc
         # clone tnis
         # *****top director on PMR's machine = needs altering for youu implementation*****
-        ipcc_top = Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc")
+        ipcc_top = Path(Resources.TEST_RESOURCES_DIR, "ipcc")
 
         assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
         cleaned_content_dir =  Path(ipcc_top, "cleaned_content").resolve() # cleans the filename (removes "..")
