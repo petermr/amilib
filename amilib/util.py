@@ -17,7 +17,6 @@ from pathlib import Path
 import pandas as pd
 import pyvis
 import requests
-from lxml import html
 
 
 # THIS FILE HAS NO amilib IMPORTS TO AVOID CYCLIC DEPENDENCIES
@@ -317,7 +316,7 @@ class Util:
     def get_urls_from_webpage(cls, suffixes, weburl):
 
         page = requests.get(weburl)
-        tree = html.fromstring(page.content)
+        tree = lxml.html.fromstring(page.content)
         ahrefs = tree.xpath(f".//a[@{HREF}]")
         urls = []
         for sf in suffixes:

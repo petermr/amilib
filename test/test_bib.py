@@ -151,7 +151,7 @@ class PygetpapersTest(AmiAnyTest):
         debug = False
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
-        assert 2 == len(infiles)
+        assert 50 == len(infiles)
         phrases = [
             "bananas",
             "South Asia",
@@ -302,7 +302,7 @@ class AmiCorpusTest(AmiAnyTest):
 
         datatables = True
         table_id = "table1"
-        htmlx, tbody = self.create_table(cls, labels, table_id)
+        htmlx, tbody = Datatables.create_table(cls, labels, table_id)
 
         for corpus_file in sorted(corpus_files):
             corpus_text = AmiCorpusContainer(corpus_file)

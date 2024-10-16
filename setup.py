@@ -21,22 +21,22 @@ requirements = [
  'setuptools',
  'pdfplumber',
  'requests',
- 'numpy',
- 'pandas',
+ 'numpy==1.24.1',
+ 'pandas==2.0.3',
  'pyvis',
  'selenium',
  'tinycss',
  'SPARQLWrapper',
  'Tkinterweb',
  'webdriver-manager',
- 'scikit-learn',
+ 'scikit-learn==1.3.2',
 
 ]
 
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.3.9',
+    version='0.3.10a6',
     description='document and dictionary download, cleaning, management',
     long_description_content_type='text/markdown',
     long_description=readme,

@@ -1,0 +1,53 @@
+digraph SemanticTools {
+
+	compound=true;
+	
+    // Define node styles
+    node [shape=box style=filled fontname="Helvetica"];
+    edge [shape=box style=filled fontname="Helvetica"];
+	
+    // Overall graph layout direction
+    rankdir=TB;  // Top to Bottom direction (default)
+    // Nodes with specific labels
+    EPMC_search [label="EPMC_search***" fillcolor=lightyellow];
+    IPCC_website [label="IPCC_website*" fillcolor=lightyellow];
+    UNFCCC_website [label="UNFCCC_website*" fillcolor=lightyellow];
+    Wikimedia [label="Wikimedia*****" fillcolor=cyan];
+    
+    // Define edges
+    UN_corpus -> dictionary [label="phrases   " color=black];
+    dictionary -> UN_corpus [label=" W3C-annotate" color=black];
+    open_science_corpus -> dictionary [label="phrases   " color=black];
+    dictionary -> open_science_corpus [label="  W3C-annotate" color=black];
+	Wikimedia -> dictionary
+    EPMC_search -> open_science_corpus [label=" pygetpapers" color=black];
+    IPCC_website -> UN_corpus [label=" amilib" color=black];
+    UNFCCC_website -> UN_corpus [label=" amilib" color=black];
+    
+        // Subgraph to control the order of IPCC_corpus and open_science_corpus
+    { rank=same; color=cyan UN_corpus; open_science_corpus; }
+    
+    // Subgraph to control the order of IPCC_website and EPMC_search
+    { rank=same; IPCC_website; UNFCCC_website; EPMC_search; }
+    
+    // Adding invisible edges to control horizontal ordering
+    UN_corpus -> open_science_corpus [style=invis];
+	
+    { rank=same; dictionary; Wikimedia;}
+
+	titlex [label="*****-ification of climate documents.
+Documents populate dictionaries with Phrases which are
+semantified with Wikimedia" fillcolor=white]
+
+    {rank=same; foo; titlex;}
+		
+
+	subgraph cluster_0 {
+		    dictionary [label="dictionary *****" fillcolor=lightblue];
+		    open_science_corpus [label="opensci_corpus *****" fillcolor=lightsalmon];
+		    UN_corpus [label="UN Corpus *****" fillcolor=lightpink];
+
+	}
+		
+	
+}
