@@ -26,9 +26,11 @@ class SearchTest(AmiAnyTest):
         """
         read inpath HTML, and use dict to match words and phrases
         """
-        stem = "carbon_cycle1"
+        stem = "carbon_cycle"
         inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", "html_with_ids.html")
-        dictpath = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.html")
+        assert inpath.exists()
+        dictpath = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.xml")
+        assert dictpath.exists()
         outpath = Path(Resources.TEMP_DIR, "annotate", f"{stem}.html")
         args = ([
             "SEARCH",
@@ -46,7 +48,7 @@ class SearchTest(AmiAnyTest):
         """
         read inpath HTML, remove styles, and use dict to match words and phrases
         """
-        stem = "carbon_cycle1"
+        stem = "carbon_cycle"
         inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", "html_with_ids.html")
 
         ahrefs = self._find_ahrefs(inpath)
@@ -54,7 +56,7 @@ class SearchTest(AmiAnyTest):
         for ahref in ahrefs:
             inset.add(ahref.text)
 
-        dictpath = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.html")
+        dictpath = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.xml")
         outpath = Path(Resources.TEMP_DIR, "annotate", f"{stem}.html")
         args = ([
             "SEARCH",

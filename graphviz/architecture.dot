@@ -50,7 +50,7 @@ Documents populate dictionaries with Phrases which are
 semantified with Wikimedia"
     labelloc  =  b // b: Place the graph's title at bottom.
     fontsize  = 20 // Make title stand out by giving a large font size
-    fontcolor = lightblue}
+    fontcolor = lightblue} // doesn't yet work
 
 
 

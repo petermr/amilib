@@ -662,8 +662,7 @@ class AmiDictionary:
             xml_tree = ET.parse(str(xml_file), parser=ET.XMLParser(encoding="utf-8"))
         except lxml.etree.XMLSyntaxError as e:
             logging.error(f"Cannot parse xml file {xml_file} because {e}")
-            logging.error(f"cannot parse xml_file {xml_file}")
-            return None
+            raise e
         except Exception as e:
             logging.warning(f"error parsing {xml_file} {e}")
 

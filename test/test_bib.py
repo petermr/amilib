@@ -243,6 +243,7 @@ class AmiCorpusTest(AmiAnyTest):
         report_glob_str = f"{str(cleaned_content_dir)}/*"
         logger.info(f"glob {report_glob_str}")
         report_dirs = FileLib.posix_glob(report_glob_str, recursive=False)
+        report_dirs = FileLib.get_children(cleaned_content_dir, dirx=True)
         assert len(report_dirs) == 7, f"child files are {report_dirs}"
         total_chapter_count = 0
         all_cleaned_files = []
@@ -269,6 +270,10 @@ class AmiCorpusTest(AmiAnyTest):
             logger.info(f"cleaned files {len(all_cleaned_files)} html_with_ids {len(all_html_id_files)}")
 
     def test_create_corpus_from_ipcc(self):
+        """
+        FAILS needs reletive file addressing
+        """
+
         """
         reads all IPCC htmls and creates a corpus/datatables
         """
@@ -302,10 +307,10 @@ class AmiCorpusTest(AmiAnyTest):
 
         datatables = True
         table_id = "table1"
-        htmlx, tbody = Datatables.create_table(cls, labels, table_id)
+        htmlx, tbody = Datatables.create_table(labels, table_id)
 
         for corpus_file in sorted(corpus_files):
-            corpus_text = AmiCorpusContainer(corpus_file)
+            corpus_text = AmiCorpusContainer(corpus_file, "stem")
             report = Path(work).stem
             arx = "report/ar6/" if report.startswith("wg") else ""
             work = f"{IPCC_CH}/{arx}{report}"

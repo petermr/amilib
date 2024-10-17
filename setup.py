@@ -60,12 +60,12 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.10',
+#        'Programming Language :: Python :: 3.10',
     ],
     entry_points={
         'console_scripts': [
             'amilib=amilib.amix:main',
         ],
     },
-    python_requires='>=3.7',
+    python_requires='>=3.7<3.11',
 )

@@ -117,6 +117,9 @@ class SearchArgs(AbstractArgs):
 
         if self.words is not None:
             self.words = Util.input_list_of_words(self.words)
+        elif self.dictfile is not None:
+            dikt = AmiDictionary.read_dictionary(self.dictfile)
+            self.words = dikt.get_terms()
 
 
         if ANNOTATE in self.operation:
