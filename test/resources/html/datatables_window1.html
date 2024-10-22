@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataTable with Modal</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Style for the modal content */
+        .modal-body {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    </style>
+	<style>
+		#example tr td {
+		    height: 50px;
+			background : blue;
+		}
+	</style>
+</head>
+<body>
+
+<table id="myTable" class="display">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Item 1</td>
+            <td><a href="https://example.com/item1" target="_blank">Link to Item 1</a></td>
+        </tr>
+        <tr>
+            <td>Item 2</td>
+            <td><p>This is <strong>Item 2</strong> description.</p></td>
+        </tr>
+        <tr>
+            <td>Item 3</td>
+            <td><ul height="100px">
+            	<li>item 1</li>
+            	<li>item 2</li>
+            	<li>item 3</li>
+            	<li>item 4</li>
+            	<li>item 5</li>
+            	<li>item 6</li>
+            	<li>item 7</li>
+            	<li>item 8</li>
+            	<li>item 9</li>
+            	<li>item 10</li>
+            </ul></td>
+        </tr>
+        <tr>
+            <td>Item 4</td>
+            <td><ul>
+            	<li>item 1</li>
+            	<li>item 2</li>
+            	<li>item 3</li>
+            	<li>item 4</li>
+            	<li>item 5</li>
+            	<li>item 6</li>
+            	<li>item 7</li>
+            	<li>item 8</li>
+            	<li>item 9</li>
+            	<li>item 10</li>
+            </ul></td>
+        </tr>
+        <tr>
+            <td>Item 5</td>
+            <td><ul>
+            	<li>item 1</li>
+            	<li>item 2</li>
+            	<li>item 3</li>
+            	<li>item 4</li>
+            	<li>item 5</li>
+            	<li>item 6</li>
+            	<li>item 7</li>
+            	<li>item 8</li>
+            	<li>item 9</li>
+            	<li>item 10</li>
+            </ul></td>
+        </tr>
+        <tr>
+            <td>Item 6</td>
+            <td><ul>
+            	<li>item 1</li>
+            	<li>item 2</li>
+            	<li>item 3</li>
+            	<li>item 4</li>
+            	<li>item 5</li>
+            	<li>item 6</li>
+            	<li>item 7</li>
+            	<li>item 8</li>
+            	<li>item 9</li>
+            	<li>item 10</li>
+            </ul></td>
+        </tr>
+		
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="contentModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Cell Content</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Initialize DataTable
+    var table = $('#myTable').DataTable();
+
+    // Cell click event
+    $('#myTable tbody').on('click', 'td', function() {
+        var cellContent = $(this).html(); // Get HTML content of the clicked cell
+        $('#modalContent').html(cellContent); // Set modal content
+        $('#contentModal').modal('show'); // Show the modal
+    });
+});
+</script>
+
+</body>
+<!--
+Explanation of the Code
+HTML Table: The table has some sample data, including HTML content in the description cells.
+
+Bootstrap Modal: A modal is defined to show the content. It includes a header and a body section where the cell's content will be displayed.
+
+JavaScript:
+
+The DataTable is initialized with $('#myTable').DataTable().
+An event listener is added to the table's body for cell clicks. When a cell is clicked, the HTML content is retrieved and set into the modal, which is then displayed.
+Scrolling: The modal's body has a maximum height set with overflow enabled to ensure it scrolls if the content exceeds the height.
+
+Notes
+Ensure that any links in the HTML content are clickable by setting target="_blank" if you want them to open in a new tab.
+Customize the modal styles as needed to fit your application's design.
+</html>
+
+-->

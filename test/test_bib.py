@@ -297,10 +297,11 @@ class AmiCorpusTest(AmiAnyTest):
 
         cls = AmiCorpusTest
 
-        ipcc_top = Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc")
+        # ipcc_top = Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc")
+        # ipcc_top = Path(Resources.TEST_RESOURCES_DIR, )
 
-        assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
-        corpus_dir =  Path(ipcc_top, "cleaned_content").resolve() # cleans the filename (removes "..")
+        # assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
+        corpus_dir =  Path(Resources.TEST_RESOURCES_DIR, "cleaned_content") # cleans the filename (removes "..")
 
         corpus_files = FileLib.get_children(corpus_dir, dirx=True)
         labels = [REPORT, REMOTE_CHAPTER, REMOTE_PDF, CLEANED_CHAPTER, CHAP_WITH_IDS]
@@ -329,7 +330,7 @@ class AmiCorpusTest(AmiAnyTest):
             Datatables.add_body_scripts(HtmlLib.get_body(htmlx), table_id=table_id)
 
 
-        HtmlLib.write_html_file(htmlx, Path(ipcc_top, "cleaned_content", "datatables.html").resolve(), debug=True)
+        HtmlLib.write_html_file(htmlx, Path(corpus_dir, "datatables.html"), debug=True)
 
     # def create_table(self, cls, labels, table_id):
     #     htmlx = HtmlLib.create_html_with_empty_head_body()

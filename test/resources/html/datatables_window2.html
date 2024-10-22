@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <style>
+        .scrollable-list {
+            max-height: 100px; /* Set max height */
+            overflow-y: auto;  /* Enable vertical scrolling */
+            border: 1px solid #ccc; /* Optional styling */
+        }
+    </style>
+    <title>DataTable with Scrollable Lists</title>
+</head>
+<body>
+
+<table id="example" class="display">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Items</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Item 1</td>
+            <td>
+                <ul class="scrollable-list">
+                    <li>Item A</li>
+                    <li>Item B</li>
+                    <li>Item C</li>
+                    <li>Item D</li>
+                    <li>Item E</li>
+                    <li>Item F</li>
+                    <li>Item G</li>
+                </ul>
+            </td>
+        </tr>
+        <!-- Add more rows as needed -->
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    });
+</script>
+
+</body>
+</html>
