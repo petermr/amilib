@@ -56,6 +56,7 @@ class AmiCorpus():
     def __init__(self, indir=None, mkdir=False, make_descendants=False):
         """
 
+
         """
         self.source_dir = indir
         if mkdir and self.source_dir:

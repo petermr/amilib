@@ -151,7 +151,7 @@ class PygetpapersTest(AmiAnyTest):
         debug = False
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
-        assert 2 == len(infiles)
+        assert 50 == len(infiles)
         phrases = [
             "bananas",
             "South Asia",
@@ -243,6 +243,7 @@ class AmiCorpusTest(AmiAnyTest):
         report_glob_str = f"{str(cleaned_content_dir)}/*"
         logger.info(f"glob {report_glob_str}")
         report_dirs = FileLib.posix_glob(report_glob_str, recursive=False)
+        report_dirs = FileLib.get_children(cleaned_content_dir, dirx=True)
         assert len(report_dirs) == 7, f"child files are {report_dirs}"
         total_chapter_count = 0
         all_cleaned_files = []
@@ -270,6 +271,10 @@ class AmiCorpusTest(AmiAnyTest):
 
     def test_create_corpus_from_ipcc(self):
         """
+        FAILS needs reletive file addressing
+        """
+
+        """
         reads all IPCC htmls and creates a corpus/datatables
         """
         """https://github.com/semanticClimate/ipcc/tree/main/cleaned_content"""
@@ -294,18 +299,18 @@ class AmiCorpusTest(AmiAnyTest):
 
         ipcc_top = Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc")
 
-        assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
-        corpus_dir =  Path(ipcc_top, "cleaned_content").resolve() # cleans the filename (removes "..")
+        # assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
+        corpus_dir =  Path(Resources.TEST_RESOURCES_DIR, "cleaned_content") # cleans the filename (removes "..")
 
         corpus_files = FileLib.get_children(corpus_dir, dirx=True)
         labels = [REPORT, REMOTE_CHAPTER, REMOTE_PDF, CLEANED_CHAPTER, CHAP_WITH_IDS]
 
         datatables = True
         table_id = "table1"
-        htmlx, tbody = self.create_table(cls, labels, table_id)
+        htmlx, tbody = Datatables.create_table(labels, table_id)
 
         for corpus_file in sorted(corpus_files):
-            corpus_text = AmiCorpusContainer(corpus_file)
+            corpus_text = AmiCorpusContainer(corpus_file, "stem")
             report = Path(work).stem
             arx = "report/ar6/" if report.startswith("wg") else ""
             work = f"{IPCC_CH}/{arx}{report}"
@@ -324,7 +329,7 @@ class AmiCorpusTest(AmiAnyTest):
             Datatables.add_body_scripts(HtmlLib.get_body(htmlx), table_id=table_id)
 
 
-        HtmlLib.write_html_file(htmlx, Path(ipcc_top, "cleaned_content", "datatables.html").resolve(), debug=True)
+        HtmlLib.write_html_file(htmlx, Path(corpus_dir, "datatables.html"), debug=True)
 
     # def create_table(self, cls, labels, table_id):
     #     htmlx = HtmlLib.create_html_with_empty_head_body()
@@ -374,3 +379,11 @@ class AmiCorpusTest(AmiAnyTest):
         else:
             cls.add_cell_content(tr, text="?")
 
+
+    def test_make_ipcc_report_corpus(self):
+        """
+        read report dictory and make corpus
+        """
+        wg1_dir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1")
+        assert wg1_dir.exists(), f"wg1 {wg1_dir} should exist"
+        wg1_corpus = AmiCorpus()
