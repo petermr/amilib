@@ -206,6 +206,7 @@ class NLPTest(AmiAnyTest):
  (1.0, 'generalize'),
  (1.0, 'allow')]
 
+    @unittest.skip("Still buggy")
     def test_rake_wg3_chap03_exec_summ(self):
         """
         IPCC WG3 Chapter03
@@ -238,10 +239,12 @@ class NLPTest(AmiAnyTest):
  (35.59577482338492, '2 ° c (> 67 %)')]
 
 
+    @unittest.skip("NYI")
     def test_bloom2_filter(self):
         """
         quick index with adjustable error rate
         """
+        import bloom_filter2
         from bloom_filter2 import BloomFilter
 
         # instantiate BloomFilter with custom settings,

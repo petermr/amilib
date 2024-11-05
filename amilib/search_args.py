@@ -140,7 +140,8 @@ class SearchArgs(AbstractArgs):
         """
         uses dictionary from self.dictfile, or list of words, to markup self.inpath and write to self.outpath:
         """
-        logger.debug(f"search {self.inpath} with {self.dictfile} or {len(self.words)} words and output to {self.outpath}")
+        # assert self.words, "must have self.words for search"
+        logger.debug(f"search {self.inpath} with {self.dictfile} or {len(self.words) if self.words else 'NO'} words and output to {self.outpath}")
         if self.inpath and (self.words or self.dictfile) and self.outpath:
             self.make_dictionary_markup_file(self.inpath, self.dictfile, self.outpath)
 

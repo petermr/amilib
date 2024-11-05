@@ -2,6 +2,7 @@
 Utilities (mainly classmethods)
 """
 import collections
+import logging
 from pathlib import Path
 
 import configparser
@@ -9,12 +10,12 @@ import numpy as np
 import math
 import csv
 
-from amilib.util import Util
+# from amilib.util import Util
 
 X = 0
 Y = 1
 
-logger = Util.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class AmiUtil:

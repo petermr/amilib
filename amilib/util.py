@@ -15,7 +15,7 @@ from enum import Enum
 from pathlib import Path
 
 import pandas as pd
-import pyvis
+# import pyvis
 import requests
 from lxml import html
 
@@ -434,6 +434,7 @@ class Util:
         :param outpath: file to draw graph to (def None)
         uses pyvis_graph.force_atlas_2based() for layout (will give moer options later
         """
+        import pyvis
         try:
             with open(str(incsv), "r") as f:
                 data = pd.read_csv(f)

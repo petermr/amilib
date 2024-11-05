@@ -1,6 +1,7 @@
 chardet
 idna
 geopy
+graphviz
 lxml
 matplotlib
 networkx
@@ -11,12 +12,15 @@ pandas
 pdfminer.six
 pdfplumber==0.11.0
 Pillow
+pytest
 pyvis
+rake-nltk
 requests
-scikit_learn
+scikit-learn
 selenium
 setuptools
 SPARQLWrapper
 tinycss
 tkinterweb
-webdriver_manager
+webdriver-manager
+yake
