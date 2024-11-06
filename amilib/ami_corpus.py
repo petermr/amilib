@@ -96,7 +96,7 @@ class AmiCorpus():
     def root_dir(self):
         return self.ami_container.file
 
-    def make_descendants(self, file):
+    def make_descendants(self, file=None):
         """
         creates AmiCorpusContainers for directory tree
         :param ami_corpus: top-level corpus or None
@@ -104,6 +104,8 @@ class AmiCorpus():
         :param source_dir: each directory in tree
         :return; None
         """
+        if file is None:
+            file = self.root_dir
         if file is None or not file.is_dir():
             logger.error(f"Cannot make file children for {file}")
             return
