@@ -114,7 +114,7 @@ class PygetpapersTest(AmiAnyTest):
 
     def test_make_datatables_cli(self):
         """
-
+        Reads json output of pygetpapers and creates datatables
         """
         indir = Path(Resources.TEST_RESOURCES_DIR, "json", "district_heating")
         args = ["HTML", "--indir", str(indir), "--operation", "DATATABLES"]
@@ -185,26 +185,37 @@ class AmiCorpusTest(AmiAnyTest):
         creates a simple tree of containers and documents with token content
         """
         corpus_dir = Path(Resources.TEMP_DIR, "corpus")
+        assert corpus_dir.exists()
 
         corpus = AmiCorpus(corpus_dir, mkdir=True)
 
         report1 = corpus.create_corpus_container(
-            Path(corpus_dir, "report1"), type="report", mkdir=True)
+            Path(corpus_dir, "report1"), bib_type="report", mkdir=True)
+        assert str(report1.file.absolute()) == str(Path(Resources.TEMP_DIR, "corpus", "report1").absolute())
+        assert report1.file.exists()
 
-        chapter11 = report1.create_corpus_container("chapter11", type="chapter", mkdir=True)
+        chapter11 = report1.create_corpus_container("chapter11", bib_type="chapter", mkdir=True)
+        assert str(chapter11.file.absolute()) == str(
+            Path(Resources.TEMP_DIR, "corpus", "report1", "chapter11").absolute())
         html11 = chapter11.create_document("text.html", text="chapter11")
+        assert str(html11.absolute()) == str(Path(
+            Resources.TEMP_DIR, "corpus", "report1", "chapter11", "text.html").absolute())
 
-        chapter12 = report1.create_corpus_container("chapter12", type="chapter", mkdir=True)
+        chapter12 = report1.create_corpus_container("chapter12", bib_type="chapter", mkdir=True)
+        assert str(chapter12.file.absolute()) == str(Path(Resources.TEMP_DIR, "corpus", "report1", "chapter12").absolute())
         html12 = chapter12.create_document("text.html", text="chapter12")
+        assert str(html12.absolute()) == str(Path(
+            Resources.TEMP_DIR, "corpus", "report1", "chapter12", "text.html").absolute())
 
         report2 = corpus.create_corpus_container(Path(corpus_dir, "report2"), mkdir=True)
-        chapter21 = report2.create_corpus_container("chapter21", type="chapter", mkdir=True)
+        assert str(report2.file.absolute()) == str(Path(Resources.TEMP_DIR, "corpus", "report2"))
+        chapter21 = report2.create_corpus_container("chapter21", bib_type="chapter", mkdir=True)
         html21 = chapter21.create_document("text.html", text="chapter21")
-        chapter22 = report2.create_corpus_container("chapter22", type="chapter", mkdir=True)
+
+        chapter22 = report2.create_corpus_container("chapter22", bib_type="chapter", mkdir=True)
         html22 = chapter22.create_document("text.html", text="chapter22")
-        assert Path(html22) == Path(
-            Resources.TEMP_DIR, "corpus", "report2", "chapter22", "text.html")
         assert html22.exists()
+        assert str(html22.absolute()) == str(Path(Resources.TEMP_DIR, "corpus", "report2", "chapter22", "text.html"))
 
     def test_unfccc_corpus(self):
         """
@@ -213,7 +224,7 @@ class AmiCorpusTest(AmiAnyTest):
         unfccc_dir = Path(Resources.TEST_RESOURCES_DIR, "unfccc", "unfcccdocuments1")
         assert unfccc_dir.exists()
         corpus = AmiCorpus(unfccc_dir, mkdir=False, make_descendants=True)
-        html_files = FileLib.list_files(corpus.source_dir, globstr="./**/*.html")
+        html_files = FileLib.list_files(corpus.root_dir, globstr="./**/*.html")
 
         table_id = "table1"
         # labels = [REPORT, REMOTE_CHAPTER, REMOTE_PDF, CLEANED_CHAPTER, CHAP_WITH_IDS]
@@ -380,3 +391,13 @@ class AmiCorpusTest(AmiAnyTest):
         else:
             cls.add_cell_content(tr, text="?")
 
+
+    def test_make_ipcc_report_corpus(self):
+        """
+        read report dictory and make corpus
+        """
+        wg1_dir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1")
+        assert wg1_dir.exists(), f"wg1 {wg1_dir} should exist"
+        wg1_corpus = AmiCorpus(wg1_dir)
+        assert wg1_corpus.root_dir == wg1_dir
+        wg1_corpus.make_descendants()

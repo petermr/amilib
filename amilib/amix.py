@@ -409,7 +409,7 @@ class AmiLib:
         version = '0.3.0a1'  # 2024-09-17 # added SEARCH option
         version = '0.3.0a2'  # 2024-09-17 # removed import bug
         version = '0.3.0a3'  # 2024-09-17 # ensure compatibility with amiclimate
-        version = '0.3.0a4'  # 2024-09-18 # 
+        version = '0.3.0'    # 2024-09-18 # 
         version = '0.3.1'    # 2024-09-18 # correct import bugs 
         version = '0.3.2'    # 2024-09-18 # correct import bugs
         version = '0.3.3'    # 2024-09-18 # correct import bugs

@@ -26,6 +26,8 @@ logger = Util.get_logger(__name__)
 
 class AmiCorpus():
     """
+    supports a tree of directories and leaf documents with wrappers AmiCorpus
+    (top dir) and AmiCorpusCompnents (subdirectories)
 
     """
     EUPMC_TRANSFORM = {
@@ -53,18 +55,70 @@ class AmiCorpus():
 
     }
 
-    def __init__(self, indir=None, mkdir=False, make_descendants=False):
+    def __init__(self, topdir, make_descendants=False, mkdir=False,  **kwargs):
         """
+        create new Corpus, withn optional input of data
+        :param indir: Input directory with files/subdis as possible corpus components
+        :param mkdir: make indir if doesn't exist (default=False)
+        :param make_descendants: makes AmiCorpusContianers for directories on tree
+        :param kwargs: dict of per-corpus user-specified properties
 
         """
-        self.source_dir = indir
-        if mkdir and self.source_dir:
-            if not Path(self.source_dir).is_dir():
-                Path(self.source_dir).mkdir()
-        if make_descendants:
-            self.make_descendants()
+        if not topdir or not topdir.is_dir():
+            raise ValueError("AmiCorpus() requires valid directory")
+
+        self.container_by_file = dict()
+        # rootnode
+        self.ami_container = self.create_corpus_container(
+            topdir, make_descendants=make_descendants, mkdir=mkdir)
+        self.make_special(kwargs)
         self.eupmc_results = None
 
+    def create_corpus_container(self, file, bib_type="None", make_descendants=False, mkdir=False):
+        """
+        create container as child of self
+        :param file: file or dir contained by container
+
+        """
+        if file is None:
+            logger.error("Container has no file")
+            return None
+
+        container = AmiCorpusContainer(self, file)
+        container.bib_type = bib_type
+        if not file.exists() and mkdir:
+            Path(file).mkdir()
+        if make_descendants:
+            self.make_descendants(file)
+        return container
+
+    @property
+    def root_dir(self):
+        return self.ami_container.file
+
+    def make_descendants(self, file=None):
+        """
+        creates AmiCorpusContainers for directory tree
+        :param ami_corpus: top-level corpus or None
+        :param parent_dir: top-level directory of corpus
+        :param source_dir: each directory in tree
+        :return; None
+        """
+        if file is None:
+            file = self.root_dir
+        if file is None or not file.is_dir():
+            logger.error(f"Cannot make file children for {file}")
+            return
+        files = FileLib.get_children(file)
+        for f in files:
+            container = AmiCorpusContainer(self, f)
+            container.make_descendants()
+
+    def make_special(self, kwargs):
+        """Horrible - us dependency injectiom
+        """
+        if "eupmc" in kwargs:
+            self.eupmc_results = kwargs["eupmc"]
     def get_datatables(self):
         """
         create a JQuery datatables from eumpc_reults.json
@@ -278,60 +332,7 @@ class AmiCorpus():
                 a.attrib["href"] = hit
         return html
 
-    def create_corpus_container(self, container_dir, mkdir=False, type="unknown"):
-        """
-        create container as child of self
-        :param container_dir: new container
-        """
-        if container_dir is not None:
-            container = AmiCorpusContainer(self, container_dir)
-            # logger.debug(f"container_dir: {container_dir}")
-            path = Path(container_dir)
-            if not path.exists():
-                path.mkdir()
-            # logger.debug(f"container exists {path}")
-            return container
 
-    def make_descendants(self):
-        self._make_descendants(self, self.source_dir)
-
-    @classmethod
-    def _make_descendants(cls, parent, source_dir):
-        files = FileLib.get_children(source_dir, dirx=False)
-        for file in files:
-            logger.debug(f"file: {file}")
-        dirs = FileLib.get_children(source_dir, dirx=True)
-        for dirx in dirs:
-            logger.debug(f"dir: {dirx}")
-            container = AmiCorpusContainer(parent, Path(dirx).stem)
-            container.make_descendants()
-
-    # @classmethod
-    # def add_cell_content(cls, tr, cell_type="td", text=None, title=None, href=None):
-    #     """
-    #     creates cell content
-    #     :param tr: parent row elemnt
-    #     :param cell_type: "td" or "th" (td by default)
-    #     :param text: text content or <a>content.
-    #     :param title: cell title (will be tooltip)
-    #     :param href: target for hyperlink. content is text or 'LINK'
-    #     :return: the cell
-    #     """
-    #
-    #     tcell = ET.SubElement(tr, cell_type)
-    #     if href is not None:
-    #         if text is None:
-    #             text = "LINK"
-    #         a = ET.SubElement(tcell, "a")
-    #         a.attrib["href"] = href
-    #         a.text = text
-    #     elif text is not None:
-    #         tcell.text = text
-    #     if title is not None:
-    #         tcell.title = title
-    #
-    #     return tcell
-    #
     @classmethod
     def add_content_for_files(cls, files, tr):
         if files:
@@ -341,50 +342,62 @@ class AmiCorpus():
 
 
 
-
 class AmiCorpusContainer:
-    def __init__(self, parent_container, dir_name, type="unknown", mkdir=False, exist_ok=True):
+    def __init__(self, ami_corpus, file, bib_type="unknown", mkdir=False, exist_ok=True):
         """
-        create corpusContainer with parent and child dir name
-        :param parent_container:
-        :param dir_name: name relative to self.source_dir
+        create corpusContainer for directory-structured corpus
+        :param ami_corpus: corpus to which this belonds
+        :param file_node: file/dir on filesystem
+        :param bib_type: type of container (e.g. report
         """
-        if not parent_container or not dir_name:
-            logger.error(f"None arbguments")
+        if (t := type(ami_corpus)) is not AmiCorpus:
+            raise ValueError(f"ami_corpus has wrong type {t}")
+        self.ami_corpus = ami_corpus
+        self.file = file
+        self.ami_corpus.container_by_file[self.file] = self
+        if not file:
+            logger.error(f"No file_node argument")
             return None
-        self.parent_container = parent_container
-        self.source_dir = Path(parent_container.source_dir, dir_name)
-        if mkdir and self.source_dir:
-            Path(self.source_dir).mkdir(exist_ok=exist_ok)
-        self.type = type
+        # if mkdir and self.source_dir:
+        #     Path(self.source_dir).mkdir(exist_ok=exist_ok)
+        self.bib_type = bib_type
         self.child_container_list = []
         self.child_document_list = []
 
-    def create_corpus_container(self, filename, type="unknown", mkdir=False):
+    @property
+    def child_containers(self):
+        child_containers = []
+        if self.ami_corpus and self.ami_corpus.source_dir:
+            child_nodes = FileLib.get_children()
+            for child_node in child_nodes:
+                child_container = AmiCorpusContainer(self.ami_corpus, child_node)
+                child_container.type = "" if Path(child_node).is_dir() else "file"
+                child_containers.append(child_container)
+        return child_containers
+
+    def create_corpus_container(self, filename, bib_type="unknown", make_descendants=False, mkdir=False):
         """
         creates a child container and optionally its actual directory
         """
         if not filename :
             logger.error("filename is None")
             return None
-        path = Path(self.source_dir, filename)
-        if not path.exists():
-            if mkdir:
-                path.mkdir()
+        path = Path(self.file, filename)
+        if mkdir and not path.exists():
+            path.mkdir()
         else:
             if not path.is_dir():
                 logger.error(f"{path} exists but is not a directory")
                 return None
-        corpus_container = AmiCorpusContainer(self, path, type=type, mkdir=mkdir)
+        corpus_container = AmiCorpusContainer(self.ami_corpus, path, bib_type=bib_type, mkdir=mkdir)
         self.child_container_list.append(corpus_container)
         return corpus_container
 
-    def create_document(self, name, text=None, type="unknown"):
+    def create_document(self, filename, text=None, type="unknown"):
         """
         creates document file with name and self as parent
         """
-        document_file = Path(self.source_dir, name)
-        # logger.debug(f"created {document_file}")
+        document_file = Path(self.file, filename)
         document_file.touch()
         if text:
             with open(document_file, "w") as f:
@@ -394,4 +407,80 @@ class AmiCorpusContainer:
         return document_file
 
     def make_descendants(self):
-        AmiCorpus._make_descendants(self, self.source_dir)
+        if (self.file and self.file.is_dir()):
+            self.ami_corpus.make_descendants(self.file)
+
+# to create a hierarchical structure for your Corpus element in Python, you'll need to define a few classes that represent the Corpus, Container, and their relationships. Here's a simple implementation that achieves this:
+#
+# python
+# Copy code
+class Container:
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+        self.parent = None
+
+    def add_child(self, child):
+        child.parent = self
+        self.children.append(child)
+
+    def __repr__(self):
+        return f"Container({self.name}, children={len(self.children)})"
+
+
+class Corpus(Container):
+    def __init__(self, directory):
+        super().__init__(directory)
+        # Assume directory is the top-level directory wrapped by this Corpus
+        self.directory = directory
+
+    def __repr__(self):
+        return f"Corpus({self.directory})"
+
+
+# Example Usage
+if __name__ == "__main__":
+    # Create a Corpus for the top directory
+    root_corpus = Corpus("root_directory")
+
+    # Create Containers for subdirectories/files
+    sub_container1 = Container("sub_directory1")
+    sub_container2 = Container("sub_directory2")
+
+    # Add containers as children to the root corpus
+    root_corpus.add_child(sub_container1)
+    root_corpus.add_child(sub_container2)
+
+    # You can further add children to the sub_containers
+    file1 = Container("file1.txt")
+    sub_container1.add_child(file1)
+
+    # Display the structure
+    print(root_corpus)
+    for child in root_corpus.children:
+        print(f"  - {child}")
+        for grandchild in child.children:
+            print(f"    - {grandchild}")
+# Explanation
+# Container Class:
+#
+# Holds a name, a list of children, and a reference to its parent.
+# The add_child method adds a child and sets its parent to the current container.
+# Corpus Class:
+#
+# Inherits from Container and represents the top-level directory (or corpus).
+# It takes a directory name during initialization.
+# Example Usage:
+#
+# Creates a Corpus for the top directory.
+# Adds child Container elements (subdirectories or files).
+# Prints the structure of the corpus, including its children.
+# Usage
+# You can expand this structure by adding methods for traversing, searching,
+# or manipulating the corpus as needed.
+# Each Container instance can easily access its parent and children,
+# allowing you to manage the hierarchical structure effectively.
+
+
+
+
