@@ -421,7 +421,7 @@ class AmiLib:
         version = '0.3.9'    # 2024-09-29 # fixed bugs and brought search from amiclimate
         version = '0.3.10a1'
         version = '0.3.10a6'
-
+        version = '0.3.11a5' # 2024-11-06 add corpus framework
         # logging.warn(f"VERSION {version}")
         return version
 

@@ -1,3 +1,4 @@
+from collections import Counter
 from pathlib import Path
 import lxml.etree as ET
 
@@ -43,6 +44,32 @@ class SearchTest(AmiAnyTest):
         pyami = AmiLib()
         pyami.run_command(args)
         assert outpath.exists(), f"{outpath} should exist"
+        html_out = HtmlLib.parse_html(outpath)
+
+        # count annotations
+        """
+        <a style="border:solid 1px; background: #ffbbbb;" 
+        href="/Users/pm286/workspace/amilib/test/resources/dictionary/climate/carbon_cycle.xml"
+         title="anthropogenic">anthropogenic</a>
+         """
+        titles = html_out.xpath(".//a[@href]/@title")
+        assert len(titles) == 62
+        title_counter = Counter()
+        for title in titles:
+            title_counter[title] += 1
+        assert title_counter == Counter({
+             'carbon_dioxide_removal': 20,
+             'anthropogenic': 13,
+             'sequestration': 13,
+             'bioenergy_with_carbon_capture_and_storage': 7,
+             'aerosols': 4,
+             'tropospheric': 2,
+             'solar_radiation_modification': 1,
+             'evapotranspiration': 1,
+             'permafrost': 1
+             })
+
+
 
     def test_annotate_file_with_phrases_from_dict(self):
         """

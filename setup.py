@@ -36,7 +36,7 @@ requirements = [
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.3.10a6',
+    version='0.3.11a5',
     description='document and dictionary download, cleaning, management',
     long_description_content_type='text/markdown',
     long_description=readme,
@@ -61,11 +61,12 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.8',
 #        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.12',
     ],
     entry_points={
         'console_scripts': [
             'amilib=amilib.amix:main',
         ],
     },
-    python_requires='>=3.7<3.11',
+    python_requires='>=3.7,<=3.12',
 )
