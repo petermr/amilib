@@ -4,6 +4,7 @@ import lxml.etree as ET
 
 from amilib.ami_html import HtmlLib
 from amilib.amix import AmiLib
+from amilib.file_lib import FileLib
 from amilib.util import Util
 
 from test.resources import Resources
@@ -33,41 +34,24 @@ class SearchTest(AmiAnyTest):
         dictpath = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.xml")
         assert dictpath.exists()
         outpath = Path(Resources.TEMP_DIR, "annotate", f"{stem}.html")
+        reportpath = Path(Resources.TEMP_DIR, "annotate", f"{stem}.report.html")
         args = ([
             "SEARCH",
             "--inpath", inpath,
             "--dict", dictpath,
             "--outpath", outpath,
-            "--operation", "annotate"
+            "--operation", "annotate",
+            "--report", reportpath,
 
             ])
         pyami = AmiLib()
         pyami.run_command(args)
         assert outpath.exists(), f"{outpath} should exist"
-        html_out = HtmlLib.parse_html(outpath)
+        assert reportpath.exists()
 
         # count annotations
-        """
-        <a style="border:solid 1px; background: #ffbbbb;" 
-        href="/Users/pm286/workspace/amilib/test/resources/dictionary/climate/carbon_cycle.xml"
-         title="anthropogenic">anthropogenic</a>
-         """
-        titles = html_out.xpath(".//a[@href]/@title")
-        assert len(titles) == 62
-        title_counter = Counter()
-        for title in titles:
-            title_counter[title] += 1
-        assert title_counter == Counter({
-             'carbon_dioxide_removal': 20,
-             'anthropogenic': 13,
-             'sequestration': 13,
-             'bioenergy_with_carbon_capture_and_storage': 7,
-             'aerosols': 4,
-             'tropospheric': 2,
-             'solar_radiation_modification': 1,
-             'evapotranspiration': 1,
-             'permafrost': 1
-             })
+        title_counter = FileLib.read_counter_from_file(reportpath)
+        assert title_counter == str([('carbon_dioxide_removal', 20), ('anthropogenic', 13), ('sequestration', 13), ('bioenergy_with_carbon_capture_and_storage', 7), ('aerosols', 4), ('tropospheric', 2), ('solar_radiation_modification', 1), ('evapotranspiration', 1), ('permafrost', 1)])
 
 
 

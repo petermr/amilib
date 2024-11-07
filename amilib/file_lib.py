@@ -669,6 +669,16 @@ class FileLib:
         if debug:
             print(f"wrote {path}")
 
+    @classmethod
+    def read_counter_from_file(cls, counterpath):
+        """
+        read serialised counter
+        """
+        if Path(counterpath).exists():
+            with open(counterpath, "r") as f:
+                counter_string = f.read()
+                return counter_string
+        return None
 
 
 # see https://realpython.com/python-pathlib/

@@ -1,6 +1,7 @@
 import argparse
 import logging
 import textwrap
+from collections import Counter
 from pathlib import Path
 
 from amilib.ami_args import AbstractArgs, AmiArgParser
@@ -15,6 +16,7 @@ INPATH = "inpath"
 NOINPUTSTYLES = "no_input_styles"
 OPERATION = "operation"
 OUTPATH = "outpath"
+REPORTPATH = "report"
 SEARCH = "SEARCH"
 TITLE = "title"
 WORDS = "words"
@@ -32,6 +34,7 @@ class SearchArgs(AbstractArgs):
         self.dictfile = None
         self.operation = None
         self.parser = None
+        self.reportpath = None
         self.title = UNKNOWN
         self.words = None
 
@@ -74,6 +77,9 @@ class SearchArgs(AbstractArgs):
                                  )
         self.parser.add_argument(f"--{OUTPATH}", type=str, nargs="+",
                                  help="output file ")
+        self.parser.add_argument(f"--{REPORTPATH}", type=str,
+                                 help="path for reporting operations (e.g .lists of extracted terms)")
+
         self.parser.add_argument(f"--{TITLE}", type=str,
                                  default="unknown",
                                  help="internal title for dictionary, normally same as stem of dictionary file")
@@ -100,8 +106,10 @@ class SearchArgs(AbstractArgs):
         self.inpath = self.arg_dict.get(INPATH)
         self.outpath = self.arg_dict.get(OUTPATH)
         self.operation = self.arg_dict.get(OPERATION)
+        self.reportpath = self.arg_dict.get(REPORTPATH)
         self.title = self.arg_dict.get(TITLE)
         self.words = self.arg_dict.get(WORDS)
+
         logger.info(f"read arguments\n"
                     f"inpath: {self.inpath}\n"
                     f"dictfile: {self.dictfile}\n"
@@ -169,8 +177,11 @@ class SearchArgs(AbstractArgs):
             logger.error("Must give dictfile or words")
 
         # TODO this should not be in AmiDictionary
+        if self.reportpath:
+            counter = Counter()
         AmiDictionary.markup_html_file_with_words_or_dictionary(
-            str(inpath), str(outpath), remove_styles=self.remove_input_styles,  html_dict_path=dictfile, phrases=self.words)
+            str(inpath), str(outpath), remove_styles=self.remove_input_styles,  html_dict_path=dictfile,
+            phrases=self.words, counter=counter, reportpath=self.reportpath)
         # logger.info(f"wrote annotated file {outpath}")
 
     @classmethod
