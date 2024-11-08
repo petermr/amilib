@@ -40,7 +40,7 @@ class SearchTest(AmiAnyTest):
             "--inpath", inpath,
             "--dict", dictpath,
             "--outpath", outpath,
-            "--operation", "annotate",
+            "--operation", "annotate", "counts",
             "--report", reportpath,
 
             ])

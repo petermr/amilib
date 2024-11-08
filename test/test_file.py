@@ -232,6 +232,33 @@ class File0Test(AmiAnyTest):
  'exacerbating']
 
 
+    def test_relative_pathname(self):
+        """
+        convert absolute pathname to relative to another path
+        some of this is in Python 3.12 but we'll support earlier versions
+        """
+        abspath = Path("/a/b/c/d/e.txt")
+        refpath = Path("/a/b/c/")
+        diffpath = FileLib.get_reletive_path(abspath, refpath)
+        assert str(diffpath) == "d/e.txt"
+
+        diffpath = FileLib.get_reletive_path(refpath, abspath)
+        assert str(diffpath) == "../.."
+
+        # dont' use Python 3.12 walk_up
+        refpath = Path("/a/b/c/x/y.txt")
+        try:
+            diffpath = FileLib.get_reletive_path(abspath, refpath, walk_up=False)
+        except ValueError as e:
+            assert str(e) == "'/a/b/c/d/e.txt' is not in the subpath of '/a/b/c/x/y.txt'"
+
+        # use Python 3.12 walk_up
+        refpath = Path("/a/b/c/x/y/z.txt")
+
+        diffpath = FileLib.get_reletive_path(abspath, refpath, walk_up=True)
+        assert str(diffpath) == ("../../../d/e.txt")
+        diffpath = FileLib.get_reletive_path(refpath, abspath, walk_up=True)
+        assert str(diffpath) == ("../../x/y/z.txt")
 
 
 def main():

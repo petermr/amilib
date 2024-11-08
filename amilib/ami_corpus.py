@@ -236,7 +236,7 @@ class AmiCorpus():
                 caption.text += f"; end: {enddate}"
 
     @classmethod
-    def create_hit_html(cls, infiles, phrases=None, outfile=None, xpath=None, debug=False):
+    def search_files_with_phrases(cls, infiles, phrases=None, outfile=None, xpath=None, debug=False):
         all_paras = []
         all_dict = dict()
         hit_dict = defaultdict(list)
@@ -340,6 +340,29 @@ class AmiCorpus():
         else:
             HtmlLib.add_cell_content(tr, text="?")
 
+    def list_files(self, globstr):
+        """
+        finds files in corpus starting at root_dir
+        :param globstr:
+        """
+        if globstr and self.root_dir:
+            return FileLib.list_files(self.root_dir, globstr=globstr)
+        return []
+
+    def create_datatables_html_with_filenames(self, html_glob, labels, table_id, path_offset=None):
+        """
+        :param html_glob: globstring to find html files
+        :labels
+        """
+        html_files = sorted(self.list_files(globstr=html_glob))
+        self.datables_html, tbody = Datatables._create_html_for_datatables(labels, table_id)
+
+        for html_file in html_files:
+            if path_offset:
+                offset = FileLib.get_reletive_path(html_file, path_offset, walk_up=True)
+            tr = ET.SubElement(tbody, "tr")
+            HtmlLib.add_cell_content(tr, text=offset, href=f"{offset}")
+        return self.datables_html
 
 
 class AmiCorpusContainer:

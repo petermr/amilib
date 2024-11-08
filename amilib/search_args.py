@@ -7,13 +7,14 @@ from pathlib import Path
 from amilib.ami_args import AbstractArgs, AmiArgParser
 from amilib.ami_dict import AmiDictionary
 from amilib.util import Util
-from amilib.ami_html import (HtmlLib)
+from amilib.ami_html import (HtmlLib, HtmlUtil)
 
 ANNOTATE = "annotate"
 DICT = "dict"
 INDEX = "index"
 INPATH = "inpath"
 NOINPUTSTYLES = "no_input_styles"
+COUNTS = "counts"
 OPERATION = "operation"
 OUTPATH = "outpath"
 REPORTPATH = "report"
@@ -25,6 +26,68 @@ UNKNOWN = "unknown"
 
 logger = Util.get_logger(__name__)
 logger.setLevel(logging.INFO)
+
+
+class AmiSearch:
+
+    @classmethod
+    def markup_html_file_with_words_or_dictionary(cls, inpath, outpath, html_dict_path=None,
+                                                  phrases=None, remove_styles=False, make_counter=True, reportpath=None):
+        """
+        read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
+        markup paras, and write marked  file
+        :param inpath: to be marked up
+        :param outpath: resulting marked file
+        :param html_dict_path: dictiomary in HTML format; if None, requires phrases
+        :param phrases: avoid AmiDictionary by giving list of phrasee, default None requires dictionary
+        :param counter: empty Counter() to be filled
+        :param reportpath: file to write counter to
+        :return: HTML element marked_up
+        """
+        assert Path(inpath).exists()
+        paras = HtmlLib._extract_paras_with_ids(inpath)
+        if remove_styles:
+            HtmlUtil.remove_elems(paras[0], "/html/head/style")
+
+        if not phrases:
+            phrases = AmiDictionary._read_phrases_from_dictionary(html_dict_path)
+        phrase_counter_by_para_id = HtmlLib.search_phrases_in_paragraphs(
+            paras, phrases, markup=html_dict_path)
+        logger.info(f"phrase_counter_by_para_id {phrase_counter_by_para_id}")
+        logger.info(f"keys: {len(phrase_counter_by_para_id)}")
+        # write marked_up html. The 'paras' are views on the original file
+        html_elem = paras[0].xpath("/html")[0]
+        HtmlLib.write_html_file(html_elem, outpath, debug=True)
+        assert Path(outpath).exists()
+        if make_counter:
+            counter = AmiSearch.add_counts_from_outpath(outpath)
+            if reportpath:
+                most_common = counter.most_common()
+                logger.info(f"most common: {most_common}")
+                with open(reportpath, "w") as f:
+                    f.write(str(most_common))
+        return html_elem
+
+    @classmethod
+    def add_counts_from_outpath(cls, htmlpath):
+        """
+        reads annotated HTML file and counts annotations (a[@href and @title]s
+        :param htmlpath: HTML file with annotations
+        :return: counter with accumulated a@href counts
+        """
+        # count annotations
+        """
+        <a style="border:solid 1px; background: #ffbbbb;" 
+        href="/Users/pm286/workspace/amilib/test/resources/dictionary/climate/carbon_cycle.xml"
+         title="anthropogenic">anthropogenic</a>
+         """
+        htmlx = HtmlLib.parse_html(htmlpath)
+        titles = htmlx.xpath(".//a[@href]/@title")
+        counter = Counter()
+        for title in titles:
+            counter[title] += 1
+
+        return counter
 
 class SearchArgs(AbstractArgs):
     pass
@@ -68,7 +131,7 @@ class SearchArgs(AbstractArgs):
         self.parser.add_argument(f"--{INPATH}", type=str, nargs="+", help="path for input file(s)")
         self.parser.add_argument(f"--{OPERATION}", type=str, nargs="+",
                                  default=ANNOTATE,
-                                 choices=[ANNOTATE, INDEX, NOINPUTSTYLES],
+                                 choices=[ANNOTATE, COUNTS, INDEX, NOINPUTSTYLES],
                                  help=f"operation: "
                                       f"'{NOINPUTSTYLES}' needs '{INPATH} ; remove styles from inpath\n"
                                       f"'{ANNOTATE}' needs '{INPATH} and {DICT}'; annotates words/phrases\n"
@@ -110,6 +173,10 @@ class SearchArgs(AbstractArgs):
         self.title = self.arg_dict.get(TITLE)
         self.words = self.arg_dict.get(WORDS)
 
+        self.remove_input_styles = NOINPUTSTYLES in self.operation
+        self.counts = COUNTS in self.operation
+
+
         logger.info(f"read arguments\n"
                     f"inpath: {self.inpath}\n"
                     f"dictfile: {self.dictfile}\n"
@@ -122,6 +189,7 @@ class SearchArgs(AbstractArgs):
             logger.warning("No operation given")
             return
         self.remove_input_styles = NOINPUTSTYLES in self.operation
+        self.counts = COUNTS in self.operation
 
         if self.words is not None:
             self.words = Util.input_list_of_words(self.words)
@@ -177,11 +245,9 @@ class SearchArgs(AbstractArgs):
             logger.error("Must give dictfile or words")
 
         # TODO this should not be in AmiDictionary
-        if self.reportpath:
-            counter = Counter()
-        AmiDictionary.markup_html_file_with_words_or_dictionary(
+        AmiSearch.markup_html_file_with_words_or_dictionary(
             str(inpath), str(outpath), remove_styles=self.remove_input_styles,  html_dict_path=dictfile,
-            phrases=self.words, counter=counter, reportpath=self.reportpath)
+            phrases=self.words, make_counter=self.counts, reportpath=self.reportpath)
         # logger.info(f"wrote annotated file {outpath}")
 
     @classmethod

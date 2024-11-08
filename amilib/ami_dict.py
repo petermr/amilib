@@ -1729,43 +1729,43 @@ class AmiDictionary:
         style = ET.SubElement(head, "style")
         style.text = ("div[role] {border:solid 1px;margin:1px;}")
 
-    @classmethod
-    def markup_html_file_with_words_or_dictionary(cls, inpath, outpath, html_dict_path=None,
-                                                  phrases=None, remove_styles=False, counter=None, reportpath=None):
-        """
-        read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
-        markup paras, and write marked  file
-        :param inpath: to be marked up
-        :param outpath: resulting marked file
-        :param html_dict_path: dictiomary in HTML format; if None, requires phrases
-        :param phrases: avoid AmiDictionary by giving list of phrasee, default None requires dictionary
-        :param counter: empty Counter() to be filled
-        :param reportpath: file to write counter to
-        :return: HTML element marked_up
-        """
-        assert Path(inpath).exists()
-        paras = HtmlLib._extract_paras_with_ids(inpath)
-        if remove_styles:
-            HtmlUtil.remove_elems(paras[0], "/html/head/style")
-
-        if not phrases:
-            phrases = cls._read_phrases_from_dictionary(html_dict_path)
-        phrase_counter_by_para_id = HtmlLib.search_phrases_in_paragraphs(
-            paras, phrases, markup=html_dict_path)
-        logger.info(f"phrase_counter_by_para_id {phrase_counter_by_para_id}")
-        logger.info(f"keys: {len(phrase_counter_by_para_id)}")
-        # write marked_up html. The 'paras' are views on the original file
-        html_elem = paras[0].xpath("/html")[0]
-        HtmlLib.write_html_file(html_elem, outpath, debug=True)
-        assert Path(outpath).exists()
-        if counter is not None:
-            cls.add_counts_from_outpath(outpath, counter)
-            if reportpath:
-                most_common = counter.most_common()
-                logger.info(f"most common: {most_common}")
-                with open(reportpath, "w") as f:
-                    f.write(str(most_common))
-        return html_elem
+    # @classmethod
+    # def markup_html_file_with_words_or_dictionary(cls, inpath, outpath, html_dict_path=None,
+    #                                               phrases=None, remove_styles=False, counter=None, reportpath=None):
+    #     """
+    #     read semantic HTML file, extract paras with ids, create AmiDictionary from HTML,
+    #     markup paras, and write marked  file
+    #     :param inpath: to be marked up
+    #     :param outpath: resulting marked file
+    #     :param html_dict_path: dictiomary in HTML format; if None, requires phrases
+    #     :param phrases: avoid AmiDictionary by giving list of phrasee, default None requires dictionary
+    #     :param counter: empty Counter() to be filled
+    #     :param reportpath: file to write counter to
+    #     :return: HTML element marked_up
+    #     """
+    #     assert Path(inpath).exists()
+    #     paras = HtmlLib._extract_paras_with_ids(inpath)
+    #     if remove_styles:
+    #         HtmlUtil.remove_elems(paras[0], "/html/head/style")
+    #
+    #     if not phrases:
+    #         phrases = cls._read_phrases_from_dictionary(html_dict_path)
+    #     phrase_counter_by_para_id = HtmlLib.search_phrases_in_paragraphs(
+    #         paras, phrases, markup=html_dict_path)
+    #     logger.info(f"phrase_counter_by_para_id {phrase_counter_by_para_id}")
+    #     logger.info(f"keys: {len(phrase_counter_by_para_id)}")
+    #     # write marked_up html. The 'paras' are views on the original file
+    #     html_elem = paras[0].xpath("/html")[0]
+    #     HtmlLib.write_html_file(html_elem, outpath, debug=True)
+    #     assert Path(outpath).exists()
+    #     if counter is not None:
+    #         cls.add_counts_from_outpath(outpath, counter)
+    #         if reportpath:
+    #             most_common = counter.most_common()
+    #             logger.info(f"most common: {most_common}")
+    #             with open(reportpath, "w") as f:
+    #                 f.write(str(most_common))
+    #     return html_elem
 
     @classmethod
     def _read_phrases_from_dictionary(cls, html_dict_path):
@@ -1776,25 +1776,25 @@ class AmiDictionary:
         dictionary.location = html_dict_path
         return phrases
 
-    @classmethod
-    def add_counts_from_outpath(cls, htmlpath, title_counter):
-        """
-        reads annotated HTML file and counts annotations (a[@href]s
-        :param htmlpath: HTML file with annotations
-        :param title_counter: empty Counter()
-        """
-        # count annotations
-        """
-        <a style="border:solid 1px; background: #ffbbbb;" 
-        href="/Users/pm286/workspace/amilib/test/resources/dictionary/climate/carbon_cycle.xml"
-         title="anthropogenic">anthropogenic</a>
-         """
-        htmlx = HtmlLib.parse_html(htmlpath)
-        titles = htmlx.xpath(".//a[@href]/@title")
-        for title in titles:
-            title_counter[title] += 1
-
-        return
+    # @classmethod
+    # def add_counts_from_outpath(cls, htmlpath, title_counter):
+    #     """
+    #     reads annotated HTML file and counts annotations (a[@href]s
+    #     :param htmlpath: HTML file with annotations
+    #     :param title_counter: empty Counter()
+    #     """
+    #     # count annotations
+    #     """
+    #     <a style="border:solid 1px; background: #ffbbbb;"
+    #     href="/Users/pm286/workspace/amilib/test/resources/dictionary/climate/carbon_cycle.xml"
+    #      title="anthropogenic">anthropogenic</a>
+    #      """
+    #     htmlx = HtmlLib.parse_html(htmlpath)
+    #     titles = htmlx.xpath(".//a[@href]/@title")
+    #     for title in titles:
+    #         title_counter[title] += 1
+    #
+    #     return
 
 
 class AmiSynonym:

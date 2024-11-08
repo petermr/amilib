@@ -112,7 +112,7 @@ class PygetpapersTest(AmiAnyTest):
         AmiCorpus.make_datatables(indir, outdir, outfile_h)
         logger.setLevel(effective_level)
 
-    def test_make_datatables_cli(self):
+    def test_make_datatables_from_pygetpapers_cli(self):
         """
         Reads json output of pygetpapers and creates datatables
         """
@@ -156,7 +156,7 @@ class PygetpapersTest(AmiAnyTest):
             "bananas",
             "South Asia",
         ]
-        html1 = AmiCorpus.create_hit_html(infiles, phrases=phrases, outfile=outfile, debug=debug)
+        html1 = AmiCorpus.search_files_with_phrases(infiles, phrases=phrases, outfile=outfile, debug=debug)
         assert html1 is not None
         assert len(html1.xpath("//p")) > 0
 
@@ -174,7 +174,7 @@ class PygetpapersTest(AmiAnyTest):
             "bananas",
             "South Asia"
         ]
-        html1 = AmiCorpus.create_hit_html(infiles, phrases=phrases, outfile=outfile, debug=debug)
+        html1 = AmiCorpus.search_files_with_phrases(infiles, phrases=phrases, outfile=outfile, debug=debug)
 
 
 
@@ -219,22 +219,22 @@ class AmiCorpusTest(AmiAnyTest):
 
     def test_unfccc_corpus(self):
         """
-        only works if unfccc material is on PMR
+        make corpus from globbed html files, populate it, and extract the datatables as html
         """
         unfccc_dir = Path(Resources.TEST_RESOURCES_DIR, "unfccc", "unfcccdocuments1")
         assert unfccc_dir.exists()
         corpus = AmiCorpus(unfccc_dir, mkdir=False, make_descendants=True)
-        html_files = FileLib.list_files(corpus.root_dir, globstr="./**/*.html")
-
+        html_glob = "./**/total_pages*.html"  # omit datatables.html
         table_id = "table1"
-        # labels = [REPORT, REMOTE_CHAPTER, REMOTE_PDF, CLEANED_CHAPTER, CHAP_WITH_IDS]
         labels = ["file", "total_pages"]
-        htmlx, tbody = Datatables.create_html_datatables(labels, table_id)
-        for html_file in html_files:
-            tr = ET.SubElement(tbody, "tr")
-            HtmlLib.add_cell_content(tr, text=html_file, href=f"file://{html_file}")
+        labels = ["file"]
 
-        HtmlLib.write_html_file(htmlx, Path(unfccc_dir, "datatables.html").resolve(), debug=True)
+        datatables_path = Path(unfccc_dir, "datatables.html").resolve()
+        path_offset = datatables_path.parent
+        htmlx = corpus.create_datatables_html_with_filenames(html_glob, labels, table_id, path_offset=path_offset)
+
+        HtmlLib.write_html_file(htmlx, datatables_path, debug=True)
+        assert datatables_path.exists()
 
     def test_list_files_from_ipcc(self):
         """
@@ -312,15 +312,17 @@ class AmiCorpusTest(AmiAnyTest):
         # ipcc_top = Path(Resources.TEST_RESOURCES_DIR, )
 
         # assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
-        corpus_dir =  Path(Resources.TEST_RESOURCES_DIR, "cleaned_content") # cleans the filename (removes "..")
-
+        corpus_dir =  Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content") # cleans the filename (removes "..")
+        assert corpus_dir.exists()
         corpus_files = FileLib.get_children(corpus_dir, dirx=True)
+        assert len(corpus_files) > 0, f"no files in {corpus_dir}"
         labels = [REPORT, REMOTE_CHAPTER, REMOTE_PDF, CLEANED_CHAPTER, CHAP_WITH_IDS]
 
         datatables = True
         table_id = "table1"
         htmlx, tbody = Datatables.create_table(labels, table_id)
 
+        ami_corpus = AmiCorpus()
         for corpus_file in sorted(corpus_files):
             corpus_text = AmiCorpusContainer(corpus_file, "stem")
             report = Path(work).stem
@@ -342,15 +344,6 @@ class AmiCorpusTest(AmiAnyTest):
 
 
         HtmlLib.write_html_file(htmlx, Path(corpus_dir, "datatables.html"), debug=True)
-
-    # def create_table(self, cls, labels, table_id):
-    #     htmlx = HtmlLib.create_html_with_empty_head_body()
-    #     body = HtmlLib.get_body(htmlx)
-    #     table = ET.SubElement(body, "table")
-    #     table.attrib["id"] = table_id
-    #     cls.create_thead_and_labels(cls, labels, table)
-    #     tbody = ET.SubElement(table, "tbody")
-    #     return htmlx, tbody
 
     def output_chapter_row(cls, IPCC_CH, arx, chapter_dir, report, roman, tbody):
         cls = AmiCorpus
@@ -377,12 +370,6 @@ class AmiCorpusTest(AmiAnyTest):
         html_id_glob = f"{str(chapter_dir)}/html_with_ids.html"
         html_id_files = FileLib.posix_glob(html_id_glob, recursive=False)
         cls.add_content_for_files(html_id_files, tr)
-
-    # def create_thead_and_labels(self, cls, labels, table):
-    #     thead = ET.SubElement(table, "thead")
-    #     tr = ET.SubElement(thead, "tr")
-    #     for label in labels:
-    #         cls.add_cell_content(tr, cell_type="th", text=label)
 
     @classmethod
     def add_content_for_files(cls, files, tr):

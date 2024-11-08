@@ -1585,7 +1585,7 @@ class HtmlLib:
         return phrase1
 
     @classmethod
-    def search_phrases_in_paragraphs(cls, paras, phrases, markup=None):
+    def search_phrases_in_paragraphs(cls, paras, phrases, markup=None, ignore_non_id_para=True):
         """search for phrases in paragraphs
         :param paras: list of HTML elems with text (normally <p>), must have @id else ignored
         :param phrases: list of strings to search for (word boundary honoured)
@@ -1595,7 +1595,7 @@ class HtmlLib:
         phrase_counter_by_para_id = dict()
         for para in paras:
             para_id = para.get("id")
-            if para_id is None:
+            if ignore_non_id_para and para_id is None:
                 continue
             phrase_counter = Counter()
             for phrase in phrases:
@@ -1997,7 +1997,7 @@ class Datatables:
         return htmlx, tbody
 
     @classmethod
-    def create_html_datatables(cls, labels, table_id):
+    def _create_html_for_datatables(cls, labels, table_id):
         htmlx, tbody = Datatables.create_table(labels, table_id)
         Datatables.add_head_info(HtmlLib.get_head(htmlx), htmlx)
         Datatables.add_body_scripts(HtmlLib.get_body(htmlx), table_id=table_id)

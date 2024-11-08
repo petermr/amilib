@@ -680,6 +680,46 @@ class FileLib:
                 return counter_string
         return None
 
+    @classmethod
+    def get_reletive_path(cls, pathx, refpath, walk_up=True):
+        """
+        get path eelatuve to refpath
+        :param pathx: to relativise
+        :param refpath: reference path
+        :return: path to convert refpath to path
+        :except: raisea Value error if no relative path
+        """
+        if pathx is None:
+            return None
+        if refpath is None:
+            return None
+        # ensure we are working with Paths
+        pathx = Path(pathx)
+        refpath = Path(refpath)
+
+        if walk_up:
+            try:
+                diffpath = pathx.relative_to(Path(refpath), walk_up=walk_up)
+                return diffpath
+            except TypeError as te:
+                logger.info(f"walkup requires Python 3.12)")
+
+        # without Python 3.12
+        parts = pathx.parts
+        refparts = refpath.parts
+        for i, part_tuple in enumerate(zip(parts, refparts)):
+            if part_tuple[0] != part_tuple[1]:
+                break
+        # add ".." for making reletive path
+        new_parts = []
+        for p in refparts[i:]:
+            new_parts.append("..")
+        for p in parts[i:]:
+            new_parts.append(p)
+        diffpath = PurePath(*new_parts)
+        return diffpath
+
+
 
 # see https://realpython.com/python-pathlib/
 
