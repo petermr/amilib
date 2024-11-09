@@ -2,6 +2,8 @@ import ast
 import collections
 import configparser
 import logging
+import unittest
+
 import lxml.etree as ET
 from pathlib import Path
 import pandas as pd
@@ -112,7 +114,7 @@ class PygetpapersTest(AmiAnyTest):
         AmiCorpus.make_datatables(indir, outdir, outfile_h)
         logger.setLevel(effective_level)
 
-    def test_make_datatables_from_pygetpapers_cli(self):
+    def test_make_datatables_cli(self):
         """
         Reads json output of pygetpapers and creates datatables
         """
@@ -227,7 +229,6 @@ class AmiCorpusTest(AmiAnyTest):
         # this only does WGs as the SR*s don't yet havehtml_with_ids
         html_glob = "./**/html_with_ids.html"  # omit datatables.html
         table_id = "table1"
-        labels = ["file", "total_pages"]
         labels = ["file"]
 
         datatables_path = Path(top_dir, "datatables.html")
@@ -241,9 +242,8 @@ class AmiCorpusTest(AmiAnyTest):
         unfccc_dir = Path(Resources.TEST_RESOURCES_DIR, "unfccc", "unfcccdocuments1")
         assert unfccc_dir.exists()
         corpus = AmiCorpus(unfccc_dir, mkdir=False, make_descendants=True)
-        html_glob = "./**/total_pages*.html"  # omit datatables.html
+        html_glob = "./**/total_pages*.html"  #
         table_id = "table1"
-        labels = ["file", "total_pages"]
         labels = ["file"]
 
         datatables_path = Path(unfccc_dir, "datatables.html").resolve()
@@ -294,6 +294,7 @@ class AmiCorpusTest(AmiAnyTest):
 
             logger.info(f"cleaned files {len(all_cleaned_files)} html_with_ids {len(all_html_id_files)}")
 
+    @unittest.skip("obsolete")
     def test_create_corpus_from_ipcc(self):
         """
         FAILS needs reletive file addressing

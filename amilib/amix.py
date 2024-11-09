@@ -422,6 +422,7 @@ class AmiLib:
         version = '0.3.10a1'
         version = '0.3.10a6'
         version = '0.3.11a5' # 2024-11-06 add corpus framework
+        version = '0.4.1a1' # 2024-11-09 includes  datatables
         # logging.warn(f"VERSION {version}")
         return version
 
@@ -504,27 +505,27 @@ class AmiLibArgs(AbstractArgs):
         """name of module"""
         return Path(__file__).stem
 
-    def annotate_with_dict(self):
-        """uses dictionary to annotate words and phrases in HTML file"""
-        logger.warning("Dictionaries not supported")
-        return
-
-        if not self.dictfile:
-            logging.error(f"no dictionary given")
-            return
-        if not self.inpath:
-            logging.error(f"no input file to annotate given")
-            return
-        if not self.location_xml:
-            logging.error(f"no output file given")
-            return
-        if not self.outdir:
-            self.outdir = Path(self.location_xml).parent
-        self.outdir = Path(self.outdir)
-        self.outdir.mkdir(exist_ok=True)
-
-        self.ami_dict = AmiDictionary.create_from_xml_file(self.dictfile)
-        self.ami_dict.markup_html_from_dictionary(self.inpath, self.location_xml, self.color)
+    # def annotate_with_dict(self):
+    #     """uses dictionary to annotate words and phrases in HTML file"""
+    #     logger.warning("Dictionaries not supported")
+    #     return
+    #
+    #     if not self.dictfile:
+    #         logging.error(f"no dictionary given")
+    #         return
+    #     if not self.inpath:
+    #         logging.error(f"no input file to annotate given")
+    #         return
+    #     if not self.location_xml:
+    #         logging.error(f"no output file given")
+    #         return
+    #     if not self.outdir:
+    #         self.outdir = Path(self.location_xml).parent
+    #     self.outdir = Path(self.outdir)
+    #     self.outdir.mkdir(exist_ok=True)
+    #
+    #     self.ami_dict = AmiDictionary.create_from_xml_file(self.dictfile)
+    #     self.ami_dict.markup_html_from_dictionary(self.inpath, self.location_xml, self.color)
 
     def make_foo(self):
         pass
