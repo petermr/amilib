@@ -349,7 +349,7 @@ class AmiCorpus():
             return FileLib.list_files(self.root_dir, globstr=globstr)
         return []
 
-    def create_datatables_html_with_filenames(self, html_glob, labels, table_id, path_offset=None):
+    def create_datatables_html_with_filenames(self, html_glob, labels, table_id, outpath=None, debug=True):
         """
         :param html_glob: globstring to find html files
         :labels
@@ -358,10 +358,12 @@ class AmiCorpus():
         self.datables_html, tbody = Datatables._create_html_for_datatables(labels, table_id)
 
         for html_file in html_files:
-            if path_offset:
-                offset = FileLib.get_reletive_path(html_file, path_offset, walk_up=True)
+            if outpath:
+                offset = FileLib.get_reletive_path(html_file, outpath.parent, walk_up=True)
             tr = ET.SubElement(tbody, "tr")
             HtmlLib.add_cell_content(tr, text=offset, href=f"{offset}")
+        HtmlLib.write_html_file(self.datables_html, outpath, debug=debug)
+
         return self.datables_html
 
 

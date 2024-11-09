@@ -217,6 +217,23 @@ class AmiCorpusTest(AmiAnyTest):
         assert html22.exists()
         assert str(html22.absolute()) == str(Path(Resources.TEMP_DIR, "corpus", "report2", "chapter22", "text.html"))
 
+    def test_ipcc_corpus(self):
+        """
+        make corpus from globbed html files, populate it, and extract the datatables as html
+        """
+        top_dir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content")
+        assert top_dir.exists()
+        corpus = AmiCorpus(top_dir, mkdir=False, make_descendants=True)
+        # this only does WGs as the SR*s don't yet havehtml_with_ids
+        html_glob = "./**/html_with_ids.html"  # omit datatables.html
+        table_id = "table1"
+        labels = ["file", "total_pages"]
+        labels = ["file"]
+
+        datatables_path = Path(top_dir, "datatables.html")
+        corpus.create_datatables_html_with_filenames(html_glob, labels, table_id, outpath=datatables_path)
+        assert datatables_path.exists()
+
     def test_unfccc_corpus(self):
         """
         make corpus from globbed html files, populate it, and extract the datatables as html
@@ -230,10 +247,7 @@ class AmiCorpusTest(AmiAnyTest):
         labels = ["file"]
 
         datatables_path = Path(unfccc_dir, "datatables.html").resolve()
-        path_offset = datatables_path.parent
-        htmlx = corpus.create_datatables_html_with_filenames(html_glob, labels, table_id, path_offset=path_offset)
-
-        HtmlLib.write_html_file(htmlx, datatables_path, debug=True)
+        corpus.create_datatables_html_with_filenames(html_glob, labels, table_id, outpath=datatables_path)
         assert datatables_path.exists()
 
     def test_list_files_from_ipcc(self):
@@ -351,8 +365,6 @@ class AmiCorpusTest(AmiAnyTest):
         chap_no = stem[-2:]
         if chap_no.startswith("0"):
             chap_no = chap_no[1:]
-        # html_glob = f"{chapter_dir}/{ANY_HTML}"
-        # html_files = FileLib.posix_glob(html_glob, recursive=False)
         tr = ET.SubElement(tbody, "tr")
         cls.add_cell_content(tr, text=report, href=f"{IPCC_CH}/{report}/")
         cls.add_cell_content(tr, text=chapter_dir.stem, href=f"{report}/chapter/chapter-{chap_no}")
