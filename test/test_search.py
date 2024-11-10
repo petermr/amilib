@@ -109,10 +109,11 @@ class SearchTest(AmiAnyTest):
             "SEARCH",
             "--inpath", inpath,
             "--words", wordpath,
-            # "--outpath", outpath,
+            "--outpath", outpath,
             "--operation", "annotate", "no_input_styles",
         ])
         pyami = AmiLib()
         pyami.run_command(args)
         assert outpath.exists(), f"{outpath} should exist"
+        logger.info(f"wrote {outpath}")
 

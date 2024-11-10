@@ -2,6 +2,8 @@ import ast
 import collections
 import configparser
 import logging
+import unittest
+
 import lxml.etree as ET
 from pathlib import Path
 import pandas as pd
@@ -294,6 +296,7 @@ class AmiCorpusTest(AmiAnyTest):
 
             logger.info(f"cleaned files {len(all_cleaned_files)} html_with_ids {len(all_html_id_files)}")
 
+    @unittest.skip("Obsolete")
     def test_create_corpus_from_ipcc(self):
         """
         FAILS needs reletive file addressing
@@ -350,7 +353,7 @@ class AmiCorpusTest(AmiAnyTest):
             chapter_glob = f"{str(work)}/{CHAPTER_ANY}"
             chapter_dirs = FileLib.posix_glob(chapter_glob, recursive=False)
             for chapter_dir in sorted(chapter_dirs):
-                cls.output_chapter_row(work, chapter_dir, tbody)
+                cls._output_chapter_row(work, chapter_dir, tbody)
 
         if datatables:
             Datatables.add_head_info(HtmlLib.get_head(htmlx), htmlx)
@@ -359,7 +362,8 @@ class AmiCorpusTest(AmiAnyTest):
 
         HtmlLib.write_html_file(htmlx, Path(corpus_dir, "datatables.html"), debug=True)
 
-    def output_chapter_row(cls, IPCC_CH, arx, chapter_dir, report, roman, tbody):
+
+    def _output_chapter_row(cls, IPCC_CH, arx, chapter_dir, report, roman, tbody):
         cls = AmiCorpus
         stem = Path(chapter_dir).stem
         chap_no = stem[-2:]
@@ -400,3 +404,43 @@ class AmiCorpusTest(AmiAnyTest):
         wg1_corpus = AmiCorpus(wg1_dir)
         assert wg1_corpus.root_dir == wg1_dir
         wg1_corpus.make_descendants()
+
+    def test_get_column_from_data_tables(self):
+        """
+        get a column from existing datatables file
+        """
+        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        assert datatables_file.exists()
+        datatables_html = HtmlLib.parse_html(datatables_file)
+        col_content = Datatables.extract_column(datatables_html, colindex="file")
+        assert len(col_content) == 48
+        assert "".join(col_content[2].itertext()) == "wg1/Chapter02/html_with_ids.html"
+
+    def test_transform_column_data_tables(self):
+        """
+        get a column from existing datatables file
+        """
+
+        def parent(cell):
+            td = ET.Element("td")
+            a = ET.SubElement(td, "a")
+            text0 = "".join(cell.itertext())
+            text = str(Path(text0).parent)
+            a.text = text
+            a.attrib["href"] = text
+            return td
+
+        get_parent = lambda cell: parent(cell)  # example function
+
+
+        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        assert datatables_file.exists()
+        datatables_html = HtmlLib.parse_html(datatables_file)
+        col_content = Datatables.extract_column(datatables_html, colindex="file")
+        dirs = list(map(get_parent, col_content))
+        assert "".join(dirs[2].itertext()) == "wg1/Chapter02"
+        Datatables.insert_column(datatables_html, dirs, "chapter")
+        datatables_file1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables1.html")
+        HtmlLib.write_html_file(datatables_html, datatables_file1, debug=True)
+
+

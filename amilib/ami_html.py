@@ -1937,6 +1937,10 @@ class HtmlLib:
 
 class Datatables:
 
+    def __init__(self):
+        pass
+        self.table = None
+
     @classmethod
     def add_body_scripts(cls, body, table_id):
         """
@@ -2009,6 +2013,65 @@ class Datatables:
         tr = ET.SubElement(thead, "tr")
         for label in labels:
             HtmlLib.add_cell_content(tr, cell_type="th", text=label)
+
+    @classmethod
+    def extract_column(cls, datatables_html, colindex):
+        """
+        :param datatables_html: datatables html elemnt, with table/thead and table/tbody
+        :param colindex:index (either index of row or title of row
+        :return: list of elements in columnn in body (NO thead id)
+        """
+        table = datatables_html.xpath("/html/body/table")[0]
+        h_rows = table.xpath("thead/tr")
+        colheads = [t.text for t in h_rows[0].xpath("th")]
+        if type(colindex) is str:
+            colindex = colheads.index(colindex)
+        b_rows = table.xpath("tbody/tr")
+        if colindex < 0 or colindex >= len(b_rows):
+            return None
+        col_content = []
+        for row in b_rows:
+            td_index_content = row.xpath("td")[colindex]
+            col_content.append(td_index_content)
+        return col_content
+
+    @classmethod
+    def insert_column(cls, datatables_html, column, title, before=None):
+        """
+        insert column in table
+        :param datatables_html: datables as HTML object
+        :param column: list of obejcts to add as column , either text or HTML
+        :param title: of column (must not dupilcate existing ones
+        :param before: index (serial or title of exiting column), None = append at end (before = len(columns)
+        """
+        body = HtmlLib.get_body(datatables_html)
+        table = body.xpath("table")[0]
+        head_tr0 = table.xpath("thead/tr")[0]
+        colheads = head_tr0.xpath("th")
+        print(f"colheads {len(colheads)}")
+        ncols = len(table.xpath("thead/tr"))
+        rows = table.xpath("tbody/tr")
+        nrows = len(rows)
+        print(f"ncols {ncols}")
+        assert nrows == len(column)
+        if before == None:
+            before = ncols - 1
+        if before < 0 or before >= ncols:
+            raise ValueError(f"bad before {before}")
+
+        th = ET.SubElement(head_tr0, "th")
+        th.text = title
+        head_tr0.insert(before, th)
+
+        for i, tr in enumerate(rows):
+            cells = tr.xpath("td")
+            colval = column[i]
+            if type(colval) is not  lxml.etree._Element:
+                td = ET.SubElement(tr, "td")
+                td.text = str(colval)
+            else:
+                td = colval
+            tr.insert(before, td)
 
 
 
