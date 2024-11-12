@@ -10,6 +10,7 @@ from amilib.ami_args import AbstractArgs
 # from amilib.ami_dict import AmiDictionary # CYCLIC import
 # from amilib.ami_dict import AmiEntry
 from amilib.file_lib import FileLib
+from amilib.search_args import AmiSearch
 from amilib.util import Util
 from amilib.wikimedia import WikidataPage, WikidataLookup, WiktionaryPage
 from amilib.ami_html import HtmlLib
@@ -400,7 +401,7 @@ class AmiDictArgs(AbstractArgs):
         # dictionary = AmiDictionary.create_from_html_file(dictfile)
         # # logger.info(f"terms: {len(dictionary.get_terms())} {dictionary.get_terms()[0]}")
         # dictionary.markup_html_from_dictionary(inpath, outpath)
-        AmiDictionary.markup_html_file_with_words_or_dictionary(
+        AmiSearch.markup_html_file_with_words_or_dictionary(
             str(inpath), str(outpath), html_dict_path=dictfile)
 
     # ========== validate ========

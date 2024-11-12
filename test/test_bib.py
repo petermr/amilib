@@ -422,8 +422,8 @@ class AmiCorpusTest(AmiAnyTest):
         get a column from existing datatables file
         """
 
-        @classmethod
-        def make_td_with_ahref_from_text(cls, atext, href):
+        # @classmethod
+        def make_td_with_ahref_from_text(atext, href):
             """
             makes td element (for table cell) containing  <a href=href>atext</a>
             :param atext: body of a
@@ -440,10 +440,10 @@ class AmiCorpusTest(AmiAnyTest):
         def make_td_with_ahref_from_cell_content(cell):
             text0 = "".join(cell.itertext())
             text = str(Path(text0).parent)
-            td = cell.make_td_with_ahref_from_text(text, text)
+            td = make_td_with_ahref_from_text(text, text)
             return td
 
-        def make_ipcc_td_with_remote_pdf_url_cell_content(strng):
+        def make_ipcc_td_with_remote_pdf_url_cell_content(td_elem):
             """
              start with string
 
@@ -453,8 +453,9 @@ class AmiCorpusTest(AmiAnyTest):
 
              https://www.ipcc.ch/report/ar6/wg1/downloads/report/IPCC_AR6_WGI_Chapter02.pdf
             """
+            strng = "".join(td_elem.itertext())
             # extract report (wg1) and chapter (Chapter02)
-            wg_dict = {"wg1": " WGI", "wg2": " WGII", "wg3": " WGIII", }
+            wg_dict = {"wg1": "WGI", "wg2": "WGII", "wg3": "WGIII", }
             url1 = "https://www.ipcc.ch/report/ar6"
             url2 = "downloads/report/IPCC_AR6"
             url3 = ".pdf"
@@ -463,10 +464,13 @@ class AmiCorpusTest(AmiAnyTest):
             match = re.match(regex, strng)
             if not match:
                 return None
-            report = match.groups("report")
-            chapter = match.groups("chapter")
+            report = match.group("report")
+            chapter = match.group("chapter")
             wg = wg_dict.get(report)
+            # https://www.ipcc.ch/report/ar6/('wg1',%20'Chapter04')/downloads/report/IPCC_AR6_None_('wg1',%20'Chapter04').pdf
             url = f"{url1}/{report}/{url2}_{wg}_{chapter}{url3}"
+            print(f"url {url}")
+
             td = make_td_with_ahref_from_text(f"{wg} {chapter}", url)
             return td
 
@@ -479,14 +483,15 @@ class AmiCorpusTest(AmiAnyTest):
         col_content = Datatables.extract_column(datatables_html, colindex="file")
 
         dirs = list(map(lambda cell: make_td_with_ahref_from_cell_content(cell), col_content))
-        Datatables.insert_column(datatables_html, dirs, "chapter")
-        datatables_file1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_parent_content.html")
-        HtmlLib.write_html_file(datatables_html, datatables_file1, debug=True)
+        Datatables.insert_column(datatables_html, dirs, "chapter_dir")
+        # datatables_file1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_parent_content.html")
+        # HtmlLib.write_html_file(datatables_html, datatables_file1, debug=True)
 
         dirs = list(map(lambda cell: make_ipcc_td_with_remote_pdf_url_cell_content(cell), col_content))
-        Datatables.insert_column(datatables_html, dirs, "chapter")
-        datatables_file1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_parent_content.html")
-        HtmlLib.write_html_file(datatables_html, datatables_file1, debug=True)
+        Datatables.insert_column(datatables_html, dirs, "PDFchapter")
+
+        datatables_file2 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_pdf_dir.html")
+        HtmlLib.write_html_file(datatables_html, datatables_file2, debug=True)
 
     def test_ipcc_add_executive_summmary_to_datatables(self):
         """

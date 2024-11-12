@@ -5,7 +5,6 @@ from collections import Counter
 from pathlib import Path
 
 from amilib.ami_args import AbstractArgs, AmiArgParser
-from amilib.ami_dict import AmiDictionary
 from amilib.util import Util
 from amilib.ami_html import (HtmlLib, HtmlUtil)
 
@@ -44,6 +43,8 @@ class AmiSearch:
         :param reportpath: file to write counter to
         :return: HTML element marked_up
         """
+        from amilib.ami_dict import AmiDictionary # TODO cyclic import
+
         assert Path(inpath).exists()
         paras = HtmlLib._extract_paras_with_ids(inpath)
         if remove_styles:
@@ -161,6 +162,8 @@ class SearchArgs(AbstractArgs):
         """runs parsed args
         pass
         """
+        from amilib.ami_dict import AmiDictionary # TODO cycliv import
+
         logger.debug(f"SEARCH process_args {self.arg_dict}")
         if not self.arg_dict:
             logger.debug(f"no arg_dict given, no actiom")
@@ -260,6 +263,8 @@ class SearchArgs(AbstractArgs):
         :param html_dict_path: dictiomary in HTML format
         :return: HTML element marked_up
         """
+        from amilib.ami_dict import AmiDictionary # TODO cyclic import
+
         assert Path(inpath).exists()
         paras = HtmlLib._extract_paras_with_ids(inpath)
         assert Path(html_dict_path).exists()

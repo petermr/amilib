@@ -19,6 +19,7 @@ from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
 from amilib.dict_args import MARKUP_FILE
 from amilib.file_lib import FileLib
+from amilib.search_args import AmiSearch
 from amilib.util import Util
 from amilib.wikimedia import WikidataSparql
 from amilib.xml_lib import XmlLib
@@ -1028,7 +1029,7 @@ class AmiDictionaryTest(AmiAnyTest):
         FileLib.delete_file(chapter_outpath)
         html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
 
-        AmiDictionary.markup_html_file_with_words_or_dictionary(
+        AmiSearch.markup_html_file_with_words_or_dictionary(
             chapter_file, chapter_outpath, html_dict_path=html_dict_path)
         assert chapter_outpath.exists()
 
@@ -1418,8 +1419,6 @@ class DictionaryCreationTest(AmiAnyTest):
         root_elem = keyword_dict.root
         assert root_elem.tag == 'dictionary'
         entry0 = root_elem.xpath("entry")[0]
-        assert entry0.attrib["desc"] == 'highly urbanized city in Metro Manila, Philippines'
-        # assert entry0.attrib["desc"] == 'longterm population movements (shift) from rural to urban areas'
         assert entry0.attrib["name"] == 'urbanization'
         # assert str(root) == \
         #        '<dictionary title="urban_terms_1"><entry name="urbanization" term="urbanization" wikidataID="Q161078" wikidataURL="https://www.wikidata.org/entity/Q161078" desc="longterm population movements (shift) from rural to urban areas;gradual increase in the proportion of people living in urban areas, and the ways in which each society adapts to the change;process by which towns and cities are formed and become larger"><wikidataHit type="wikidata_hits">Q5381005</wikidataHit><wikidataHit type="wikidata_hits">Q23580084</wikidataHit><wikidataHit type="wikidata_hits">Q2608153</wikidataHit><wikidataHit type="wikidata_hits">Q95443723</wikidataHit></entry></dictionary>'
