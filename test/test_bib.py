@@ -2,6 +2,7 @@ import ast
 import collections
 import configparser
 import logging
+import re
 import unittest
 
 import lxml.etree as ET
@@ -229,7 +230,6 @@ class AmiCorpusTest(AmiAnyTest):
         # this only does WGs as the SR*s don't yet havehtml_with_ids
         html_glob = "./**/html_with_ids.html"  # omit datatables.html
         table_id = "table1"
-        labels = ["file", "total_pages"]
         labels = ["file"]
 
         datatables_path = Path(top_dir, "datatables.html")
@@ -410,6 +410,7 @@ class AmiCorpusTest(AmiAnyTest):
         get a column from existing datatables file
         """
         datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        logger.info(f"datatables is: {datatables_file}")
         assert datatables_file.exists()
         datatables_html = HtmlLib.parse_html(datatables_file)
         col_content = Datatables.extract_column(datatables_html, colindex="file")
@@ -421,26 +422,130 @@ class AmiCorpusTest(AmiAnyTest):
         get a column from existing datatables file
         """
 
-        def parent(cell):
+        @classmethod
+        def make_td_with_ahref_from_text(cls, atext, href):
+            """
+            makes td element (for table cell) containing  <a href=href>atext</a>
+            :param atext: body of a
+            :param href: value of href
+            """
             td = ET.Element("td")
             a = ET.SubElement(td, "a")
-            text0 = "".join(cell.itertext())
-            text = str(Path(text0).parent)
-            a.text = text
-            a.attrib["href"] = text
+            a.text = atext
+            if href is None:
+                href = atext
+            a.attrib["href"] = href
             return td
 
-        get_parent = lambda cell: parent(cell)  # example function
+        def make_td_with_ahref_from_cell_content(cell):
+            text0 = "".join(cell.itertext())
+            text = str(Path(text0).parent)
+            td = cell.make_td_with_ahref_from_text(text, text)
+            return td
+
+        def make_ipcc_td_with_remote_pdf_url_cell_content(strng):
+            """
+             start with string
+
+             wg1/Chapter02/html_with_ids.html
+
+             and create
+
+             https://www.ipcc.ch/report/ar6/wg1/downloads/report/IPCC_AR6_WGI_Chapter02.pdf
+            """
+            # extract report (wg1) and chapter (Chapter02)
+            wg_dict = {"wg1": " WGI", "wg2": " WGII", "wg3": " WGIII", }
+            url1 = "https://www.ipcc.ch/report/ar6"
+            url2 = "downloads/report/IPCC_AR6"
+            url3 = ".pdf"
+
+            regex = "(?P<report>wg\d)/(?P<chapter>Chapter\d\d)/html_with_ids.html"
+            match = re.match(regex, strng)
+            if not match:
+                return None
+            report = match.groups("report")
+            chapter = match.groups("chapter")
+            wg = wg_dict.get(report)
+            url = f"{url1}/{report}/{url2}_{wg}_{chapter}{url3}"
+            td = make_td_with_ahref_from_text(f"{wg} {chapter}", url)
+            return td
 
 
+
+        # example function
         datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
         assert datatables_file.exists()
         datatables_html = HtmlLib.parse_html(datatables_file)
         col_content = Datatables.extract_column(datatables_html, colindex="file")
-        dirs = list(map(get_parent, col_content))
-        assert "".join(dirs[2].itertext()) == "wg1/Chapter02"
+
+        dirs = list(map(lambda cell: make_td_with_ahref_from_cell_content(cell), col_content))
         Datatables.insert_column(datatables_html, dirs, "chapter")
-        datatables_file1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables1.html")
+        datatables_file1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_parent_content.html")
         HtmlLib.write_html_file(datatables_html, datatables_file1, debug=True)
+
+        dirs = list(map(lambda cell: make_ipcc_td_with_remote_pdf_url_cell_content(cell), col_content))
+        Datatables.insert_column(datatables_html, dirs, "chapter")
+        datatables_file1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_parent_content.html")
+        HtmlLib.write_html_file(datatables_html, datatables_file1, debug=True)
+
+    def test_ipcc_add_executive_summmary_to_datatables(self):
+        """
+        get a column listing hyperlinks to documents from existing datatables file
+        create a new column pointing to subcomponents of the document
+        """
+        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        datatables_html = HtmlLib.parse_html(datatables_file)
+
+        # list to receive td's
+        id_ref = "#Executive"
+        new_content = "Executive Summary"
+        new_column_title = "exec_summary"
+        new_datatables = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec.html")
+
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(datatables_html, id_ref, new_content, new_datatables,
+                                                                 new_column_title)
+
+        # list to receive td's
+        new_column_title = "acknowledgements"
+        new_datatables = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec_ack.html")
+
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(
+            datatables_html,
+            "#acknowledgements",
+            "Acknowledgements",
+            new_datatables,
+            "acknowledgements")
+
+
+    # @classmethod
+    # def add_column_with_ahref_pointers_to_sections_with_ids(cls, datatables_html, id_ref, new_content, new_datatables,
+    #                                                         new_title):
+    #     col_content = Datatables.extract_column(datatables_html, colindex="file")
+    #     # make a column of pointers in td cells
+    #     # content is
+    #     # <td>
+    #     #   <a href="wg1/Chapter01/html_with_ids.html">wg1/Chapter01/html_with_ids.html</a>
+    #     # </td>
+    #     new_column = []
+    #     for cell in col_content:
+    #         # get <a> child
+    #         a_elem = cell.xpath("./a")[0]
+    #         href = a_elem.attrib['href']
+    #         print(f"href {href}")
+    #         # add section reference
+    #
+    #         href_new = href + id_ref
+    #
+    #         # create new td
+    #         td_new = ET.Element("td")
+    #         # create child <a>
+    #         a_new = ET.SubElement(td_new, "a")
+    #         a_new.attrib['href'] = href_new
+    #         a_new.text = new_content
+    #
+    #         new_column.append(td_new)
+    #     Datatables.insert_column(datatables_html, new_column, new_title)
+    #     HtmlLib.write_html_file(datatables_html, new_datatables, debug=True)
+    #
 
 

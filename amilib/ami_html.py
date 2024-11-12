@@ -2073,6 +2073,44 @@ class Datatables:
                 td = colval
             tr.insert(before, td)
 
+    @classmethod
+    def add_column_with_ahref_pointers_to_sections_with_ids(
+            cls, datatables_html, id_ref, new_content, new_datatables_filename, new_column_title):
+        """
+        takes existing datatables object and adds column pointers to documecnt section with ids
+        :param datatables_html: html object from datatables
+        :param id_ref: id of section
+        :param new_content:content of a elements
+        :param new_datatables_filename: filename of modified datatables
+        :param new_column_title:new column title 
+        """
+        col_content = Datatables.extract_column(datatables_html, colindex="file")
+        # make a column of pointers in td cells
+        # content is
+        # <td>
+        #   <a href="wg1/Chapter01/html_with_ids.html">wg1/Chapter01/html_with_ids.html</a>
+        # </td>
+        new_column = []
+        for cell in col_content:
+            # get <a> child
+            a_elem = cell.xpath("./a")[0]
+            href = a_elem.attrib['href']
+            print(f"href {href}")
+            # add section reference
+
+            href_new = href + id_ref
+
+            # create new td
+            td_new = ET.Element("td")
+            # create child <a>
+            a_new = ET.SubElement(td_new, "a")
+            a_new.attrib['href'] = href_new
+            a_new.text = new_content
+
+            new_column.append(td_new)
+        Datatables.insert_column(datatables_html, new_column, new_column_title)
+        HtmlLib.write_html_file(datatables_html, new_datatables_filename, debug=True)
+
 
 
 
