@@ -953,7 +953,6 @@ Free Research Preview. ChatGPT may produce inaccurate information about people, 
                     style1 = CSSStyle.create_css_style_from_attribute_of_body_element(span0)
                     if style0 == style1:
                         if span1 is not None and len(span1.text) > 0 and span1.text[0].islower():
-                            # print(f" joined second_span {span1.text}")
                             HtmlUtil.join_spans_in_same_div(span0, span1)
                             for span in div.xpath("./span"):
                                 div0.append(span)
@@ -2048,11 +2047,9 @@ class Datatables:
         table = body.xpath("table")[0]
         head_tr0 = table.xpath("thead/tr")[0]
         colheads = head_tr0.xpath("th")
-        print(f"colheads {len(colheads)}")
         ncols = len(table.xpath("thead/tr"))
         rows = table.xpath("tbody/tr")
         nrows = len(rows)
-        print(f"ncols {ncols}")
         assert nrows == len(column)
         if before == None:
             before = ncols - 1
@@ -2075,7 +2072,7 @@ class Datatables:
 
     @classmethod
     def add_column_with_ahref_pointers_to_sections_with_ids(
-            cls, datatables_html, id_ref, new_content, new_datatables_filename, new_column_title):
+            cls, datatables_input, id_ref, new_content0, new_datatables_filename, new_column_title):
         """
         takes existing datatables object and adds column pointers to documecnt section with ids
         :param datatables_html: html object from datatables
@@ -2084,7 +2081,13 @@ class Datatables:
         :param new_datatables_filename: filename of modified datatables
         :param new_column_title:new column title 
         """
-        col_content = Datatables.extract_column(datatables_html, colindex="file")
+        try:
+            datatables = HtmlLib.parse_html(datatables_input)
+        except Exception as e:
+            logger.error(F'cannotb parse {datatables_input} type {type(datatables_input)}')
+            return
+
+        col_content = Datatables.extract_column(datatables, colindex="file")
         # make a column of pointers in td cells
         # content is
         # <td>
@@ -2095,21 +2098,32 @@ class Datatables:
             # get <a> child
             a_elem = cell.xpath("./a")[0]
             href = a_elem.attrib['href']
-            print(f"href {href}")
+            href_file = Path(datatables_input.parent, href)
+            href_html = HtmlLib.parse_html(str(href_file))
+            id_elems = href_html.xpath(f".//*[@id='{id_ref}']")
+            if len(id_elems) > 0:
+                elem = id_elems[0]
+                new_content = "".join(elem.itertext())[:80] + "..."
+            else:
+                new_content = None
+
             # add section reference
 
-            href_new = href + id_ref
+            href_new = href + "#" + id_ref
 
             # create new td
             td_new = ET.Element("td")
             # create child <a>
-            a_new = ET.SubElement(td_new, "a")
-            a_new.attrib['href'] = href_new
-            a_new.text = new_content
+            if new_content is not None:
+                a_new = ET.SubElement(td_new, "a")
+                a_new.attrib['href'] = href_new
+                a_new.text = new_content
+            else:
+                td_new = "..."
 
             new_column.append(td_new)
-        Datatables.insert_column(datatables_html, new_column, new_column_title)
-        HtmlLib.write_html_file(datatables_html, new_datatables_filename, debug=True)
+        Datatables.insert_column(datatables, new_column, new_column_title)
+        HtmlLib.write_html_file(datatables, new_datatables_filename, debug=True)
 
 
 
@@ -2562,7 +2576,6 @@ class HtmlUtil:
             page_top_y = float(page_top_y)
             ycoord = ycoord0 - page_top_y
 
-            # print(f"TOP {ycoord0} {ycoord} {pagesize} {ycoord % pagesize}")
             in_top = ycoord < header_height
             if in_top:
                 if debug:
@@ -2805,7 +2818,7 @@ class HtmlUtil:
             body_elems = cls.get_body_elements_by_class(elem, head_style)
             body_elems_str = '\n     '.join([elem.text for elem in body_elems[:3]])
             logger.debug(f"{head_style}: {len(body_elems)} {cssstr}\n     {body_elems_str}")
-        pprint(f"size {font_size_dict}")
+
 
         for size in font_size_dict:
             fonts = font_size_dict[size]
@@ -3225,17 +3238,13 @@ class AnnotatorCommand:
         div.attrib["style"] = "border:black dashed 2px;"
         xp = self.end_xpath
         xp = "self::div[span[contains(text(),'END')]]"
-        # print(f"end_xpath {xp}")
         for sibling in siblings:
-            print(f"sibling: {''.join(sibling.itertext())}")
             end_sib = None
             try:
                 end_sib = sibling.xpath(xp)
             except Exception as e:
                 logger.error(f"failed xpath {xp} {e}")
             if end_sib and len(end_sib) > 0:
-            # if sibling != end_group:
-            #     print(f"sibling {sibling}")
                 break
             div.append(sibling)
         return div
@@ -3526,7 +3535,6 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             "div", [("border", "red solid 0.5px"), ("background", "yellow)])
         """
         for style in styles:
-            # print(f"style {style}")
             HtmlLib.add_head_style(html_elem, style[0], style[1])
 
     @classmethod
@@ -3597,7 +3605,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
         """
         styles = html.xpath(f"/html/head/style[contains(.,'.{clazz} ')]")
         if len(styles) == 0:
-            print(f"no styles for {clazz}")
+            logger.warn(f"no styles for {clazz}")
             return None
         head_style = styles[0]
         _, css_style = CSSStyle.create_css_style_from_html_head_style_elem(head_style)
@@ -3612,7 +3620,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             return False
         css_style = HtmlStyle.lookup_head_style_by_classref(elem)
         if not css_style:
-            print(f"no style resolved for {ET.tostring(elem)}")
+            logger.info(f"no style resolved for {ET.tostring(elem)}")
             return False
         return css_style.is_bold
 
@@ -3625,7 +3633,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             return False
         css_style = HtmlStyle.lookup_head_style_by_classref(elem)
         if not css_style:
-            print(f"no style resolved for {ET.tostring(elem)}")
+            logger.info(f"no style resolved for {ET.tostring(elem)}")
             return False
         return css_style.is_italic
 
@@ -3651,12 +3659,11 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             clazz = elem.attrib["class"]
             new_class = style_converter.get(clazz)
             if new_class is None:
-                print(f"cannot find replace for {clazz}")
+                logger.warn(f"cannot find replace for {clazz}")
                 continue
             html_class = HtmlClass(clazz)
             html_class.replace_class(clazz, new_class)
             elem.attrib["class"] = new_class
-            # print(f"replaced {clazz} by {new_class}")
 
     @classmethod
     def create_style_converter(cls, html_elem):
@@ -3664,7 +3671,6 @@ Some spans are not joined, x1 on one span and x0 on following are equal
         style_converter = dict()
         for style in styles:
             dot_style, css = HtmlStyle.extract_classref_and_cssstring_from_html_style(style)
-            # print(f"{dot_style} {css}")
             css_style = CSSStyle.create_css_style_from_css_string(css)
             # print(
             #     f"font: {css_style.font_family} size {css_style.font_size} bold {css_style.is_bold} italic {css_style.is_italic}")
@@ -3679,7 +3685,6 @@ Some spans are not joined, x1 on one span and x0 on following are equal
                 c_style += "_" + "i"
             if c_style.startswith("_"):
                 c_style = c_style[1:]
-            # print(f"c_style {c_style}")
             if c_style != "":
                 style_converter[dot_style[1:]] = c_style
                 cls.set_classref_and_css(style, c_style, css)
@@ -4221,11 +4226,10 @@ class URLCache:
                 html_elem = XmlLib.read_xml_element_from_github(github_url=github_url)
                 time.sleep(delay)
             except Exception as e:
-                print(f"cannot read {github_url} because {e}")
+                logger.warn(f"cannot read {github_url} because {e}")
                 return None
             self.url_dict[github_url] = html_elem
         else:
-            # print(f" found in cache!")
             pass
         return copy.deepcopy(html_elem)
 
@@ -4334,7 +4338,6 @@ class FloatExtractor:
     def extract_float_boundaries(self, html_elem, regex_str):
         float_boundaries = []
         regex = re.compile(regex_str)
-        # print(f" regex {regex}")
         divs = html_elem.xpath(".//div")
         for div in divs:
             spans = div.xpath("./span")
@@ -4741,16 +4744,12 @@ class CSSStyle:
             return
         family_style, style = self.match_weight_style(family, style_regex, value="I", mark="SS")
         family_weight, weight = self.match_weight_style(family, weight_regex, value="B", mark="WW")
-        # print(f"family: {family}; style: {style}; weight: {weight};")
         if family_weight and overwrite_family:
             self.set_family(family_weight)
         if weight and overwrite_bold:
             self.set_font_weight(weight)
         if style and overwrite_style:
             self.set_font_style(style)
-        # if style and overwrite_stretched:
-        #     self.set_font_stretched(style)
-        # print(f"new style {self}")
 
 
     #    class CSSStyle:
@@ -5286,7 +5285,7 @@ class AmiFont:
         if css_style is None:
             return None
         if type(css_style) is ET._Element:
-            print (f"element {ET.tostring(css_style)}")
+            logger.debug (f"element {ET.tostring(css_style)}")
         if type(css_style) is str:
             css_style = CSSStyle.create_css_style_from_css_string(css_style)
         if css_style is None:
@@ -5350,7 +5349,7 @@ class SectionHierarchy:
             try:
                 parent_dict.pop(pop)  # remove non-numeric item
             except:
-                print("Cannot pop {pop}")
+                logger.warn("Cannot pop {pop}")
 
         root = Element(self.SECT)
         root.attrib[self.ID] = "4"
@@ -5383,7 +5382,7 @@ class SectionHierarchy:
 
     def ensure_element(self, root, sect_id, parent_dict):
         if sect_id == "":
-            print(f"RAN OFF TOP")
+            logger.warning(f"RAN OFF TOP")
             return None
         xpath = f"//{self.SECT}[@id='{sect_id}']"
         elems = root.xpath(xpath)
@@ -5406,13 +5405,13 @@ class SectionHierarchy:
                     sect_xml.attrib[self.MISSING] = "Y"
                 return sect_xml
         elif len(elems) > 1:
-            print(f" duplicate ids: {sect_id}")
+            logger.warning(f" duplicate ids: {sect_id}")
             return None
         else:
             return elems[0]
 
     def sort_sections(self):
-        print("sort sections NYI")
+        logger.info("sort sections NYI")
         pass
 
     @classmethod
@@ -5446,7 +5445,7 @@ class Footnote:
         nextx = XmlLib.get_next_element(footnote_number_elem)
         text = footnote_number_elem.text
         if nextx is None:
-            print(f"NO following elem")
+            logger.warning(f"NO following elem")
             return False
         # folloed by small font?
         next_class = nextx.attrib["class"]

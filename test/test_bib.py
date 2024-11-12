@@ -497,23 +497,21 @@ class AmiCorpusTest(AmiAnyTest):
         datatables_html = HtmlLib.parse_html(datatables_file)
 
         # list to receive td's
-        id_ref = "#Executive"
+        id_ref = "Executive"
         new_content = "Executive Summary"
         new_column_title = "exec_summary"
-        new_datatables = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec.html")
-
-        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(datatables_html, id_ref, new_content, new_datatables,
+        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec.html")
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(datatables_file, id_ref, new_content, new_datatables_file,
                                                                  new_column_title)
 
         # list to receive td's
         new_column_title = "acknowledgements"
-        new_datatables = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec_ack.html")
-
+        new_datatables_file2 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec_ack.html")
         Datatables.add_column_with_ahref_pointers_to_sections_with_ids(
-            datatables_html,
-            "#acknowledgements",
+            new_datatables_file,
+            "acknowledgements",
             "Acknowledgements",
-            new_datatables,
+            new_datatables_file2,
             "acknowledgements")
 
 
