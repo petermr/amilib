@@ -484,11 +484,9 @@ class AmiCorpusTest(AmiAnyTest):
 
         dirs = list(map(lambda cell: make_td_with_ahref_from_cell_content(cell), col_content))
         Datatables.insert_column(datatables_html, dirs, "chapter_dir")
-        # datatables_file1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_parent_content.html")
-        # HtmlLib.write_html_file(datatables_html, datatables_file1, debug=True)
 
-        dirs = list(map(lambda cell: make_ipcc_td_with_remote_pdf_url_cell_content(cell), col_content))
-        Datatables.insert_column(datatables_html, dirs, "PDFchapter")
+        pdfs = list(map(lambda cell: make_ipcc_td_with_remote_pdf_url_cell_content(cell), col_content))
+        Datatables.insert_column(datatables_html, pdfs, "PDFchapter")
 
         datatables_file2 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_pdf_dir.html")
         HtmlLib.write_html_file(datatables_html, datatables_file2, debug=True)
