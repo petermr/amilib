@@ -36,7 +36,7 @@ requirements = [
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.4.1a1',
+    version='0.4.1',
     description='document and dictionary download, cleaning, management',
     long_description_content_type='text/markdown',
     long_description=readme,
@@ -68,5 +68,5 @@ setup(
             'amilib=amilib.amix:main',
         ],
     },
-    python_requires='>=3.7,<=3.12',
+    python_requires='>=3.7,<3.13',
 )

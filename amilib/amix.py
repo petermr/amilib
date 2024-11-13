@@ -423,6 +423,7 @@ class AmiLib:
         version = '0.3.10a6'
         version = '0.3.11a5' # 2024-11-06 add corpus framework
         version = '0.4.1a1' # 2024-11-09 includes  datatables
+        version = '0.4.1'   # 2024-11-14 includes  datatables with multiple IPCC columns
         # logging.warn(f"VERSION {version}")
         return version
 
