@@ -2125,6 +2125,23 @@ class Datatables:
         Datatables.insert_column(datatables, new_column, new_column_title)
         HtmlLib.write_html_file(datatables, new_datatables_filename, debug=True)
 
+    @classmethod
+    def add_column_with_ahref_pointers_to_figures(cls, datatables_file, new_content, new_datatables_file,
+                                                  new_column_title):
+        # search for figures captions in datatables
+        """
+        <div id="chapter-figures">
+          <div class="col-lg-3 col-12">
+
+            <h3>Figure 1.1</h3>
+            <img src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_1_1.png" alt="Figure 1.1 | Figure 1.1 | The structure of the AR6 WGI Report" class="img-card">
+          </div>
+          """
+        # root html
+        href_html = HtmlLib.parse_html(str(datatables_file))
+        # search for figure container
+        figure_list = href_html.xpath("//div[@id='chapter-figures']")
+        assert len(figure_list) > 0
 
 
 

@@ -21,8 +21,8 @@ requirements = [
  'setuptools',
  'pdfplumber',
  'requests',
- 'numpy==1.24.1',
- 'pandas==2.0.3',
+ 'numpy',
+ 'pandas',
  'pyvis',
  'selenium',
  'tinycss',
@@ -68,5 +68,5 @@ setup(
             'amilib=amilib.amix:main',
         ],
     },
-    python_requires='>=3.7,<=3.12',
+    python_requires='>=3.7,<=3.10', # numpy etc are incompatible with 3.12
 )

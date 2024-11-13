@@ -491,7 +491,7 @@ class AmiCorpusTest(AmiAnyTest):
         datatables_file2 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_pdf_dir.html")
         HtmlLib.write_html_file(datatables_html, datatables_file2, debug=True)
 
-    def test_ipcc_add_executive_summmary_to_datatables(self):
+    def test_ipcc_add_executive_summmary_and_acknow_to_datatables(self):
         """
         get a column listing hyperlinks to documents from existing datatables file
         create a new column pointing to subcomponents of the document
@@ -516,6 +516,73 @@ class AmiCorpusTest(AmiAnyTest):
             "Acknowledgements",
             new_datatables_file2,
             "acknowledgements")
+
+
+    def test_extract_figures_from_chapter(self):
+        """
+        read IPCC Chapter and extract figures
+        """
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter05", "html_with_ids.html")
+        assert chapter_file.exists()
+        chapter_html = HtmlLib.parse_html(chapter_file)
+        assert chapter_html is not None
+        # search for figures captions in html
+        """
+        <div id="chapter-figures">
+          <div class="col-lg-3 col-12">
+
+            <h3>Figure 1.1</h3>
+            <img 
+              src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_1_1.png" 
+              alt="Figure 1.1 | Figure 1.1 | The structure of the AR6 WGI Report" 
+              class="img-card">
+          </div>
+          """
+        # search for figure container
+        figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
+        assert len(figure_containers) == 1
+        figures = figure_containers[0].xpath("./div[h3]")
+        print(f"figures {len(figures)}")
+        figure_list = []
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(htmlx)
+
+        ul = ET.SubElement(body, "ul")
+        for fig in figures:
+            h3s = fig.xpath("h3")
+            imgs = fig.xpath("img")
+            if len(h3s) == 1:
+                fig_num = h3s[0].text
+                print(f"fig num {fig_num}")
+            if len(imgs) == 1:
+                img_alt = imgs[0].attrib.get("alt")
+                print(f"fig alt {img_alt} {ET.tostring(imgs[0])}")
+            if fig_num is not None:
+                li = ET.SubElement(ul, "li")
+                a = ET.SubElement(li, "a")
+                a.attrib["href"] = imgs[0].get("src")
+                a.text = img_alt if img_alt is not None else fig_num
+                a.text = f"{fig_num}"
+
+        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_5_figures.html"), debug=True)
+
+
+
+    def test_ipcc_add_figures_to_datatables(self):
+        """
+        get a column listing hyperlinks to documents from existing datatables file
+        create a new column pointing to subcomponents of the document
+        """
+        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        datatables_html = HtmlLib.parse_html(datatables_file)
+
+        # list to receive td's
+        # id_ref = "Executive"
+        new_content = "Figures"
+        new_column_title = "figures"
+        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_figures.html")
+        Datatables.add_column_with_ahref_pointers_to_figures(datatables_file, new_content, new_datatables_file,
+                                                                 new_column_title)
 
 
     # @classmethod
