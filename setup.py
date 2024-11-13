@@ -36,7 +36,7 @@ requirements = [
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.3.11a5',
+    version='0.4.1a1',
     description='document and dictionary download, cleaning, management',
     long_description_content_type='text/markdown',
     long_description=readme,
