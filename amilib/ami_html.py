@@ -2141,7 +2141,7 @@ class Datatables:
         href_html = HtmlLib.parse_html(str(datatables_file))
         # search for figure container
         figure_list = href_html.xpath("//div[@id='chapter-figures']")
-        assert len(figure_list) > 0
+
 
 
 

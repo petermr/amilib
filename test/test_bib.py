@@ -4,6 +4,7 @@ import configparser
 import logging
 import re
 import unittest
+from copy import copy
 
 import lxml.etree as ET
 from pathlib import Path
@@ -543,30 +544,85 @@ class AmiCorpusTest(AmiAnyTest):
         assert len(figure_containers) == 1
         figures = figure_containers[0].xpath("./div[h3]")
         print(f"figures {len(figures)}")
-        figure_list = []
         htmlx = HtmlLib.create_html_with_empty_head_body()
+        head = HtmlLib.get_or_create_head(htmlx)
+        ET.SubElement(head, "meta").attrib["charset"] = "UTF-8"
+        meta = ET.SubElement(head, "meta")
+        meta.attrib["name"] = "viewport"
+        meta.attrib["content"] = "width=device-width, initial-scale=1.0"
+        style = ET.SubElement(head, "style")
+        style.text = """
+.scroll-container {
+display: flex;
+overflow-x: auto;
+max-width: 10%;
+}
+.thumbnail {
+flex: 0 0 auto;
+width: 100px;
+height: 100px;
+margin: 5px;
+text-align: center;
+}
+.thumbnail img {
+max-width: 100%;
+max-height: 100%;
+}
+.caption {
+font-size: 12px;
+}
+"""
+
         body = HtmlLib.get_body(htmlx)
 
-        ul = ET.SubElement(body, "ul")
+        figure_table = ET.SubElement(body, "table")
+        tbody = ET.SubElement(figure_table, "tbody")
+        tr = ET.SubElement(tbody, "tr")
+        scroller = ET.SubElement(tr, "td")
+        scroller.attrib["class"] = "scroll-container"
+
         for fig in figures:
-            h3s = fig.xpath("h3")
-            imgs = fig.xpath("img")
-            if len(h3s) == 1:
-                fig_num = h3s[0].text
-                print(f"fig num {fig_num}")
-            if len(imgs) == 1:
-                img_alt = imgs[0].attrib.get("alt")
-                print(f"fig alt {img_alt} {ET.tostring(imgs[0])}")
-            if fig_num is not None:
-                li = ET.SubElement(ul, "li")
-                a = ET.SubElement(li, "a")
-                a.attrib["href"] = imgs[0].get("src")
-                a.text = img_alt if img_alt is not None else fig_num
-                a.text = f"{fig_num}"
+            h30 = fig.xpath("h3")[0]
+            img0 = fig.xpath("img")[0]
+            fig_num = h30.text
+            img_alt = img0.attrib.get("alt")
+
+            div = self._create_a_div(fig_num, img_alt, img0)
+
+            """
+        <div class="scroll-container">
+          <div class="thumbnail">
+            <img src="image1.jpg" alt="Image 1">
+            <div class="caption">Caption 1</div>
+          </div>
+        </div>
+            """
+            thumbnail = ET.SubElement(scroller, "div" )
+            thumbnail.attrib["class"] = "thumbnail"
+            a2 = ET.SubElement(thumbnail, "a")
+            a2.attrib["href"] = img0.attrib.get("src")
+            a2.append(copy(img0))
+            div1 = ET.SubElement(thumbnail, "div")
+            div1.attrib["class"] = "caption"
+            div1.text = h30.text
+
+        dummy_tr = ET.SubElement(tr, "td")
+        dummy_tr.text = "Text to pad out column"
 
         HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_5_figures.html"), debug=True)
 
+    def _create_a_div(self, fig_num, img_alt, img):
+        div = ET.Element("div")
 
+        a = ET.SubElement(div, "a")
+        a.attrib["href"] = img.get("src")
+        a.text = img_alt if img_alt is not None else fig_num
+        a.text = f"{fig_num}"
+        br = ET.SubElement(a, "br")
+        aimg = ET.SubElement(a, "img")
+        aimg.attrib["src"] = img.get("src")
+        # aimg.attrib["width"] = "10%"
+        return div
 
     def test_ipcc_add_figures_to_datatables(self):
         """
@@ -583,6 +639,7 @@ class AmiCorpusTest(AmiAnyTest):
         new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_figures.html")
         Datatables.add_column_with_ahref_pointers_to_figures(datatables_file, new_content, new_datatables_file,
                                                                  new_column_title)
+        # NYI
 
 
     # @classmethod
