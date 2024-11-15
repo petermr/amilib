@@ -181,6 +181,27 @@ class PygetpapersTest(AmiAnyTest):
         html1 = AmiCorpus.search_files_with_phrases(infiles, phrases=phrases, outfile=outfile, debug=debug)
 
 
+def _ipcc_create_zip_caption_img(chapter_html):
+    # search for figures captions in html
+    """
+    <div id="chapter-figures">
+      <div class="col-lg-3 col-12">
+
+        <h3>Figure 1.1</h3>
+        <img
+          src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_1_1.png"
+          alt="Figure 1.1 | Figure 1.1 | The structure of the AR6 WGI Report"
+          class="img-card">
+      </div>
+      """
+
+    figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
+    figures = figure_containers[0].xpath("./div[h3]")
+    captions = [fig.xpath("h3")[0].text for fig in figures]
+    imgs = [fig.xpath("img")[0] for fig in figures]
+    captioned_figures = list(zip(imgs, captions))
+    return captioned_figures
+
 
 class AmiCorpusTest(AmiAnyTest):
 
@@ -519,6 +540,7 @@ class AmiCorpusTest(AmiAnyTest):
             "acknowledgements")
 
 
+
     def test_extract_figures_from_chapter(self):
         """
         read IPCC Chapter and extract figures
@@ -527,102 +549,23 @@ class AmiCorpusTest(AmiAnyTest):
         assert chapter_file.exists()
         chapter_html = HtmlLib.parse_html(chapter_file)
         assert chapter_html is not None
-        # search for figures captions in html
-        """
-        <div id="chapter-figures">
-          <div class="col-lg-3 col-12">
+        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_5_figures.html")
 
-            <h3>Figure 1.1</h3>
-            <img 
-              src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_1_1.png" 
-              alt="Figure 1.1 | Figure 1.1 | The structure of the AR6 WGI Report" 
-              class="img-card">
-          </div>
-          """
-        # search for figure container
-        figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
-        assert len(figure_containers) == 1
-        figures = figure_containers[0].xpath("./div[h3]")
-        print(f"figures {len(figures)}")
-        htmlx = HtmlLib.create_html_with_empty_head_body()
-        head = HtmlLib.get_or_create_head(htmlx)
-        ET.SubElement(head, "meta").attrib["charset"] = "UTF-8"
-        meta = ET.SubElement(head, "meta")
-        meta.attrib["name"] = "viewport"
-        meta.attrib["content"] = "width=device-width, initial-scale=1.0"
-        style = ET.SubElement(head, "style")
-        style.text = """
-.scroll-container {
-display: flex;
-overflow-x: auto;
-max-width: 10%;
-}
-.thumbnail {
-flex: 0 0 auto;
-width: 100px;
-height: 100px;
-margin: 5px;
-text-align: center;
-}
-.thumbnail img {
-max-width: 100%;
-max-height: 100%;
-}
-.caption {
-font-size: 12px;
-}
-"""
-
+        htmlx = HtmlLib.create_html_with_scrolling_style()
         body = HtmlLib.get_body(htmlx)
+        # figure_table = ET.SubElement(body, "table")
+        # tbody = ET.SubElement(figure_table, "tbody")
+        # tr = ET.SubElement(tbody, "tr")
+        # tr.attrib["class"] = "unused"
+        scroll_div = ET.SubElement(body, "div")
+        scroll_div.attrib["class"] = "scroll_parent"
 
-        figure_table = ET.SubElement(body, "table")
-        tbody = ET.SubElement(figure_table, "tbody")
-        tr = ET.SubElement(tbody, "tr")
-        scroller = ET.SubElement(tr, "td")
-        scroller.attrib["class"] = "scroll-container"
+        # search for figure container
+        captioned_figures = _ipcc_create_zip_caption_img(chapter_html)
+        # HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, tr)
+        HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
+        HtmlLib.write_html_file(htmlx, outpath, debug=True)
 
-        for fig in figures:
-            h30 = fig.xpath("h3")[0]
-            img0 = fig.xpath("img")[0]
-            fig_num = h30.text
-            img_alt = img0.attrib.get("alt")
-
-            div = self._create_a_div(fig_num, img_alt, img0)
-
-            """
-        <div class="scroll-container">
-          <div class="thumbnail">
-            <img src="image1.jpg" alt="Image 1">
-            <div class="caption">Caption 1</div>
-          </div>
-        </div>
-            """
-            thumbnail = ET.SubElement(scroller, "div" )
-            thumbnail.attrib["class"] = "thumbnail"
-            a2 = ET.SubElement(thumbnail, "a")
-            a2.attrib["href"] = img0.attrib.get("src")
-            a2.append(copy(img0))
-            div1 = ET.SubElement(thumbnail, "div")
-            div1.attrib["class"] = "caption"
-            div1.text = h30.text
-
-        dummy_tr = ET.SubElement(tr, "td")
-        dummy_tr.text = "Text to pad out column"
-
-        HtmlLib.write_html_file(htmlx, Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_5_figures.html"), debug=True)
-
-    def _create_a_div(self, fig_num, img_alt, img):
-        div = ET.Element("div")
-
-        a = ET.SubElement(div, "a")
-        a.attrib["href"] = img.get("src")
-        a.text = img_alt if img_alt is not None else fig_num
-        a.text = f"{fig_num}"
-        br = ET.SubElement(a, "br")
-        aimg = ET.SubElement(a, "img")
-        aimg.attrib["src"] = img.get("src")
-        # aimg.attrib["width"] = "10%"
-        return div
 
     def test_ipcc_add_figures_to_datatables(self):
         """
@@ -640,37 +583,4 @@ font-size: 12px;
         Datatables.add_column_with_ahref_pointers_to_figures(datatables_file, new_content, new_datatables_file,
                                                                  new_column_title)
         # NYI
-
-
-    # @classmethod
-    # def add_column_with_ahref_pointers_to_sections_with_ids(cls, datatables_html, id_ref, new_content, new_datatables,
-    #                                                         new_title):
-    #     col_content = Datatables.extract_column(datatables_html, colindex="file")
-    #     # make a column of pointers in td cells
-    #     # content is
-    #     # <td>
-    #     #   <a href="wg1/Chapter01/html_with_ids.html">wg1/Chapter01/html_with_ids.html</a>
-    #     # </td>
-    #     new_column = []
-    #     for cell in col_content:
-    #         # get <a> child
-    #         a_elem = cell.xpath("./a")[0]
-    #         href = a_elem.attrib['href']
-    #         print(f"href {href}")
-    #         # add section reference
-    #
-    #         href_new = href + id_ref
-    #
-    #         # create new td
-    #         td_new = ET.Element("td")
-    #         # create child <a>
-    #         a_new = ET.SubElement(td_new, "a")
-    #         a_new.attrib['href'] = href_new
-    #         a_new.text = new_content
-    #
-    #         new_column.append(td_new)
-    #     Datatables.insert_column(datatables_html, new_column, new_title)
-    #     HtmlLib.write_html_file(datatables_html, new_datatables, debug=True)
-    #
-
 

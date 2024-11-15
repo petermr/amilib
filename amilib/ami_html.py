@@ -19,7 +19,7 @@ import lxml
 import numpy as np
 import lxml.etree as ET
 from lxml.etree import Element, _Element, _ElementTree
-from lxml.html import HTMLParser
+from lxml.html import HTMLParser, HtmlElement
 from sklearn.linear_model import LinearRegression
 
 # local
@@ -1932,6 +1932,110 @@ class HtmlLib:
             tcell.title = title
 
         return tcell
+
+    @classmethod
+    def create_horizontal_scrolling_thumbnails_with_hrefs(cls, captioned_imgs, scroller_parent=None):
+        """
+        takes an iterable of (img, caption) pairs and creates a scrolling
+        banner of clickable thumbnails as a[@href]/img which display clickable images
+        """
+        # logger.info(f"len cap_imgs {len(captioned_imgs)}")
+        scroll_container = ET.Element("div") if scroller_parent is None else ET.SubElement(scroller_parent, "div")
+        scroll_container.attrib["class"] = "scroll-container"
+        logger.info(f"scroller parent {scroll_container.getparent().get('class')}")
+        for (img, caption) in captioned_imgs:
+            assert (t := type(img)) is HtmlElement, f"found {t}"
+            img.attrib["alt"] = caption
+            cls.create_thumbnail_and_add_to_scroller(img, caption, scroll_container)
+        logger.info(f"scroller parent after  {scroll_container.getparent().tag} {scroll_container.getparent().get('class')} {scroll_container.tag}")
+        return scroll_container
+
+    @classmethod
+    def create_ahref_for_img(cls, img, caption, alt=None, title=None):
+        """
+        given an existing img@src create a div[a[@href]] pointing to the src and with img as the content
+        <img src="foo.png" alt="bar/>
+        goes to
+        <div>
+          <a href="foo.png" title="bar"><img src="foo.png" alt="bar"/><br/>
+        might be obsolete
+        """
+
+        if img is None:
+            raise ValueError("img is None")
+        assert (t := type(img)) is HtmlElement, f"found {t}"
+        if caption is None:
+            caption = "No caption"
+        div = ET.Element("div")
+        div.attrib["class"] = "ahref_image"
+
+        a = ET.SubElement(div, "a")
+        a.attrib["href"] = img.attrib.get("src")
+        a.text = alt if alt else caption
+        a.text = f"{caption}"
+        br = ET.SubElement(a, "br")
+        aimg = ET.SubElement(a, "img")
+        aimg.attrib["src"] = img.get("src")
+
+        if title:
+            div.attrib["title"] = title
+        # aimg.attrib["width"] = "10%"
+        return div
+
+    @classmethod
+    def create_thumbnail_and_add_to_scroller(cls, img, caption: str, scroller):
+        """
+        Requires styles to be set for thumbnail and caption
+        <div class="scroll-container">
+          <div class="thumbnail"
+            <img src="image1.jpg" alt="Image 1">
+            <div class="caption">Caption 1</div>
+          </div>
+        </div>
+        :param img: HTML <img>
+        :param caption: string for caption
+        """
+
+        thumbnail = ET.SubElement(scroller, "div")
+        thumbnail.attrib["class"] = "thumbnail"
+        a2 = ET.SubElement(thumbnail, "a")
+        a2.attrib["href"] = img.attrib.get("src")
+        a2.append(copy.copy(img))
+        div1 = ET.SubElement(thumbnail, "div")
+        div1.attrib["class"] = "caption"
+        div1.text = caption
+
+    @classmethod
+    def create_html_with_scrolling_style(cls):
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        head = HtmlLib.get_or_create_head(htmlx)
+        ET.SubElement(head, "meta").attrib["charset"] = "UTF-8"
+        meta = ET.SubElement(head, "meta")
+        meta.attrib["name"] = "viewport"
+        meta.attrib["content"] = "width=device-width, initial-scale=1.0"
+        style = ET.SubElement(head, "style")
+        style.text = """
+.scroll-container {
+display: flex;
+overflow-x: auto;
+max-width: 10%;
+}
+.thumbnail {
+flex: 0 0 auto;
+width: 100px;
+height: 100px;
+margin: 5px;
+text-align: center;
+}
+.thumbnail img {
+max-width: 100%;
+max-height: 100%;
+}
+.caption {
+font-size: 12px;
+}
+"""
+        return htmlx
 
 
 class Datatables:
