@@ -2245,6 +2245,19 @@ class Datatables:
         href_html = HtmlLib.parse_html(str(datatables_file))
         # search for figure container
         figure_list = href_html.xpath("//div[@id='chapter-figures']")
+        table_list = href_html.xpath("//table[@class='Table']")
+
+    @classmethod
+    def add_column_with_ahref_pointers_to_tables(cls, datatables_file, new_content, new_datatables_file,
+                                                  new_column_title):
+        # search for tables in datatables
+        """
+        """
+        # root html
+        href_html = HtmlLib.parse_html(str(datatables_file))
+        # search for figure container
+
+        table_list = href_html.xpath("//table[@class='Table']")
 
 
 

@@ -202,6 +202,18 @@ def _ipcc_create_zip_caption_img(chapter_html):
     captioned_figures = list(zip(imgs, captions))
     return captioned_figures
 
+def _ipcc_create_zip_caption_table(chapter_html):
+    # search for figures captions in html
+    """
+    """
+    raise NotImplemented("table")
+    figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
+    figures = figure_containers[0].xpath("./div[h3]")
+    captions = [fig.xpath("h3")[0].text for fig in figures]
+    imgs = [fig.xpath("img")[0] for fig in figures]
+    captioned_figures = list(zip(imgs, captions))
+    return captioned_figures
+
 
 class AmiCorpusTest(AmiAnyTest):
 
@@ -546,24 +558,75 @@ class AmiCorpusTest(AmiAnyTest):
         read IPCC Chapter and extract figures
         """
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter05", "html_with_ids.html")
-        assert chapter_file.exists()
         chapter_html = HtmlLib.parse_html(chapter_file)
-        assert chapter_html is not None
         outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_5_figures.html")
 
         htmlx = HtmlLib.create_html_with_scrolling_style()
         body = HtmlLib.get_body(htmlx)
-        # figure_table = ET.SubElement(body, "table")
-        # tbody = ET.SubElement(figure_table, "tbody")
-        # tr = ET.SubElement(tbody, "tr")
-        # tr.attrib["class"] = "unused"
         scroll_div = ET.SubElement(body, "div")
         scroll_div.attrib["class"] = "scroll_parent"
 
         # search for figure container
         captioned_figures = _ipcc_create_zip_caption_img(chapter_html)
-        # HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, tr)
         HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
+        HtmlLib.write_html_file(htmlx, outpath, debug=True)
+
+    def test_extract_tables_from_chapter(self):
+        """
+        read IPCC Chapter and extract figures
+        """
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter05", "html_with_ids.html")
+        chapter_html = HtmlLib.parse_html(chapter_file)
+        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_5_tables.html")
+
+        htmlx = HtmlLib.create_html_with_scrolling_style()
+        body = HtmlLib.get_body(htmlx)
+        scroll_div = ET.SubElement(body, "div")
+        scroll_div.attrib["class"] = "scroll_parent"
+
+        # search for tables
+        captioned_tables = _ipcc_create_zip_caption_table(chapter_html)
+        HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_tables, scroll_div)
+        HtmlLib.write_html_file(htmlx, outpath, debug=True)
+
+    def test_extract_figures_from_chapters(self):
+        """
+        read IPCC Chapter and extract figures
+        """
+        chapter_files = [
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter01", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter02", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter03", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter04", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter05", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter06", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter07", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter08", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter09", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter10", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter11", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter12", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter13", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter14", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter15", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter16", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter17", "html_with_ids.html"),
+            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter18", "html_with_ids.html"),
+            ]
+        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_figures.html")
+
+        htmlx = HtmlLib.create_html_with_scrolling_style()
+        body = HtmlLib.get_body(htmlx)
+
+        for chapter_file in chapter_files:        # search for figure container
+            if not chapter_file.exists():
+                logger.info(f"file does not exist {chapter_file}")
+                continue
+            scroll_div = ET.SubElement(body, "div")
+            scroll_div.attrib["class"] = "scroll_parent"
+            chapter_html = HtmlLib.parse_html(chapter_file)
+            captioned_figures = _ipcc_create_zip_caption_img(chapter_html)
+            HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
         HtmlLib.write_html_file(htmlx, outpath, debug=True)
 
 
@@ -581,6 +644,20 @@ class AmiCorpusTest(AmiAnyTest):
         new_column_title = "figures"
         new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_figures.html")
         Datatables.add_column_with_ahref_pointers_to_figures(datatables_file, new_content, new_datatables_file,
+                                                                 new_column_title)
+        # NYI
+    def test_ipcc_add_tables_to_datatables(self):
+        """
+        """
+        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        datatables_html = HtmlLib.parse_html(datatables_file)
+
+        # list to receive td's
+        # id_ref = "Executive"
+        new_content = "Tables"
+        new_column_title = "tables"
+        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_tables.html")
+        Datatables.add_column_with_ahref_pointers_to_tables(datatables_file, new_content, new_datatables_file,
                                                                  new_column_title)
         # NYI
 
