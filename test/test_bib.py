@@ -205,14 +205,69 @@ def _ipcc_create_zip_caption_img(chapter_html):
 def _ipcc_create_zip_caption_table(chapter_html):
     # search for figures captions in html
     """
+    :param chapter_html: chapter (currently in WG1 only)
+    :return: Zipped (caption table)
     """
-    raise NotImplemented("table")
-    figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
-    figures = figure_containers[0].xpath("./div[h3]")
-    captions = [fig.xpath("h3")[0].text for fig in figures]
-    imgs = [fig.xpath("img")[0] for fig in figures]
-    captioned_figures = list(zip(imgs, captions))
-    return captioned_figures
+    """
+    IPCC WG1 uses a strange approach to captions and puts a <strong> before the table
+    WG2 is different :-(
+    """
+    """#table001"""
+    """
+    <div class="_idGenObjectStyleOverride-1" id="_idContainer031">
+      <strong class="Body-copy_Figures--tables-etc_•-Figure-title--bold-to-------spans-columns" lang="en  -US">
+        <span class="•-Figure-table-number---title">
+          <span class="•-Bold-condensed--dark-blue-">Table 5.1 | </span>
+        </span>
+        <span class="•-Bold-condensed--dark-blue-">Global anthropogenic CO</span>
+        <sub class="•-Bold-condensed-subscript _idGenCharOverride-1" lang="en-GB">2</sub>
+        <span class="•-Bold-condensed--dark-blue-"> budget accumulated since the Industrial Revolution (onset in 1750) and averaged over the 1980s, 1990s, 2000s, and 2010s</span>. By convention, a negative ocean or land to atmosphere CO<sub class="•-Subscript--e-g--for-CO2-etc- _idGenCharOverride-1">2</sub> flux is equivalent to a gain of carbon by these reservoirs. The table does not include natural exchanges (e.g., rivers, weathering) between reservoirs. Uncertainties represent the 68% confidence interval (<a class="reference-link" href="#Friedlingstein--2020">Friedlingstein et al., 2020</a>). </strong>
+      <table class="IPCC-Table" id="table001">
+            <colgroup><col class="_idGenTableRowColumn-1">
+              <col class="_idGenTableRowColumn-2">
+              <col class="_idGenTableRowColumn-2">
+              <col class="_idGenTableRowColumn-2">
+              <col class="_idGenTableRowColumn-2">
+              <col class="_idGenTableRowColumn-2">
+              <col class="_idGenTableRowColumn-2">
+            </colgroup>
+            <thead>
+              <tr class="IPCC-Table _idGenTableRowColumn-3">
+              <td class="IPCC-Table •-Header-row--blue- •-Header-row--blue-"></td>
+              <td class="IPCC-Table •-Header-row--blue- •-Header-row--blue-">
+              <p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">1750–2019</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">Cumulative</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">(PgC)</p></td><td class="IPCC-Table •-Header-row--blue- •-Header-row--blue-"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">1850–2019</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">Cumulative</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">(PgC)</p></td><td class="IPCC-Table •-Header-row--blue- •-Header-row--blue-"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">1980–1989</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">Mean Annual Growth Rate</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">(PgC yr<sup class="•-Superscript--e-g--footnote-refs-in-text- _idGenCharOverride-1">–1</sup>)</p></td><td class="IPCC-Table •-Header-row--blue- •-Header-row--blue-"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">1990–1999</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">Mean Annual Growth Rate</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">(PgC yr<sup class="•-Superscript--e-g--footnote-refs-in-text- _idGenCharOverride-1">–1</sup>)</p></td><td class="IPCC-Table •-Header-row--blue- •-Header-row--blue-"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">2000–2009</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">Mean Annual Growth Rate</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">(PgC yr<sup class="•-Superscript--e-g--footnote-refs-in-text- _idGenCharOverride-1">–1</sup>)</p></td><td class="IPCC-Table •-Header-row--blue- •-Header-row--blue-"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">2010–2019</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">Mean Annual Growth Rate</p><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-header-row-" lang="en-US">(PgC yr<sup class="•-Superscript--e-g--footnote-refs-in-text- _idGenCharOverride-1">–1</sup>)</p></td></tr></thead><tbody><tr class="IPCC-Table _idGenTableRowColumn-4"><td class="IPCC-Table •-Body-row •-Body-row" colspan="7"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US"><span class="•-Bold-condensed" lang="en-GB">Emissions</span></p></td></tr><tr class="IPCC-Table _idGenTableRowColumn-5"><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--left-align" lang="en-US">Fossil fuel combustion and cement production</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">445 ± 20</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">445 ± 20</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">5.4 ± 0.3</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">6.3 ± 0.3</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">7.7 ± 0.4</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">9.4 ± 0.5</p></td></tr><tr class="IPCC-Table _idGenTableRowColumn-4"><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--left-align" lang="en-US">Net land-use change</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">240 ± 70</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">210 ± 60</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">1.3 ± 0.7</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">1.4 ± 0.7</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">1.4 ± 0.7</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">1.6 ± 0.7</p></td></tr><tr class="IPCC-Table _idGenTableRowColumn-6"><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--left-align" lang="en-US">Total emissions</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">685 ± 75</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">655 ± 65</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">6.7 ± 0.8</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">7.7 ± 0.8</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">9.1 ± 0.8</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">10.9 ± 0.9</p></td></tr><tr class="IPCC-Table _idGenTableRowColumn-4"><td class="IPCC-Table •-Body-row •-Body-row" colspan="7"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US"><span class="•-Bold-condensed" lang="en-GB">Partition</span></p></td></tr><tr class="IPCC-Table _idGenTableRowColumn-6"><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--left-align" lang="en-US">Atmospheric increase</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">285 ± 5</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">265 ± 5</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">3.4 ± 0.02</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">3.2 ± 0.02</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">4.1 ± 0.02</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">5.1 ± 0.02</p></td></tr><tr class="IPCC-Table _idGenTableRowColumn-4"><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--left-align" lang="en-US">Ocean sink</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">170 ± 20</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">160 ± 20</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">1.7 ± 0.4</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">2.0 ± 0.5</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">2.1 ± 0.5</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">2.5 ± 0.6</p></td></tr><tr class="IPCC-Table _idGenTableRowColumn-6"><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--left-align" lang="en-US">Terrestrial sink</p></td>
+              <td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">230 ± 60</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">210 ± 55</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">2.0 ± 0.7</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">2.6 ± 0.7</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">2.9 ± 0.8</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">3.4 ± 0.9</p></td></tr><tr class="IPCC-Table _idGenTableRowColumn-4"><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--left-align" lang="en-US"><span class="•-Bold-condensed" lang="en-GB">B</span><span class="•-Bold-condensed" lang="en-GB">udget imbalance</span></p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">0</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">20</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">–0.4</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">–0.1</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">0</p></td><td class="IPCC-Table •-Body-row •-Body-row"><p class="Body-copy_Figures--tables-etc_Table-styles_•-Table-body-row--black--centre-align" lang="en-US">–0.1</p>
+              </td>
+              </tr>
+              </tbody>
+        </table></div>"""
+    # table_containers = chapter_html.xpath("//div[table[starts-with(@id,'table')")
+    # table_containers = chapter_html.xpath("//div[@class='_idGenObjectStyleOverride-1']")
+    # table_containers = chapter_html.xpath("//table[@class='IPCC-Table']")
+    table_containers = chapter_html.xpath("//div[table]")
+    logger.info(f"len {len(table_containers)}")
+    captions = []
+    tables = []
+    for table_container in table_containers:
+        strong_children = table_container.xpath("strong")
+        table_children = table_container.xpath("table")
+        caption = "None" if len(strong_children) == 0 else "".join(strong_children[0].itertext())
+        table = "No table" if len(table_children) == 0 else table_children[0]
+        logger.info(f"strong {len(strong_children)} tables {len(table_children)} {caption}")
+        captions.append(caption)
+        tables.append(table)
+
+    logger.info (f"table count {len(table_containers)}")
+    assert len(table_containers) > 0
+    return list(zip(tables, captions))
+
+
+wg1_chapter_nums = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16",
+                    "17", "18", ]
+
+wg1_chapter_files = [Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1",
+                      f"Chapter{chapter_num}", "html_with_ids.html")
+                 for chapter_num in wg1_chapter_nums]
 
 
 class AmiCorpusTest(AmiAnyTest):
@@ -557,9 +612,9 @@ class AmiCorpusTest(AmiAnyTest):
         """
         read IPCC Chapter and extract figures
         """
-        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter05", "html_with_ids.html")
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter05", "html_with_ids.html")
         chapter_html = HtmlLib.parse_html(chapter_file)
-        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_5_figures.html")
+        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg1_5_figures.html")
 
         htmlx = HtmlLib.create_html_with_scrolling_style()
         body = HtmlLib.get_body(htmlx)
@@ -575,9 +630,9 @@ class AmiCorpusTest(AmiAnyTest):
         """
         read IPCC Chapter and extract figures
         """
-        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter05", "html_with_ids.html")
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter05", "html_with_ids.html")
         chapter_html = HtmlLib.parse_html(chapter_file)
-        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_5_tables.html")
+        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg1_5_tables.html")
 
         htmlx = HtmlLib.create_html_with_scrolling_style()
         body = HtmlLib.get_body(htmlx)
@@ -586,39 +641,19 @@ class AmiCorpusTest(AmiAnyTest):
 
         # search for tables
         captioned_tables = _ipcc_create_zip_caption_table(chapter_html)
-        HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_tables, scroll_div)
+        HtmlLib.create_horizontal_scrolling_thumbnails_with_tables(captioned_tables, scroll_div)
         HtmlLib.write_html_file(htmlx, outpath, debug=True)
 
-    def test_extract_figures_from_chapters(self):
+    def test_extract_figures_from_wg1(self):
         """
         read IPCC Chapter and extract figures
         """
-        chapter_files = [
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter01", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter02", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter03", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter04", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter05", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter06", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter07", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter08", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter09", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter10", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter11", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter12", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter13", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter14", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter15", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter16", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter17", "html_with_ids.html"),
-            Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "Chapter18", "html_with_ids.html"),
-            ]
-        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg2_figures.html")
+        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg1_figures.html")
 
         htmlx = HtmlLib.create_html_with_scrolling_style()
         body = HtmlLib.get_body(htmlx)
 
-        for chapter_file in chapter_files:        # search for figure container
+        for chapter_file in wg1_chapter_files:        # search for figure container
             if not chapter_file.exists():
                 logger.info(f"file does not exist {chapter_file}")
                 continue
@@ -628,6 +663,31 @@ class AmiCorpusTest(AmiAnyTest):
             captioned_figures = _ipcc_create_zip_caption_img(chapter_html)
             HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
         HtmlLib.write_html_file(htmlx, outpath, debug=True)
+
+    def test_extract_tables_from_wg1(self):
+        """
+        read IPCC Chapter and extract figures
+        """
+        chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter05", "html_with_ids.html")
+        chapter_html = HtmlLib.parse_html(chapter_file)
+        outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg1_tables.html")
+
+        htmlx = HtmlLib.create_html_with_scrolling_style()
+        body = HtmlLib.get_body(htmlx)
+
+        for chapter_file in wg1_chapter_files:        # search for figure container
+            if not chapter_file.exists():
+                logger.info(f"file does not exist {chapter_file}")
+                continue
+            scroll_div = ET.SubElement(body, "div")
+            scroll_div.attrib["class"] = "scroll_parent"
+            chapter_html = HtmlLib.parse_html(chapter_file)
+            captioned_tables = _ipcc_create_zip_caption_table(chapter_html)
+            HtmlLib.create_horizontal_scrolling_thumbnails_with_tables(captioned_tables, scroll_div)
+        HtmlLib.write_html_file(htmlx, outpath, debug=True)
+
+
+
 
 
     def test_ipcc_add_figures_to_datatables(self):
