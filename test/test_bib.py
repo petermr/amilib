@@ -181,27 +181,34 @@ class PygetpapersTest(AmiAnyTest):
         html1 = AmiCorpus.search_files_with_phrases(infiles, phrases=phrases, outfile=outfile, debug=debug)
 
 
-def _ipcc_create_zip_caption_img(chapter_html):
-    # search for figures captions in html
-    """
-    <div id="chapter-figures">
-      <div class="col-lg-3 col-12">
-
-        <h3>Figure 1.1</h3>
-        <img
-          src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_1_1.png"
-          alt="Figure 1.1 | Figure 1.1 | The structure of the AR6 WGI Report"
-          class="img-card">
-      </div>
-      """
-
-    figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
-    figures = figure_containers[0].xpath("./div[h3]")
-    captions = [fig.xpath("h3")[0].text for fig in figures]
-    imgs = [fig.xpath("img")[0] for fig in figures]
-    captioned_figures = list(zip(imgs, captions))
-    return captioned_figures
-
+# def _ipcc_create_zip_caption_img(chapter_html):
+#     """
+#     function to read html file, extracts figures with caption
+#     :param chapter_html: HTML file containing images aith captions
+#     :return: zip of (img, caption_text)
+#     :except: any error returns None
+#
+#     <div id="chapter-figures">
+#       <div class="col-lg-3 col-12">
+#
+#         <h3>Figure 1.1</h3>
+#         <img
+#           src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_1_1.png"
+#           alt="Figure 1.1 | Figure 1.1 | The structure of the AR6 WGI Report"
+#           class="img-card">
+#       </div>
+#       """
+#
+#     try:
+#         figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
+#         figures = figure_containers[0].xpath("./div[h3]")
+#         captions = [fig.xpath("h3")[0].text for fig in figures]
+#         imgs = [fig.xpath("img")[0] for fig in figures]
+#         captioned_figures = list(zip(imgs, captions))
+#         return captioned_figures
+#     except Exception as e:
+#         return None
+#
 def _ipcc_create_zip_caption_table(chapter_html):
     # search for figures captions in html
     """
@@ -613,18 +620,32 @@ class AmiCorpusTest(AmiAnyTest):
         read IPCC Chapter and extract figures
         """
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter05", "html_with_ids.html")
-        chapter_html = HtmlLib.parse_html(chapter_file)
         outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg1_5_figures.html")
 
+        self.create_scrolling_thumbnails_from_html_images(chapter_file, HtmlLib._ipcc_create_zip_caption_img,
+                                                          outpath)
+
+    @classmethod
+    def create_scrolling_thumbnails_from_html_images(cls, html_file, create_image_caption_zip_from_html_figures,
+                                                     outpath=None, debug=True):
+        """
+        uses a corpus-specific function to create list of (img, caption_text) tuples and create scrolling thumbnails
+        :param html_file: contains images (img) with captions
+        :param create_image_caption_zip_from_html_figures: function to create list of (img, text) tuples
+        :return: div[class="scrolling-container] with list of clickable thumbnails, None if errors
+
+        """
+        chapter_html = HtmlLib.parse_html(html_file)
         htmlx = HtmlLib.create_html_with_scrolling_style()
         body = HtmlLib.get_body(htmlx)
         scroll_div = ET.SubElement(body, "div")
         scroll_div.attrib["class"] = "scroll_parent"
-
         # search for figure container
-        captioned_figures = _ipcc_create_zip_caption_img(chapter_html)
+        captioned_figures = create_image_caption_zip_from_html_figures(chapter_html)
         HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
-        HtmlLib.write_html_file(htmlx, outpath, debug=True)
+        if outpath:
+            HtmlLib.write_html_file(htmlx, outpath, debug=debug)
+        return captioned_figures
 
     def test_extract_tables_from_chapter(self):
         """
@@ -660,7 +681,10 @@ class AmiCorpusTest(AmiAnyTest):
             scroll_div = ET.SubElement(body, "div")
             scroll_div.attrib["class"] = "scroll_parent"
             chapter_html = HtmlLib.parse_html(chapter_file)
-            captioned_figures = _ipcc_create_zip_caption_img(chapter_html)
+            # captioned_figures = _ipcc_create_zip_caption_img(chapter_html)
+            captioned_figures = self.create_scrolling_thumbnails_from_html_images(chapter_file, HtmlLib._ipcc_create_zip_caption_img,
+                                                          outpath)
+
             HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
         HtmlLib.write_html_file(htmlx, outpath, debug=True)
 

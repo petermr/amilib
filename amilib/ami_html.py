@@ -1174,6 +1174,8 @@ if JSDTable == JQ217:
 PRE_TEXT = "$(document).ready(function(){$('#"
 POST_TEXT = "').DataTable();});"
 
+SCROLL_CONTAINER = "scroll-container"
+
 """
 new DataTable('#example', {
     paging: false,
@@ -1184,6 +1186,36 @@ new DataTable('#example', {
 # POST_TEXT = "', {paging: false, scrollCollapse: true, scrollY: '200px'});"
 
 class HtmlLib:
+
+    # _ipcc_create_zip_caption_img = None
+
+    def _ipcc_create_zip_caption_img(chapter_html):
+        """
+        function to read html file, extracts figures with caption
+        :param chapter_html: HTML file containing images aith captions
+        :return: zip of (img, caption_text)
+        :except: any error returns None
+
+        <div id="chapter-figures">
+          <div class="col-lg-3 col-12">
+
+            <h3>Figure 1.1</h3>
+            <img
+              src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_1_1.png"
+              alt="Figure 1.1 | Figure 1.1 | The structure of the AR6 WGI Report"
+              class="img-card">
+          </div>
+          """
+
+        try:
+            figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
+            figures = figure_containers[0].xpath("./div[h3]")
+            captions = [fig.xpath("h3")[0].text for fig in figures]
+            imgs = [fig.xpath("img")[0] for fig in figures]
+            captioned_figures = list(zip(imgs, captions))
+            return captioned_figures
+        except Exception as e:
+            return None
 
     CLASS_ATTNAME = "class"
     HREF = "href"
@@ -1940,11 +1972,13 @@ class HtmlLib:
         takes an iterable of (img, caption) pairs and creates a scrolling
         banner of clickable thumbnails as a[@href]/img which display clickable images
         :param captioned_imgs: zip of image+text_caption
-        :param scroller_parent: parent HTML element to hold thumbnails (None creates new div)
+        :param scroller_parent: parent HTML element to hold scroll-container (None creates new div)
+        :return: div[@class='scroll-container'] contains list of clickable thumbnails
         """
         # logger.info(f"len cap_imgs {len(captioned_imgs)}")
+        assert captioned_imgs is not None
         scroll_container = ET.Element("div") if scroller_parent is None else ET.SubElement(scroller_parent, "div")
-        scroll_container.attrib["class"] = "scroll-container"
+        scroll_container.attrib["class"] = SCROLL_CONTAINER
         logger.info(f"scroller parent {scroll_container.getparent().get('class')}")
         for (img, caption) in captioned_imgs:
             assert (t := type(img)) is HtmlElement, f"found {t}"
@@ -2053,7 +2087,7 @@ font-size: 12px;
         """
         # logger.info(f"len cap_imgs {len(captioned_imgs)}")
         scroll_container = ET.Element("div") if scroller_parent is None else ET.SubElement(scroller_parent, "div")
-        scroll_container.attrib["class"] = "scroll-container"
+        scroll_container.attrib["class"] = SCROLL_CONTAINER
         logger.info(f"scroller parent {scroll_container.getparent().get('class')}")
         for (table, caption) in captioned_tables:
             tablex = copy.copy(table)
@@ -2081,6 +2115,261 @@ font-size: 12px;
         div1 = ET.SubElement(thumbnail, "div")
         div1.attrib["class"] = "caption"
         div1.text = caption
+        # div1.append(tablex)
+
+#     def create_modal_table_window(self):
+#
+# """To display a list of HTML tables in a modal window that appears when you click a list item and disappears when you click a "close" button, you can achieve this using only HTML and CSS (no JavaScript).
+#
+# Here is how you can do this:
+#
+# HTML and CSS Code:
+# html
+# Copy code
+# """
+# """
+# <!DOCTYPE html>
+# <html lang="en">
+# <head>
+#     <meta charset="UTF-8">
+#     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+#     <title>HTML Tables in Modal</title>
+#     <style>
+#         body {
+#             font-family: Arial, sans-serif;
+#         }
+#
+#         /* Style for the list */
+#         ul {
+#             list-style-type: none;
+#             padding: 0;
+#         }
+#
+#         li {
+#             padding: 10px;
+#             margin: 5px;
+#             background-color: #f0f0f0;
+#             border: 1px solid #ddd;
+#             cursor: pointer;
+#         }
+#
+#         li:hover {
+#             background-color: #e0e0e0;
+#         }
+#
+#         /* Modal styles */
+#         .modal {
+#             display: none; /* Hidden by default */
+#             position: fixed;
+#             z-index: 1;
+#             left: 0;
+#             top: 0;
+#             width: 100%;
+#             height: 100%;
+#             background-color: rgba(0, 0, 0, 0.5);
+#             overflow: auto;
+#             padding-top: 50px;
+#         }
+#
+#         .modal-content {
+#             background-color: white;
+#             margin: 5% auto;
+#             padding: 20px;
+#             border: 1px solid #888;
+#             width: 80%;
+#             max-width: 600px;
+#         }
+#
+#         .close-btn {
+#             color: #aaa;
+#             float: right;
+#             font-size: 28px;
+#             font-weight: bold;
+#             cursor: pointer;
+#         }
+#
+#         .close-btn:hover,
+#         .close-btn:focus {
+#             color: black;
+#             text-decoration: none;
+#         }
+#
+#         table {
+#             width: 100%;
+#             border-collapse: collapse;
+#             margin-bottom: 20px;
+#         }
+#
+#         th, td {
+#             padding: 10px;
+#             text-align: left;
+#             border: 1px solid #ddd;
+#         }
+#
+#         th {
+#             background-color: #f4f4f4;
+#         }
+#     </style>
+# </head>
+# <body>
+#
+#     <h1>Tables List</h1>
+#
+#     <!-- List of items that trigger the modal -->
+#     <ul>
+#         <li id="table1Link">Table 1</li>
+#         <li id="table2Link">Table 2</li>
+#         <li id="table3Link">Table 3</li>
+#     </ul>
+#
+#     <!-- The Modal -->
+#     <div id="tableModal" class="modal">
+#         <div class="modal-content">
+#             <span class="close-btn" id="closeBtn">&times;</span>
+#             <h2>Table</h2>
+#             <div id="modalTableContent">
+#                 <!-- Table content will be inserted dynamically -->
+#             </div>
+#         </div>
+#     </div>
+#
+#     <div style="display:none" id="table1">
+#         <h3>Table 1</h3>
+#         <table>
+#             <thead>
+#                 <tr>
+#                     <th>Header 1</th>
+#                     <th>Header 2</th>
+#                     <th>Header 3</th>
+#                 </tr>
+#             </thead>
+#             <tbody>
+#                 <tr>
+#                     <td>Row 1, Column 1</td>
+#                     <td>Row 1, Column 2</td>
+#                     <td>Row 1, Column 3</td>
+#                 </tr>
+#                 <tr>
+#                     <td>Row 2, Column 1</td>
+#                     <td>Row 2, Column 2</td>
+#                     <td>Row 2, Column 3</td>
+#                 </tr>
+#             </tbody>
+#         </table>
+#     </div>
+#
+#     <div style="display:none" id="table2">
+#         <h3>Table 2</h3>
+#         <table>
+#             <thead>
+#                 <tr>
+#                     <th>Column A</th>
+#                     <th>Column B</th>
+#                     <th>Column C</th>
+#                 </tr>
+#             </thead>
+#             <tbody>
+#                 <tr>
+#                     <td>Row 1A</td>
+#                     <td>Row 1B</td>
+#                     <td>Row 1C</td>
+#                 </tr>
+#                 <tr>
+#                     <td>Row 2A</td>
+#                     <td>Row 2B</td>
+#                     <td>Row 2C</td>
+#                 </tr>
+#             </tbody>
+#         </table>
+#     </div>
+#
+#     <div style="display:none" id="table3">
+#         <h3>Table 3</h3>
+#         <table>
+#             <thead>
+#                 <tr>
+#                     <th>Item</th>
+#                     <th>Price</th>
+#                 </tr>
+#             </thead>
+#             <tbody>
+#                 <tr>
+#                     <td>Item 1</td>
+#                     <td>$10</td>
+#                 </tr>
+#                 <tr>
+#                     <td>Item 2</td>
+#                     <td>$20</td>
+#                 </tr>
+#             </tbody>
+#         </table>
+#     </div>
+#
+#     <script>
+#         // Get elements
+#         const modal = document.getElementById('tableModal');
+#         const closeBtn = document.getElementById('closeBtn');
+#         const modalTableContent = document.getElementById('modalTableContent');
+#
+#         const tableLinks = {
+#             'table1Link': 'table1',
+#             'table2Link': 'table2',
+#             'table3Link': 'table3'
+#         };
+#
+#         // Add event listeners to each list item to show the modal
+#         Object.keys(tableLinks).forEach(linkId => {
+#             const link = document.getElementById(linkId);
+#             link.addEventListener('click', function() {
+#                 const tableId = tableLinks[linkId];
+#                 const tableContent = document.getElementById(tableId).innerHTML;
+#                 modalTableContent.innerHTML = tableContent;
+#                 modal.style.display = 'block';
+#             });
+#         });
+#
+#         // Close the modal when the close button is clicked
+#         closeBtn.addEventListener('click', function() {
+#             modal.style.display = 'none';
+#         });
+#
+#         // Close the modal if the user clicks outside of the modal content
+#         window.addEventListener('click', function(event) {
+#             if (event.target === modal) {
+#                 modal.style.display = 'none';
+#             }
+#         });
+#     </script>
+# </body>
+# </html>
+# Explanation:
+# List of Links:
+#
+# The list (<ul>) has items that trigger the modal window when clicked. Each item has an ID (like table1Link, table2Link, table3Link).
+# The Modal:
+#
+# The modal is initially hidden (display: none) and becomes visible when one of the list items is clicked.
+# The modal contains a close button (&times;), which hides the modal when clicked.
+# Tables in Hidden Divs:
+#
+# Each table is wrapped in a hidden <div> (like table1, table2, table3), which is revealed inside the modal when its corresponding list item is clicked.
+# CSS for Modal and List:
+#
+# The modal has a semi-transparent background and a centered content box.
+# The list has a simple hover effect for interactivity.
+# How it works:
+# When a list item (like "Table 1") is clicked, it shows the modal and displays the corresponding table inside it.
+# The modal can be closed by either clicking the close button (×) or by clicking outside the modal area.
+# This approach uses only HTML and CSS for styling and layout. The modal functionality is achieved with the simple structure of hidden and visible elements.
+#
+#
+#
+#
+#
+#
+#
+#
+# """
 
 
 
