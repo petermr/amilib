@@ -493,7 +493,7 @@ class AmiCorpusTest(AmiAnyTest):
 
     def test_make_ipcc_report_corpus(self):
         """
-        read report dictory and make corpus
+        read report directory and make corpus
         """
         wg1_dir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1")
         assert wg1_dir.exists(), f"wg1 {wg1_dir} should exist"
@@ -600,18 +600,20 @@ class AmiCorpusTest(AmiAnyTest):
         new_content = "Executive Summary"
         new_column_title = "exec_summary"
         new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec.html")
-        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(datatables_file, id_ref, new_content, new_datatables_file,
-                                                                 new_column_title)
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(datatables_file,
+                                                                       id_ref,
+                                                                       new_column_title,
+                                                                       new_content,
+                                                                       new_datatables_file)
 
         # list to receive td's
         new_column_title = "acknowledgements"
         new_datatables_file2 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec_ack.html")
-        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(
-            new_datatables_file,
-            "acknowledgements",
-            "Acknowledgements",
-            new_datatables_file2,
-            "acknowledgements")
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(new_datatables_file,
+                                                                       "acknowledgements",
+                                                                       "acknowledgements",
+                                                                       "Acknowledgements",
+                                                                       new_datatables_file2)
 
 
 
@@ -681,7 +683,7 @@ class AmiCorpusTest(AmiAnyTest):
             scroll_div = ET.SubElement(body, "div")
             scroll_div.attrib["class"] = "scroll_parent"
             chapter_html = HtmlLib.parse_html(chapter_file)
-            # captioned_figures = _ipcc_create_zip_caption_img(chapter_html)
+
             captioned_figures = self.create_scrolling_thumbnails_from_html_images(chapter_file, HtmlLib._ipcc_create_zip_caption_img,
                                                           outpath)
 
@@ -710,9 +712,31 @@ class AmiCorpusTest(AmiAnyTest):
             HtmlLib.create_horizontal_scrolling_thumbnails_with_tables(captioned_tables, scroll_div)
         HtmlLib.write_html_file(htmlx, outpath, debug=True)
 
+    def test_add_many_columns_to_wg1_datatables(self):
+        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        datatables_html = HtmlLib.parse_html(datatables_file)
+
+        # list to receive td's
+        id_ref = "Executive"
+        new_content = "Executive Summary"
+        new_column_title = "exec_summary"
+
+        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec.html")
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(datatables_file, id_ref, new_column_title,
+                                                                       new_content, new_datatables_file)
+
+        # list to receive td's
+        new_column_title = "acknowledgements"
+        new_datatables_file2 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_ack.html")
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(new_datatables_file, "acknowledgements",
+                                                                       "acknowledgements", "Acknowledgements",
+                                                                       new_datatables_file2)
 
 
 
+
+
+# ================ NYI ===============
 
     def test_ipcc_add_figures_to_datatables(self):
         """

@@ -2510,15 +2510,19 @@ class Datatables:
             tr.insert(before, td)
 
     @classmethod
-    def add_column_with_ahref_pointers_to_sections_with_ids(
-            cls, datatables_input, id_ref, new_content0, new_datatables_filename, new_column_title):
+    def add_column_with_ahref_pointers_to_sections_with_ids(cls,
+                                                            datatables_input,
+                                                            id_ref,
+                                                            new_column_title=None,
+                                                            new_content=None,
+                                                            new_datatables_filename=None):
         """
-        takes existing datatables object and adds column pointers to documecnt section with ids
-        :param datatables_html: html object from datatables
+        takes existing datatables object and adds column pointers to document section with ids
+        :param datatables_input: html object from datatables
         :param id_ref: id of section
-        :param new_content:content of a elements
+        :param new_column_title:new column title
+        :param new_content:default constant content for cell
         :param new_datatables_filename: filename of modified datatables
-        :param new_column_title:new column title 
         """
         try:
             datatables = HtmlLib.parse_html(datatables_input)
@@ -2526,7 +2530,8 @@ class Datatables:
             logger.error(F'cannotb parse {datatables_input} type {type(datatables_input)}')
             return
 
-        col_content = Datatables.extract_column(datatables, colindex="file")
+        colindex = "file"
+        col_content = Datatables.extract_column(datatables, colindex=colindex)
         # make a column of pointers in td cells
         # content is
         # <td>
@@ -2534,35 +2539,38 @@ class Datatables:
         # </td>
         new_column = []
         for cell in col_content:
-            # get <a> child
-            a_elem = cell.xpath("./a")[0]
-            href = a_elem.attrib['href']
-            href_file = Path(datatables_input.parent, href)
-            href_html = HtmlLib.parse_html(str(href_file))
-            id_elems = href_html.xpath(f".//*[@id='{id_ref}']")
-            if len(id_elems) > 0:
-                elem = id_elems[0]
-                new_content = "".join(elem.itertext())[:80] + "..."
-            else:
-                new_content = None
-
-            # add section reference
-
-            href_new = href + "#" + id_ref
-
-            # create new td
-            td_new = ET.Element("td")
-            # create child <a>
-            if new_content is not None:
-                a_new = ET.SubElement(td_new, "a")
-                a_new.attrib['href'] = href_new
-                a_new.text = new_content
-            else:
-                td_new = "..."
-
+            td_new = cls.create_cell_with_ahref_pointers(cell, datatables_input, id_ref, new_content)
             new_column.append(td_new)
+
         Datatables.insert_column(datatables, new_column, new_column_title)
-        HtmlLib.write_html_file(datatables, new_datatables_filename, debug=True)
+        if new_datatables_filename:
+            HtmlLib.write_html_file(datatables, new_datatables_filename, debug=True)
+
+    @classmethod
+    def create_cell_with_ahref_pointers(cls, cell, datatables_input, id_ref, new_column, new_content_default=None):
+        # get <a> child
+        a_elem = cell.xpath("./a")[0]
+        href = a_elem.attrib['href']
+        href_file = Path(datatables_input.parent, href)
+        href_html = HtmlLib.parse_html(str(href_file))
+        id_elems = href_html.xpath(f".//*[@id='{id_ref}']")
+        if len(id_elems) > 0:
+            elem = id_elems[0]
+            new_content = "".join(elem.itertext())[:80] + "..."
+        else:
+            new_content = new_content_default
+        # add section reference
+        href_new = href + "#" + id_ref
+        # create new td
+        td_new = ET.Element("td")
+        # create child <a>
+        if new_content is not None:
+            a_new = ET.SubElement(td_new, "a")
+            a_new.attrib['href'] = href_new
+            a_new.text = new_content
+        else:
+            td_new = "..."
+        return td_new
 
     @classmethod
     def add_column_with_ahref_pointers_to_figures(cls, datatables_file, new_content, new_datatables_file,
