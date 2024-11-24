@@ -18,7 +18,7 @@ from pprint import pprint
 import lxml
 import numpy as np
 import lxml.etree as ET
-from lxml.etree import Element, _Element, _ElementTree
+from lxml.etree import Element, _Element, _ElementTree, XPathEvalError
 from lxml.html import HTMLParser, HtmlElement
 from sklearn.linear_model import LinearRegression
 
@@ -1175,6 +1175,9 @@ PRE_TEXT = "$(document).ready(function(){$('#"
 POST_TEXT = "').DataTable();});"
 
 SCROLL_CONTAINER = "scroll-container"
+SCROLL_PARENT = "scroll_parent"
+CLASS = "class"
+DIV = "div"
 
 """
 new DataTable('#example', {
@@ -1253,20 +1256,6 @@ class HtmlLib:
         html_elem.append(lxml.etree.Element("body"))
         return html_elem
 
-    # def create_html_container_with_head_style_body(cls):
-    #     """
-    #     creates
-    #     <html>
-    #       <head/>
-    #       <body/>
-    #     </html>
-    #     """
-    #     html_container = Html_Container()
-    #     html_elem = lxml.etree.Element("html")
-    #     html_elem.append(lxml.etree.Element("head"))
-    #     html_elem.append(lxml.etree.Element("body"))
-    #     return html_elem
-
     @classmethod
     def add_copies_to_head(cls, html_elem, elems):
         """copies elems and adds them to <head> of html_elem
@@ -1332,7 +1321,7 @@ class HtmlLib:
         if html is None or not target or not css_value_pairs:
             raise ValueError(f"None params in add_head_style")
         head = HtmlLib.get_head(html)
-        style = lxml.etree.Element("style")
+        style = lxml.etree.Element(STYLE)
         head.append(style)
         style.text = target + " {"
         for css_value_pair in css_value_pairs:
@@ -1923,7 +1912,7 @@ class HtmlLib:
         return elem
 
     @classmethod
-    def create_para_ohrase_dict(cls, paras, phrases):
+    def create_search_results_para_ohrase_dict(cls, paras, phrases):
         """
 
         """
@@ -1934,10 +1923,11 @@ class HtmlLib:
                 text = " ".join(para.itertext())
                 if phrase in text.lower():
                     id = para.get("id")
-                    para_id_by_phrase_dict[phrase] = id
-                    logger.info(f"{phrase} : {id} // {text[:50]} ")
+                    para_id_by_phrase_dict[phrase].append(id)
+                    # logger.info(f"found phrase {phrase} : in para {id} // {text[:50]} ")
         if len(para_id_by_phrase_dict) > 0:
-            logger.info(f"** {para_id_by_phrase_dict}")
+            # logger.info(f"**id by phrase: {para_id_by_phrase_dict}")
+            pass
         return para_id_by_phrase_dict
 
     @classmethod
@@ -1984,7 +1974,7 @@ class HtmlLib:
             assert (t := type(img)) is HtmlElement, f"found {t}"
             img.attrib["alt"] = caption
             img.attrib["title"] = caption
-            cls.create_thumbnail_and_add_to_scroller(img, caption, scroll_container)
+            HtmlLib.create_thumbnail_and_add_image_href_to_scroller(img, caption, scroll_container)
         logger.info(f"scroller parent after  {scroll_container.getparent().tag} {scroll_container.getparent().get('class')} {scroll_container.tag}")
         return scroll_container
 
@@ -2023,7 +2013,7 @@ class HtmlLib:
         return div
 
     @classmethod
-    def create_thumbnail_and_add_to_scroller(cls, img, caption: str, scroller):
+    def create_thumbnail_and_add_image_href_to_scroller(cls, img, caption: str, scroller):
         """
         Requires styles to be set for thumbnail and caption
         <div class="scroll-container">
@@ -2044,6 +2034,35 @@ class HtmlLib:
         div1 = ET.SubElement(thumbnail, "div")
         div1.attrib["class"] = "caption"
         div1.text = caption
+
+    @classmethod
+    def create_thumbnail_and_add_div_to_scroller(cls, div, scroller, caption:str=None, href=None):
+        """
+        Requires styles to be set for thumbnail and caption
+        <div class="scroll-container">
+          <div class="thumbnail"
+            <img src="image1.jpg" alt="Image 1">
+            <div class="caption">Caption 1</div>
+          </div>
+        </div>
+        :param div: HTML <div>
+        :param scroller: horizontal scroller
+        :param caption: caption for div
+        :param href: target for clicked div
+        """
+
+        thumbnail = ET.SubElement(scroller, "div")
+        thumbnail.attrib["class"] = "thumbnail"
+        if href:
+            a_ = ET.SubElement(thumbnail, "a")
+            a_.attrib["href"] = href
+            a_.append(copy.copy(div))
+        if caption:
+            div1 = ET.SubElement(thumbnail, "div")
+            div1.attrib["class"] = "caption"
+            div1.text = caption
+            thumbnail.attrib["title"] = caption
+
 
     @classmethod
     def create_html_with_scrolling_style(cls):
@@ -2087,8 +2106,8 @@ font-size: 12px;
         """
         # logger.info(f"len cap_imgs {len(captioned_imgs)}")
         scroll_container = ET.Element("div") if scroller_parent is None else ET.SubElement(scroller_parent, "div")
-        scroll_container.attrib["class"] = SCROLL_CONTAINER
-        logger.info(f"scroller parent {scroll_container.getparent().get('class')}")
+        scroll_container.attrib[CLASS] = SCROLL_CONTAINER
+        logger.info(f"scroller parent {scroll_container.getparent().get(CLASS)}")
         for (table, caption) in captioned_tables:
             tablex = copy.copy(table)
             cls.create_table_and_add_to_scroller(tablex, caption, scroll_container)
@@ -2116,6 +2135,31 @@ font-size: 12px;
         div1.attrib["class"] = "caption"
         div1.text = caption
         # div1.append(tablex)
+
+    @classmethod
+    def create_scrolling_thumbnails_from_html_images(cls, html_file, create_image_caption_zip_from_html_figures,
+                                                     outpath=None, debug=True):
+        """
+        uses a corpus-specific function to create list of (img, caption_text) tuples and create scrolling thumbnails
+        :param html_file: contains images (img) with captions
+        :param create_image_caption_zip_from_html_figures: function to create list of (img, text) tuples
+        :return: div[class="scrolling-container] with list of clickable thumbnails, None if errors
+
+        """
+        chapter_html = HtmlLib.parse_html(html_file)
+        htmlx = HtmlLib.create_html_with_scrolling_style()
+        body = HtmlLib.get_body(htmlx)
+        scroll_div = ET.SubElement(body, "div")
+        scroll_div.attrib["class"] = SCROLL_PARENT
+        # search for figure container
+        captioned_figures = create_image_caption_zip_from_html_figures(chapter_html)
+        HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
+        if outpath:
+            HtmlLib.write_html_file(htmlx, outpath, debug=debug)
+        return captioned_figures
+
+
+
 
 #     def create_modal_table_window(self):
 #
@@ -2371,6 +2415,40 @@ font-size: 12px;
 #
 # """
 
+    @classmethod
+    def get_first_object_by_xpath(cls, elem, xpath, exact=False):
+        """
+        convenience method to search for one xpath result and avoid stacktrace on empty list
+        :param elem: element to examine
+        :param xpath: to search with
+        :param cxact: require exactly 1 hit
+        :return: first xpath hit or None if no hits or exact and >1 hits or argument/s are None
+        """
+        if elem is None or not xpath:
+            return None
+        try:
+            objs = elem.xpath(xpath)
+        except XPathEvalError as e:
+            logger.error(f"bad xpath {xpath}")
+            raise ValueError()
+
+        if len(objs) == 0:
+            return None
+        if len(objs) > 1 and exact:
+            return None
+        return objs[0]
+
+    @classmethod
+    def get_element_by_id(cls, htmlx, id):
+        """
+        gets unique ID in element using XPath.
+        :param htmlx: HTML element (assumed to ber whole parsed document)
+        :param id: id to match - must be unique and acse-sensitive
+        :return: element with @id=id or None (if not unique or bad arguments)
+        """
+        if htmlx is None or not id:
+            return None
+        return HtmlLib.get_first_object_by_xpath(htmlx, f"//*[@id='{id}']", exact=True)
 
 
 class Datatables:
@@ -2482,22 +2560,20 @@ class Datatables:
         :param title: of column (must not dupilcate existing ones
         :param before: index (serial or title of exiting column), None = append at end (before = len(columns)
         """
-        body = HtmlLib.get_body(datatables_html)
-        table = body.xpath("table")[0]
-        head_tr0 = table.xpath("thead/tr")[0]
-        colheads = head_tr0.xpath("th")
-        ncols = len(table.xpath("thead/tr"))
-        rows = table.xpath("tbody/tr")
-        nrows = len(rows)
-        assert nrows == len(column)
+        head_tr0, ncols, rows = cls._read_tables_get_row_column_count(column, datatables_html)
         if before == None:
-            before = ncols - 1
-        if before < 0 or before >= ncols:
+            # before = ncols - 1
+            before = ncols
+        if before < 0 or before > ncols:
             raise ValueError(f"bad before {before}")
+
 
         th = ET.SubElement(head_tr0, "th")
         th.text = title
-        head_tr0.insert(before, th)
+        if before == ncols:
+            head_tr0.append(th)
+        else:
+            head_tr0.insert(before, th)
 
         for i, tr in enumerate(rows):
             cells = tr.xpath("td")
@@ -2508,6 +2584,18 @@ class Datatables:
             else:
                 td = colval
             tr.insert(before, td)
+
+    @classmethod
+    def _read_tables_get_row_column_count(cls, column, datatables_html):
+        body = HtmlLib.get_body(datatables_html)
+        table = body.xpath("table")[0]
+        head_tr0 = table.xpath("thead/tr")[0]
+        colheads = head_tr0.xpath("th")
+        ncols = len(table.xpath("thead/tr"))
+        rows = table.xpath("tbody/tr")
+        nrows = len(rows)
+        assert nrows == len(column)
+        return head_tr0, ncols, rows
 
     @classmethod
     def add_column_with_ahref_pointers_to_sections_with_ids(cls,
@@ -3711,8 +3799,8 @@ class AnnotatorCommand:
             print(f"siblings {len(siblings)}!!!")
         div = ET.SubElement(parent, "div")
         div.append(group_lead)
-        div.attrib["title"] = group_lead.text if group_lead.text else "?"
-        div.attrib["style"] = "border:black dashed 2px;"
+        div.attrib[TITLE] = group_lead.text if group_lead.text else "?"
+        div.attrib[STYLE] = "border:black dashed 2px;"
         xp = self.end_xpath
         xp = "self::div[span[contains(text(),'END')]]"
         for sibling in siblings:

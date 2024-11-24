@@ -12,6 +12,7 @@ from test.test_all import AmiAnyTest
 
 logger = Util.get_logger(__name__)
 
+
 class SearchTest(AmiAnyTest):
     pass
 
@@ -20,7 +21,7 @@ class SearchTest(AmiAnyTest):
         args = ([
             "SEARCH",
             "--help",
-            ])
+        ])
         pyami = AmiLib()
         pyami.run_command(args)
 
@@ -43,7 +44,7 @@ class SearchTest(AmiAnyTest):
             "--operation", "annotate", "counts",
             "--report", reportpath,
 
-            ])
+        ])
         pyami = AmiLib()
         pyami.run_command(args)
         assert outpath.exists(), f"{outpath} should exist"
@@ -51,9 +52,10 @@ class SearchTest(AmiAnyTest):
 
         # count annotations
         title_counter = FileLib.read_counter_from_file(reportpath)
-        assert title_counter == str([('carbon_dioxide_removal', 20), ('anthropogenic', 13), ('sequestration', 13), ('bioenergy_with_carbon_capture_and_storage', 7), ('aerosols', 4), ('tropospheric', 2), ('solar_radiation_modification', 1), ('evapotranspiration', 1), ('permafrost', 1)])
-
-
+        assert title_counter == str([('carbon_dioxide_removal', 20), ('anthropogenic', 13), ('sequestration', 13),
+                                     ('bioenergy_with_carbon_capture_and_storage', 7), ('aerosols', 4),
+                                     ('tropospheric', 2), ('solar_radiation_modification', 1),
+                                     ('evapotranspiration', 1), ('permafrost', 1)])
 
     def test_annotate_file_with_phrases_from_dict(self):
         """
@@ -76,7 +78,7 @@ class SearchTest(AmiAnyTest):
             "--outpath", outpath,
             "--operation", "annotate", "no_input_styles",
 
-            ])
+        ])
         pyami = AmiLib()
         pyami.run_command(args)
         assert outpath.exists(), f"{outpath} should exist"
@@ -116,4 +118,3 @@ class SearchTest(AmiAnyTest):
         pyami.run_command(args)
         assert outpath.exists(), f"{outpath} should exist"
         logger.info(f"wrote {outpath}")
-

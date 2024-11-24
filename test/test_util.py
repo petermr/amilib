@@ -6,12 +6,13 @@ import re
 import shutil
 import sys
 import unittest
+from json import JSONDecodeError
 from pathlib import Path
 
 from amilib.ami_util import AmiJson
 from amilib.file_lib import FileLib
 from amilib.util import EnhancedRegex
-from amilib.util import Util, GithubDownloader
+from amilib.util import Util, GithubDownloader, TextUtil
 from amilib.ami_args import ArgParseBuilder, AmiArgParser, AmiArgParseException
 from amilib.xml_lib import Templater
 
@@ -213,6 +214,29 @@ class Util0Test(AmiAnyTest):
         username = Util.get_username()
         if AmiAnyTest.IS_PMR:
             assert username == "pm286"
+
+    def test_parse_quoted_list(self):
+        quoted_list = '["a", "b"]'
+        parsed_list = TextUtil.convert_quoted_list_to_list(quoted_list)
+        assert type(parsed_list) is list
+        assert len(parsed_list) == 2
+        assert parsed_list[0] == "a"
+
+        quoted_list = '["a", "b", [1 ,2]]'
+        parsed_list = TextUtil.convert_quoted_list_to_list(quoted_list)
+        assert type(parsed_list) is list
+        assert len(parsed_list) == 3
+        assert parsed_list[2] == [1,2]
+
+    def test_parse_double_quoted_list(self):
+        """
+        single quotes fail in json, but we code round it
+        """
+        quoted_list = "['a', 'b']"
+        parsed_list = TextUtil.convert_quoted_list_to_list(quoted_list)
+        assert parsed_list == ["a", "b"]
+
+
 
 
 class GithubDownloaderTest(AmiAnyTest):

@@ -236,10 +236,10 @@ class AmiCorpus():
                 caption.text += f"; end: {enddate}"
 
     @classmethod
-    def search_files_with_phrases(cls, infiles, phrases=None, outfile=None, xpath=None, debug=False):
+    def search_files_with_phrases_write_results(cls, infiles, phrases=None, xpath=None, outfile=None, debug=False):
         all_paras = []
-        all_dict = dict()
-        hit_dict = defaultdict(list)
+        all_hits_dict = dict()
+        url_list_by_phrase_dict = defaultdict(list)
         if type(phrases) is not list:
             phrases = [phrases]
         for infile in infiles:
@@ -249,33 +249,34 @@ class AmiCorpus():
             all_paras.extend(paras)
 
             # this does the search
-            para_id_by_phrase_dict = HtmlLib.create_para_ohrase_dict(paras, phrases)
+            para_id_by_phrase_dict = HtmlLib.create_search_results_para_ohrase_dict(paras, phrases)
             if len(para_id_by_phrase_dict) > 0:
                 if debug:
-                    print(f"para_phrase_dict {para_id_by_phrase_dict}")
-                cls.add_hit_with_filename_and_para_id(all_dict, hit_dict, infile, para_id_by_phrase_dict)
+                    logger.debug(f"para_phrase_dict {para_id_by_phrase_dict}")
+                    pass
+                cls.add_hit_with_filename_and_para_id(all_hits_dict, url_list_by_phrase_dict, infile, para_id_by_phrase_dict)
         if debug:
             print(f"para count~: {len(all_paras)}")
         outfile = Path(outfile)
         outfile.parent.mkdir(exist_ok=True, parents=True)
-        html1 = cls.create_html_from_hit_dict(hit_dict)
+        html1 = cls.create_html_from_hit_dict(url_list_by_phrase_dict)
         if outfile:
             with open(outfile, "w") as f:
                 if debug:
-                    print(f" hitdict {hit_dict}")
+                    print(f" hitdict {url_list_by_phrase_dict}")
                 HtmlLib.write_html_file(html1, outfile, debug=True)
         return html1
 
     @classmethod
-    def add_hit_with_filename_and_para_id(cls, all_dict, hit_dict, infile, phrase_by_para_id_dict):
+    def add_hit_with_filename_and_para_id(cls, all_hits_dict, hit_dict, infile, phrase_by_para_id_dict):
         """adds non-empty hits in hit_dict and all to all_dict
-        :param all_dict: accumulates para_phrase_dict by infile
+        :param all_hits_dict: accumulates para_phrase_dict by infile
+        :param hit_dict: accumulates url by hit (
 
-        TODO - move to amilib
         """
         item_paras = [item for item in phrase_by_para_id_dict.items() if len(item[1]) > 0]
         if len(item_paras) > 0:
-            all_dict[infile] = phrase_by_para_id_dict
+            all_hits_dict[infile] = phrase_by_para_id_dict
             for para_id, hits in phrase_by_para_id_dict.items():
                 for hit in hits:
                     # TODO should write file with slashes (on Windows we get %5C)
@@ -284,6 +285,7 @@ class AmiCorpus():
                     infile_s = infile_s.replace("%5C", "/")
                     url = f"{infile_s}#{para_id}"
                     hit_dict[hit].append(url)
+                    logger.info(f"hit: {hit} in url {url}")
 
 
     @classmethod
@@ -293,17 +295,17 @@ class AmiCorpus():
 
         TODO - move to amilib
         """
+        infile_s = f"{infile}"
+        infile_s = infile_s.replace("\\", "/")
+        infile_s = infile_s.replace("%5C", "/")
+
         item_paras = [item for item in para_phrase_dict.items() if len(item[1]) > 0]
         if len(item_paras) > 0:
             all_dict[infile] = para_phrase_dict
-            for para_id, hits in para_phrase_dict.items():
-                for hit in hits:
-                    # TODO should write file with slashes (on Windows we get %5C)
-                    infile_s = f"{infile}"
-                    infile_s = infile_s.replace("\\", "/")
-                    infile_s = infile_s.replace("%5C", "/")
-                    url = f"{infile_s}#{para_id}"
-                    hit_dict[hit].append(url)
+            for term, para_id in para_phrase_dict.items():
+                # TODO should write file with slashes (on Windows we get %5C)
+                url = f"{infile_s}#{para_id}"
+                hit_dict[term].append(url)
 
     @classmethod
     def create_html_from_hit_dict(cls, hit_dict):
@@ -313,7 +315,7 @@ class AmiCorpus():
         for term, hits in hit_dict.items():
             li = ET.SubElement(ul, "li")
             p = ET.SubElement(li, "p")
-            p.text = term
+            p.text = f"term: {term}"
             ul1 = ET.SubElement(li, "ul")
             for hit in hits:
                 # TODO manage hits with Paths

@@ -13,12 +13,12 @@ import pandas as pd
 from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, QUERY, STARTDATE, XML, \
                             EUPMC_RESULTS_JSON, PMCID, ABS_TEXT, EPMC_KEYS, JOURNAL_INFO, DOI, TITLE, AUTHOR_STRING,
                             PUB_YEAR, JOURNAL_INFO_TITLE, Pygetpapers)
-from amilib.ami_html import HtmlUtil, HtmlLib, Datatables
+from amilib.ami_html import HtmlUtil, HtmlLib, Datatables, SCROLL_PARENT
 from amilib.ami_util import AmiJson, AmiUtil
 from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
-from amilib.util import Util
+from amilib.util import Util, TextUtil
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -144,15 +144,16 @@ class PygetpapersTest(AmiAnyTest):
         assert saved_section.get(STARTDATE) == "False"
         assert saved_section.get(XML) == "True"
 
-    def test_search_all_chapters_with_query_words(self, outfile=None):
+    def test_search_all_chapters_with_query_words(self):
         """
         read chapter, search for words and return list of paragraphs/ids in which they occur
         simple, but requires no server
         """
-        query = "south_asia"
+        debug = True
+        query = "bananas"
+        xpath = None
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         outfile = Path(indir, f"{query}.html")
-        debug = False
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
         assert 50 == len(infiles)
@@ -160,7 +161,7 @@ class PygetpapersTest(AmiAnyTest):
             "bananas",
             "South Asia",
         ]
-        html1 = AmiCorpus.search_files_with_phrases(infiles, phrases=phrases, outfile=outfile, debug=debug)
+        html1 = AmiCorpus.search_files_with_phrases_write_results(infiles, phrases=phrases, xpath=xpath, outfile=outfile, debug=debug)
         assert html1 is not None
         assert len(html1.xpath("//p")) > 0
 
@@ -178,7 +179,7 @@ class PygetpapersTest(AmiAnyTest):
             "bananas",
             "South Asia"
         ]
-        html1 = AmiCorpus.search_files_with_phrases(infiles, phrases=phrases, outfile=outfile, debug=debug)
+        html1 = AmiCorpus.search_files_with_phrases_write_results(infiles, phrases=phrases, outfile=outfile, debug=debug)
 
 
 # def _ipcc_create_zip_caption_img(chapter_html):
@@ -275,6 +276,64 @@ wg1_chapter_nums = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", 
 wg1_chapter_files = [Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1",
                       f"Chapter{chapter_num}", "html_with_ids.html")
                  for chapter_num in wg1_chapter_nums]
+
+wg_dict = {"wg1": "WGI", "wg2": "WGII", "wg3": "WGIII", }
+AR6_URL = "https://www.ipcc.ch/report/ar6"
+DOWNLOAD_AR6_URL = "downloads/report/IPCC_AR6"
+DOT_PDF = ".pdf"
+
+
+def make_hits_by_url(html1):
+    """
+    <body>
+      <ul>
+        <li>term: xyz
+          <li><a href-to-para
+    """
+    # iterate over hit list
+    body = HtmlLib.get_body(html1)
+    query_ul = HtmlLib.get_first_object_by_xpath(body, "ul")
+    hits_by_url = dict()
+    for li in query_ul.xpath("li"):
+        p0 = HtmlLib.get_first_object_by_xpath(li, "p")
+        term = p0.text
+        txt = "term: "
+        if (term.startswith(txt)):
+            term = term[len(txt):]
+        hits_ul = HtmlLib.get_first_object_by_xpath(li, "ul")
+        hits_li_list = hits_ul.xpath("li")
+        for hits_li in hits_li_list:
+            add_hit_list_to_hits_by_url(hits_by_url, hits_li, term)
+
+    return hits_by_url
+
+
+def add_hit_list_to_hits_by_url(hits_by_url, hits_li, term):
+    a = HtmlLib.get_first_object_by_xpath(hits_li, "a")
+    href = a.attrib.get("href")
+    href_target = href.split("#")[0]
+    id = href.split("#")[1]
+    html_targ = HtmlLib.parse_html(href_target)
+    if "[" in id:
+        id_list = TextUtil.convert_quoted_list_to_list(id)
+        # logger.debug(f"id_list {id_list}")
+        for id1 in id_list:
+            # logger.debug(f"id1 {id1}")
+            _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id1, term)
+    else:
+        _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term)
+    # logger.debug(f"len (hits_by_url) {len(hits_by_url)}")
+
+
+def _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term):
+    p = HtmlLib.get_element_by_id(html_targ, id)
+    # p_text = "".join(p.itertext())
+    # logger.debug(f"{term}: {href_target} + {id} => {p_text}")
+    if p is not None:
+        tuple = (term, p)
+        target_id = f"{href_target}#{id}"
+        hits_by_url[target_id] = (tuple)
+
 
 
 class AmiCorpusTest(AmiAnyTest):
@@ -506,7 +565,7 @@ class AmiCorpusTest(AmiAnyTest):
         get a column from existing datatables file
         """
         datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
-        logger.info(f"datatables is: {datatables_file}")
+        # logger.info(f"datatables is: {datatables_file}")
         assert datatables_file.exists()
         datatables_html = HtmlLib.parse_html(datatables_file)
         col_content = Datatables.extract_column(datatables_html, colindex="file")
@@ -551,10 +610,6 @@ class AmiCorpusTest(AmiAnyTest):
             """
             strng = "".join(td_elem.itertext())
             # extract report (wg1) and chapter (Chapter02)
-            wg_dict = {"wg1": "WGI", "wg2": "WGII", "wg3": "WGIII", }
-            url1 = "https://www.ipcc.ch/report/ar6"
-            url2 = "downloads/report/IPCC_AR6"
-            url3 = ".pdf"
 
             regex = "(?P<report>wg\d)/(?P<chapter>Chapter\d\d)/html_with_ids.html"
             match = re.match(regex, strng)
@@ -564,7 +619,7 @@ class AmiCorpusTest(AmiAnyTest):
             chapter = match.group("chapter")
             wg = wg_dict.get(report)
             # https://www.ipcc.ch/report/ar6/('wg1',%20'Chapter04')/downloads/report/IPCC_AR6_None_('wg1',%20'Chapter04').pdf
-            url = f"{url1}/{report}/{url2}_{wg}_{chapter}{url3}"
+            url = f"{AR6_URL}/{report}/{DOWNLOAD_AR6_URL}_{wg}_{chapter}{DOT_PDF}"
             print(f"url {url}")
 
             td = make_td_with_ahref_from_text(f"{wg} {chapter}", url)
@@ -624,30 +679,9 @@ class AmiCorpusTest(AmiAnyTest):
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter05", "html_with_ids.html")
         outpath = Path(Resources.TEMP_DIR, "datatables", "chapter_wg1_5_figures.html")
 
-        self.create_scrolling_thumbnails_from_html_images(chapter_file, HtmlLib._ipcc_create_zip_caption_img,
+        HtmlLib.create_scrolling_thumbnails_from_html_images(chapter_file, HtmlLib._ipcc_create_zip_caption_img,
                                                           outpath)
 
-    @classmethod
-    def create_scrolling_thumbnails_from_html_images(cls, html_file, create_image_caption_zip_from_html_figures,
-                                                     outpath=None, debug=True):
-        """
-        uses a corpus-specific function to create list of (img, caption_text) tuples and create scrolling thumbnails
-        :param html_file: contains images (img) with captions
-        :param create_image_caption_zip_from_html_figures: function to create list of (img, text) tuples
-        :return: div[class="scrolling-container] with list of clickable thumbnails, None if errors
-
-        """
-        chapter_html = HtmlLib.parse_html(html_file)
-        htmlx = HtmlLib.create_html_with_scrolling_style()
-        body = HtmlLib.get_body(htmlx)
-        scroll_div = ET.SubElement(body, "div")
-        scroll_div.attrib["class"] = "scroll_parent"
-        # search for figure container
-        captioned_figures = create_image_caption_zip_from_html_figures(chapter_html)
-        HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
-        if outpath:
-            HtmlLib.write_html_file(htmlx, outpath, debug=debug)
-        return captioned_figures
 
     def test_extract_tables_from_chapter(self):
         """
@@ -660,7 +694,7 @@ class AmiCorpusTest(AmiAnyTest):
         htmlx = HtmlLib.create_html_with_scrolling_style()
         body = HtmlLib.get_body(htmlx)
         scroll_div = ET.SubElement(body, "div")
-        scroll_div.attrib["class"] = "scroll_parent"
+        scroll_div.attrib["class"] = SCROLL_PARENT
 
         # search for tables
         captioned_tables = _ipcc_create_zip_caption_table(chapter_html)
@@ -681,11 +715,13 @@ class AmiCorpusTest(AmiAnyTest):
                 logger.info(f"file does not exist {chapter_file}")
                 continue
             scroll_div = ET.SubElement(body, "div")
-            scroll_div.attrib["class"] = "scroll_parent"
+            scroll_div.attrib["class"] = SCROLL_PARENT
             chapter_html = HtmlLib.parse_html(chapter_file)
 
-            captioned_figures = self.create_scrolling_thumbnails_from_html_images(chapter_file, HtmlLib._ipcc_create_zip_caption_img,
-                                                          outpath)
+            captioned_figures = HtmlLib.create_scrolling_thumbnails_from_html_images(
+                chapter_file,
+                HtmlLib._ipcc_create_zip_caption_img,
+                outpath)
 
             HtmlLib.create_horizontal_scrolling_thumbnails_with_hrefs(captioned_figures, scroll_div)
         HtmlLib.write_html_file(htmlx, outpath, debug=True)
@@ -706,7 +742,7 @@ class AmiCorpusTest(AmiAnyTest):
                 logger.info(f"file does not exist {chapter_file}")
                 continue
             scroll_div = ET.SubElement(body, "div")
-            scroll_div.attrib["class"] = "scroll_parent"
+            scroll_div.attrib["class"] = SCROLL_PARENT
             chapter_html = HtmlLib.parse_html(chapter_file)
             captioned_tables = _ipcc_create_zip_caption_table(chapter_html)
             HtmlLib.create_horizontal_scrolling_thumbnails_with_tables(captioned_tables, scroll_div)
@@ -721,23 +757,121 @@ class AmiCorpusTest(AmiAnyTest):
         new_content = "Executive Summary"
         new_column_title = "exec_summary"
 
-        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec.html")
+        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec1.html")
         Datatables.add_column_with_ahref_pointers_to_sections_with_ids(datatables_file, id_ref, new_column_title,
                                                                        new_content, new_datatables_file)
 
         # list to receive td's
         new_column_title = "acknowledgements"
-        new_datatables_file2 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_ack.html")
-        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(new_datatables_file, "acknowledgements",
-                                                                       "acknowledgements", "Acknowledgements",
-                                                                       new_datatables_file2)
+        new_datatables_file2 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_ack1.html")
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(
+            new_datatables_file, "acknowledgements",
+            "acknowledgements",
+            "Acknowledgements",
+            new_datatables_file2)
 
 
+    def test_search_and_create_datatables_column(self):
 
+        """
+        read chapter, search for words and return list of paragraphs/ids in which they occur
+        simple, but requires no server
+        """
+        debug = True
+        query = "bananas_millet"
+        xpath = None
+        indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        outfile = Path(indir, f"{query}.html")
+        globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
+        infiles = FileLib.posix_glob(globstr, recursive=True)
+        assert 50 == len(infiles)
+        phrases = [
+            "bananas",
+            "millet",
+            # "wheat",
+            # "climate justice",
+        ]
 
+        html1 = AmiCorpus.search_files_with_phrases_write_results(
+            infiles, phrases=phrases, xpath=xpath, outfile=outfile, debug=debug)
 
-# ================ NYI ===============
+        assert html1 is not None
+        assert len(html1.xpath("//p")) > 0
+        term_id_by_url = make_hits_by_url(html1)
+        logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
+        term_ref_p_tuple_list = self.get_term_ref_p_tuple_list(term_id_by_url)
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        head = HtmlLib.get_head(htmlx)
+        style = ET.SubElement(head, "style")
+        style.text = "table,td,th {border:solid blue 1px;}"
+        body = HtmlLib.get_body(htmlx)
+        table = ET.SubElement(body, "table")
+        thead = ET.SubElement(table, "thead")
+        tr = ET.SubElement(thead, "tr")
+        for col in ["term", "ref", "para"]:
+            th = ET.SubElement(tr, "th")
+            th.text = col
+        tbody = ET.SubElement(table, "tbody")
+        for term,ref,p in term_ref_p_tuple_list:
+            tr = ET.SubElement(tbody, "tr")
+            tds = []
+            for item in term, ref, p:
+                tds.append(ET.SubElement(tr, "td"))
+            tds[0].text = term
+            a = ET.SubElement(tds[1], "a")
+            a.attrib["href"] = ref
+            a.text = ref
 
+            tds[2].append(p)
+            # logger.debug(f"trp {term}:{ref}: {"".join(p.itertext())}")
+
+        trp_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "tern_ref_p.html")
+        HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+
+        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        datatables_html = HtmlLib.parse_html(datatables_file)
+
+        """
+        <tr> 
+          <td class="sorting_1">
+            <a href="syr/longer-report/html_with_ids.html">syr/longer-report/html_with_ids.html</a>
+          </td>
+        </tr>
+        """
+        tds = datatables_html.xpath("//body/table/tbody/tr/td")
+        logger.info(f"tds {len(tds)}")
+        # keys in datatables
+        for td in tds:
+            a_ = td.xpath('a')[0]
+            logger.debug(f"td {a_.attrib['href']} {a_.text}")
+
+        # list to receive td's
+        id_ref = "Executive"
+        new_content = "Executive Summary"
+        new_column_title = "exec_summary"
+
+        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec1.html")
+        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(
+            datatables_file, id_ref, new_column_title, new_content, new_datatables_file)
+
+    def get_term_ref_p_tuple_list(self, term_id_by_url):
+        trp_list = []
+        for ref in term_id_by_url.keys():
+            bits = ref.split("#")
+            file = bits[0]
+            idref = bits[1]
+            term_p = term_id_by_url.get(ref)
+            term = term_p[0]
+            p = term_p[1]
+            # logger.debug(f"{term}:{idref} => {''.join(p.itertext())}")
+            tuple = (term, ref, p)
+            trp_list.append(tuple)
+
+        return trp_list
+
+    # ================ NYI ===============
+
+    @unittest.skip("NYI")
     def test_ipcc_add_figures_to_datatables(self):
         """
         get a column listing hyperlinks to documents from existing datatables file
@@ -750,9 +884,10 @@ class AmiCorpusTest(AmiAnyTest):
         # id_ref = "Executive"
         new_content = "Figures"
         new_column_title = "figures"
-        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_figures.html")
-        Datatables.add_column_with_ahref_pointers_to_figures(datatables_file, new_content, new_datatables_file,
-                                                                 new_column_title)
+        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_figures1.html")
+        Datatables.add_column_with_ahref_pointers_to_figures(
+            datatables_file, new_content, new_datatables_file, new_column_title)
+
         # NYI
     def test_ipcc_add_tables_to_datatables(self):
         """
@@ -769,3 +904,249 @@ class AmiCorpusTest(AmiAnyTest):
                                                                  new_column_title)
         # NYI
 
+# ===================== snippets ===================
+"""
+HTML, NO Javascript
+Top level div contains two children tab-list and tab_display
+In tab_list a list of (caption, table) pairs.
+all tables in the list should be initially hidden
+clicking on a caption will display the table in tab_display
+Please give sample code for a list of 3 small tables
+"""
+"""
+
+
+You can create this behavior using pure HTML and CSS, without relying on JavaScript. 
+The key to achieving this functionality is leveraging the :checked pseudo-class combined with input elements and label elements. 
+Here's how you can implement it:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Display</title>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      margin: 0 auto;
+    }
+
+    .tables {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .caption {
+      cursor: pointer;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      text-align: center;
+      margin-bottom: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .caption:hover {
+      background-color: #e0e0e0;
+    }
+
+    .table {
+      display: none;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .table th, .table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    input[type="radio"]:checked + label + .tables .table {
+      display: table;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="tables">
+      <!-- Table 1 -->
+      <input type="radio" id="table1" name="table" />
+      <label class="caption" for="table1">Table 1 Caption</label>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alice</td>
+              <td>24</td>
+            </tr>
+            <tr>
+              <td>Bob</td>
+              <td>30</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table 2 -->
+      <input type="radio" id="table2" name="table" />
+      <label class="caption" for="table2">Table 2 Caption</label>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Phone</td>
+              <td>$500</td>
+            </tr>
+            <tr>
+              <td>Laptop</td>
+              <td>$1000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table 3 -->
+      <input type="radio" id="table3" name="table" />
+      <label class="caption" for="table3">Table 3 Caption</label>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>City</th>
+              <th>Population</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>New York</td>
+              <td>8,623,000</td>
+            </tr>
+            <tr>
+              <td>Los Angeles</td>
+              <td>3,990,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+How It Works:
+Radio Buttons & Labels: Each table is associated with a radio input and a label. 
+Clicking the label (which acts as the caption) triggers the corresponding radio input.
+
+CSS Display Management:
+
+Initially, all tables are hidden using display: none;.
+When a radio button is selected (via :checked), the corresponding table becomes visible using display: table;.
+Input/Label Interaction: The input[type="radio"] elements are visually hidden (display: none;), 
+and the associated label elements act as clickable captions. When a user clicks a caption (label), 
+the corresponding radio button is checked, and the CSS rule applies to make the respective table visible.
+
+Single Table Display: Since all radio buttons share the same name attribute (name="table"), 
+only one radio button can be checked at a time. This ensures that only one table is displayed at any given moment.
+
+This is a simple, JavaScript-free solution for toggling between multiple tables using just HTML and CSS.
+
+------------------------------------
+Sure! Here's a sample HTML code that meets your requirements:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tab Display</title>
+<style>
+.tab_list div {
+cursor: pointer;
+margin: 5px 0;
+padding: 5px;
+background-color: #f0f0f0;
+border: 1px solid #ccc;
+}
+.tab_display table {
+display: none;
+width: 100%;
+border-collapse: collapse;
+}
+.tab_display table, .tab_display th, .tab_display td {
+border: 1px solid black;
+}
+.tab_display th, .tab_display td {
+padding: 8px;
+text-align: left;
+}
+</style>
+</head>
+<body>
+<div class="tab_list">
+<div onclick="showTable('table1')">Caption 1</div>
+<div onclick="showTable('table2')">Caption 2</div>
+<div onclick="showTable('table3')">Caption 3</div>
+</div>
+<div class="tab_display">
+<table id="table1">
+<tr><th>Header 1</th><th>Header 2</th></tr>
+<tr><td>Data 1</td><td>Data 2</td></tr>
+</table>
+<table id="table2">
+<tr><th>Header A</th><th>Header B</th></tr>
+<tr><td>Data A</td><td>Data B</td></tr>
+</table>
+<table id="table3">
+<tr><th>Header X</th><th>Header Y</th></tr>
+<tr><td>Data X</td><td>Data Y</td></tr>
+</table>
+</div>
+
+<script>
+function showTable(tableId) {
+var tables = document.querySelectorAll('.tab_display table');
+tables.forEach(function(table) {
+table.style.display = 'none';
+});
+document.getElementById(tableId).style.display = 'table';
+}
+</script>
+</body>
+</html>
+
+This code creates a simple tab system where clicking on a caption in the tab_list will display the corresponding table 
+in the tab_display section. Initially, all tables are hidden, and only the selected table is shown when a caption is clicked.
+
+Feel free to modify the content and style as needed!
+
+
+
+
+
+
+
+ChatGPT can make mistakes. Check important info.
+?
+"""

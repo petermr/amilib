@@ -15,7 +15,6 @@ from enum import Enum
 from pathlib import Path
 
 import pandas as pd
-# import pyvis
 import requests
 
 
@@ -918,6 +917,32 @@ class TextUtil:
             [c if c not in unwanted_chars else replacement for c in text])
         return text0
 
+    @classmethod
+    def convert_quoted_list_to_list(cls, quoted_list):
+        """
+        lists are often serialised as a strin of form '["A", "b", 1]'
+        see https://stackoverflow.com/questions/1894269/how-to-convert-string-representation-of-list-to-a-list
+        we have chosen the json method
+        Does NOT appear to parse "['a', 'b']"
+        :param quoted_list: list of form '[ "A","B","C" , " D"]'
+
+        """
+        if quoted_list is None:
+            return None
+        if type(quoted_list) is list:
+            return quoted_list
+        if type(quoted_list) is not str:
+            raise ValueError(f"not a quoted list: {quoted_list}")
+        if "'" in quoted_list:
+            # change all single quote to double
+            if '"' in quoted_list:
+                raise ValueError(f"list has both types of quotes, too difficult ATM")
+            # logger.debug(f"single quote {quoted_list}")
+            quoted_list = quoted_list.replace("'", '"')
+            # logger.debug(f"double quote {quoted_list}")
+        parsed_list = json.loads(quoted_list)
+        # logger.debug(f"parsed_list {len(parsed_list)} => {parsed_list[0]} ... {parsed_list}")
+        return parsed_list
 
 # sub/Super
 
