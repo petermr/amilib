@@ -846,9 +846,7 @@ class AmiCorpusTest(AmiAnyTest):
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
         path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
-        with open(path, "r") as f:
-            phrases = f.readlines()
-            # phrases = [w.strip() for w in phrases]
+        phrases = FileLib.read_strings_from_path(path)
 
         logger.debug(f"phrases {phrases}")
 
