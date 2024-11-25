@@ -778,7 +778,7 @@ class AmiCorpusTest(AmiAnyTest):
         simple, but requires no server
         """
         debug = True
-        query = "bananas_millet"
+        query = "bananas_millet_climate"
         xpath = None
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         outfile = Path(indir, f"{query}.html")
@@ -789,7 +789,7 @@ class AmiCorpusTest(AmiAnyTest):
             "bananas",
             "millet",
             # "wheat",
-            # "climate justice",
+            "climate justice",
         ]
 
         html1 = AmiCorpus.search_files_with_phrases_write_results(
@@ -799,20 +799,74 @@ class AmiCorpusTest(AmiAnyTest):
         assert len(html1.xpath("//p")) > 0
         term_id_by_url = make_hits_by_url(html1)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
-        term_ref_p_tuple_list = self.get_term_ref_p_tuple_list(term_id_by_url)
-        htmlx = HtmlLib.create_html_with_empty_head_body()
-        head = HtmlLib.get_head(htmlx)
-        style = ET.SubElement(head, "style")
-        style.text = "table,td,th {border:solid blue 1px;}"
-        body = HtmlLib.get_body(htmlx)
-        table = ET.SubElement(body, "table")
-        thead = ET.SubElement(table, "thead")
-        tr = ET.SubElement(thead, "tr")
-        for col in ["term", "ref", "para"]:
-            th = ET.SubElement(tr, "th")
-            th.text = col
-        tbody = ET.SubElement(table, "tbody")
-        for term,ref,p in term_ref_p_tuple_list:
+        term_ref_p_tuple_list = self.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+        htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        self._add_hits_to_table(tbody, term_ref_p_tuple_list)
+
+        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_hits.html")
+        HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+        assert trp_file.exists()
+
+
+        # datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        # datatables_html = HtmlLib.parse_html(datatables_file)
+
+        """
+        <tr> 
+          <td class="sorting_1">
+            <a href="syr/longer-report/html_with_ids.html">syr/longer-report/html_with_ids.html</a>
+          </td>
+        </tr>
+        """
+        # tds = datatables_html.xpath("//body/table/tbody/tr/td")
+        # logger.info(f"tds {len(tds)}")
+        # # keys in datatables
+        # for td in tds:
+        #     a_ = td.xpath('a')[0]
+        #     logger.debug(f"td {a_.attrib['href']} {a_.text}")
+        #
+        # # list to receive td's
+        # id_ref = "Executive"
+        # new_content = "Executive Summary"
+        # new_column_title = "exec_summary"
+        #
+        # new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec1.html")
+        # Datatables.add_column_with_ahref_pointers_to_sections_with_ids(
+        #     datatables_file, id_ref, new_column_title, new_content, new_datatables_file)
+
+    def test_search_corpus_with_wordlist(self):
+        """
+        reads words from file and searches corpus giving term_oriented table
+        """
+        debug = True
+        query = "carbon_cycle"
+        xpath = None
+        indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        outfile = Path(indir, f"{query}.html")
+        globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
+        infiles = FileLib.posix_glob(globstr, recursive=True)
+        path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        with open(path, "r") as f:
+            phrases = f.readlines()
+            # phrases = [w.strip() for w in phrases]
+
+        logger.debug(f"phrases {phrases}")
+
+        html1 = AmiCorpus.search_files_with_phrases_write_results(
+            infiles, phrases=phrases, xpath=xpath, outfile=outfile, debug=debug)
+
+        term_id_by_url = make_hits_by_url(html1)
+        logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
+        term_ref_p_tuple_list = self.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+        htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        self._add_hits_to_table(tbody, term_ref_p_tuple_list)
+
+        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_hits.html")
+        HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+        assert trp_file.exists()
+
+    def _add_hits_to_table(self, tbody, term_ref_p_tuple_list):
+        for term, ref, p in term_ref_p_tuple_list:
             tr = ET.SubElement(tbody, "tr")
             tds = []
             for item in term, ref, p:
@@ -823,38 +877,8 @@ class AmiCorpusTest(AmiAnyTest):
             a.text = ref
 
             tds[2].append(p)
-            # logger.debug(f"trp {term}:{ref}: {"".join(p.itertext())}")
 
-        trp_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "tern_ref_p.html")
-        HtmlLib.write_html_file(htmlx, trp_file, debug=True)
-
-        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
-        datatables_html = HtmlLib.parse_html(datatables_file)
-
-        """
-        <tr> 
-          <td class="sorting_1">
-            <a href="syr/longer-report/html_with_ids.html">syr/longer-report/html_with_ids.html</a>
-          </td>
-        </tr>
-        """
-        tds = datatables_html.xpath("//body/table/tbody/tr/td")
-        logger.info(f"tds {len(tds)}")
-        # keys in datatables
-        for td in tds:
-            a_ = td.xpath('a')[0]
-            logger.debug(f"td {a_.attrib['href']} {a_.text}")
-
-        # list to receive td's
-        id_ref = "Executive"
-        new_content = "Executive Summary"
-        new_column_title = "exec_summary"
-
-        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec1.html")
-        Datatables.add_column_with_ahref_pointers_to_sections_with_ids(
-            datatables_file, id_ref, new_column_title, new_content, new_datatables_file)
-
-    def get_term_ref_p_tuple_list(self, term_id_by_url):
+    def get_hits_as_term_ref_p_tuple_list(self, term_id_by_url):
         trp_list = []
         for ref in term_id_by_url.keys():
             bits = ref.split("#")

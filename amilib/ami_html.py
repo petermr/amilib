@@ -2450,6 +2450,33 @@ font-size: 12px;
             return None
         return HtmlLib.get_first_object_by_xpath(htmlx, f"//*[@id='{id}']", exact=True)
 
+    @classmethod
+    def make_skeleton_table(cls, style_text="table,td,th {border:solid blue 1px;}", colheads=None):
+        """
+        creates a srectangular keleton HTML table with default style
+        :param style_text: style for table, tr, th
+        :param colheads: column headings (should be given)
+        :return: (html, tbody) tuple
+        """
+        if not colheads:
+            logger.warning("No colheads given, no table")
+            return None
+        htmlx = HtmlLib.create_html_with_empty_head_body()
+        head = HtmlLib.get_head(htmlx)
+        style = ET.SubElement(head, "style")
+        style.text = style_text
+        body = HtmlLib.get_body(htmlx)
+        table = ET.SubElement(body, "table")
+        thead = ET.SubElement(table, "thead")
+        tr = ET.SubElement(thead, "tr")
+        for col in colheads :
+            th = ET.SubElement(tr, "th")
+            th.text = col
+        tbody = ET.SubElement(table, "tbody")
+        return htmlx, tbody
+
+
+
 
 class Datatables:
 
