@@ -1499,7 +1499,7 @@ class HtmlLib:
         return paras
 
     @classmethod
-    def para_contains_phrase(cls, para, phrase, ignore_case=True, markup=None):
+    def para_contains_phrase(cls, para, phrase, ignore_case=True, markup=None, url_base=None):
         """
         search paragraph with phrase. If markuip is not None add hyperlinks
 
@@ -1508,7 +1508,7 @@ class HtmlLib:
         para paragraph to search
         phrase search phrase
         ignore_case if True lowercase text and phrase
-        markup if True search each itertext and insert hrefs, else just seatch concatenation
+        markup if True search each itertext and insert hrefs, else just search concatenation
 
         Returns
         -------
@@ -1528,17 +1528,25 @@ class HtmlLib:
             for text in texts:
                 match = re.search(search_re, text)
                 if match:
-                    cls._insert_ahref(markup, match, phrase, text)
+                    cls._insert_ahref(match, phrase, text, url_base)
+
 
         return False
 
     @classmethod
-    def _insert_ahref(cls, url_base, match, phrase, text):
+    def _insert_ahref(cls, match, phrase, text, url_base=None):
         """
-        Add hyperlinks to text. The order of opratyations matters
+        Add hyperlinks to text. The order of operations matters
+        :param match: result of regex matching phrase in the text
+        :param phrase: to search for in the text
+        :param text: to find phrase in
+        :param url_base: to create hyperlink with
+
         """
         id = HtmlLib.generate_id(phrase)
-        href, title = cls._create_href_and_title(id, url_base)
+        href, title = None, None
+        if url_base is not None:
+            href, title = cls._create_href_and_title(id, url_base)
 
         # text before, inside and after <a> element
         start_ = text[0:match.start()]
@@ -1558,7 +1566,8 @@ class HtmlLib:
             logger.error(f"ERROR??? (not text of tail) {start_}|{mid_}|{end_}")
 
         # add content and attributes to aelem
-        aelem.attrib["href"] = href
+        if href:
+            aelem.attrib["href"] = href
         aelem.text = mid_
         aelem.tail = end_
         if title:
@@ -1574,18 +1583,32 @@ class HtmlLib:
         return aelem
 
     @classmethod
-    def add_href_for_lxml_text(cls, start_, text):
+    def add_href_for_lxml_text(cls, start_, text,
+                               style="border:solid 1px; background: #ffffbb;"):
+        """
+        adds href to text in a lxml document (text has parent)
+        :param start_ text before hyperlink
+        :param text:original flat text
+        :param style: hyperlink style
+        """
         parent = text.getparent()
         tail = parent.tail
         aelem = ET.SubElement(parent, "a")
-        aelem.attrib["style"] = "border:solid 1px; background: #ffffbb;"
+        if style:
+            aelem.attrib["style"] = style
         parent.text = start_
         parent.tail = tail
         return aelem
 
     @classmethod
     def _create_href_and_title(cls, id, url_base):
+        """
+        parse remote target and extract id
+        """
+        if url_base is None:
+            return None
         href = f"{url_base}"
+    # check the hyperlink target exists and is parsable
         href_elem = ET.parse(href, HTMLParser())
         idelems = href_elem.xpath(f".//*[@id='{id}']")
         title = id
@@ -1606,11 +1629,13 @@ class HtmlLib:
         return phrase1
 
     @classmethod
-    def search_phrases_in_paragraphs(cls, paras, phrases, markup=None, ignore_non_id_para=True):
+    def search_phrases_in_paragraphs(cls, paras, phrases, markup=None,
+                                     ignore_non_id_para=True, url_base=None):
         """search for phrases in paragraphs
         :param paras: list of HTML elems with text (normally <p>), must have @id else ignored
         :param phrases: list of strings to search for (word boundary honoured)
         :param markup: html dictionary with phrases
+        :param url_base; base of hyperlinks, None=nor href URL
         :return: dict() keyed on para_ids values are dict of search hits by phrase
         """
         phrase_counter_by_para_id = dict()
@@ -1620,7 +1645,8 @@ class HtmlLib:
                 continue
             phrase_counter = Counter()
             for phrase in phrases:
-                matched = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True, markup=markup)
+                matched = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True,
+                                                       markup=markup, url_base=url_base)
                 if matched:
                     phrase_counter[phrase] += 1
                     phrase_counter_by_para_id[para_id] = phrase_counter

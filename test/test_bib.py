@@ -9,6 +9,8 @@ from copy import copy
 import lxml.etree as ET
 from pathlib import Path
 import pandas as pd
+from lxml.etree import _Element
+from lxml.html import HtmlElement
 
 from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, QUERY, STARTDATE, XML, \
                             EUPMC_RESULTS_JSON, PMCID, ABS_TEXT, EPMC_KEYS, JOURNAL_INFO, DOI, TITLE, AUTHOR_STRING,
@@ -771,7 +773,7 @@ class AmiCorpusTest(AmiAnyTest):
             new_datatables_file2)
 
 
-    def test_search_and_create_datatables_column(self):
+    def test_search_and_create_term_href_p_table(self):
 
         """
         read chapter, search for words and return list of paragraphs/ids in which they occur
@@ -800,6 +802,7 @@ class AmiCorpusTest(AmiAnyTest):
         term_id_by_url = make_hits_by_url(html1)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
         term_ref_p_tuple_list = self.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+
         htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
         self._add_hits_to_table(tbody, term_ref_p_tuple_list)
 
@@ -807,6 +810,18 @@ class AmiCorpusTest(AmiAnyTest):
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 
+        # markup para with nyperlink
+        # new html document
+        htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        new_term_ref_p_list = []
+        for (term, ref, para) in term_ref_p_tuple_list:
+            para_new = HtmlLib.para_contains_phrase(para, term, ignore_case=True, markup=True)
+            new_term_ref_p_list.append((term, ref, para))
+        self._add_hits_to_table(tbody, new_term_ref_p_list)
+
+        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_markup_hits.html")
+        HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+        assert trp_file.exists()
 
         # datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
         # datatables_html = HtmlLib.parse_html(datatables_file)
@@ -848,7 +863,7 @@ class AmiCorpusTest(AmiAnyTest):
         path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
         phrases = FileLib.read_strings_from_path(path)
 
-        logger.debug(f"phrases {phrases}")
+        logger.debug(f"phrases {len(phrases)}")
 
         html1 = AmiCorpus.search_files_with_phrases_write_results(
             infiles, phrases=phrases, xpath=xpath, outfile=outfile, debug=debug)
@@ -865,6 +880,9 @@ class AmiCorpusTest(AmiAnyTest):
 
     def _add_hits_to_table(self, tbody, term_ref_p_tuple_list):
         for term, ref, p in term_ref_p_tuple_list:
+            assert type(term) is str
+            assert type(ref) is str
+            assert type(p) is _Element or type(p) is HtmlElement
             tr = ET.SubElement(tbody, "tr")
             tds = []
             for item in term, ref, p:
