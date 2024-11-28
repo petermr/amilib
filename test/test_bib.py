@@ -21,6 +21,7 @@ from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 from amilib.util import Util, TextUtil
+from amilib.xml_lib import XmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -336,6 +337,15 @@ def _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, h
         target_id = f"{href_target}#{id}"
         hits_by_url[target_id] = (tuple)
 
+
+def analyze_exec():
+    logger.error("Exec Not implemented")
+
+def analyze_faq():
+    logger.error("FAQ Not implemented")
+
+def analyze_references():
+    logger.error("Ref Not implemented")
 
 
 class AmiCorpusTest(AmiAnyTest):
@@ -781,6 +791,7 @@ class AmiCorpusTest(AmiAnyTest):
         """
         debug = True
         query = "bananas_millet_climate"
+        query = "methane_emissions"
         xpath = None
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         outfile = Path(indir, f"{query}.html")
@@ -792,6 +803,9 @@ class AmiCorpusTest(AmiAnyTest):
             "millet",
             # "wheat",
             "climate justice",
+        ]
+        phrases = [
+            "methane emissions"
         ]
 
         html1 = AmiCorpus.search_files_with_phrases_write_results(
@@ -942,7 +956,109 @@ class AmiCorpusTest(AmiAnyTest):
         new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_tables.html")
         Datatables.add_column_with_ahref_pointers_to_tables(datatables_file, new_content, new_datatables_file,
                                                                  new_column_title)
+
+    def test_make_toc_and_make_normalized_html(self):
+        """
+        take html_with_ids and
+          - make TOC
+          - remove styles
+
+        """
+        infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter05", "html_with_ids.html")
+        outfile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter05", "normalized.html")
+        assert infile.exists()
+        # read file into XML object
+        root_element = HtmlLib.parse_html(infile)
+        assert root_element is not None
+        head = root_element.xpath("./head")[0]
+        style_elements = head.xpath("./style")
+        assert len(style_elements) > 10
+        XmlLib.remove_elements(head, "./style")
+        body = root_element.xpath("./body")[0]
+
+        # find list of images before main text and reduce their scale
+        chap_butt_content = body.xpath(".//div[@id='chapter-button-content']")[0]
+        assert chap_butt_content is not None
+        self.shrink_images(chap_butt_content)
+
+        # make TableOfContents (ToC)
+        h1_list = body.xpath(".//div[@class='h1-container']")
+        assert len(h1_list) > 0
+
+        body_header = body.xpath("./div/header")[0]
+        toc_ul = ET.SubElement(body_header, "ul")
+        EXECUTIVE = "Executive"
+        FAQ = "frequently-asked-questions"
+        REFERENCES = "references"
+        id_values = [
+            EXECUTIVE,
+            FAQ,
+            REFERENCES,
+        ]
+        subchapter_regex = "\d+\.\d+"
+        for h1_elem in h1_list:
+            id = h1_elem.attrib["id"]
+            if id in id_values:
+                if id == EXECUTIVE:
+                    analyze_exec()
+                if id == FAQ:
+                    analyze_faq()
+                if id == REFERENCES:
+                    analyze_references()
+                # known ID
+                pass
+            elif re.match(subchapter_regex, id):
+                self.sub_element_title(id, toc_ul, ["h1", "h2"])
+
+                pass
+            else:
+                logger.error(f"unknown subchapter {id}")
+
+
+
+        HtmlLib.write_html_file(root_element, outfile, debug=True)
+
         # NYI
+
+    def sub_element_title(self, id, toc_ul, h_list):
+
+        sub_elem = XmlLib.get_single_element(toc_ul, f"//*[@id='{id}']")
+        if sub_elem is None:
+            return
+        h = sub_elem.xpath(f"./{h_list[0]}")[0]
+        h_text = "".join(h.itertext())
+        text = "".join(sub_elem.itertext())
+        toc_li = ET.SubElement(toc_ul, "li")
+        toc_li.attrib["title"] = f"sect {id}"
+        a = ET.SubElement(toc_li, "a")
+        a.attrib["title"] = text[:200]
+        a.text = h_text
+        a.attrib["href"] = f"#{id}"
+
+        sub_ids = ["id1"]
+        for sub_id in sub_ids:
+            self.sub_element_title(sub_id, sub_elem, h_list[1:])
+
+    def shrink_images(self, chap_butt_content):
+        img_list = chap_butt_content.xpath(".//img")
+        assert len(img_list) > 0
+        """
+        <div class="col-lg-3 col-12">
+          <h3>Figure 5.5</h3>
+          <img src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_5_5.png" alt="" class="img-card" width="10%">
+        </div>
+        """
+        for img in img_list:
+            img.attrib["width"] = "10%"
+            h3 = img.getparent().xpath("./h3")[0]
+            caption = "".join(h3.itertext()).strip().lower()
+            img.attrib["alt"] = caption
+            caption1 = caption.replace(" ", "-").replace(".", "-")
+            h3.text = ""
+            a = ET.SubElement(h3, "a")
+            a.attrib["href"] = f"#{caption1}"
+            a.text = f"#{caption}"
+
 
 # ===================== snippets ===================
 """

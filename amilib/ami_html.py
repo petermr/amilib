@@ -1446,7 +1446,7 @@ class HtmlLib:
     @classmethod
     def parse_html(cls, infile):
         """
-        parse html file as checks for file existence
+        parse html file and checks for file existence
         :param infile: file to parse or url (checks prefix)
         :return: root element
         """
