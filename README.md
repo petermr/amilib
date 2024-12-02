@@ -13,7 +13,7 @@ This represents functionality at 2024-12-02:
 
 |Module|Function  |
 |-------|----  |
-|amilib/ami_args.py|Abstract class for argparse option  |
+|[amilib/ami_args.py](amilib/ami_args.py)|Abstract class for argparse option  |
 |ami_bib.py|Bibliographic support  |
 |ami_corpus.py|create, normalize, search, tranform a corpus  |
 |ami_csv.py|CSV utilities  |
