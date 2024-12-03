@@ -974,6 +974,10 @@ class AmiCorpusTest(AmiAnyTest):
         style_elements = head.xpath("./style")
         assert len(style_elements) > 10
         XmlLib.remove_elements(head, "./style")
+        style = ET.SubElement(head, "style")
+        style.text = "img {width:10%;border:solid gray 1px;}"
+        style = ET.SubElement(head, "style")
+        style.text = "img[class='_idGenObjectAttribute-1'] {width:50%;border:solid green 2px;}"
         body = root_element.xpath("./body")[0]
 
         # find list of images before main text and reduce their scale
@@ -1025,9 +1029,13 @@ class AmiCorpusTest(AmiAnyTest):
         sub_elem = XmlLib.get_single_element(toc_ul, f"//*[@id='{id}']")
         if sub_elem is None:
             return
-        h = sub_elem.xpath(f"./{h_list[0]}")[0]
-        h_text = "".join(h.itertext())
-        text = "".join(sub_elem.itertext())
+        logger.debug(f"sub_elem {sub_elem.attrib}")
+        if len(h_list) == 0:
+            return
+        sub_h = h_list[0]
+        h_elem = sub_elem.xpath(f"./{sub_h}")[0]
+        h_text = "".join(h_elem.itertext())
+        text = " ".join(sub_elem.itertext())
         toc_li = ET.SubElement(toc_ul, "li")
         toc_li.attrib["title"] = f"sect {id}"
         a = ET.SubElement(toc_li, "a")
@@ -1035,8 +1043,18 @@ class AmiCorpusTest(AmiAnyTest):
         a.text = h_text
         a.attrib["href"] = f"#{id}"
 
-        sub_ids = ["id1"]
-        for sub_id in sub_ids:
+        h_list = h_list[1:]
+        if len(h_list) == 0:
+            logger.debug("finished h-hierarchy")
+            return
+
+        h_level = h_list[0]
+        xp = f"./div[@class='{h_level}-container']"
+        logger.debug(f"xp: {xp}")
+        sub_elems = sub_elem.xpath(xp)
+        for sub_elem in sub_elems:
+            sub_id = sub_elem.attrib['id']
+            logger.debug(f"sub id {sub_id}")
             self.sub_element_title(sub_id, sub_elem, h_list[1:])
 
     def shrink_images(self, chap_butt_content):
@@ -1053,11 +1071,14 @@ class AmiCorpusTest(AmiAnyTest):
             h3 = img.getparent().xpath("./h3")[0]
             caption = "".join(h3.itertext()).strip().lower()
             img.attrib["alt"] = caption
-            caption1 = caption.replace(" ", "-").replace(".", "-")
+            a_text = caption
+            for punct in [" ", "."]:
+                caption = caption.replace(punct, "-")
+            caption = caption.replace(",", "")
             h3.text = ""
             a = ET.SubElement(h3, "a")
-            a.attrib["href"] = f"#{caption1}"
-            a.text = f"#{caption}"
+            a.attrib["href"] = f"#{caption}"
+            a.text = a_text
 
 
 # ===================== snippets ===================
