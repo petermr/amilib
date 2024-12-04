@@ -1484,18 +1484,19 @@ class HtmlLib:
         return html_element
 
     @classmethod
-    def find_paras_with_ids(cls, html, xpath=None):
+    def find_paras_with_ids(cls, html, para_xpath=None):
         """
         find all p's with @id and return ordered list
         :param html: parsed html DOM
+        :param para_xpath: xpath to find paras with IDs (default ".//p[@id]")
         """
-        if not xpath:
-            xpath = ".//p[@id]"
         paras = []
         if html is None:
             return paras
         body = HtmlLib.get_body(html)
-        paras = body.xpath(xpath)
+        if not para_xpath:
+            para_xpath = ".//p[@id]"
+        paras = body.xpath(para_xpath)
         return paras
 
     @classmethod

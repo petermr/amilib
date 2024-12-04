@@ -55,24 +55,55 @@ class AmiCorpus():
 
     }
 
-    def __init__(self, topdir, make_descendants=False, mkdir=False,  **kwargs):
+    def __init__(self,
+                 topdir=None,
+                 infiles=None,
+                 globstr=None,
+                 outfile=None,
+                 query=None,
+                 make_descendants=False,
+                 mkdir=False,
+                 **kwargs):
         """
         create new Corpus, withn optional input of data
-        :param indir: Input directory with files/subdis as possible corpus components
-        :param mkdir: make indir if doesn't exist (default=False)
+        :param topdir: Input directory with files/subdis as possible corpus components
+        :param infiles: list of files to use (alternative to globstr)
+        :param globstr: create infiles using globbing under topdir (requires topdir)
+        :param outfile:
+        :param mkdir: make topdir if doesn't exist (default=False)
         :param make_descendants: makes AmiCorpusContianers for directories on tree
         :param kwargs: dict of per-corpus user-specified properties
 
         """
-        if not topdir or not topdir.is_dir():
-            raise ValueError("AmiCorpus() requires valid directory")
+        self.topdir = topdir
+        if self.topdir and not self.topdir.is_dir():
+            raise ValueError(f"AmiCorpus() requires valid directory {self.topdir}")
 
         self.container_by_file = dict()
         # rootnode
         self.ami_container = self.create_corpus_container(
-            topdir, make_descendants=make_descendants, mkdir=mkdir)
-        self.make_special(kwargs)
+            self.topdir, make_descendants=make_descendants, mkdir=mkdir)
         self.eupmc_results = None
+        self.infiles = infiles
+        self.outfile = outfile
+        self.globstr = globstr
+        self.search_html = None
+        self._make_infiles()
+        self._make_outfile()
+
+        self.make_special(kwargs)
+
+    def _make_infiles(self):
+        if self.infiles:
+            logger.info(f"taking infiles from list")
+        else:
+            if self.topdir and self.globstr:
+                self.infiles = FileLib.posix_glob(f"{self.topdir}/{self.globstr}", recursive=True)
+        if self.infiles is None:
+            logger.error(f"self.infiles is None")
+            return
+        logger.info(f"inputting {len(self.infiles)} files")
+        return self.infiles
 
     def create_corpus_container(self, file, bib_type="None", make_descendants=False, mkdir=False):
         """
@@ -236,31 +267,33 @@ class AmiCorpus():
                 caption.text += f"; end: {enddate}"
 
     @classmethod
-    def search_files_with_phrases_write_results(cls, infiles, phrases=None, xpath=None, outfile=None, debug=False):
-        all_paras = []
+    def search_files_with_phrases_write_results(cls, infiles, phrases=None, para_xpath=None, outfile=None, debug=False):
         all_hits_dict = dict()
         url_list_by_phrase_dict = defaultdict(list)
         if type(phrases) is not list:
             phrases = [phrases]
+        all_paras = []
         for infile in infiles:
             assert Path(infile).exists(), f"{infile} does not exist"
             html_tree = lxml.etree.parse(str(infile), HTMLParser())
-            paras = HtmlLib.find_paras_with_ids(html_tree, xpath=xpath)
+            paras = HtmlLib.find_paras_with_ids(html_tree, para_xpath=para_xpath)
             all_paras.extend(paras)
+
 
             # this does the search
             para_id_by_phrase_dict = HtmlLib.create_search_results_para_ohrase_dict(paras, phrases)
             if len(para_id_by_phrase_dict) > 0:
                 if debug:
-                    logger.debug(f"para_phrase_dict {para_id_by_phrase_dict}")
+                    # logger.debug(f"para_phrase_dict {para_id_by_phrase_dict}")
                     pass
                 cls.add_hit_with_filename_and_para_id(all_hits_dict, url_list_by_phrase_dict, infile, para_id_by_phrase_dict)
         if debug:
             print(f"para count~: {len(all_paras)}")
-        outfile = Path(outfile)
-        outfile.parent.mkdir(exist_ok=True, parents=True)
         html1 = cls.create_html_from_hit_dict(url_list_by_phrase_dict)
+        assert html1 is not None
         if outfile:
+            outfile = Path(outfile)
+            outfile.parent.mkdir(exist_ok=True, parents=True)
             with open(outfile, "w") as f:
                 if debug:
                     print(f" hitdict {url_list_by_phrase_dict}")
@@ -367,6 +400,22 @@ class AmiCorpus():
         HtmlLib.write_html_file(self.datables_html, outpath, debug=debug)
 
         return self.datables_html
+
+    def make_infiles(self):
+        self.infiles = FileLib.posix_glob(self.globstr, recursive=True)
+
+    def make_globstr(self):
+        pass
+
+    def _make_outfile(self):
+        if not self.outfile:
+        #     if self.query:
+            pass
+
+    def search_files_with_phrases(self, phrases, debug=False):
+        self.search_html = AmiCorpus.search_files_with_phrases_write_results(
+            self.infiles, phrases=phrases, outfile=self.outfile, debug=debug)
+
 
 
 class AmiCorpusContainer:

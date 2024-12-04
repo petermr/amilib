@@ -164,7 +164,7 @@ class PygetpapersTest(AmiAnyTest):
             "bananas",
             "South Asia",
         ]
-        html1 = AmiCorpus.search_files_with_phrases_write_results(infiles, phrases=phrases, xpath=xpath, outfile=outfile, debug=debug)
+        html1 = AmiCorpus.search_files_with_phrases_write_results(infiles, phrases=phrases, para_xpath=xpath, outfile=outfile, debug=debug)
         assert html1 is not None
         assert len(html1.xpath("//p")) > 0
 
@@ -294,48 +294,74 @@ def make_hits_by_url(html1):
           <li><a href-to-para
     """
     # iterate over hit list
+    if html1 is None:
+        logger.error(f"html1 is None")
+        return None
     body = HtmlLib.get_body(html1)
     query_ul = HtmlLib.get_first_object_by_xpath(body, "ul")
     hits_by_url = dict()
     for li in query_ul.xpath("li"):
+        # logger.debug("li")
         p0 = HtmlLib.get_first_object_by_xpath(li, "p")
+        if p0 is None:
+            continue
         term = p0.text
         txt = "term: "
         if (term.startswith(txt)):
             term = term[len(txt):]
         hits_ul = HtmlLib.get_first_object_by_xpath(li, "ul")
+        if hits_ul is None:
+            continue
         hits_li_list = hits_ul.xpath("li")
+        # logger.debug(f"hits {len(hits_li_list)}")
         for hits_li in hits_li_list:
+            # logger.debug(f"hits_li")
             add_hit_list_to_hits_by_url(hits_by_url, hits_li, term)
+            # logger.debug(f"added hits_li")
 
     return hits_by_url
 
 
 def add_hit_list_to_hits_by_url(hits_by_url, hits_li, term):
+    if hits_by_url is None or hits_li is None or term is None:
+        logger.error(f"add_hit_list None args ")
+        return
     a = HtmlLib.get_first_object_by_xpath(hits_li, "a")
+    if a is None:
+        logger.error(f"a is None")
+        return
+    # logger.debug(f"a is {a}")
     href = a.attrib.get("href")
+    if href is None:
+        logger.error(f"href is None {ET.tostring(a)}")
+        return
+    # logger.debug(f"href {href}")
     href_target = href.split("#")[0]
     id = href.split("#")[1]
+    # logger.debug(f"href_target {href_target}")
     html_targ = HtmlLib.parse_html(href_target)
+    assert html_targ is not None
     if "[" in id:
+        # logger.debug("quoted list")
         id_list = TextUtil.convert_quoted_list_to_list(id)
-        # logger.debug(f"id_list {id_list}")
         for id1 in id_list:
-            # logger.debug(f"id1 {id1}")
             _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id1, term)
     else:
+        # logger.debug("non quoted list")
         _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term)
-    # logger.debug(f"len (hits_by_url) {len(hits_by_url)}")
+    # logger.debug("exit add hitlist")
 
 
 def _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term):
+    if hits_by_url is None or href_target is None or html_targ is None or id is None or term is None:
+        logger.error("arg is None")
+        return None
     p = HtmlLib.get_element_by_id(html_targ, id)
-    # p_text = "".join(p.itertext())
-    # logger.debug(f"{term}: {href_target} + {id} => {p_text}")
     if p is not None:
         tuple = (term, p)
         target_id = f"{href_target}#{id}"
         hits_by_url[target_id] = (tuple)
+    # logger.debug("exit _get_element_by_id_and_add_term_id_tuple_to_hits")
 
 
 def analyze_exec():
@@ -809,7 +835,7 @@ class AmiCorpusTest(AmiAnyTest):
         ]
 
         html1 = AmiCorpus.search_files_with_phrases_write_results(
-            infiles, phrases=phrases, xpath=xpath, outfile=outfile, debug=debug)
+            infiles, phrases=phrases, para_xpath=xpath, outfile=outfile, debug=debug)
 
         assert html1 is not None
         assert len(html1.xpath("//p")) > 0
@@ -837,31 +863,6 @@ class AmiCorpusTest(AmiAnyTest):
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 
-        # datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
-        # datatables_html = HtmlLib.parse_html(datatables_file)
-
-        """
-        <tr> 
-          <td class="sorting_1">
-            <a href="syr/longer-report/html_with_ids.html">syr/longer-report/html_with_ids.html</a>
-          </td>
-        </tr>
-        """
-        # tds = datatables_html.xpath("//body/table/tbody/tr/td")
-        # logger.info(f"tds {len(tds)}")
-        # # keys in datatables
-        # for td in tds:
-        #     a_ = td.xpath('a')[0]
-        #     logger.debug(f"td {a_.attrib['href']} {a_.text}")
-        #
-        # # list to receive td's
-        # id_ref = "Executive"
-        # new_content = "Executive Summary"
-        # new_column_title = "exec_summary"
-        #
-        # new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_exec1.html")
-        # Datatables.add_column_with_ahref_pointers_to_sections_with_ids(
-        #     datatables_file, id_ref, new_column_title, new_content, new_datatables_file)
 
     def test_search_corpus_with_wordlist(self):
         """
@@ -871,24 +872,59 @@ class AmiCorpusTest(AmiAnyTest):
         query = "carbon_cycle"
         xpath = None
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
-        outfile = Path(indir, f"{query}.html")
+        outfile = Path(Resources.TEMP_DIR, "corpus", f"{query}.html")
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
-        path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
-        phrases = FileLib.read_strings_from_path(path)
+        words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        phrases = FileLib.read_strings_from_path(words_path)
 
         logger.debug(f"phrases {len(phrases)}")
 
         html1 = AmiCorpus.search_files_with_phrases_write_results(
-            infiles, phrases=phrases, xpath=xpath, outfile=outfile, debug=debug)
+            infiles, phrases=phrases, outfile=outfile, debug=debug)
 
         term_id_by_url = make_hits_by_url(html1)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
         term_ref_p_tuple_list = self.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
         htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        assert htmlx is not None
+        assert tbody is not None
         self._add_hits_to_table(tbody, term_ref_p_tuple_list)
 
         trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_hits.html")
+        HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+        assert trp_file.exists(), f"{trp_file} should exist"
+
+    def test_create_corpus_with_wordlist_and_search(self):
+        """
+        reads words from file and searches corpus giving term_oriented table
+        """
+        indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        query_stem = "carbon_cycle"
+        outfile = str(Path(Resources.TEMP_DIR, "corpus", f"{query_stem}.html"))
+        ami_corpus = AmiCorpus(
+            indir=indir,
+            globstr=f"**/{HTML_WITH_IDS}.html",
+            query_stem = query_stem,
+            outfile=outfile,
+            debug = True)
+        ami_corpus.make_infiles()
+        xpath = None
+        path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        phrases = FileLib.read_strings_from_path(path)
+
+        logger.debug(f"phrases {len(phrases)}")
+        ami_corpus.search_files_with_phrases(phrases)
+        assert ami_corpus.search_html is not None
+        term_id_by_url = make_hits_by_url(ami_corpus.search_html)
+        assert term_id_by_url is not None
+        assert len(term_id_by_url.keys()) > 0
+        logger.debug(f"term_id_by_url keys {len(term_id_by_url.keys())}")
+        term_ref_p_tuple_list = self.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+        htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        self._add_hits_to_table(tbody, term_ref_p_tuple_list)
+
+        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query_stem}_hits.html")
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 

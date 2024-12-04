@@ -1414,7 +1414,7 @@ class WiktionaryTest(AmiAnyTest):
         HtmlUtil.write_html_elem(htmlx, outpath, debug=True)
         assert outpath.exists(), f"output html should exist {outpath}"
         FileLib.copyanything(Path(Resources.TEST_RESOURCES_DIR, "wiktionary", "wiktionary.css"),
-                          Path(Resources.TEMP_DIR, "wiktionary", "wikitionary.css"))
+                          Path(Resources.TEMP_DIR, "wiktionary", "wiktionary.css"))
 
     def test_get_ancestor_language(self):
         termx = "curlicue"

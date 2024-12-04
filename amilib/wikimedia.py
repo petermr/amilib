@@ -2081,6 +2081,9 @@ class WiktionaryPage:
         :param url: is complete wiktionary url
         :return: (html_element, mw_content)
         """
+        """
+        WARNING WM CHANGED THE HTML STRUCTURE
+        """
         if term is not None:
             assert type(term) is str, f"term should be str, not {type(term)}"
             url = cls.get_url(term)
@@ -2092,17 +2095,27 @@ class WiktionaryPage:
             html_element = HtmlLib.parse_html_string(res.content)
         except Exception as e:
             raise e
+        if html_element is None:
+            raise ValueError("html_element is None")
         body = HtmlLib.get_body(html_element)
+        assert body is not None
         content = cls.get_content(body)
-        body_content = content.xpath("./div[@id='bodyContent']")[0]
-        h1_first_heading = content.xpath("./h1[@id='firstHeading']")[0]
+        assert content is not None
+        body_content = XmlLib.get_single_element(content, "./div[@id='bodyContent']")
+        assert body_content is not None
+        h1_first_heading = XmlLib.get_single_element(content, ".//h1[@id='firstHeading']")
+        assert h1_first_heading is not None
         logger.debug(f"\n\n>>>h1 {''.join(h1_first_heading.itertext())}")
-        mw_content_text = body_content.xpath("./div[@id='mw-content-text']")[0]
+        mw_content_text = XmlLib.get_single_element(body_content, "./div[@id='mw-content-text']")
         return html_element, mw_content_text
 
     @classmethod
     def get_content(cls, body):
-        content = body.xpath("./div[@id='content']")[0]
+        # used to be div, now main?
+        content = XmlLib.get_single_element(body, ".//*[@id='content']")
+        if content is None:
+            print(ET.tostring(body, pretty_print=True))
+            pass
         return content
 
     @classmethod
