@@ -8,20 +8,28 @@ from pathlib import Path
 
 import lxml
 import lxml.etree as ET
-from lxml.html import HTMLParser
+from lxml.etree import _Element
+from lxml.html import HTMLParser, HtmlElement
 
+from amilib.ami_bib import EUPMC_RESULTS_JSON, EUPMC_TRANSFORM
 # from amilib.ami_bib import SAVED, QUERY, STARTDATE, ENDDATE
 from amilib.ami_html import HtmlLib, HtmlUtil, Datatables
 from amilib.ami_util import AmiJson, AmiUtil
 from amilib.file_lib import FileLib
 # from amilib.ami_bib import DOI, AUTHOR_STRING, JOURNAL_INFO_TITLE, PUB_YEAR, ABS_TEXT, SAVED_CONFIG_INI, Pygetpapers
-from amilib.util import Util
+from amilib.util import Util, TextUtil
+from test.resources import Resources
 
-EUPMC_RESULTS_JSON = "eupmc_results.json"
 DATATABLES_HTML = "datatables.html"
 SAVED_CONFIG_INI = "saved_config.ini"  # TODO cyclic import
+HTML_WITH_IDS = "html_with_ids"
 
 logger = Util.get_logger(__name__)
+
+
+
+
+
 
 
 class AmiCorpus():
@@ -30,37 +38,12 @@ class AmiCorpus():
     (top dir) and AmiCorpusCompnents (subdirectories)
 
     """
-    EUPMC_TRANSFORM = {
-        "doi": {
-            "url": {
-                "prefix": "https://www.doi.org/",
-            }
-        },
-        "authorString": {
-            "text": {
-                "split": ",",
-            }
-        },
-        "abstractText": {
-            "text": {
-                "truncate": 200,
-            }
-        },
-        "pmcid": {
-            "url": {
-                "prefix": "https://europepmc.org/betaSearch?query=",
-            }
-
-        }
-
-    }
 
     def __init__(self,
                  topdir=None,
                  infiles=None,
                  globstr=None,
                  outfile=None,
-                 query=None,
                  make_descendants=False,
                  mkdir=False,
                  **kwargs):
@@ -83,15 +66,37 @@ class AmiCorpus():
         # rootnode
         self.ami_container = self.create_corpus_container(
             self.topdir, make_descendants=make_descendants, mkdir=mkdir)
-        self.eupmc_results = None
         self.infiles = infiles
         self.outfile = outfile
         self.globstr = globstr
+        self.corpus_queries = dict()
         self.search_html = None
+        self.eupmc_results = None
         self._make_infiles()
         self._make_outfile()
 
         self.make_special(kwargs)
+
+    def __str__(self):
+        values = []
+        for key in self.corpus_queries.keys():
+            value = self.corpus_queries.get(key)
+            values.append(value)
+
+
+            s = f"""AmiCorpus:
+topdir:  {self.topdir}
+globstr: {self.globstr}
+infiles: {len(self.infiles)}
+outfile: {self.outfile}
+"""
+            s += "QUERIES"
+            for (key, value) in self.corpus_queries.items():
+                s += f"""
+                {key}:
+                {value.__str__()}
+                """
+        return s
 
     def _make_infiles(self):
         if self.infiles:
@@ -233,7 +238,7 @@ class AmiCorpus():
         # specific keys we want
         dict_by_id = AmiJson.create_json_table(papers, wanted_keys)
         htmlx, table = HtmlLib.create_html_table(
-            dict_by_id, transform_dict=AmiCorpus.EUPMC_TRANSFORM,
+            dict_by_id, transform_dict=EUPMC_TRANSFORM,
             styles=styles, datatables=datatables, table_id=table_id
         )
         cls.add_query_as_caption(config_ini, table)
@@ -268,9 +273,12 @@ class AmiCorpus():
 
     @classmethod
     def search_files_with_phrases_write_results(cls, infiles, phrases=None, para_xpath=None, outfile=None, debug=False):
+        if phrases is None:
+            logger.error("no phrases")
+            return
         all_hits_dict = dict()
         url_list_by_phrase_dict = defaultdict(list)
-        if type(phrases) is not list:
+        if (type(phrases) is not list):
             phrases = [phrases]
         all_paras = []
         for infile in infiles:
@@ -281,8 +289,8 @@ class AmiCorpus():
 
 
             # this does the search
-            para_id_by_phrase_dict = HtmlLib.create_search_results_para_ohrase_dict(paras, phrases)
-            if len(para_id_by_phrase_dict) > 0:
+            para_id_by_phrase_dict = HtmlLib.create_search_results_para_phrase_dict(paras, phrases)
+            if para_id_by_phrase_dict is not None and len(para_id_by_phrase_dict) > 0:
                 if debug:
                     # logger.debug(f"para_phrase_dict {para_id_by_phrase_dict}")
                     pass
@@ -342,6 +350,9 @@ class AmiCorpus():
 
     @classmethod
     def create_html_from_hit_dict(cls, hit_dict):
+        """
+        This looks awful
+        """
         html = HtmlLib.create_html_with_empty_head_body()
         body = HtmlLib.get_body(html)
         ul = ET.SubElement(body, "ul")
@@ -356,12 +367,12 @@ class AmiCorpus():
                 hit = str(hit).replace("%5C", "/")
                 li1 = ET.SubElement(ul1, "li")
                 a = ET.SubElement(li1, "a")
-                a.text = hit.replace("/html_with_ids.html", "")
+                a.text = hit.replace("/{HTML_WITH_IDS}.html", "")
                 ss = "ipcc/"
                 try:
                     idx = a.text.index(ss)
                 except Exception as e:
-                    print(f"cannot find substring {ss} in {a}")
+                    print(f"cannot find substring {ss} in {a.text}")
                     continue
                 a.text = a.text[idx + len(ss):]
                 a.attrib["href"] = hit
@@ -412,9 +423,211 @@ class AmiCorpus():
         #     if self.query:
             pass
 
-    def search_files_with_phrases(self, phrases, debug=False):
-        self.search_html = AmiCorpus.search_files_with_phrases_write_results(
-            self.infiles, phrases=phrases, outfile=self.outfile, debug=debug)
+    def search_files_with_phrases(self, debug=False):
+        if self.phrases:
+            self.search_html = AmiCorpus.search_files_with_phrases_write_results(
+                self.infiles, phrases=self.phrases, outfile=self.outfile, debug=debug)
+
+    def get_or_create_corpus_query(self,
+                                   query_id,
+                                   phrasefile=None,
+                                   phrases=None,
+                                   outfile=None):
+        """
+        retrieves query by query_stem. If not found creates new one
+        :param query_id: unique id of query
+        :param outfile: file to output results of search
+        :return: query
+        """
+        corpus_query = self.corpus_queries.get(query_id)
+        if not corpus_query:
+            corpus_query = CorpusQuery(
+                query_id=query_id,
+                phrasefile=phrasefile,
+                phrases=phrases,
+                outfile=outfile)
+            self.corpus_queries[query_id] = corpus_query
+            corpus_query.corpus = self
+
+        return corpus_query
+
+    def search_files_with_queries(self, query_ids, debug=True):
+        """
+        run queries. Assumed that queries have been loaded and recallable by id
+        :param query_ids: single or list of ids
+        """
+        if type(query_ids) is str:
+            query_ids = [query_ids]
+        elif (t :=type(query_ids)) is not list:
+            raise ValueError(f"queries requires id/s as list or str, found {t}")
+        for query_id in query_ids:
+            query = self.corpus_queries.get(query_id)
+            if query is None:
+                logger.error(f"cannot find query: {query_id}")
+                continue
+            logger.debug(f"outfile==> {query.outfile}")
+            self.search_html = AmiCorpus.search_files_with_phrases_write_results(
+                self.infiles, phrases=query.phrases, outfile=query.outfile, debug=debug)
+
+            term_id_by_url = CorpusQuery.make_hits_by_url(self.search_html)
+            term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+            htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+            CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)
+
+            trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"xx_{query_id}_hits.html")
+            HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+            assert trp_file.exists()
+
+            # AmiCorpus.search_files_with_phrases_write_results(self.infiles, phrases=query.phrases)
+
+class CorpusQuery:
+    """
+    holds query and related info (hits, files)
+    """
+    def __init__(self,
+                 query_id=None,
+                 phrasefile=None,
+                 phrases=None,
+                 outfile=None,
+                 ):
+        self.query_id = query_id
+        self.phrasefile = phrasefile
+        self.phrases = phrases
+        if self.phrasefile and not self.phrases:
+            self.phrases = FileLib.read_strings_from_path(self.phrasefile)
+
+        self.outfile = outfile
+        self.corpus = None
+        logger.debug(f"made query {self}")
+
+    def __str__(self):
+        s = f"""CorpusQuery
+query_id:  {self.query_id}
+phrasefile:{self.phrasefile}
+phrases:   {None if not self.phrases else len(self.phrases) }
+outfile:   {self.outfile}
+corpus:    {None if self.corpus is None else self.corpus.__hash__() }
+"""
+        return s
+    @classmethod
+    def make_hits_by_url(cls, nested_list_html):
+        """
+        <body>
+          <ul>
+            <li>term: xyz
+              <li><a href-to-para
+        """
+        # iterate over hit list
+        if nested_list_html is None:
+            logger.error(f"html1 is None")
+            return None
+        body = HtmlLib.get_body(nested_list_html)
+        query_ul = HtmlLib.get_first_object_by_xpath(body, "ul")
+        hits_by_url = dict()
+        for li in query_ul.xpath("li"):
+            # logger.debug("li")
+            p0 = HtmlLib.get_first_object_by_xpath(li, "p")
+            if p0 is None:
+                continue
+            term = p0.text
+            txt = "term: "
+            if (term.startswith(txt)):
+                term = term[len(txt):]
+            hits_ul = HtmlLib.get_first_object_by_xpath(li, "ul")
+            if hits_ul is None:
+                continue
+            hits_li_list = hits_ul.xpath("li")
+            # logger.debug(f"hits {len(hits_li_list)}")
+            for hits_li in hits_li_list:
+                # logger.debug(f"hits_li")
+                cls.add_hit_list_to_hits_by_url(hits_by_url, hits_li, term)
+                # logger.debug(f"added hits_li")
+
+        return hits_by_url
+
+
+    @classmethod
+    def add_hit_list_to_hits_by_url(cls, hits_by_url, hits_li, term):
+        if hits_by_url is None or hits_li is None or term is None:
+            logger.error(f"add_hit_list None args ")
+            return
+        a = HtmlLib.get_first_object_by_xpath(hits_li, "a")
+        if a is None:
+            logger.error(f"a is None")
+            return
+        # logger.debug(f"a is {a}")
+        href = a.attrib.get("href")
+        if href is None:
+            logger.error(f"href is None {ET.tostring(a)}")
+            return
+        # logger.debug(f"href {href}")
+        href_target = href.split("#")[0]
+        id = href.split("#")[1]
+        # logger.debug(f"href_target {href_target}")
+        html_targ = HtmlLib.parse_html(href_target)
+        assert html_targ is not None
+        if "[" in id:
+            # logger.debug("quoted list")
+            id_list = TextUtil.convert_quoted_list_to_list(id)
+            for id1 in id_list:
+                cls._get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id1, term)
+        else:
+            # logger.debug("non quoted list")
+            cls._get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term)
+        # logger.debug("exit add hitlist")
+
+
+    @classmethod
+    def _get_element_by_id_and_add_term_id_tuple_to_hits(cls, hits_by_url, href_target, html_targ, id, term):
+        if hits_by_url is None or href_target is None or html_targ is None or id is None or term is None:
+            logger.error("arg is None")
+            return None
+        p = HtmlLib.get_element_by_id(html_targ, id)
+        if p is not None:
+            tuple = (term, p)
+            target_id = f"{href_target}#{id}"
+            hits_by_url[target_id] = (tuple)
+        # logger.debug("exit _get_element_by_id_and_add_term_id_tuple_to_hits")
+
+    @classmethod
+    def get_hits_as_term_ref_p_tuple_list(cls, term_id_by_url):
+        if term_id_by_url is None:
+            logger.error(f"term_id_by_url is None")
+            return None
+        trp_list = []
+        for ref in term_id_by_url.keys():
+            bits = ref.split("#")
+            file = bits[0]
+            idref = bits[1]
+            term_p = term_id_by_url.get(ref)
+            term = term_p[0]
+            p = term_p[1]
+            # logger.debug(f"{term}:{idref} => {''.join(p.itertext())}")
+            tuple = (term, ref, p)
+            trp_list.append(tuple)
+
+        return trp_list
+
+    @classmethod
+    def _add_hits_to_table(cls, tbody, term_ref_p_tuple_list):
+        if term_ref_p_tuple_list is None:
+            logger.error(f"term_ref_p_tuple_list is None")
+            return
+        for term, ref, p in term_ref_p_tuple_list:
+            assert type(term) is str
+            assert type(ref) is str
+            assert type(p) is _Element or type(p) is HtmlElement
+            tr = ET.SubElement(tbody, "tr")
+            tds = []
+            for item in term, ref, p:
+                tds.append(ET.SubElement(tr, "td"))
+            tds[0].text = term
+            a = ET.SubElement(tds[1], "a")
+            a.attrib["href"] = ref
+            a.text = ref
+
+            tds[2].append(p)
+
 
 
 

@@ -1939,12 +1939,17 @@ class HtmlLib:
         return elem
 
     @classmethod
-    def create_search_results_para_ohrase_dict(cls, paras, phrases):
+    def create_search_results_para_phrase_dict(cls, paras, phrases):
         """
 
         """
         para_id_by_phrase_dict = defaultdict(list)
+        # logger.debug(f"phrases {phrases}")
+        if phrases is None:
+            logger.error(f"no phrases")
+            return None
         for phrase in phrases:
+
             phrase = phrase.lower()
             for para in paras:
                 text = " ".join(para.itertext())
@@ -1952,9 +1957,9 @@ class HtmlLib:
                     id = para.get("id")
                     para_id_by_phrase_dict[phrase].append(id)
                     # logger.info(f"found phrase {phrase} : in para {id} // {text[:50]} ")
-        if len(para_id_by_phrase_dict) > 0:
-            # logger.info(f"**id by phrase: {para_id_by_phrase_dict}")
-            pass
+            if len(para_id_by_phrase_dict) > 0:
+                # logger.info(f"**id by phrase: {para_id_by_phrase_dict}")
+                pass
         return para_id_by_phrase_dict
 
     @classmethod

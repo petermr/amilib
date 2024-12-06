@@ -5,7 +5,6 @@ import json
 import lxml.etree as ET
 import re
 
-from amilib.ami_corpus import AmiCorpus
 from amilib.ami_html import HtmlUtil, HtmlLib
 from amilib.ami_util import AmiUtil, AmiJson
 # local
@@ -228,7 +227,30 @@ EPMC_KEYS = [
     MESH_HEADING_LIST, SUBSET_LIST, DATE_OF_COMPLETION, CHEMICAL_LIST,
     INVESTIGATOR_LIST, EMBARGO_DATE, MANUSCRIPT_ID]
 
+EUPMC_RESULTS_JSON = "eupmc_results.json"
 
+EUPMC_TRANSFORM = {
+    "doi": {
+        "url": {
+            "prefix": "https://www.doi.org/",
+        }
+    },
+    "authorString": {
+        "text": {
+            "split": ",",
+        }
+    },
+    "abstractText": {
+        "text": {
+            "truncate": 200,
+        }
+    },
+    "pmcid": {
+        "url": {
+            "prefix": "https://europepmc.org/betaSearch?query=",
+        }
+    }
+}
 class Pygetpapers:
 
     @classmethod
@@ -271,7 +293,7 @@ class Pygetpapers:
         # specific keys we want
         dict_by_id = AmiJson.create_json_table(papers, wanted_keys)
         htmlx, table = HtmlLib.create_html_table(
-            dict_by_id, transform_dict=AmiCorpus.EUPMC_TRANSFORM,
+            dict_by_id, transform_dict=EUPMC_TRANSFORM,
             styles=styles, datatables=datatables, table_id=table_id
         )
         Pygetpapers.add_query_as_caption(config_ini, table)

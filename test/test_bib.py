@@ -17,7 +17,7 @@ from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, Q
                             PUB_YEAR, JOURNAL_INFO_TITLE, Pygetpapers)
 from amilib.ami_html import HtmlUtil, HtmlLib, Datatables, SCROLL_PARENT
 from amilib.ami_util import AmiJson, AmiUtil
-from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer
+from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer, CorpusQuery, HTML_WITH_IDS
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 from amilib.util import Util, TextUtil
@@ -71,7 +71,6 @@ def df_unpack_dict(json_string):
     title = dikt.get("journal").get("title")
     return title
 
-HTML_WITH_IDS = "html_with_ids"
 
 class PygetpapersTest(AmiAnyTest):
     """
@@ -286,7 +285,7 @@ DOWNLOAD_AR6_URL = "downloads/report/IPCC_AR6"
 DOT_PDF = ".pdf"
 
 
-def make_hits_by_url(html1):
+def make_hits_by_url(nested_list_html):
     """
     <body>
       <ul>
@@ -294,10 +293,10 @@ def make_hits_by_url(html1):
           <li><a href-to-para
     """
     # iterate over hit list
-    if html1 is None:
+    if nested_list_html is None:
         logger.error(f"html1 is None")
         return None
-    body = HtmlLib.get_body(html1)
+    body = HtmlLib.get_body(nested_list_html)
     query_ul = HtmlLib.get_first_object_by_xpath(body, "ul")
     hits_by_url = dict()
     for li in query_ul.xpath("li"):
@@ -841,10 +840,10 @@ class AmiCorpusTest(AmiAnyTest):
         assert len(html1.xpath("//p")) > 0
         term_id_by_url = make_hits_by_url(html1)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
-        term_ref_p_tuple_list = self.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+        term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
 
         htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
-        self._add_hits_to_table(tbody, term_ref_p_tuple_list)
+        CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)
 
         trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_hits.html")
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
@@ -857,7 +856,7 @@ class AmiCorpusTest(AmiAnyTest):
         for (term, ref, para) in term_ref_p_tuple_list:
             para_new = HtmlLib.para_contains_phrase(para, term, ignore_case=True, markup=True)
             new_term_ref_p_list.append((term, ref, para))
-        self._add_hits_to_table(tbody, new_term_ref_p_list)
+        CorpusQuery._add_hits_to_table(tbody, new_term_ref_p_list)
 
         trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_markup_hits.html")
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
@@ -885,11 +884,11 @@ class AmiCorpusTest(AmiAnyTest):
 
         term_id_by_url = make_hits_by_url(html1)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
-        term_ref_p_tuple_list = self.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+        term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
         htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
         assert htmlx is not None
         assert tbody is not None
-        self._add_hits_to_table(tbody, term_ref_p_tuple_list)
+        CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)
 
         trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_hits.html")
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
@@ -920,45 +919,115 @@ class AmiCorpusTest(AmiAnyTest):
         assert term_id_by_url is not None
         assert len(term_id_by_url.keys()) > 0
         logger.debug(f"term_id_by_url keys {len(term_id_by_url.keys())}")
-        term_ref_p_tuple_list = self.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+        term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
         htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
-        self._add_hits_to_table(tbody, term_ref_p_tuple_list)
+        CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)
 
         trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query_stem}_hits.html")
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 
-    def _add_hits_to_table(self, tbody, term_ref_p_tuple_list):
-        for term, ref, p in term_ref_p_tuple_list:
-            assert type(term) is str
-            assert type(ref) is str
-            assert type(p) is _Element or type(p) is HtmlElement
-            tr = ET.SubElement(tbody, "tr")
-            tds = []
-            for item in term, ref, p:
-                tds.append(ET.SubElement(tr, "td"))
-            tds[0].text = term
-            a = ET.SubElement(tds[1], "a")
-            a.attrib["href"] = ref
-            a.text = ref
+    def test_create_corpus_with_wordlist_and_search_with_query(self):
+        """
+        reads words from file and searches corpus giving term_oriented table
+        uses CorpusQuery.
+        Under development
+        """
+        indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        main_key = "corpus"
+        main_out_dir = Path(Resources.TEMP_DIR, main_key)
+        outfile = Path(main_out_dir, f"out.html")
 
-            tds[2].append(p)
+        ami_corpus = AmiCorpus(
+            indir=indir,
+            globstr=f"**/{HTML_WITH_IDS}.html",
+            outfile=outfile,
+            debug = True)
+        ami_corpus.make_infiles()
 
-    def get_hits_as_term_ref_p_tuple_list(self, term_id_by_url):
-        trp_list = []
-        for ref in term_id_by_url.keys():
-            bits = ref.split("#")
-            file = bits[0]
-            idref = bits[1]
-            term_p = term_id_by_url.get(ref)
-            term = term_p[0]
-            p = term_p[1]
-            # logger.debug(f"{term}:{idref} => {''.join(p.itertext())}")
-            tuple = (term, ref, p)
-            trp_list.append(tuple)
+        # queries
+        cc_id = self._carbon_cycle_query(ami_corpus, main_out_dir)
+        crop_id = self._crop_query(ami_corpus, main_out_dir)
 
-        return trp_list
+        logger.debug(f">>>>> {ami_corpus}")
+        ami_corpus.search_files_with_queries([
+            cc_id,
+            crop_id
+        ])
+        print(">==================")
+        if False:
+            term_id_by_url = make_hits_by_url(ami_corpus.search_html)
+            term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+            htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+            CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)
 
+            trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"xx_{cc_id}_hits.html")
+            HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+            assert trp_file.exists()
+
+    def _crop_query(self, ami_corpus, main_out_dir):
+        crop_id = "crops"
+        crop_out = Path(main_out_dir, f"{crop_id}_out.html")
+        crop_phrases = [
+            "maize",
+            "millet",
+            "rice",
+            "wheat"
+        ]
+        crop_query = ami_corpus.get_or_create_corpus_query(
+            query_id=crop_id,
+            phrases=crop_phrases,
+            outfile=crop_out)
+        return crop_id
+
+    def _carbon_cycle_query(self, ami_corpus, main_out_dir):
+        cc_id = "carbon_cycle"
+        cc_wordfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        cc_out = Path(main_out_dir, f"{cc_id}_out.html")
+        cc_query = ami_corpus.get_or_create_corpus_query(
+            query_id=cc_id,
+            phrasefile=cc_wordfile,
+            outfile=cc_out)
+        print("===================")
+        return cc_id
+
+    # def _add_hits_to_table(self, tbody, term_ref_p_tuple_list):
+    #     if term_ref_p_tuple_list is None:
+    #         logger.error(f"term_ref_p_tuple_list is None")
+    #         return
+    #     for term, ref, p in term_ref_p_tuple_list:
+    #         assert type(term) is str
+    #         assert type(ref) is str
+    #         assert type(p) is _Element or type(p) is HtmlElement
+    #         tr = ET.SubElement(tbody, "tr")
+    #         tds = []
+    #         for item in term, ref, p:
+    #             tds.append(ET.SubElement(tr, "td"))
+    #         tds[0].text = term
+    #         a = ET.SubElement(tds[1], "a")
+    #         a.attrib["href"] = ref
+    #         a.text = ref
+    #
+    #         tds[2].append(p)
+    #
+    # def get_hits_as_term_ref_p_tuple_list(self, term_id_by_url):
+    #     if term_id_by_url is None:
+    #         logger.error(f"term_id_by_url is None")
+    #         return None
+    #     trp_list = []
+    #     for ref in term_id_by_url.keys():
+    #         bits = ref.split("#")
+    #         file = bits[0]
+    #         idref = bits[1]
+    #         term_p = term_id_by_url.get(ref)
+    #         term = term_p[0]
+    #         p = term_p[1]
+    #         # logger.debug(f"{term}:{idref} => {''.join(p.itertext())}")
+    #         tuple = (term, ref, p)
+    #         trp_list.append(tuple)
+    #
+    #     return trp_list
+    #
     # ================ NYI ===============
 
     @unittest.skip("NYI")
