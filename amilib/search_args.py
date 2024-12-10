@@ -95,11 +95,15 @@ class SearchArgs(AbstractArgs):
 
     def __init__(self):
         super().__init__()
+        # dictionary file to read search words from
         self.dictfile = None
+        # particular search operation
         self.operation = None
+        # the argparser
         self.parser = None
         self.reportpath = None
         self.title = UNKNOWN
+        # words to search with (may be read directly or from dictfile
         self.words = None
 
         self.subparser_arg = SEARCH
@@ -179,15 +183,6 @@ class SearchArgs(AbstractArgs):
         self.remove_input_styles = NOINPUTSTYLES in self.operation
         self.counts = COUNTS in self.operation
 
-
-        logger.info(f"read arguments\n"
-                    f"inpath: {self.inpath}\n"
-                    f"dictfile: {self.dictfile}\n"
-                    f"outpath: {self.outpath}\n"
-                    f"operation: {self.operation}\n"
-                    f"title: {self.title}\n"
-                    f"words: {self.words}\n"
-                    )
         if self.operation is None:
             logger.warning("No operation given")
             return
@@ -199,6 +194,15 @@ class SearchArgs(AbstractArgs):
         elif self.dictfile is not None:
             dikt = AmiDictionary.read_dictionary(self.dictfile)
             self.words = dikt.get_terms()
+
+        logger.info(f"read arguments\n"
+                    f"inpath: {self.inpath}\n"
+                    f"dictfile: {self.dictfile}\n"
+                    f"outpath: {self.outpath}\n"
+                    f"operation: {self.operation}\n"
+                    f"title: {self.title}\n"
+                    f"words: {self.words}\n"
+                    )
 
 
         if ANNOTATE in self.operation:

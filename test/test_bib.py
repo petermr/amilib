@@ -183,35 +183,6 @@ class PygetpapersTest(AmiAnyTest):
         ]
         html1 = AmiCorpus.search_files_with_phrases_write_results(infiles, phrases=phrases, outfile=outfile, debug=debug)
 
-
-# def _ipcc_create_zip_caption_img(chapter_html):
-#     """
-#     function to read html file, extracts figures with caption
-#     :param chapter_html: HTML file containing images aith captions
-#     :return: zip of (img, caption_text)
-#     :except: any error returns None
-#
-#     <div id="chapter-figures">
-#       <div class="col-lg-3 col-12">
-#
-#         <h3>Figure 1.1</h3>
-#         <img
-#           src="https://www.ipcc.ch/report/ar6/wg1/downloads/figures/IPCC_AR6_WGI_Figure_1_1.png"
-#           alt="Figure 1.1 | Figure 1.1 | The structure of the AR6 WGI Report"
-#           class="img-card">
-#       </div>
-#       """
-#
-#     try:
-#         figure_containers = chapter_html.xpath("//div[@id='chapter-figures']")
-#         figures = figure_containers[0].xpath("./div[h3]")
-#         captions = [fig.xpath("h3")[0].text for fig in figures]
-#         imgs = [fig.xpath("img")[0] for fig in figures]
-#         captioned_figures = list(zip(imgs, captions))
-#         return captioned_figures
-#     except Exception as e:
-#         return None
-#
 def _ipcc_create_zip_caption_table(chapter_html):
     # search for figures captions in html
     """
@@ -371,6 +342,22 @@ def analyze_faq():
 
 def analyze_references():
     logger.error("Ref Not implemented")
+
+
+main_key = "corpus"
+main_out_dir = Path(Resources.TEMP_DIR, main_key)
+crop_id = "crops"
+outfile = Path(main_out_dir, f"{crop_id}_out.html")
+crop_query = {
+    "id" : crop_id,
+    "outfile" : str(outfile),
+    "phrases" : [
+            "maize",
+            "millet",
+            "rice",
+            "wheat"
+        ],
+        }
 
 
 class AmiCorpusTest(AmiAnyTest):
@@ -815,7 +802,6 @@ class AmiCorpusTest(AmiAnyTest):
         simple, but requires no server
         """
         debug = True
-        query = "bananas_millet_climate"
         query = "methane_emissions"
         xpath = None
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
@@ -824,12 +810,6 @@ class AmiCorpusTest(AmiAnyTest):
         infiles = FileLib.posix_glob(globstr, recursive=True)
         assert 50 == len(infiles)
         phrases = [
-            "bananas",
-            "millet",
-            # "wheat",
-            "climate justice",
-        ]
-        phrases = [
             "methane emissions"
         ]
 
@@ -837,31 +817,99 @@ class AmiCorpusTest(AmiAnyTest):
             infiles, phrases=phrases, para_xpath=xpath, outfile=outfile, debug=debug)
 
         assert html1 is not None
-        assert len(html1.xpath("//p")) > 0
+        assert len(html1.xpath("//p")) > 0, f"html1 output should contain paragraphs"
         term_id_by_url = make_hits_by_url(html1)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
         term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
 
-        htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
-        CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)
+        htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
 
-        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_hits.html")
+        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_table_hits.html")
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 
         # markup para with nyperlink
         # new html document
-        htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
         new_term_ref_p_list = []
         for (term, ref, para) in term_ref_p_tuple_list:
-            para_new = HtmlLib.para_contains_phrase(para, term, ignore_case=True, markup=True)
+            has_markup = HtmlLib.find_and_markup_phrases(para, term, ignore_case=True, markup=True)
+            ahrefs = para.xpath("./a[@href]")
+            # for ahref in ahrefs:
+            #     print(f"ahref: {ahref.text}")
             new_term_ref_p_list.append((term, ref, para))
-        CorpusQuery._add_hits_to_table(tbody, new_term_ref_p_list)
+        CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
 
-        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_markup_hits.html")
+        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_table_markup_hits.html")
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 
+    def test_do_all_output_paras_contain_anchor_markup_for_hits(self):
+        """
+        read existing table after markup and check that all paras have markup
+        uses output of CorpusQuery._add_hits_to_table
+        """
+        htmlx, query = self._create_markup_test_datatable()
+        # find all paras in "para" column
+        tables = htmlx.xpath("/html/body/table")
+        assert len(tables) == 1
+        table = tables[0]
+        tbody = table.xpath("./tbody")[0]
+        trs = tbody.xpath("./tr")
+        assert len(trs) > 160
+        logger.debug(f"rows {len(trs)}")
+        for tr in trs:
+            para_td = tr.xpath("./td")[2]
+            ps = para_td.xpath("./p")
+            assert len(ps) == 1
+            # does p contain a amrku/ anchor
+            """
+            <a style="border:solid 1px; background: #ffffbb;">methane emissions</a>
+            """
+            a_elems = ps[0].xpath(".//a[@style='border:solid 1px; background: #ffffbb;']")
+            if len(a_elems) == 0:
+                text = tr.xpath('./td')[1].text
+                logger.error(f"no markup for {text}")
+
+
+
+    def _create_markup_test_datatable(self):
+        debug = True
+        query = "methane_emissions"
+        xpath = None
+        indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        outfile = Path(indir, f"{query}.html")
+        globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
+        infiles = FileLib.posix_glob(globstr, recursive=True)
+        assert 50 == len(infiles)
+        phrases = [
+            "methane emissions"
+        ]
+        html1 = AmiCorpus.search_files_with_phrases_write_results(
+            infiles, phrases=phrases, para_xpath=xpath, outfile=outfile, debug=debug)
+        assert html1 is not None
+        assert len(html1.xpath("//p")) > 0, f"html1 output should contain paragraphs"
+        term_id_by_url = make_hits_by_url(html1)
+        logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
+        term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+        htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
+        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_table_hits.html")
+        HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+        assert trp_file.exists()
+        # markup para with nyperlink
+        # new html document
+        htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+        new_term_ref_p_list = []
+        for (term, ref, para) in term_ref_p_tuple_list:
+            has_markup = HtmlLib.find_and_markup_phrases(para, term, ignore_case=True, markup=True)
+            ahrefs = para.xpath("./a[@href]")
+            # for ahref in ahrefs:
+            #     print(f"ahref: {ahref.text}")
+            new_term_ref_p_list.append((term, ref, para))
+        CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
+        return htmlx, query
 
     def test_search_corpus_with_wordlist(self):
         """
@@ -874,15 +922,17 @@ class AmiCorpusTest(AmiAnyTest):
         outfile = Path(Resources.TEMP_DIR, "corpus", f"{query}.html")
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
+        assert len(infiles) > 0, f"failed to find {HTML_WITH_IDS}.html in {indir}"
         words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
         phrases = FileLib.read_strings_from_path(words_path)
+        assert len(phrases) > 0, f"failed to find phrases in {words_path}"
 
         logger.debug(f"phrases {len(phrases)}")
 
-        html1 = AmiCorpus.search_files_with_phrases_write_results(
+        search_results_html = AmiCorpus.search_files_with_phrases_write_results(
             infiles, phrases=phrases, outfile=outfile, debug=debug)
 
-        term_id_by_url = make_hits_by_url(html1)
+        term_id_by_url = make_hits_by_url(search_results_html)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
         term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
         htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
@@ -911,8 +961,8 @@ class AmiCorpusTest(AmiAnyTest):
         xpath = None
         path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
         phrases = FileLib.read_strings_from_path(path)
-
         logger.debug(f"phrases {len(phrases)}")
+        ami_query = ami_corpus.get_or_create_corpus_query(phrases=phrases)
         ami_corpus.search_files_with_phrases(phrases)
         assert ami_corpus.search_html is not None
         term_id_by_url = make_hits_by_url(ami_corpus.search_html)
@@ -955,7 +1005,7 @@ class AmiCorpusTest(AmiAnyTest):
             crop_id
         ])
         print(">==================")
-        if False:
+        if False: # old code
             term_id_by_url = make_hits_by_url(ami_corpus.search_html)
             term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
             htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
@@ -980,7 +1030,7 @@ class AmiCorpusTest(AmiAnyTest):
             outfile=crop_out)
         return crop_id
 
-    def _carbon_cycle_query(self, ami_corpus, main_out_dir):
+    def _carbon_cycle_query(cls, ami_corpus, main_out_dir):
         cc_id = "carbon_cycle"
         cc_wordfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
         cc_out = Path(main_out_dir, f"{cc_id}_out.html")

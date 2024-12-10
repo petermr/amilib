@@ -774,19 +774,19 @@ class HtmlTest(AmiAnyTest):
         para = lxml.etree.Element("p")
         para.text = "there is a greenhouse gas which"
         phrase = "greenhouse gas"
-        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True)
+        contains = HtmlLib.find_and_markup_phrases(para, phrase, ignore_case=True)
         assert contains
 
         phrase = "greenhouse solid"
-        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True)
+        contains = HtmlLib.find_and_markup_phrases(para, phrase, ignore_case=True)
         assert not contains
 
         phrase = "Greenhouse gas"
-        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True)
+        contains = HtmlLib.find_and_markup_phrases(para, phrase, ignore_case=True)
         assert contains
 
         phrase = "Greenhouse gas"
-        contains = HtmlLib.para_contains_phrase(para, phrase, ignore_case=False)
+        contains = HtmlLib.find_and_markup_phrases(para, phrase, ignore_case=False)
         assert not contains
 
 

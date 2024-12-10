@@ -1500,7 +1500,7 @@ class HtmlLib:
         return paras
 
     @classmethod
-    def para_contains_phrase(cls, para, phrase, ignore_case=True, markup=None, url_base=None):
+    def find_and_markup_phrases(cls, para, phrase, ignore_case=True, markup=None, url_base=None):
         """
         search paragraph with phrase. If markuip is not None add hyperlinks
 
@@ -1527,12 +1527,16 @@ class HtmlLib:
         else:
             texts = para.xpath(".//text()")
             for text in texts:
-                match = re.search(search_re, text)
-                if match:
-                    cls._insert_ahref(match, phrase, text, url_base)
-
+                cls.find_phrase_and_markup_matches(phrase, search_re, text, url_base)
 
         return False
+
+    @classmethod
+    def find_phrase_and_markup_matches(cls, phrase, search_re, text, url_base):
+        match = re.search(search_re, text)
+        if match:
+            # logger.debug(f"match {match}")
+            cls._insert_ahref(match, phrase, text, url_base)
 
     @classmethod
     def _insert_ahref(cls, match, phrase, text, url_base=None):
@@ -1646,8 +1650,8 @@ class HtmlLib:
                 continue
             phrase_counter = Counter()
             for phrase in phrases:
-                matched = HtmlLib.para_contains_phrase(para, phrase, ignore_case=True,
-                                                       markup=markup, url_base=url_base)
+                matched = HtmlLib.find_and_markup_phrases(para, phrase, ignore_case=True,
+                                                          markup=markup, url_base=url_base)
                 if matched:
                     phrase_counter[phrase] += 1
                     phrase_counter_by_para_id[para_id] = phrase_counter
