@@ -4,7 +4,7 @@ import configparser
 import logging
 import re
 import unittest
-from copy import copy
+from re import RegexFlag
 
 import lxml.etree as ET
 from pathlib import Path
@@ -358,6 +358,44 @@ crop_query = {
             "wheat"
         ],
         }
+
+
+def _create_markup_test_datatable():
+    debug = True
+    query = "methane_emissions"
+    xpath = None
+    indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+    outfile = Path(indir, f"{query}.html")
+    globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
+    infiles = FileLib.posix_glob(globstr, recursive=True)
+    assert 50 == len(infiles)
+    phrases = [
+        "methane emissions"
+    ]
+    html_markup = AmiCorpus.search_files_with_phrases_write_results(
+        infiles, phrases=phrases, para_xpath=xpath, outfile=outfile, debug=debug)
+    assert html_markup is not None
+    assert len(html_markup.xpath("//p")) > 0, f"html1 output should contain paragraphs"
+    term_id_by_url = make_hits_by_url(html_markup)
+    logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
+    term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+    htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+    CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
+    trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_table_hits.html")
+    HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+    assert trp_file.exists()
+    # markup para with nyperlink
+    # new html document
+    htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
+    new_term_ref_p_list = []
+    for (term, ref, para) in term_ref_p_tuple_list:
+        has_markup = HtmlLib.find_and_markup_phrases(para, term, ignore_case=True, markup=True, flags=RegexFlag.IGNORECASE)
+        ahrefs = para.xpath("./a[@href]")
+        # for ahref in ahrefs:
+        #     print(f"ahref: {ahref.text}")
+        new_term_ref_p_list.append((term, ref, para))
+    CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
+    return htmlx, query
 
 
 class AmiCorpusTest(AmiAnyTest):
@@ -845,12 +883,17 @@ class AmiCorpusTest(AmiAnyTest):
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 
-    def test_do_all_output_paras_contain_anchor_markup_for_hits(self):
+    def test_do_all_output_paras_contain_anchor_markup_for_hits_IMPORTANT(self):
         """
         read existing table after markup and check that all paras have markup
         uses output of CorpusQuery._add_hits_to_table
         """
-        htmlx, query = self._create_markup_test_datatable()
+        htmlx, query = _create_markup_test_datatable()
+        # write html datatable
+        datatable_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_table_markup_hits.html")
+        HtmlLib.write_html_file(htmlx, datatable_file, debug=True)
+        assert datatable_file.exists()
+
         # find all paras in "para" column
         tables = htmlx.xpath("/html/body/table")
         assert len(tables) == 1
@@ -860,56 +903,32 @@ class AmiCorpusTest(AmiAnyTest):
         assert len(trs) > 160
         logger.debug(f"rows {len(trs)}")
         for tr in trs:
-            para_td = tr.xpath("./td")[2]
+            tds = tr.xpath("./td")
+            assert len(tds) == 3
+            para_td = tds[2]
             ps = para_td.xpath("./p")
             assert len(ps) == 1
             # does p contain a amrku/ anchor
             """
             <a style="border:solid 1px; background: #ffffbb;">methane emissions</a>
             """
-            a_elems = ps[0].xpath(".//a[@style='border:solid 1px; background: #ffffbb;']")
+            # anchor inserted by markup
+            anchor = tds[1].xpath(".//a")[0]
+            text = anchor.text
+            # para_id is in column 2
+            para_id = text.split("#")[1]
+            para = ps[0]
+            # does para contain <a> created by amilib markup
+            a_elems = para.xpath(".//a[@style='border:solid 1px; background: #ffffbb;']")
             if len(a_elems) == 0:
-                text = tr.xpath('./td')[1].text
-                logger.error(f"no markup for {text}")
+                logger.error(f"no markup for {para_id}")
+            elif (len(a_elems) > 1):
+                logger.debug(f"multiple markup for {len(a_elems)} {para_id=} ")
+            else:
+                logger.debug(f"markup for {len(a_elems)} {para_id=} ")
+                pass
 
 
-
-    def _create_markup_test_datatable(self):
-        debug = True
-        query = "methane_emissions"
-        xpath = None
-        indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
-        outfile = Path(indir, f"{query}.html")
-        globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
-        infiles = FileLib.posix_glob(globstr, recursive=True)
-        assert 50 == len(infiles)
-        phrases = [
-            "methane emissions"
-        ]
-        html1 = AmiCorpus.search_files_with_phrases_write_results(
-            infiles, phrases=phrases, para_xpath=xpath, outfile=outfile, debug=debug)
-        assert html1 is not None
-        assert len(html1.xpath("//p")) > 0, f"html1 output should contain paragraphs"
-        term_id_by_url = make_hits_by_url(html1)
-        logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
-        term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
-        htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
-        CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
-        trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_table_hits.html")
-        HtmlLib.write_html_file(htmlx, trp_file, debug=True)
-        assert trp_file.exists()
-        # markup para with nyperlink
-        # new html document
-        htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
-        new_term_ref_p_list = []
-        for (term, ref, para) in term_ref_p_tuple_list:
-            has_markup = HtmlLib.find_and_markup_phrases(para, term, ignore_case=True, markup=True)
-            ahrefs = para.xpath("./a[@href]")
-            # for ahref in ahrefs:
-            #     print(f"ahref: {ahref.text}")
-            new_term_ref_p_list.append((term, ref, para))
-        CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
-        return htmlx, query
 
     def test_search_corpus_with_wordlist(self):
         """

@@ -1500,7 +1500,12 @@ class HtmlLib:
         return paras
 
     @classmethod
-    def find_and_markup_phrases(cls, para, phrase, ignore_case=True, markup=None, url_base=None):
+    def find_and_markup_phrases(cls,
+                                para, phrase,
+                                ignore_case=True,
+                                markup=None,
+                                url_base=None,
+                                flags=0):
         """
         search paragraph with phrase. If markuip is not None add hyperlinks
 
@@ -1510,6 +1515,9 @@ class HtmlLib:
         phrase search phrase
         ignore_case if True lowercase text and phrase
         markup if True search each itertext and insert hrefs, else just search concatenation
+        url_base to create hyperlinks
+        flags RegexFlags , e.g. IGNORECASE
+
 
         Returns
         -------
@@ -1527,13 +1535,30 @@ class HtmlLib:
         else:
             texts = para.xpath(".//text()")
             for text in texts:
-                cls.find_phrase_and_markup_matches(phrase, search_re, text, url_base)
+                cls.find_phrase_and_markup_matches(
+                    phrase, search_re, text, url_base, flags=flags)
 
         return False
 
     @classmethod
-    def find_phrase_and_markup_matches(cls, phrase, search_re, text, url_base):
-        match = re.search(search_re, text)
+    def find_phrase_and_markup_matches(cls,
+                                       phrase: str,
+                                       search_re: str,
+                                       text: str,
+                                       url_base=None,
+                                       flags=0):
+        """
+        finds a match within phrase and inserts <a> if found
+        :param phrase: phrase to search with
+        :param search_re: regex to search with (may have \b boundaries)
+        :param text: target text to search
+        :param url_base: base for hyperlinks
+        :param flags: RegexFlags (e.g. IGNORECASE)
+
+
+        """
+
+        match = re.search(search_re, text, flags=flags)
         if match:
             # logger.debug(f"match {match}")
             cls._insert_ahref(match, phrase, text, url_base)
@@ -1589,18 +1614,22 @@ class HtmlLib:
 
     @classmethod
     def add_href_for_lxml_text(cls, start_, text,
-                               style="border:solid 1px; background: #ffffbb;"):
+                               style="border:solid 1px; background: #ffffbb;",
+                               clazz="markup"):
         """
         adds href to text in a lxml document (text has parent)
         :param start_ text before hyperlink
         :param text:original flat text
         :param style: hyperlink style
+        :param clazz: class attribute indicating markup (default 'markup')
         """
         parent = text.getparent()
         tail = parent.tail
         aelem = ET.SubElement(parent, "a")
         if style:
             aelem.attrib["style"] = style
+        if clazz:
+            aelem.attrib["class"] = clazz
         parent.text = start_
         parent.tail = tail
         return aelem
