@@ -15,7 +15,7 @@ from lxml.html import HtmlElement
 from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, QUERY, STARTDATE, XML, \
                             EUPMC_RESULTS_JSON, PMCID, ABS_TEXT, EPMC_KEYS, JOURNAL_INFO, DOI, TITLE, AUTHOR_STRING,
                             PUB_YEAR, JOURNAL_INFO_TITLE, Pygetpapers)
-from amilib.ami_html import HtmlUtil, HtmlLib, Datatables, SCROLL_PARENT
+from amilib.ami_html import HtmlUtil, HtmlLib, Datatables, SCROLL_PARENT, ANNOTATION
 from amilib.ami_util import AmiJson, AmiUtil
 from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer, CorpusQuery, HTML_WITH_IDS
 from amilib.amix import AmiLib
@@ -396,6 +396,54 @@ def _create_markup_test_datatable():
         new_term_ref_p_list.append((term, ref, para))
     CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
     return htmlx, query
+
+def _validate_and_count_datatable(htmlx, min_entries=10, num_columns = 3):
+    """
+    validate datatable created by term-based search with ID and paragraph
+    :param htmlx: document to test
+    :param min_entries: to test it got something useful
+    :param num_columns: column count
+    """
+    # find all paras in "para" column
+    id_col = 1
+    para_column = 2
+
+    table = XmlLib.get_single_element(htmlx, "/html/body/table")
+    tbody = XmlLib.get_single_element(table, "./tbody")
+    trs = tbody.xpath("./tr")
+    assert len(trs) > min_entries
+    # logger.debug(f"rows {len(trs)}")
+    missing_markup = []
+    for tr in trs:
+        tds = tr.xpath("./td")
+        assert len(tds) == num_columns
+        para_td = tds[para_column]
+        ps = para_td.xpath("./p")
+        assert len(ps) == 1
+        # does p contain a markup/ anchor
+        """
+        <a class="annotation">methane emissions</a>
+        """
+        # anchor inserted by markup
+        anchor = tds[id_col].xpath(".//a")[0]
+        text = anchor.text
+        # para_id is in column 2, id is after #
+        para_id = text.split("#")[1]
+        para = ps[0]
+        # does para contain <a> created by amilib markup
+        # a_elems = para.xpath(".//a[@style='border:solid 1px; background: #ffffbb;']")
+        a_elems = para.xpath(f".//a[@class='{ANNOTATION}']")
+        if len(a_elems) == 0:
+            logger.error(f"no markup for {para_id}")
+            missing_markup.append(para)
+        elif (len(a_elems) > 1):
+            # logger.debug(f"multiple markup for {len(a_elems)} {para_id=} ")
+            pass
+        else:
+            # logger.debug(f"markup for {len(a_elems)} {para_id=} ")
+            pass
+    if len(missing_markup) > 0:
+        logger.error(f"missing markup for {len(missing_markup)} {missing_markup[:20]}...")
 
 
 class AmiCorpusTest(AmiAnyTest):
@@ -894,40 +942,8 @@ class AmiCorpusTest(AmiAnyTest):
         HtmlLib.write_html_file(htmlx, datatable_file, debug=True)
         assert datatable_file.exists()
 
-        # find all paras in "para" column
-        tables = htmlx.xpath("/html/body/table")
-        assert len(tables) == 1
-        table = tables[0]
-        tbody = table.xpath("./tbody")[0]
-        trs = tbody.xpath("./tr")
-        assert len(trs) > 160
-        logger.debug(f"rows {len(trs)}")
-        for tr in trs:
-            tds = tr.xpath("./td")
-            assert len(tds) == 3
-            para_td = tds[2]
-            ps = para_td.xpath("./p")
-            assert len(ps) == 1
-            # does p contain a amrku/ anchor
-            """
-            <a style="border:solid 1px; background: #ffffbb;">methane emissions</a>
-            """
-            # anchor inserted by markup
-            anchor = tds[1].xpath(".//a")[0]
-            text = anchor.text
-            # para_id is in column 2
-            para_id = text.split("#")[1]
-            para = ps[0]
-            # does para contain <a> created by amilib markup
-            a_elems = para.xpath(".//a[@style='border:solid 1px; background: #ffffbb;']")
-            if len(a_elems) == 0:
-                logger.error(f"no markup for {para_id}")
-            elif (len(a_elems) > 1):
-                logger.debug(f"multiple markup for {len(a_elems)} {para_id=} ")
-            else:
-                logger.debug(f"markup for {len(a_elems)} {para_id=} ")
-                pass
-
+        min_entries = 160
+        _validate_and_count_datatable(htmlx, min_entries)
 
 
     def test_search_corpus_with_wordlist(self):

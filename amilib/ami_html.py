@@ -120,6 +120,8 @@ S_POSITION = "position"
 S_WIDTH = "width"
 S_WRITING_MODE = "writing-mode"
 
+# annotation
+ANNOTATION = "annotation"
 _UTF8 = "UTF-8"
 
 CHAP_TOP_REC = re.compile("__NOT__YET__IMPLEMENTED__")
@@ -1608,6 +1610,7 @@ class HtmlLib:
         prev = text.getparent()
         aelem = ET.Element("a")
         aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
+        aelem.attrib["class"] = ANNOTATION
         prev.addnext(aelem)  # order metters1
         prev.tail = start_ + " "
         return aelem
@@ -1615,7 +1618,7 @@ class HtmlLib:
     @classmethod
     def add_href_for_lxml_text(cls, start_, text,
                                style="border:solid 1px; background: #ffffbb;",
-                               clazz="markup"):
+                               clazz=ANNOTATION):
         """
         adds href to text in a lxml document (text has parent)
         :param start_ text before hyperlink
