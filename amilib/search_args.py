@@ -26,6 +26,32 @@ UNKNOWN = "unknown"
 logger = Util.get_logger(__name__)
 logger.setLevel(logging.INFO)
 
+# ANNOTATION = 'annotation'
+#
+# class AmiAnnotator:
+#     """
+#     provides tools and syntax for annotating HTML, including hyperlinks
+#     """
+#     def __init__(self):
+#         pass
+#
+#     def get_annotation_class(self):
+#         """return symbol for annotation"""
+#         return ANNOTATION
+#
+#     @classmethod
+#     def get_anchors_with_annotations(cls, elem):
+#         """
+#         get all annotations in element (class='{ANNOTATION}'
+#         :param elem: HTML element
+#         :return: list of annotated anchor subelements, or None
+#         """
+#         if elem is None:
+#             logger.error("None element")
+#             return None
+#         return elem.xpath(f".//a[@class='{ANNOTATION}']")
+#
+#
 
 class AmiSearch:
 
@@ -83,12 +109,13 @@ class AmiSearch:
          title="anthropogenic">anthropogenic</a>
          """
         htmlx = HtmlLib.parse_html(htmlpath)
-        annotations = htmlx.xpath(".//a[@class='annotation']")
+        annotations = AmiAnnotator.get_a(htmlx)
         counter = Counter()
         for annotation in annotations:
-            counter[annotation.text] += 1
+            counter[annotation.href] += 1
 
         return counter
+
 
 class SearchArgs(AbstractArgs):
     pass

@@ -122,6 +122,8 @@ S_WRITING_MODE = "writing-mode"
 
 # annotation
 ANNOTATION = "annotation"
+ANNOTATION_STYLE = "border:solid 1px; background: #ffbbbb;"
+
 _UTF8 = "UTF-8"
 
 CHAP_TOP_REC = re.compile("__NOT__YET__IMPLEMENTED__")
@@ -139,6 +141,48 @@ s1  to mean class name (classname)
 """
 
 logger = Util.get_logger(__name__)
+
+ANNOTATION = 'annotation'
+
+class AmiAnnotator:
+    """
+    provides tools and syntax for annotating HTML, including hyperlinks
+    """
+    def __init__(self, words=None):
+        """constructor
+        :param words: list of words for annotating with
+        """
+        self.words = words
+
+    def get_annotation_class(self):
+        """return symbol for annotation"""
+        return ANNOTATION
+
+    @classmethod
+    def get_anchors_with_annotations(cls, elem):
+        """
+        get all annotations in element (class='{ANNOTATION}'
+        :param elem: HTML element
+        :return: list of annotated anchor subelements, or None
+        """
+        if elem is None:
+            logger.error("None element")
+            return None
+        return elem.xpath(f".//a[@class='{ANNOTATION}']")
+
+    def annotate_elem(self, elem):
+        """
+        annotate text descendants in element
+        requires self.words
+        :param elem: to annotate
+
+        """
+        logger.warning("NOT YET DEBUGGED, doesn't annotate text")
+        if self.words is None or len(self.words) == 0:
+            logger.warning(f"no words given for annotation")
+            return None
+        HtmlLib.find_and_markup_phrases(elem, self.words[0], markup=True)
+
 
 class AmiSpan:
     def __init__(self):
@@ -1503,7 +1547,8 @@ class HtmlLib:
 
     @classmethod
     def find_and_markup_phrases(cls,
-                                para, phrase,
+                                para,
+                                phrase,
                                 ignore_case=True,
                                 markup=None,
                                 url_base=None,
@@ -1539,6 +1584,7 @@ class HtmlLib:
             for text in texts:
                 cls.find_phrase_and_markup_matches(
                     phrase, search_re, text, url_base, flags=flags)
+            return True
 
         return False
 
@@ -1566,13 +1612,14 @@ class HtmlLib:
             cls._insert_ahref(match, phrase, text, url_base)
 
     @classmethod
-    def _insert_ahref(cls, match, phrase, text, url_base=None):
+    def _insert_ahref(cls, match, phrase, text, url_base=None, annotation=ANNOTATION):
         """
         Add hyperlinks to text. The order of operations matters
         :param match: result of regex matching phrase in the text
         :param phrase: to search for in the text
         :param text: to find phrase in
         :param url_base: to create hyperlink with
+        :param annotation: adds class={annotation} , default={ANNOTATION}
 
         """
         id = HtmlLib.generate_id(phrase)
@@ -1604,12 +1651,14 @@ class HtmlLib:
         aelem.tail = end_
         if title:
             aelem.attrib["title"] = title
+        if annotation:
+            aelem.attrib["class"] = ANNOTATION
 
     @classmethod
     def _add_href_for_lxml_tail(cls, start_, text):
         prev = text.getparent()
         aelem = ET.Element("a")
-        aelem.attrib["style"] = "border:solid 1px; background: #ffbbbb;"
+        aelem.attrib["style"] = ANNOTATION_STYLE
         aelem.attrib["class"] = ANNOTATION
         prev.addnext(aelem)  # order metters1
         prev.tail = start_ + " "

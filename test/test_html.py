@@ -17,7 +17,7 @@ from lxml.etree import HTMLParser, _Element
 
 from amilib.ami_bib import Reference, Biblioref
 from amilib.file_lib import FileLib
-from amilib.ami_html import HTMLSearcher, HtmlTree, HtmlAnnotator, AnnotatorCommand, URLCache
+from amilib.ami_html import HTMLSearcher, HtmlTree, HtmlAnnotator, AnnotatorCommand, URLCache, AmiAnnotator
 from amilib.ami_html import HtmlUtil, H_SPAN, CSSStyle, HtmlTidy, HtmlStyle, HtmlClass, SectionHierarchy, AmiFont, \
     FloatBoundary, Footnote, HtmlGroup
 from amilib.html_extra import HtmlExtra
@@ -2408,3 +2408,23 @@ class FontTest(AmiAnyTest):
 
         outfile = Path(Resources.TEMP_DIR, "styles", "classes.html")
         HtmlLib.write_html_file(html, outfile, debug=True)
+
+
+class AnnotateTest(AmiAnyTest):
+    """
+    tests AmiAnnotator and annotation more generally
+    """
+
+    def test_annotate_element(self):
+        """annotate text"""
+        para = ET.Element("p")
+        para.text = "We need to understand the carbon cycle and methane."
+        annotator = AmiAnnotator(words=["carbon cycle", "methane", "AMOC"])
+        assert 3 == len(annotator.words)
+        annotator.annotate_elem(para)
+        a_elems = annotator.get_anchors_with_annotations(para)
+        assert len(a_elems) > 0
+        for a_elem in a_elems:
+            logger.debug(f"A {a_elem=}")
+
+

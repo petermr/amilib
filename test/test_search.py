@@ -126,3 +126,4 @@ class SearchTest(AmiAnyTest):
         assert outpath.exists(), f"{outpath} should exist"
         logger.info(f"wrote {outpath}")
         # TODO test we have annotation
+
