@@ -47,7 +47,9 @@ class SearchTest(AmiAnyTest):
         ])
         pyami = AmiLib()
         pyami.run_command(args)
+        logger.info(f"wrote outpath to {outpath}")
         assert outpath.exists(), f"{outpath} should exist"
+        logger.info(f"wrote report to {reportpath}")
         assert reportpath.exists()
 
         # count annotations
@@ -108,6 +110,9 @@ class SearchTest(AmiAnyTest):
         inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", "html_with_ids.html")
 
         wordpath = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.txt")
+        with open(wordpath, "r") as f:
+            lines = f.readlines()
+            assert len(lines) == 62
         outpath = Path(Resources.TEMP_DIR, "annotate", f"{stem}.html")
         args = ([
             "SEARCH",
@@ -120,3 +125,4 @@ class SearchTest(AmiAnyTest):
         pyami.run_command(args)
         assert outpath.exists(), f"{outpath} should exist"
         logger.info(f"wrote {outpath}")
+        # TODO test we have annotation

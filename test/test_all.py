@@ -38,6 +38,10 @@ class AmiAnyTest(unittest.TestCase):
     IS_PMR = (PMR_NAME == Util.get_username())
     # outputs for tests
 
+    # input for tests
+    TEST_WG1 = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1")
+    TEST_WG1_05 = Path(TEST_WG1, "Chapter05")
+
     # temporary output data (can be deleted after tests)
     TEMP_DIR = Path(Resources.TEST_RESOURCES_DIR.parent.parent, "temp")
     TEMP_DIR.mkdir(exist_ok=True, parents=True)
@@ -45,7 +49,7 @@ class AmiAnyTest(unittest.TestCase):
 
     TEMP_HTML_DIR = Path(TEMP_DIR, "html")
     TEMP_HTML_DIR.mkdir(exist_ok=True, parents=True)
-    TEMP_HTML_IPCC = Path(TEMP_DIR, "html", "ar6")
+    TEMP_HTML_IPCC = Path(TEMP_HTML_DIR, "ar6")
     TEMP_HTML_IPCC.mkdir(exist_ok=True, parents=True)
     TEMP_HTML_IPCC_CHAP04 = Path(TEMP_HTML_IPCC, "chapter04")
     TEMP_HTML_IPCC_CHAP04.mkdir(exist_ok=True, parents=True)
@@ -60,6 +64,10 @@ class AmiAnyTest(unittest.TestCase):
     TEMP_PDF_IPCC_CHAP06.mkdir(exist_ok=True, parents=True)
 
     CLIMATE_10_HTML_TEMP_DIR = Path(TEMP_DIR, "climate10", "html")
+
+    # consts
+    REFERENCE_TEXT = "R"
+    REFERENCE_TEXT = "📖" # open book
 
     def setUp(self) -> None:
         # if len(sys.argv) == 0:

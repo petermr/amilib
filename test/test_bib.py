@@ -31,13 +31,41 @@ class AmiBibliographyTest(AmiAnyTest):
     """
 
     """
-    @classmethod
-    def convert_csv_to_bib(cls):
-        """
+    # @classmethod
+    # def convert_csv_to_bib(cls):
+    #     """
+    #
+    #     """
 
+    def test_iconize_references(self):
         """
+        find references and reduce to a single char
+        """
+        infile = Path(self.TEST_WG1_05, f"{HTML_WITH_IDS}.html")
+        htmlx = HtmlLib.parse_html(infile)
+        para = XmlLib.get_single_element(htmlx, ".//p[@id='5.1.1_p1']")
+        assert para is not None
+        """
+<a class="reference-link" href="#Williams--2019">Williams et al., 2019</a>
+        """
+        xpath = ".//a[@class='reference-link']"
+        HtmlLib.iconize_hyperlinks(htmlx, xpath)
+        HtmlLib.write_html_file(htmlx, outfile=str(Path(self.TEMP_HTML_DIR, "misc", "dereferenced.html")), debug=True)
 
-def df_toupper(s):
+    # @classmethod
+    # def iconize_hyperlinks(cls, htmlx, xpath):
+    #     anchors = htmlx.xpath(xpath)
+    #     for anchor in anchors:
+    #         if anchor.text is not None and len(anchor.text.strip()) > 0:
+    #             anchor.text = anchor.text.strip()
+    #             anchor.attrib["title"] = anchor.text
+    #             anchor.text = AmiAnyTest.REFERENCE_TEXT
+
+
+def df_to_ahref_string(s):
+    """
+    converte a URL to an anchro element
+    I don't know whether this does what is wanted!"""
     return f"<a href='{s}`>s</a>"
 
 def df_truncate(s):
@@ -93,7 +121,7 @@ class PygetpapersTest(AmiAnyTest):
         keys = df.keys()
         key_list = keys.to_list()
         assert EPMC_KEYS == keys.to_list()
-        df[PMCID] = df[PMCID].apply(df_toupper)
+        df[PMCID] = df[PMCID].apply(df_to_ahref_string)
         df[ABS_TEXT] = df[ABS_TEXT].apply(df_truncate)
         df[JOURNAL_INFO] = df[JOURNAL_INFO].apply(df_unpack_dict)
         df2 = df[[PMCID, DOI, TITLE, AUTHOR_STRING, JOURNAL_INFO, PUB_YEAR, ABS_TEXT]]
@@ -256,83 +284,83 @@ DOWNLOAD_AR6_URL = "downloads/report/IPCC_AR6"
 DOT_PDF = ".pdf"
 
 
-def make_hits_by_url(nested_list_html):
-    """
-    <body>
-      <ul>
-        <li>term: xyz
-          <li><a href-to-para
-    """
-    # iterate over hit list
-    if nested_list_html is None:
-        logger.error(f"html1 is None")
-        return None
-    body = HtmlLib.get_body(nested_list_html)
-    query_ul = HtmlLib.get_first_object_by_xpath(body, "ul")
-    hits_by_url = dict()
-    for li in query_ul.xpath("li"):
-        # logger.debug("li")
-        p0 = HtmlLib.get_first_object_by_xpath(li, "p")
-        if p0 is None:
-            continue
-        term = p0.text
-        txt = "term: "
-        if (term.startswith(txt)):
-            term = term[len(txt):]
-        hits_ul = HtmlLib.get_first_object_by_xpath(li, "ul")
-        if hits_ul is None:
-            continue
-        hits_li_list = hits_ul.xpath("li")
-        # logger.debug(f"hits {len(hits_li_list)}")
-        for hits_li in hits_li_list:
-            # logger.debug(f"hits_li")
-            add_hit_list_to_hits_by_url(hits_by_url, hits_li, term)
-            # logger.debug(f"added hits_li")
+# def extract_hits_by_url_from_nested_lists(nested_list_html):
+#     """
+#     <body>
+#       <ul>
+#         <li>term: xyz
+#           <li><a href-to-para
+#     """
+#     # iterate over hit list
+#     if nested_list_html is None:
+#         logger.error(f"html1 is None")
+#         return None
+#     body = HtmlLib.get_body(nested_list_html)
+#     query_ul = HtmlLib.get_first_object_by_xpath(body, "ul")
+#     hits_by_url = dict()
+#     for li in query_ul.xpath("li"):
+#         # logger.debug("li")
+#         p0 = HtmlLib.get_first_object_by_xpath(li, "p")
+#         if p0 is None:
+#             continue
+#         term = p0.text
+#         txt = "term: "
+#         if (term.startswith(txt)):
+#             term = term[len(txt):]
+#         hits_ul = HtmlLib.get_first_object_by_xpath(li, "ul")
+#         if hits_ul is None:
+#             continue
+#         hits_li_list = hits_ul.xpath("li")
+#         # logger.debug(f"hits {len(hits_li_list)}")
+#         for hits_li in hits_li_list:
+#             # logger.debug(f"hits_li")
+#             add_hit_list_to_hits_by_url(hits_by_url, hits_li, term)
+#             # logger.debug(f"added hits_li")
+#
+#     return hits_by_url
+#
 
-    return hits_by_url
-
-
-def add_hit_list_to_hits_by_url(hits_by_url, hits_li, term):
-    if hits_by_url is None or hits_li is None or term is None:
-        logger.error(f"add_hit_list None args ")
-        return
-    a = HtmlLib.get_first_object_by_xpath(hits_li, "a")
-    if a is None:
-        logger.error(f"a is None")
-        return
-    # logger.debug(f"a is {a}")
-    href = a.attrib.get("href")
-    if href is None:
-        logger.error(f"href is None {ET.tostring(a)}")
-        return
-    # logger.debug(f"href {href}")
-    href_target = href.split("#")[0]
-    id = href.split("#")[1]
-    # logger.debug(f"href_target {href_target}")
-    html_targ = HtmlLib.parse_html(href_target)
-    assert html_targ is not None
-    if "[" in id:
-        # logger.debug("quoted list")
-        id_list = TextUtil.convert_quoted_list_to_list(id)
-        for id1 in id_list:
-            _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id1, term)
-    else:
-        # logger.debug("non quoted list")
-        _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term)
-    # logger.debug("exit add hitlist")
-
-
-def _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term):
-    if hits_by_url is None or href_target is None or html_targ is None or id is None or term is None:
-        logger.error("arg is None")
-        return None
-    p = HtmlLib.get_element_by_id(html_targ, id)
-    if p is not None:
-        tuple = (term, p)
-        target_id = f"{href_target}#{id}"
-        hits_by_url[target_id] = (tuple)
-    # logger.debug("exit _get_element_by_id_and_add_term_id_tuple_to_hits")
-
+# def add_hit_list_to_hits_by_url(hits_by_url, hits_li, term):
+#     if hits_by_url is None or hits_li is None or term is None:
+#         logger.error(f"add_hit_list None args ")
+#         return
+#     a = HtmlLib.get_first_object_by_xpath(hits_li, "a")
+#     if a is None:
+#         logger.error(f"a is None")
+#         return
+#     # logger.debug(f"a is {a}")
+#     href = a.attrib.get("href")
+#     if href is None:
+#         logger.error(f"href is None {ET.tostring(a)}")
+#         return
+#     # logger.debug(f"href {href}")
+#     href_target = href.split("#")[0]
+#     id = href.split("#")[1]
+#     # logger.debug(f"href_target {href_target}")
+#     html_targ = HtmlLib.parse_html(href_target)
+#     assert html_targ is not None
+#     if "[" in id:
+#         # logger.debug("quoted list")
+#         id_list = TextUtil.convert_quoted_list_to_list(id)
+#         for id1 in id_list:
+#             _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id1, term)
+#     else:
+#         # logger.debug("non quoted list")
+#         _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term)
+#     # logger.debug("exit add hitlist")
+#
+#
+# def _get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term):
+#     if hits_by_url is None or href_target is None or html_targ is None or id is None or term is None:
+#         logger.error("arg is None")
+#         return None
+#     p = HtmlLib.get_element_by_id(html_targ, id)
+#     if p is not None:
+#         tuple = (term, p)
+#         target_id = f"{href_target}#{id}"
+#         hits_by_url[target_id] = (tuple)
+#     # logger.debug("exit _get_element_by_id_and_add_term_id_tuple_to_hits")
+#
 
 def analyze_exec():
     logger.error("Exec Not implemented")
@@ -360,42 +388,34 @@ crop_query = {
         }
 
 
-def _create_markup_test_datatable():
-    debug = True
-    query = "methane_emissions"
-    xpath = None
-    indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
-    outfile = Path(indir, f"{query}.html")
-    globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
-    infiles = FileLib.posix_glob(globstr, recursive=True)
-    assert 50 == len(infiles)
-    phrases = [
-        "methane emissions"
-    ]
-    html_markup = AmiCorpus.search_files_with_phrases_write_results(
-        infiles, phrases=phrases, para_xpath=xpath, outfile=outfile, debug=debug)
-    assert html_markup is not None
-    assert len(html_markup.xpath("//p")) > 0, f"html1 output should contain paragraphs"
-    term_id_by_url = make_hits_by_url(html_markup)
-    logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
-    term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
-    htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
-    CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
-    trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_table_hits.html")
-    HtmlLib.write_html_file(htmlx, trp_file, debug=True)
-    assert trp_file.exists()
-    # markup para with nyperlink
-    # new html document
-    htmlx, table_body = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
-    new_term_ref_p_list = []
-    for (term, ref, para) in term_ref_p_tuple_list:
-        has_markup = HtmlLib.find_and_markup_phrases(para, term, ignore_case=True, markup=True, flags=RegexFlag.IGNORECASE)
-        ahrefs = para.xpath("./a[@href]")
-        # for ahref in ahrefs:
-        #     print(f"ahref: {ahref.text}")
-        new_term_ref_p_list.append((term, ref, para))
-    CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
-    return htmlx, query
+# def create_markup_test_datatable(corpus_query):
+#     corpus_query.debug = True
+#     corpus_query.query_id = "methane_emissions"
+#     corpus_query.para_xpath = None
+#     corpus_query.indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+#     corpus_query.outfile = Path(corpus_query.indir, f"{corpus_query.query_id}.html")
+#     corpus_query.globstr = f"{str(corpus_query.indir)}/**/{HTML_WITH_IDS}.html"
+#     corpus_query.infiles = FileLib.posix_glob(corpus_query.globstr, recursive=True)
+#     # assert 50 == len(infiles)
+#     corpus_query.phrases = ["methane emissions"]
+#     corpus_query.colheads = ["term", "ref", "para"]
+#
+#     html_markup = AmiCorpus.search_files_with_phrases_write_results(
+#         corpus_query.infiles, phrases=corpus_query.phrases, para_xpath=corpus_query.para_xpath, outfile=corpus_query.outfile, debug=corpus_query.debug)
+#     term_id_by_url = extract_hits_by_url_from_nested_lists(html_markup)
+#     term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+#     htmlx, table_body = HtmlLib.make_skeleton_table(colheads=corpus_query.colheads)
+#     CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
+#     table_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{corpus_query.query_id}_table_hits.html")
+#     HtmlLib.write_html_file(htmlx, table_file, debug=True)
+#     htmlx, table_body = HtmlLib.make_skeleton_table(colheads=corpus_query.colheads)
+#     new_term_ref_p_list = []
+#     for (term, ref, para) in term_ref_p_tuple_list:
+#         has_markup = HtmlLib.find_and_markup_phrases(
+#             para, term, ignore_case=True, markup=True, flags=RegexFlag.IGNORECASE)
+#         new_term_ref_p_list.append((term, ref, para))
+#     CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
+#     return htmlx, corpus_query.query_id
 
 def _validate_and_count_datatable(htmlx, min_entries=10, num_columns = 3):
     """
@@ -904,7 +924,7 @@ class AmiCorpusTest(AmiAnyTest):
 
         assert html1 is not None
         assert len(html1.xpath("//p")) > 0, f"html1 output should contain paragraphs"
-        term_id_by_url = make_hits_by_url(html1)
+        term_id_by_url = CorpusQuery.extract_hits_by_url_from_nested_lists(html1)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
         term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
 
@@ -936,14 +956,14 @@ class AmiCorpusTest(AmiAnyTest):
         read existing table after markup and check that all paras have markup
         uses output of CorpusQuery._add_hits_to_table
         """
-        htmlx, query = _create_markup_test_datatable()
+        corpus_query = CorpusQuery()
+        htmlx, query_id = corpus_query.create_markup_test_datatable()
         # write html datatable
-        datatable_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query}_table_markup_hits.html")
+        datatable_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query_id}_table_markup_hits.html")
         HtmlLib.write_html_file(htmlx, datatable_file, debug=True)
         assert datatable_file.exists()
 
-        min_entries = 160
-        _validate_and_count_datatable(htmlx, min_entries)
+        _validate_and_count_datatable(htmlx, min_entries=160)
 
 
     def test_search_corpus_with_wordlist(self):
@@ -967,7 +987,7 @@ class AmiCorpusTest(AmiAnyTest):
         search_results_html = AmiCorpus.search_files_with_phrases_write_results(
             infiles, phrases=phrases, outfile=outfile, debug=debug)
 
-        term_id_by_url = make_hits_by_url(search_results_html)
+        term_id_by_url = CorpusQuery.extract_hits_by_url_from_nested_lists(search_results_html)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
         term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
         htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
@@ -989,18 +1009,18 @@ class AmiCorpusTest(AmiAnyTest):
         ami_corpus = AmiCorpus(
             indir=indir,
             globstr=f"**/{HTML_WITH_IDS}.html",
-            query_stem = query_stem,
-            outfile=outfile,
+            # query_stem = query_stem,
+            # outfile=outfile,
             debug = True)
         ami_corpus.make_infiles()
         xpath = None
         path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
         phrases = FileLib.read_strings_from_path(path)
         logger.debug(f"phrases {len(phrases)}")
-        ami_query = ami_corpus.get_or_create_corpus_query(phrases=phrases)
-        ami_corpus.search_files_with_phrases(phrases)
+        ami_query = ami_corpus.get_or_create_corpus_query(query_id=query_stem, phrases=phrases)
+        ami_corpus.search_files_with_phrases(ami_query.phrases)
         assert ami_corpus.search_html is not None
-        term_id_by_url = make_hits_by_url(ami_corpus.search_html)
+        term_id_by_url = CorpusQuery.extract_hits_by_url_from_nested_lists(ami_corpus.search_html)
         assert term_id_by_url is not None
         assert len(term_id_by_url.keys()) > 0
         logger.debug(f"term_id_by_url keys {len(term_id_by_url.keys())}")
@@ -1041,7 +1061,7 @@ class AmiCorpusTest(AmiAnyTest):
         ])
         print(">==================")
         if False: # old code
-            term_id_by_url = make_hits_by_url(ami_corpus.search_html)
+            term_id_by_url = extract_hits_by_url_from_nested_lists(ami_corpus.search_html)
             term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
             htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
             CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)

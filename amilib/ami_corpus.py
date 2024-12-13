@@ -5,6 +5,7 @@ import datetime
 import json
 from collections import defaultdict
 from pathlib import Path
+from re import RegexFlag
 
 import lxml
 import lxml.etree as ET
@@ -423,10 +424,11 @@ outfile: {self.outfile}
         #     if self.query:
             pass
 
-    def search_files_with_phrases(self, debug=False):
-        if self.phrases:
+    def search_files_with_phrases(self, phrases, debug=False):
+        """ TODO rewrite with AmiQuery"""
+        if phrases:
             self.search_html = AmiCorpus.search_files_with_phrases_write_results(
-                self.infiles, phrases=self.phrases, outfile=self.outfile, debug=debug)
+                self.infiles, phrases=phrases, outfile=self.outfile, debug=debug)
 
     def get_or_create_corpus_query(self,
                                    query_id,
@@ -499,6 +501,36 @@ class CorpusQuery:
         self.outfile = outfile
         self.corpus = None
         logger.debug(f"made query {self}")
+
+    def create_markup_test_datatable(self):
+        self.debug = True
+        self.query_id = "methane_emissions"
+        self.para_xpath = None
+        self.indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        self.outfile = Path(self.indir, f"{self.query_id}.html")
+        self.globstr = f"{str(self.indir)}/**/{HTML_WITH_IDS}.html"
+        self.infiles = FileLib.posix_glob(self.globstr, recursive=True)
+        # assert 50 == len(infiles)
+        self.phrases = ["methane emissions"]
+        self.colheads = ["term", "ref", "para"]
+
+        html_markup = AmiCorpus.search_files_with_phrases_write_results(
+            self.infiles, phrases=self.phrases, para_xpath=self.para_xpath,
+            outfile=self.outfile, debug=self.debug)
+        term_id_by_url = CorpusQuery.extract_hits_by_url_from_nested_lists(html_markup)
+        term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
+        htmlx, table_body = HtmlLib.make_skeleton_table(colheads=self.colheads)
+        CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
+        table_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{self.query_id}_table_hits.html")
+        HtmlLib.write_html_file(htmlx, table_file, debug=True)
+        htmlx, table_body = HtmlLib.make_skeleton_table(colheads=self.colheads)
+        new_term_ref_p_list = []
+        for (term, ref, para) in term_ref_p_tuple_list:
+            has_markup = HtmlLib.find_and_markup_phrases(
+                para, term, ignore_case=True, markup=True, flags=RegexFlag.IGNORECASE)
+            new_term_ref_p_list.append((term, ref, para))
+        CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
+        return htmlx, self.query_id
 
     def __str__(self):
         s = f"""CorpusQuery
@@ -627,6 +659,84 @@ corpus:    {None if self.corpus is None else self.corpus.__hash__() }
             a.text = ref
 
             tds[2].append(p)
+
+    @classmethod
+    def extract_hits_by_url_from_nested_lists(cls, nested_list_html):
+        """
+        <body>
+          <ul>
+            <li>term: xyz
+              <li><a href-to-para
+        """
+        # iterate over hit list
+        if nested_list_html is None:
+            logger.error(f"html1 is None")
+            return None
+        body = HtmlLib.get_body(nested_list_html)
+        query_ul = HtmlLib.get_first_object_by_xpath(body, "ul")
+        hits_by_url = dict()
+        for li in query_ul.xpath("li"):
+            # logger.debug("li")
+            p0 = HtmlLib.get_first_object_by_xpath(li, "p")
+            if p0 is None:
+                continue
+            term = p0.text
+            txt = "term: "
+            if (term.startswith(txt)):
+                term = term[len(txt):]
+            hits_ul = HtmlLib.get_first_object_by_xpath(li, "ul")
+            if hits_ul is None:
+                continue
+            hits_li_list = hits_ul.xpath("li")
+            # logger.debug(f"hits {len(hits_li_list)}")
+            for hits_li in hits_li_list:
+                # logger.debug(f"hits_li")
+                CorpusQuery.add_hit_list_to_hits_by_url(hits_by_url, hits_li, term)
+                # logger.debug(f"added hits_li")
+
+        return hits_by_url
+
+    @classmethod
+    def add_hit_list_to_hits_by_url(cls, hits_by_url, hits_li, term):
+        if hits_by_url is None or hits_li is None or term is None:
+            logger.error(f"add_hit_list None args ")
+            return
+        a = HtmlLib.get_first_object_by_xpath(hits_li, "a")
+        if a is None:
+            logger.error(f"a is None")
+            return
+        # logger.debug(f"a is {a}")
+        href = a.attrib.get("href")
+        if href is None:
+            logger.error(f"href is None {ET.tostring(a)}")
+            return
+        # logger.debug(f"href {href}")
+        href_target = href.split("#")[0]
+        id = href.split("#")[1]
+        # logger.debug(f"href_target {href_target}")
+        html_targ = HtmlLib.parse_html(href_target)
+        assert html_targ is not None
+        if "[" in id:
+            # logger.debug("quoted list")
+            id_list = TextUtil.convert_quoted_list_to_list(id)
+            for id1 in id_list:
+                CorpusQuery._get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id1, term)
+        else:
+            # logger.debug("non quoted list")
+            CorpusQuery._get_element_by_id_and_add_term_id_tuple_to_hits(hits_by_url, href_target, html_targ, id, term)
+        # logger.debug("exit add hitlist")
+
+    @classmethod
+    def _get_element_by_id_and_add_term_id_tuple_to_hits(cls, hits_by_url, href_target, html_targ, id, term):
+        if hits_by_url is None or href_target is None or html_targ is None or id is None or term is None:
+            logger.error("arg is None")
+            return None
+        p = HtmlLib.get_element_by_id(html_targ, id)
+        if p is not None:
+            tuple = (term, p)
+            target_id = f"{href_target}#{id}"
+            hits_by_url[target_id] = (tuple)
+        # logger.debug("exit _get_element_by_id_and_add_term_id_tuple_to_hits")
 
 
 

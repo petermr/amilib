@@ -2543,7 +2543,25 @@ font-size: 12px;
         tbody = ET.SubElement(table, "tbody")
         return htmlx, tbody
 
+    @classmethod
+    def iconize_hyperlinks(cls, elem, xpath, icon="*"):
+        """
+        replace text in a[@href] elements with icons and move original text to title
+        <a href="boo">text</a>
+        is transformed to:
+        <a href="boo" title="text">*</a>
+        where * is a selectable icon
 
+        :param elem: HTML element
+        :param xpath: link to anchors
+
+        """
+        anchors = elem.xpath(xpath)
+        for anchor in anchors:
+            if anchor.text is not None and len(anchor.text.strip()) > 0:
+                anchor.text = anchor.text.strip()
+                anchor.attrib["title"] = anchor.text
+                anchor.text = icon
 
 
 class Datatables:

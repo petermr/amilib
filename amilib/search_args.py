@@ -83,10 +83,10 @@ class AmiSearch:
          title="anthropogenic">anthropogenic</a>
          """
         htmlx = HtmlLib.parse_html(htmlpath)
-        titles = htmlx.xpath(".//a[@href]/@title")
+        annotations = htmlx.xpath(".//a[@class='annotation']")
         counter = Counter()
-        for title in titles:
-            counter[title] += 1
+        for annotation in annotations:
+            counter[annotation.text] += 1
 
         return counter
 
