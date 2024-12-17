@@ -47,7 +47,8 @@ class HTMLArgs(AbstractArgs):
                 usage="HTML amilib always uses subcommands (HTML,PDF)\n e.g. amilib PDF --help"
             )
 
-        super().add_arguments();
+        super().add_arguments()
+        not_super = True
 
         """adds arguments to a parser or subparser"""
 
@@ -60,8 +61,11 @@ class HTMLArgs(AbstractArgs):
                                  help="colour for annotation")
         self.parser.add_argument(f"--{DICT}", type=str, nargs=1,
                                  help="dictionary for annotation")
-        self.parser.add_argument(f"--{INDIR}", type=str, nargs=1,
-                                 help="input directory (CProject)")
+        if not_super:
+            self.parser.add_argument(f"--{self.INDIR}", nargs="+",
+                                     help=self.INDIR_HELP)
+            self.parser.add_argument(f"--{self.OUTDIR}",
+                                     help=self.OUTDIR_HELP)
         self.parser.add_argument(f"--{INPATH}", type=str, nargs=1,
                                  help="input html file")
         self.parser.add_argument(f"--{OPERATION}", type=str,
@@ -75,8 +79,8 @@ class HTMLArgs(AbstractArgs):
 
         self.parser.add_argument(f"--{OUTPATH}", type=str, nargs=1,
                                  help="output html file")
-        self.parser.add_argument(f"--{OUTDIR}", type=str, nargs=1,
-                                 help="output directory")
+        # self.parser.add_argument(f"--{OUTDIR}", type=str, nargs=1,
+        #                          help="output directory")
         self.parser.epilog = "====== epilog ========="
         return self.parser
 

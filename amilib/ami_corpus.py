@@ -39,6 +39,7 @@ class AmiCorpus():
     (top dir) and AmiCorpusCompnents (subdirectories)
 
     """
+    TABLE_MARKUP_HITS = "table_markup_hits"
 
     def __init__(self,
                  topdir=None,
@@ -482,6 +483,7 @@ outfile: {self.outfile}
 
             # AmiCorpus.search_files_with_phrases_write_results(self.infiles, phrases=query.phrases)
 
+TABLE_HITS_SUFFIX = "table_hits.html"
 class CorpusQuery:
     """
     holds query and related info (hits, files)
@@ -502,12 +504,40 @@ class CorpusQuery:
         self.corpus = None
         logger.debug(f"made query {self}")
 
-    def create_markup_test_datatable(self):
+    def run_query_make_table_TUTORIAL(
+            self, query: str | list[str], query_id:str, indir, outdir, outfile=None):
+        """
+        takes query string and query_id, creates input and output filenames
+        runs query
+        creates table of results
+        :param query: query string or list of query strings
+        :param query_id: string without spaces to uniquely identify the query
+        :param indir: top directory of corpus
+        :param outdir: output top directory
+        :param outfile: output HTML file with tables
+        """
+
         self.debug = True
-        self.query_id = "methane_emissions"
+        if not query:
+            raise ValueError("No query given")
+        if type(query) is str:
+            self.phrases = list(query)
+        if not query_id :
+            raise ValueError("No query_id given")
+        query_id = query_id.strip()
+        if " " in query_id:
+            raise ValueError(f"no spaces allowed in query_id, found {query_id}")
+        self.query_id = query_id
+
+        if indir is None or not Path(indir).exists():
+            logger.error(f"input directory must exist {indir}")
+        self.indir = indir
+        self.outfile = outfile
+        if not outfile:
+            self.outfile = Path(self.indir, f"{query_id}.html")
+
         self.para_xpath = None
-        self.indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
-        self.outfile = Path(self.indir, f"{self.query_id}.html")
+
         self.globstr = f"{str(self.indir)}/**/{HTML_WITH_IDS}.html"
         self.infiles = FileLib.posix_glob(self.globstr, recursive=True)
         # assert 50 == len(infiles)
@@ -521,7 +551,7 @@ class CorpusQuery:
         term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
         htmlx, table_body = HtmlLib.make_skeleton_table(colheads=self.colheads)
         CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
-        table_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{self.query_id}_table_hits.html")
+        table_file = Path(outdir, f"{self.query_id}_{TABLE_HITS_SUFFIX}")
         HtmlLib.write_html_file(htmlx, table_file, debug=True)
         htmlx, table_body = HtmlLib.make_skeleton_table(colheads=self.colheads)
         new_term_ref_p_list = []

@@ -102,8 +102,9 @@ class AbstractArgs(ABC):
 
     def add_arguments(self):
         """
-        Not used
-        maybe this should be called by subclasses
+        TODO Needs refactoring
+        Called by subclasses
+        maybe overridden by abstract add_arguments
         """
 
         self.parser.add_argument(f"--{self.DEBUG}",
@@ -116,14 +117,14 @@ class AbstractArgs(ABC):
         self.parser.add_argument(f"--{self.INDIR}", nargs="+",
                                  help=self.INDIR_HELP)
 
-        self.parser.add_argument(f"--{self.OUTPUT}", nargs="+",
+        self.parser.add_argument(f"--{self.OUTPUT}",
                                  help=self.OUTPUT_HELP)
 
-        self.parser.add_argument(f"--{self.OUTDIR}", nargs="+",
+        self.parser.add_argument(f"--{self.OUTDIR}",
                                  help=self.OUTDIR_HELP)
 
-        self.parser.add_argument(f"--{self.OPERATION}", nargs="+",
-                                 help=self.OPERATION_HELP)
+        # self.parser.add_argument(f"--{self.OPERATION}", nargs="+",
+        #                          help=self.OPERATION_HELP)
 
         INFORM_HELP = "input format/s; experimental"
         self.parser.add_argument(f"--{self.KWARGS}", nargs="*",
@@ -141,6 +142,7 @@ class AbstractArgs(ABC):
 
     @abstractmethod
     def add_arguments(self):
+        # Overrides add_arguments
         pass
 
     # @property

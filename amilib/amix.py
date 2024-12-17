@@ -16,13 +16,13 @@ from amilib.dict_args import AmiDictArgs
 from amilib.search_args import SearchArgs
 from amilib.util import Util
 
+# cyclic import?
 try:
     from html_args import HTMLArgs
 except ModuleNotFoundError as e:
     from amilib.html_args import HTMLArgs
 
 from amilib.pdf_args import PDFArgs
-
 from amilib.ami_args import AbstractArgs
 from amilib.wikimedia import WikidataLookup
 

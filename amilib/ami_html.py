@@ -1634,7 +1634,7 @@ class HtmlLib:
 
         # might be a text (contained within lead) or tail following it
 
-        # text contained in element
+        # text contained in element.li
         if text.is_text:
             aelem = cls.add_href_for_lxml_text(start_, text)
 

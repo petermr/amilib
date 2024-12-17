@@ -40,6 +40,7 @@ OMIT_LONG = True
 
 SLEEP = 1
 
+# xpath expressions for expand buttons in ?SYR web-html
 EXPAND_SECTION_PARAS = [
     '//button[contains(@class, "chapter-expand") and contains(text(), "Expand section")]',
     '//p[contains(@class, "expand-paras") and contains(text(), "Read more...")]'
@@ -73,10 +74,13 @@ class DriverTest(AmiAnyTest):
 
         html_out = Path(SC_TEST_DIR, f"complete_text_{level}.html")
         driver.download_expand_save(url, click_list, html_out, level=level)
-        logger.debug(f"elem {driver.get_lxml_element_count()}")
+        elem_count = driver.get_lxml_element_count()
+        assert elem_count > 0
+        logger.debug(f"elem {elem_count}")
         XmlLib.remove_common_clutter(driver.lxml_root_elem)
 
-        logger.debug(f"elem {driver.get_lxml_element_count()}")
+        logger.debug(f"elem {elem_count}")
+        # TODO use HtmlLib.write() instead and remove this method
         driver.write_html(Path(html_out))
         driver.quit()
 

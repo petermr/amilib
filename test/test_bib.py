@@ -151,7 +151,10 @@ class PygetpapersTest(AmiAnyTest):
         Reads json output of pygetpapers and creates datatables
         """
         indir = Path(Resources.TEST_RESOURCES_DIR, "json", "district_heating")
-        args = ["HTML", "--indir", str(indir), "--operation", "DATATABLES"]
+        args = ["HTML",
+                "--indir", str(indir),
+                # "--indir", "/Users/pm286/workspace/amilib/test/resources/json/district_heating",
+                "--operation", "DATATABLES"]
         amilib = AmiLib()
         amilib.run_command(args)
 
@@ -417,7 +420,7 @@ crop_query = {
 #     CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
 #     return htmlx, corpus_query.query_id
 
-def _validate_and_count_datatable(htmlx, min_entries=10, num_columns = 3):
+def _validate_and_count_table(htmlx, min_entries=10, num_columns = 3):
     """
     validate datatable created by term-based search with ID and paragraph
     :param htmlx: document to test
@@ -951,19 +954,53 @@ class AmiCorpusTest(AmiAnyTest):
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 
-    def test_do_all_output_paras_contain_anchor_markup_for_hits_IMPORTANT(self):
+    def test_tutorial_search_and_create_table_IMPORTANT(self):
         """
         read existing table after markup and check that all paras have markup
         uses output of CorpusQuery._add_hits_to_table
         """
         corpus_query = CorpusQuery()
-        htmlx, query_id = corpus_query.create_markup_test_datatable()
+        htmlx, query_id = corpus_query.run_query_make_table_TUTORIAL(
+            query="methane emissions",
+            query_id="methane_emissions",
+            indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc'),
+            outdir = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content")
+        )
         # write html datatable
-        datatable_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query_id}_table_markup_hits.html")
-        HtmlLib.write_html_file(htmlx, datatable_file, debug=True)
-        assert datatable_file.exists()
+        table_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{query_id}_table_markup_hits.html")
+        HtmlLib.write_html_file(htmlx, table_file, debug=True)
+        assert table_file.exists()
 
-        _validate_and_count_datatable(htmlx, min_entries=160)
+        _validate_and_count_table(htmlx, min_entries=160)
+
+    def test_tutorial_search_and_create_table_CLI_IMPORTANT(self):
+        """
+        read existing table after markup and check that all paras have markup
+        uses output of CorpusQuery._add_hits_to_table
+        """
+        query = "methane emissions"
+        query_id = "methane_emissions"
+        indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
+        outdir = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content")
+        outpath = Path(outdir, f"{query_id}_{AmiCorpus.TABLE_MARKUP_HITS}.html")
+        args = [
+            "SEARCH",
+            "--query", query, "foo",
+            "--query_id", query_id,
+            "--indir", str(indir),
+            "--outdir", str(outdir),
+            "--outpath", str(outpath),
+        ]
+        amilib = AmiLib()
+        amilib.run_command(args)
+
+        # htmlx, query_id = corpus_query.run_query_make_table_TUTORIAL(
+        # )
+        # write html datatable
+        # HtmlLib.write_html_file(htmlx, table_file, debug=True)
+        # assert table_file.exists()
+
+        # _validate_and_count_table(htmlx, min_entries=160)
 
 
     def test_search_corpus_with_wordlist(self):

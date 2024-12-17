@@ -141,7 +141,10 @@ class AmiDriver:
             time.sleep(self.sleep)  # Wait for the section to expand
         logger.debug(f"<<<<element count after = {self.get_lxml_element_count()}")
 
-    def get_lxml_element_count(self):
+    def get_lxml_element_count(self) -> int:
+        """
+        finds all elements in document and counts them
+        """
         elements = self.get_lxml_root_elem().xpath("//*")
         return len(elements)
 

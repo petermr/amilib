@@ -628,10 +628,10 @@ class XmlLib:
             return False
 
     @classmethod
-    def remove_common_clutter(cls, elem, declutter=None, bad_display=None):
+    def remove_common_clutter(cls, elem, declutter=None, bad_display=None) -> None:
         """
         :param elem: to declutter
-        :param declutter: If None
+        :param declutter: If None uses DEFAULT_DECLUTTER
         :param debug: print removed elements
         """
         if elem is None:
