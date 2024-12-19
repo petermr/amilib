@@ -54,7 +54,7 @@ class SearchTest(AmiAnyTest):
 
         # count annotations
         title_counter = FileLib.read_counter_from_file(reportpath)
-        print(f"title_counter {title_counter}")
+        logger.debug(f"title_counter {title_counter}")
         assert title_counter == str([('carbon_dioxide_removal', 20), ('anthropogenic', 13), ('sequestration', 13),
                                      ('bioenergy_with_carbon_capture_and_storage', 7), ('aerosols', 4),
                                      ('tropospheric', 2), ('solar_radiation_modification', 1),
@@ -86,7 +86,7 @@ class SearchTest(AmiAnyTest):
         pyami.run_command(args)
         assert outpath.exists(), f"{outpath} should exist"
         ahrefs = self._find_ahrefs(outpath)
-        print(f"ahrefs {ahrefs}")
+        # print(f"ahrefs {ahrefs}")
         outset = set()
         for ahref in ahrefs:
             outset.add(ahref.text)
