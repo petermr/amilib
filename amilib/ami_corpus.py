@@ -275,6 +275,9 @@ outfile: {self.outfile}
 
     @classmethod
     def search_files_with_phrases_write_results(cls, infiles, phrases=None, para_xpath=None, outfile=None, debug=False):
+        """
+        iterates over files in corpus
+        """
         if phrases is None:
             logger.error("no phrases")
             return
@@ -284,19 +287,10 @@ outfile: {self.outfile}
             phrases = [phrases]
         all_paras = []
         for infile in infiles:
-            assert Path(infile).exists(), f"{infile} does not exist"
-            html_tree = lxml.etree.parse(str(infile), HTMLParser())
-            paras = HtmlLib.find_paras_with_ids(html_tree, para_xpath=para_xpath)
+            paras = cls.search_paras_with_id_and_create_dict(all_hits_dict, infile, para_xpath, phrases,
+                                                     url_list_by_phrase_dict)
             all_paras.extend(paras)
 
-
-            # this does the search
-            para_id_by_phrase_dict = HtmlLib.create_search_results_para_phrase_dict(paras, phrases)
-            if para_id_by_phrase_dict is not None and len(para_id_by_phrase_dict) > 0:
-                if debug:
-                    # logger.debug(f"para_phrase_dict {para_id_by_phrase_dict}")
-                    pass
-                cls.add_hit_with_filename_and_para_id(all_hits_dict, url_list_by_phrase_dict, infile, para_id_by_phrase_dict)
         if debug:
             print(f"para count~: {len(all_paras)}")
         html1 = cls.create_html_from_hit_dict(url_list_by_phrase_dict)
@@ -311,25 +305,49 @@ outfile: {self.outfile}
         return html1
 
     @classmethod
+    def search_paras_with_id_and_create_dict(cls, all_hits_dict, infile, para_xpath, phrases,
+                                             url_list_by_phrase_dict):
+        """
+        should be instance method
+        reads file, creates HTML, finds paras_with_id,
+        """
+
+        assert Path(infile).exists(), f"{infile} does not exist"
+        html_tree = lxml.etree.parse(str(infile), HTMLParser())
+        paras = HtmlLib.find_paras_with_ids(html_tree, para_xpath=para_xpath)
+        # this does the search
+        para_id_by_phrase_dict = HtmlLib.create_search_results_para_phrase_dict(paras, phrases)
+        if para_id_by_phrase_dict is not None and len(para_id_by_phrase_dict) > 0:
+            cls.add_hit_with_filename_and_para_id(all_hits_dict, url_list_by_phrase_dict, infile,
+                                                  para_id_by_phrase_dict)
+        return paras
+
+    @classmethod
     def add_hit_with_filename_and_para_id(cls, all_hits_dict, hit_dict, infile, phrase_by_para_id_dict):
         """adds non-empty hits in hit_dict and all to all_dict
         :param all_hits_dict: accumulates para_phrase_dict by infile
         :param hit_dict: accumulates url by hit (
 
         """
+        infile_s = cls.create_url_from_filename(infile)
+
+        # what is item[1] ???
         item_paras = [item for item in phrase_by_para_id_dict.items() if len(item[1]) > 0]
         if len(item_paras) > 0:
             all_hits_dict[infile] = phrase_by_para_id_dict
             for para_id, hits in phrase_by_para_id_dict.items():
                 for hit in hits:
-                    # TODO should write file with slashes (on Windows we get %5C)
-                    infile_s = f"{infile}"
-                    infile_s = infile_s.replace("\\", "/")
-                    infile_s = infile_s.replace("%5C", "/")
                     url = f"{infile_s}#{para_id}"
                     hit_dict[hit].append(url)
-                    logger.info(f"hit: {hit} in url {url}")
+                    # logger.info(f"hit: {hit} in url {url}")
 
+    @classmethod
+    def create_url_from_filename(cls, infile):
+        # TODO should write file with slashes (on Windows we get %5C)
+        infile_s = f"{infile}"
+        infile_s = infile_s.replace("\\", "/")
+        infile_s = infile_s.replace("%5C", "/")
+        return infile_s
 
     @classmethod
     def add_hit_with_filename_and_para_id(cls, all_dict, hit_dict, infile, para_phrase_dict):

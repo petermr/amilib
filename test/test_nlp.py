@@ -1,19 +1,15 @@
 """
 Tests for NLP
+removed the yake, BERT, Bloom filter, etc.
 """
 import unittest
-from pathlib import Path
-import csv
 
 from pytest import approx
-from yake import yake
 
-from amilib.file_lib import FileLib
 from amilib.util import Util
-from test.resources import Resources
 from test.test_all import AmiAnyTest
 
-from amilib.ami_nlp import AmiNLP, AmiRake
+from amilib.ami_nlp import AmiNLP
 
 import nltk
 nltk.download('stopwords')
@@ -70,278 +66,278 @@ class NLPTest(AmiAnyTest):
         assert ami_nlp.cosine_sim('a little bird', 'a little bird chirps') == approx(0.7093, abs=0.001)
         assert ami_nlp.cosine_sim('a little bird', 'a big dog barks') == approx(0, abs=0.001)
 
-    @unittest.skip("crashes on PMR machine with 'illegal instruction' - probably incompatible hardware")
-    def test_keyBERT(self):
-        """
-        from keyBERT docs
-        """
-        logger.info("start")
-        from keybert import KeyBERT
+    # @unittest.skip("crashes on PMR machine with 'illegal instruction' - probably incompatible hardware")
+    # def test_keyBERT(self):
+    #     """
+    #     from keyBERT docs
+    #     """
+    #     logger.info("start")
+    #     from keybert import KeyBERT
+    #
+    #     doc = """
+    #              Supervised learning is the machine learning task of learning a function that
+    #              maps an input to an output based on example input-output pairs. It infers a
+    #              function from labeled training data consisting of a set of training examples.
+    #              In supervised learning, each example is a pair consisting of an input object
+    #              (typically a vector) and a desired output value (also called the supervisory signal).
+    #              A supervised learning algorithm analyzes the training data and produces an inferred function,
+    #              which can be used for mapping new examples. An optimal scenario will allow for the
+    #              algorithm to correctly determine the class labels for unseen instances. This requires
+    #              the learning algorithm to generalize from the training data to unseen situations in a
+    #              'reasonable' way (see inductive bias).
+    #           """
+    #     kw_model = KeyBERT()
+    #     keywords = kw_model.extract_keywords(doc)
+    #     assert keywords is not None
 
-        doc = """
-                 Supervised learning is the machine learning task of learning a function that
-                 maps an input to an output based on example input-output pairs. It infers a
-                 function from labeled training data consisting of a set of training examples.
-                 In supervised learning, each example is a pair consisting of an input object
-                 (typically a vector) and a desired output value (also called the supervisory signal).
-                 A supervised learning algorithm analyzes the training data and produces an inferred function,
-                 which can be used for mapping new examples. An optimal scenario will allow for the
-                 algorithm to correctly determine the class labels for unseen instances. This requires
-                 the learning algorithm to generalize from the training data to unseen situations in a
-                 'reasonable' way (see inductive bias).
-              """
-        kw_model = KeyBERT()
-        keywords = kw_model.extract_keywords(doc)
-        assert keywords is not None
+ #    @unittest.skip("diff not stable")
+ #    def test_rake_nltk(self):
+ #        """
+ #        example from repo/pypi
+ #        """
+ #        ami_rake = AmiRake()
+ #
+ #        doc = """
+ #                 Supervised learning is the machine learning task of learning a function that
+ #                 maps an input to an output based on example input-output pairs. It infers a
+ #                 function from labeled training data consisting of a set of training examples.
+ #                 In supervised learning, each example is a pair consisting of an input object
+ #                 (typically a vector) and a desired output value (also called the supervisory signal).
+ #                 A supervised learning algorithm analyzes the training data and produces an inferred function,
+ #                 which can be used for mapping new examples. An optimal scenario will allow for the
+ #                 algorithm to correctly determine the class labels for unseen instances. This requires
+ #                 the learning algorithm to generalize from the training data to unseen situations in a
+ #                 'reasonable' way (see inductive bias).
+ #              """
+ #        ami_rake.read_text(EXEC_SUMM)
+ #        ranked_phrases = ami_rake.get_ranked_phrases()
+ #        assert ranked_phrases == [
+ #    'see inductive bias ).',
+ # 'labeled training data consisting',
+ # 'supervised learning algorithm analyzes',
+ # 'supervisory signal ).',
+ # 'mapping new examples',
+ # 'machine learning task',
+ # 'desired output value',
+ # 'training data',
+ # 'training data',
+ # 'training examples',
+ # 'supervised learning',
+ # 'supervised learning',
+ # 'pair consisting',
+ # 'learning algorithm',
+ # 'output pairs',
+ # 'output based',
+ # 'unseen situations',
+ # 'unseen instances',
+ # 'optimal scenario',
+ # 'correctly determine',
+ # 'class labels',
+ # 'also called',
+ # 'input object',
+ # 'inferred function',
+ # 'example input',
+ # 'learning',
+ # 'algorithm',
+ # 'input',
+ # 'example',
+ # 'function',
+ # 'function',
+ # 'way',
+ # 'vector',
+ # 'used',
+ # 'typically',
+ # 'set',
+ # 'requires',
+ # 'reasonable',
+ # 'produces',
+ # 'maps',
+ # 'infers',
+ # 'generalize',
+ # 'allow']
+ #
+ #        ranked_phrases_with_scores = ami_rake.get_ranked_phrases_with_scores()
+ #        assert ranked_phrases_with_scores == [
+ # (15.5, 'see inductive bias ).'),
+ # (12.166666666666666, 'labeled training data consisting'),
+ # (11.333333333333334, 'supervised learning algorithm analyzes'),
+ # (9.5, 'supervisory signal ).'),
+ # (8.5, 'mapping new examples'),
+ # (8.333333333333334, 'machine learning task'),
+ # (8.333333333333334, 'desired output value'),
+ # (5.166666666666666, 'training data'),
+ # (5.166666666666666, 'training data'),
+ # (5.0, 'training examples'),
+ # (5.0, 'supervised learning'),
+ # (5.0, 'supervised learning'),
+ # (5.0, 'pair consisting'),
+ # (4.666666666666667, 'learning algorithm'),
+ # (4.333333333333334, 'output pairs'),
+ # (4.333333333333334, 'output based'),
+ # (4.0, 'unseen situations'),
+ # (4.0, 'unseen instances'),
+ # (4.0, 'optimal scenario'),
+ # (4.0, 'correctly determine'),
+ # (4.0, 'class labels'),
+ # (4.0, 'also called'),
+ # (3.666666666666667, 'input object'),
+ # (3.333333333333333, 'inferred function'),
+ # (3.166666666666667, 'example input'),
+ # (2.3333333333333335, 'learning'),
+ # (2.3333333333333335, 'algorithm'),
+ # (1.6666666666666667, 'input'),
+ # (1.5, 'example'),
+ # (1.3333333333333333, 'function'),
+ # (1.3333333333333333, 'function'),
+ # (1.0, 'way'),
+ # (1.0, 'vector'),
+ # (1.0, 'used'),
+ # (1.0, 'typically'),
+ # (1.0, 'set'),
+ # (1.0, 'requires'),
+ # (1.0, 'reasonable'),
+ # (1.0, 'produces'),
+ # (1.0, 'maps'),
+ # (1.0, 'infers'),
+ # (1.0, 'generalize'),
+ # (1.0, 'allow')]
 
-    @unittest.skip("diff not stable")
-    def test_rake_nltk(self):
-        """
-        example from repo/pypi
-        """
-        ami_rake = AmiRake()
-
-        doc = """
-                 Supervised learning is the machine learning task of learning a function that
-                 maps an input to an output based on example input-output pairs. It infers a
-                 function from labeled training data consisting of a set of training examples.
-                 In supervised learning, each example is a pair consisting of an input object
-                 (typically a vector) and a desired output value (also called the supervisory signal).
-                 A supervised learning algorithm analyzes the training data and produces an inferred function,
-                 which can be used for mapping new examples. An optimal scenario will allow for the
-                 algorithm to correctly determine the class labels for unseen instances. This requires
-                 the learning algorithm to generalize from the training data to unseen situations in a
-                 'reasonable' way (see inductive bias).
-              """
-        ami_rake.read_text(EXEC_SUMM)
-        ranked_phrases = ami_rake.get_ranked_phrases()
-        assert ranked_phrases == [
-    'see inductive bias ).',
- 'labeled training data consisting',
- 'supervised learning algorithm analyzes',
- 'supervisory signal ).',
- 'mapping new examples',
- 'machine learning task',
- 'desired output value',
- 'training data',
- 'training data',
- 'training examples',
- 'supervised learning',
- 'supervised learning',
- 'pair consisting',
- 'learning algorithm',
- 'output pairs',
- 'output based',
- 'unseen situations',
- 'unseen instances',
- 'optimal scenario',
- 'correctly determine',
- 'class labels',
- 'also called',
- 'input object',
- 'inferred function',
- 'example input',
- 'learning',
- 'algorithm',
- 'input',
- 'example',
- 'function',
- 'function',
- 'way',
- 'vector',
- 'used',
- 'typically',
- 'set',
- 'requires',
- 'reasonable',
- 'produces',
- 'maps',
- 'infers',
- 'generalize',
- 'allow']
-
-        ranked_phrases_with_scores = ami_rake.get_ranked_phrases_with_scores()
-        assert ranked_phrases_with_scores == [
- (15.5, 'see inductive bias ).'),
- (12.166666666666666, 'labeled training data consisting'),
- (11.333333333333334, 'supervised learning algorithm analyzes'),
- (9.5, 'supervisory signal ).'),
- (8.5, 'mapping new examples'),
- (8.333333333333334, 'machine learning task'),
- (8.333333333333334, 'desired output value'),
- (5.166666666666666, 'training data'),
- (5.166666666666666, 'training data'),
- (5.0, 'training examples'),
- (5.0, 'supervised learning'),
- (5.0, 'supervised learning'),
- (5.0, 'pair consisting'),
- (4.666666666666667, 'learning algorithm'),
- (4.333333333333334, 'output pairs'),
- (4.333333333333334, 'output based'),
- (4.0, 'unseen situations'),
- (4.0, 'unseen instances'),
- (4.0, 'optimal scenario'),
- (4.0, 'correctly determine'),
- (4.0, 'class labels'),
- (4.0, 'also called'),
- (3.666666666666667, 'input object'),
- (3.333333333333333, 'inferred function'),
- (3.166666666666667, 'example input'),
- (2.3333333333333335, 'learning'),
- (2.3333333333333335, 'algorithm'),
- (1.6666666666666667, 'input'),
- (1.5, 'example'),
- (1.3333333333333333, 'function'),
- (1.3333333333333333, 'function'),
- (1.0, 'way'),
- (1.0, 'vector'),
- (1.0, 'used'),
- (1.0, 'typically'),
- (1.0, 'set'),
- (1.0, 'requires'),
- (1.0, 'reasonable'),
- (1.0, 'produces'),
- (1.0, 'maps'),
- (1.0, 'infers'),
- (1.0, 'generalize'),
- (1.0, 'allow')]
-
-    @unittest.skip("Still buggy")
-    def test_rake_wg3_chap03_exec_summ(self):
-        """
-        IPCC WG3 Chapter03
-        """
-        ami_rake = AmiRake()
-        ami_rake.read_text(EXEC_SUMM)
-        scored_phrases = ami_rake.get_ranked_phrases_with_scores()
-        print(scored_phrases[:20])
-        assert len(scored_phrases) == 1237
-        assert scored_phrases[:20] == [(58.877160104770205, '2 ° c (> 67 %) outweigh global mitigation costs'),
- (57.95613518374528, '2 ° c (> 67 %), marginal abatement costs'),
- (48.49721770370979, '2 ° c (> 67 %), projected co2 emissions'),
- (47.3922902494331, 'net ghg emissions typically around 21 – 36 gtco2'),
- (47.262441490051586, '2 ° c (> 67 %) entail losses'),
- (47.25053672814683, '2 ° c (> 67 %) reach 50'),
- (44.38198388050872, 'net zero ghg emissions imply net negative co2 emissions'),
- (42.59577482338492, '2 ° c (> 67 %) converge'),
- (40.59577482338492, '2 ° c (> 67 %) require'),
- (40.17258297258297, 'around 480 – 750 ej yr – 1'),
- (39.70265143345301, '5 ° c – 2 ° c pathways'),
- (39.61047619047619,
-  'effective mitigation pathways assuming immediate action1 tolimit warming'),
- (37.45599715918865, '5 ° c (> 50 %) pathways'),
- (35.74184782608695, 'supply sector typically reaches net zero co2'),
- (35.59577482338492, '2 ° c (> 67 %)'),
- (35.59577482338492, '2 ° c (> 67 %)'),
- (35.59577482338492, '2 ° c (> 67 %)'),
- (35.59577482338492, '2 ° c (> 67 %)'),
- (35.59577482338492, '2 ° c (> 67 %)'),
- (35.59577482338492, '2 ° c (> 67 %)')]
-
-
-    @unittest.skip("NYI")
-    def test_bloom2_filter(self):
-        """
-        quick index with adjustable error rate
-        """
-        from bloom_filter2 import BloomFilter
-
-        # instantiate BloomFilter with custom settings,
-        # max_elements is how many elements you expect the filter to hold.
-        # error_rate defines accuracy; You can use defaults with
-        # `BloomFilter()` without any arguments. Following example
-        # is same as defaults:
-        bloom = BloomFilter(max_elements=10000, error_rate=0.1)
-
-        # Test whether the bloom-filter has seen a key:
-        assert "test-key" not in bloom
-
-        # Mark the key as seen
-        bloom.add("test-key")
-
-    @unittest.skip("cannot load/run ImportError: numpy.core.multiarray failed to import")
-    def test_pke(self):
-        """
-        tests PKE - python keyphrase extraction
-        https://github.com/boudinfl/pke?tab=readme-ov-file#minimal-example
-        """
-        import pke
-
-        # initialize keyphrase extraction model, here TopicRank
-        extractor = pke.unsupervised.TopicRank()
-
-        # load the content of the document, here document is expected to be a simple
-        # test string and preprocessing is carried out using spacy
-        extractor.load_document(input='text', language='en')
-
-        # keyphrase candidate selection, in the case of TopicRank: sequences of nouns
-        # and adjectives (i.e. `(Noun|Adj)*`)
-        extractor.candidate_selection()
-
-        # candidate weighting, in the case of TopicRank: using a random walk algorithm
-        extractor.candidate_weighting()
-
-        # N-best selection, keyphrases contains the 10 highest scored candidates as
-        # (keyphrase, score) tuples
-        keyphrases = extractor.get_n_best(n=10)
-
-    def test_yake(self):
-        """
-
-        """
-        kw_extractor = yake.KeywordExtractor()
-        keywords = kw_extractor.extract_keywords(EXEC_SUMM)
-
-        for kw in keywords:
-            print(kw)
-
-        print("===========")
-
-        language = "en"
-        max_ngram_size = 3
-        deduplication_thresold = 0.9
-        deduplication_algo = 'seqm'
-        windowSize = 1
-        numOfKeywords = 200
-
-        kw_extractor = yake.KeywordExtractor(
-            lan=language,
-            n=max_ngram_size,
-            dedupLim=deduplication_thresold,
-            dedupFunc=deduplication_algo,
-            windowsSize=windowSize,
-            top=numOfKeywords
-        )
-
-        keywords = kw_extractor.extract_keywords(EXEC_SUMM)
-
-        for kw in keywords:
-            print(kw)
-
-"""
-        ('google', 0.026580863364597897)
-        ('kaggle', 0.0289005976239829)
-        ('ceo anthony goldbloom', 0.029946071606210194)
-        ('san francisco', 0.048810837074825336)
-        ('anthony goldbloom declined', 0.06176910090701819)
-        ('google cloud platform', 0.06261974476422487)
-        ('co-founder ceo anthony', 0.07357749587020043)
-        ('acquiring kaggle', 0.08723571551039863)
-        ('ceo anthony', 0.08915156857226395)
-        ('anthony goldbloom', 0.09123482372372106)
-        ('machine learning', 0.09147989238151344)
-        ('kaggle co-founder ceo', 0.093805063905847)
-        ('data', 0.097574333771058)
-        ('google cloud', 0.10260128641464673)
-        ('machine learning competitions', 0.10773000650607861)
-        ('francisco this week', 0.11519915079240485)
-        ('platform', 0.1183512305596321)
-        ('conference in san', 0.12392066376108138)
-        ('service', 0.12546743261462942)
-        ('goldbloom', 0.14611408778815776)
-        How
-        does
-        YAKE! work?
-"""
+#     @unittest.skip("Still buggy")
+#     def test_rake_wg3_chap03_exec_summ(self):
+#         """
+#         IPCC WG3 Chapter03
+#         """
+#         ami_rake = AmiRake()
+#         ami_rake.read_text(EXEC_SUMM)
+#         scored_phrases = ami_rake.get_ranked_phrases_with_scores()
+#         print(scored_phrases[:20])
+#         assert len(scored_phrases) == 1237
+#         assert scored_phrases[:20] == [(58.877160104770205, '2 ° c (> 67 %) outweigh global mitigation costs'),
+#  (57.95613518374528, '2 ° c (> 67 %), marginal abatement costs'),
+#  (48.49721770370979, '2 ° c (> 67 %), projected co2 emissions'),
+#  (47.3922902494331, 'net ghg emissions typically around 21 – 36 gtco2'),
+#  (47.262441490051586, '2 ° c (> 67 %) entail losses'),
+#  (47.25053672814683, '2 ° c (> 67 %) reach 50'),
+#  (44.38198388050872, 'net zero ghg emissions imply net negative co2 emissions'),
+#  (42.59577482338492, '2 ° c (> 67 %) converge'),
+#  (40.59577482338492, '2 ° c (> 67 %) require'),
+#  (40.17258297258297, 'around 480 – 750 ej yr – 1'),
+#  (39.70265143345301, '5 ° c – 2 ° c pathways'),
+#  (39.61047619047619,
+#   'effective mitigation pathways assuming immediate action1 tolimit warming'),
+#  (37.45599715918865, '5 ° c (> 50 %) pathways'),
+#  (35.74184782608695, 'supply sector typically reaches net zero co2'),
+#  (35.59577482338492, '2 ° c (> 67 %)'),
+#  (35.59577482338492, '2 ° c (> 67 %)'),
+#  (35.59577482338492, '2 ° c (> 67 %)'),
+#  (35.59577482338492, '2 ° c (> 67 %)'),
+#  (35.59577482338492, '2 ° c (> 67 %)'),
+#  (35.59577482338492, '2 ° c (> 67 %)')]
+#
+#
+#     @unittest.skip("NYI")
+#     def test_bloom2_filter(self):
+#         """
+#         quick index with adjustable error rate
+#         """
+#         from bloom_filter2 import BloomFilter
+#
+#         # instantiate BloomFilter with custom settings,
+#         # max_elements is how many elements you expect the filter to hold.
+#         # error_rate defines accuracy; You can use defaults with
+#         # `BloomFilter()` without any arguments. Following example
+#         # is same as defaults:
+#         bloom = BloomFilter(max_elements=10000, error_rate=0.1)
+#
+#         # Test whether the bloom-filter has seen a key:
+#         assert "test-key" not in bloom
+#
+#         # Mark the key as seen
+#         bloom.add("test-key")
+#
+#     @unittest.skip("cannot load/run ImportError: numpy.core.multiarray failed to import")
+#     def test_pke(self):
+#         """
+#         tests PKE - python keyphrase extraction
+#         https://github.com/boudinfl/pke?tab=readme-ov-file#minimal-example
+#         """
+#         import pke
+#
+#         # initialize keyphrase extraction model, here TopicRank
+#         extractor = pke.unsupervised.TopicRank()
+#
+#         # load the content of the document, here document is expected to be a simple
+#         # test string and preprocessing is carried out using spacy
+#         extractor.load_document(input='text', language='en')
+#
+#         # keyphrase candidate selection, in the case of TopicRank: sequences of nouns
+#         # and adjectives (i.e. `(Noun|Adj)*`)
+#         extractor.candidate_selection()
+#
+#         # candidate weighting, in the case of TopicRank: using a random walk algorithm
+#         extractor.candidate_weighting()
+#
+#         # N-best selection, keyphrases contains the 10 highest scored candidates as
+#         # (keyphrase, score) tuples
+#         keyphrases = extractor.get_n_best(n=10)
+#
+#     def test_yake(self):
+#         """
+#
+#         """
+#         kw_extractor = yake.KeywordExtractor()
+#         keywords = kw_extractor.extract_keywords(EXEC_SUMM)
+#
+#         for kw in keywords:
+#             print(kw)
+#
+#         print("===========")
+#
+#         language = "en"
+#         max_ngram_size = 3
+#         deduplication_thresold = 0.9
+#         deduplication_algo = 'seqm'
+#         windowSize = 1
+#         numOfKeywords = 200
+#
+#         kw_extractor = yake.KeywordExtractor(
+#             lan=language,
+#             n=max_ngram_size,
+#             dedupLim=deduplication_thresold,
+#             dedupFunc=deduplication_algo,
+#             windowsSize=windowSize,
+#             top=numOfKeywords
+#         )
+#
+#         keywords = kw_extractor.extract_keywords(EXEC_SUMM)
+#
+#         for kw in keywords:
+#             print(kw)
+#
+# """
+#         ('google', 0.026580863364597897)
+#         ('kaggle', 0.0289005976239829)
+#         ('ceo anthony goldbloom', 0.029946071606210194)
+#         ('san francisco', 0.048810837074825336)
+#         ('anthony goldbloom declined', 0.06176910090701819)
+#         ('google cloud platform', 0.06261974476422487)
+#         ('co-founder ceo anthony', 0.07357749587020043)
+#         ('acquiring kaggle', 0.08723571551039863)
+#         ('ceo anthony', 0.08915156857226395)
+#         ('anthony goldbloom', 0.09123482372372106)
+#         ('machine learning', 0.09147989238151344)
+#         ('kaggle co-founder ceo', 0.093805063905847)
+#         ('data', 0.097574333771058)
+#         ('google cloud', 0.10260128641464673)
+#         ('machine learning competitions', 0.10773000650607861)
+#         ('francisco this week', 0.11519915079240485)
+#         ('platform', 0.1183512305596321)
+#         ('conference in san', 0.12392066376108138)
+#         ('service', 0.12546743261462942)
+#         ('goldbloom', 0.14611408778815776)
+#         How
+#         does
+#         YAKE! work?
+# """
 
 

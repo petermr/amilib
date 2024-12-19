@@ -1,13 +1,15 @@
+"""
+removed geocoding
+"""
 import re
 import unittest
 from collections import Counter
 from pathlib import Path
 
 import pytest
-from geopy.geocoders import Nominatim
+# from geopy.geocoders import Nominatim
 
 from amilib.ami_html import HtmlUtil
-from amilib.file_lib import FileLib
 from amilib.util import Util
 from test.resources import Resources
 from test.test_all import AmiAnyTest
@@ -37,37 +39,37 @@ def multiple_replace(replacements, text):
 
 class MiscTest(AmiAnyTest):
 
-    @unittest.skip("requires connection and output can micro-vary")
-    def test_geolocate_GEO(self):
-        """
-        GEO: locates places by name using Nominatim
-
-        (Test occasionally returns variable decimal places
-        TODO needs a fixed-place numeric comparison
-        :return:
-        """
-        geolocator = Nominatim(timeout=10, user_agent="semanticclimate@gmail.com")
-        results = []
-        for name in [
-            "Benares",
-#            "Bengaluru",
-            "Delhi",
-            "Ladakh",
-            # "Mumbai",
-            "Mysore",
-        ]:
-            location = geolocator.geocode(name)
-            tuple = (name, location[1], location.latitude, location.longitude)
-            results.append(tuple)
-        assert results == [
-            ('Benares', (25.3356491, 83.0076292), 25.3356491, 83.0076292),
-            # ('Bengaluru', (12.9767936, 77.590082), 12.9767936, 77.590082),
-            ('Delhi', (28.6273928, 77.1716954), 28.6273928, 77.1716954),
-            ('Ladakh', (33.9456407, 77.6568576), 33.9456407, 77.6568576),
-            # ('Mumbai', (18.9733536, 72.82810491917377), 18.9733536, 72.82810491917377), # Mumbai seems to move!
-            ('Mysore', (12.3051828, 76.6553609), 12.3051828, 76.6553609),
-        ]
-
+#     @unittest.skip("requires connection and output can micro-vary")
+#     def test_geolocate_GEO(self):
+#         """
+#         GEO: locates places by name using Nominatim
+#
+#         (Test occasionally returns variable decimal places
+#         TODO needs a fixed-place numeric comparison
+#         :return:
+#         """
+#         geolocator = Nominatim(timeout=10, user_agent="semanticclimate@gmail.com")
+#         results = []
+#         for name in [
+#             "Benares",
+# #            "Bengaluru",
+#             "Delhi",
+#             "Ladakh",
+#             # "Mumbai",
+#             "Mysore",
+#         ]:
+#             location = geolocator.geocode(name)
+#             tuple = (name, location[1], location.latitude, location.longitude)
+#             results.append(tuple)
+#         assert results == [
+#             ('Benares', (25.3356491, 83.0076292), 25.3356491, 83.0076292),
+#             # ('Bengaluru', (12.9767936, 77.590082), 12.9767936, 77.590082),
+#             ('Delhi', (28.6273928, 77.1716954), 28.6273928, 77.1716954),
+#             ('Ladakh', (33.9456407, 77.6568576), 33.9456407, 77.6568576),
+#             # ('Mumbai', (18.9733536, 72.82810491917377), 18.9733536, 72.82810491917377), # Mumbai seems to move!
+#             ('Mysore', (12.3051828, 76.6553609), 12.3051828, 76.6553609),
+#         ]
+#
 
     @unittest.skip("Not processing transcript ")
     def test_tidy_transcript(self):

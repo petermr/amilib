@@ -1,10 +1,4 @@
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
-# with open('requirements.txt') as f:
-#    required = f.read().splitlines()
+from setuptools import setup
 
 with open('README.md') as readme_file:
     readme = readme_file.read()
@@ -29,14 +23,15 @@ requirements = [
  'SPARQLWrapper',
  'Tkinterweb',
  'webdriver-manager',
- 'scikit-learn==1.3.2',
+ # 'scikit-learn==1.3.2',
+  'scikit-learn',
 
 ]
 
 setup(
     name='amilib',
     url='https://github.com/petermr/amilib',
-    version='0.4.1a1',
+    version='0.4.2a1',
     description='document and dictionary download, cleaning, management',
     long_description_content_type='text/markdown',
     long_description=readme,
@@ -68,5 +63,5 @@ setup(
             'amilib=amilib.amix:main',
         ],
     },
-    python_requires='>=3.7,<=3.10', # numpy etc are incompatible with 3.12
+    python_requires='>=3.12', # numpy etc may be incompatible with 3.12
 )

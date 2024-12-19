@@ -83,8 +83,8 @@ class AmiSearch:
             phrases = AmiDictionary._read_phrases_from_dictionary(html_dict_path)
         phrase_counter_by_para_id = HtmlLib.search_phrases_in_paragraphs(
             paras, phrases, markup=html_dict_path)
-        logger.info(f"phrase_counter_by_para_id {phrase_counter_by_para_id}")
-        logger.info(f"keys: {len(phrase_counter_by_para_id)}")
+        # logger.info(f"phrase_counter_by_para_id {phrase_counter_by_para_id}")
+        # logger.info(f"keys: {len(phrase_counter_by_para_id)}")
         # write marked_up html. The 'paras' are views on the original file
         html_elem = paras[0].xpath("/html")[0]
         HtmlLib.write_html_file(html_elem, outpath, debug=True)

@@ -744,7 +744,7 @@ class AmiCorpusTest(AmiAnyTest):
             strng = "".join(td_elem.itertext())
             # extract report (wg1) and chapter (Chapter02)
 
-            regex = "(?P<report>wg\d)/(?P<chapter>Chapter\d\d)/html_with_ids.html"
+            regex = "(?P<report>wg\\d)/(?P<chapter>Chapter\\d\\d)/html_with_ids.html"
             match = re.match(regex, strng)
             if not match:
                 return None
@@ -958,6 +958,7 @@ class AmiCorpusTest(AmiAnyTest):
         """
         read existing table after markup and check that all paras have markup
         uses output of CorpusQuery._add_hits_to_table
+        creates annotations
         """
         corpus_query = CorpusQuery()
         htmlx, query_id = corpus_query.run_query_make_table_TUTORIAL(
@@ -985,7 +986,7 @@ class AmiCorpusTest(AmiAnyTest):
         outpath = Path(outdir, f"{query_id}_{AmiCorpus.TABLE_MARKUP_HITS}.html")
         args = [
             "SEARCH",
-            "--query", query, "foo",
+            "--words", query,
             "--query_id", query_id,
             "--indir", str(indir),
             "--outdir", str(outdir),
@@ -994,6 +995,10 @@ class AmiCorpusTest(AmiAnyTest):
         amilib = AmiLib()
         amilib.run_command(args)
 
+        logger.debug(f"wrote to dir {outdir}")
+        assert outdir.exists()
+        outfile = Path(outdir, f"{query_id}_table_hits.html")
+        assert outfile.exists()
         # htmlx, query_id = corpus_query.run_query_make_table_TUTORIAL(
         # )
         # write html datatable
@@ -1246,7 +1251,7 @@ class AmiCorpusTest(AmiAnyTest):
             FAQ,
             REFERENCES,
         ]
-        subchapter_regex = "\d+\.\d+"
+        subchapter_regex = "\\d+\\.\\d+"
         for h1_elem in h1_list:
             id = h1_elem.attrib["id"]
             if id in id_values:

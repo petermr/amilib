@@ -3,7 +3,6 @@ import logging
 import string
 from collections import defaultdict
 
-import matplotlib.pyplot as plt
 import nltk
 from nltk.corpus import stopwords
 import numpy as np
@@ -19,7 +18,7 @@ from sklearn.cluster import AgglomerativeClustering, KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from rake_nltk import Rake
+# from rake_nltk import Rake
 
 from amilib.file_lib import FileLib
 from amilib.util import Util
@@ -258,54 +257,54 @@ class WordTrie:
 
         return True
 
-class AmiRake:
-
-    """
-    wraps RAKE/NLTK
-    see https://pypi.org/project/rake-nltk/
-    """
-    def __init__(self):
-        self.text = None
-        # Uses stopwords for english from NLTK, and all puntuation characters by
-        # default
-        self.rake = Rake()
-        self.ranked_phrases = None
-        self.ranked_phrases_with_scores = None
-
-    def read_text(self, text):
-        """
-        reads text to be analysed
-        """
-        self.text = text
-
-    def get_ranked_phrases(self):
-        """
-        if self.ranked_phrases is None
-        runs rake.extract_keywords_from_text()
-        and then rake.get_ranked_phrases()
-        """
-        if (not self.ranked_phrases) and  self.text:
-            self.rake.extract_keywords_from_text(self.text)
-            self.ranked_phrases = self.rake.get_ranked_phrases()
-        return self.ranked_phrases
-
-    def get_ranked_phrases_with_scores(self):
-        """
-        if self.ranked_phrases_with_scores is None
-        runs rake.extract_keywords_from_text()
-        and then rake.get_ranked_phrases_with_scores()
-        """
-        if (not self.ranked_phrases_with_scores) and  self.text:
-            self.rake.extract_keywords_from_text(self.text)
-            self.ranked_phrases_with_scores = self.rake.get_ranked_phrases_with_scores()
-        return self.ranked_phrases_with_scores
-
-class ScoredPhrase:
-    """
-    tuple with score and phrase
-    allows simple aggregation
-    NYI
-    """
-
-
+# class AmiRake:
+#
+#     """
+#     wraps RAKE/NLTK
+#     see https://pypi.org/project/rake-nltk/
+#     """
+#     def __init__(self):
+#         self.text = None
+#         # Uses stopwords for english from NLTK, and all puntuation characters by
+#         # default
+#         self.rake = Rake()
+#         self.ranked_phrases = None
+#         self.ranked_phrases_with_scores = None
+#
+#     def read_text(self, text):
+#         """
+#         reads text to be analysed
+#         """
+#         self.text = text
+#
+#     def get_ranked_phrases(self):
+#         """
+#         if self.ranked_phrases is None
+#         runs rake.extract_keywords_from_text()
+#         and then rake.get_ranked_phrases()
+#         """
+#         if (not self.ranked_phrases) and  self.text:
+#             self.rake.extract_keywords_from_text(self.text)
+#             self.ranked_phrases = self.rake.get_ranked_phrases()
+#         return self.ranked_phrases
+#
+#     def get_ranked_phrases_with_scores(self):
+#         """
+#         if self.ranked_phrases_with_scores is None
+#         runs rake.extract_keywords_from_text()
+#         and then rake.get_ranked_phrases_with_scores()
+#         """
+#         if (not self.ranked_phrases_with_scores) and  self.text:
+#             self.rake.extract_keywords_from_text(self.text)
+#             self.ranked_phrases_with_scores = self.rake.get_ranked_phrases_with_scores()
+#         return self.ranked_phrases_with_scores
+#
+# class ScoredPhrase:
+#     """
+#     tuple with score and phrase
+#     allows simple aggregation
+#     NYI
+#     """
+#
+#
 

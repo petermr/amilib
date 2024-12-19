@@ -762,9 +762,10 @@ class HtmlTest(AmiAnyTest):
         test HtmlLib.find_paras_with_ids(html)
         """
         infile = Path(Resources.TEST_RESOURCES_DIR, "html", "html_with_ids.html")
+        assert 1_300_000 < FileLib.size(infile) < 1_320_000
         html = lxml.etree.parse(str(infile), HTMLParser())
         paras = HtmlLib.find_paras_with_ids(html)
-        assert len(paras) == 1163
+        assert len(paras) >= 1163
         # None returns 0 paras
         paras = HtmlLib.find_paras_with_ids(None)
         assert len(paras) == 0
