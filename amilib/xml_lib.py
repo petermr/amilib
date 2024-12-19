@@ -508,7 +508,7 @@ class XmlLib:
         if mkdir:
             path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(path, "w") as f:
+        with open(path, "w", encoding="UTF-8") as f:
             try:
                 # this solves some problems but not unknown font encodings
                 # xmlstr = lxml.etree.tostring(elem, encoding='UTF-8').decode(encoding)
@@ -1633,7 +1633,7 @@ class DataTable:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         data_table_file = os.path.join(output_dir, "full_data_table.html")
-        with open(data_table_file, "w") as f:
+        with open(data_table_file, "w", encoding="UTF-8") as f:
             text = bytes.decode(ET.tostring(self.html))
             f.write(text)
             logger.info("WROTE", data_table_file)
@@ -1928,7 +1928,7 @@ def test_data_table():
     data_table.add_row_old(["a4", "b4", "c4"])
     html = ET.tostring(data_table.html).decode("UTF-8")
     HOME = os.path.expanduser("~")
-    with open(os.path.join(HOME, "junk_html.html"), "w") as f:
+    with open(os.path.join(HOME, "junk_html.html"), "w", encoding="UTF-8") as f:
         f.write(html)
     pprint.pprint(html)
 

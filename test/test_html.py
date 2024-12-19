@@ -586,7 +586,7 @@ class HtmlTest(AmiAnyTest):
                     tstr = "".join(nonb)
                 file = Path(outdir, f"B_{i}.md")
                 logger.info(f"writing {file}")
-                with open(file, "w") as f:
+                with open(file, "w", encoding="UTF-8") as f:
                     f.write(bstr)
                     f.write(tstr)
 
@@ -1803,7 +1803,7 @@ class CSSStyleTest(AmiAnyTest):
         html_dir = Path(AmiAnyTest.TEMP_DIR, "html")
         html_dir.mkdir(exist_ok=True)
         outpath = Path(html_dir, "styles.html")
-        with open(str(outpath), "w") as f:
+        with open(str(outpath), "w", encoding="UTF-8") as f:
             f.write(lxml.etree.tostring(html_elem, method="html").decode('UTF-8'))
             logger.info(f"wrote style file to {outpath}")
             print(f"(logger) wrote style file to {outpath}")

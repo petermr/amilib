@@ -90,7 +90,7 @@ class MiscTest(AmiAnyTest):
         transcript_dir = Path(Resources.TEMP_DIR, "misc", "transcript")
         transcript_dir.mkdir(exist_ok=True, parents=True)
         outfile = Path(transcript_dir, "transcript2.txt")
-        with open(outfile, "w") as f:
+        with open(outfile, "w", encoding="UTF-8") as f:
             f.writelines(lines2)
         logger.debug(f"lines2 {lines2}")
 

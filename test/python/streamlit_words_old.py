@@ -115,7 +115,7 @@ class WordFinder():
 
     def extract_words(output_directory, files, patternx):
         counter = ceate_counter_from_files(files, patternx)
-        with open(output_file, "w") as f:
+        with open(output_file, "w", encoding="UTF-8") as f:
             most_common = counter.most_common()
             for item in most_common:
                 f.write(f"{item}\n")

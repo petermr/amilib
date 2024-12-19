@@ -117,7 +117,7 @@ if directory and os.path.isdir(directory):
                     counter[match] += 1
 
                 # Display the contents of the output file
-            with open(output_file, "w") as f:
+            with open(output_file, "w", encoding="UTF-8") as f:
                 most_common = counter.most_common()
                 for item in most_common:
                     f.write(f"{item}\n")

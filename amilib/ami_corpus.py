@@ -298,7 +298,7 @@ outfile: {self.outfile}
         if outfile:
             outfile = Path(outfile)
             outfile.parent.mkdir(exist_ok=True, parents=True)
-            with open(outfile, "w") as f:
+            with open(outfile, "w", encoding="UTF-8") as f:
                 if debug:
                     print(f" hitdict {url_list_by_phrase_dict}")
                 HtmlLib.write_html_file(html1, outfile, debug=True)
@@ -847,7 +847,7 @@ class AmiCorpusContainer:
         document_file = Path(self.file, filename)
         document_file.touch()
         if text:
-            with open(document_file, "w") as f:
+            with open(document_file, "w", encoding="UTF-8") as f:
                 f.write(text)
 
         self.child_document_list.append(document_file)

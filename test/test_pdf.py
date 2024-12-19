@@ -1859,7 +1859,7 @@ Framing Climate Ch"""
             html_out = Path(outdir, f"{stem}.html")
             HtmlUtil.write_html_elem(htmlx, html_out)
             outfile = Path(outdir, f"{stem}.txt")
-            with open(outfile, "w") as f:
+            with open(outfile, "w", encoding="UTF-8") as f:
                 f.write(pdfToString)
                 print(f"wrote text to {outfile}")
 

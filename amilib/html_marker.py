@@ -87,7 +87,7 @@ class SpanMarker:
             logger.debug(f"no outfile")
         pdf_list = [pdfs] if type(pdfs) is not list else pdfs
         Path(self.outcsv).parent.mkdir(exist_ok=True)
-        with open(self.outcsv, "w") as f:
+        with open(self.outcsv, "w", encoding="UTF-8") as f:
             self.csvwriter = csv.writer(f)
             self.csvwriter.writerow(["source", "link_type", self.TARGET, self.SECTION_ID, "para"])
             for i, pdf in enumerate(sorted(pdf_list)):

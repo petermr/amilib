@@ -334,7 +334,7 @@ class HeadlessLib:
     @classmethod
     def write_missing(cls, missing_targets, filename):
         targets = [t for t in missing_targets if t is not None]
-        with open(filename, "w") as f:
+        with open(filename, "w", encoding="UTF-8") as f:
             for t in sorted(targets):
                 f.write(t + "\n")
 
@@ -428,7 +428,7 @@ class HeadlessLib:
         cls.write_missing(missing_targets, Path(total_glossary, "missing_em_targets.txt"))
         logger.info(f"entry_dict {len(entry_by_id)}")
         gloss_ids_file = str(Path(total_glossary, "ids.txt"))
-        with open(gloss_ids_file, "w") as f:
+        with open(gloss_ids_file, "w", encoding="UTF-8") as f:
             for key in sorted(entry_by_id.keys()):
                 entry = entry_by_id.get(key)
                 f.write(f"{key} {entry.xpath('/html/body/a/@name')}\n")

@@ -387,7 +387,7 @@ class DriverTest(AmiAnyTest):
         csvfile = Path(TOTAL_GLOSS_DIR, "wiki", f"{start}_{end}.csv")
         csvfile.parent.mkdir(parents=True, exist_ok=True)
         logger.info(f"writing to {csvfile}")
-        with open(csvfile, "w") as f:
+        with open(csvfile, "w", encoding="UTF-8") as f:
             wikiwriter = csv.writer(f, quoting=csv.QUOTE_ALL)
             wikiwriter.writerow(["term", "highestQid", "highest_desc", "list_of_others"])
             for i, entry in enumerate(entries):
@@ -415,7 +415,7 @@ class DriverTest(AmiAnyTest):
             end = start + 1
             lookup = WikidataLookup()
             output_file = Path(TOTAL_GLOSS_DIR, "glossaries", "total", f"acronyms_wiki_{start}_{end}.csv")
-            with open(output_file, "w") as fout:
+            with open(output_file, "w", encoding="UTF-8") as fout:
                 csvwriter = csv.writer(fout)
                 csvwriter.writerow(['abb', 'term', 'qid', 'desc', 'hits'])
                 with open(abbrev_file, newline='') as input:
@@ -446,7 +446,7 @@ class DriverTest(AmiAnyTest):
         output_file = Path(glossdir, "acronyms_wiki_pedia.csv")
         maxout = 5  # 1700 in total
         lookup = WikidataLookup()
-        with open(output_file, "w") as fout:
+        with open(output_file, "w", encoding="UTF-8") as fout:
             csvwriter = csv.writer(fout)
             # csv header
             csvwriter.writerow(['abb', 'term', 'qid', 'desc', 'hits', 'wikipedia'])

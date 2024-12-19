@@ -393,7 +393,7 @@ class FileLib:
         :param indent:
         """
 
-        with open(str(path), "w") as f:
+        with open(str(path), "w", encoding="UTF-8") as f:
             json.dump(dikt, f, indent=indent)
         if debug:
             logger.debug(f"wrote dictionary to {path}")
@@ -664,7 +664,7 @@ class FileLib:
         print(f"file exists {path.exists()}")
         # path.parent.mkdir(exist_ok=False, parents=False)
         print(f"file exists {path.exists()}")
-        with open(str(path), "w") as f:
+        with open(str(path), "w", encoding="UTF-8") as f:
             f.write(pptext.decode())
         if debug:
             print(f"wrote {path}")

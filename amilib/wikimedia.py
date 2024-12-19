@@ -1952,7 +1952,8 @@ class WiktionaryPage:
     @classmethod
     def write_mw_content_text(cls, mw_content_text, index):
         ss = XmlLib.element_to_string(mw_content_text, pretty_print=True)
-        with open((Path(FileLib.get_home(), "junk", f"junk{index}.xml")), "w") as f:
+        junk_xml = (Path(FileLib.get_home(), "junk", f"junk{index}.xml"))
+        with open(junk_xml, "w", encoding="UTF-8") as f:
             f.write(ss)
 
     @classmethod

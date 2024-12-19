@@ -94,7 +94,7 @@ class AmiSearch:
             if reportpath:
                 most_common = counter.most_common()
                 logger.info(f"most common: {most_common}")
-                with open(reportpath, "w") as f:
+                with open(reportpath, "w", encoding="UTF-8") as f:
                     f.write(str(most_common))
         return html_elem
 
@@ -116,8 +116,9 @@ class AmiSearch:
         counter = Counter()
         for annotation in annotations:
             href = annotation.attrib.get("href")
-            if not href:
-                logger.warning(f"annotation has no href {ET.tostring(annotation)}")
+            clazz = annotation.attrib.get("class")
+            if not href and not clazz=='annotation':
+                logger.warning(f"annotation has no href or class='annotation' {ET.tostring(annotation)}")
                 continue
             counter[href] += 1
 

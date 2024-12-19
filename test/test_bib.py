@@ -126,9 +126,9 @@ class PygetpapersTest(AmiAnyTest):
         df[JOURNAL_INFO] = df[JOURNAL_INFO].apply(df_unpack_dict)
         df2 = df[[PMCID, DOI, TITLE, AUTHOR_STRING, JOURNAL_INFO, PUB_YEAR, ABS_TEXT]]
 
-        with open(outfile, "w") as f:
+        with open(outfile, "w", encoding="UTF-8") as f:
             f.write(df2.to_csv())
-        with open(outfile_h, "w") as f:
+        with open(outfile_h, "w", encoding="UTF-8") as f:
             f.write(df2.to_html(escape="False"))
 
     def test_make_html_table_from_json(self):

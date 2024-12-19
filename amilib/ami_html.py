@@ -1427,7 +1427,7 @@ class HtmlLib:
         # cannot get this to output pretty_printed, (nor the encoding)
         tostring = lxml.etree.tostring(html_elem, method="html", pretty_print=pretty_print).decode("UTF-8")
 
-        with open(str(outfile), "w") as f:
+        with open(str(outfile), "w", encoding="UTF-8") as f:
             f.write(tostring)
         if debug:
             print(f"wrote: {Path(outfile).absolute()}")
