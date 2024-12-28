@@ -973,7 +973,7 @@ class AmiDictionaryTest(AmiAnyTest):
         assert len(phrases) == 11
         para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_path)
         chapter_elem = paras[0].xpath("/html")[0]
-        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "Chapter03", "marked_up.html", debug=True)
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "Chapter03", "marked_up.html")
         HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
 
     def test_search_with_dictionary_and_make_links_WORKFLOW(self):
@@ -1013,7 +1013,7 @@ class AmiDictionaryTest(AmiAnyTest):
 
         # write marked_up html
         chapter_elem = paras[0].xpath("/html")[0]
-        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html")
         HtmlLib.write_html_file(chapter_elem, chapter_outpath, debug=True)
         assert  chapter_outpath.exists()
 
@@ -1025,7 +1025,7 @@ class AmiDictionaryTest(AmiAnyTest):
         """
         stem = "carbon_cycle"
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
-        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True)
+        chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html")
         FileLib.delete_file(chapter_outpath)
         html_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html")
 
@@ -1040,7 +1040,7 @@ class AmiDictionaryTest(AmiAnyTest):
 
         stem = "carbon_cycle"
         chapter_file = str(Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html"))
-        chapter_outpath = str(Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html", debug=True))
+        chapter_outpath = str(Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html"))
         FileLib.delete_file(chapter_outpath)
         html_dict_path = str(Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html"))
 

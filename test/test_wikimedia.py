@@ -297,7 +297,7 @@ class WikipediaTest(base_test):
         assert xml_ami_dict is not None
         xml_ami_dict.create_html_write_to_file(Path(Resources.TEMP_DIR, "words", "xml", f"{stem}.xml"))
         html_elem = xml_ami_dict.create_html_dictionary(create_default_entry=True, title=stem)
-        path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html", debug="True")
+        path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
 

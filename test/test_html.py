@@ -1148,7 +1148,6 @@ class PDFHTMLTest(AmiAnyTest):
             div_text = div.xpath('string(.//*)')
             print (f"div: {div_text[:10000]}")
             rows.append([HtmlUtil.get_id(div), div_text])
-        return rows
 
 
     def test_annotate_pdf_html_page_HACKATHON(self):

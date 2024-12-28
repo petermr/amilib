@@ -189,7 +189,7 @@ class AmiPage:
             else:
                 logger.warning("no svg file or data")
                 return
-            self.text_elements = self.page_element.findall(f"//{{{SVG_NS}}}text")
+            self.text_elements = self.page_element.findall(f".//{{{SVG_NS}}}text")
             self.create_text_spans_from_text_elements(content_box, rotated_text)
             for axis in sort_axes:
                 if axis == X:

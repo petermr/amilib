@@ -269,7 +269,7 @@ class SearchArgs(AbstractArgs):
                     f"outpath: {self.outpath}\n"
                     f"operation: {self.operation}\n"
                     f"title: {self.title}\n"
-                    f"words: {self.words}\n"
+                    f"words: {len(self.words)}:{self.words[:20]}...\n"
                     )
 
 

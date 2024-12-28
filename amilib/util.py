@@ -198,12 +198,12 @@ class Util:
         sys.argv.extend(args)
 
     @classmethod
-    def create_name_value(cls, arg: str, delim: str = "=") -> tuple:
+    def create_name_value(cls, arg: str, delim: str = "=") -> tuple | None:
         """create name-value from argument
         if arg is simple string, set value to True
         if arg contains delimeter (e.g. "=") split at that
         :param arg: argument (with 0 or 1 delimiters
-        :param delim: delimiter (default "=", cannot be whitespace
+        :paramhitory delim: delimiter (default "=", cannot be whitespace
         :return: name, value , or name, True or None
         """
         if not arg:
