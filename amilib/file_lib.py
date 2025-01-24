@@ -157,7 +157,22 @@ class FileLib:
                     f.write(data)
 
     @classmethod
-    def copy_file_or_directory(cls, dest_path, src_path, overwrite):
+    def copy_file_or_directory(cls, dest_path, src_path, overwrite=False):
+        """
+        copy src_path to dest_path, allowing for overwrite
+        :param dest_path: destination file or (complete) directory
+        :param src_path: source file or directory tree (must exist)
+        :param overwrite: if true foces overwrite of existing dest (default False)
+        :except: src files do not exist or overwrite forbidden (or other file error)
+        """
+        if src_path is None or not src_path.exists():
+            raise FileExistsError(f"no src path found {src_path}")
+        if dest_path is None:
+            raise ValueError(f"dest_path must not be None")
+        dest_path = Path(dest_path)
+        src_path = Path(src_path)
+        if not src_path.exists():
+            raise FileNotFoundError(f"src_path must exist {src_path}")
         if dest_path.exists():
             if not overwrite:
                 file_type = "dirx" if dest_path.is_dir() else "path"
@@ -165,21 +180,27 @@ class FileLib:
                     str(dest_path), f"cannot overwrite existing {file_type} (str({dest_path})")
 
         else:
-            # assume directory
-            logger.warning(f"create directory {dest_path}")
-            dest_path.mkdir(parents=True, exist_ok=True)
-            logger.info(f"created directory {dest_path}")
+            dest_parent = dest_path.parent
+            if src_path.is_dir():
+                logger.warning(f"create directory {dest_path}")
+                dest_path.mkdir(parents=True, exist_ok=True)
+                logger.info(f"created directory {dest_path}")
+            else:
+                src_parent = src_path.parent
+
         if src_path.is_dir():
             if os.path.exists(dest_path):
                 shutil.rmtree(dest_path)
             shutil.copytree(src_path, dest_path)
             logger.info(f"copied directory {src_path} to {dest_path}")
         else:
+            if dest_path.is_dir() and not overwrite:
+                raise FileExistsError(f"cannot overwrite dir {dest_path} with file {src_path}")
             try:
                 shutil.copy(src_path, dest_path)  # will overwrite
                 logger.info(f"copied path {src_path} to {dest_path}")
             except Exception as e:
-                logger.fatal(f"Cannot copy direcctory {src_path} to {dest_path} because {e}")
+                logger.fatal(f"Cannot copy directory {src_path} to {dest_path} because {e}")
 
     @staticmethod
     def create_absolute_name(file):
