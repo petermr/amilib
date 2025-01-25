@@ -77,12 +77,7 @@ class AmiGraphTest(AmiAnyTest):
             assert html_elem is not None
             commands = Path(ar6, "edit_toplevel.json")
             commands_dict = json.load(open(commands))
-            AmiGraphTest.execute_commands(commands_dict, html_elem)
+            HtmlLib.execute_commands(commands_dict, html_elem)
             HtmlLib.write_html_file(html_elem, outpath, debug=True)
-
-    @classmethod
-    def execute_commands(cls, commands_dict, html_elem):
-        deletes = commands_dict["delete"]
-        XmlLib.remove_all(html_elem, deletes)
 
 

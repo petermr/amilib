@@ -2612,6 +2612,22 @@ font-size: 12px;
                 anchor.attrib["title"] = anchor.text
                 anchor.text = icon
 
+    @classmethod
+    def execute_commands(cls, commands_dict, html_elem):
+        """
+        edit element using commands
+        still experimental
+        probably make commands_dict a Class
+        :param commands_dict: Python dict of commands
+        :param html_elem: element to edit
+        """
+        cls._delete_elements(commands_dict, html_elem)
+
+    @classmethod
+    def _delete_elements(cls, commands_dict, html_elem):
+        deletes = commands_dict["delete"]
+        XmlLib.remove_all(html_elem, deletes)
+
 
 class Datatables:
 
