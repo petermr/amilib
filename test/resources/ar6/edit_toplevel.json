@@ -1,0 +1,15 @@
+{"delete": [
+  "//noscript",
+  "//script",
+  "//meta",
+  "//style",
+  "//link",
+  "//div[@class='artistLink']",
+  "//div[@class='nav2']",
+  "//div[count(*)=0]",
+  "//footer",
+  "//picture",
+  "//div[img]",
+  "//div[count(*)=0]"
+]
+}

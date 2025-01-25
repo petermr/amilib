@@ -1393,7 +1393,7 @@ class HtmlLib:
         style.text = target + " " + css_string
 
     @classmethod
-    def write_html_file(self, html_elem, outfile, debug=False, mkdir=True, pretty_print=False, encoding="UTF-8"):
+    def write_html_file(cls, html_elem, outfile, debug=False, mkdir=True, pretty_print=False, encoding="UTF-8"):
         """writes XML element (or tree) to file, making directory if needed .
         adds method=True to ensure end tags
         :param html_elem: element to write

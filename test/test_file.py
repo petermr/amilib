@@ -94,7 +94,7 @@ class File0Test(AmiAnyTest):
         test that children can be listed as dir/not_dir. Ignore hidden files as these
         are not very standard
         """
-        top_dir = Path(Resources.TEMP_DIR, "test_files")
+        top_dir = self.make_self_test_dir()
         if Path(top_dir).exists():
             FileLib.delete_directory_contents(top_dir, delete_directory=True)
         assert not top_dir.exists()
@@ -259,6 +259,93 @@ class File0Test(AmiAnyTest):
         assert str(diffpath) == ("../../../d/e.txt")
         diffpath = FileLib.get_reletive_path(refpath, abspath, walk_up=True)
         assert str(diffpath) == ("../../x/y/z.txt")
+
+    def test_force_write_operations(self):
+        """Test basic file writing operations"""
+        test_file = self.make_self_test_dir() / "test.txt"
+        
+        # Test basic write
+        FileLib.force_write(test_file, "hello")
+        self.assertTrue(test_file.exists())
+        self.assertEqual(test_file.read_text(), "hello")
+        
+        # Test overwrite=False
+        FileLib.force_write(test_file, "world", overwrite=False)
+        self.assertEqual(test_file.read_text(), "hello")  # Should not change
+        
+        # Test nested path creation
+        nested_file = self.test_dir / "a/b/c/test.txt"
+        FileLib.force_write(nested_file, "nested")
+        self.assertTrue(nested_file.exists())
+        self.assertEqual(nested_file.read_text(), "nested")
+
+    def test_copy_operations(self):
+        """Test file and directory copying"""
+        # Setup test files
+
+        # source_dir = self.test_dir / "source" PMR - there is no self.test_dir
+        source_dir = self.make_self_test_dir() / "source"
+        source_dir.mkdir(exist_ok=True)
+        assert source_dir.is_dir()
+        test_txt = source_dir / "test.txt"
+        test_txt = (test_txt)
+        logger.debug(f"abs path {test_txt.absolute()}")
+        test_txt.write_text("hello")
+        assert test_txt.is_file() and not test_txt.is_dir()
+        self.assertEqual(test_txt.read_text(), "hello")
+        (source_dir / "subdir").mkdir(exist_ok=True)
+        (source_dir / "subdir/test2.txt").write_text("world")
+        
+        # Test file copy
+        dest_file = Path(self.test_dir, "dest.txt")
+        FileLib.copy_file_or_directory(
+            dest_file,
+            test_txt,
+            overwrite=True
+        )
+        self.assertTrue(dest_file.exists())
+        self.assertEqual(dest_file.read_text(), "hello")
+        
+        # Test directory copy
+        dest_dir = self.test_dir / "dest"
+        FileLib.copy_file_or_directory(
+            dest_dir,
+            source_dir,
+            overwrite=True
+        )
+        self.assertTrue((dest_dir / "test.txt").exists())
+        self.assertTrue((dest_dir / "subdir/test2.txt").exists())
+
+    def test_input_string_edge_cases(self):
+        """Test edge cases for input string handling"""
+        # Test empty inputs
+        self.assertEqual(FileLib.get_input_strings(None), [])
+        self.assertEqual(FileLib.get_input_strings([]), [])
+        
+        # Test mixed input types
+        self.make_self_test_dir()
+        test_file = self.test_dir / "words.txt"
+        test_file.write_text("one\ntwo")
+        
+        result = FileLib.get_input_strings([
+            "hello",
+            test_file,
+            "world"
+        ])
+        self.assertEqual(
+            result,
+            ["hello", "one", "two", "world"]
+        )
+
+    def make_self_test_dir(self):
+        try:
+            self.test_dir = self.__getattribute__("test_dir")
+        except AttributeError as ae:
+            self.test_dir = None
+        if self.test_dir is None:
+            self.test_dir = Path(Resources.TEMP_DIR, "test_files")
+        self.test_dir.mkdir(exist_ok=True)
+        return self.test_dir
 
 
 def main():
