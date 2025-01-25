@@ -4,6 +4,7 @@ import argparse
 import collections
 import copy
 import html
+import json
 import logging
 import os
 import re
@@ -2612,22 +2613,6 @@ font-size: 12px;
                 anchor.attrib["title"] = anchor.text
                 anchor.text = icon
 
-    @classmethod
-    def execute_commands(cls, commands_dict, html_elem):
-        """
-        edit element using commands
-        still experimental
-        probably make commands_dict a Class
-        :param commands_dict: Python dict of commands
-        :param html_elem: element to edit
-        """
-        cls._delete_elements(commands_dict, html_elem)
-
-    @classmethod
-    def _delete_elements(cls, commands_dict, html_elem):
-        deletes = commands_dict["delete"]
-        XmlLib.remove_all(html_elem, deletes)
-
 
 class Datatables:
 
@@ -2895,13 +2880,15 @@ class HtmlEditor:
 
     """
 
-    def __init__(self):
+    def __init__(self, create_skeleton=False):
         """
-        creates elements self.html, self.head, self.body
+        :param create_skeleton: create minimal html element
+                 self.html, and self.head, self.body
         """
         self.html = lxml.etree.Element("html")
         self.head = ET.SubElement(self.html, "head")
         self.body = ET.SubElement(self.html, "body")
+        self.commands = None
 
     def write(self, file, debug=True):
         HtmlLib.write_html_file(self.html, file, debug=debug)
@@ -2920,9 +2907,51 @@ class HtmlEditor:
         style = ET.SubElement(self.head, "style")
         style.text = f"{selector} {value}"
 
+    def read_html(self, inpath: Path | str) -> _Element:
+        """
+        parse html
+        fails if file does not exist or not parsable HTML
+        if success , creates self.html_elem
+        :param
+        """
+        if not inpath.exists():
+            raise FileNotFoundError(inpath)
+        self.html_elem = HtmlLib.parse_html(inpath)
+        if self.html_elem is None:
+            raise ValueError("Cannot parse HTML")
+        return self.html_elem
+
+    def read_commands(self, command_path):
+        self.commands = json.load(open(command_path))
+
+    def execute_commands(self):
+        """
+        edit element using commands
+        still experimental
+        """
+        if self.commands is None:
+            logger.warning("No commands, no action")
+            return
+        if self.html_elem is None:
+            logger.warning("No html_elem, no action")
+            return
+
+        commands = self.commands["commands"]
+        for command in commands:
+            self.execute_command(command)
+
+    def execute_command(self, command):
+        delete_xpath = command["delete"]
+        if delete_xpath:
+            self._delete_elements(delete_xpath)
+
+    def _delete_elements(self, xpath):
+        XmlLib.remove_all(self.html_elem, xpath)
+
+
 
 class HtmlUtil:
-    SCRIPT_FACT = 0.9  # maybe sholdn't be here; avoid circular
+    SCRIPT_FACT = 0.9  # maybe shouldn't be here; avoid circular
     MARKER = "marker"
 
 

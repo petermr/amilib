@@ -1,15 +1,15 @@
-{"delete": [
-  "//noscript",
-  "//script",
-  "//meta",
-  "//style",
-  "//link",
-  "//div[@class='artistLink']",
-  "//div[@class='nav2']",
-  "//div[count(*)=0]",
-  "//footer",
-  "//picture",
-  "//div[img]",
-  "//div[count(*)=0]"
+{"commands": [
+  {"delete": "//noscript", "comment":  "no useful content"},
+  {"delete": "//script"},
+  {"delete": "//meta"},
+  {"delete": "//style"},
+  {"delete": "//link"},
+  {"delete": "//footer"},
+  {"delete": "//picture"},
+  {"delete": "//div[@class='artistLink']"},
+  {"delete": "//div[@class='nav2']"},
+  {"delete": "//div[count(*)=0]"},
+  {"delete": "//div[img]"},
+  {"delete": "//div[count(*)=0]"}
 ]
 }
