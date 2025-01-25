@@ -1,8 +1,13 @@
 """
 tests networks and graphs
 """
+from pathlib import Path
+
 from amilib.ami_graph import AmiGraph
+from amilib.ami_html import HtmlLib
 from amilib.util import Util
+from amilib.xml_lib import XmlLib
+from test.resources import Resources
 from test.test_all import AmiAnyTest
 
 logger = Util.get_logger(__name__)
@@ -52,4 +57,31 @@ class AmiGraphTest(AmiAnyTest):
                 wg3.edge('wg3,Chap06', 'toc3')
 
         ipcc.view()
+
+    def test_extract_toc_graph_from_report_toplevel(self):
+        """
+        read webpage from IPCC report (WG1/2/3) and extract network of components.
+        Will probably not work with actual webpages on web because we need to use headless
+        browser. Here we use pre-downloaded page in test/ directory
+        """
+        for wg in ["wg1", "wg2", "wg3"]:
+            ar6 = Path(Resources.TEST_RESOURCES_DIR, "ar6")
+            IN_WG = Path(ar6, wg)
+            OUT_WG = Path(Resources.TEMP_DIR, "ipcc", wg)
+            inpath = Path(IN_WG, "toplevel.html")
+            assert inpath.exists(), f"inpath {inpath} should exist"
+            outpath = Path(OUT_WG, "toplevel.html")
+            html_elem = HtmlLib.parse_html(inpath)
+            assert html_elem is not None
+            commands = Path(ar6, "edit_toplevel.json")
+            commands_dict = json.load(open(commands))
+            AmiGraphTest.execute_commands(commands_dict, html_elem)
+            HtmlLib.write_html_file(html_elem, outpath, debug=True)
+
+    @classmethod
+    def execute_commands(cls, commands_dict, html_elem):
+        deletes = commands_dict["delete"]
+        XmlLib.remove_all(html_elem, deletes)
+
+
 
