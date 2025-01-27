@@ -1,15 +1,55 @@
 {"commands": [
-  {"delete": "//noscript", "comment":  "no useful content"},
-  {"delete": "//script"},
-  {"delete": "//meta"},
-  {"delete": "//style"},
-  {"delete": "//link"},
-  {"delete": "//footer"},
-  {"delete": "//picture"},
-  {"delete": "//div[@class='artistLink']"},
-  {"delete": "//div[@class='nav2']"},
-  {"delete": "//div[count(*)=0]"},
-  {"delete": "//div[img]"},
-  {"delete": "//div[count(*)=0]"}
-]
+  {"delete": {
+    "xpath":  "//noscript",
+    "comment":  "no useful content"}
+  },
+  {"delete": {
+    "xpath":  "//script"}
+  },
+  {"delete": {
+    "xpath":  "//meta"}
+  },
+  {"delete": {
+    "xpath":  "//style"}
+  },
+  {"delete": {
+    "xpath":  "//link"}
+  },
+  {"delete": {
+    "xpath":  "//footer"}
+  },
+  {"delete": {
+    "xpath":  "//picture"}
+  },
+  {"delete": {
+    "xpath":  "//div[@class='artistLink']"}
+  },
+  {"delete": {
+    "xpath":  "//div[@class='nav2']"}
+  },
+  {"delete": {
+    "xpath":  "//div[count(*)=0]"}
+  },
+  {"delete": {
+    "xpath":  "//div[img]"}
+  },
+  {
+    "delete": {
+      "xpath": "//div[count(*)=0]"}
+  },
+  {
+    "style":
+      [
+        {"css":
+          {
+            "selector": "div",
+            "value": {
+              "border": "solid red 1px",
+              "margin": "5px"
+            }
+          }
+        }
+      ]
+    }
+  ]
 }

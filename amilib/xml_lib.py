@@ -924,21 +924,21 @@ class XmlLib:
             element, method=method, pretty_print=pretty_print).decode(encoding)
 
     @classmethod
-    def get_single_element(cls, xmlx, xpath):
+    def get_single_element(cls, element, xpath):
         """
         Convenience method to avoid testing for len()
         gets a single element from xpath or returns None
-        :param xmlx: lxml element to query
+        :param element: lxml element to query
         :param xpath:
         :return: single element or None
         """
-        if xmlx is None:
-            logger.debug("xmlx is None")
+        if element is None:
+            logger.debug("element is None")
             return None
         if xpath is None:
             logger.debug("xpath is None ")
             return None
-        results = xmlx.xpath(xpath)
+        results = element.xpath(xpath)
         if len(results) == 1:
             return results[0]
         else:

@@ -1326,6 +1326,7 @@ class HtmlLib:
         """
         if html_elem is None:
             html_elem = HtmlLib.create_html_with_empty_head_body()
+            print(f"html {html_elem}")
         bodys = html_elem.xpath("./body")
         return bodys[0] if len(bodys) == 1 else None
 
@@ -1864,7 +1865,7 @@ class HtmlLib:
         """
 
 
-        if len(styles) > 0:
+        if styles is not None and len(styles) > 0:
             for style_t in styles:
                 style = ET.SubElement(HtmlLib.get_head(htmlx), "style")
                 style.text = style_t
@@ -2613,6 +2614,37 @@ font-size: 12px;
                 anchor.attrib["title"] = anchor.text
                 anchor.text = icon
 
+    @classmethod
+    def find_single_child_divs(cls, html_elem):
+        """
+        find all divs with a single child element.
+        These divs can potentially removed without affecting basic tree
+        structure
+        """
+        if html_elem is None:
+            logger.error(f"html elem is None")
+            return []
+        single_child_and_no_text_xpath = ".//div[count(*)=1 and normalize-space(text())='']"
+        single_child_divs = html_elem.xpath(single_child_and_no_text_xpath)
+        return single_child_divs
+
+    @classmethod
+    def remove_single_child_divs(cls, html_elem):
+
+        """
+        remove all divs with a single child element
+        and transfer the child to the parent
+        :param html_elem: element to remove single child divs from
+        :return: None
+        """
+        if html_elem is None:
+            logger.warning(f"html_elem is None")
+            return None
+        single_child_divs = HtmlLib.find_single_child_divs(html_elem)
+        for div in single_child_divs:
+            HtmlUtil.remove_element_in_hierarchy(div)
+
+
 
 class Datatables:
 
@@ -2941,12 +2973,42 @@ class HtmlEditor:
             self.execute_command(command)
 
     def execute_command(self, command):
-        delete_xpath = command["delete"]
-        if delete_xpath:
-            self._delete_elements(delete_xpath)
+        if c := command.get("delete"):
+            self._delete_elements(c)
+        elif c := command.get("no-op"):
+            logger.info("No-op")
+        else:
+            print(f"bad command {command}")
 
-    def _delete_elements(self, xpath):
+    def _delete_elements(self, command):
+        xpath = command.get("xpath")
+        if xpath is None:
+            logger.warning("delete requires xpath")
+            return
         XmlLib.remove_all(self.html_elem, xpath)
+
+    def add_element(self, parent_xpath, tag, text=None):
+        """
+        adds an element, currently experimental
+        :param parent_xpath: parent of new element
+        :param tag: element name
+        :param text: child text (if None, no text)
+        """
+        if tag is None:
+            logger.warning(f"tag required")
+            return None
+        parent_elem = XmlLib.get_single_element(self.html_elem, parent_xpath)
+        if parent_elem is None:
+            logger.warning(f"cannot find parent element {parent_xpath}")
+            return None
+        try:
+            new_element = ET.SubElement(parent_elem, tag)
+        except Exception as e:
+            logger.error(f"Cannot add element because {e}")
+        if new_element is not None and type(text) is str:
+            new_element.text = text
+        return new_element
+
 
 
 
@@ -3719,7 +3781,7 @@ class HtmlUtil:
                 <span id="s1">blah</span>
               </div>
             </div>
-            a2 is playing no role in grouping, so can be removed to give:
+            d2 is playing no role in grouping, so can be removed to give:
             <div id="d1">
               <span id="s1">blah</span>
             </div>

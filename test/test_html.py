@@ -991,9 +991,49 @@ class HtmlTest(AmiAnyTest):
         assert ugly_string == """<p><span>text</span></p>"""
 
 
+def _make_test_elem():
+    body = lxml.etree.Element("body")
+    body.attrib["id"] = "b"
+    d1 = lxml.etree.SubElement(body, "div")
+    d1.attrib["id"] = "d1"
+    d21 = lxml.etree.SubElement(d1, 'div')
+    d21.attrib["id"] = "d21"
+    d22 = lxml.etree.SubElement(d1, 'div')
+    d22.attrib["id"] = "d22"
+    d31 = lxml.etree.SubElement(d21, 'div')
+    d31.attrib["id"] = "d31"
+    s1 = lxml.etree.SubElement(d31, 'span')
+    s1.text = "spantext"
+    s1.attrib["id"] = "s1"
+    string = lxml.etree.tostring(body).decode("utf-8")
+    logger.info(f"string |{string}|")
+    if string != """<body id="b"><div id="d1"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div><div id="d22"/></div></body>""":
+        print(f"string: {string}")
+    return body
+
+
+
 class PDFHTMLTest(AmiAnyTest):
+
+    # def _make_test_elem():
+    #     body = lxml.etree.Element("body")
+    #     body.attrib["id"] = "b"
+    #     d1 = ET.SubElement(body, "div")
+    #     d1.attrib["id"] = "d1"
+    #     d2 = ET.SubElement(d1, 'div')
+    #     d2.attrib["id"] = "d2"
+    #     d3 = ET.SubElement(d2, 'div')
+    #     d3.attrib["id"] = "d3"
+    #     s1 = ET.SubElement(d3, 'span')
+    #     s1.text = "spantext"
+    #     s1.attrib["id"] = "s1"
+    #     assert lxml.etree.tostring(
+    #         body) == b'<body id="b"><div id="d1"><div id="d2"><div id="d3"><span id="s1">spantext</span></div></div></div></body>'
+    #     return body
+    #
     """
     Combine PDF2HTML with styles and other tidy
+    Many tests are generic
     """
 
     @unittest.skipUnless(AmiAnyTest.run_long() and AmiAnyTest.IS_PMR, "run occasionally")
@@ -1304,7 +1344,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/spm/tot
             HtmlGroup.group_nested_siblings(html_elem, styles=styles)
             HtmlLib.write_html_file(html_elem, Path(outdir, f"test_{stem}_groups.html"), debug=True)
 
-    # Chatpers within Working groups
+    # Chapters within Working groups
 
     # @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
     @unittest.skip("IPCC")
@@ -1500,65 +1540,55 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
             This can be recursive but spans should always have div parents
         """
 
-        def _make_test_elem():
-            body = lxml.etree.Element("body")
-            body.attrib["id"] = "b"
-            d1 = lxml.etree.SubElement(body, "div")
-            d1.attrib["id"] = "d1"
-            d2 = lxml.etree.SubElement(d1, 'div')
-            d2.attrib["id"] = "d2"
-            d3 = lxml.etree.SubElement(d2, 'div')
-            d3.attrib["id"] = "d3"
-            s1 = lxml.etree.SubElement(d3, 'span')
-            s1.text = "spantext"
-            s1.attrib["id"] = "s1"
-            assert lxml.etree.tostring(
-                body) == b'<body id="b"><div id="d1"><div id="d2"><div id="d3"><span id="s1">spantext</span></div></div></div></body>'
-            return body
-
         body = _make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
         # now remove
-        removable_div_xpath = "//div[count(*)=1 and count(*)=1 and parent::div]"
-        elems = body.xpath(removable_div_xpath)
-        assert len(elems) == 2
+        # removable_div_xpath = "//div[count(*)=1 and count(*)=1 and parent::div]"
+        # elems = body.xpath(removable_div_xpath)
+        # assert len(elems) == 2
 
         HtmlUtil.remove_element_in_hierarchy(d1)
-        assert lxml.etree.tostring(body) == b'<body id="b"><div id="d2"><div id="d3"><span id="s1">spantext</span></div></div></body>'
+        assert lxml.etree.tostring(body).decode("utf-8") == \
+               '<body id="b"><div id="d22"/><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></body>'
 
         body = _make_test_elem()
-        d2 = body.xpath("//*[@id='d2']")[0]
+        d2 = body.xpath("//*[@id='d22']")[0]
         HtmlUtil.remove_element_in_hierarchy(d2)
-        assert lxml.etree.tostring(body) == b'<body id="b"><div id="d1"><div id="d3"><span id="s1">spantext</span></div></div></body>'
+        decode = lxml.etree.tostring(body).decode("utf-8")
+        assert decode == '<body id="b"><div id="d1"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></div></body>'
 
         # remove both elements in various orders
         body = _make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
-        d2 = body.xpath("//*[@id='d2']")[0]
+        d2 = body.xpath("//*[@id='d22']")[0]
         HtmlUtil.remove_element_in_hierarchy(d2)
         HtmlUtil.remove_element_in_hierarchy(d1)
-        assert lxml.etree.tostring(body) == b'<body id="b"><div id="d3"><span id="s1">spantext</span></div></body>'
+        assert lxml.etree.tostring(body).decode("utf-8") == \
+               '<body id="b"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></body>'
 
         body = _make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
-        d2 = body.xpath("//*[@id='d2']")[0]
+        d2 = body.xpath("//*[@id='d22']")[0]
         HtmlUtil.remove_element_in_hierarchy(d1)
         HtmlUtil.remove_element_in_hierarchy(d2)
-        assert lxml.etree.tostring(body) == b'<body id="b"><div id="d3"><span id="s1">spantext</span></div></body>'
+        assert lxml.etree.tostring(body).decode("utf-8") == \
+               '<body id="b"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></body>'
 
         body = _make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
-        d3 = body.xpath("//*[@id='d3']")[0]
+        d3 = body.xpath("//*[@id='d31']")[0]
         HtmlUtil.remove_element_in_hierarchy(d1)
         HtmlUtil.remove_element_in_hierarchy(d3)
-        assert lxml.etree.tostring(body) == b'<body id="b"><div id="d2"><span id="s1">spantext</span></div></body>'
+        assert lxml.etree.tostring(body).decode("utf-8") == \
+               '<body id="b"><div id="d22"/><div id="d21"><span id="s1">spantext</span></div></body>'
 
         body = _make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
-        d3 = body.xpath("//*[@id='d3']")[0]
+        d3 = body.xpath("//*[@id='d31']")[0]
         HtmlUtil.remove_element_in_hierarchy(d3)
         HtmlUtil.remove_element_in_hierarchy(d1)
-        assert lxml.etree.tostring(body) == b'<body id="b"><div id="d2"><span id="s1">spantext</span></div></body>'
+        assert lxml.etree.tostring(body).decode("utf-8") == \
+               '<body id="b"><div id="d22"/><div id="d21"><span id="s1">spantext</span></div></body>'
 
 
     def test_remove_multiple_child_div_from_nesting(self):
@@ -1569,31 +1599,12 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
                 <span id="s1">blah</span>
               </div>
             </div>
-            a2 is playing no role in grouping, so can be removed to give:
+            d2 is playing no role in grouping, so can be removed to give:
             <div id="d1">
               <span id="s1">blah</span>
             </div>
             This can be recursive but spans should always have div parents
         """
-        def _make_test_elem():
-            body = lxml.etree.Element("body")
-            body.attrib["id"] = "b"
-            d1 = lxml.etree.SubElement(body, "div")
-            d1.attrib["id"] = "d1"
-            d21 = lxml.etree.SubElement(d1, 'div')
-            d21.attrib["id"] = "d21"
-            d22 = lxml.etree.SubElement(d1, 'div')
-            d22.attrib["id"] = "d22"
-            d31 = lxml.etree.SubElement(d21, 'div')
-            d31.attrib["id"] = "d31"
-            s1 = lxml.etree.SubElement(d31, 'span')
-            s1.text = "spantext"
-            s1.attrib["id"] = "s1"
-            string = lxml.etree.tostring(body).decode("utf-8")
-            assert string == """<body id="b"><div id="d1"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div><div id="d22"/></div></body>"""
-            return body
-
-
         body = _make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
         # now remove
@@ -1604,12 +1615,58 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         HtmlUtil.remove_element_in_hierarchy(d1)
         assert lxml.etree.tostring(body).decode(encoding="UTF-8") == '<body id="b"><div id="d22"/><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></body>'
 
+    def test_find_single_child_divs(self):
+        """
+        find all divs with single child element
+        """
+        inpath = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "edited_toplevel.html")
+        html_elem = HtmlLib.parse_html(inpath)
+
+        single_child_divs = HtmlLib.find_single_child_divs(html_elem)
+        classes = [div.get("class") for div in single_child_divs]
+        assert len(classes) == 115
+        assert classes[:20] == [
+            None,
+            None,
+            None,
+            'header__content pt-4',
+            'home-top homepage',
+            'container',
+            'col-lg-4 col-sm-6 col-12',
+            'mt-auto gap-2 d-flex flex-column align-items-center',
+            'mt-auto gap-2 d-flex flex-column align-items-center',
+            'dropdown',
+            'mt-auto gap-2 d-flex flex-column align-items-center',
+            'col-lg-4 col-sm-6 col-12',
+            'mt-auto gap-2 d-flex flex-column align-items-center',
+            'mt-auto gap-2 d-flex flex-column align-items-center',
+            'dropdown',
+            'mt-auto gap-2 d-flex flex-column align-items-center',
+            'col-lg-4 col-sm-6 col-12',
+            'mt-auto gap-2 d-flex flex-row align-items-center pb-1',
+            'mt-auto gap-2 d-flex flex-column align-items-center',
+            'dropdown',
+            ]
+
+        print(f"classes {classes}")
+
+    def test_remove_selected_elements_in_hierarchy(self):
+        """
+        read wg1/toplevel page and remove single-child divs
+        """
+        inpath = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "edited_toplevel.html")
+        html_elem = HtmlLib.parse_html(inpath)
+        HtmlLib.remove_single_child_divs(html_elem)
+        outfile = Path(Resources.TEMP_DIR, "ipcc", "wg1", "stripped_toplevel.html")
+        HtmlLib.write_html_file(html_elem, outfile, debug=True)
+
+
 
 class HtmlTidyTest(AmiAnyTest):
 
     def test_html_good(self):
         """
-        ensures valid html passes
+        ensures valid html will pass
         """
         # ideal file html-head-body
         html_ideal = """

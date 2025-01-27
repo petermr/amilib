@@ -59,6 +59,19 @@ class AmiGraphTest(AmiAnyTest):
 
         ipcc.view()
 
+    def test_strip_single_child_divs(self):
+        """
+        takes result of applying json commands ("edited_toplevel.html") and
+        strips single_child divs
+        """
+        for wg in ["wg1" , "wg2", "wg3"]:
+            inpath = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "edited_toplevel.html")
+            html_elem = HtmlLib.parse_html(inpath)
+            HtmlLib.remove_single_child_divs(html_elem)
+            outfile = Path(Resources.TEMP_DIR, "ipcc", "wg1", "stripped_toplevel.html")
+            HtmlLib.write_html_file(html_elem, outfile, debug=True)
+
+
     def test_extract_toc_graph_from_report_toplevel(self):
         """
         read webpage from IPCC report (WG1/2/3) and extract network of components.
@@ -73,11 +86,29 @@ class AmiGraphTest(AmiAnyTest):
             inpath = Path(IN_WG, "toplevel.html")
 
             editor.read_html(inpath)
-            editor.read_commands(Path(ar6, "edit_toplevel.json"))
+            json_path = Path(ar6, "edit_toplevel.json")
+            logger.info(f"json commands {json_path}")
+            editor.read_commands(json_path)
             editor.execute_commands()
+            editor.add_element(parent_xpath="/html/head", tag="style", text="div {border: solid 1px red; margin: 5px;}")
 
             outpath = Path(OUT_WG, "toplevel.html")
             HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+
+    def test_create_toc_tree_graphviz(self):
+        """
+        wg1 toplevel page with nested divs
+        experimental
+        """
+        for wg in ["wg1", "wg2", "wg3"]:
+            print(f"**** current wg {wg}")
+            inpath = Path(Resources.TEST_RESOURCES_DIR, "ar6", wg, "stripped_toplevel.html")
+            html_elem = HtmlLib.parse_html(inpath)
+            ul = AmiGraph.create_nested_uls_from_nested_divs(html_elem)
+            outfile = Path(Resources.TEMP_DIR, "ipcc", wg, "toc.html")
+            HtmlLib.write_html_file(ul, outfile, debug=True)
+
+
 
 
 
