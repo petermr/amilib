@@ -2975,6 +2975,8 @@ class HtmlEditor:
     def execute_command(self, command):
         if c := command.get("delete"):
             self._delete_elements(c)
+        elif c := command.get("style"):
+            logger.warning("style NYI (not yet implemented)")
         elif c := command.get("no-op"):
             logger.info("No-op")
         else:
@@ -2985,6 +2987,7 @@ class HtmlEditor:
         if xpath is None:
             logger.warning("delete requires xpath")
             return
+        #  convenience library routine to remove all elements selected by xpath
         XmlLib.remove_all(self.html_elem, xpath)
 
     def add_element(self, parent_xpath, tag, text=None):

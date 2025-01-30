@@ -82,6 +82,7 @@ class AmiGraphTest(AmiAnyTest):
 
             outpath = Path(OUT_WG, "toplevel.html")
             HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+            assert outpath.exists()
 
     def test_strip_single_child_divs(self):
         """
@@ -148,6 +149,7 @@ class AmiGraphTest(AmiAnyTest):
             ul = AmiGraph.create_nested_uls_from_nested_divs(html_elem)
             outfile = Path(Resources.TEMP_DIR, "ipcc", wg, "toc.html")
             HtmlLib.write_html_file(ul, outfile, debug=True)
+            assert outfile.exists()
 
 
 

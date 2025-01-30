@@ -33,17 +33,24 @@ class AmiGraph:
     @classmethod
     def _iterate_children(cls, elem, new_html, xpath):
         children = elem.xpath(xpath)
-        if len(children) == 0:
+        if (nchild := len(children)) == 0:
             return None
         ul = ET.SubElement(new_html, "ul")
+        p = ET.SubElement(ul, "p")
+        p.text = f"{nchild}.."
         for child in children:
-            print(f"{child.tag} => ({child.get('class')})")
+            # print(f"{child.tag} => ({child.get('class')})")
             li = ET.SubElement(ul, "li")
             h = child.xpath("h1 | h2 | h3 | h4 | a")
             if h:
                 h0 = h[0]
                 li.text = h0.text
-                print(f" ... {h0.text}")
+                if h0.text is None:
+                    print(f"no text for {child.tag}@({child.attrib.get('class')})")
+                else:
+                    print(f" ... {h0.text}")
+            else:
+                print(f"no title for {child.attrib.get('class')}")
             cls._iterate_children(child, li, xpath)
 
 

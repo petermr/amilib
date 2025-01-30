@@ -308,9 +308,10 @@ class XmlLib:
 
     @staticmethod
     def remove_all(elem, xpaths, debug=False):
-        """removes all sub/elements in result of applying xpath
+        """removes all sub/elements as a result of applying xpath
         :param elem: to remove sub/elements from
-        :param xpaths: """
+        :param xpaths: to apply to elem
+        """
         xpaths = [xpaths] if type(xpaths) is str else xpaths
         if debug:
             logger.debug(f"xpaths for removal {xpaths}")

@@ -1659,6 +1659,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         HtmlLib.remove_single_child_divs(html_elem)
         outfile = Path(Resources.TEMP_DIR, "ipcc", "wg1", "stripped_toplevel.html")
         HtmlLib.write_html_file(html_elem, outfile, debug=True)
+        assert outfile.exists()
 
 
 
