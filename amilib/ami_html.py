@@ -2891,7 +2891,7 @@ class Datatables:
 class HtmlEditor:
     """
     Convenience method for creating HTML tree
-    skeleton html with attributes for head, style, body
+    skeleton html with elements for head, style, body
     hardcoded attributes (Html elements) are:
     .html - the whole document
     .head - the head
@@ -2923,6 +2923,12 @@ class HtmlEditor:
         self.commands = None
 
     def write(self, file, debug=True):
+        """
+        writes self.html to file
+        :param file: to write to
+        :param debug: writes filename to console (default = True)
+        """
+
         HtmlLib.write_html_file(self.html, file, debug=debug)
 
     def add_style(self, selector, value):
@@ -2954,12 +2960,17 @@ class HtmlEditor:
         return self.html_elem
 
     def read_commands(self, command_path):
+        """
+        read commands from a JSON dictionary and store in self.commands
+        :param command_path: path containing JSON dictionary
+        """
         self.commands = json.load(open(command_path))
 
     def execute_commands(self):
         """
         edit element using commands
         still experimental
+        returns None if no commands read
         """
         if self.commands is None:
             logger.warning("No commands, no action")
@@ -2968,7 +2979,10 @@ class HtmlEditor:
             logger.warning("No html_elem, no action")
             return
 
-        commands = self.commands["commands"]
+        commands = self.commands.get("commands")
+        if commands is None:
+            logger.error("commands dictionary must have 'commands' key")
+            return
         for command in commands:
             self.execute_command(command)
 

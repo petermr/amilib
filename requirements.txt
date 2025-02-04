@@ -3,7 +3,7 @@ idna
 # geopy
 graphviz
 lxml
-# matplotlib
+matplotlib
 networkx
 nltk
 numpy
