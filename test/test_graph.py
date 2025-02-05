@@ -3,6 +3,7 @@ tests networks and graphs
 """
 import json
 from pathlib import Path
+import re
 
 import networkx as nx
 
@@ -15,6 +16,9 @@ from test.test_all import AmiAnyTest
 
 logger = Util.get_logger(__name__)
 class AmiGraphTest(AmiAnyTest):
+    """
+    collection of tests for `amilib.graph`
+    """
 
     def test_create_report(self):
         import graphviz
@@ -77,7 +81,7 @@ class AmiGraphTest(AmiAnyTest):
 
             editor.read_html(inpath)
             json_path = Path(ar6, "edit_toplevel.json")
-            logger.info(f"json commands {json_path}")
+            logger.info(f"json commands {json_path=}")
             editor.read_commands(json_path)
             editor.execute_commands()
             editor.add_element(parent_xpath="/html/head", tag="style", text="div {border: solid 1px red; margin: 5px;}")
@@ -114,7 +118,7 @@ class AmiGraphTest(AmiAnyTest):
     def test_toc_workflow(self):
         """
         creates tocs and trees from toplevel HTML
-        adds the components above together
+        collects the components above together
         NEEDS TIDYING
         """
         editor = HtmlEditor()
@@ -152,6 +156,33 @@ class AmiGraphTest(AmiAnyTest):
             outfile = Path(Resources.TEMP_DIR, "ipcc", wg, "toc.html")
             HtmlLib.write_html_file(ul, outfile, debug=True)
             assert outfile.exists()
+
+
+    def test_chapter_graph(self):
+        """
+        simple example of extracting tree from chapter
+        """
+        wg = "wg1"
+        chap = "Chapter01"
+        infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", wg, chap, "html_with_ids.html")
+        html = HtmlLib.parse_html(infile)
+        assert html is not None
+        # sections to be extracted
+        ID_RE = "acknowledgements|Executive|frequently\\-asked\\-questions|\\d+\\.\\d+"
+        ID_NOT_RE = ".*siblings"
+        top_div = html.xpath("/html/body//div[div[@class='h1-container']]")[0]
+        assert top_div is not None
+        maxlev = 99
+        # top_id = top_div.get("id")
+        top_id = "top"
+        for div in top_div.xpath("./div[@class='h1-container']"):
+            id = div.get("id")
+            if not re.match(ID_RE, id) or re.match(ID_NOT_RE, id):
+                continue
+            # print(f"add node {id}")
+            print(f"add edge {top_id}->{id}")
+            # logger.info(f"match {id=}")
+            self.list_divs_with_ids(div, maxlevel=maxlev)
 
 
 
@@ -330,16 +361,16 @@ class AmiGraphTest(AmiAnyTest):
 
 
 
-        # """
-        # This is the main function where the overall workflow is executed.
-        # 1. Reading of toplevel.html and processing with help of json file(edit_toplevel.json) to modify the html file.
-        # 2. The output file is parsed again to clean up unnecessary tags(Html.remove_single_child_divs).
-        # 3. Then again the output is further processed to create a nested list (<ul> and <li>). The html file is in format - toc.html
-        # 4. Then graph is created and visualized by taking the toc.html
-        # These all process is looped through all the three working groups (wg1, wg2, wg3).
-        #
-        # REQUIREMENTS:- 1. Networkx
-        #                2. Matplotlib
-        #
-        # author: Sharon
-        # """
+
+    def list_divs_with_ids(self, parent_div, maxlevel):
+        ID_NOT_RE = ".*siblings"
+        parent_id = parent_div.get("id")
+        if maxlevel >= 0:
+            divs = parent_div.xpath("./div")
+            for div in divs:
+                div_id = div.get('id')
+                if div_id is None or re.match(ID_NOT_RE, div_id):
+                    continue
+                # print(f"add node {div_id=}")
+                print(f"add edge {parent_id}->{div_id}")
+                self.list_divs_with_ids(div, maxlevel-1)

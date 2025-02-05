@@ -2917,7 +2917,7 @@ class HtmlEditor:
         :param create_skeleton: create minimal html element
                  self.html, and self.head, self.body
         """
-        self.html = lxml.etree.Element("html")
+        self.html = ET.Element("html")
         self.head = ET.SubElement(self.html, "head")
         self.body = ET.SubElement(self.html, "body")
         self.commands = None

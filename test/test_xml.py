@@ -214,6 +214,97 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
         assert barx is None
 
 
+class SvgParser:
+    """
+    crudely manage SVG stuff
+    """
+    def __init__(self):
+        """
+
+        """
+        ET.register_namespace("", "http://www.itunes.com/dtds/podcast-1.0.dtd")
+        element = etree.Element(etree.QName("http://www.itunes.com/dtds/podcast-1.0.dtd", "duration"))
+        self.svg = ET.Element("svg")
+
+    def write_file(self, file, debug=True):
+        """
+        write SVG file
+        """
+        if self.cml is None:
+            logger.error("no self.svg to write")
+            return
+        if file is None:
+            logger.error("no output file given")
+            return
+        XmlLib.write_xml(self.svg, file, debug=debug)
+
+
+CML_NS = "http://www.xml-cml.org/schema"
+
+class CmlParser():
+    """
+    simple tool to parse CML files. Not complete
+    """
+    def __init__(self, make_root=True):
+        ET.register_namespace("", CML_NS)
+        self.cml = None if not make_root else ET.Element("cml")
+
+    def read_file(self, path):
+        """
+        read CML from path
+        :param path: to read from
+        """
+        self.cml = XmlLib.parse_xml_file_to_root(path)
+
+    def convert_to_svg(self):
+        """
+        converts CML element to SVG
+        """
+        if self.xml is None:
+            logger.error("no self.cml read")
+            return
+
+        self.svg = SvgParser().svg
+        self.atoms_to_svg()
+        self.bonds_to_svg()
+
+    def atoms_to_svg(self, xpath="//molecule[0]"):
+        atoms = self.cml.xpath(xpath)
+        for atom in atoms:
+            self.display(atom)
+
+    def bonds_to_svg(self):
+        pass
+
+    def display(self, atom):
+        """
+        output simple atom to SVG
+        """
+
+
+    def create_svg(self):
+        """
+        create empty SVG element with svg namespace
+        """
+        svg = SvgParser()
+
+
+class CmlTest(AmiAnyTest):
+    """
+    experiments with CML (does not require CML-framework)
+    """
+    # def __init__(self):
+    #     pass
+
+
+    def test_convert_cml_react_to_svg(self):
+        """
+        reads a CML file with 2D coords and creates an SVG
+        """
+        cml_file = Path(Resources.TEST_RESOURCES_DIR, "cml", "hydrolysis.cml")
+        cml = XmlLib.parse_xml_file_to_root(cml_file)
+        cml_parser = CmlParser()
+
 if __name__ == "__main__":
     logger.info(f"running {__name__} main")
 
@@ -223,7 +314,7 @@ if __name__ == "__main__":
 
     # NYI
     # if config_test:
-    #     ConfigTests.tests()
+    #     ConfigTests.tests()2D coords and
     if xml_test:
         XmlTest.test_replace_nodes_with_text()
         XmlTest.test_replace_nodenames()

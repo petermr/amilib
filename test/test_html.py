@@ -17,7 +17,7 @@ from lxml.etree import HTMLParser, _Element
 
 from amilib.ami_bib import Reference, Biblioref
 from amilib.file_lib import FileLib
-from amilib.ami_html import HTMLSearcher, HtmlTree, HtmlAnnotator, AnnotatorCommand, URLCache, AmiAnnotator
+from amilib.ami_html import HTMLSearcher, HtmlTree, HtmlAnnotator, AnnotatorCommand, URLCache, AmiAnnotator, HtmlEditor
 from amilib.ami_html import HtmlUtil, H_SPAN, CSSStyle, HtmlTidy, HtmlStyle, HtmlClass, SectionHierarchy, AmiFont, \
     FloatBoundary, Footnote, HtmlGroup
 from amilib.html_extra import HtmlExtra
@@ -989,6 +989,41 @@ class HtmlTest(AmiAnyTest):
 
         ugly_string = XmlLib.element_to_string(p_elem, pretty_print=False)
         assert ugly_string == """<p><span>text</span></p>"""
+
+    def test_editor(self):
+        """
+        create simple HTML object and write to file
+        then add child paras and also CSS style (in head)
+        """
+        editor = HtmlEditor()
+        editor.write(Path(Resources.TEMP_DIR, "html", "editor_0.html"), debug=True)
+        # get complete html object
+        html = editor.html
+        assert html is not None
+        # find body by xpath
+        body = editor.html.xpath("body")[0]
+        assert body is not None
+        # add div to body
+        div = ET.SubElement(body, "div")
+        # add p as child of div
+        p = ET.SubElement(div, "p")
+        # add text to p
+        p.text = "AMI loves html"
+        editor.write(Path(Resources.TEMP_DIR, "html", "editor_1.html"), debug=True)
+        # add new paragraph with class
+        p1 = ET.SubElement(div, "p")
+        p1.text = "paragraph with class=warning"
+        # add attribute
+        p1.attrib["class"] = "warning"
+        editor.write(Path(Resources.TEMP_DIR, "html", "editor_2.html"), debug=True)
+        # add <style> to <head> with CSS style
+        style = ET.SubElement(editor.head, "style")
+        # CSS selector (<p class='warning'> and style
+        style.text = "p.warning {background: red;}"
+        editor.write(Path(Resources.TEMP_DIR, "html", "editor_warning.html"), debug=True)
+
+
+
 
 
 def _make_test_elem():

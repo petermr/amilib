@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<cml xmlns="http://www.xml-cml.org/schema">
+	<reaction>
+		<reactionStep>
+			<reactant>
+				<molecule id="m1">
+					<atomArray>
+						<atom id="o1" x="100" y="100" elementType="O"/>
+						<atom id="c1" x="100" y="200" elementType="C"/>
+						<atom id="r1" x="30" y="250" elementType="R"/>
+						<atom id="o2" x="170" y="250" elementType="O"/>
+						<atom id="r2" x="240" y="200" elementType="R"/>
+					</atomArray>
+					<bondArray>
+						<bond id="o1_c1" order="2" atomRefs2="o1 c1"/>
+					</bondArray>
+				</molecule>
+				<molecule id="m2">
+					<atomArray>
+						<atom id="o3" x="250" y="100" elementType="O" formalCharge="-1">
+							<electron count="2"/>
+						</atom>
+						<atom id="h3" x="350" y="100" elementType="H" formalCharge="-1">
+          </atom>
+					</atomArray>
+					<bondArray>
+						<bond id="o1_c1" order="2" atomRefs2="o1 c1"/>
+					</bondArray>
+				</molecule>
+			</reactant>
+			<product>
+				<molecule id="m1">
+					<atomArray>
+						<atom id="o1" x="70" y="70" elementType="O"/>
+						<atom id="c1" x="100" y="200" elementType="C"/>
+						<atom id="r1" x="30" y="250" elementType="R"/>
+						<atom id="o2" x="170" y="250" elementType="O"/>
+						<atom id="r2" x="240" y="200" elementType="R"/>
+					</atomArray>
+					<bondArray>
+						<bond id="o1_c1" order="2" atomRefs2="o1 c1"/>
+					</bondArray>
+				</molecule>
+				<molecule id="m2">
+					<atomArray>
+						<atom id="o3" x="250" y="100" elementType="O" formalCharge="-1">
+							<electron count="2"/>
+						</atom>
+						<atom id="h3" x="350" y="100" elementType="H" formalCharge="-1">
+          </atom>
+					</atomArray>
+					<bondArray>
+						<bond id="o1_c1" order="2" atomRefs2="o1 c1"/>
+					</bondArray>
+				</molecule>
+			</product>
+		</reactionStep>
+	</reaction>
+</cml>
