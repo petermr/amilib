@@ -162,26 +162,34 @@ class AmiGraphTest(AmiAnyTest):
         """
         simple example of extracting tree from chapter
         """
-        wg = "wg1"
-        chap = "Chapter01"
+        wg = "wg2"
+        chap = "Chapter05"
+        # create filename from test/resources
         infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", wg, chap, "html_with_ids.html")
+        logger.info(f"reading from {infile=}")
+        # outfile = Path(Resources.TEMP_DIR, "ipcc", wg, chap, "network.svg")
+        
+        # parse infile to HTML object
         html = HtmlLib.parse_html(infile)
         assert html is not None
-        # sections to be extracted
-        ID_RE = "acknowledgements|Executive|frequently\\-asked\\-questions|\\d+\\.\\d+"
-        ID_NOT_RE = ".*siblings"
+        # sections to be extracted using regexes
+        WANTED_ID_RE = "acknowledgements|Executive|frequently\\-asked\\-questions|\\d+\\.\\d+"
+        # sections to exclude
+        UNWANTED_ID_RE = ".*siblings"
+        # highest level div on chapter page
         top_div = html.xpath("/html/body//div[div[@class='h1-container']]")[0]
         assert top_div is not None
+        # maximum depth to recurse
         maxlev = 99
-        # top_id = top_div.get("id")
         top_id = "top"
-        for div in top_div.xpath("./div[@class='h1-container']"):
+        # iterate over children of top,
+        for div in top_div.xpath("div[@class='h1-container']"):
+            # get "id" attribute value
             id = div.get("id")
-            if not re.match(ID_RE, id) or re.match(ID_NOT_RE, id):
+            # reject if id is not in selected list or in not-selected list
+            if not re.match(WANTED_ID_RE, id) or re.match(UNWANTED_ID_RE, id):
                 continue
-            # print(f"add node {id}")
-            print(f"add edge {top_id}->{id}")
-            # logger.info(f"match {id=}")
+            logger.info(f"add edge {top_id}->{id}")
             self.list_divs_with_ids(div, maxlevel=maxlev)
 
 
@@ -363,14 +371,22 @@ class AmiGraphTest(AmiAnyTest):
 
 
     def list_divs_with_ids(self, parent_div, maxlevel):
-        ID_NOT_RE = ".*siblings"
+        UNWANTED_ID_RE = ".*siblings"
         parent_id = parent_div.get("id")
         if maxlevel >= 0:
-            divs = parent_div.xpath("./div")
+            # find children
+            divs = parent_div.xpath("div")
             for div in divs:
                 div_id = div.get('id')
-                if div_id is None or re.match(ID_NOT_RE, div_id):
+                if div_id is None or re.match(UNWANTED_ID_RE, div_id):
                     continue
                 # print(f"add node {div_id=}")
-                print(f"add edge {parent_id}->{div_id}")
+                logger.info(f"add edge {parent_id}->{div_id}")
+                # TODO write nodes and edges to filesystem for input to network
+                # use context manager
+                # with open(node_edge_file, "r") as f:
+                #     for node in nodes:
+                #         f.write(node)
+                #     for edge in edges:
+                #         f.write(edge)
                 self.list_divs_with_ids(div, maxlevel-1)
