@@ -13,23 +13,23 @@ graph wg2 {
 	5.3 -- "5.3.2"
 	Chapter05 -- 5.4
 	5.4 -- "5.4.1"
-	5.4 -- "box-5.1":"-evidence-for-simultaneous-crop-failures-due-to-climate-change"
+	5.4 -- "box_5.1":_evidence_for_simultaneous_crop_failures_due_to_climate_change
 	5.4 -- "5.4.2"
 	5.4 -- "5.4.3"
-	5.4 -- "box-5.2":"-case-study":-wine
-	5.4 -- "box-5.3":"-pollinators"
-	5.4 -- "box-5.4":"-soil-health"
+	5.4 -- "box_5.2":_case_study:_wine
+	5.4 -- "box_5.3":_pollinators
+	5.4 -- "box_5.4":_soil_health
 	5.4 -- "5.4.4"
 	Chapter05 -- 5.5
 	5.5 -- "5.5.1"
 	5.5 -- "5.5.2"
 	5.5 -- "5.5.3"
 	5.5 -- "5.5.4"
-	5.5 -- "box-5.5":"-alternative-sources-of-protein-for-food-and-feed"
+	5.5 -- "box_5.5":_alternative_sources_of_protein_for_food_and_feed
 	Chapter05 -- 5.6
 	5.6 -- "5.6.1"
 	5.6 -- "5.6.2"
-	5.6 -- "cross-chapter-box-x"
+	5.6 -- cross_chapter_box_x
 	5.6 -- "5.6.3"
 	Chapter05 -- 5.7
 	5.7 -- "5.7.1"
@@ -41,7 +41,7 @@ graph wg2 {
 	5.8 -- "5.8.2"
 	5.8 -- "5.8.3"
 	5.8 -- "5.8.4"
-	5.8 -- "cross-chapter-box":"-moving-plate":-sourcing-food-when-species-distributions-change
+	5.8 -- cross_chapter_box:_moving_plate:_sourcing_food_when_species_distributions_change
 	Chapter05 -- 5.9
 	5.9 -- "5.9.1"
 	5.9 -- "5.9.2"
@@ -52,10 +52,10 @@ graph wg2 {
 	5.10 -- "5.10.1"
 	5.10 -- "5.10.2"
 	5.10 -- "5.10.3"
-	5.10 -- "box-5.7":"-perspectives-of-crop-and-livestock-farmers-on-observed-changes-in-climate-in-the-sahel"
+	5.10 -- "box_5.7":_perspectives_of_crop_and_livestock_farmers_on_observed_changes_in_climate_in_the_sahel
 	5.10 -- "5.10.4"
 	Chapter05 -- 5.11
-	5.11 -- "box-5.8":"-climate-adaptation-and-maladaptation-in-cocoa-and-coffee-production"
+	5.11 -- "box_5.8":_climate_adaptation_and_maladaptation_in_cocoa_and_coffee_production
 	5.11 -- "5.11.1"
 	5.11 -- "5.11.2"
 	5.11 -- "5.11.3"
@@ -64,9 +64,9 @@ graph wg2 {
 	5.12 -- "5.12.1"
 	5.12 -- "5.12.2"
 	5.12 -- "5.12.3"
-	5.12 -- "box-5.9":"-desert-locust-case-study":-climate-as-compounding-effect-on-food-security
+	5.12 -- "box_5.9":_desert_locust_case_study:_climate_as_compounding_effect_on_food_security
 	5.12 -- "5.12.4"
-	5.12 -- "box-5.10":"-food-safety-interactions-with-food-security-and-malnutrition"
+	5.12 -- "box_5.10":_food_safety_interactions_with_food_security_and_malnutrition
 	5.12 -- "5.12.5"
 	5.12 -- "5.12.6"
 	5.12 -- "5.12.7"
@@ -78,16 +78,10 @@ graph wg2 {
 	5.13 -- "5.13.4"
 	Chapter05 -- 5.14
 	5.14 -- "5.14.1"
-	5.14 -- "box-5.11":"-agroecology-as-a-transformative-climate-change-adaptation-approach"
+	5.14 -- "box_5.11":_agroecology_as_a_transformative_climate_change_adaptation_approach
 	5.14 -- "5.14.2"
-	5.14 -- "box-5.12":"-is-climate-smart-agriculture-overlooking-gender-and-power-relations?"
-	5.14 -- "box-5.13":"-supporting-youth-adaptation-in-food-systems"
+	5.14 -- "box_5.12":"_is_climate_smart_agriculture_overlooking_gender_and_power_relations?"
+	5.14 -- "box_5.13":_supporting_youth_adaptation_in_food_systems
 	5.14 -- "5.14.3"
-	5.14 -- "cross-working-group-box-bioeconomy"
-	Chapter05 -- "frequently-asked-questions"
-	"frequently-asked-questions" -- "FAQ 5.1"
-	"frequently-asked-questions" -- "FAQ 5.2"
-	"frequently-asked-questions" -- "FAQ 5.3"
-	"frequently-asked-questions" -- "FAQ 5.4"
-	"frequently-asked-questions" -- "FAQ 5.5"
+	5.14 -- cross_working_group_box_bioeconomy
 }

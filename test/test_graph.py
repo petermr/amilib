@@ -189,24 +189,32 @@ class AmiGraphTest(AmiAnyTest):
             FileLib.delete_file(gv_output)
             logger.info(f"file deleted {gv_output.absolute()=}")
         assert not gv_output.exists(), f"deleted {gv_output.absolute()}"
-        ipcc = graphviz.Graph(top_id, filename=gv_output, engine='fdp')
+        graph = graphviz.Graph(top_id, filename=str(gv_output), engine='fdp')
 
-        ipcc.edge(wg, chap)
+        graph.edge(wg, chap)
 
-        # ipcc.view()
         # iterate over children of top,
         for div in top_div.xpath("div[@class='h1-container']"):
             # get "id" attribute value
-            id = div.get("id")
+            id = self.get_cleaned_id(div)
             # reject if id is not in selected list or in not-selected list
             if not re.match(WANTED_ID_RE, id) or re.match(UNWANTED_ID_RE, id):
                 continue
             logger.info(f"add edge {chap}->{id}")
-            ipcc.edge(chap, id)
-            self.list_divs_with_ids(div, maxlevel=maxlev, graph=ipcc)
+            graph.edge(chap, id)
+            self.list_divs_with_ids(div, maxlevel=maxlev, graph=graph)
 
-        if ipcc is not None:
-            ipcc.view()
+        if graph is not None:
+            graph.view()
+
+    def get_cleaned_id(self, div):
+        id = div.get("id")
+        id = id.replace("-", "_")
+        id = id.replace("\"", "")
+        id = id.split(":")[0]
+        logger.info(f"{id=}")
+
+        return id
 
     """
             import graphviz
@@ -399,12 +407,13 @@ class AmiGraphTest(AmiAnyTest):
 
     def list_divs_with_ids(self, parent_div, maxlevel, graph=None):
         UNWANTED_ID_RE = ".*siblings"
-        parent_id = parent_div.get("id")
+        parent_id = self.get_cleaned_id(parent_div)
         if maxlevel >= 0:
             # find children
             divs = parent_div.xpath("div")
             for div in divs:
                 div_id = div.get('id')
+                div_id = div_id.replace("-", "_")
                 if div_id is None or re.match(UNWANTED_ID_RE, div_id):
                     continue
                 # print(f"add node {div_id=}")
