@@ -81,8 +81,11 @@ class AmiSearch:
 
         if not phrases:
             phrases = AmiDictionary._read_phrases_from_dictionary(html_dict_path)
+
         phrase_counter_by_para_id = HtmlLib.search_phrases_in_paragraphs(
             paras, phrases, markup=html_dict_path)
+        phrase_counter_by_para_id = HtmlLib.search_phrases_in_paragraphs(
+            paras, phrases, markup=True, url_base=html_dict_path)
         # logger.info(f"phrase_counter_by_para_id {phrase_counter_by_para_id}")
         # logger.info(f"keys: {len(phrase_counter_by_para_id)}")
         # write marked_up html. The 'paras' are views on the original file
@@ -91,11 +94,13 @@ class AmiSearch:
         assert Path(outpath).exists()
         if make_counter:
             counter = AmiSearch.add_counts_from_outpath(outpath)
+            logger.info(f"counts from {outpath=} {len(counter)=}")
             if reportpath:
                 most_common = counter.most_common()
                 logger.info(f"most common: {most_common}")
                 with open(reportpath, "w", encoding="UTF-8") as f:
                     f.write(str(most_common))
+                    logger.info(f"wrote most_common to {reportpath=}")
         return html_elem
 
     @classmethod
@@ -110,17 +115,23 @@ class AmiSearch:
         <a style="border:solid 1px; background: #ffbbbb;" 
         href="/Users/pm286/workspace/amilib/test/resources/dictionary/climate/carbon_cycle.xml"
          title="anthropogenic">anthropogenic</a>
+         
+         Sometimes no href (WHY?) THIS IS A BUG
+         <a style="border:solid 1px; background: #ffbbbb;" 
+         class="annotation">carbon dioxide removal</a>
          """
         htmlx = HtmlLib.parse_html(htmlpath)
         annotations = AmiAnnotator.get_anchors_with_annotations(htmlx)
         counter = Counter()
         for annotation in annotations:
             href = annotation.attrib.get("href")
+            # markup_text = href if href is not None else annotation.text
+            markup_text = href
             clazz = annotation.attrib.get("class")
-            if not href and not clazz=='annotation':
+            if not markup_text and not clazz=='annotation':
                 logger.warning(f"annotation has no href or class='annotation' {ET.tostring(annotation)}")
                 continue
-            counter[href] += 1
+            counter[markup_text] += 1
 
 
         return counter

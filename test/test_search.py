@@ -29,6 +29,15 @@ class SearchTest(AmiAnyTest):
         """
         read inpath HTML, and use dict to match words and phrases
         """
+        """
+        TODO
+        NOTE: annotates html but fails to use dictionary, so fails 
+        to add hrefs to words.
+        may be simple fix 
+        look in def add_counts_from_outpath()
+        the parameter `markup` should be set to Tru, not a dictionary name
+        
+        """
         stem = "carbon_cycle"
         inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", "html_with_ids.html")
         assert inpath.exists()

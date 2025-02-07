@@ -169,7 +169,10 @@ class AmiAnnotator:
         if elem is None:
             logger.error("None element")
             return None
-        return elem.xpath(f".//a[@class='{ANNOTATION}']")
+        annotations = elem.xpath(f".//a[@class='{ANNOTATION}']")
+        if len(annotations) == 0:
+            logger.warning(f"expected some annotations, found none")
+        return annotations
 
     def annotate_elem(self, elem):
         """

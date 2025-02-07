@@ -5,10 +5,12 @@ import json
 from pathlib import Path
 import re
 
+import graphviz
 import networkx as nx
 
 from amilib.ami_graph import AmiGraph
 from amilib.ami_html import HtmlLib, HtmlEditor
+from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.xml_lib import XmlLib
 from test.resources import Resources
@@ -181,7 +183,17 @@ class AmiGraphTest(AmiAnyTest):
         assert top_div is not None
         # maximum depth to recurse
         maxlev = 99
-        top_id = "top"
+        top_id = wg
+        gv_output = Path(Resources.TEMP_DIR, "ipcc", wg, chap, f"toc.gv")
+        if gv_output.exists():
+            FileLib.delete_file(gv_output)
+            logger.info(f"file deleted {gv_output.absolute()=}")
+        assert not gv_output.exists(), f"deleted {gv_output.absolute()}"
+        ipcc = graphviz.Graph(top_id, filename=gv_output, engine='fdp')
+
+        ipcc.edge(wg, chap)
+
+        # ipcc.view()
         # iterate over children of top,
         for div in top_div.xpath("div[@class='h1-container']"):
             # get "id" attribute value
@@ -189,10 +201,25 @@ class AmiGraphTest(AmiAnyTest):
             # reject if id is not in selected list or in not-selected list
             if not re.match(WANTED_ID_RE, id) or re.match(UNWANTED_ID_RE, id):
                 continue
-            logger.info(f"add edge {top_id}->{id}")
-            self.list_divs_with_ids(div, maxlevel=maxlev)
+            logger.info(f"add edge {chap}->{id}")
+            ipcc.edge(chap, id)
+            self.list_divs_with_ids(div, maxlevel=maxlev, graph=ipcc)
 
+        if ipcc is not None:
+            ipcc.view()
 
+    """
+            import graphviz
+            gv_output = 'fdpclust.gv'
+            ipcc = graphviz.Graph('IPCC', filename=gv_output, engine='fdp')
+    
+    
+            with ipcc.subgraph(name='clusterIPCC') as a:
+                a.edge('toc1', 'ipcc')
+    
+    
+            ipcc.view()
+    """
 
 
 # """
@@ -296,11 +323,11 @@ class AmiGraphTest(AmiAnyTest):
         """
         editor = HtmlEditor()
         networks = {}
-        wgs = ["wg1", "wg2", "wg3"]
+        # wgs = ["wg1", "wg2", "wg3"]
         wgs = ["wg1"]
 
         for wg in wgs:
-            print(f"**** current wg {wg}")
+            logger.info(f"**** current wg {wg}")
             ar6 = Path(Resources.TEST_RESOURCES_DIR, "ar6")
             IN_WG = Path(ar6, wg)
             OUT_WG = Path(Resources.TEMP_DIR, "ipcc", wg)
@@ -370,7 +397,7 @@ class AmiGraphTest(AmiAnyTest):
 
 
 
-    def list_divs_with_ids(self, parent_div, maxlevel):
+    def list_divs_with_ids(self, parent_div, maxlevel, graph=None):
         UNWANTED_ID_RE = ".*siblings"
         parent_id = parent_div.get("id")
         if maxlevel >= 0:
@@ -382,6 +409,8 @@ class AmiGraphTest(AmiAnyTest):
                     continue
                 # print(f"add node {div_id=}")
                 logger.info(f"add edge {parent_id}->{div_id}")
+                if graph is not None:
+                    graph.edge(parent_id, div_id)
                 # TODO write nodes and edges to filesystem for input to network
                 # use context manager
                 # with open(node_edge_file, "r") as f:
@@ -389,4 +418,45 @@ class AmiGraphTest(AmiAnyTest):
                 #         f.write(node)
                 #     for edge in edges:
                 #         f.write(edge)
-                self.list_divs_with_ids(div, maxlevel-1)
+                self.list_divs_with_ids(div, maxlevel-1, graph=graph)
+
+
+    def test_graphviz2(self):
+        """
+        probably a duplicate
+        """
+        import graphviz
+        gv_output = 'fdpclust.gv'
+        ipcc = graphviz.Graph('IPCC', filename=gv_output, engine='fdp')
+
+        # glossary = ipcc.node('glossaryx', URL='https://ipcc.ch')
+        ipcc.edge('ipcc', 'glossary')
+
+        with ipcc.subgraph(name='clusterIPCC') as a:
+            a.edge('toc1', 'ipcc')
+
+            with a.subgraph(name='clusterWG1') as wg1:
+                wg1.edge('wg1.Chap01', 'toc1')
+                wg1.edge('wg1.Chap02', 'toc1')
+                wg1.edge('wg1.Chap03', 'toc1')
+                wg1.edge('wg1.Chap04', 'toc1')
+                wg1.edge('wg1.Chap05', 'toc1')
+                wg1.edge('wg1.Chap06', 'toc1')
+            a.edge('toc2', 'ipcc')
+            with a.subgraph(name='clusterWG2') as wg2:
+                wg2.edge('wg2.Chap01', 'toc2')
+                wg2.edge('wg2.Chap02', 'toc2')
+                wg2.edge('wg2.Chap03', 'toc2')
+                wg2.edge('wg2.Chap04', 'toc2')
+                wg2.edge('wg2.Chap05', 'toc2')
+                wg2.edge('wg2,Chap06', 'toc2')
+            a.edge('toc3', 'ipcc')
+            with a.subgraph(name='clusterWG3') as wg3:
+                wg3.edge('wg3.Chap01', 'toc3')
+                wg3.edge('wg3.Chap02', 'toc3')
+                wg3.edge('wg3.Chap03', 'toc3')
+                wg3.edge('wg3.Chap04', 'toc3')
+                wg3.edge('wg3.Chap05', 'toc3')
+                wg3.edge('wg3,Chap06', 'toc3')
+
+        ipcc.view()

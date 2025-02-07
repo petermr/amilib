@@ -246,7 +246,7 @@ class CmlParser():
     simple tool to parse CML files. Not complete
     """
     def __init__(self, make_root=True):
-        ET.register_namespace("", CML_NS)
+        ET.register_namespace("cml", CML_NS)
         self.cml = None if not make_root else ET.Element("cml")
 
     def read_file(self, path):

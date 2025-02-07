@@ -1,33 +1,21 @@
-graph IPCC {
-	glossaryx [URL="https://ipcc.ch"]
-	ipcc -- glossary
-	subgraph clusterIPCC {
-		toc1 -- ipcc
-		subgraph clusterWG1 {
-			"wg1.Chap01" -- toc1
-			"wg1.Chap02" -- toc1
-			"wg1.Chap03" -- toc1
-			"wg1.Chap04" -- toc1
-			"wg1.Chap05" -- toc1
-			"wg1.Chap06" -- toc1
-		}
-		toc2 -- ipcc
-		subgraph clusterWG2 {
-			"wg2.Chap01" -- toc2
-			"wg2.Chap02" -- toc2
-			"wg2.Chap03" -- toc2
-			"wg2.Chap04" -- toc2
-			"wg2.Chap05" -- toc2
-			"wg2,Chap06" -- toc2
-		}
-		toc3 -- ipcc
-		subgraph clusterWG3 {
-			"wg3.Chap01" -- toc3
-			"wg3.Chap02" -- toc3
-			"wg3.Chap03" -- toc3
-			"wg3.Chap04" -- toc3
-			"wg3.Chap05" -- toc3
-			"wg3,Chap06" -- toc3
-		}
-	}
+graph top {
+	ipcc -- top
+	ipcc -- a
+	ipcc -- b
+	top -- Executive
+	top -- 5.1
+	top -- 5.2
+	top -- 5.3
+	top -- 5.4
+	top -- 5.5
+	top -- 5.6
+	top -- 5.7
+	top -- 5.8
+	top -- 5.9
+	top -- 5.10
+	top -- 5.11
+	top -- 5.12
+	top -- 5.13
+	top -- 5.14
+	top -- "frequently-asked-questions"
 }
