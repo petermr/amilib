@@ -1,13 +1,16 @@
 """
 for drawing networks/graphs
 """
+import re
 from pathlib import Path
 
+import graphviz
 import lxml.etree as ET
 import networkx as nx
 from matplotlib import pyplot as plt
 
-from amilib.ami_html import HtmlLib
+from amilib.ami_html import HtmlLib, logger
+from amilib.file_lib import FileLib
 from test.resources import Resources
 
 
@@ -160,5 +163,98 @@ class AmiGraph:
         To Show the graph (optional)
         plt.show()
         """
+
+    @classmethod
+    def create_and_display_chapter_toc_network(cls, wg, chapter, infile, gv_output, maxlev=4, engine='fdp'):
+        """
+        :param wg: "wg1", "wg2", "wg3 etc.
+        :param chapter: Chapter01 etc
+        :param infile: *.html_with_ids.html at present
+        :param gv_output: output Graphviz file
+        :param maxlev: maximum depth of sub/subsections (default 4)
+        :param engine: layout engine (default fdp)
+        """
+        logger.info(f"reading from {infile=}")
+        # parse infile to HTML object
+        html = HtmlLib.parse_html(infile)
+        assert html is not None
+        # sections to be extracted using regexes
+        WANTED_ID_RE = ".*acknowledgements|.*Executive|.*frequently\\-asked\\-questions|(n_)?\\d+(\\_\\d+)*"
+        # sections to exclude
+        UNWANTED_ID_RE = ".*siblings"
+        # highest level div on chapter page
+        top_div = html.xpath("/html/body//div[div[@class='h1-container']]")[0]
+        assert top_div is not None
+        # maximum depth to recurse
+        top_id = wg
+        if gv_output.exists():
+            FileLib.delete_file(gv_output)
+            # logger.info(f"file deleted {gv_output.absolute()=}")
+        # assert not gv_output.exists(), f"deleted {gv_output.absolute()}"
+        graph = graphviz.Digraph(top_id, filename=str(gv_output), engine=engine)
+        graph.edge(wg, chapter)
+        # iterate over children of top,
+        for div in top_div.xpath("div[@class='h1-container']"):
+            # get "id" attribute value
+            id = cls.get_cleaned_id(div)
+            # reject if id is not in selected list or in not-selected list
+            if not re.match(WANTED_ID_RE, id) or re.match(UNWANTED_ID_RE, id):
+                logger.info(f"skipped {id=}")
+                continue
+            # logger.info(f"add edge {chap}->{id}")
+            graph.edge(chapter, id)
+            cls.list_divs_with_ids(div, maxlevel=maxlev, graph=graph)
+        if graph is not None:
+            """NOTE the PDF viewer caches the displays and does not update
+            this wasted a lot of time
+            """
+            graph.view()
+
+    @classmethod
+    def list_divs_with_ids(cls, parent_div, maxlevel, graph=None):
+
+        """
+        recursively find descendants and create graph
+        :param parent_div:
+        :param maxlevel: decremented for each recursion
+        :param graph: if not none, adds edges to graph
+        """
+        UNWANTED_ID_RE = ".*siblings"
+        parent_id = cls.get_cleaned_id(parent_div)
+        if maxlevel >= 0:
+            # find children
+            divs = parent_div.xpath("div")
+            for div in divs:
+                div_id = cls.get_cleaned_id(div)
+                if div_id is None or re.match(UNWANTED_ID_RE, div_id):
+                    logger.info(f"skipped {div_id=}")
+                    continue
+                # print(f"add node {div_id=}")
+                # logger.info(f"add edge {graph} {parent_id}->{div_id}")
+                if graph is not None:
+                    graph.edge(parent_id, div_id)
+                    # logger.info(f"edge: {graph} {parent_id}->{div_id}")
+                cls.list_divs_with_ids(div, maxlevel-1, graph=graph)
+
+
+    @classmethod
+    def get_cleaned_id(self, div):
+        """
+        I think node ids should not look like (DP) numbers so replace "." and
+        prefix with "n_"
+        """
+        id = div.get("id")
+        id = id.replace("-", "_")
+        id = id.replace(".", "_")
+        id = id.replace("\"", "")
+        if ":" in id:
+            ids = id.split(":")
+            id = ids[0]
+        id = f"n_{id}"
+        # logger.info(f"{id=}")
+
+        return id
+
+
 
 

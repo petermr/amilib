@@ -162,72 +162,14 @@ class AmiGraphTest(AmiAnyTest):
 
     def test_chapter_graph(self):
         """
-        simple example of extracting tree from chapter
+        simple example of extracting and plotting TOC tree from chapter
         """
         wg = "wg2"
-        chap = "Chapter05"
+        chapter = "Chapter05"
         # create filename from test/resources
-        infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", wg, chap, "html_with_ids.html")
-        logger.info(f"reading from {infile=}")
-        # outfile = Path(Resources.TEMP_DIR, "ipcc", wg, chap, "network.svg")
-        
-        # parse infile to HTML object
-        html = HtmlLib.parse_html(infile)
-        assert html is not None
-        # sections to be extracted using regexes
-        WANTED_ID_RE = "acknowledgements|Executive|frequently\\-asked\\-questions|\\d+\\.\\d+"
-        # sections to exclude
-        UNWANTED_ID_RE = ".*siblings"
-        # highest level div on chapter page
-        top_div = html.xpath("/html/body//div[div[@class='h1-container']]")[0]
-        assert top_div is not None
-        # maximum depth to recurse
-        maxlev = 99
-        top_id = wg
-        gv_output = Path(Resources.TEMP_DIR, "ipcc", wg, chap, f"toc.gv")
-        if gv_output.exists():
-            FileLib.delete_file(gv_output)
-            logger.info(f"file deleted {gv_output.absolute()=}")
-        assert not gv_output.exists(), f"deleted {gv_output.absolute()}"
-        graph = graphviz.Graph(top_id, filename=str(gv_output), engine='fdp')
-
-        graph.edge(wg, chap)
-
-        # iterate over children of top,
-        for div in top_div.xpath("div[@class='h1-container']"):
-            # get "id" attribute value
-            id = self.get_cleaned_id(div)
-            # reject if id is not in selected list or in not-selected list
-            if not re.match(WANTED_ID_RE, id) or re.match(UNWANTED_ID_RE, id):
-                continue
-            logger.info(f"add edge {chap}->{id}")
-            graph.edge(chap, id)
-            self.list_divs_with_ids(div, maxlevel=maxlev, graph=graph)
-
-        if graph is not None:
-            graph.view()
-
-    def get_cleaned_id(self, div):
-        id = div.get("id")
-        id = id.replace("-", "_")
-        id = id.replace("\"", "")
-        id = id.split(":")[0]
-        logger.info(f"{id=}")
-
-        return id
-
-    """
-            import graphviz
-            gv_output = 'fdpclust.gv'
-            ipcc = graphviz.Graph('IPCC', filename=gv_output, engine='fdp')
-    
-    
-            with ipcc.subgraph(name='clusterIPCC') as a:
-                a.edge('toc1', 'ipcc')
-    
-    
-            ipcc.view()
-    """
+        infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", wg, chapter, "html_with_ids.html")
+        gv_output = Path(Resources.TEMP_DIR, "ipcc", wg, chapter, f"toc.gv")
+        AmiGraph.create_and_display_chapter_toc_network(wg, chapter, infile, gv_output)
 
 
 # """
@@ -404,30 +346,6 @@ class AmiGraphTest(AmiAnyTest):
 
 
 
-
-    def list_divs_with_ids(self, parent_div, maxlevel, graph=None):
-        UNWANTED_ID_RE = ".*siblings"
-        parent_id = self.get_cleaned_id(parent_div)
-        if maxlevel >= 0:
-            # find children
-            divs = parent_div.xpath("div")
-            for div in divs:
-                div_id = div.get('id')
-                div_id = div_id.replace("-", "_")
-                if div_id is None or re.match(UNWANTED_ID_RE, div_id):
-                    continue
-                # print(f"add node {div_id=}")
-                logger.info(f"add edge {parent_id}->{div_id}")
-                if graph is not None:
-                    graph.edge(parent_id, div_id)
-                # TODO write nodes and edges to filesystem for input to network
-                # use context manager
-                # with open(node_edge_file, "r") as f:
-                #     for node in nodes:
-                #         f.write(node)
-                #     for edge in edges:
-                #         f.write(edge)
-                self.list_divs_with_ids(div, maxlevel-1, graph=graph)
 
 
     def test_graphviz2(self):
