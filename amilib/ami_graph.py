@@ -209,6 +209,8 @@ class AmiGraph:
             this wasted a lot of time
             """
             graph.view()
+        return graph
+
 
     @classmethod
     def list_divs_with_ids(cls, parent_div, maxlevel, graph=None):

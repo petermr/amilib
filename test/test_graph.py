@@ -169,8 +169,18 @@ class AmiGraphTest(AmiAnyTest):
         # create filename from test/resources
         infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", wg, chapter, "html_with_ids.html")
         gv_output = Path(Resources.TEMP_DIR, "ipcc", wg, chapter, f"toc.gv")
-        AmiGraph.create_and_display_chapter_toc_network(wg, chapter, infile, gv_output)
+        graph = AmiGraph.create_and_display_chapter_toc_network(wg, chapter, infile, gv_output)
+        logger.info(f"wrote graphviz file {gv_output}")
+        svg_dir = Path(Resources.TEMP_DIR, "ipcc", wg, chapter)
+        svg_output = Path(svg_dir, f"toc.svg")
+        graph.format = 'svg'
 
+        # graphviz.render(filepath=svg_output).replace('\\', '/')
+
+        engine = "fdp"
+        # engine = "neato"
+        svg_path = graph.render(filename=svg_output, engine=engine, format="svg")
+        logger.info(f"wrote svg {svg_output}")
 
 # """
 # There are two files which are used:-
