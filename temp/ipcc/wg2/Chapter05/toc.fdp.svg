@@ -42,8 +42,10 @@
 <!-- n_5_1 -->
 <g id="node4" class="node">
 <title>section_5.1</title>
-<ellipse fill="pink" stroke="black" cx="704.52" cy="-413.98" rx="33.95" ry="18" title="section_5.1"/>
+<ellipse fill="pink" stroke="black" cx="704.52" cy="-413.98" rx="33.95" ry="18" title="5.1 Introduction"/>
+<a href="https://htmlpreview.github.io/?https://github.com/petermr/amilib/blob/main/test/resources/ipcc/cleaned_content/wg2/Chapter05/html_with_ids.html#5.1">
 <text text-anchor="middle" x="704.52" y="-408.93" font-family="Times,serif" font-size="14.00">n_5_1</text>
+</a>
 </g>
 <!-- Chapter05&#45;&gt;n_5_1 -->
 <g id="edge3" class="edge">
