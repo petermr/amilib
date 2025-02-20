@@ -6,7 +6,7 @@ lxml
 matplotlib
 networkx
 nltk
-numpy
+numpy~=1.26.4
 packaging
 pandas
 pdfminer.six
