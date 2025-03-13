@@ -1646,7 +1646,14 @@ class WikipediaPage:
         a_elems = td0.xpath("span/a[img]")
         return a_elems[0] if len(a_elems) > 0 else None
 
-
+    def disambiguate(self,
+        include=None,
+        exclude=None
+    ):
+        new_page = None
+        if include is None and exclude is None:
+            logger.error("disambiguate requires exactly one of include/exclude")
+        return new_page
 
 class WikipediaPara:
     """
@@ -2939,6 +2946,10 @@ class WikipediaBasicInfo:
     def get_local_description(self):
         key = self.LOCAL_DESCRIPTION
         return self.get_value_for_key(key)
+
+    def get_central_description(self):
+        return self.get_value_for_key(self.CENTRAL_DESCRIPTION)
+
 
     def get_value_for_key(self, key):
         return self.table_dict[key]

@@ -534,6 +534,52 @@ THIS SEEMS TO BE THE BEST
         assert XmlLib.element_to_string(img_elems[0]) == \
             '<img alt="Map of the Bay of Bengal" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/264px-Bay_of_Bengal_map.png" decoding="async" width="264" height="269" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/396px-Bay_of_Bengal_map.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/528px-Bay_of_Bengal_map.png 2x" data-file-width="1000" data-file-height="1019"/>\n'
 
+    def test_clean_disambiguation_page(self):
+        """
+        includes or excludes links in WP disambiguation page
+        very empirical!
+        """
+        outdir = Path(Resources.TEMP_DIR, "disambig")
+        FileLib.force_mkdir(outdir)
+        page_names = [
+            "acidification",
+            "anthropogenic",
+            "katrina",
+            "migration",
+            "sequestration",
+            "superdome",
+            "tipping point",
+        ]
+        disambig_include = [
+            "meteorology",
+            "science",
+            "technical",
+        ]
+        disambig_exclude = [
+            "arts",
+            "entertainment",
+            "literature",
+            "media",
+            "music",
+            "people",
+            "places",
+            "proper name",
+            "television",
+        ]
+        for page_name in page_names:
+            page_name1 = page_name.replace(" ", "_").lower()
+            page_dir = Path(outdir, page_name1)
+            page = WikipediaPage.lookup_wikipedia_page_for_term(page_name)
+            if page is not None and page.is_disambiguation_page():
+                new_page = page.disambiguate(
+                    include=disambig_include,
+                    exclude=disambig_exclude
+                )
+                HtmlLib.write_html_file(page.html_elem, Path(page_dir, "disambig.html"), debug=True)
+                HtmlLib.write_html_file(page.html_elem, Path(page_dir, "disambig_clean.html"), debug=True)
+
+
+
 
 
 class WikidataTest(base_test):
