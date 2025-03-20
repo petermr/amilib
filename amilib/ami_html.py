@@ -2647,6 +2647,47 @@ font-size: 12px;
         for div in single_child_divs:
             HtmlUtil.remove_element_in_hierarchy(div)
 
+    @classmethod
+    def extract_styles_to_css_file(cls, html, css_file=None, link=False):
+        """
+        extracts all <html><head><style> elements to CSS file
+        :param html:html element with <head>
+
+        """
+        if html is None:
+            logger.error("no html element")
+            return None
+        if css_file is None:
+            logger.error("no style_file element")
+            return None
+        css_file.parent.mkdir(exist_ok=True)
+        styles = html.xpath("/html/head/style")
+        with open(css_file, "w", encoding="UTF-8") as f:
+            for style in styles:
+                f.write(f"{style.text}\n")
+        if link:
+            cls.delete_styles_replace_by_link_css(html, href=css_file)
+        return styles
+
+    @classmethod
+    def delete_styles_replace_by_link_css(cls, html, href):
+        """
+        delete all <html><head><style>
+        optionally add link to css
+        :param html: html element with head
+        :param href: optional css resource to link to. Does NOT test for existence
+        """
+        if html is None:
+            logger.error("no html given")
+            return
+        styles = html.xpath("/html/head/style")
+        for style in styles:
+            XmlLib.remove(style)
+        if href:
+            link = ET.SubElement(HtmlLib.get_head(html_elem=html), "link")
+            link.attrib["rel"] = "stylesheet"
+            link.attrib["href"] = str(href)
+
 
 
 class Datatables:
@@ -2947,6 +2988,8 @@ class HtmlEditor:
 
         style = ET.SubElement(self.head, "style")
         style.text = f"{selector} {value}"
+
+
 
     def read_html(self, inpath: Path | str) -> _Element:
         """

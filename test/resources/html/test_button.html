@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Button Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #container {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      min-height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Click the button to add "OK"</h1>
+  <button id="addButton">Add "OK"</button>
+
+  <div id="container"></div>
+
+  <script>
+    // Get references to the button and the container div
+    const button = document.getElementById('addButton');
+    const container = document.getElementById('container');
+
+    // Set up the event listener for the button
+    button.addEventListener('click', () => {
+      // Add "OK" to the container div
+      const newContent = document.createElement('p');
+      newContent.textContent = 'OK';
+      container.appendChild(newContent);
+   	  addButton.remove(); 
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Display</title>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      margin: 0 auto;
+    }
+
+    .tables {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .caption {
+      cursor: pointer;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      text-align: center;
+      margin-bottom: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .caption:hover {
+      background-color: #e0e0e0;
+    }
+
+    .table {
+      display: none;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .table th, .table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    input[type="radio"]:checked + label + .tables .table {
+      display: table;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="tables">
+      <!-- Table 1 -->
+      <input type="radio" id="table1" name="table" />
+      <label class="caption" for="table1">Table 1 Caption</label>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alice</td>
+              <td>24</td>
+            </tr>
+            <tr>
+              <td>Bob</td>
+              <td>30</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table 2 -->
+      <input type="radio" id="table2" name="table" />
+      <label class="caption" for="table2">Table 2 Caption</label>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Phone</td>
+              <td>$500</td>
+            </tr>
+            <tr>
+              <td>Laptop</td>
+              <td>$1000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table 3 -->
+      <input type="radio" id="table3" name="table" />
+      <label class="caption" for="table3">Table 3 Caption</label>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>City</th>
+              <th>Population</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>New York</td>
+              <td>8,623,000</td>
+            </tr>
+            <tr>
+              <td>Los Angeles</td>
+              <td>3,990,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+

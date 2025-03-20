@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			Tab Display
+		</title>
+		<style>
+		.tab_list div {
+		cursor: pointer;
+		margin: 5px 0;
+		padding: 5px;
+		background-color: #f0f0f0;
+		border: 1px solid #ccc;
+		}
+		.tab_display table {
+		display: none;
+		width: 100%;
+		border-collapse: collapse;
+		}
+		.tab_display table, .tab_display th, .tab_display td {
+		border: 1px solid black;
+		}
+		.tab_display th, .tab_display td {
+		padding: 8px;
+		text-align: left;
+		}
+		</style>
+	</head>
+	<body>
+	  <table>
+		<tr>
+			<td>
+		<div class="tab_list">
+			<div onclick="showTable('table1')">
+				Caption 1
+			</div>
+			<div onclick="showTable('table2')">
+				Caption 2
+			</div>
+			<div onclick="showTable('table3')">
+				Caption 3
+			</div>
+		</div>
+	</td>
+	<td>
+		<div class="tab_display">
+			<table id="table1">
+				<tr>
+					<th>
+						Header 1
+					</th>
+					<th>
+						Header 2
+					</th>
+				</tr>
+				<tr>
+					<td>
+						Data 1
+					</td>
+					<td>
+						Data 2
+					</td>
+				</tr>
+			</table>
+			<table id="table2">
+				<tr>
+					<th>
+						Header A
+					</th>
+					<th>
+						Header B
+					</th>
+				</tr>
+				<tr>
+					<td>
+						Data A
+					</td>
+					<td>
+						Data B
+					</td>
+				</tr>
+			</table>
+			<table id="table3">
+				<tr>
+					<th>
+						Header X
+					</th>
+					<th>
+						Header Y
+					</th>
+				</tr>
+				<tr>
+					<td>
+						Data X
+					</td>
+					<td>
+						Data Y
+					</td>
+				</tr>
+			</td>
+			  </tr>
+			</table>
+		</div>
+		<script>
+		function showTable(tableId) {
+		var tables = document.querySelectorAll('.tab_display table');
+		tables.forEach(function(table) {
+		table.style.display = 'none';
+		});
+		document.getElementById(tableId).style.display = 'table';
+		}
+		</script>
+	  </table>
+	</body>
+</html>

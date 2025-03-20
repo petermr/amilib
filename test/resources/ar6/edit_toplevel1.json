@@ -1,0 +1,21 @@
+{"commands": [
+  {"delete": 
+	  {"xpath": 
+		  [
+		"//noscript",
+		"//script",
+		"//meta",
+		"//style",
+        "//link",
+        "//footer",
+        "//picture",
+        "//div[@class='artistLink']",
+        "//div[@class='nav2']",
+        "//div[count(*)=0]",
+        "//div[img]",
+        "//div[count(*)= 0]",
+           ],
+       }, 
+     },
+   ],
+}

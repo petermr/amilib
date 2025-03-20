@@ -1022,6 +1022,30 @@ class HtmlTest(AmiAnyTest):
         style.text = "p.warning {background: red;}"
         editor.write(Path(Resources.TEMP_DIR, "html", "editor_warning.html"), debug=True)
 
+    def test_extract_styles_into_stylesheet(self):
+        """
+        extract list of <head><style> elements into stylesheet
+        optionally replace styles by single call to load stylesheet
+        """
+        html = HtmlLib.parse_html(Path(Resources.TEST_RESOURCES_DIR,
+                "ipcc", "cleaned_content", "wg1", "Chapter01", "html_with_ids.html"))
+        assert html is not None
+        css_file = Path(Resources.TEMP_DIR, "styles", "nested_boxes.css")
+        styles = HtmlLib.extract_styles_to_css_file(html, css_file=css_file, link=True)
+        assert len(styles) == 19
+        assert css_file.exists()
+
+    def test_replace_style_elems_by_css_link(self):
+        """
+        removes all <style> elements and replaces by <link rel='stylesheet'>
+        """
+        inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter01", "html_with_ids.html")
+        html = HtmlLib.parse_html(inpath)
+        assert html is not None
+        css_file = Path(Resources.TEST_RESOURCES_DIR, "styles", "nested_boxes.css")
+        styles = HtmlLib.extract_styles_to_css_file(html, css_file=css_file, link=True)
+        outfile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter01", "html_with_ids.restyled.html")
+        HtmlLib.write_html_file(html, outfile=outfile, debug=True)
 
 
 
@@ -2520,4 +2544,24 @@ class AnnotateTest(AmiAnyTest):
         for a_elem in a_elems:
             logger.debug(f"A {a_elem=}")
 
+class HtmlEditorTest(AmiAnyTest):
+    def test_execute_commands(self):
+        editor = HtmlEditor()
+        wg = "wg1"
+
+        logger.info(f"**** current wg {wg}")
+        ar6 = Path(Resources.TEST_RESOURCES_DIR, "ar6")
+        IN_WG = Path(ar6, wg)
+        OUT_WG = Path(Resources.TEMP_DIR, "ipcc", wg)
+        inpath = Path(IN_WG, "toplevel.html")
+
+        # apply edit commands
+        editor.read_html(inpath)
+        json_path = Path(ar6, "edit_toplevel.json")
+        logger.info(f"json commands {json_path}")
+        editor.read_commands(json_path)
+        editor.execute_commands()
+
+        outpath = Path(OUT_WG, "edited_toplevel.html")
+        HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
 

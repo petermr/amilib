@@ -325,8 +325,15 @@ class XmlLib:
             if debug:
                 logger.debug(f"elems to remove {elems}")
             for el in elems:
-                if el.getparent() is not None:
-                    el.getparent().remove(el)
+                XmlLib.remove(el)
+
+    @staticmethod
+    def remove(el):
+        """removes element and all its descendants
+        :param el: element to delete
+        """
+        if el.getparent() is not None:
+            el.getparent().remove(el)
 
     @staticmethod
     def get_or_create_child(parent, tag):

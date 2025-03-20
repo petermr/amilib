@@ -1,0 +1,71 @@
+.
+├── __init__.py
+├── chapter11
+│   ├── chapter_11.html
+│   ├── chapter_21.html
+│   └── text.html
+├── chapter12
+│   ├── chapter_12.html
+│   ├── test.py
+│   └── text.html
+├── chapter21
+│   └── text.html
+├── chapter22
+│   └── text.html
+├── climate_words_dict.xml
+├── error.log
+├── fdpclust.gv
+├── fdpclust.gv.pdf
+├── html
+│   ├── clickable_table_list.html
+│   ├── clickable_table_list1.html
+│   └── clickable_table_list2.html
+├── resources
+│   ├── ar6
+│   ├── cleaned_content
+│   ├── climate10_proj
+│   ├── csv
+│   ├── datatables.html
+│   ├── dictionary
+│   ├── eoCompound
+│   ├── filter00.json
+│   ├── graph
+│   ├── html
+│   ├── ipcc
+│   ├── json
+│   ├── misc
+│   ├── p31.html
+│   ├── pdf
+│   ├── pdffill-demo.pdf
+│   ├── plant
+│   ├── projects
+│   ├── pygetpapers
+│   ├── unfccc
+│   ├── unlibrary
+│   ├── wikipedia
+│   ├── wiktionary
+│   └── wordlists
+├── resources.py
+├── test_all.py
+├── test_amix.py
+├── test_bib.py
+├── test_dict.py
+├── test_file.py
+├── test_file.py.old
+├── test_file.py.old1.py
+├── test_graph.py
+├── test_headless.py
+├── test_html.py
+├── test_misc.py
+├── test_nlp.py
+├── test_pdf.py
+├── test_pytest.py
+├── test_search.py
+├── test_stat.py
+├── test_svg.py
+├── test_util.py
+├── test_wikimedia.py
+├── test_xml.py
+└── tree.txt
+
+28 directories, 69 files

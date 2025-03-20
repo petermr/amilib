@@ -1,0 +1,19 @@
+div {border : dotted red 0.5px;margin : 5px;}
+img {width : 50%;margin : 5px;}
+header::before {content : 'HEADER';}
+div.col-lg-10.col-12.offset-lg-0::before {content : 'BODY';}
+.box-container::before {margin : 15px;background : #dddddd;border : dashed blue 5px;content : 'BOX';}
+#chapter-button-content::before {content : 'CHAPTER-BUTTONS';}
+#chapter-authors::before {content : 'AUTHORS';}
+#chapter-figures::before {content : 'FIGURES';}
+#chapter-citation::before {content : 'CITATION';}
+#references::before {content : 'REFERENCES';}
+#executive-summary::before {content : 'EXECUTIVE-SUMMARY';}
+#frequently-asked-questions::before {content : 'FAQs';}
+.figure-cont {background : #ffffdd;padding : 5px;}
+p.Caption {background : #eeeeff;}
+p.LR-salmon-grey-box {background : #eedddd;}
+p {background : #f3f3f3;padding : 5px;margin : 5px;}
+.h1-container {background : #ffffff;border : solid red 2px;padding : 5px;margin : 5px;}
+.h2-container {background : #ffffff;border : solid red 1.3px;padding : 5px;margin : 5px;}
+.h3-container {background : #ffffff;border : solid red 0.8px;padding : 5px;margin : 5px;}
