@@ -36,7 +36,7 @@ logger = Util.get_logger(__name__)
 class AmiCorpus():
     """
     supports a tree of directories and leaf documents with wrappers AmiCorpus
-    (top dir) and AmiCorpusCompnents (subdirectories)
+    (top dir) and AmiCorpusComponents (subdirectories)
 
     """
     TABLE_MARKUP_HITS = "table_markup_hits"
@@ -51,7 +51,7 @@ class AmiCorpus():
                  **kwargs):
         """
         create new Corpus, withn optional input of data
-        :param topdir: Input directory with files/subdis as possible corpus components
+        :param topdir: Input directory with files/subdirs as possible corpus components
         :param infiles: list of files to use (alternative to globstr)
         :param globstr: create infiles using globbing under topdir (requires topdir)
         :param outfile:
@@ -157,9 +157,12 @@ outfile: {self.outfile}
         """
         if "eupmc" in kwargs:
             self.eupmc_results = kwargs["eupmc"]
+
     def get_datatables(self):
         """
+        deprecated
         create a JQuery datatables from eumpc_reults.json
+        TODO rewrite - EUPMC should not be in here
         """
         self.get_or_create_eupmc_results()
         if self.eupmc_results is None:
@@ -187,7 +190,7 @@ outfile: {self.outfile}
         May make this method a member function later
         :param indir: directory with corpus (normally created by pygetpapers)
         :param outdir: output for datatables (if omitted uses indir)
-        :param outfile_h: the HTML file ceated (may be changed)
+        :param outfile_h: the HTML file created (may be changed)
         """
         from amilib.ami_bib import SAVED_CONFIG_INI
 

@@ -1,4 +1,5 @@
 # Tests wikipedia and wikidata methods under pytest
+import copy
 import pprint
 import unittest
 from pathlib import Path
@@ -360,19 +361,112 @@ class WikipediaTest(base_test):
         HtmlLib.write_html_file(html_elem, path, debug=True)
         assert path.exists()
 
-    @unittest.skip("not yet working")
+#    @unittest.skip("not yet working")
 
-    def test_disambiguation_page(self):
+    def test_flat_disambiguation_page(self):
         """
         annotates disambiguation page
         """
-        term = "Anthropogenic"
+        term = "AGW"
         wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
         basic_info = wpage.get_basic_information()
         assert basic_info is not None
         central_desc = basic_info.get_central_description()
         assert central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
         assert wpage.is_disambiguation_page()
+        diambig_list = wpage.get_disambiguation_list()
+        html_new = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(html_new)
+        div = ET.SubElement(body, "div")
+        ul = ET.SubElement(div, "ul")
+
+
+        for i, li in enumerate(diambig_list):
+            a = HtmlLib.get_first_object_by_xpath(li, "a")
+            if a is not None:
+                li_new = ET.SubElement(ul, "li")
+                li_new.attrib["id"] = f"li_{i}"
+                li_new.append(copy.copy(a))
+                delete_button = ET.SubElement(li_new, "button")
+                delete_button.attrib["id"] = f"delete_{i}"
+                delete_button.text = "delete"
+                li_new.append(delete_button)
+                script = ET.SubElement(li_new, "script")
+                script.text = f"""
+
+    const button_{i} = document.getElementById('delete_{i}');
+    const li_{i} = document.getElementById('li_{i}');
+    button_{i}.addEventListener('click', (button) => {{button.remove()}});
+                        """
+            print(f"a {ET.tostring(script)}")
+
+            """
+              <button id="addButton">Add "OK"</button>
+
+  <div id="container"></div>
+
+  <script>
+    // Get references to the button and the container div
+    const button = document.getElementById('addButton');
+    const container = document.getElementById('container');
+
+    // Set up the event listener for the button
+    button.addEventListener('click', () => {
+      // Add "OK" to the container div
+      const newContent = document.createElement('p');
+      newContent.textContent = 'OK';
+      container.appendChild(newContent);
+   	  button.remove(); 
+    });
+  </script>
+"""
+        html_out = Path(Resources.TEMP_DIR, "html", "wiki", f"{term.lower().replace(' ', '_')}.html")
+        HtmlLib.write_html_file(html_new, html_out, debug=True)
+
+
+    def test_edit_disambiguation_page(self):
+        """
+        edits disambiguation page
+        """
+        term = "Tipping point"
+        wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
+
+        # html_file = Path(Resources.TEST_RESOURCES_DIR,"html", "tipping_disambig.html")
+        # assert html_file.exists()
+        # local_html = HtmlLib.parse_html(html_file)
+        #
+        # wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        basic_info = wpage.get_basic_information()
+        assert basic_info is not None
+        central_desc = basic_info.get_central_description()
+        assert central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
+        assert wpage.is_disambiguation_page()
+        div = XmlLib.get_single_element(wpage.html_elem, "//*[@id='mw-content-text']")
+        if div is None:
+            logger.error("no 'mw-content-text'")
+            return
+        li_list = div.xpath(".//li")
+        for li in li_list:
+            self.get_target_first_para_text(li)
+
+    @classmethod
+    def get_target_first_para_text(cls, elem_with_a_href):
+
+        a_list = elem_with_a_href.xpath(".//a[@href]")
+        if len(a_list) == 0:
+            elem_text = XmlLib.get_text(elem_with_a_href)
+            logger.debug(f"NO hyperlink for: {elem_text}")
+            return
+        a_elem = a_list[0]
+        href = a_elem.attrib['href']
+        wp_target = f"{WikipediaPage.WIKIPEDIA_EN}{href}"
+        wp_page = WikipediaPage.lookup_wikipedia_page_for_url(wp_target)
+        if wp_page is None:
+            logger.error(f"cannot find page {href}")
+            return
+        desc = wp_page.create_first_wikipedia_para()
+        text = XmlLib.get_text(desc.para_element)
+        print(f"desc {text}")
 
     def test_create_basic_info_for_page(self):
         """

@@ -1327,7 +1327,7 @@ class AmiDictionary:
 
     def disambiguate_wikidata_by_desc(self, entry):
         """
-
+        NYI
         """
         wikidata_id = AmiDictionary.get_wikidata_id(entry)
         if not AmiDictionary.is_valid_wikidata_id(wikidata_id):

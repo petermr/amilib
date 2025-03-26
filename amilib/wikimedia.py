@@ -1312,6 +1312,8 @@ class WikipediaPage:
     FIRST_PARA = "wpage_first_para"
     FIRST_PARA = "wpage_first_para"
     WIKIPEDIA_PHP = "https://en.wikipedia.org/w/index.php?"
+    WIKIPEDIA_EN = "https://en.wikipedia.org"
+    MAY_REFER_TO = "may refer to:"
 
     def __init__(self):
         self.html_elem = None
@@ -1588,6 +1590,23 @@ class WikipediaPage:
             central_desc = basic_info.get_central_description()
             is_disambig = central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
         return is_disambig
+
+    def get_disambiguation_list(self):
+        """gets 'flat' disambiguation list (follows) 'may refer to:'
+        """
+        """
+<p><b>AGW</b> may refer to:
+</p>
+followed by <ul><li>...</li></ul> etc.
+        """
+        if not self.is_disambiguation_page():
+            logger.error("Not a disambiguation page")
+            return None
+        p_may_refer = HtmlLib.get_first_object_by_xpath(self.html_elem, "//p[contains(.,'may refer to:')]")
+        assert p_may_refer is not None
+        ul = HtmlLib.get_first_object_by_xpath(p_may_refer.getparent(), "ul")
+        lis = ul.xpath("li")
+        return lis
 
     @classmethod
     def lookup_pages_for_words_in_file(cls, filestem, indir, suffix=".txt"):

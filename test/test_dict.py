@@ -1702,6 +1702,36 @@ class DictionaryCreationTest(AmiAnyTest):
         AmiLib().run_command(args)
         assert Path(output_dict).exists()
 
+class AmiIndexTest(AmiAnyTest):
+    """
+    tests to develop a book-like index of words
+    """
+    def test_index_pages_by_words(self):
+        """
+        read a list of pages, and the words in them and
+        create a simple index pointing to occurrence of words in pages
+        """
+# import urllib.request  # the lib that handles the url stuff
+        import requests
+
+        pages_url = "https://github.com/semanticClimate/internship_sC/tree/MEBIN/Climate_Academy/Individual_Pages"
+        pages_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/refs/heads/MEBIN/Climate_Academy/Individual_Pages"
+        max_page = 357
+        max_page = 2
+        page_nos = range(1, max_page + 1)
+
+        for i, page_no in enumerate(page_nos):
+            if page_no < 10:
+                page_no = f"0{page_no}"
+            page_url = f"{pages_url}/page_{page_no}.txt"
+            print(f"page {i} = {page_url}")
+
+
+            response = requests.get(page_url)
+            data = response.text
+            print(f"page : {data[:200]}")
+
+
 
 class IPCCDictTest(AmiAnyTest):
     def test_ipcc_dictionaries_from_URL(self):
