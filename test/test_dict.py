@@ -5,6 +5,7 @@ import pprint
 import re
 import traceback
 import unittest
+from collections import defaultdict
 from pathlib import Path
 
 import lxml
@@ -1748,6 +1749,7 @@ class AmiIndexTest(AmiAnyTest):
         read a list of pages, and the words in them and
         create a simple index pointing to occurrence of words in pages
         """
+        # TODO split into smaller methods
 # import urllib.request  # the lib that handles the url stuff
         import requests
         import json
@@ -1759,20 +1761,35 @@ class AmiIndexTest(AmiAnyTest):
             logger.error("No counter read")
             return
         print(f"counter {len(counter)}")
+        # max_page = 10 # to limit time
         max_page = 357
-        start = 200
+        # start = 200
         start = 1
-        max_page = 10 # to limit time
+        min_count = 1
+        stopwords = {"The", "Academy", "is"} # don't understand just these
+        page_dict = defaultdict(list)
         # max_page = 2
         page_urls = self.get_page_urls(pages_url, max_page, start=start)
         for page_url in page_urls:
+            url_bits = page_url.split("/")
+            page_no = url_bits[-1][len('page_'):-4]
+            # print(f"page: {page_no}")
             response = requests.get(page_url)
             data = response.text
             # print(f"page : {data[:200]}")
             words = data.split()
             for word in words:
+                if word in stopwords:
+                    continue
                 if word in counter:
-                    print(f"word: {word}")
+                    count = int(counter[word])
+                    if count <= min_count:
+                        continue
+                    # print(f"word: {word} {count}")
+                    page_dict[word].append(page_no)
+        for word in page_dict:
+            page_list = set(page_dict[word])
+            print(f"{word}: {page_list}")
 
     def get_page_urls(self, pages_url, max_page, start=1):
         """
