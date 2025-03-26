@@ -1702,6 +1702,43 @@ class DictionaryCreationTest(AmiAnyTest):
         AmiLib().run_command(args)
         assert Path(output_dict).exists()
 
+
+def read_counter(url):
+    import requests
+    import ast
+    from collections import Counter
+
+    # Fetch the serialized data from the URL
+    response = requests.get(url)
+
+    # Ensure the request was successful
+    if response.status_code == 200:
+        try:
+            # Get the string representing the Counter (e.g. Counter({'key': value, ...}))
+            counter_str = response.text.strip()
+
+            # Remove the 'Counter(' and ')' parts to get the dictionary-like string
+            if counter_str.startswith('Counter(') and counter_str.endswith(')'):
+                counter_dict_str = counter_str[8:-1]  # Removes 'Counter(' and ')'
+
+                # Safely evaluate the dictionary string to get a dict
+                counter_dict = ast.literal_eval(counter_dict_str)
+
+                # Ensure that the deserialized object is a dictionary
+                if isinstance(counter_dict, dict):
+                    counter = Counter(counter_dict)
+                    print(f"Deserialized Counter: {len(counter)} {counter[:20]}")
+                    return counter
+                else:
+                    print("The deserialized object is not a dictionary.")
+            else:
+                print("The string does not represent a valid Counter.")
+        except (ValueError, SyntaxError) as e:
+            print(f"Error during deserialization: {e}")
+    else:
+        print(f"Failed to fetch the data. Status code: {response.status_code}")
+
+
 class AmiIndexTest(AmiAnyTest):
     """
     tests to develop a book-like index of words
@@ -1713,24 +1750,46 @@ class AmiIndexTest(AmiAnyTest):
         """
 # import urllib.request  # the lib that handles the url stuff
         import requests
+        import json
 
-        pages_url = "https://github.com/semanticClimate/internship_sC/tree/MEBIN/Climate_Academy/Individual_Pages"
+        counter_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/refs/heads/shabnam/Wordlist_management/wordlistCa.txt"
         pages_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/refs/heads/MEBIN/Climate_Academy/Individual_Pages"
+        counter = read_counter(counter_url)
+        if counter is None:
+            logger.error("No counter read")
+            return
+        print(f"counter {len(counter)}")
         max_page = 357
-        max_page = 2
-        page_nos = range(1, max_page + 1)
-
-        for i, page_no in enumerate(page_nos):
-            if page_no < 10:
-                page_no = f"0{page_no}"
-            page_url = f"{pages_url}/page_{page_no}.txt"
-            print(f"page {i} = {page_url}")
-
-
+        start = 200
+        start = 1
+        max_page = 10 # to limit time
+        # max_page = 2
+        page_urls = self.get_page_urls(pages_url, max_page, start=start)
+        for page_url in page_urls:
             response = requests.get(page_url)
             data = response.text
-            print(f"page : {data[:200]}")
+            # print(f"page : {data[:200]}")
+            words = data.split()
+            for word in words:
+                if word in counter:
+                    print(f"word: {word}")
 
+    def get_page_urls(self, pages_url, max_page, start=1):
+        """
+        gets all pages from semanticClimate ClimateAcademy book
+        :param max_page: maximum pages to download
+        :param pages_url: URL of pages
+        :param start: start page
+        :return: list of urls in numeric order
+        """
+        page_nos = range(1, max_page + 1)  # because count from 1
+        page_urls = []
+        for page_no in page_nos:
+            if page_no < 10:
+                page_no = f"0{page_no}" # leading zero if < 10!
+            page_url = f"{pages_url}/page_{page_no}.txt"
+            page_urls.append(page_url)
+        return page_urls
 
 
 class IPCCDictTest(AmiAnyTest):

@@ -401,7 +401,7 @@ class AmiJson:
     def create_json_table(cls, data_items, wanted_keys):
         """
         iterates over an implicit json table of dicts
-        developed for EuriopePMC output
+        developed for EuropePMC output
         Not guaranteed to work elsewhere
         :param data_items: a dict of key:dict items
         :param wanted_keys: keys to extract - assumed toplevel in each dict (may use AmiJson notations a.b.c
