@@ -1720,7 +1720,7 @@ class MWParserTest(AmiAnyTest):
 
         mw_parser = MediawikiParser()
         input_html, body = mw_parser.read_html_path(
-            input_file, remove_non_content=True, remove_head=True, remove_empty_elements=divFalse)
+            input_file, remove_non_content=True, remove_head=True, remove_empty_elements=False)
         assert input_html is not None and body is not None
         HtmlUtil.write_html_elem(input_html, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html"))
 

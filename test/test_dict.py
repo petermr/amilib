@@ -9,8 +9,11 @@ from collections import defaultdict
 from pathlib import Path
 
 import lxml
+import requests
 from lxml import etree
 from lxml.etree import XMLSyntaxError, _Element
+import lxml.etree as ET
+
 
 # local
 from amilib.ami_dict import AmiDictionary, AmiEntry, AMIDictError, \
@@ -639,12 +642,12 @@ class AmiDictionaryTest(AmiAnyTest):
                                       'Kingdom'},
 """
 
-    @unittest.skipUnless(VERYLONG, "runs several chapters")
-    def test_debug_chapter_dictionaries(self):
-        self.debug_dict(dict_path=Resources.LOCAL_IPCC_CHAP07_ABB_DICT)
-        self.debug_dict(dict_path=Resources.LOCAL_IPCC_CHAP07_MAN_DICT)
-        self.debug_dict(dict_path=Resources.TEST_IPCC_CHAP08_ABB_DICT)
-        self.debug_dict(dict_path=Resources.TEST_IPCC_CHAP08_MAN_DICT)
+    # @unittest.skipUnless(VERYLONG, "runs several chapters")
+    # def test_debug_chapter_dictionaries(self):
+    #     self.debug_dict(dict_path=Resources.LOCAL_IPCC_CHAP07_ABB_DICT)
+    #     self.debug_dict(dict_path=Resources.LOCAL_IPCC_CHAP07_MAN_DICT)
+    #     self.debug_dict(dict_path=Resources.TEST_IPCC_CHAP08_ABB_DICT)
+    #     self.debug_dict(dict_path=Resources.TEST_IPCC_CHAP08_MAN_DICT)
 
     @classmethod
     def debug_dict(cls, dict_path):
@@ -1744,6 +1747,7 @@ class AmiIndexTest(AmiAnyTest):
     """
     tests to develop a book-like index of words
     """
+
     def test_index_pages_by_words(self):
         """
         read a list of pages, and the words in them and
@@ -1751,10 +1755,10 @@ class AmiIndexTest(AmiAnyTest):
         """
         # TODO split into smaller methods
 # import urllib.request  # the lib that handles the url stuff
-        import requests
-        import json
 
+        # Counter (words, count) created for words in Climate Academy
         counter_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/refs/heads/shabnam/Wordlist_management/wordlistCa.txt"
+        # repository for 357 text pages from Climate
         pages_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/refs/heads/MEBIN/Climate_Academy/Individual_Pages"
         counter = read_counter(counter_url)
         if counter is None:
@@ -1763,20 +1767,21 @@ class AmiIndexTest(AmiAnyTest):
         print(f"counter {len(counter)}")
         # max_page = 10 # to limit time
         max_page = 357
+        # max_page = 5
         # start = 200
         start = 1
         min_count = 1
         stopwords = {"The", "Academy", "is"} # don't understand just these
         page_dict = defaultdict(list)
-        # max_page = 2
         page_urls = self.get_page_urls(pages_url, max_page, start=start)
         for page_url in page_urls:
             url_bits = page_url.split("/")
             page_no = url_bits[-1][len('page_'):-4]
-            # print(f"page: {page_no}")
+            # download url
             response = requests.get(page_url)
+            # text of url
             data = response.text
-            # print(f"page : {data[:200]}")
+            # split by whitespace (spaces and newlines)
             words = data.split()
             for word in words:
                 if word in stopwords:
@@ -1785,11 +1790,29 @@ class AmiIndexTest(AmiAnyTest):
                     count = int(counter[word])
                     if count <= min_count:
                         continue
-                    # print(f"word: {word} {count}")
                     page_dict[word].append(page_no)
-        for word in page_dict:
-            page_list = set(page_dict[word])
-            print(f"{word}: {page_list}")
+        html = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(html)
+        self.add_and_sort_words_and_hyperlinks_to_pages(body, page_dict, pages_url)
+
+        index_file = Path(Resources.TEMP_DIR, "html", "climate_book", "index.html")
+        HtmlLib.write_html_file(html, index_file, debug=True)
+
+    def add_and_sort_words_and_hyperlinks_to_pages(self, body, page_dict, pages_url):
+        ul = ET.SubElement(body, "ul")
+        words = page_dict.keys()
+        for word in sorted(words, key=str.casefold):
+            li = ET.SubElement(ul, "li")
+            span = ET.SubElement(li, "span")
+            span.text = f"{word}: "
+            page_list = sorted(set(page_dict[word]), key=int)
+            page_dict[word] = page_list
+            for pg in page_list:
+                # generate URL or text page
+                pg_url = f"{pages_url}/page_{pg}.txt"
+                a = ET.SubElement(li, "a")
+                a.attrib["href"] = pg_url
+                a.text = f"{pg},"
 
     def get_page_urls(self, pages_url, max_page, start=1):
         """
