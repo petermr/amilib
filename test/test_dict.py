@@ -14,6 +14,7 @@ from lxml import etree
 from lxml.etree import XMLSyntaxError, _Element
 import lxml.etree as ET
 
+# from github import Github
 
 # local
 from amilib.ami_dict import AmiDictionary, AmiEntry, AMIDictError, \
@@ -66,6 +67,112 @@ def _create_amidict_with_foo_bar_entries():
     entry_foo = amidict.create_and_add_entry_with_term("foo")
     entry_bar = amidict.create_and_add_entry_with_term("bar")
     return amidict
+
+class AmiIndexMisc:
+    """
+    temporary class for components that will move to more formal library
+    """
+    from collections import Counter
+    @classmethod
+    def read_counter(cls, url: str) -> Counter:
+        """
+        Read a serialized Counter object using ast.literal_eval
+        :param url:
+        """
+        import requests
+        import ast
+        from collections import Counter
+
+        # Fetch the serialized data from the URL
+        response = requests.get(url)
+
+        # Ensure the request was successful
+        if response.status_code == 200:
+            try:
+                # Get the string representing the Counter (e.g. Counter({'key': value, ...}))
+                counter_str = response.text.strip()
+
+                # Remove the 'Counter(' and ')' parts to get the dictionary-like string
+                if counter_str.startswith('Counter(') and counter_str.endswith(')'):
+                    counter_dict_str = counter_str[8:-1]  # Removes 'Counter(' and ')'
+
+                    # Safely evaluate the dictionary string to get a dict
+                    counter_dict = ast.literal_eval(counter_dict_str)
+
+                    # Ensure that the deserialized object is a dictionary
+                    if isinstance(counter_dict, dict):
+                        counter = Counter(counter_dict)
+                        print(f"Deserialized Counter: {len(counter)} {counter[:20]}")
+                        return counter
+                    else:
+                        print("The deserialized object is not a dictionary.")
+                else:
+                    print("The string does not represent a valid Counter.")
+            except (ValueError, SyntaxError) as e:
+                print(f"Error during deserialization: {e}")
+        else:
+            print(f"Failed to fetch the data. Status code: {response.status_code}")
+
+    @classmethod
+    def create_html_index_of_pages(cls, counter, max_page, min_count, pages_url, start, stopwords):
+        page_dict = defaultdict(list)
+        page_urls = cls.get_climate_academy_page_urls(pages_url, max_page, start=start)
+        for page_url in page_urls:
+            url_bits = page_url.split("/")
+            page_no = url_bits[-1][len('page_'):-4]
+            # download url
+            response = requests.get(page_url)
+            # text of url
+            data = response.text
+            # split by whitespace (spaces and newlines)
+            words = data.split()
+            for word in words:
+                if word in stopwords:
+                    continue
+                if word in counter:
+                    count = int(counter[word])
+                    if count <= min_count:
+                        continue
+                    page_dict[word].append(page_no)
+        html = HtmlLib.create_html_with_empty_head_body()
+        body = HtmlLib.get_body(html)
+        cls.add_and_sort_words_and_hyperlinks_to_pages(body, page_dict, pages_url)
+        return html
+
+    @classmethod
+    def add_and_sort_words_and_hyperlinks_to_pages(cls, body, page_dict, pages_url):
+        ul = ET.SubElement(body, "ul")
+        words = page_dict.keys()
+        for word in sorted(words, key=str.casefold):
+            li = ET.SubElement(ul, "li")
+            span = ET.SubElement(li, "span")
+            span.text = f"{word}: "
+            page_list = sorted(set(page_dict[word]), key=int)
+            page_dict[word] = page_list
+            for pg in page_list:
+                # generate URL or text page
+                pg_url = f"{pages_url}/page_{pg}.txt"
+                a = ET.SubElement(li, "a")
+                a.attrib["href"] = pg_url
+                a.text = f"{pg},"
+
+    @classmethod
+    def get_climate_academy_page_urls(cls, pages_url, max_page, start=1):
+        """
+        gets all pages from semanticClimate ClimateAcademy book
+        :param max_page: maximum pages to download
+        :param pages_url: URL of pages
+        :param start: start page
+        :return: list of urls in numeric order
+        """
+        page_nos = range(1, max_page + 1)  # because count from 1
+        page_urls = []
+        for page_no in page_nos:
+            if page_no < 10:
+                page_no = f"0{page_no}" # leading zero if < 10!
+            page_url = f"{pages_url}/page_{page_no}.txt"
+            page_urls.append(page_url)
+        return page_urls
 
 
 class AmiDictionaryTest(AmiAnyTest):
@@ -660,17 +767,17 @@ class AmiDictionaryTest(AmiAnyTest):
             print(f"****Cannot find valid dict {dict_path}****")
             logging.error(f"Cannot find valid dict {dict_path}")
 
-    @unittest.skipUnless(VERYLONG, "lookup whole dictionaries")
-    def test_lookup_missing_manual_wikidata_ids_by_name(self):
-        """
-        scans dictionary for missing @wikidataID and searches wikidata by name/term
-        USEFUL
-        """
-        ami_dict = AmiDictionary.create_from_xml_file(Resources.LOCAL_IPCC_CHAP07_MAN_DICT)
-        lookup = ami_dict.lookup_missing_wikidata_ids()
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint(lookup.hits_dict)
-        assert 8 >= len(lookup.hits_dict) >= 6
+    # @unittest.skipUnless(VERYLONG, "lookup whole dictionaries")
+    # def test_lookup_missing_manual_wikidata_ids_by_name(self):
+    #     """
+    #     scans dictionary for missing @wikidataID and searches wikidata by name/term
+    #     USEFUL
+    #     """
+    #     ami_dict = AmiDictionary.create_from_xml_file(Resources.LOCAL_IPCC_CHAP07_MAN_DICT)
+    #     lookup = ami_dict.lookup_missing_wikidata_ids()
+    #     pp = pprint.PrettyPrinter(indent=4)
+    #     pp.pprint(lookup.hits_dict)
+    #     assert 8 >= len(lookup.hits_dict) >= 6
 
     @unittest.skipUnless(VERYLONG, "lookup whole dictionaries")
     def test_lookup_missing_wikidata_ids_by_term(self):
@@ -1707,40 +1814,6 @@ class DictionaryCreationTest(AmiAnyTest):
         assert Path(output_dict).exists()
 
 
-def read_counter(url):
-    import requests
-    import ast
-    from collections import Counter
-
-    # Fetch the serialized data from the URL
-    response = requests.get(url)
-
-    # Ensure the request was successful
-    if response.status_code == 200:
-        try:
-            # Get the string representing the Counter (e.g. Counter({'key': value, ...}))
-            counter_str = response.text.strip()
-
-            # Remove the 'Counter(' and ')' parts to get the dictionary-like string
-            if counter_str.startswith('Counter(') and counter_str.endswith(')'):
-                counter_dict_str = counter_str[8:-1]  # Removes 'Counter(' and ')'
-
-                # Safely evaluate the dictionary string to get a dict
-                counter_dict = ast.literal_eval(counter_dict_str)
-
-                # Ensure that the deserialized object is a dictionary
-                if isinstance(counter_dict, dict):
-                    counter = Counter(counter_dict)
-                    print(f"Deserialized Counter: {len(counter)} {counter[:20]}")
-                    return counter
-                else:
-                    print("The deserialized object is not a dictionary.")
-            else:
-                print("The string does not represent a valid Counter.")
-        except (ValueError, SyntaxError) as e:
-            print(f"Error during deserialization: {e}")
-    else:
-        print(f"Failed to fetch the data. Status code: {response.status_code}")
 
 
 class AmiIndexTest(AmiAnyTest):
@@ -1760,7 +1833,7 @@ class AmiIndexTest(AmiAnyTest):
         counter_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/refs/heads/shabnam/Wordlist_management/wordlistCa.txt"
         # repository for 357 text pages from Climate
         pages_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/refs/heads/MEBIN/Climate_Academy/Individual_Pages"
-        counter = read_counter(counter_url)
+        counter = AmiIndexMisc.read_counter(counter_url)
         if counter is None:
             logger.error("No counter read")
             return
@@ -1772,65 +1845,83 @@ class AmiIndexTest(AmiAnyTest):
         start = 1
         min_count = 1
         stopwords = {"The", "Academy", "is"} # don't understand just these
-        page_dict = defaultdict(list)
-        page_urls = self.get_page_urls(pages_url, max_page, start=start)
-        for page_url in page_urls:
-            url_bits = page_url.split("/")
-            page_no = url_bits[-1][len('page_'):-4]
-            # download url
-            response = requests.get(page_url)
-            # text of url
-            data = response.text
-            # split by whitespace (spaces and newlines)
-            words = data.split()
-            for word in words:
-                if word in stopwords:
-                    continue
-                if word in counter:
-                    count = int(counter[word])
-                    if count <= min_count:
-                        continue
-                    page_dict[word].append(page_no)
-        html = HtmlLib.create_html_with_empty_head_body()
-        body = HtmlLib.get_body(html)
-        self.add_and_sort_words_and_hyperlinks_to_pages(body, page_dict, pages_url)
+
+        google_response = requests.get("https://google.com")
+        print(f"google {google_response}")
+        files_response = requests.get(pages_url + "/")
+        print(f"files {pages_url} {files_response}")
+        html = AmiIndexMisc.create_html_index_of_pages(
+            counter, max_page, min_count, pages_url, start, stopwords)
 
         index_file = Path(Resources.TEMP_DIR, "html", "climate_book", "index.html")
         HtmlLib.write_html_file(html, index_file, debug=True)
 
-    def add_and_sort_words_and_hyperlinks_to_pages(self, body, page_dict, pages_url):
-        ul = ET.SubElement(body, "ul")
-        words = page_dict.keys()
-        for word in sorted(words, key=str.casefold):
-            li = ET.SubElement(ul, "li")
-            span = ET.SubElement(li, "span")
-            span.text = f"{word}: "
-            page_list = sorted(set(page_dict[word]), key=int)
-            page_dict[word] = page_list
-            for pg in page_list:
-                # generate URL or text page
-                pg_url = f"{pages_url}/page_{pg}.txt"
-                a = ET.SubElement(li, "a")
-                a.attrib["href"] = pg_url
-                a.text = f"{pg},"
-
-    def get_page_urls(self, pages_url, max_page, start=1):
+    def test_download_github_dir0(self):
         """
-        gets all pages from semanticClimate ClimateAcademy book
-        :param max_page: maximum pages to download
-        :param pages_url: URL of pages
-        :param start: start page
-        :return: list of urls in numeric order
+        Doesnt yet work
         """
-        page_nos = range(1, max_page + 1)  # because count from 1
-        page_urls = []
-        for page_no in page_nos:
-            if page_no < 10:
-                page_no = f"0{page_no}" # leading zero if < 10!
-            page_url = f"{pages_url}/page_{page_no}.txt"
-            page_urls.append(page_url)
-        return page_urls
+        import os
+        import requests
 
+        # Set the GitHub repository info
+        owner = "petermr"
+        repo = "amilib"
+        directory = "directory"  # The directory you want to list the files from
+
+        # GitHub API URL for repository contents
+        url = f"https://api.github.com/repos/{owner}/{repo}/contents/{directory}"
+        url = f"https://api.github.com/repos/{owner}/{repo}/tree/pmr_aug/test/chapter11"
+
+        # If you are using authentication (optional)
+        headers = {
+            "Authorization": "Bearer YOUR_GITHUB_TOKEN"
+        }
+        headers = {}
+
+        # Function to download a file
+        def download_file(file_url, file_name):
+            response = requests.get(file_url)
+            response.raise_for_status()  # Check for request errors
+
+            with open(file_name, 'wb') as file:
+                file.write(response.content)
+            print(f"Downloaded {file_name}")
+
+        # Fetch the directory contents
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+
+        # Iterate over the files in the directory
+        files = response.json()
+
+        for file in files:
+            if file['type'] == 'file':  # Only files (not subdirectories)
+                file_url = file['download_url']
+                file_name = file['name']
+                download_file(file_url, file_name)
+
+    # def test_github_repos(self):
+    #     pass
+        # # Authentication is defined via github.Auth
+        # from github import Auth
+        #
+        # # using an access token
+        # auth = Auth.Token("access_token")
+        #
+        # # First create a Github instance:
+        #
+        # # Public Web Github
+        # g = Github(auth=auth)
+        #
+        # # Github Enterprise with custom hostname
+        # g = Github(base_url="https://{hostname}/api/v3", auth=auth)
+        #
+        # # Then play with your Github objects:
+        # for repo in g.get_user().get_repos():
+        #     print(repo.name)
+        #
+        # # To close connections after use
+        # g.close()
 
 class IPCCDictTest(AmiAnyTest):
     def test_ipcc_dictionaries_from_URL(self):

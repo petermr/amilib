@@ -238,6 +238,24 @@ class PDFPlumberTest(AmiAnyTest):
                         logger.debug(f"df {df}")
 
 
+    def test_pdf_index(self):
+        """
+        Reads a medium PDF (Breward Chapter 1) and extracts words
+        Still evolving
+        """
+        import pdfplumber
+        infile = Path(Resources.TEST_RESOURCES_DIR, "pdf", "breward_1.pdf")
+        assert infile.exists()
+        outdir = Path(Resources.TEMP_DIR, "pdf", "html", "breward_1")
+
+        AmiPage.create_html_pages_pdfplumber(
+             # bbox=DEFAULT_BBOX,
+             input_pdf=infile,
+             output_dir=outdir,
+             output_stem="page",
+#             range_list=range(1, 9999999)
+        )
+
 class PDFTest(AmiAnyTest):
     MAX_PAGE = 5
     MAX_ITER = 20
@@ -1862,6 +1880,29 @@ Framing Climate Ch"""
             with open(outfile, "w", encoding="UTF-8") as f:
                 f.write(pdfToString)
                 print(f"wrote text to {outfile}")
+
+    def test_pdf_index(self):
+        """
+        Reads a medium PDF (Breward Chapter 1) and extracts words
+        Still evolving
+        """
+        import pdfplumber
+        infile = Path(Resources.TEST_RESOURCES_DIR, "pdf", "breward_1.pdf")
+        assert infile.exists()
+        pdfplumber.extract_words(
+            x_tolerance=3,
+            x_tolerance_ratio=None,
+            y_tolerance=3,
+            keep_blank_chars=False,
+            use_text_flow=False,
+            line_dir="ttb",
+            char_dir="ltr",
+            line_dir_rotated="ttb",
+            char_dir_rotated="ltr",
+            extra_attrs=[],
+            split_at_punctuation=False,
+            expand_ligatures=True,
+            return_chars=False)
 
 
 
