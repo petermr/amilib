@@ -1,12 +1,18 @@
+import unittest
+from collections import Counter
 from pathlib import Path
 
 import pdfplumber
+from keybert import KeyBERT
 
 from amilib.ami_html import HtmlLib
+from amilib.file_lib import FileLib
+from amilib.util import Util
 from amilib.xml_lib import XmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
+logger = Util.get_logger(__name__)
 
 class ExtractTextTest(AmiAnyTest):
 
@@ -24,13 +30,13 @@ class ExtractTextTest(AmiAnyTest):
             print(f"======= {chapno} ========")
             pdf = pdfplumber.open(infile)
             for pageno, page in enumerate(pdf.pages):
-                text = page.extract_text()
+                # text = page.extract_text()
                 lines = page.extract_text_lines()
                 imgs = page.images
                 if imgs:
-                    print(f"\n=====images {len(imgs)}")
+                    logger.info(f"\n=====images {len(imgs)}")
                     for imgno, img in enumerate(imgs):
-                        print(f"page {pageno}: image {imgno}: {img}")
+                        logger.info(f"page {pageno}: image {imgno}: {img}")
 
                 print("")
                 for line in lines:
@@ -38,7 +44,8 @@ class ExtractTextTest(AmiAnyTest):
                     pass
 
 
-    def test_keybert(self):
+
+    def test_keybert_breward_1(self):
         """
         uses keyBERT to extract phrases/words
         """
@@ -55,17 +62,127 @@ class ExtractTextTest(AmiAnyTest):
          the learning algorithm to generalize from the training data to unseen situations in a
          'reasonable' way (see inductive bias).
       """
-        kw_model = KeyBERT()
-        # keywords = kw_model.extract_keywords(doc)
+        phrase_range = (1, 3)
+        phrase_range = (1, 1)
+        top_n = 4
         breward_dir = Path(Resources.TEMP_DIR, "pdf", "html", "breward_1")
-        all_keywords = set()
-        for page_no in range(0, 29):
-            file = Path(breward_dir, f"page_{page_no}.html")
+
+        self._read_chapter_extract_keywords(breward_dir, phrase_range, top_n)
+
+    def _read_chapter_extract_keywords(self, indir, phrase_range=(1,1), top_n=4, globstr="*.html", chunk_xpath=None):
+        kw_counter, html_by_file, spans_by_file = \
+            self._read_html_file_and_extract_keywords_from_spans(
+                indir, phrase_range=phrase_range, top_n=top_n, globstr=globstr, chunk_xpath=chunk_xpath)
+        # logger.info(f"kw_counter {len(kw_counter)}: {kw_counter.most_common()}")
+        marked_out_dir = Path(list(spans_by_file.keys())[0].parent, "marked")
+        FileLib.force_mkdir(marked_out_dir)
+        counter_path = Path(marked_out_dir, "kw_counter.txt")
+        with open(counter_path, "w") as f:
+            logger.info(f"wrote {counter_path}")
+            f.write(str(kw_counter))
+        self._output_marked_html_files(kw_counter, html_by_file, spans_by_file)
+        return kw_counter
+
+    def _output_marked_html_files(self, all_keywords, html_by_file, spans_by_file, marked_out_dir=None, markup=True):
+        """
+        :param all_keywords: a dict() indexed by keywords
+        :param html_by_file: html objects indexed by their files
+        :param spans_by_file: html spans in files indexed by files
+        :param marked_out_dir: output directory (default files.parent/marked)
+        :param markup: add hyperlinks to text (default True)
+        """
+        marked_out_dir = Path(list(spans_by_file.keys())[0].parent, "marked")
+        for file, spans in sorted(spans_by_file.items()):
+            html = html_by_file[file]
+            # logger.info(f"parent: {file.parent}")
+            text = " ".join([s.text for s in spans if s.text is not None])
+            words = text.split()
+            markup = False
+            for word in words:
+                if word.casefold() in all_keywords.keys():
+                    for span in spans:
+                        HtmlLib.find_and_markup_phrases(span, word, markup=markup)
+                        outpath = Path(marked_out_dir, f"{file.stem}.html")
+            if markup:
+                HtmlLib.write_html_file(html, outpath, debug=True)
+
+    def _read_html_file_and_extract_keywords_from_spans(
+            self, dir_with_html, phrase_range, top_n, globstr=None, chunk_xpath=None):
+        """
+
+        """
+        if globstr is None:
+            globstr = "*.html"
+        if chunk_xpath is None:
+            chunk_xpath = "//span"
+            logger.info(f"using default chunk {chunk_xpath}")
+        if top_n is None:
+            top_n = 5
+        if phrase_range is None:
+            phrase_range = (1,1)
+        files = FileLib.list_files(dir_with_html, globstr)
+        kw_model = KeyBERT()
+        kw_counter = Counter()
+        chunks_by_file = dict()
+        html_by_file = dict()
+        logger.info(f"searching {len(files)} {files}")
+        for file in files:
             html = HtmlLib.parse_html(file)
-            texts = html.xpath("//span/text()")
-            text = " ".join([t for t in texts])
-            # print(f"text {text[:100]}")
-            keyword_wts = kw_model.extract_keywords(text, top_n=7, )
+            html_by_file[file] = html
+            chunks = html.xpath(chunk_xpath)
+            # logger.info(f"chunks {chunk_xpath} => {len(chunks)}")
+            if chunks is None or len(chunks) == 0:
+                logger.warn(f"no chunks for {chunk_xpath}")
+                continue
+            # logger.info(f"chunking {file}")
+            chunks_by_file[file] = chunks
+            chunk_texts = [s.text for s in chunks if s.text is not None]
+            text = " ".join(chunk_texts)
+            wds = text.split()
+            keyword_wts = kw_model.extract_keywords(
+                text, top_n=top_n, keyphrase_ngram_range=phrase_range)
+            # logger.info(f"keyword_wts {len(keyword_wts)}")
             for keyword_wt in keyword_wts:
-                all_keywords.add(keyword_wt[0])
-        print(f"kw {all_keywords}")
+                kw = keyword_wt[0]
+                kw_counter[kw] += 1
+        # logger.info(f"kw_counter {kw_counter}")
+        return kw_counter, html_by_file, chunks_by_file
+
+    def test_keybert_ipcc_wg1_3(self):
+        """file:///Users/pm286/workspace/amilib/test/resources/ipcc/cleaned_content/wg1/Chapter03/html_with_ids.html"""
+        indir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content","wg1", "Chapter03")
+        assert indir.exists()
+        kw_counter = self._read_chapter_extract_keywords(
+            indir, phrase_range=(1,1), top_n=50, globstr="html_with_ids.html", chunk_xpath="//p")
+
+    @unittest.skip("too long")
+    def test_keybert_ipcc_wg1(self):
+        """file:///Users/pm286/workspace/amilib/test/resources/ipcc/cleaned_content/wg1/Chapter03/html_with_ids.html"""
+        wgdir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content","wg1")
+        chapters = [
+            "Chapter01",
+            "Chapter02",
+            "Chapter03",
+            "Chapter04",
+            "Chapter05",
+            "Chapter06",
+            "Chapter07",
+            "Chapter08",
+            "Chapter09",
+            "Chapter10",
+            "Chapter11",
+            "Chapter12",
+        ]
+        all_words = Counter()
+        for chapter in chapters:
+            indir = Path(wgdir, chapter)
+            assert indir.exists()
+            kw_counter = self._read_chapter_extract_keywords(
+                indir, phrase_range=(1,1), top_n=100, globstr="html_with_ids.html", chunk_xpath="//p")
+            for word, count in kw_counter.items():
+                all_words[word] += count
+        logger.info(f"all words {all_words.most_common()}")
+        marked_dir = Path(wgdir, "marked")
+        FileLib.force_mkdir(marked_dir)
+        with open(Path(marked_dir, "keywords.txt"), "w") as f:
+            f.write(str(all_words))

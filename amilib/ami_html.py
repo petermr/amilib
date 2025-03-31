@@ -1552,18 +1552,18 @@ class HtmlLib:
 
     @classmethod
     def find_and_markup_phrases(cls,
-                                para,
+                                elem,
                                 phrase,
                                 ignore_case=True,
                                 markup=None,
                                 url_base=None,
                                 flags=0):
         """
-        search paragraph with phrase. If markuip is not None add hyperlinks
+        search paragraph/span with phrase. If markup is not None add hyperlinks
 
         Parameters
         ----------
-        para paragraph to search
+        elem paragraph/span to search
         phrase search phrase
         ignore_case if True lowercase text and phrase
         markup if True search each itertext and insert hrefs, else just search concatenation
@@ -1579,13 +1579,13 @@ class HtmlLib:
             phrase = phrase.lower()
         search_re = r'\b' + phrase + r'\b'
         if not markup:
-            text = "".join(para.itertext())
+            text = "".join(elem.itertext())
             if ignore_case:
                 text = text.lower()
             if re.search(search_re, text):
                 return True
         else:
-            texts = para.xpath(".//text()")
+            texts = elem.xpath(".//text()")
             for text in texts:
                 cls.find_phrase_and_markup_matches(
                     phrase, search_re, text, url_base, flags=flags)
