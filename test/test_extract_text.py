@@ -50,26 +50,39 @@ class ExtractTextTest(AmiAnyTest):
         uses keyBERT to extract phrases/words
         """
         from keybert import KeyBERT
-        doc = """
-         Supervised learning is the machine learning task of learning a function that
-         maps an input to an output based on example input-output pairs. It infers a
-         function from labeled training data consisting of a set of training examples.
-         In supervised learning, each example is a pair consisting of an input object
-         (typically a vector) and a desired output value (also called the supervisory signal).
-         A supervised learning algorithm analyzes the training data and produces an inferred function,
-         which can be used for mapping new examples. An optimal scenario will allow for the
-         algorithm to correctly determine the class labels for unseen instances. This requires
-         the learning algorithm to generalize from the training data to unseen situations in a
-         'reasonable' way (see inductive bias).
-      """
+      #   doc = """
+      #    Supervised learning is the machine learning task of learning a function that
+      #    maps an input to an output based on example input-output pairs. It infers a
+      #    function from labeled training data consisting of a set of training examples.
+      #    In supervised learning, each example is a pair consisting of an input object
+      #    (typically a vector) and a desired output value (also called the supervisory signal).
+      #    A supervised learning algorithm analyzes the training data and produces an inferred function,
+      #    which can be used for mapping new examples. An optimal scenario will allow for the
+      #    algorithm to correctly determine the class labels for unseen instances. This requires
+      #    the learning algorithm to generalize from the training data to unseen situations in a
+      #    'reasonable' way (see inductive bias).
+      # """
         phrase_range = (1, 3)
         phrase_range = (1, 1)
         top_n = 4
         breward_dir = Path(Resources.TEMP_DIR, "pdf", "html", "breward_1")
 
-        self._read_chapter_extract_keywords(breward_dir, phrase_range, top_n)
+        kw_counter = self._read_chapter_extract_keywords(breward_dir, phrase_range, top_n)
+        assert kw_counter is not None
+        assert len(kw_counter) > 10
+        assert 'climate' in kw_counter
 
-    def _read_chapter_extract_keywords(self, indir, phrase_range=(1,1), top_n=4, globstr="*.html", chunk_xpath=None):
+
+    def _read_chapter_extract_keywords(
+            self, indir, phrase_range=(1,1), top_n=4, globstr="*.html", chunk_xpath=None):
+        """
+        iterate over files in directory and use keyBERT to extract keywords
+        :param indir: input directory
+        :param phrase_range: range of phrase lengths
+        :param globstr: glob selection of files in dir
+        :param chunk_xpath: selection of document components by xpath
+        :return: counter of keywords
+        """
         kw_counter, html_by_file, spans_by_file = \
             self._read_html_file_and_extract_keywords_from_spans(
                 indir, phrase_range=phrase_range, top_n=top_n, globstr=globstr, chunk_xpath=chunk_xpath)
@@ -154,6 +167,9 @@ class ExtractTextTest(AmiAnyTest):
         assert indir.exists()
         kw_counter = self._read_chapter_extract_keywords(
             indir, phrase_range=(1,1), top_n=50, globstr="html_with_ids.html", chunk_xpath="//p")
+        assert "madagascar" in kw_counter
+        assert Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter03", "marked/kw_counter.txt").exists()
+
 
     @unittest.skip("too long")
     def test_keybert_ipcc_wg1(self):

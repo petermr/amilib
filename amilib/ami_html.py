@@ -1551,13 +1551,15 @@ class HtmlLib:
         return paras
 
     @classmethod
-    def find_and_markup_phrases(cls,
-                                elem,
-                                phrase,
-                                ignore_case=True,
-                                markup=None,
-                                url_base=None,
-                                flags=0):
+    def find_and_markup_phrases(
+            cls,
+            elem,
+            phrase,
+            ignore_case=True,
+            markup=None,
+            url_base=None,
+            flags=0
+    ):
         """
         search paragraph/span with phrase. If markup is not None add hyperlinks
 
@@ -1594,12 +1596,14 @@ class HtmlLib:
         return False
 
     @classmethod
-    def find_phrase_and_markup_matches(cls,
-                                       phrase: str,
-                                       search_re: str,
-                                       text: str,
-                                       url_base=None,
-                                       flags=0):
+    def find_phrase_and_markup_matches(
+        cls,
+        phrase: str,
+        search_re: str,
+        text: str,
+        url_base=None,
+        flags=0
+    ):
         """
         finds a match within phrase and inserts <a> if found
         :param phrase: phrase to search with
@@ -1628,6 +1632,7 @@ class HtmlLib:
 
         """
         id = HtmlLib.generate_id(phrase)
+
         href, title = None, None
         if url_base is not None:
             href, title = cls._create_href_and_title(id, url_base)
@@ -1635,6 +1640,8 @@ class HtmlLib:
         # text before, inside and after <a> element
         start_ = text[0:match.start()]
         mid_ = text[match.start():match.end()]
+        if len(mid_.strip()) == 0:
+            logger.warn("empty text {text}")
         end_ = text[match.end():]
 
         # might be a text (contained within lead) or tail following it

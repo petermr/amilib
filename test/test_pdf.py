@@ -151,12 +151,15 @@ class PDFPlumberTest(AmiAnyTest):
         """
         creates AmiPDFPlumber and reads single-column pdf and debugs
         probably belongs in UNIPCC
+
+        writes one div per line
         """
         input_pdf = Path(Resources.TEST_IPCC_LONGER_REPORT, "fulltext.pdf")
         output_page_dir = Path(AmiAnyTest.TEMP_DIR, "html", "ar6", "LongerReport", "pages")
         page_json_dir = output_page_dir
         output_page_dir.mkdir(exist_ok=True, parents=True)
         ami_pdfplumber = AmiPDFPlumber()
+        logger.info(f"writing to {output_page_dir}")
         HtmlGenerator.create_html_pages(
             ami_pdfplumber, input_pdf=input_pdf, outdir=output_page_dir, page_json_dir=page_json_dir,
             pages=[1, 2, 3, 4, 5, 6, 7])
@@ -786,9 +789,11 @@ Uses:
                 for page in pages[:max_page]:
                     pdf_debug.debug_page_properties(page, debug=options)
 
+
     @unittest.skip("output is not HTML")
     def test_extract_single_page_ipcc_toc_chap6(self):
         """
+        ERROR extracts all text in chapter into single unstructured paragraph
         extract a single page which is the TableOfContents
         NOTE. pages 4 extracts "page 4" in 1-based but output file is 0-based.(Doh!)
 
@@ -1889,7 +1894,8 @@ Framing Climate Ch"""
         import pdfplumber
         infile = Path(Resources.TEST_RESOURCES_DIR, "pdf", "breward_1.pdf")
         assert infile.exists()
-        pdfplumber.extract_words(
+        pdfplumb = pdfplumber.PDFPlumber()
+        pdfplumb.extract_words(
             x_tolerance=3,
             x_tolerance_ratio=None,
             y_tolerance=3,
