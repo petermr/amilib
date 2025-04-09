@@ -220,25 +220,36 @@ class ExtractTextTest(AmiAnyTest):
         xpath = ".//body//div[p[@id]]"
         div_p_with_ids = html.xpath(xpath)
         assert len(div_p_with_ids) == 43
-        ids = [div.getparent().attrib['id'] for div in div_p_with_ids]
+        ids = sorted([div.getparent().attrib['id'] for div in div_p_with_ids])
         assert len(ids) == 43
         logger.info(f"ids = {ids}")
         outdir = Path(Resources.TEMP_DIR, "csv", "ipcc")
         FileLib.force_mkdir(outdir)
         csvout = Path(outdir, "syr_paras.csv")
-        with open(csvout, 'w', ) as csvfile:
-            csvwriter = csv.writer(csvfile, delimiter="|")
+        with (open(csvout, 'w', ) as csvfile):
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(["id", "title", "text"])
             for div in div_p_with_ids:
+                divid = div.get('id')
                 parent = div.getparent()
-                titles = parent.xpath(".//h2.text|.//h3.text.//h4.text")
-                title = "NO_TITLE" if len(titles) == 0 else titles[0]
-                first_p = parent.xpath(".//p")[0]
-                if first_p.text is not None:
-                    text_ = first_p.text[0:150]
-                    if text_ is not None:
-                        id_ = first_p.get('id')
-                        if id_ is not None and len(id_) > 0:
-                            print(f"{id_}: {title} {text_}")
-                            row = [id_, title, text_]
-                            csvwriter.writerow(row)
+                titles = parent.xpath(".//h2/text()|.//h3/text()|.//h4/text()")
+                div_title = "NO_TITLE" if len(titles) == 0 else titles[0]
+                if len(div_title.strip()) == 0:
+                    div_title = "NO_TITLE_1"
+                ps = parent.xpath(".//p")
+                for p in ps:
+                    pid = p.get('id')
+                    p_text = list(p.itertext())
+                    if p_text is None:
+                        logger.info(f"no text for {pid}")
+                        continue
+                    text_ = "".join(p_text)
+                    if text_ is None or len(text_) == 0:
+                        logger.info(f"empty text for {pid}")
+                        continue
+                    if pid:
+                        # print(f"{pid}: [{title}] {text_}")
+                        row = [pid, div_title, text_]
+                        csvwriter.writerow(row)
+        logger.info(f"wrote CSV {csvout}")
 
