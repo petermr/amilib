@@ -6,7 +6,7 @@ logger = FileLib().get_logger(__name__)
 
 
 class AmiCSV:
-
+    """Not many methods"""
 
     def read_transpose_write(self, inputx, output):
         """not developed"""

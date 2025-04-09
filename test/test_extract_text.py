@@ -1,9 +1,11 @@
 import unittest
 from collections import Counter
+import csv
 from pathlib import Path
-
+import lxml.etree as ET
 import pdfplumber
 from keybert import KeyBERT
+from lxml.html import HTMLParser
 
 from amilib.ami_html import HtmlLib
 from amilib.file_lib import FileLib
@@ -202,3 +204,41 @@ class ExtractTextTest(AmiAnyTest):
         FileLib.force_mkdir(marked_dir)
         with open(Path(marked_dir, "keywords.txt"), "w") as f:
             f.write(str(all_words))
+
+    def test_extract_title_id_para_from_ipcc_syr(self):
+        """
+        read a chapter from IPCC and extract paras with ids and their section titles
+
+        Purpose is to create CSV for input to LLM/RAG
+        reads IPCC SYR report, finds all divs with paragraphs and returns the title and
+        first para.
+        """
+        infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "syr", "longer-report", "html_with_ids.html")
+        assert infile.exists()
+        html = ET.parse(str(infile), HTMLParser())
+        assert html is not None
+        xpath = ".//body//div[p[@id]]"
+        div_p_with_ids = html.xpath(xpath)
+        assert len(div_p_with_ids) == 43
+        ids = [div.getparent().attrib['id'] for div in div_p_with_ids]
+        assert len(ids) == 43
+        logger.info(f"ids = {ids}")
+        outdir = Path(Resources.TEMP_DIR, "csv", "ipcc")
+        FileLib.force_mkdir(outdir)
+        csvout = Path(outdir, "syr_paras.csv")
+        with open(csvout, 'w', ) as csvfile:
+            csvwriter = csv.writer(csvfile, delimiter="|")
+            for div in div_p_with_ids:
+                parent = div.getparent()
+                titles = parent.xpath(".//h2.text|.//h3.text.//h4.text")
+                title = "NO_TITLE" if len(titles) == 0 else titles[0]
+                first_p = parent.xpath(".//p")[0]
+                if first_p.text is not None:
+                    text_ = first_p.text[0:150]
+                    if text_ is not None:
+                        id_ = first_p.get('id')
+                        if id_ is not None and len(id_) > 0:
+                            print(f"{id_}: {title} {text_}")
+                            row = [id_, title, text_]
+                            csvwriter.writerow(row)
+
