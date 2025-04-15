@@ -128,3 +128,92 @@ class MiscTest(AmiAnyTest):
                 for split in splits:
                     p_counter[split] += 1
         return p_counter
+
+    def test_wordsquare(self):
+
+        import random
+        import numpy as np
+
+        # Word list
+        words = [
+            "IGBOLAND", "VASSA", "NIGERIA", "BRIDGETOWN", "BARBADOS", "VIRGINIA",
+            "PASCAL", "FALMOUTH", "PHILADELPHIA", "KING", "MONTSERRAT", "SPITZBERGEN",
+            "SOHAM", "CAMBRIDGE", "MARIA"
+        ]
+        words = [word.upper() for word in words]
+
+        # Grid size
+        grid_size = 13
+        grid = np.full((grid_size, grid_size), '', dtype=str)
+
+        # Directions: all 8 possible
+        directions = [
+            (0, 1), (1, 0), (1, 1), (0, -1),
+            (-1, 0), (-1, -1), (1, -1), (-1, 1)
+        ]
+
+        placed_words = []
+
+
+        def can_place(word, row, col, dr, dc):
+            for i in range(len(word)):
+                r, c = row + dr * i, col + dc * i
+                if not (0 <= r < grid_size and 0 <= c < grid_size):
+                    return False
+                if grid[r, c] != '' and grid[r, c] != word[i]:
+                    return False
+            return True
+
+
+        def place_word(word):
+            random_directions = directions.copy()
+            random.shuffle(random_directions)
+            for dr, dc in random_directions:
+                for _ in range(100):
+                    row = random.randint(0, grid_size - 1)
+                    col = random.randint(0, grid_size - 1)
+                    if can_place(word, row, col, dr, dc):
+                        for i in range(len(word)):
+                            grid[row + dr * i, col + dc * i] = word[i]
+                        placed_words.append((word, row, col, dr, dc))
+                        return True
+            return False
+
+
+        # Place each word randomly forward or backward
+        for word in words:
+            chosen_word = word[::-1] if random.random() < 0.5 else word
+            if not place_word(chosen_word):
+                print(f"Could not place word: {word}")
+
+        # Fill in the rest with random letters
+        alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        for r in range(grid_size):
+            for c in range(grid_size):
+                if grid[r, c] == '.' or grid[r,c] == ' ' or grid[r, c] == '':
+                    grid[r, c] = random.choice(alphabet)
+
+        # Create a solution grid
+        solution_grid = np.full((grid_size, grid_size), '.', dtype=str)
+        for word, row, col, dr, dc in placed_words:
+            for i in range(len(word)):
+                solution_grid[row + dr * i, col + dc * i] = grid[row + dr * i, col + dc * i]
+
+
+        # Print the results
+        def grid_to_text(grid_array):
+            return '\n'.join(' '.join(row) for row in grid_array)
+
+
+        print("===== INSTRUCTIONS =====")
+        print(
+            "Find the following words hidden in the grid below. Words may go forwards, backwards, diagonally, vertically, or horizontally.\n")
+
+        print("===== WORDSEARCH PUZZLE =====")
+        print(grid_to_text(grid))
+
+        print("\n===== WORD LIST =====")
+        print(', '.join(words))
+
+        print("\n===== SOLUTION KEY =====")
+        print(grid_to_text(solution_grid))

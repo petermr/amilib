@@ -1,3 +1,4 @@
+import os
 import unittest
 from collections import Counter
 import csv
@@ -213,43 +214,162 @@ class ExtractTextTest(AmiAnyTest):
         reads IPCC SYR report, finds all divs with paragraphs and returns the title and
         first para.
         """
-        infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "syr", "longer-report", "html_with_ids.html")
-        assert infile.exists()
-        html = ET.parse(str(infile), HTMLParser())
-        assert html is not None
-        xpath = ".//body//div[p[@id]]"
-        div_p_with_ids = html.xpath(xpath)
-        assert len(div_p_with_ids) == 43
-        ids = sorted([div.getparent().attrib['id'] for div in div_p_with_ids])
-        assert len(ids) == 43
-        logger.info(f"ids = {ids}")
+
+        chapter = "longer-report"
+        wg = "syr"
+        infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content",
+                      wg, chapter, "html_with_ids.html")
         outdir = Path(Resources.TEMP_DIR, "csv", "ipcc")
+        outfile_name = "syr_paras.csv"
+        csvout = Path(outdir, outfile_name)
+
+        MiscLib.create_and_write_csv(
+            infile,
+            outdir,
+            csvout,
+            div_with_p_with_ids_xpath=".//body//div[p[@id]]",
+            para_xpath=".//p",
+            title_xpath=".//h2/text()|.//h3/text()|.//h4/text()")
+
+    def test_extract_title_id_para_from_ipcc_wg123(self):
+        """
+        read all chapters from IPCC WG1/2/3 and extract paras with ids and their section titles
+
+        Purpose is to create CSV for input to LLM/RAG
+        reads IPCC SYR report, finds all divs with paragraphs and returns the title and
+        first para.
+        """
+
+        wgs = ["wg1", "wg2", "wg3"]
+        chapters = [
+            "Chapter01","Chapter02","Chapter03","Chapter04","Chapter05",
+            "Chapter06","Chapter07","Chapter08","Chapter09","Chapter10",
+            "Chapter11", "Chapter12", "Chapter13", "Chapter14", "Chapter15",
+            "Chapter16", "Chapter17", "Chapter18", "Chapter19", "Chapter20",
+        ]
+        for wg in wgs:
+            for chapter in chapters:
+                ipcc_dir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", wg, chapter)
+                infile = Path(ipcc_dir, "html_with_ids.html")
+                if not infile.exists():
+                    logger.info(f"skipped {infile}")
+                    continue
+                outdir = Path(Resources.TEMP_DIR, "csv", "ipcc", wg, chapter)
+                outdir = ipcc_dir
+                outfile_name = "paras.csv"
+                csvout = Path(outdir, outfile_name)
+
+                MiscLib.create_and_write_csv(
+                    infile,
+                    outdir,
+                    csvout,
+                    div_with_p_with_ids_xpath=".//body//div[p[@id]]",
+                    para_xpath=".//p",
+                    title_xpath=".//h2/text()|.//h3/text()|.//h4/text()",
+                    wg=wg,
+                    chap=f"ch{chapter[-2:]}"
+                )
+
+    # -------------------------------------------------
+
+    def test_extract_title_id_para_from_makespace(self):
+        """
+        read makespace pages and extract text with titles
+
+        Purpose is to create CSV for input to LLM/RAG
+        reads makespace scrape, returns the title and
+        text.
+        """
+
+        makespacedir = Path(Path(__file__).parent.parent.parent,
+                            "ollama_langchain_rag", "AI-ML-Prj1", "MSWebScrape", "2025March")
+        assert makespacedir.exists()
+        outdir = Path(Resources.TEMP_DIR, "csv", "makespace")
         FileLib.force_mkdir(outdir)
-        csvout = Path(outdir, "syr_paras.csv")
+        csvout = Path(outdir, "makespace.csv")
+        files = os.listdir(str(Path(makespacedir)))
         with (open(csvout, 'w', ) as csvfile):
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(["id", "title", "text"])
-            for div in div_p_with_ids:
-                divid = div.get('id')
-                parent = div.getparent()
-                titles = parent.xpath(".//h2/text()|.//h3/text()|.//h4/text()")
-                div_title = "NO_TITLE" if len(titles) == 0 else titles[0]
-                if len(div_title.strip()) == 0:
-                    div_title = "NO_TITLE_1"
-                ps = parent.xpath(".//p")
-                for p in ps:
-                    pid = p.get('id')
-                    p_text = list(p.itertext())
-                    if p_text is None:
-                        logger.info(f"no text for {pid}")
-                        continue
-                    text_ = "".join(p_text)
-                    if text_ is None or len(text_) == 0:
-                        logger.info(f"empty text for {pid}")
-                        continue
-                    if pid:
-                        # print(f"{pid}: [{title}] {text_}")
-                        row = [pid, div_title, text_]
-                        csvwriter.writerow(row)
+            for i, file in enumerate(files):
+                filename = Path(file).stem
+                path = Path(makespacedir, filename)
+                if not path.exists():
+                    logger.error(f"Cannot read {path}")
+                    continue
+                with open(path, "r") as f:
+                    strings = f.readlines()
+                # print(f"strings {strings}")
+                text_ = "".join(list(strings))
+                divid = str(i)
+                if text_ is None or len(text_) == 0:
+                    logger.info(f"empty text for {divid}")
+                    continue
+                if divid:
+                    # print(f"{pid}: [{title}] {text_}")
+                    row = [divid, filename, text_]
+                    csvwriter.writerow(row)
         logger.info(f"wrote CSV {csvout}")
+
+class MiscLib:
+
+    @classmethod
+    def _add_ids_and_text_as_csv_row(cls, csvwriter, div_title, para, wg, chap):
+        pid = para.get('id')
+        p_text = list(para.itertext())  # gets text in spans, a, etc.
+        if p_text is None:
+            logger.info(f"no text for {pid}")
+            return
+        text_ = "".join(p_text)
+        if text_ is None or len(text_) == 0:
+            logger.info(f"empty text for {pid}")
+            return
+        if pid:
+            full_pid = f"{wg}_{chap}_{pid}"
+            logger.info(f"{chap}:{full_pid}")
+            # print(f"{pid}: [{title}] {text_}")
+            row = [full_pid, div_title, text_]
+            csvwriter.writerow(row)
+
+    @classmethod
+    def _write_csv(cls, csvout, divs_with_p_with_ids, para_xpath, title_xpath, wg, chap):
+
+        with (open(csvout, 'w', ) as csvfile):
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(["id", "title", "text"])
+            for div in divs_with_p_with_ids:
+                paras = div.xpath(para_xpath)
+                for para in paras:
+                    parent = para.getparent()
+                    titles = parent.xpath(title_xpath)
+                    div_title = "NO_TITLE" if len(titles) == 0 else titles[0]
+                    if len(div_title.strip()) == 0:
+                        div_title = "NO_TITLE_1"
+                    cls._add_ids_and_text_as_csv_row(csvwriter, div_title, para, wg, chap)
+        logger.info(f"wrote CSV {csvout}")
+
+    @classmethod
+    def create_and_write_csv(
+            cls,
+            infile,
+            outdir,
+            csvout,
+            div_with_p_with_ids_xpath=".//body//div[p[@id]]",
+            para_xpath=".//p",
+            title_xpath=".//h2/text()|.//h3/text()|.//h4/text()",
+            wg=None,
+            chap=None,
+    ):
+        FileLib.force_mkdir(outdir)
+        assert infile.exists()
+        html = ET.parse(str(infile), HTMLParser())
+        assert html is not None
+        divs_with_p_with_ids = html.xpath(div_with_p_with_ids_xpath)
+        # assert len(divs_with_p_with_ids) == divs_with_p_with_ids_count
+        # get Id of div parent
+        # div_parent_ids = sorted([div.getparent().get('id') for div in divs_with_p_with_ids])
+        # logger.info(f"ids = {div_parent_ids}")
+        cls._write_csv(csvout, divs_with_p_with_ids, para_xpath, title_xpath, wg, chap)
+
+
 
