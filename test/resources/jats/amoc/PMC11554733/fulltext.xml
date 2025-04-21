@@ -1,0 +1,1036 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd"> 
+<article xmlns:ali="http://www.niso.org/schemas/ali/1.0/" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="1.3"><?properties open_access?><?DTDIdentifier.IdentifierValue -//Springer-Verlag//DTD A++ V2.4//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName A++V2.4.dtd?><?SourceDTD.Version 2.4?><?ConverterInfo.XSLTName springer2nlmx2.xsl?><?ConverterInfo.Version 1?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Clim Dyn</journal-id><journal-id journal-id-type="iso-abbrev">Clim Dyn</journal-id><journal-title-group><journal-title>Climate Dynamics</journal-title></journal-title-group><issn pub-type="ppub">0930-7575</issn><issn pub-type="epub">1432-0894</issn><publisher><publisher-name>Springer Berlin Heidelberg</publisher-name><publisher-loc>Berlin/Heidelberg</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">11554733</article-id><article-id pub-id-type="publisher-id">7295</article-id><article-id pub-id-type="doi">10.1007/s00382-024-07295-y</article-id><article-categories><subj-group subj-group-type="heading"><subject>Original Article</subject></subj-group></article-categories><title-group><article-title>Response of atmospheric pCO<inline-formula id="IEq1"><alternatives><tex-math id="M1">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M2"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq1.gif"/></alternatives></inline-formula> to a strong AMOC weakening under low and high emission scenarios</article-title></title-group><contrib-group><contrib contrib-type="author" corresp="yes"><contrib-id contrib-id-type="orcid">http://orcid.org/0000-0002-3521-9710</contrib-id><name><surname>Boot</surname><given-names>Amber A.</given-names></name><address><email>a.a.boot@uu.nl</email></address><xref ref-type="aff" rid="Aff1">1</xref></contrib><contrib contrib-type="author"><name><surname>von der Heydt</surname><given-names>Anna S.</given-names></name><xref ref-type="aff" rid="Aff1">1</xref><xref ref-type="aff" rid="Aff2">2</xref></contrib><contrib contrib-type="author"><name><surname>Dijkstra</surname><given-names>Henk A.</given-names></name><xref ref-type="aff" rid="Aff1">1</xref><xref ref-type="aff" rid="Aff2">2</xref></contrib><aff id="Aff1"><label>1</label><institution-wrap><institution-id institution-id-type="ROR">https://ror.org/04pp8hn57</institution-id><institution-id institution-id-type="GRID">grid.5477.1</institution-id><institution-id institution-id-type="ISNI">0000 0000 9637 0671</institution-id><institution>Department of Physics, Institute for Marine and Atmospheric Research Utrecht, </institution><institution>Utrecht University, </institution></institution-wrap>Princetonplein 5, Utrecht, 3584CC The Netherlands </aff><aff id="Aff2"><label>2</label><institution-wrap><institution-id institution-id-type="ROR">https://ror.org/04pp8hn57</institution-id><institution-id institution-id-type="GRID">grid.5477.1</institution-id><institution-id institution-id-type="ISNI">0000 0000 9637 0671</institution-id><institution>Centre for Complex Systems Studies, </institution><institution>Utrecht University, </institution></institution-wrap>Leuvenlaan 4, Utrecht, 3584CE The Netherlands </aff></contrib-group><pub-date pub-type="epub"><day>6</day><month>6</month><year>2024</year></pub-date><pub-date pub-type="pmc-release"><day>6</day><month>6</month><year>2024</year></pub-date><pub-date pub-type="ppub"><year>2024</year></pub-date><volume>62</volume><issue>8</issue><fpage>7559</fpage><lpage>7574</lpage><history><date date-type="received"><day>14</day><month>11</month><year>2023</year></date><date date-type="accepted"><day>24</day><month>5</month><year>2024</year></date></history><permissions><copyright-statement>&#x000a9; The Author(s) 2024</copyright-statement><copyright-year>2024</copyright-year><license><ali:license_ref specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p><bold>Open Access</bold> This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link>.</license-p></license></permissions><abstract id="Abs1"><p id="Par1">The Earth System is warming due to anthropogenic greenhouse gas emissions which increases the risk of passing a tipping point in the Earth System, such as a collapse of the Atlantic Meridional Overturning Circulation (AMOC). An AMOC weakening can have large climate impacts which influences the marine and terrestrial carbon cycle and hence atmospheric pCO<inline-formula id="IEq3"><alternatives><tex-math id="M3">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M4"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq3.gif"/></alternatives></inline-formula>. However, the sign and mechanism of this response are subject to uncertainty. Here, we use a state-of-the-art Earth System Model, the Community Earth System Model v2 (CESM2), to study the atmospheric pCO<inline-formula id="IEq4"><alternatives><tex-math id="M5">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M6"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq4.gif"/></alternatives></inline-formula> response to an AMOC weakening under low (SSP1-2.6) and high (SSP5-8.5) emission scenarios over the years 2015&#x02013;2100. A freshwater flux anomaly in the North Atlantic strongly weakens the AMOC, and we simulate a weak positive pCO<inline-formula id="IEq5"><alternatives><tex-math id="M7">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M8"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq5.gif"/></alternatives></inline-formula> response of 0.45 and 1.3&#x000a0;ppm increase per AMOC decrease in Sv for SSP1-2.6 and SSP5-8.5, respectively. For SSP1-2.6 this response is driven by both the oceanic and terrestrial carbon cycles, whereas in SSP5-8.5 it is solely the ocean that drives the response. However, the spatial patterns of both the climate and carbon cycle response are similar in both emission scenarios over the course of the simulation period (2015&#x02013;2100), showing that the response pattern is not dependent on cumulative CO<inline-formula id="IEq6"><alternatives><tex-math id="M9">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M10"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq6.gif"/></alternatives></inline-formula> emissions up to 2100. Though the global atmospheric pCO<inline-formula id="IEq7"><alternatives><tex-math id="M11">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M12"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq7.gif"/></alternatives></inline-formula> response might be small, locally large changes in both the carbon cycle and the climate system occur due to the AMOC weakening, which can have large detrimental effects on ecosystems and society.</p><sec><title>Supplementary Information</title><p>The online version contains supplementary material available at 10.1007/s00382-024-07295-y.</p></sec></abstract><kwd-group xml:lang="en"><title>Keywords</title><kwd>Atlantic meridional overturning circulation</kwd><kwd>Carbon cycle</kwd><kwd>AMOC weakening</kwd><kwd>Climate change</kwd><kwd>Marine biosphere</kwd><kwd>Atmospheric pCO<inline-formula id="IEq8"><alternatives><tex-math id="M13">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M14"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq8.gif"/></alternatives></inline-formula></kwd></kwd-group><funding-group><award-group><funding-source><institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/501100011756</institution-id><institution>Netherlands Earth System Science Centre</institution></institution-wrap></funding-source><award-id>024.002.001</award-id></award-group></funding-group><funding-group><award-group><funding-source><institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/501100003246</institution-id><institution>Nederlandse Organisatie voor Wetenschappelijk Onderzoek</institution></institution-wrap></funding-source><award-id>VI.C.202.081</award-id><principal-award-recipient><name><surname>von der Heydt</surname><given-names>Anna S.</given-names></name></principal-award-recipient></award-group></funding-group><funding-group><award-group><funding-source><institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/501100000781</institution-id><institution>European Research Council</institution></institution-wrap></funding-source><award-id>101055096</award-id><principal-award-recipient><name><surname>Dijkstra</surname><given-names>Henk A.</given-names></name></principal-award-recipient></award-group></funding-group><custom-meta-group><custom-meta><meta-name>issue-copyright-statement</meta-name><meta-value>&#x000a9; Springer-Verlag GmbH Germany, part of Springer Nature 2024</meta-value></custom-meta></custom-meta-group></article-meta></front><body><sec id="Sec1"><title>Introduction</title><p id="Par2">Anthropogenic emissions of greenhouse gases cause the Earth System to change and warm up. As temperatures increase, we are at risk of crossing tipping points with possibly large detrimental effects on our climate, biodiversity and human communities (Lenton et&#x000a0;al. <xref ref-type="bibr" rid="CR21">2008</xref>; McKay et&#x000a0;al. <xref ref-type="bibr" rid="CR26">2022</xref>). One of these tipping points can occur in the Atlantic Meridional Overturning Circulation (AMOC) (Lenton et&#x000a0;al. <xref ref-type="bibr" rid="CR21">2008</xref>). Currently, the AMOC is in a so-called on-state where it transports heat from the Southern Hemisphere to the Northern Hemisphere and thereby modulates global and especially European climate (Buckley and Marshall <xref ref-type="bibr" rid="CR3">2016</xref>). In models, the AMOC can be strongly weakened and in this so-called collapsed state (or off-state), the northward heat transport is disrupted with large global climatic effects (Orihuela-Pinto et&#x000a0;al. <xref ref-type="bibr" rid="CR30">2022</xref>).</p><p id="Par3">Proxy-based evidence suggest that AMOC collapses have occurred frequently during the Pleistocene where they are a main source of millennial variability (e.g. the Dansgaard-Oeschger cycles; Rahmstorf <xref ref-type="bibr" rid="CR31">2002</xref>; Lynch-Stieglitz <xref ref-type="bibr" rid="CR24">2017</xref>). The disrupted heat transport causes warming of surface air temperature (SAT) and sea surface temperature (SST) in the Southern Hemisphere, while the Northern Hemisphere cools (also called the &#x02018;bipolar seesaw&#x02019;; Vellinga and Wood <xref ref-type="bibr" rid="CR38">2002</xref>; Caesar et&#x000a0;al. <xref ref-type="bibr" rid="CR5">2018</xref>), with local SAT changes up to 10<inline-formula id="IEq9"><alternatives><tex-math id="M15">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M16"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq9.gif"/></alternatives></inline-formula>C (Cuffey and Clow <xref ref-type="bibr" rid="CR7">1997</xref>; Rahmstorf <xref ref-type="bibr" rid="CR31">2002</xref>). In models, the bipolar seesaw results in an increased northern hemispheric sea-ice extent and changes in atmospheric dynamics (Vellinga and Wood <xref ref-type="bibr" rid="CR38">2002</xref>; Orihuela-Pinto et&#x000a0;al. <xref ref-type="bibr" rid="CR30">2022</xref>). The changes in atmospheric dynamics are, for example, seen in wind fields with strengthened trade winds and strengthened Pacific Walker Circulation (Orihuela-Pinto et&#x000a0;al. <xref ref-type="bibr" rid="CR30">2022</xref>), and a southward shift of the Intertropical Convergence Zone (ITCZ) (Zhang and Delworth <xref ref-type="bibr" rid="CR45">2005</xref>; Jackson et&#x000a0;al. <xref ref-type="bibr" rid="CR15">2015</xref>). The tipping threshold for the AMOC is estimated to be around 4&#x000a0;<inline-formula id="IEq10"><alternatives><tex-math id="M17">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M18"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq10.gif"/></alternatives></inline-formula>C of warming relative to pre-industrial climate (McKay et&#x000a0;al. <xref ref-type="bibr" rid="CR26">2022</xref>).</p><p id="Par4">In addition to the climate system, also the carbon cycle is affected by an AMOC collapse. In the ocean, the change in ocean circulation affects the advection of important tracers such as Dissolved Inorganic Carbon (DIC) and nutrients (Zickfeld et&#x000a0;al. <xref ref-type="bibr" rid="CR47">2008</xref>). An AMOC collapse can also change upwelling rates and surface stratification, processes that are important for driving Net Primary Production (NPP) and carbon sequestration in the deep ocean. Terrestrial primary productivity is affected by the changing temperature and precipitation patterns. Locally, this can lead to both a reduction or an increased uptake of CO<inline-formula id="IEq11"><alternatives><tex-math id="M19">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M20"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq11.gif"/></alternatives></inline-formula> (e.g. K&#x000f6;hler et&#x000a0;al. <xref ref-type="bibr" rid="CR18">2005</xref>). Several studies have looked into a potential feedback between AMOC dynamics and atmospheric pCO<inline-formula id="IEq12"><alternatives><tex-math id="M21">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M22"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq12.gif"/></alternatives></inline-formula>, which is controlled by the exchange of the atmosphere with the ocean and land carbon stocks. These studies (e.g. Marchal et&#x000a0;al. <xref ref-type="bibr" rid="CR25">1998</xref>; K&#x000f6;hler et&#x000a0;al. <xref ref-type="bibr" rid="CR18">2005</xref>; Schmittner and Galbraith <xref ref-type="bibr" rid="CR34">2008</xref>), mostly focused on Pleistocene and pre-industrial conditions, show a wide range of possible responses. There is no clear consensus on the responses of the terrestrial and ocean carbon stock to an AMOC weakening, or to the net effect on atmospheric pCO<inline-formula id="IEq13"><alternatives><tex-math id="M23">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M24"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq13.gif"/></alternatives></inline-formula>, which can be attributed to different climatic boundary conditions, timescales assessed, and model detail used (Gottschalk et&#x000a0;al. <xref ref-type="bibr" rid="CR13">2019</xref>). In CMIP6 models, the AMOC gradually weakens up to 2100 and, independent of the used emission scenario (Weijer et&#x000a0;al. <xref ref-type="bibr" rid="CR40">2020</xref>), no AMOC tipping is found. However, these models are thought to be biased towards a too stable AMOC (e.g. Cheng et&#x000a0;al. <xref ref-type="bibr" rid="CR6">2018</xref>; Weijer et&#x000a0;al. <xref ref-type="bibr" rid="CR39">2019</xref>), and a recent observation based study has indicated that the AMOC may tip between 2025 and 2095 (Ditlevsen and Ditlevsen <xref ref-type="bibr" rid="CR11">2023</xref>).</p><p id="Par5">The carbon cycle is also affected by climate change. In the ocean, the effect on the solubility pump is relatively straight forward: increased warming, and increased CO<inline-formula id="IEq14"><alternatives><tex-math id="M25">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M26"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq14.gif"/></alternatives></inline-formula> concentrations, reduce ocean pH and the solubility of CO<inline-formula id="IEq15"><alternatives><tex-math id="M27">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M28"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq15.gif"/></alternatives></inline-formula>, which reduces the uptake capacity of the ocean (Sarmiento et&#x000a0;al. <xref ref-type="bibr" rid="CR32">1998</xref>). The biological pump in Coupled Model Intercomparison Project 6 (CMIP6; Eyring et&#x000a0;al. <xref ref-type="bibr" rid="CR12">2016</xref>) models is much more uncertain though (Henson et&#x000a0;al. <xref ref-type="bibr" rid="CR14">2022</xref>; Wilson et&#x000a0;al. <xref ref-type="bibr" rid="CR42">2022</xref>), especially given that the spread in NPP and Export Production (EP) has increased from CMIP5 to CMIP6 (Kwiatkowski et&#x000a0;al. <xref ref-type="bibr" rid="CR19">2020</xref>; Tagliabue et&#x000a0;al. <xref ref-type="bibr" rid="CR37">2021</xref>). The terrestrial biosphere is affected for example through increased primary production related to CO<inline-formula id="IEq16"><alternatives><tex-math id="M29">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M30"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq16.gif"/></alternatives></inline-formula> fertilization (Zhu et&#x000a0;al. <xref ref-type="bibr" rid="CR46">2022</xref>), but also increased respiration due to permafrost melt (Burke et&#x000a0;al. <xref ref-type="bibr" rid="CR4">2020</xref>).</p><p id="Par6">Studies looking at the combined effect of strong AMOC weakening and anthropogenic climate change on the future carbon cycle are limited. A projected AMOC weakening affects both the solubility and the biological carbon pumps (Liu et&#x000a0;al. <xref ref-type="bibr" rid="CR22">2023</xref>), and generally leads to reduced uptake of (anthropogenic) carbon in the ocean (Obata <xref ref-type="bibr" rid="CR28">2007</xref>; Zickfeld et&#x000a0;al. <xref ref-type="bibr" rid="CR47">2008</xref>; Liu et&#x000a0;al. <xref ref-type="bibr" rid="CR22">2023</xref>), which can be partially compensated for by the terrestrial biosphere (Zickfeld et&#x000a0;al. <xref ref-type="bibr" rid="CR47">2008</xref>). However, the net effect has been found to be small due to competing effects (Swingedouw et&#x000a0;al. <xref ref-type="bibr" rid="CR36">2007</xref>; Zickfeld et&#x000a0;al. <xref ref-type="bibr" rid="CR47">2008</xref>). Though global effects might be weak, local effects can be quite strong. For example, a weakening of the AMOC can also result in a local reduction in primary productivity (Whitt and Jansen <xref ref-type="bibr" rid="CR41">2020</xref>), changes in the plankton stock (Schmittner <xref ref-type="bibr" rid="CR33">2005</xref>) and plankton composition (Boot et&#x000a0;al. <xref ref-type="bibr" rid="CR1">2023</xref>), which all can lead to reduced CO<inline-formula id="IEq17"><alternatives><tex-math id="M31">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M32"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq17.gif"/></alternatives></inline-formula> uptake of the ocean (e.g. Yamamoto et&#x000a0;al. <xref ref-type="bibr" rid="CR44">2018</xref>; Boot et&#x000a0;al. <xref ref-type="bibr" rid="CR1">2023</xref>). These local changes related to an AMOC weakening are strongest in the Atlantic Ocean (Katavouta and Williams <xref ref-type="bibr" rid="CR17">2021</xref>).</p><p id="Par7">The novel aspect of this paper is that we consider the effect of AMOC weakening on the carbon cycle under climate change in a state-of-the-art global climate model, the Community Earth System Model v2 (CESM2; Danabasoglu et&#x000a0;al. <xref ref-type="bibr" rid="CR9">2020</xref>), as explained in Sect. <xref rid="Sec2" ref-type="sec">2</xref>. We use a strong freshwater forcing in the North Atlantic to artificially weaken the AMOC and consider two different emission scenarios, Shared Socioeconomic Pathways (SSPs), with low (SSP1-2.6) and high (SSP5-8.5) emissions (O&#x02019;Neill et&#x000a0;al. <xref ref-type="bibr" rid="CR29">2020</xref>). In the results of Sect. <xref rid="Sec3" ref-type="sec">3</xref> and the subsequent analysis, we focus on the mechanisms how a forced AMOC weakening affects atmospheric pCO<inline-formula id="IEq18"><alternatives><tex-math id="M33">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M34"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq18.gif"/></alternatives></inline-formula> under climate change.</p></sec><sec id="Sec2"><title>Method</title><p id="Par8">In the CESM2 (Danabasoglu et&#x000a0;al. <xref ref-type="bibr" rid="CR9">2020</xref>), the atmosphere is represented by the CAM6 model, the land by the CLM5 model (Lawrence et&#x000a0;al. <xref ref-type="bibr" rid="CR20">2019</xref>), sea ice by the CICE model, ocean circulation by POP2 (Smith et&#x000a0;al. <xref ref-type="bibr" rid="CR35">2010</xref>), and ocean biogeochemistry by MARBL (Long et&#x000a0;al. <xref ref-type="bibr" rid="CR23">2021</xref>). The ocean models POP2 and MARBL are both run on a displaced Greenland pole grid at a nominal horizontal resolution of 1<inline-formula id="IEq19"><alternatives><tex-math id="M35">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M36"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq19.gif"/></alternatives></inline-formula>, with 60 non-equidistant vertical levels. The ocean biogeochemical module MARBL is based on a NPZD-model, where four nutrients (N, P, Fe, and Si) together with light co-limit the production of three phytoplankton groups (diatoms, diazotrophs and small phytoplankton) which are grazed upon by one zooplankton group. The terrestrial carbon cycle is represented with CLM5. This module represents several surface processes such as biogeochemistry, ecology, human influences, biogeophysics and the hydrological cycle. As we use the default CESM2 version, there is no dynamic vegetation. For a complete overview of the CESM2 model and submodules we refer the reader to Danabasoglu et&#x000a0;al. (<xref ref-type="bibr" rid="CR9">2020</xref>) (CESM2), Long et&#x000a0;al. (<xref ref-type="bibr" rid="CR23">2021</xref>) (MARBL), and Lawrence et&#x000a0;al. (<xref ref-type="bibr" rid="CR20">2019</xref>) (CLM5).</p><p id="Par9">We performed emission forced CESM2 simulations with two different emission scenarios, the low emission scenario SSP1-2.6 (126) and the high emission scenario SSP5-8.5 (585). For each emission scenario, a control (CTL) and a hosing (HOS) simulation were carried out. The CTL simulations were only forced with the greenhouse gas emissions, while the HOS simulations were forced with greenhouse gas emissions and an additional, artificial freshwater flux in the North Atlantic. This freshwater forcing is uniformly distributed in the North Atlantic Ocean over the latitudes 50&#x02013;70<inline-formula id="IEq20"><alternatives><tex-math id="M37">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^\circ$$\end{document}</tex-math><mml:math id="M38"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq20.gif"/></alternatives></inline-formula> N (Fig. S1), and is kept constant at a rate of 0.5&#x000a0;Sv, a typical value for these type of experiments (see e.g. Orihuela-Pinto et&#x000a0;al. <xref ref-type="bibr" rid="CR30">2022</xref>; Jackson et&#x000a0;al. <xref ref-type="bibr" rid="CR16">2023</xref>), over the entire simulation period. Both the alkalinity and DIC of the freshwater forcing are set to zero, meaning that the freshwater forcing dilutes the alkalinity and DIC concentrations of the surface.</p><p id="Par10">We will refer to the simulations by their simulation type (CTL or HOS) and the respective emission scenario (126 or 585), e.g. as CTL-126 and HOS-585. All simulations are run from year 2015 to year 2100 and are initialized by values of the NCAR CMIP6 emission driven historical simulation (Danabasoglu <xref ref-type="bibr" rid="CR8">2019</xref>). The used model output is based on monthly means, and line plots are smoothed with a 5 year running mean. When looking at the difference between the HOS and CTL simulations, we subtract the CTL simulations from the HOS simulations.</p><p id="Par11">In Sect.&#x000a0;<xref rid="Sec3" ref-type="sec">3</xref>, we look at relations between variables such as the gas exchange and NPP. To test the relation between such variables, we perform a linear regression on the decadal trends of these variables. We do this analysis on the difference between the HOS and CTL simulations, i.e. we do not perform this analysis for the individual simulations. We determine decadal trends for each decade starting from the 2020&#x02019;s to the 2090&#x02019;s, resulting in 8 data points. The decadal trend of the 2020&#x02019;s is determined as the difference between the average over 2021 to 2030 and the average over 2016 to 2020. The decadal trend of the 2030&#x02019;s is determined as the difference between the average over 2031 to 2040 and the average over 2021 and 2030. The other decadal trends are determined in a similar fashion. This analysis provides us with the sign and strength of the relation between two variables, and the statistical significance of the relation. The regions for which a linear regressions are determined can be seen in Fig. S2, and a result of this analysis for the subtropical North Atlantic Ocean can be seen in Fig. S3.</p></sec><sec id="Sec3"><title>Results</title><sec id="Sec4"><title>Climate reponse</title><p id="Par12">In CTL-126, an increase in atmospheric CO<inline-formula id="IEq21"><alternatives><tex-math id="M39">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M40"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq21.gif"/></alternatives></inline-formula> concentration from 400 to 467&#x000a0;ppm in the 2050s is found, after which the concentration decreases to 432&#x000a0;ppm in 2100 (Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>c). This is accompanied by an increase in global mean surface temperature (GMST) of 1&#x000a0;<inline-formula id="IEq22"><alternatives><tex-math id="M41">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M42"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq22.gif"/></alternatives></inline-formula>C (Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>b), and an AMOC decrease from 17&#x000a0;Sv in 2015 to 9&#x000a0;Sv in 2100 (Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>a). The weakening of the AMOC results in a cooling of the North Atlantic Ocean, while the rest of the Earth warms with largest temperature increases found near the poles (Fig.&#x000a0;<xref rid="Fig2" ref-type="fig">2</xref>a, b) as a response to the increase in greenhouse gas concentrations. In the water cycle we see a southward shift of the Pacific InterTropical Convergence Zone (ITCZ) of a few degrees (Fig. S4a, b). Furthermore, wind fields in the Northern Hemisphere show a small weakening, whereas in the Southern Hemisphere the winds intensify (Fig. S5a, b).</p><p id="Par13">In CTL-585, the emissions increase the atmospheric CO<inline-formula id="IEq23"><alternatives><tex-math id="M43">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M44"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq23.gif"/></alternatives></inline-formula> concentration from 400 to 1094&#x000a0;ppm in 2100 (Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>c) which results in a GMST warming of 5&#x000a0;<inline-formula id="IEq24"><alternatives><tex-math id="M45">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M46"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq24.gif"/></alternatives></inline-formula>C (Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>b). The AMOC weakens from 17 to 7&#x000a0;Sv (Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>a), which leads to a region without warming in the North Atlantic, whereas we see strong warming everywhere else (Fig.&#x000a0;<xref rid="Fig2" ref-type="fig">2</xref>d, e). There is a strong southward shift of the ITCZ in the Pacific and a moderate shift in the Atlantic Ocean (Fig. S4d, e). The changes in the wind field show similar patterns as CTL-126 but with a larger amplitude (Fig. S5d, e).</p><p id="Par14">The net effect of the AMOC weakening (i.e. HOS minus CTL) is shown in Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>d&#x02013;f. In the year 2100, atmospheric CO<inline-formula id="IEq25"><alternatives><tex-math id="M47">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M48"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq25.gif"/></alternatives></inline-formula> concentrations are 2.6 and 4.2&#x000a0;ppm higher in HOS-126 and HOS-585 compared to their respective CTL simulations. In both HOS simulations the AMOC quickly weakens from 17&#x000a0;Sv in 2015 to 6&#x000a0;Sv in 2045 after which the AMOC weakening starts to level off until the AMOC is weaker than 4&#x000a0;Sv in 2100 (Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>d). This strong response to freshwater forcing of the AMOC being independent of greenhouse gas emissions is also found in other studies where a similar freshwater forcing is used (e.g. Jackson et&#x000a0;al. <xref ref-type="bibr" rid="CR16">2023</xref>). Due to the AMOC weakening we observe a relative cooling of (locally) more than 3&#x000a0;<inline-formula id="IEq26"><alternatives><tex-math id="M49">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M50"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq26.gif"/></alternatives></inline-formula>C in the Northern Hemisphere and warming in the Southern Hemisphere (Fig.&#x000a0;<xref rid="Fig2" ref-type="fig">2</xref>c, f) (i.e. the bipolar seesaw). The cooling in the Northern Hemisphere results into an increase in sea-ice cover of the Arctic Ocean (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref> and S6), which for HOS-126 persists throughout the entire simulation period. The AMOC weakening also results into a stronger southward shift of the ITCZ in both the Pacific and Atlantic Ocean (Fig. S4c, f), and winds are relatively intensified in the Northern Hemisphere and weakened in the Southern Hemisphere (Fig. S5c, f), with a stronger response in SSP5-8.5.<fig id="Fig1"><label>Fig. 1</label><caption><p><bold>a</bold> AMOC strength at 26.5<inline-formula id="IEq27"><alternatives><tex-math id="M51">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M52"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq27.gif"/></alternatives></inline-formula>N in Sv, <bold>b</bold> GMST in <inline-formula id="IEq28"><alternatives><tex-math id="M53">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M54"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq28.gif"/></alternatives></inline-formula>C, and <bold>c</bold> atmospheric CO<inline-formula id="IEq29"><alternatives><tex-math id="M55">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M56"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq29.gif"/></alternatives></inline-formula> concentration in ppm for the period 2020&#x02013;2100 smoothed with a 5 year moving mean. In (<bold>a</bold>&#x02013;<bold>c</bold>) blue lines represent the control (CTL) simulations, and orange lines the HOS simulations. (<bold>d</bold>&#x02013;<bold>f</bold>) as in (<bold>a</bold>&#x02013;<bold>c</bold>) but for the difference between the HOS simulations and the control simulations. In all subplots dashed lines represent SSP1-2.6 (126) and solid lines SSP5-8.5 (585)</p></caption><graphic xlink:href="382_2024_7295_Fig1_HTML" id="MO1"/></fig><fig id="Fig2"><label>Fig. 2</label><caption><p>Results for Surface Air Temperature (SAT) in <inline-formula id="IEq30"><alternatives><tex-math id="M57">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M58"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq30.gif"/></alternatives></inline-formula>C. The top row (<bold>a</bold>&#x02013;<bold>c</bold>) is for SSP1-2.6, and the bottom row (<bold>d</bold>&#x02013;<bold>f</bold>) for SSP5-8.5. The left column (<bold>a</bold>, <bold>d</bold>) represents the average over 2016&#x02013;2020 in the control simulations. The middle row (<bold>b</bold>, <bold>e</bold>) represents the difference between the average of 2096&#x02013;2100 and 2016&#x02013;2020 for the control simulations. The right row (<bold>c</bold>, <bold>f</bold>) represents the difference between the HOS and CTL simulations averaged over 2096&#x02013;2100. Note the different scaling between <bold>b</bold> and <bold>e</bold></p></caption><graphic xlink:href="382_2024_7295_Fig2_HTML" id="MO2"/></fig></p></sec><sec id="Sec5"><title>Marine carbon cycle response</title><p id="Par15">In CTL-126 we see that, integrated over the entire simulation period, there are regions in the ocean with net carbon uptake, and net carbon outgassing (Fig.&#x000a0;<xref rid="Fig3" ref-type="fig">3</xref>a). The Southern Ocean between 45 and 60<inline-formula id="IEq31"><alternatives><tex-math id="M59">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M60"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq31.gif"/></alternatives></inline-formula> S, and the equatorial Pacific Ocean, are regions of carbon release from the ocean to the atmosphere. The region of strongest outgassing in the Pacific is located in the upwelling regions on the eastern side of the basin. Carbon uptake generally occurs in the rest of the ocean with the strongest uptake located in the Sea of Japan and the high latitude North Atlantic Ocean. Looking at the development over time (Fig. S8a, b) we see a negative trend over almost the entire ocean, meaning regions which take up carbon in the beginning of the simulation have lower uptake at the end, and regions which emit carbon in 2015 emit more carbon at the end of the simulation. Some regions, e.g. in the Southern Ocean, shift from a carbon uptake region to a region of outgassing.</p><p id="Par16">In CTL-585, also integrated over the simulation period, only the eastern equatorial Pacific shows strong outgassing (Fig.&#x000a0;<xref rid="Fig3" ref-type="fig">3</xref>d). In the other equatorial basins, there are also some small patches that show net outgassing, but the rest of the ocean shows net carbon uptake. Except for the high latitude North Atlantic Ocean and some small other regions, we see a positive trend (Fig. S8d, e), meaning that regions that take up carbon in the beginning, take up more carbon at the end of the simulation, and regions which show outgassing in the beginning show either reduced outgassing or go from being a region of outgassing to a region of CO<inline-formula id="IEq32"><alternatives><tex-math id="M61">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M62"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq32.gif"/></alternatives></inline-formula> uptake. A remarkable region is the high latitude North Atlantic Ocean where the flux from the atmosphere into the ocean strongly decreases while atmospheric pCO<inline-formula id="IEq33"><alternatives><tex-math id="M63">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M64"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq33.gif"/></alternatives></inline-formula> almost triples.</p><p id="Par17">Looking at the response to the AMOC weakening, i.e. HOS-CTL, we see that the spatial pattern of regions that have increased or decreased exchange with the atmosphere is very similar for SSP1-2.6 as for SSP5-8.5 (Fig.&#x000a0;<xref rid="Fig3" ref-type="fig">3</xref>c, f). In total, the ocean takes up 7.4&#x000a0;PgC less due to the AMOC weakening in SSP1-2.6 and 15.6&#x000a0;PgC less in SSP5-8.5 (Fig.&#x000a0;<xref rid="Fig4" ref-type="fig">4</xref>a, b).<fig id="Fig3"><label>Fig. 3</label><caption><p>Results for the oceanic CO<inline-formula id="IEq34"><alternatives><tex-math id="M65">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M66"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq34.gif"/></alternatives></inline-formula> uptake integrated over the entire simulation period in kg C m<inline-formula id="IEq35"><alternatives><tex-math id="M67">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{-2}$$\end{document}</tex-math><mml:math id="M68"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mrow><mml:mo>-</mml:mo><mml:mn>2</mml:mn></mml:mrow></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq35.gif"/></alternatives></inline-formula>. The top row (<bold>a</bold>&#x02013;<bold>c</bold>) represents SSP1-2.6 and the bottom row (<bold>d</bold>&#x02013;<bold>f</bold>) represents SSP5-8.5. The left column (<bold>a</bold>, <bold>d</bold>) represents the uptake in the control simulations, the middle column (<bold>b</bold>, <bold>e</bold>) the uptake in the HOS simulations, and the right column (<bold>c</bold>, <bold>f</bold>) the difference between the HOS and CTL simulations. In <bold>a</bold>, <bold>b</bold>, <bold>d</bold>, and <bold>e</bold> positive values (brown colors) represent net uptake, and negative values (blue colors) represent net outgassing</p></caption><graphic xlink:href="382_2024_7295_Fig3_HTML" id="MO3"/></fig><fig id="Fig4"><label>Fig. 4</label><caption><p><bold>a</bold> Cumulative uptake of CO<inline-formula id="IEq36"><alternatives><tex-math id="M69">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M70"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq36.gif"/></alternatives></inline-formula> in the ocean from 2020 onward in PgC. <bold>b</bold> The difference in the cumulative oceanic CO<inline-formula id="IEq37"><alternatives><tex-math id="M71">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M72"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq37.gif"/></alternatives></inline-formula> uptake between the HOS and CTL simulations. <bold>c</bold> Difference in the cumulative oceanic CO<inline-formula id="IEq38"><alternatives><tex-math id="M73">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M74"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq38.gif"/></alternatives></inline-formula> uptake between the HOS and CTL simulations in SSP1-2.6 for different ocean basins. <bold>d</bold> As in (<bold>c</bold>) but for SSP5-8.5. In (<bold>a</bold>) blue lines represent the CTL simulations, and the orange lines the HOS simulations. In all subplots dashed lines represent SSP1-2.6 and solid lines SSP5-8.5. Negative values in <bold>b</bold>&#x02013;<bold>d</bold> represent reduced uptake in the HOS simulations compared to the CTL simulations. Results are smoothed with a 5 year moving mean</p></caption><graphic xlink:href="382_2024_7295_Fig4_HTML" id="MO4"/></fig></p><p id="Par18">Even though the climate system changes a lot due to the AMOC weakening, the CO<inline-formula id="IEq39"><alternatives><tex-math id="M75">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M76"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq39.gif"/></alternatives></inline-formula> uptake of the ocean does not change a lot because of compensating effects. To obtain a better understanding of the mechanisms behind the reduced uptake, we have divided the ocean into five basins: the Arctic (north of 66<inline-formula id="IEq40"><alternatives><tex-math id="M77">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M78"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq40.gif"/></alternatives></inline-formula> N), the Southern (south of 35<inline-formula id="IEq41"><alternatives><tex-math id="M79">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M80"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq41.gif"/></alternatives></inline-formula> S), the Atlantic, Pacific and Indian Ocean (Fig.&#x000a0;<xref rid="Fig4" ref-type="fig">4</xref>c, d). In the response (i.e. HOS-CTL), the strength of the response differs between the emission scenarios. However, we find that all basins have the same sign, i.e. in both emission scenarios the Pacific takes up more carbon, and the other basins take up less.</p><p id="Par19">In both emission scenarios the Arctic Ocean shows a decreased uptake (<inline-formula id="IEq42"><alternatives><tex-math id="M81">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M82"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq42.gif"/></alternatives></inline-formula>6.0 PgC in SSP1-2.6 and -4.4 PgC in SSP5-8.5), which can be explained by looking at the sea-ice cover (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref> and S6). The cooling in the Northern Hemisphere following the AMOC weakening in the HOS simulations, increases the sea-ice cover. The increase in sea-ice cover has two effects on the uptake of CO<inline-formula id="IEq43"><alternatives><tex-math id="M83">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M84"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq43.gif"/></alternatives></inline-formula>: (1) it reduces the ocean area available for exchange with the atmosphere; and (2) it increases light limitation and thereby reduces net primary production (NPP; Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>n, o and S9) and the carbon export to the subsurface ocean. In SSP5-8.5 most of the sea ice still disappears due to the strong warming, but in SSP1-2.6 most of the sea ice persists throughout the simulation period, which explains why the Arctic Ocean in SSP1-2.6 responds stronger compared to SSP5-8.5. We also find this effect in the sea-ice covered regions in the North Atlantic (e.g. the Labrador Sea). Both effects mentioned above contribute to the reduced uptake in the Arctic, which is supported by the linear regression on decadal trends of the ice fraction, NPP and gas exchange showing strong, significant relations with R<inline-formula id="IEq44"><alternatives><tex-math id="M85">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M86"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq44.gif"/></alternatives></inline-formula>-values ranging from 0.79 to 0.97 for both emission scenarios. Especially the relations between NPP and the gas exchange are strong: 0.97 and 0.96 for SSP1-2.6 and SSP5-8.5, respectively.</p><p id="Par20">The Pacific Ocean takes up more carbon in the HOS than in the CTL simulations (+4.9&#x000a0;PgC in SSP1-2.6 and +1.7&#x000a0;PgC in SSP5-8.5). To analyze what is happening in the Pacific, we considered three different regions: (1) the North Pacific (20&#x02013;66<inline-formula id="IEq45"><alternatives><tex-math id="M87">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M88"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq45.gif"/></alternatives></inline-formula> N), the Equatorial Pacific (20<inline-formula id="IEq46"><alternatives><tex-math id="M89">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M90"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq46.gif"/></alternatives></inline-formula> N&#x02013;10<inline-formula id="IEq47"><alternatives><tex-math id="M91">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M92"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq47.gif"/></alternatives></inline-formula> S), and the South Pacific (10<inline-formula id="IEq48"><alternatives><tex-math id="M93">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M94"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq48.gif"/></alternatives></inline-formula>&#x02013;35<inline-formula id="IEq49"><alternatives><tex-math id="M95">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M96"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq49.gif"/></alternatives></inline-formula> S). In the North Pacific, we see an increased uptake of CO<inline-formula id="IEq50"><alternatives><tex-math id="M97">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M98"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq50.gif"/></alternatives></inline-formula> (Fig.&#x000a0;<xref rid="Fig3" ref-type="fig">3</xref>e, f), and a relative cooling of the surface ocean (Fig. S10) which increases the solubility of CO<inline-formula id="IEq51"><alternatives><tex-math id="M99">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M100"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq51.gif"/></alternatives></inline-formula>. The linear regression analysis shows a weak relation between SSTs and the gas exchange (R<inline-formula id="IEq52"><alternatives><tex-math id="M101">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M102"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq52.gif"/></alternatives></inline-formula> is 0.26 and 0.20 for SSP1-2.6 and SSP5-8.5). SSS, surface DIC and surface Alk show no relation to the gas exchange, i.e. all have R<inline-formula id="IEq53"><alternatives><tex-math id="M103">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M104"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq53.gif"/></alternatives></inline-formula> close to zero. A similar, but opposite, response is seen in the South Pacific. Here the surface ocean becomes relatively warmer decreasing the solubility of CO<inline-formula id="IEq54"><alternatives><tex-math id="M105">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M106"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq54.gif"/></alternatives></inline-formula>. Just as in the North Pacific, the statistical relation is weak (R<inline-formula id="IEq55"><alternatives><tex-math id="M107">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M108"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq55.gif"/></alternatives></inline-formula> is 0.07 and 0.19 for SSP1-2.6 and SSP5-8.5, respectively), but this could also be related to more spatial variation in the South Pacific Ocean carbon uptake. The equatorial Pacific is characterized by a band with reduced uptake and one with increased uptake. This can be related to the stronger southward shift of the ITCZ in the Pacific in HOS compared to the CTL (Fig. S4). Due to this shift, the dilutive fluxes related to net precipitation shift southward, causing relative increases of SSS, surface DIC and surface Alk in the northern section due to reduced precipitation, and relative decreases due to increased precipitation in the southern section (Fig. S8). The changes in precipitation patterns also affect the stratification, with a weaker stratification in the north and a stronger stratification in the south (Fig. S12). The changes in stratification also affect the entrainment of DIC from DIC rich subsurface layers to the surface ocean, with more entrainment in regions with a weaker stratification. The changes in SSS and surface DIC cause the decreased uptake in the northern section and increased uptake in the southern section. This is supported by the linear regression results which show high R<inline-formula id="IEq56"><alternatives><tex-math id="M109">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M110"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq56.gif"/></alternatives></inline-formula>-values in the northern section for the surface DIC&#x02014;gas exchange (0.58 and 0.86), SSS&#x02014;gas exchange (0.56 and 0.72), DIC&#x02014;stratification (0.95 and 0.96), and stratification&#x02014;precipitation (0.75 and 0.46) relations, where the values are reported for SSP1-2.6 and SSP5-8.5, respectively.</p><p id="Par21">We find the largest difference in carbon uptake (<inline-formula id="IEq57"><alternatives><tex-math id="M111">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M112"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq57.gif"/></alternatives></inline-formula>2.0&#x000a0;PgC in SSP1-2.6 and <inline-formula id="IEq58"><alternatives><tex-math id="M113">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M114"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq58.gif"/></alternatives></inline-formula>9.3&#x000a0;PgC in SSP5-8.5) in the Atlantic. In the beginning of the simulation period, the HOS simulations take up more carbon compared to the CTL simulations in both emission scenarios (Fig.&#x000a0;<xref rid="Fig4" ref-type="fig">4</xref>c, d). This is because initially the response is only present in the subpolar North Atlantic. The strong cooling related to the AMOC weakening and the strong freshening due to the freshwater forcing cause an increase in solubility leading to more uptake of CO<inline-formula id="IEq59"><alternatives><tex-math id="M115">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M116"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq59.gif"/></alternatives></inline-formula> here. As the AMOC weakening signal spreads to the subtropical gyre, we see that the Atlantic uptake is much reduced in the HOS simulations compared to the CTL simulations.</p><p id="Par22">The regions with sea ice show similar behavior as the Arctic Ocean with decreased uptake related to a larger sea-ice cover in the HOS simulations (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>). In the ice-free subpolar region, an increase in uptake is observed (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>a, b). The linear regression analysis shows that the trend in gas exchange is determined by the dilution of Alk by the freshwater forcing (R<inline-formula id="IEq60"><alternatives><tex-math id="M117">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M118"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq60.gif"/></alternatives></inline-formula>-values of 0.66 and 0.84 for SSP1-2.6 and SSP5-8.5 respectively). However, the increased uptake cannot be explained by Alk (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>m, n), since it decreases in the HOS simulations decreasing the uptake capacity of the ocean. This suggests that we should look towards SSS (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>i, j), SST (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>g, h) and surface DIC (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>k, l) to explain the behavior of the subpolar region. Spatially integrated over the region, pH (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>e, f) is lower in the HOS simulation which suggests that the increased uptake we find is related to an increase of solubility of CO<inline-formula id="IEq61"><alternatives><tex-math id="M119">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M120"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq61.gif"/></alternatives></inline-formula>. This is associated to the initial strong cooling in this region, and the decreases in SSS (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>i, j and S11) due to the applied freshwater forcing in this region.</p><p id="Par23">In the subtropical region we generally see a decrease in uptake (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>a, b). To explain this we consider several variables, i.e. SST (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>g, h and S10), SSS (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>i, j and S11), DIC (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>k, l and S14), Alk (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>m, n and S15) and NPP (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>o, p and S9), which all show a relative decrease in this region. The net effect of the changes in these variables is a reduction in pH (Fig.&#x000a0;<xref rid="Fig5" ref-type="fig">5</xref>e, f and S16) and reduced uptake capacity of the ocean. This is supported by the linear regression analysis between the decadal trends in the gas exchange and surface pH with R<inline-formula id="IEq62"><alternatives><tex-math id="M121">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M122"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq62.gif"/></alternatives></inline-formula>-values of 0.82 and 0.93 for SSP1-2.6 and SSP5-8.5, respectively. The decrease in pH is caused by the decrease in Alk (R<inline-formula id="IEq63"><alternatives><tex-math id="M123">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M124"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq63.gif"/></alternatives></inline-formula>-values of 0.82 and 0.91), which is related to the freshwater forcing in the subpolar region. The freshwater forcing dilutes surface Alk after which it is advected along the eastern side of the basin southwards into the subtropical gyre. Here it reduces the pH and therefore the uptake capacity.</p><p id="Par24">The Indian Ocean has a relatively weak response and is very similar in size for both emission scenarios with a small decrease in uptake (<inline-formula id="IEq64"><alternatives><tex-math id="M125">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M126"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq64.gif"/></alternatives></inline-formula>1.2&#x000a0;PgC in SSP1-2.6 and <inline-formula id="IEq65"><alternatives><tex-math id="M127">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M128"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq65.gif"/></alternatives></inline-formula>1.5&#x000a0;PgC in SSP5-8.5). In SSP1<inline-formula id="IEq66"><alternatives><tex-math id="M129">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M130"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq66.gif"/></alternatives></inline-formula>2.6 this is related to the relatively warmer SSTs in the HOS simulations (Fig. S10), with an R<inline-formula id="IEq67"><alternatives><tex-math id="M131">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M132"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq67.gif"/></alternatives></inline-formula>-value of 0.057. The Southern Ocean also has a small decrease in uptake, with a larger decrease in SSP1-2.6 (<inline-formula id="IEq68"><alternatives><tex-math id="M133">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M134"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq68.gif"/></alternatives></inline-formula>1.8&#x000a0;PgC compared to <inline-formula id="IEq69"><alternatives><tex-math id="M135">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M136"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq69.gif"/></alternatives></inline-formula>0.9&#x000a0;PgC in SSP5-8.5). This larger decrease can be explained by the fact that the sea-ice cover is larger in SSP1-2.6 compared to SSP5-8.5 (Fig. S7). In SSP5-8.5 we see more uptake around the sea-ice edge just south of 60<inline-formula id="IEq70"><alternatives><tex-math id="M137">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M138"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq70.gif"/></alternatives></inline-formula> S while in SSP1-2.6 there is less uptake (Fig.&#x000a0;<xref rid="Fig8" ref-type="fig">8</xref>d).<fig id="Fig5"><label>Fig. 5</label><caption><p>Response of specific variables to the AMOC weakening, i.e. the HOS minus the CTL simulations, zoomed in on the North Atlantic and Arctic Ocean. Columns 1 and 3 represent SSP1-2.6 and columns 2 and 4 SSP5-8.5. The black lines represent the 0.15 sea ice fraction averaged over 2096&#x02013;2100 for the CTL simulation (dashed lines) and HOS simulation (solid lines). Panels <bold>a</bold> and <bold>b</bold> represent integrated ocean uptake over the entire simulation period, the other panels represent averages over 2096&#x02013;2100. The variables shown here are the gas exchange (<bold>c</bold>, <bold>d</bold>), surface pH (<bold>e</bold>, <bold>f</bold>), SSTs (<bold>g</bold>, <bold>h</bold>), SSSs (<bold>i</bold>, <bold>j</bold>), DIC in the top 150&#x000a0;m (<bold>k</bold>, <bold>l</bold>), Alk in the top 150&#x000a0;m (<bold>m</bold>, <bold>n</bold>), NPP (<bold>o</bold>, <bold>p</bold>), and maximum mixed layer depth (<bold>q</bold>, <bold>r</bold>)</p></caption><graphic xlink:href="382_2024_7295_Fig5_HTML" id="MO5"/></fig></p></sec><sec id="Sec6"><title>Terrestrial carbon cycle response</title><p id="Par25">In CTL-126, the terrestrial biosphere, integrated over the entire simulation period, shows a net uptake of CO<inline-formula id="IEq71"><alternatives><tex-math id="M139">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M140"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq71.gif"/></alternatives></inline-formula> in most regions (Fig.&#x000a0;<xref rid="Fig6" ref-type="fig">6</xref>a). The Net Biosphere Production (NBP) maxima are located on the equator for the tropical rainforests, the boreal forests in the high latitude Northern Hemisphere, and the eastern United States and China. The few locations that show net emission of CO<inline-formula id="IEq72"><alternatives><tex-math id="M141">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M142"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq72.gif"/></alternatives></inline-formula> are very local and present in the high latitude Northern Hemisphere, the Tibetan Plateau, South East Asia and South America. If we look at the development over time (Fig. S17a, b) we see that the tropical rainforests have a lower NBP at the end of the simulation. There are some regions that have a higher NBP in 2100, e.g. the boreal forests in Scandinavia.</p><p id="Par26">The response in CTL-585 is very similar to CTL-126 with respect to the spatial pattern, except in central Africa (Fig.&#x000a0;<xref rid="Fig6" ref-type="fig">6</xref>d). However, the amplitude of the response is much larger due to the CO<inline-formula id="IEq73"><alternatives><tex-math id="M143">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M144"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq73.gif"/></alternatives></inline-formula> fertilization effect. Especially the tropical rainforests, but also the boreal forests, show more carbon uptake compared to CTL-126. The same is also true for regions that emit carbon, i.e., the region in the high latitude Northern Hemisphere that emits carbon is larger, and the amount of carbon emitted is also higher. The main difference with respect to CTL-126 is a region in the Congo basin which emits CO<inline-formula id="IEq74"><alternatives><tex-math id="M145">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M146"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq74.gif"/></alternatives></inline-formula> in CTL-585 whereas in CTL-126 it is a region of relatively strong uptake, which is possibly related to increased wildfire activity in this region in SSP5-8.5 (Fig. S18). When we look at the development over time (Fig. S17d, e) we find a completely different pattern in CTL-585 compared with CTL-126. The tropical rainforests show an increase in NBP related to the CO<inline-formula id="IEq75"><alternatives><tex-math id="M147">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M148"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq75.gif"/></alternatives></inline-formula> fertilization effect whereas northern Siberia shows a decrease related to increased respiration due to permafrost melt (Fig. S20 and S21).</p><p id="Par27">Integrated globally the terrestrial biosphere takes up 5.3&#x000a0;PgC less in SSP1-2.6 and 0.5&#x000a0;PgC more in SSP5-8.5 (Fig.&#x000a0;<xref rid="Fig7" ref-type="fig">7</xref>) in the HOS simulations compared to the CTL simulations. Figure&#x000a0;<xref rid="Fig7" ref-type="fig">7</xref> shows the opposite trends in carbon uptake on the land for the two emission scenarios: in SSP1-2.6 the land takes up more carbon between 2015 and 2040 in the HOS simulation, whereas in SSP5-8.5 the land takes up less in the HOS simulation for the same period. The increased uptake in HOS-126 compared to CTL-126 can be explained by increased NBP in Brazil. For HOS-126, in the first years there is already an increase in precipitation over Brazil boosting the productivity and therefore also the carbon uptake in this region. The strong decrease in precipitation (related to the ITCZ shift) in Central America only starts in the 2030s and does not influence the response in the first two decades of the simulation period. In HOS-585 the increase in precipitation of Brazil is delayed compared to HOS-126. Additionally, there is a strong carbon outflux in the 2020s in HOS-585 related to fire in the Congo basin (Fig. S18).</p><p id="Par28">Looking at spatial patterns of the cumulative uptake, we see a very similar response to the AMOC weakening (HOS-CTL) for both emission scenarios (Fig.&#x000a0;<xref rid="Fig6" ref-type="fig">6</xref>c, f). In both emission scenarios we find that the increased southward shift in the ITCZ in the HOS simulations leads to decreased NBP in central America, and increased NBP in Southern America. The linear regression analysis supports this. The decadal trends of NBP and precipitation relate well to each other in both the northern (0.77 and 0.49) and southern section (0.50 and 0.54) for SSP1-2.6 and SSP5-8.5, respectively. A similar shift can be seen in Africa, but with a smaller latitudinal shift and amplitude. The shift and amplitude are slightly stronger in SSP1-2.6. The boreal forests become relatively lower in NBP in the HOS simulations with a larger amplitude in SSP1-2.6. This is because in SSP1-2.6, the forests have lower Gross Primary Production (GPP; Fig. S19) over the course of the century which can be related to the relative cooling in the Northern Hemisphere seen in the HOS simulations (Fig.&#x000a0;<xref rid="Fig2" ref-type="fig">2</xref>). This relative cooling is stronger in SSP1-2.6, related to the increased sea-ice cover and therefore higher albedo in the Arctic. The R<inline-formula id="IEq76"><alternatives><tex-math id="M149">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M150"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq76.gif"/></alternatives></inline-formula>-values for the linear regression on decadal trends in SAT and GPP over the boreal forests are 0.70 and 0.90 for SSP1-2.6 and SSP5-8.5. Another effect of the Northern Hemispheric cooling is an increase in NBP in the permafrost regions in Siberia and North America in the HOS simulations. The cooling reduces permafrost melt (Fig. S20) and therefore reduces soil respiration (Fig. S21), with a larger amplitude in Siberia for SSP5-8.5. The R<inline-formula id="IEq77"><alternatives><tex-math id="M151">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^2$$\end{document}</tex-math><mml:math id="M152"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mn>2</mml:mn></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq77.gif"/></alternatives></inline-formula>-values for the linear regression on the decadal trends in SATs and soil respiration are 0.79 and 0.61 for SSP1-2.6 and SSP5-8.5, respectively.<fig id="Fig6"><label>Fig. 6</label><caption><p>Results for the CO<inline-formula id="IEq78"><alternatives><tex-math id="M153">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M154"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq78.gif"/></alternatives></inline-formula> exchange with the land integrated over the entire simulation period in kg C m<inline-formula id="IEq79"><alternatives><tex-math id="M155">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{-2}$$\end{document}</tex-math><mml:math id="M156"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mrow><mml:mo>-</mml:mo><mml:mn>2</mml:mn></mml:mrow></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq79.gif"/></alternatives></inline-formula>. The top row (<bold>a</bold>&#x02013;<bold>c</bold>) represents SSP1-2.6 and the bottom row (<bold>d</bold>&#x02013;<bold>f</bold>) represents SSP5-8.5. The left column (<bold>a</bold>, <bold>d</bold>) represents the uptake in the control simulations, the middle column (<bold>b</bold>, <bold>e</bold>) the uptake in the HOS simulations, and the right column (<bold>c</bold>, <bold>f</bold>) the difference between the HOS and CTL simulations. In <bold>a</bold>, <bold>b</bold>, <bold>d</bold>, and <bold>e</bold> green colors represent net CO<inline-formula id="IEq80"><alternatives><tex-math id="M157">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M158"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq80.gif"/></alternatives></inline-formula> uptake by the land, and red colors represent net emissions into the atmosphere</p></caption><graphic xlink:href="382_2024_7295_Fig6_HTML" id="MO6"/></fig><fig id="Fig7"><label>Fig. 7</label><caption><p><bold>a</bold> Cumulative uptake of CO<inline-formula id="IEq81"><alternatives><tex-math id="M159">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M160"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq81.gif"/></alternatives></inline-formula> on the land from 2020 onward in PgC. <bold>b</bold> Difference in the cumulative land uptake of CO<inline-formula id="IEq82"><alternatives><tex-math id="M161">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M162"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq82.gif"/></alternatives></inline-formula> between the HOS and CTL simulations. Blue lines represent the control simulations, and the orange lines the HOS simulations. In both subplots dashed lines represent SSP1-2.6 and solid lines SSP5-8.5. Negative values in b represent reduced uptake in the HOS simulations compared to the CTL simulations. Results are smoothed with a 5 year moving mean</p></caption><graphic xlink:href="382_2024_7295_Fig7_HTML" id="MO7"/></fig></p></sec><sec id="Sec7"><title>Total response</title><p id="Par29">In total we see an increase of atmospheric CO<inline-formula id="IEq83"><alternatives><tex-math id="M163">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M164"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq83.gif"/></alternatives></inline-formula> concentration of 2.6 and 4.2&#x000a0;ppm in 2100 in SSP1-2.6 and SSP5-8.5 due to the AMOC weakening (HOS-CTL). In SSP1-2.6 this response is caused due to reduced uptake of the ocean (7.4&#x000a0;PgC) and reduced uptake of the land (5.3&#x000a0;PgC) in 2100. In SSP5-8.5 it is driven by the ocean which has taken up 15.6&#x000a0;PgC less in 2100 in the HOS simulations, whereas the land has taken up 0.5&#x000a0;PgC more in 2100. Eventually the AMOC strength in 2100 has decreased by 5.8 and 3.2&#x000a0;Sv in the HOS simulations compared to the CTL simulations. Under the assumption of linearity, this results in a positive feedback strength of 0.44&#x000a0;ppm Sv<inline-formula id="IEq84"><alternatives><tex-math id="M165">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{-1}$$\end{document}</tex-math><mml:math id="M166"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mrow><mml:mo>-</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq84.gif"/></alternatives></inline-formula> and 1.3&#x000a0;ppm Sv<inline-formula id="IEq85"><alternatives><tex-math id="M167">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{-1}$$\end{document}</tex-math><mml:math id="M168"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mrow><mml:mo>-</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq85.gif"/></alternatives></inline-formula> for SSP1-2.6 and SSP5-8.5 respectively. This can be considered a positive feedback since increased CO<inline-formula id="IEq86"><alternatives><tex-math id="M169">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M170"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq86.gif"/></alternatives></inline-formula> concentrations in future climates are generally associated with a weakening of the AMOC (e.g. Weijer et&#x000a0;al. <xref ref-type="bibr" rid="CR40">2020</xref>). This AMOC-pCO<inline-formula id="IEq87"><alternatives><tex-math id="M171">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M172"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq87.gif"/></alternatives></inline-formula> feedback is small on the global scale, due to competing effects but locally large changes in carbon uptake can occur. It is good to note here that the timescale of the feedback can influence the sign of the feedback, since in SSP1-2.6 the CO<inline-formula id="IEq88"><alternatives><tex-math id="M173">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M174"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq88.gif"/></alternatives></inline-formula> concentration is lower in the HOS simulation compared to the CTL simulation in the first 40 years of the simulation (Fig.&#x000a0;<xref rid="Fig1" ref-type="fig">1</xref>c,f).</p><p id="Par30">Figure&#x000a0;<xref rid="Fig8" ref-type="fig">8</xref> gives an overview of the most important climate changes and how the marine and terrestrial respond to these changes. In Fig.&#x000a0;<xref rid="Fig8" ref-type="fig">8</xref>c, d the difference between SSP1<inline-formula id="IEq89"><alternatives><tex-math id="M175">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M176"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq89.gif"/></alternatives></inline-formula>2.6 and 5<inline-formula id="IEq90"><alternatives><tex-math id="M177">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M178"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq90.gif"/></alternatives></inline-formula>8.5 is highlighted. In the terrestrial biosphere the prime effect of the AMOC weakening is the southward shift of the GPP maxima in the tropical rainforests (Fig. S19). Though this could potentially have beneficial effects for the southern regions, it could have detrimental effects for the northern regions (e.g. the Sahel region) and could for example increase the latitudinal extent of the Sahara desert. This shift, caused by a shift in precipitation (Fig. S4), also has effects for the probability of wildfires (Fig. S18), which can increase in regions with reduced precipitation. We cannot conclude whether the AMOC weakening would result into a collapse of the Amazonian rainforests or an increase in the Sahara desert since the model is used without a dynamic vegetation model. In the ocean, a decrease in NPP (Fig. S9) and surface nutrient concentrations (Fig. S13) occurs. The changes in NPP can have effects on the entire food web and thereby have a negative impact on ecosystems and ecosystem functions. If the trend of the surface ocean becoming more depleted of nutrients continues, this might drive a large decline in NPP for the coming centuries. Another important effect of the AMOC weakening is increased ocean acidification (i.e. a decrease in pH; Fig. S16). Lower pH values increase the stress on calcifying organisms and reduces the uptake capacity of the ocean, which might increase the AMOC-pCO<inline-formula id="IEq91"><alternatives><tex-math id="M179">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M180"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq91.gif"/></alternatives></inline-formula> feedback strength on longer timescales. However, the strongest ocean acidification observed in the simulations, i.e. the decrease in pH in the North Atlantic and Arctic, is related to the freshwater forcing. Therefore it is difficult to determine how relevant this effect will be in these regions.</p><p id="Par31">In many climate and carbon cycle variables we see a similar response in spatial pattern, but sometimes with a slightly different amplitude (Fig.&#x000a0;<xref rid="Fig8" ref-type="fig">8</xref>c, d). In the terrestrial biosphere, the main differences are seen in the boreal forests in Scandinavia and Russia (box 1 in Fig.&#x000a0;<xref rid="Fig8" ref-type="fig">8</xref>), and in the Siberian permafrost regions (box 2). The difference in the boreal forests can be explained by looking at the temperature differences between the HOS and CTL simulations. In SSP1-2.6, the northern hemisphere cools more, which causes increased GPP reduction in the boreal forests. For the permafrost region we find a stronger response in SSP5-8.5, because in SSP1-2.6 there is not much permafrost melt in the CTL simulation; therefore the additional cooling in the HOS simulation does not have a large effect on the permafrost melt. In the ocean, we find the largest changes in the subpolar North Atlantic and the Arctic sea-ice regions (boxes 7 and 8 in Fig.&#x000a0;<xref rid="Fig8" ref-type="fig">8</xref>). In the subpolar region there is a relatively stronger decrease in SSS and SST (Fig. S10 and S11) in SSP1-2.6 compared to 5&#x02013;8.5 leading to a larger increase in solubility of CO<inline-formula id="IEq92"><alternatives><tex-math id="M181">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M182"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq92.gif"/></alternatives></inline-formula> and therefore more uptake. Because of the increased cooling, and lower background temperatures in SSP1-2.6, sea-ice cover does not diminish over the simulation whereas in SSP5-8.5 we see in both simulations a strong reduction in sea-ice cover (Fig. S6). This is the reason why we see a stronger reduction in the Arctic in SSP1-2.6.<fig id="Fig8"><label>Fig. 8</label><caption><p>Summarizing figure with dominant mechanisms included for SSP1-2.6 (<bold>a</bold>) and SSP5-8.5 (<bold>b</bold>). <bold>a</bold> and <bold>b</bold> represent results from HOS minus the CTL simulations. The sea-ice edge is taken as where the ice fraction is 0.25 and denoted by the purple lines, where dashed lines represent the CTL simulations and solid lines the HOS simulations. The bar at the left shows the difference in zonal mean surface air temperature averaged over 2096&#x02013;2100 between HOS and CTL. The scaling of this bar is between <inline-formula id="IEq93"><alternatives><tex-math id="M183">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M184"><mml:mo>-</mml:mo></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq93.gif"/></alternatives></inline-formula>2.5 <inline-formula id="IEq94"><alternatives><tex-math id="M185">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M186"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq94.gif"/></alternatives></inline-formula>C (dark blue) and 2.5 <inline-formula id="IEq95"><alternatives><tex-math id="M187">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M188"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq95.gif"/></alternatives></inline-formula>C (dark red). <bold>c</bold> The difference between SSP5-8.5 (<bold>b</bold>) and SSP1-2.6 (<bold>a</bold>) for the regions where (<bold>b</bold>) is negative. Negative values represent a higher negative anomaly in SSP5-8.5 compared to SSP1-2.6. (<bold>d</bold>) as in (<bold>c</bold>) but for positive anomalies. Positive values represent a higher positive anomaly in SSP5-8.5 compared to SSP1-2.6. The color bars in (<bold>c</bold>) and (<bold>d</bold>) apply to both subfigures</p></caption><graphic xlink:href="382_2024_7295_Fig8_HTML" id="MO8"/></fig></p></sec></sec><sec id="Sec8"><title>Summary and discussion</title><p id="Par32">In this study, we have investigated the carbon cycle response to a weakening of the Atlantic Meridional Overturning Circulation (AMOC) under climate change scenarios. We did this by forcing a state-of-the-art Earth System Model, the Community Earth System Model v2 (CESM2), on a nominal 1<inline-formula id="IEq96"><alternatives><tex-math id="M189">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M190"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq96.gif"/></alternatives></inline-formula> resolution with emissions from two different SSP scenarios (SSP1-2.6 and SSP5-8.5) and an additional freshwater flux in the North Atlantic to artificially decrease the AMOC. To our knowledge, this is the first study that utilizes a model of this high complexity with a horizontal resolution of 1<inline-formula id="IEq97"><alternatives><tex-math id="M191">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M192"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq97.gif"/></alternatives></inline-formula> to study the effects of an AMOC weakening on the carbon cycle. We find a positive feedback in both emission scenarios of 0.44 and 1.3&#x000a0;ppm Sv<inline-formula id="IEq98"><alternatives><tex-math id="M193">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{-1}$$\end{document}</tex-math><mml:math id="M194"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mrow><mml:mo>-</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq98.gif"/></alternatives></inline-formula> for SSP1-2.6 and SSP5-8.5, respectively. The response in SSP1-2.6 is driven by both the land and ocean carbon reservoirs, whereas in SSP5-8.5 it is driven solely by the ocean. The response is small, being the effect of many compensating effects over both the land and the ocean. Looking at regional response patterns, both emission scenarios show similar behavior in many climate and carbon cycle variables. In absolute numbers, the response is stronger in SSP5-8.5, but when the high CO<inline-formula id="IEq99"><alternatives><tex-math id="M195">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M196"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq99.gif"/></alternatives></inline-formula> concentrations are taken into account, the relative response is actually weaker in SSP5-8.5 compared to SSP1-2.6.</p><p id="Par33">Our simulations show the climate response to an AMOC weakening, such as a southward shift of the ITCZ and the bipolar seesaw, similar to many previous studies (Obata <xref ref-type="bibr" rid="CR28">2007</xref>; Zickfeld et&#x000a0;al. <xref ref-type="bibr" rid="CR47">2008</xref>; Orihuela-Pinto et&#x000a0;al. <xref ref-type="bibr" rid="CR30">2022</xref>). The AMOC weakening in our simulations follows a very similar trajectory as in Orihuela-Pinto et&#x000a0;al. (<xref ref-type="bibr" rid="CR30">2022</xref>), which used an older version of CESM (i.e. v1.2) under pre-industrial boundary conditions. In our study, the AMOC weakening results in a small increase in atmospheric CO<inline-formula id="IEq100"><alternatives><tex-math id="M197">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M198"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq100.gif"/></alternatives></inline-formula> concentrations. This small effect, especially on the multi-decadal to centennial timescales assessed here, was also found in more idealized models (e.g. Zickfeld et&#x000a0;al. <xref ref-type="bibr" rid="CR47">2008</xref>; Nielsen et&#x000a0;al. <xref ref-type="bibr" rid="CR27">2019</xref>; Gottschalk et&#x000a0;al. <xref ref-type="bibr" rid="CR13">2019</xref>), but as described in Gottschalk et&#x000a0;al. (<xref ref-type="bibr" rid="CR13">2019</xref>) the relative response of the ocean and land reservoirs are dependent on climatic boundary conditions and the used model. It also agrees well with Winton et&#x000a0;al. (<xref ref-type="bibr" rid="CR43">2013</xref>) where they assess the effect of changing ocean circulation on heat and carbon uptake and also find a small decrease in carbon uptake as a response to changing ocean currents. Here, we have used a member of the newest generation of Earth System Models with a relatively high spatial resolution (i.e. nominal 1<inline-formula id="IEq101"><alternatives><tex-math id="M199">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ } \times$$\end{document}</tex-math><mml:math id="M200"><mml:mrow><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts><mml:mo>&#x000d7;</mml:mo></mml:mrow></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq101.gif"/></alternatives></inline-formula> 1<inline-formula id="IEq102"><alternatives><tex-math id="M201">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M202"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq102.gif"/></alternatives></inline-formula> ocean grid). When considering studies with induced AMOC weakening we find, integrated over the entire ocean, a similar response as in Zickfeld et&#x000a0;al. (<xref ref-type="bibr" rid="CR47">2008</xref>), and spatially as in Obata (<xref ref-type="bibr" rid="CR28">2007</xref>), though local differences remain which can be attributed to the use of a higher resolution, and a more complex model in our study. It is also possible to collapse the AMOC without an additional freshwater forcing. In Nielsen et&#x000a0;al. (<xref ref-type="bibr" rid="CR27">2019</xref>) they used such an alternative method under Pleistocene conditions, which resulted in a much slower response in the ocean compared to our simulations. The response of the terrestrial biosphere, especially the changes related to the southward shift of the ITCZ, is also similar to that of previous studies using static vegetation (e.g. Obata <xref ref-type="bibr" rid="CR28">2007</xref>; Nielsen et&#x000a0;al. <xref ref-type="bibr" rid="CR27">2019</xref>). In K&#x000f6;hler et&#x000a0;al. (<xref ref-type="bibr" rid="CR18">2005</xref>) a dynamic vegetation model is used, and they show that an AMOC collapse affects vegetation type. This leads to reduced carbon storage in the high latitudes and increased carbon storage in the Northern Hemisphere midlatitudes. This dynamic behavior is not captured in our simulations and unfortunately, it is not possible to assess what the effect of dynamic vegetation would be based on K&#x000f6;hler et&#x000a0;al. (<xref ref-type="bibr" rid="CR18">2005</xref>) since they consider Pleistocene conditions.</p><p id="Par34">The result that the pattern of the carbon cycle response to an AMOC weakening is independent of the cumulative CO<inline-formula id="IEq103"><alternatives><tex-math id="M203">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M204"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq103.gif"/></alternatives></inline-formula> emissions on multi-decadal to centennial timescales has been shown before. In Zickfeld et&#x000a0;al. (<xref ref-type="bibr" rid="CR47">2008</xref>), for example, the marine carbon cycle remains independent on the used emission scenario for the first 200 years of their simulation, and for the terrestrial carbon cycle this is 150 years. After this period the different emissions start to diverge, though the qualitative behavior remains similar. In our simulations, globally integrated variables show little change as a response to the AMOC weakening. However, on regional scales the effects of an AMOC weakening can be large, e.g. SATs can decrease or increase by more than 3&#x000a0;<inline-formula id="IEq104"><alternatives><tex-math id="M205">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^{\circ }$$\end{document}</tex-math><mml:math id="M206"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq104.gif"/></alternatives></inline-formula>C locally (Fig.&#x000a0;<xref rid="Fig2" ref-type="fig">2</xref>) and some regions become much drier and other see a large increase in precipitation (Fig. S4). These changing climate conditions, on top of already greenhouse gas driven climate change, require climate adaptation which might be difficult to achieve in such a short time frame (i.e. decades). The climate changes associated to an AMOC weakening also cause changes in the carbon cycle. Such changes can increase, for example, desertification and reduce (but also increase) crop yields. This may lead locally to increased food stress, potentially leading to more frequent and more severe famines. The changes in the ocean can lead to more frequent marine heatwaves in the Southern Hemisphere due to the warming, and reduced (global) NPP due to changing nutrient distributions, which might impact food web dynamics and ecosystem function. However, due to the cooling effect of the bipolar seesaw we would can also expect a (relative) reduction in marine heatwaves in the Northern Hemisphere. These effects show that an AMOC collapse can have local effects that have a beneficiary impact or a detrimental impact on the terrestrial and marine biospheres.</p><p id="Par35">Interestingly, the relative effects on multi-decadal timescales are independent to the (cumulative) greenhouse gas emissions. This means that the uncertainty around the effects of a possible AMOC collapse or weakening is not related to past emissions. However, in a future climate without AMOC weakening, emissions do have an influence on when the AMOC might collapse. Furthermore, the small positive feedback found in this study might make the AMOC more likely to tip earlier. Even though on these timescales the relative effects are not dependent on the greenhouse gas emissions, this might be different on intermediate (multi-centennial to millennial) timescales. Since ocean circulation changes, and especially the meridional overturning circulation, is especially dominant in the Earth System on the intermediate timescales, we can expect the most important effects to occur in this time frame. We find, for example, that the surface ocean is becoming more depleted of nutrients (Fig. S13), which might depress NPP for centuries.</p><p id="Par36">Other long term effects that might be relevant are tipping cascades (e.g. Dekker et&#x000a0;al. <xref ref-type="bibr" rid="CR10">2018</xref>), meaning that a collapse of the AMOC could set off an other tipping element in the Earth System. In our simulations, we find decreasing temperatures in the Northern Hemisphere due to the AMOC weakening, which reduces the probability of tipping for example melting of the Greenland Ice Sheet, Arctic sea ice, and Northern Hemispheric permafrost. However, due to the bipolar seesaw, the Southern Hemisphere becomes warmer, which might increase the probability of tipping the Antarctic Ice Sheets. Another tipping point connected to the AMOC is the die off of the Amazonian rainforest. Because we do not use a dynamic vegetation model in this study, we cannot investigate whether the AMOC weakening in our simulations would lead to such a die off.</p><p id="Par37">By using a low and a high emission scenario we have tried to cover uncertainties regarding future emissions. However, we have only used one Earth System Model, which means that the results presented here could be model dependent. Especially ocean productivity shows large spread in the CMIP6 ensemble, which can influence the uptake capacity of the ocean. Another bias in Earth System Models is a too stable AMOC, meaning we need a large freshwater flux in the North Atlantic Ocean to weaken the AMOC. This flux is generally too high to represent for example Greenland Ice Sheet melt, but necessary to achieve a weakened AMOC. This large freshwater flux also leads to freshening of the surface ocean in the subpolar gyre, and dilutes both surface DIC and surface Alk which influences the carbonate chemistry and carbon uptake capacity unrealistically. These effects are present in both the subpolar and subtropical gyres in the North Atlantic Ocean. We have not taken this effect into account explicitly, but it could potentially result in a different uptake capacity of the ocean, and therefore a different feedback strength.</p><p id="Par38">Finally, we have shown in a relatively high resolution, state-of-the-art Earth System Model, that the spatial pattern of the carbon cycle response to an AMOC weakening is not dependent on cumulative CO<inline-formula id="IEq105"><alternatives><tex-math id="M207">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M208"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq105.gif"/></alternatives></inline-formula> emissions. As a follow up study it would be interesting to see what happens on multi-centennial and longer timescales, and what the pCO<inline-formula id="IEq106"><alternatives><tex-math id="M209">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M210"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq106.gif"/></alternatives></inline-formula> response would be under an AMOC recovery. Though not analyzed thoroughly, NPP in the ocean shows large decreases due to the AMOC weakening. This could affect food web dynamics in the ocean with possible (detrimental) changes in fishery yields, food securities and income. These ecosystem and socio-economic effects are worth investigating, to see how a change in the climate system cascades through ecosystems to socio-economic systems.</p></sec><sec id="Sec9" sec-type="supplementary-material"><title>Supplementary Information</title><p>Below is the link to the electronic supplementary material.<supplementary-material content-type="local-data" id="MOESM1"><media xlink:href="382_2024_7295_MOESM1_ESM.pdf"><caption><p><bold>Supplementary information</bold> This article has Supplementary Information containing additional figures. (pdf 38,038KB)</p></caption></media></supplementary-material></p></sec></body><back><fn-group><fn><p><bold>Publisher's Note</bold></p><p>Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.</p></fn></fn-group><ack><title>Acknowledgements</title><p>The authors want to thank Michael Kliphuis (IMAU, Utrecht University) for performing the CESM2 simulations, which were performed at at SURFsara in Amsterdam on the Dutch Supercomputer Snellius within NWO-SURF project 17239.</p></ack><notes notes-type="author-contribution"><title>Author contributions</title><p>A.A.B. performed the analysis on the model output. All authors designed the study and contributed to the writing of the paper.</p></notes><notes notes-type="funding-information"><title>Funding</title><p>This study has been supported by the Netherlands Earth System Science Centre(NESSC), which is financially supported by the Ministry of Education, Culture andScience (OCW; Grant 024.002.001). The work of H.A.D. was also funded by the European Research Council through the ERC-AdG project TAOC (project&#x000a0;101055096). The work of A.S.vdH. was also funded by the Dutch Research Council (NWO) through the NWO-Vici project &#x02018;Interacting climate tipping elements: When does tipping cause tipping?&#x02019; (project VI.C.202.081)</p></notes><notes notes-type="data-availability"><title>Data and code availability</title><p>Yearly output for the most important variables, data necessary to replicate the figures, and the scripts used for creating the figures can be downloaded from <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.5281/zenodo.8376701">https://doi.org/10.5281/zenodo.8376701</ext-link> [47].</p></notes><notes><title>Declarations</title><notes id="FPar1" notes-type="COI-statement"><title>Conflict of interest</title><p id="Par39">The authors declare that they have no conflict of interest.</p></notes></notes><ref-list id="Bib1"><title>References</title><ref id="CR1"><citation-alternatives><element-citation id="ec-CR1" publication-type="journal"><person-group person-group-type="author"><name><surname>Boot</surname><given-names>A</given-names></name><name><surname>Heydt</surname><given-names>AS</given-names></name><name><surname>Dijkstra</surname><given-names>HA</given-names></name></person-group><article-title>Effect of plankton composition shifts in the north Atlantic on atmospheric pCO<inline-formula id="IEq115"><alternatives><tex-math id="M211">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M212"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq115.gif"/></alternatives></inline-formula></article-title><source>Geophys Res Lett</source><year>2023</year><volume>50</volume><issue>2</issue><fpage>2022</fpage><lpage>100230</lpage><pub-id pub-id-type="doi">10.1029/2022GL100230</pub-id></element-citation><mixed-citation id="mc-CR1" publication-type="journal">Boot A, Heydt AS, Dijkstra HA (2023a) Effect of plankton composition shifts in the north Atlantic on atmospheric pCO<inline-graphic xlink:href="382_2024_7295_Article_IEq116.gif"/>. Geophys Res Lett 50(2):2022&#x02013;100230. 10.1029/2022GL100230</mixed-citation></citation-alternatives></ref><ref id="CR2"><mixed-citation publication-type="other">Boot A, Heydt AS, Dijkstra HA (2023b) GBC_2023: V1.1_25_09_23 (v1.1). 10.5281/zenodo.8376701</mixed-citation></ref><ref id="CR3"><citation-alternatives><element-citation id="ec-CR3" publication-type="journal"><person-group person-group-type="author"><name><surname>Buckley</surname><given-names>MW</given-names></name><name><surname>Marshall</surname><given-names>J</given-names></name></person-group><article-title>Observations, inferences, and mechanisms of the Atlantic meridional overturning circulation: a review</article-title><source>Rev Geophys</source><year>2016</year><volume>54</volume><issue>1</issue><fpage>5</fpage><lpage>63</lpage><pub-id pub-id-type="doi">10.1002/2015RG000493</pub-id></element-citation><mixed-citation id="mc-CR3" publication-type="journal">Buckley MW, Marshall J (2016) Observations, inferences, and mechanisms of the Atlantic meridional overturning circulation: a review. Rev Geophys 54(1):5&#x02013;63. 10.1002/2015RG000493</mixed-citation></citation-alternatives></ref><ref id="CR4"><citation-alternatives><element-citation id="ec-CR4" publication-type="journal"><person-group person-group-type="author"><name><surname>Burke</surname><given-names>EJ</given-names></name><name><surname>Zhang</surname><given-names>Y</given-names></name><name><surname>Krinner</surname><given-names>G</given-names></name></person-group><article-title>Evaluating permafrost physics in the coupled model intercomparison project 6 (CMIP6) models and their sensitivity to climate change</article-title><source>Cryosphere</source><year>2020</year><volume>14</volume><issue>9</issue><fpage>3155</fpage><lpage>3174</lpage><pub-id pub-id-type="doi">10.5194/tc-14-3155-2020</pub-id></element-citation><mixed-citation id="mc-CR4" publication-type="journal">Burke EJ, Zhang Y, Krinner G (2020) Evaluating permafrost physics in the coupled model intercomparison project 6 (CMIP6) models and their sensitivity to climate change. Cryosphere 14(9):3155&#x02013;3174. 10.5194/tc-14-3155-2020</mixed-citation></citation-alternatives></ref><ref id="CR5"><citation-alternatives><element-citation id="ec-CR5" publication-type="journal"><person-group person-group-type="author"><name><surname>Caesar</surname><given-names>L</given-names></name><name><surname>Rahmstorf</surname><given-names>S</given-names></name><name><surname>Robinson</surname><given-names>A</given-names></name><name><surname>Feulner</surname><given-names>G</given-names></name><name><surname>Saba</surname><given-names>V</given-names></name></person-group><article-title>Observed fingerprint of a weakening Atlantic Ocean overturning circulation</article-title><source>Nature</source><year>2018</year><volume>556</volume><issue>7700</issue><fpage>191</fpage><lpage>196</lpage><pub-id pub-id-type="doi">10.1038/s41586-018-0006-5</pub-id><pub-id pub-id-type="pmid">29643485</pub-id>
+</element-citation><mixed-citation id="mc-CR5" publication-type="journal">Caesar L, Rahmstorf S, Robinson A, Feulner G, Saba V (2018) Observed fingerprint of a weakening Atlantic Ocean overturning circulation. Nature 556(7700):191&#x02013;196. 10.1038/s41586-018-0006-5<pub-id pub-id-type="pmid">29643485</pub-id>
+</mixed-citation></citation-alternatives></ref><ref id="CR6"><citation-alternatives><element-citation id="ec-CR6" publication-type="journal"><person-group person-group-type="author"><name><surname>Cheng</surname><given-names>W</given-names></name><name><surname>Weijer</surname><given-names>W</given-names></name><name><surname>Kim</surname><given-names>WM</given-names></name><name><surname>Danabasoglu</surname><given-names>G</given-names></name><name><surname>Yeager</surname><given-names>SG</given-names></name><name><surname>Gent</surname><given-names>PR</given-names></name><name><surname>Zhang</surname><given-names>D</given-names></name><name><surname>Chiang</surname><given-names>JCH</given-names></name><name><surname>Zhang</surname><given-names>J</given-names></name></person-group><article-title>Can the salt-advection feedback be detected in internal variability of the Atlantic meridional overturning circulation?</article-title><source>J Clim</source><year>2018</year><volume>31</volume><issue>16</issue><fpage>6649</fpage><lpage>6667</lpage><pub-id pub-id-type="doi">10.1175/JCLI-D-17-0825.1</pub-id></element-citation><mixed-citation id="mc-CR6" publication-type="journal">Cheng W, Weijer W, Kim WM, Danabasoglu G, Yeager SG, Gent PR, Zhang D, Chiang JCH, Zhang J (2018) Can the salt-advection feedback be detected in internal variability of the Atlantic meridional overturning circulation? J Clim 31(16):6649&#x02013;6667. 10.1175/JCLI-D-17-0825.1</mixed-citation></citation-alternatives></ref><ref id="CR7"><citation-alternatives><element-citation id="ec-CR7" publication-type="journal"><person-group person-group-type="author"><name><surname>Cuffey</surname><given-names>KM</given-names></name><name><surname>Clow</surname><given-names>GD</given-names></name></person-group><article-title>Temperature, accumulation, and ice sheet elevation in central Greenland through the last deglacial transition</article-title><source>J Geophys Res Oceans</source><year>1997</year><volume>102</volume><issue>C12</issue><fpage>26383</fpage><lpage>26396</lpage><pub-id pub-id-type="doi">10.1029/96JC03981</pub-id></element-citation><mixed-citation id="mc-CR7" publication-type="journal">Cuffey KM, Clow GD (1997) Temperature, accumulation, and ice sheet elevation in central Greenland through the last deglacial transition. J Geophys Res Oceans 102(C12):26383&#x02013;26396. 10.1029/96JC03981</mixed-citation></citation-alternatives></ref><ref id="CR8"><mixed-citation publication-type="other">Danabasoglu G (2019) NCAR CESM2 model output prepared for CMIP6 CMIP esm-hist. Earth Syst Grid Fed. <pub-id pub-id-type="doi">10.22033/ESGF/CMIP6.7575</pub-id></mixed-citation></ref><ref id="CR9"><citation-alternatives><element-citation id="ec-CR9" publication-type="journal"><person-group person-group-type="author"><name><surname>Danabasoglu</surname><given-names>G</given-names></name><name><surname>Lamarque</surname><given-names>J-F</given-names></name><name><surname>Bacmeister</surname><given-names>J</given-names></name><name><surname>Bailey</surname><given-names>DA</given-names></name><name><surname>DuVivier</surname><given-names>AK</given-names></name><name><surname>Edwards</surname><given-names>J</given-names></name><name><surname>Emmons</surname><given-names>LK</given-names></name><name><surname>Fasullo</surname><given-names>J</given-names></name><name><surname>Garcia</surname><given-names>R</given-names></name><name><surname>Gettelman</surname><given-names>A</given-names></name><name><surname>Hannay</surname><given-names>C</given-names></name><name><surname>Holland</surname><given-names>MM</given-names></name><name><surname>Large</surname><given-names>WG</given-names></name><name><surname>Lauritzen</surname><given-names>PH</given-names></name><name><surname>Lawrence</surname><given-names>DM</given-names></name><name><surname>Lenaerts</surname><given-names>JTM</given-names></name><name><surname>Lindsay</surname><given-names>K</given-names></name><name><surname>Lipscomb</surname><given-names>WH</given-names></name><name><surname>Mills</surname><given-names>MJ</given-names></name><name><surname>Neale</surname><given-names>R</given-names></name><name><surname>Oleson</surname><given-names>KW</given-names></name><name><surname>Otto-Bliesner</surname><given-names>B</given-names></name><name><surname>Phillips</surname><given-names>AS</given-names></name><name><surname>Sacks</surname><given-names>W</given-names></name><name><surname>Tilmes</surname><given-names>S</given-names></name><name><surname>Kampenhout</surname><given-names>L</given-names></name><name><surname>Vertenstein</surname><given-names>M</given-names></name><name><surname>Bertini</surname><given-names>A</given-names></name><name><surname>Dennis</surname><given-names>J</given-names></name><name><surname>Deser</surname><given-names>C</given-names></name><name><surname>Fischer</surname><given-names>C</given-names></name><name><surname>Fox-Kemper</surname><given-names>B</given-names></name><name><surname>Kay</surname><given-names>JE</given-names></name><name><surname>Kinnison</surname><given-names>D</given-names></name><name><surname>Kushner</surname><given-names>PJ</given-names></name><name><surname>Larson</surname><given-names>VE</given-names></name><name><surname>Long</surname><given-names>MC</given-names></name><name><surname>Mickelson</surname><given-names>S</given-names></name><name><surname>Moore</surname><given-names>JK</given-names></name><name><surname>Nienhouse</surname><given-names>E</given-names></name><name><surname>Polvani</surname><given-names>L</given-names></name><name><surname>Rasch</surname><given-names>PJ</given-names></name><name><surname>Strand</surname><given-names>WG</given-names></name></person-group><article-title>The community earth system model version 2 (CESM2)</article-title><source>J Adv Model Earth Syst</source><year>2020</year><pub-id pub-id-type="doi">10.1029/2019MS001916</pub-id></element-citation><mixed-citation id="mc-CR9" publication-type="journal">Danabasoglu G, Lamarque J-F, Bacmeister J, Bailey DA, DuVivier AK, Edwards J, Emmons LK, Fasullo J, Garcia R, Gettelman A, Hannay C, Holland MM, Large WG, Lauritzen PH, Lawrence DM, Lenaerts JTM, Lindsay K, Lipscomb WH, Mills MJ, Neale R, Oleson KW, Otto-Bliesner B, Phillips AS, Sacks W, Tilmes S, Kampenhout L, Vertenstein M, Bertini A, Dennis J, Deser C, Fischer C, Fox-Kemper B, Kay JE, Kinnison D, Kushner PJ, Larson VE, Long MC, Mickelson S, Moore JK, Nienhouse E, Polvani L, Rasch PJ, Strand WG (2020) The community earth system model version 2 (CESM2). J Adv Model Earth Syst. 10.1029/2019MS001916</mixed-citation></citation-alternatives></ref><ref id="CR10"><citation-alternatives><element-citation id="ec-CR10" publication-type="journal"><person-group person-group-type="author"><name><surname>Dekker</surname><given-names>MM</given-names></name><name><surname>Heydt</surname><given-names>AS</given-names></name><name><surname>Dijkstra</surname><given-names>HA</given-names></name></person-group><article-title>Cascading transitions in the climate system</article-title><source>Earth Syst Dyn</source><year>2018</year><volume>9</volume><issue>4</issue><fpage>1243</fpage><lpage>1260</lpage><pub-id pub-id-type="doi">10.5194/esd-9-1243-2018</pub-id></element-citation><mixed-citation id="mc-CR10" publication-type="journal">Dekker MM, Heydt AS, Dijkstra HA (2018) Cascading transitions in the climate system. Earth Syst Dyn 9(4):1243&#x02013;1260. 10.5194/esd-9-1243-2018</mixed-citation></citation-alternatives></ref><ref id="CR11"><citation-alternatives><element-citation id="ec-CR11" publication-type="journal"><person-group person-group-type="author"><name><surname>Ditlevsen</surname><given-names>P</given-names></name><name><surname>Ditlevsen</surname><given-names>S</given-names></name></person-group><article-title>Warning of a forthcoming collapse of the Atlantic meridional overturning circulation</article-title><source>Nat Commun</source><year>2023</year><volume>14</volume><issue>1</issue><fpage>4254</fpage><pub-id pub-id-type="doi">10.1038/s41467-023-39810-w</pub-id><pub-id pub-id-type="pmid">37491344</pub-id>
+</element-citation><mixed-citation id="mc-CR11" publication-type="journal">Ditlevsen P, Ditlevsen S (2023) Warning of a forthcoming collapse of the Atlantic meridional overturning circulation. Nat Commun 14(1):4254<pub-id pub-id-type="pmid">37491344</pub-id>
+</mixed-citation></citation-alternatives></ref><ref id="CR12"><citation-alternatives><element-citation id="ec-CR12" publication-type="journal"><person-group person-group-type="author"><name><surname>Eyring</surname><given-names>V</given-names></name><name><surname>Bony</surname><given-names>S</given-names></name><name><surname>Meehl</surname><given-names>GA</given-names></name><name><surname>Senior</surname><given-names>CA</given-names></name><name><surname>Stevens</surname><given-names>B</given-names></name><name><surname>Stouffer</surname><given-names>RJ</given-names></name><name><surname>Taylor</surname><given-names>KE</given-names></name></person-group><article-title>Overview of the coupled model intercomparison project phase 6 (CMIP6) experimental design and organization</article-title><source>Geosci Model Dev</source><year>2016</year><volume>9</volume><issue>5</issue><fpage>1937</fpage><lpage>1958</lpage><pub-id pub-id-type="doi">10.5194/gmd-9-1937-2016</pub-id></element-citation><mixed-citation id="mc-CR12" publication-type="journal">Eyring V, Bony S, Meehl GA, Senior CA, Stevens B, Stouffer RJ, Taylor KE (2016) Overview of the coupled model intercomparison project phase 6 (CMIP6) experimental design and organization. Geosci Model Dev 9(5):1937&#x02013;1958. 10.5194/gmd-9-1937-2016</mixed-citation></citation-alternatives></ref><ref id="CR13"><citation-alternatives><element-citation id="ec-CR13" publication-type="journal"><person-group person-group-type="author"><name><surname>Gottschalk</surname><given-names>J</given-names></name><name><surname>Battaglia</surname><given-names>G</given-names></name><name><surname>Fischer</surname><given-names>H</given-names></name><name><surname>Fr&#x000f6;licher</surname><given-names>TL</given-names></name><name><surname>Jaccard</surname><given-names>SL</given-names></name><name><surname>Jeltsch-Th&#x000f6;mmes</surname><given-names>A</given-names></name><name><surname>Joos</surname><given-names>F</given-names></name><name><surname>K&#x000f6;hler</surname><given-names>P</given-names></name><name><surname>Meissner</surname><given-names>KJ</given-names></name><name><surname>Menviel</surname><given-names>L</given-names></name><name><surname>Nehrbass-Ahles</surname><given-names>C</given-names></name><name><surname>Schmitt</surname><given-names>J</given-names></name><name><surname>Schmittner</surname><given-names>A</given-names></name><name><surname>Skinner</surname><given-names>LC</given-names></name><name><surname>Stocker</surname><given-names>TF</given-names></name></person-group><article-title>Mechanisms of millennial-scale atmospheric CO<inline-formula id="IEq117"><alternatives><tex-math id="M213">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M214"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq117.gif"/></alternatives></inline-formula> change in numerical model simulations</article-title><source>Quatern Sci Rev</source><year>2019</year><volume>220</volume><fpage>30</fpage><lpage>74</lpage><pub-id pub-id-type="doi">10.1016/j.quascirev.2019.05.013</pub-id></element-citation><mixed-citation id="mc-CR13" publication-type="journal">Gottschalk J, Battaglia G, Fischer H, Fr&#x000f6;licher TL, Jaccard SL, Jeltsch-Th&#x000f6;mmes A, Joos F, K&#x000f6;hler P, Meissner KJ, Menviel L, Nehrbass-Ahles C, Schmitt J, Schmittner A, Skinner LC, Stocker TF (2019) Mechanisms of millennial-scale atmospheric CO<inline-graphic xlink:href="382_2024_7295_Article_IEq118.gif"/> change in numerical model simulations. Quatern Sci Rev 220:30&#x02013;74. 10.1016/j.quascirev.2019.05.013</mixed-citation></citation-alternatives></ref><ref id="CR14"><citation-alternatives><element-citation id="ec-CR14" publication-type="journal"><person-group person-group-type="author"><name><surname>Henson</surname><given-names>SA</given-names></name><name><surname>Laufk&#x000f6;tter</surname><given-names>C</given-names></name><name><surname>Leung</surname><given-names>S</given-names></name><name><surname>Giering</surname><given-names>SLC</given-names></name><name><surname>Palevsky</surname><given-names>HI</given-names></name><name><surname>Cavan</surname><given-names>EL</given-names></name></person-group><article-title>Uncertain response of ocean biological carbon export in a changing world</article-title><source>Nat Geosci</source><year>2022</year><volume>15</volume><issue>4</issue><fpage>248</fpage><lpage>254</lpage><pub-id pub-id-type="doi">10.1038/s41561-022-00927-0</pub-id></element-citation><mixed-citation id="mc-CR14" publication-type="journal">Henson SA, Laufk&#x000f6;tter C, Leung S, Giering SLC, Palevsky HI, Cavan EL (2022) Uncertain response of ocean biological carbon export in a changing world. Nat Geosci 15(4):248&#x02013;254. 10.1038/s41561-022-00927-0</mixed-citation></citation-alternatives></ref><ref id="CR15"><citation-alternatives><element-citation id="ec-CR15" publication-type="journal"><person-group person-group-type="author"><name><surname>Jackson</surname><given-names>LC</given-names></name><name><surname>Kahana</surname><given-names>R</given-names></name><name><surname>Graham</surname><given-names>T</given-names></name><name><surname>Ringer</surname><given-names>MA</given-names></name><name><surname>Woollings</surname><given-names>T</given-names></name><name><surname>Mecking</surname><given-names>JV</given-names></name><name><surname>Wood</surname><given-names>RA</given-names></name></person-group><article-title>Global and European climate impacts of a slowdown of the AMOC in a high resolution GCM</article-title><source>Clim Dyn</source><year>2015</year><volume>45</volume><issue>11</issue><fpage>3299</fpage><lpage>3316</lpage><pub-id pub-id-type="doi">10.1007/s00382-015-2540-2</pub-id></element-citation><mixed-citation id="mc-CR15" publication-type="journal">Jackson LC, Kahana R, Graham T, Ringer MA, Woollings T, Mecking JV, Wood RA (2015) Global and European climate impacts of a slowdown of the AMOC in a high resolution GCM. Clim Dyn 45(11):3299&#x02013;3316. 10.1007/s00382-015-2540-2</mixed-citation></citation-alternatives></ref><ref id="CR16"><citation-alternatives><element-citation id="ec-CR16" publication-type="journal"><person-group person-group-type="author"><name><surname>Jackson</surname><given-names>LC</given-names></name><name><surname>Asenjo</surname><given-names>E</given-names></name><name><surname>Bellomo</surname><given-names>K</given-names></name><name><surname>Danabasoglu</surname><given-names>G</given-names></name><name><surname>Haak</surname><given-names>H</given-names></name><name><surname>Hu</surname><given-names>A</given-names></name><name><surname>Jungclaus</surname><given-names>J</given-names></name><name><surname>Lee</surname><given-names>W</given-names></name><name><surname>Meccia</surname><given-names>VL</given-names></name><name><surname>Saenko</surname><given-names>O</given-names></name><name><surname>Shao</surname><given-names>A</given-names></name><name><surname>Swingedouw</surname><given-names>D</given-names></name></person-group><article-title>Understanding AMOC stability: the North Atlantic hosing model intercomparison project</article-title><source>Geosci Model Dev</source><year>2023</year><volume>16</volume><issue>7</issue><fpage>1975</fpage><lpage>1995</lpage><pub-id pub-id-type="doi">10.5194/gmd-16-1975-2023</pub-id></element-citation><mixed-citation id="mc-CR16" publication-type="journal">Jackson LC, Asenjo E, Bellomo K, Danabasoglu G, Haak H, Hu A, Jungclaus J, Lee W, Meccia VL, Saenko O, Shao A, Swingedouw D (2023) Understanding AMOC stability: the North Atlantic hosing model intercomparison project. Geosci Model Dev 16(7):1975&#x02013;1995. 10.5194/gmd-16-1975-2023</mixed-citation></citation-alternatives></ref><ref id="CR17"><citation-alternatives><element-citation id="ec-CR17" publication-type="journal"><person-group person-group-type="author"><name><surname>Katavouta</surname><given-names>A</given-names></name><name><surname>Williams</surname><given-names>RG</given-names></name></person-group><article-title>Ocean carbon cycle feedbacks in CMIP6 models: contributions from different basins</article-title><source>Biogeosciences</source><year>2021</year><volume>18</volume><issue>10</issue><fpage>3189</fpage><lpage>3218</lpage><pub-id pub-id-type="doi">10.5194/bg-18-3189-2021</pub-id></element-citation><mixed-citation id="mc-CR17" publication-type="journal">Katavouta A, Williams RG (2021) Ocean carbon cycle feedbacks in CMIP6 models: contributions from different basins. Biogeosciences 18(10):3189&#x02013;3218. 10.5194/bg-18-3189-2021</mixed-citation></citation-alternatives></ref><ref id="CR18"><citation-alternatives><element-citation id="ec-CR18" publication-type="journal"><person-group person-group-type="author"><name><surname>K&#x000f6;hler</surname><given-names>P</given-names></name><name><surname>Joos</surname><given-names>F</given-names></name><name><surname>Gerber</surname><given-names>S</given-names></name><name><surname>Knutti</surname><given-names>R</given-names></name></person-group><article-title>Simulated changes in vegetation distribution, land carbon storage, and atmospheric CO<inline-formula id="IEq119"><alternatives><tex-math id="M215">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M216"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq119.gif"/></alternatives></inline-formula> in response to a collapse of the North Atlantic thermohaline circulation</article-title><source>Clim Dyn</source><year>2005</year><volume>25</volume><issue>7</issue><fpage>689</fpage><pub-id pub-id-type="doi">10.1007/s00382-005-0058-8</pub-id></element-citation><mixed-citation id="mc-CR18" publication-type="journal">K&#x000f6;hler P, Joos F, Gerber S, Knutti R (2005) Simulated changes in vegetation distribution, land carbon storage, and atmospheric CO<inline-graphic xlink:href="382_2024_7295_Article_IEq120.gif"/> in response to a collapse of the North Atlantic thermohaline circulation. Clim Dyn 25(7):689. 10.1007/s00382-005-0058-8</mixed-citation></citation-alternatives></ref><ref id="CR19"><citation-alternatives><element-citation id="ec-CR19" publication-type="journal"><person-group person-group-type="author"><name><surname>Kwiatkowski</surname><given-names>L</given-names></name><name><surname>Torres</surname><given-names>O</given-names></name><name><surname>Bopp</surname><given-names>L</given-names></name><name><surname>Aumont</surname><given-names>O</given-names></name><name><surname>Chamberlain</surname><given-names>M</given-names></name><name><surname>Christian</surname><given-names>JR</given-names></name><name><surname>Dunne</surname><given-names>JP</given-names></name><name><surname>Gehlen</surname><given-names>M</given-names></name><name><surname>Ilyina</surname><given-names>T</given-names></name><name><surname>John</surname><given-names>JG</given-names></name><name><surname>Lenton</surname><given-names>A</given-names></name><name><surname>Li</surname><given-names>H</given-names></name><name><surname>Lovenduski</surname><given-names>NS</given-names></name><name><surname>Orr</surname><given-names>JC</given-names></name><name><surname>Palmieri</surname><given-names>J</given-names></name><name><surname>Santana-Falc&#x000f3;n</surname><given-names>Y</given-names></name><name><surname>Schwinger</surname><given-names>J</given-names></name><name><surname>S&#x000e9;f&#x000e9;rian</surname><given-names>R</given-names></name><name><surname>Stock</surname><given-names>CA</given-names></name><name><surname>Tagliabue</surname><given-names>A</given-names></name><name><surname>Takano</surname><given-names>Y</given-names></name><name><surname>Tjiputra</surname><given-names>J</given-names></name><name><surname>Toyama</surname><given-names>K</given-names></name><name><surname>Tsujino</surname><given-names>H</given-names></name><name><surname>Watanabe</surname><given-names>M</given-names></name><name><surname>Yamamoto</surname><given-names>A</given-names></name><name><surname>Yool</surname><given-names>A</given-names></name><name><surname>Ziehn</surname><given-names>T</given-names></name></person-group><article-title>Twenty-first century ocean warming, acidification, deoxygenation, and upper-ocean nutrient and primary production decline from CMIP6 model projections</article-title><source>Biogeosciences</source><year>2020</year><volume>17</volume><issue>13</issue><fpage>3439</fpage><lpage>3470</lpage><pub-id pub-id-type="doi">10.5194/bg-17-3439-2020</pub-id></element-citation><mixed-citation id="mc-CR19" publication-type="journal">Kwiatkowski L, Torres O, Bopp L, Aumont O, Chamberlain M, Christian JR, Dunne JP, Gehlen M, Ilyina T, John JG, Lenton A, Li H, Lovenduski NS, Orr JC, Palmieri J, Santana-Falc&#x000f3;n Y, Schwinger J, S&#x000e9;f&#x000e9;rian R, Stock CA, Tagliabue A, Takano Y, Tjiputra J, Toyama K, Tsujino H, Watanabe M, Yamamoto A, Yool A, Ziehn T (2020) Twenty-first century ocean warming, acidification, deoxygenation, and upper-ocean nutrient and primary production decline from CMIP6 model projections. Biogeosciences 17(13):3439&#x02013;3470. 10.5194/bg-17-3439-2020</mixed-citation></citation-alternatives></ref><ref id="CR20"><citation-alternatives><element-citation id="ec-CR20" publication-type="journal"><person-group person-group-type="author"><name><surname>Lawrence</surname><given-names>DM</given-names></name><name><surname>Fisher</surname><given-names>RA</given-names></name><name><surname>Koven</surname><given-names>CD</given-names></name><name><surname>Oleson</surname><given-names>KW</given-names></name><name><surname>Swenson</surname><given-names>SC</given-names></name><name><surname>Bonan</surname><given-names>G</given-names></name><name><surname>Collier</surname><given-names>N</given-names></name><name><surname>Ghimire</surname><given-names>B</given-names></name><name><surname>Kampenhout</surname><given-names>L</given-names></name><name><surname>Kennedy</surname><given-names>D</given-names></name><name><surname>Kluzek</surname><given-names>E</given-names></name><name><surname>Lawrence</surname><given-names>PJ</given-names></name><name><surname>Li</surname><given-names>F</given-names></name><name><surname>Li</surname><given-names>H</given-names></name><name><surname>Lombardozzi</surname><given-names>D</given-names></name><name><surname>Riley</surname><given-names>WJ</given-names></name><name><surname>Sacks</surname><given-names>WJ</given-names></name><name><surname>Shi</surname><given-names>M</given-names></name><name><surname>Vertenstein</surname><given-names>M</given-names></name><name><surname>Wieder</surname><given-names>WR</given-names></name><name><surname>Xu</surname><given-names>C</given-names></name><name><surname>Ali</surname><given-names>AA</given-names></name><name><surname>Badger</surname><given-names>AM</given-names></name><name><surname>Bisht</surname><given-names>G</given-names></name><name><surname>Broeke</surname><given-names>M</given-names></name><name><surname>Brunke</surname><given-names>MA</given-names></name><name><surname>Burns</surname><given-names>SP</given-names></name><name><surname>Buzan</surname><given-names>J</given-names></name><name><surname>Clark</surname><given-names>M</given-names></name><name><surname>Craig</surname><given-names>A</given-names></name><name><surname>Dahlin</surname><given-names>K</given-names></name><name><surname>Drewniak</surname><given-names>B</given-names></name><name><surname>Fisher</surname><given-names>JB</given-names></name><name><surname>Flanner</surname><given-names>M</given-names></name><name><surname>Fox</surname><given-names>AM</given-names></name><name><surname>Gentine</surname><given-names>P</given-names></name><name><surname>Hoffman</surname><given-names>F</given-names></name><name><surname>Keppel-Aleks</surname><given-names>G</given-names></name><name><surname>Knox</surname><given-names>R</given-names></name><name><surname>Kumar</surname><given-names>S</given-names></name><name><surname>Lenaerts</surname><given-names>J</given-names></name><name><surname>Leung</surname><given-names>LR</given-names></name><name><surname>Lipscomb</surname><given-names>WH</given-names></name><name><surname>Lu</surname><given-names>Y</given-names></name><name><surname>Pandey</surname><given-names>A</given-names></name><name><surname>Pelletier</surname><given-names>JD</given-names></name><name><surname>Perket</surname><given-names>J</given-names></name><name><surname>Randerson</surname><given-names>JT</given-names></name><name><surname>Ricciuto</surname><given-names>DM</given-names></name><name><surname>Sanderson</surname><given-names>BM</given-names></name><name><surname>Slater</surname><given-names>A</given-names></name><name><surname>Subin</surname><given-names>ZM</given-names></name><name><surname>Tang</surname><given-names>J</given-names></name><name><surname>Thomas</surname><given-names>RQ</given-names></name><name><surname>Val Martin</surname><given-names>M</given-names></name><name><surname>Zeng</surname><given-names>X</given-names></name></person-group><article-title>The community land model version 5: description of new features, benchmarking, and impact of forcing uncertainty</article-title><source>J Adv Model Earth Syst</source><year>2019</year><volume>11</volume><issue>12</issue><fpage>4245</fpage><lpage>4287</lpage><pub-id pub-id-type="doi">10.1029/2018MS001583</pub-id></element-citation><mixed-citation id="mc-CR20" publication-type="journal">Lawrence DM, Fisher RA, Koven CD, Oleson KW, Swenson SC, Bonan G, Collier N, Ghimire B, Kampenhout L, Kennedy D, Kluzek E, Lawrence PJ, Li F, Li H, Lombardozzi D, Riley WJ, Sacks WJ, Shi M, Vertenstein M, Wieder WR, Xu C, Ali AA, Badger AM, Bisht G, Broeke M, Brunke MA, Burns SP, Buzan J, Clark M, Craig A, Dahlin K, Drewniak B, Fisher JB, Flanner M, Fox AM, Gentine P, Hoffman F, Keppel-Aleks G, Knox R, Kumar S, Lenaerts J, Leung LR, Lipscomb WH, Lu Y, Pandey A, Pelletier JD, Perket J, Randerson JT, Ricciuto DM, Sanderson BM, Slater A, Subin ZM, Tang J, Thomas RQ, Val Martin M, Zeng X (2019) The community land model version 5: description of new features, benchmarking, and impact of forcing uncertainty. J Adv Model Earth Syst 11(12):4245&#x02013;4287. 10.1029/2018MS001583</mixed-citation></citation-alternatives></ref><ref id="CR21"><citation-alternatives><element-citation id="ec-CR21" publication-type="journal"><person-group person-group-type="author"><name><surname>Lenton</surname><given-names>TM</given-names></name><name><surname>Held</surname><given-names>H</given-names></name><name><surname>Kriegler</surname><given-names>E</given-names></name><name><surname>Hall</surname><given-names>JW</given-names></name><name><surname>Lucht</surname><given-names>W</given-names></name><name><surname>Rahmstorf</surname><given-names>S</given-names></name><name><surname>Schellnhuber</surname><given-names>HJ</given-names></name></person-group><article-title>Tipping elements in the Earth&#x02019;s climate system</article-title><source>Proc Natl Acad Sci</source><year>2008</year><volume>105</volume><issue>6</issue><fpage>1786</fpage><lpage>1793</lpage><pub-id pub-id-type="doi">10.1073/pnas.0705414105</pub-id><pub-id pub-id-type="pmid">18258748</pub-id>
+</element-citation><mixed-citation id="mc-CR21" publication-type="journal">Lenton TM, Held H, Kriegler E, Hall JW, Lucht W, Rahmstorf S, Schellnhuber HJ (2008) Tipping elements in the Earth&#x02019;s climate system. Proc Natl Acad Sci 105(6):1786&#x02013;1793. 10.1073/pnas.0705414105<pub-id pub-id-type="pmid">18258748</pub-id>
+</mixed-citation></citation-alternatives></ref><ref id="CR22"><citation-alternatives><element-citation id="ec-CR22" publication-type="journal"><person-group person-group-type="author"><name><surname>Liu</surname><given-names>Y</given-names></name><name><surname>Moore</surname><given-names>JK</given-names></name><name><surname>Primeau</surname><given-names>F</given-names></name><name><surname>Wang</surname><given-names>WL</given-names></name></person-group><article-title>Reduced CO<inline-formula id="IEq121"><alternatives><tex-math id="M217">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M218"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq121.gif"/></alternatives></inline-formula> uptake and growing nutrient sequestration from slowing overturning circulation</article-title><source>Nat Clim Chang</source><year>2023</year><volume>13</volume><issue>1</issue><fpage>83</fpage><lpage>90</lpage><pub-id pub-id-type="doi">10.1038/s41558-022-01555-7</pub-id></element-citation><mixed-citation id="mc-CR22" publication-type="journal">Liu Y, Moore JK, Primeau F, Wang WL (2023) Reduced CO<inline-graphic xlink:href="382_2024_7295_Article_IEq122.gif"/> uptake and growing nutrient sequestration from slowing overturning circulation. Nat Clim Chang 13(1):83&#x02013;90. 10.1038/s41558-022-01555-7</mixed-citation></citation-alternatives></ref><ref id="CR23"><citation-alternatives><element-citation id="ec-CR23" publication-type="journal"><person-group person-group-type="author"><name><surname>Long</surname><given-names>MC</given-names></name><name><surname>Moore</surname><given-names>JK</given-names></name><name><surname>Lindsay</surname><given-names>K</given-names></name><name><surname>Levy</surname><given-names>M</given-names></name><name><surname>Doney</surname><given-names>SC</given-names></name><name><surname>Luo</surname><given-names>JY</given-names></name><name><surname>Krumhardt</surname><given-names>KM</given-names></name><name><surname>Letscher</surname><given-names>RT</given-names></name><name><surname>Grover</surname><given-names>M</given-names></name><name><surname>Sylvester</surname><given-names>ZT</given-names></name></person-group><article-title>Simulations with the marine biogeochemistry library (MARBL)</article-title><source>J Adv Model Earth Syst</source><year>2021</year><pub-id pub-id-type="doi">10.1029/2021MS002647</pub-id></element-citation><mixed-citation id="mc-CR23" publication-type="journal">Long MC, Moore JK, Lindsay K, Levy M, Doney SC, Luo JY, Krumhardt KM, Letscher RT, Grover M, Sylvester ZT (2021) Simulations with the marine biogeochemistry library (MARBL). J Adv Model Earth Syst. 10.1029/2021MS002647</mixed-citation></citation-alternatives></ref><ref id="CR24"><citation-alternatives><element-citation id="ec-CR24" publication-type="journal"><person-group person-group-type="author"><name><surname>Lynch-Stieglitz</surname><given-names>J</given-names></name></person-group><article-title>The Atlantic meridional overturning circulation and abrupt climate change</article-title><source>Ann Rev Mar Sci</source><year>2017</year><volume>9</volume><issue>1</issue><fpage>83</fpage><lpage>104</lpage><pub-id pub-id-type="doi">10.1146/annurev-marine-010816-060415</pub-id></element-citation><mixed-citation id="mc-CR24" publication-type="journal">Lynch-Stieglitz J (2017) The Atlantic meridional overturning circulation and abrupt climate change. Ann Rev Mar Sci 9(1):83&#x02013;104. 10.1146/annurev-marine-010816-060415</mixed-citation></citation-alternatives></ref><ref id="CR25"><citation-alternatives><element-citation id="ec-CR25" publication-type="journal"><person-group person-group-type="author"><name><surname>Marchal</surname><given-names>O</given-names></name><name><surname>Stocker</surname><given-names>TF</given-names></name><name><surname>Joos</surname><given-names>F</given-names></name></person-group><article-title>Impact of oceanic reorganizations on the ocean carbon cycle and atmospheric carbon dioxide content</article-title><source>Paleoceanography</source><year>1998</year><volume>13</volume><issue>3</issue><fpage>225</fpage><lpage>244</lpage><pub-id pub-id-type="doi">10.1029/98PA00726</pub-id></element-citation><mixed-citation id="mc-CR25" publication-type="journal">Marchal O, Stocker TF, Joos F (1998) Impact of oceanic reorganizations on the ocean carbon cycle and atmospheric carbon dioxide content. Paleoceanography 13(3):225&#x02013;244. 10.1029/98PA00726</mixed-citation></citation-alternatives></ref><ref id="CR26"><citation-alternatives><element-citation id="ec-CR26" publication-type="journal"><person-group person-group-type="author"><name><surname>McKay</surname><given-names>DIA</given-names></name><name><surname>Staal</surname><given-names>A</given-names></name><name><surname>Abrams</surname><given-names>JF</given-names></name><name><surname>Winkelmann</surname><given-names>R</given-names></name><name><surname>Sakschewski</surname><given-names>B</given-names></name><name><surname>Loriani</surname><given-names>S</given-names></name><name><surname>Fetzer</surname><given-names>I</given-names></name><name><surname>Cornell</surname><given-names>SE</given-names></name><name><surname>Rockstr&#x000f6;m</surname><given-names>J</given-names></name><name><surname>Lenton</surname><given-names>TM</given-names></name></person-group><article-title>Exceeding 1.5 <inline-formula id="IEq123"><alternatives><tex-math id="M219">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$^\circ$$\end{document}</tex-math><mml:math id="M220"><mml:mmultiscripts><mml:mrow/><mml:mrow/><mml:mo>&#x02218;</mml:mo></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq123.gif"/></alternatives></inline-formula>C global warming could trigger multiple climate tipping points</article-title><source>Science</source><year>2022</year><volume>377</volume><issue>6611</issue><fpage>7950</fpage><pub-id pub-id-type="doi">10.1126/science.abn7950</pub-id></element-citation><mixed-citation id="mc-CR26" publication-type="journal">McKay DIA, Staal A, Abrams JF, Winkelmann R, Sakschewski B, Loriani S, Fetzer I, Cornell SE, Rockstr&#x000f6;m J, Lenton TM (2022) Exceeding 1.5 <inline-graphic xlink:href="382_2024_7295_Article_IEq124.gif"/>C global warming could trigger multiple climate tipping points. Science 377(6611):7950. 10.1126/science.abn7950</mixed-citation></citation-alternatives></ref><ref id="CR27"><citation-alternatives><element-citation id="ec-CR27" publication-type="journal"><person-group person-group-type="author"><name><surname>Nielsen</surname><given-names>SB</given-names></name><name><surname>Jochum</surname><given-names>M</given-names></name><name><surname>Pedro</surname><given-names>JB</given-names></name><name><surname>Eden</surname><given-names>C</given-names></name><name><surname>Nuterman</surname><given-names>R</given-names></name></person-group><article-title>Two-timescale carbon cycle response to an AMOC collapse</article-title><source>Paleoceanogr Paleoclimatol</source><year>2019</year><volume>34</volume><issue>4</issue><fpage>511</fpage><lpage>523</lpage><pub-id pub-id-type="doi">10.1029/2018PA003481</pub-id></element-citation><mixed-citation id="mc-CR27" publication-type="journal">Nielsen SB, Jochum M, Pedro JB, Eden C, Nuterman R (2019) Two-timescale carbon cycle response to an AMOC collapse. Paleoceanogr Paleoclimatol 34(4):511&#x02013;523. 10.1029/2018PA003481</mixed-citation></citation-alternatives></ref><ref id="CR28"><citation-alternatives><element-citation id="ec-CR28" publication-type="journal"><person-group person-group-type="author"><name><surname>Obata</surname><given-names>A</given-names></name></person-group><article-title>Climate carbon cycle model response to freshwater discharge into the north Atlantic</article-title><source>J Clim</source><year>2007</year><volume>20</volume><fpage>5962</fpage><lpage>5976</lpage><pub-id pub-id-type="doi">10.1175/2007JCLI1808.1</pub-id></element-citation><mixed-citation id="mc-CR28" publication-type="journal">Obata A (2007) Climate carbon cycle model response to freshwater discharge into the north Atlantic. J Clim 20:5962&#x02013;5976. 10.1175/2007JCLI1808.1</mixed-citation></citation-alternatives></ref><ref id="CR29"><citation-alternatives><element-citation id="ec-CR29" publication-type="journal"><person-group person-group-type="author"><name><surname>O&#x02019;Neill</surname><given-names>BC</given-names></name><name><surname>Carter</surname><given-names>TR</given-names></name><name><surname>Ebi</surname><given-names>K</given-names></name><name><surname>Harrison</surname><given-names>PA</given-names></name><name><surname>Kemp-Benedict</surname><given-names>E</given-names></name><name><surname>Kok</surname><given-names>K</given-names></name><name><surname>Kriegler</surname><given-names>E</given-names></name><name><surname>Preston</surname><given-names>BL</given-names></name><name><surname>Riahi</surname><given-names>K</given-names></name><name><surname>Sillmann</surname><given-names>J</given-names></name><name><surname>Ruijven</surname><given-names>BJ</given-names></name><name><surname>Vuuren</surname><given-names>D</given-names></name><name><surname>Carlisle</surname><given-names>D</given-names></name><name><surname>Conde</surname><given-names>C</given-names></name><name><surname>Fuglestvedt</surname><given-names>J</given-names></name><name><surname>Green</surname><given-names>C</given-names></name><name><surname>Hasegawa</surname><given-names>T</given-names></name><name><surname>Leininger</surname><given-names>J</given-names></name><name><surname>Monteith</surname><given-names>S</given-names></name><name><surname>Pichs-Madruga</surname><given-names>R</given-names></name></person-group><article-title>Achievements and needs for the climate change scenario framework</article-title><source>Nat Clim Chang</source><year>2020</year><volume>10</volume><issue>12</issue><fpage>1074</fpage><lpage>1084</lpage><pub-id pub-id-type="doi">10.1038/s41558-020-00952-0</pub-id><pub-id pub-id-type="pmid">33262808</pub-id>
+</element-citation><mixed-citation id="mc-CR29" publication-type="journal">O&#x02019;Neill BC, Carter TR, Ebi K, Harrison PA, Kemp-Benedict E, Kok K, Kriegler E, Preston BL, Riahi K, Sillmann J, Ruijven BJ, Vuuren D, Carlisle D, Conde C, Fuglestvedt J, Green C, Hasegawa T, Leininger J, Monteith S, Pichs-Madruga R (2020) Achievements and needs for the climate change scenario framework. Nat Clim Chang 10(12):1074&#x02013;1084. 10.1038/s41558-020-00952-0<pub-id pub-id-type="pmid">33262808</pub-id>
+</mixed-citation></citation-alternatives></ref><ref id="CR30"><citation-alternatives><element-citation id="ec-CR30" publication-type="journal"><person-group person-group-type="author"><name><surname>Orihuela-Pinto</surname><given-names>B</given-names></name><name><surname>England</surname><given-names>MH</given-names></name><name><surname>Taschetto</surname><given-names>AS</given-names></name></person-group><article-title>Interbasin and interhemispheric impacts of a collapsed Atlantic overturning circulation</article-title><source>Nat Clim Chang</source><year>2022</year><volume>12</volume><issue>6</issue><fpage>558</fpage><lpage>565</lpage><pub-id pub-id-type="doi">10.1038/s41558-022-01380-y</pub-id></element-citation><mixed-citation id="mc-CR30" publication-type="journal">Orihuela-Pinto B, England MH, Taschetto AS (2022) Interbasin and interhemispheric impacts of a collapsed Atlantic overturning circulation. Nat Clim Chang 12(6):558&#x02013;565. 10.1038/s41558-022-01380-y</mixed-citation></citation-alternatives></ref><ref id="CR31"><citation-alternatives><element-citation id="ec-CR31" publication-type="journal"><person-group person-group-type="author"><name><surname>Rahmstorf</surname><given-names>S</given-names></name></person-group><article-title>Ocean circulation and climate during the past 120,000 years</article-title><source>Nature</source><year>2002</year><volume>419</volume><issue>6903</issue><fpage>207</fpage><lpage>214</lpage><pub-id pub-id-type="doi">10.1038/nature01090</pub-id><pub-id pub-id-type="pmid">12226675</pub-id>
+</element-citation><mixed-citation id="mc-CR31" publication-type="journal">Rahmstorf S (2002) Ocean circulation and climate during the past 120,000 years. Nature 419(6903):207&#x02013;214. 10.1038/nature01090<pub-id pub-id-type="pmid">12226675</pub-id>
+</mixed-citation></citation-alternatives></ref><ref id="CR32"><citation-alternatives><element-citation id="ec-CR32" publication-type="journal"><person-group person-group-type="author"><name><surname>Sarmiento</surname><given-names>JL</given-names></name><name><surname>Hughes</surname><given-names>TMC</given-names></name><name><surname>Stouffer</surname><given-names>RJ</given-names></name><name><surname>Manabe</surname><given-names>S</given-names></name></person-group><article-title>Simulated response of the ocean carbon cycle to anthropogenic climate warming</article-title><source>Nature</source><year>1998</year><volume>393</volume><issue>6682</issue><fpage>245</fpage><lpage>249</lpage><pub-id pub-id-type="doi">10.1038/30455</pub-id></element-citation><mixed-citation id="mc-CR32" publication-type="journal">Sarmiento JL, Hughes TMC, Stouffer RJ, Manabe S (1998) Simulated response of the ocean carbon cycle to anthropogenic climate warming. Nature 393(6682):245&#x02013;249. 10.1038/30455</mixed-citation></citation-alternatives></ref><ref id="CR33"><citation-alternatives><element-citation id="ec-CR33" publication-type="journal"><person-group person-group-type="author"><name><surname>Schmittner</surname><given-names>A</given-names></name></person-group><article-title>Decline of the marine ecosystem caused by a reduction in the Atlantic overturning circulation</article-title><source>Nature</source><year>2005</year><volume>434</volume><issue>7033</issue><fpage>628</fpage><lpage>633</lpage><pub-id pub-id-type="doi">10.1038/nature03476</pub-id><pub-id pub-id-type="pmid">15800620</pub-id>
+</element-citation><mixed-citation id="mc-CR33" publication-type="journal">Schmittner A (2005) Decline of the marine ecosystem caused by a reduction in the Atlantic overturning circulation. Nature 434(7033):628&#x02013;633. 10.1038/nature03476<pub-id pub-id-type="pmid">15800620</pub-id>
+</mixed-citation></citation-alternatives></ref><ref id="CR34"><citation-alternatives><element-citation id="ec-CR34" publication-type="journal"><person-group person-group-type="author"><name><surname>Schmittner</surname><given-names>A</given-names></name><name><surname>Galbraith</surname><given-names>ED</given-names></name></person-group><article-title>Glacial greenhouse-gas fluctuations controlled by ocean circulation changes</article-title><source>Nature</source><year>2008</year><volume>456</volume><issue>7220</issue><fpage>373</fpage><lpage>376</lpage><pub-id pub-id-type="doi">10.1038/nature07531</pub-id><pub-id pub-id-type="pmid">19020618</pub-id>
+</element-citation><mixed-citation id="mc-CR34" publication-type="journal">Schmittner A, Galbraith ED (2008) Glacial greenhouse-gas fluctuations controlled by ocean circulation changes. Nature 456(7220):373&#x02013;376. 10.1038/nature07531<pub-id pub-id-type="pmid">19020618</pub-id>
+</mixed-citation></citation-alternatives></ref><ref id="CR35"><mixed-citation publication-type="other">Smith R, Jones PW, Briegleb PA, Bryan O, Danabasoglu G, Dennis ML, Dukowicz JK, Eden C, Fo&#x000ef; Kemper B, Gent R, Hecht M, Jayne SR, Jochum M, Large G, Lindsay K, Maltrud ME, Norton J, Peacock L, Vertenstein M, Yeager SG (2010) The parallel ocean program (POP) reference manual: ocean component of the community climate system model (CCSM)</mixed-citation></ref><ref id="CR36"><citation-alternatives><element-citation id="ec-CR36" publication-type="journal"><person-group person-group-type="author"><name><surname>Swingedouw</surname><given-names>D</given-names></name><name><surname>Bopp</surname><given-names>L</given-names></name><name><surname>Matras</surname><given-names>A</given-names></name><name><surname>Braconnot</surname><given-names>P</given-names></name></person-group><article-title>Effect of land-ice melting and associated changes in the AMOC result in little overall impact on oceanic CO<inline-formula id="IEq125"><alternatives><tex-math id="M221">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M222"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq125.gif"/></alternatives></inline-formula> uptake</article-title><source>Geophys Res Lett</source><year>2007</year><pub-id pub-id-type="doi">10.1029/2007GL031990</pub-id></element-citation><mixed-citation id="mc-CR36" publication-type="journal">Swingedouw D, Bopp L, Matras A, Braconnot P (2007) Effect of land-ice melting and associated changes in the AMOC result in little overall impact on oceanic CO<inline-graphic xlink:href="382_2024_7295_Article_IEq126.gif"/> uptake. Geophys Res Lett. 10.1029/2007GL031990</mixed-citation></citation-alternatives></ref><ref id="CR37"><citation-alternatives><element-citation id="ec-CR37" publication-type="journal"><person-group person-group-type="author"><name><surname>Tagliabue</surname><given-names>A</given-names></name><name><surname>Kwiatkowski</surname><given-names>L</given-names></name><name><surname>Bopp</surname><given-names>L</given-names></name><name><surname>Butensch&#x000f6;n</surname><given-names>M</given-names></name><name><surname>Cheung</surname><given-names>W</given-names></name><name><surname>Lengaigne</surname><given-names>M</given-names></name><name><surname>Vialard</surname><given-names>J</given-names></name></person-group><article-title>Persistent uncertainties in ocean net primary production climate change projections at regional scales raise challenges for assessing impacts on ecosystem services</article-title><source>Front Clim</source><year>2021</year><pub-id pub-id-type="doi">10.3389/fclim.2021.738224</pub-id></element-citation><mixed-citation id="mc-CR37" publication-type="journal">Tagliabue A, Kwiatkowski L, Bopp L, Butensch&#x000f6;n M, Cheung W, Lengaigne M, Vialard J (2021) Persistent uncertainties in ocean net primary production climate change projections at regional scales raise challenges for assessing impacts on ecosystem services. Front Clim. 10.3389/fclim.2021.738224</mixed-citation></citation-alternatives></ref><ref id="CR38"><citation-alternatives><element-citation id="ec-CR38" publication-type="journal"><person-group person-group-type="author"><name><surname>Vellinga</surname><given-names>M</given-names></name><name><surname>Wood</surname><given-names>RA</given-names></name></person-group><article-title>Global climatic impacts of a collapse of the Atlantic thermohaline circulation</article-title><source>Clim Change</source><year>2002</year><volume>54</volume><issue>3</issue><fpage>251</fpage><lpage>267</lpage><pub-id pub-id-type="doi">10.1023/A:1016168827653</pub-id></element-citation><mixed-citation id="mc-CR38" publication-type="journal">Vellinga M, Wood RA (2002) Global climatic impacts of a collapse of the Atlantic thermohaline circulation. Clim Change 54(3):251&#x02013;267. 10.1023/A:1016168827653</mixed-citation></citation-alternatives></ref><ref id="CR39"><citation-alternatives><element-citation id="ec-CR39" publication-type="journal"><person-group person-group-type="author"><name><surname>Weijer</surname><given-names>W</given-names></name><name><surname>Cheng</surname><given-names>W</given-names></name><name><surname>Drijfhout</surname><given-names>SS</given-names></name><name><surname>Fedorov</surname><given-names>AV</given-names></name><name><surname>Hu</surname><given-names>A</given-names></name><name><surname>Jackson</surname><given-names>LC</given-names></name><name><surname>Liu</surname><given-names>W</given-names></name><name><surname>McDonagh</surname><given-names>EL</given-names></name><name><surname>Mecking</surname><given-names>JV</given-names></name><name><surname>Zhang</surname><given-names>J</given-names></name></person-group><article-title>Stability of the Atlantic meridional overturning circulation: a review and synthesis</article-title><source>J Geophys Res Oceans</source><year>2019</year><volume>124</volume><issue>8</issue><fpage>5336</fpage><lpage>5375</lpage><pub-id pub-id-type="doi">10.1029/2019JC015083</pub-id></element-citation><mixed-citation id="mc-CR39" publication-type="journal">Weijer W, Cheng W, Drijfhout SS, Fedorov AV, Hu A, Jackson LC, Liu W, McDonagh EL, Mecking JV, Zhang J (2019) Stability of the Atlantic meridional overturning circulation: a review and synthesis. J Geophys Res Oceans 124(8):5336&#x02013;5375. 10.1029/2019JC015083</mixed-citation></citation-alternatives></ref><ref id="CR40"><citation-alternatives><element-citation id="ec-CR40" publication-type="journal"><person-group person-group-type="author"><name><surname>Weijer</surname><given-names>W</given-names></name><name><surname>Cheng</surname><given-names>W</given-names></name><name><surname>Garuba</surname><given-names>OA</given-names></name><name><surname>Hu</surname><given-names>A</given-names></name><name><surname>Nadiga</surname><given-names>BT</given-names></name></person-group><article-title>CMIP6 models predict significant 21st century decline of the Atlantic meridional overturning circulation</article-title><source>Geophys Res Lett</source><year>2020</year><volume>47</volume><issue>12</issue><fpage>2019</fpage><lpage>086075</lpage><pub-id pub-id-type="doi">10.1029/2019GL086075</pub-id></element-citation><mixed-citation id="mc-CR40" publication-type="journal">Weijer W, Cheng W, Garuba OA, Hu A, Nadiga BT (2020) CMIP6 models predict significant 21st century decline of the Atlantic meridional overturning circulation. Geophys Res Lett 47(12):2019&#x02013;086075. 10.1029/2019GL086075</mixed-citation></citation-alternatives></ref><ref id="CR41"><citation-alternatives><element-citation id="ec-CR41" publication-type="journal"><person-group person-group-type="author"><name><surname>Whitt</surname><given-names>DB</given-names></name><name><surname>Jansen</surname><given-names>MF</given-names></name></person-group><article-title>Slower nutrient stream suppresses subarctic Atlantic Ocean biological productivity in global warming</article-title><source>Proc Natl Acad Sci</source><year>2020</year><volume>117</volume><issue>27</issue><fpage>15504</fpage><lpage>15510</lpage><pub-id pub-id-type="doi">10.1073/pnas.2000851117</pub-id><pub-id pub-id-type="pmid">32571954</pub-id>
+</element-citation><mixed-citation id="mc-CR41" publication-type="journal">Whitt DB, Jansen MF (2020) Slower nutrient stream suppresses subarctic Atlantic Ocean biological productivity in global warming. Proc Natl Acad Sci 117(27):15504&#x02013;15510. 10.1073/pnas.2000851117<pub-id pub-id-type="pmid">32571954</pub-id>
+</mixed-citation></citation-alternatives></ref><ref id="CR42"><citation-alternatives><element-citation id="ec-CR42" publication-type="journal"><person-group person-group-type="author"><name><surname>Wilson</surname><given-names>JD</given-names></name><name><surname>Andrews</surname><given-names>O</given-names></name><name><surname>Katavouta</surname><given-names>A</given-names></name><name><surname>de Melo Vir&#x000ed;ssimo</surname><given-names>F</given-names></name><name><surname>Death</surname><given-names>RM</given-names></name><name><surname>Adloff</surname><given-names>M</given-names></name><name><surname>Baker</surname><given-names>CA</given-names></name><name><surname>Blackledge</surname><given-names>B</given-names></name><name><surname>Goldsworth</surname><given-names>FW</given-names></name><name><surname>Kennedy-Asser</surname><given-names>AT</given-names></name><name><surname>Liu</surname><given-names>Q</given-names></name><name><surname>Sieradzan</surname><given-names>KR</given-names></name><name><surname>Vosper</surname><given-names>E</given-names></name><name><surname>Ying</surname><given-names>R</given-names></name></person-group><article-title>The biological carbon pump in CMIP6 models: 21st century trends and uncertainties</article-title><source>Proc Natl Acad Sci</source><year>2022</year><volume>119</volume><issue>29</issue><fpage>2204369119</fpage><pub-id pub-id-type="doi">10.1073/pnas.2204369119</pub-id></element-citation><mixed-citation id="mc-CR42" publication-type="journal">Wilson JD, Andrews O, Katavouta A, de Melo Vir&#x000ed;ssimo F, Death RM, Adloff M, Baker CA, Blackledge B, Goldsworth FW, Kennedy-Asser AT, Liu Q, Sieradzan KR, Vosper E, Ying R (2022) The biological carbon pump in CMIP6 models: 21st century trends and uncertainties. Proc Natl Acad Sci 119(29):2204369119. 10.1073/pnas.2204369119</mixed-citation></citation-alternatives></ref><ref id="CR43"><citation-alternatives><element-citation id="ec-CR43" publication-type="journal"><person-group person-group-type="author"><name><surname>Winton</surname><given-names>M</given-names></name><name><surname>Griffies</surname><given-names>SM</given-names></name><name><surname>Samuels</surname><given-names>BL</given-names></name><name><surname>Sarmiento</surname><given-names>JL</given-names></name><name><surname>Fr&#x000f6;licher</surname><given-names>TL</given-names></name></person-group><article-title>Connecting changing ocean circulation with changing climate</article-title><source>J Clim</source><year>2013</year><volume>26</volume><issue>7</issue><fpage>2268</fpage><lpage>2278</lpage><pub-id pub-id-type="doi">10.1175/JCLI-D-12-00296.1</pub-id></element-citation><mixed-citation id="mc-CR43" publication-type="journal">Winton M, Griffies SM, Samuels BL, Sarmiento JL, Fr&#x000f6;licher TL (2013) Connecting changing ocean circulation with changing climate. J Clim 26(7):2268&#x02013;2278. 10.1175/JCLI-D-12-00296.1</mixed-citation></citation-alternatives></ref><ref id="CR44"><citation-alternatives><element-citation id="ec-CR44" publication-type="journal"><person-group person-group-type="author"><name><surname>Yamamoto</surname><given-names>A</given-names></name><name><surname>Abe-Ouchi</surname><given-names>A</given-names></name><name><surname>Yamanaka</surname><given-names>Y</given-names></name></person-group><article-title>Long-term response of oceanic carbon uptake to global warming via physical and biological pumps</article-title><source>Biogeosciences</source><year>2018</year><volume>15</volume><issue>13</issue><fpage>4163</fpage><lpage>4180</lpage><pub-id pub-id-type="doi">10.5194/bg-15-4163-2018</pub-id></element-citation><mixed-citation id="mc-CR44" publication-type="journal">Yamamoto A, Abe-Ouchi A, Yamanaka Y (2018) Long-term response of oceanic carbon uptake to global warming via physical and biological pumps. Biogeosciences 15(13):4163&#x02013;4180. 10.5194/bg-15-4163-2018</mixed-citation></citation-alternatives></ref><ref id="CR45"><citation-alternatives><element-citation id="ec-CR45" publication-type="journal"><person-group person-group-type="author"><name><surname>Zhang</surname><given-names>R</given-names></name><name><surname>Delworth</surname><given-names>TL</given-names></name></person-group><article-title>Simulated tropical response to a substantial weakening of the Atlantic thermohaline circulation</article-title><source>J Clim</source><year>2005</year><volume>18</volume><issue>12</issue><fpage>1853</fpage><lpage>1860</lpage><pub-id pub-id-type="doi">10.1175/JCLI3460.1</pub-id></element-citation><mixed-citation id="mc-CR45" publication-type="journal">Zhang R, Delworth TL (2005) Simulated tropical response to a substantial weakening of the Atlantic thermohaline circulation. J Clim 18(12):1853&#x02013;1860. 10.1175/JCLI3460.1</mixed-citation></citation-alternatives></ref><ref id="CR46"><citation-alternatives><element-citation id="ec-CR46" publication-type="journal"><person-group person-group-type="author"><name><surname>Zhu</surname><given-names>J</given-names></name><name><surname>Zeng</surname><given-names>X</given-names></name><name><surname>Gao</surname><given-names>X</given-names></name><name><surname>Zhang</surname><given-names>H</given-names></name></person-group><article-title>Response of terrestrial net primary production to quadrupled CO<inline-formula id="IEq127"><alternatives><tex-math id="M223">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M224"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq127.gif"/></alternatives></inline-formula> forcing: a comparison between the CAS-ESM2 and CMIP6 models</article-title><source>Biology</source><year>2022</year><pub-id pub-id-type="doi">10.3390/biology11121693</pub-id></element-citation><mixed-citation id="mc-CR46" publication-type="journal">Zhu J, Zeng X, Gao X, Zhang H (2022) Response of terrestrial net primary production to quadrupled CO<inline-graphic xlink:href="382_2024_7295_Article_IEq128.gif"/> forcing: a comparison between the CAS-ESM2 and CMIP6 models. Biology. 10.3390/biology11121693</mixed-citation></citation-alternatives></ref><ref id="CR47"><citation-alternatives><element-citation id="ec-CR47" publication-type="journal"><person-group person-group-type="author"><name><surname>Zickfeld</surname><given-names>K</given-names></name><name><surname>Eby</surname><given-names>M</given-names></name><name><surname>Weaver</surname><given-names>AJ</given-names></name></person-group><article-title>Carbon-cycle feedbacks of changes in the Atlantic meridional overturning circulation under future atmospheric CO<inline-formula id="IEq129"><alternatives><tex-math id="M225">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$_2$$\end{document}</tex-math><mml:math id="M226"><mml:mmultiscripts><mml:mrow/><mml:mn>2</mml:mn><mml:mrow/></mml:mmultiscripts></mml:math><inline-graphic xlink:href="382_2024_7295_Article_IEq129.gif"/></alternatives></inline-formula></article-title><source>Glob Biogeochem Cycles</source><year>2008</year><pub-id pub-id-type="doi">10.1029/2007GB003118</pub-id></element-citation><mixed-citation id="mc-CR47" publication-type="journal">Zickfeld K, Eby M, Weaver AJ (2008) Carbon-cycle feedbacks of changes in the Atlantic meridional overturning circulation under future atmospheric CO<inline-graphic xlink:href="382_2024_7295_Article_IEq130.gif"/>. Glob Biogeochem Cycles. 10.1029/2007GB003118</mixed-citation></citation-alternatives></ref></ref-list></back></article>

@@ -1,14 +1,18 @@
 """manages bibligraphy and related stuff"""
 import datetime
 import json
+from typing import List
 
 import lxml.etree as ET
 import re
+
+from lxml.etree import _Element
 
 from amilib.ami_html import HtmlUtil, HtmlLib
 from amilib.ami_util import AmiUtil, AmiJson
 # local
 from amilib.util import Util
+from amilib.xml_lib import XmlLib
 
 logger = Util.get_logger(__name__)
 
@@ -400,4 +404,110 @@ SECTION_KEYS = {
 }
 JOURNAL_INFO_TITLE = "journalInfo.journal.title"
 
+class JATSSection:
+    """
+    a section in JATS file.
+    Often child of <body> or <back>
+    may have an ID and/or sec-type
+    <sec sec-type = 'introduction' ...>
+    """
+class JATSDoc:
+    """holds data for JATS file (possibly including parsed XML
+    """
+
+    ARTICLE = "article"
+    BACK = "back"
+    BODY = "body"
+    FRONT = "front"
+    SEC = 'sec'
+    SEC_TYPE = 'sec-type'
+    def __init__(self, xml):
+        self.xml = xml
+        self.article = self.get_article()
+        self.front = self.get_front()
+        self.body = self.get_body()
+        self.back = self.get_back()
+        self.body_secs, self.body_non_secs = None, None
+        self.body_secs, self.body_non_secs = self.get_body_secs_non_secs()
+
+    def get_article_component(self, jats_doc_component):
+        self.get_article()
+        if self.article is None:
+            logger.warn(f"no self.article")
+        component = XmlLib.get_single_element(
+            element=self.article, xpath=f"./*[local-name()='{jats_doc_component}']")
+        return component
+
+
+
+    def get_article(self):
+        """
+        get <article> which must be root element
+        """
+        self.article = XmlLib.get_single_element(
+            element=self.xml, xpath=f"/*[local-name()='{JATSDoc.ARTICLE}']")
+        return self.article
+
+
+    def get_front(self):
+        """
+        get <front> which must be child of <article>
+        """
+        self.front = self.get_article_component(JATSDoc.FRONT)
+        return self.front
+
+    def get_body(self):
+        """
+        get <body> which must be child of <article>
+        """
+        self.body = self.get_article_component(JATSDoc.BODY)
+        return self.body
+
+    def get_back(self):
+        """
+        get <back> which must be child of <article>
+        """
+        self.back = self.get_article_component(JATSDoc.BACK)
+        return self.back
+
+    def get_body_secs_non_secs(self):
+        """
+        gets all body-child elements grouped into secs , and non-secs
+        """
+        self.body = self.get_body()
+        if self.body is None:
+            logger.warn(f"no body")
+        else:
+            self.body_secs = self.body.xpath(f"*[local-name()='{JATSDoc.SEC}']")
+            self.body_non_secs = self.body.xpath(f"*[local-name()!='{JATSDoc.SEC}']")
+        return self.body_secs, self.body_non_secs
+
+    @classmethod
+    def get_titles_and_ids(cls, sec_list:List):
+        """get titles from sections
+        Assume <title> child
+        """
+        if sec_list is None:
+            return None
+        titles_and_ids = list()
+        for sec in sec_list:
+            title, id = cls.get_title_and_id(sec)
+            titles_and_ids.append((title, id))
+        return titles_and_ids
+
+    @classmethod
+    def get_title_and_id(cls, sec: _Element):
+        """
+        get title and id of sec(tion)
+        generally title is <title> child and id is @id
+        :param sec: section
+        :return: title, id
+        """
+        title_text = None
+        id = None
+        if type(sec) is _Element:
+            id = sec.get('id')
+            title = XmlLib.get_single_element(sec, "./*[local-name()='title']")
+            title_text = None if title is None else "".join(title.itertext())
+        return title_text, id
 

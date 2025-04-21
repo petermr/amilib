@@ -15,6 +15,6 @@ class AmiCSV:
 
     def transpose(self, a):
 
-        b = izip(*a)
+        b = zip(*a)
         return b
 

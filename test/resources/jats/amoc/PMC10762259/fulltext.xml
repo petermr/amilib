@@ -1,0 +1,1942 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd">
+<article xmlns:ali="http://www.niso.org/schemas/ali/1.0/" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="1.3">
+	<?properties open_access?>
+	<?DTDIdentifier.IdentifierValue -//Springer-Verlag//DTD A++ V2.4//EN?>
+	<?DTDIdentifier.IdentifierType public?>
+	<?SourceDTD.DTDName A++V2.4.dtd?>
+	<?SourceDTD.Version 2.4?>
+	<?ConverterInfo.XSLTName springer2nlmx2.xsl?>
+	<?ConverterInfo.Version 1?>
+	<processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats">
+		<restricted-by>pmc</restricted-by>
+	</processing-meta>
+	<front>
+		<journal-meta>
+			<journal-id journal-id-type="nlm-ta">Nat Commun</journal-id>
+			<journal-id journal-id-type="iso-abbrev">Nat Commun</journal-id>
+			<journal-title-group>
+				<journal-title>Nature Communications</journal-title>
+			</journal-title-group>
+			<issn pub-type="epub">2041-1723</issn>
+			<publisher>
+				<publisher-name>Nature Publishing Group UK</publisher-name>
+				<publisher-loc>London</publisher-loc>
+			</publisher>
+		</journal-meta>
+		<article-meta>
+			<article-id pub-id-type="pmcid">10762259</article-id>
+			<article-id pub-id-type="publisher-id">44597</article-id>
+			<article-id pub-id-type="doi">10.1038/s41467-023-44597-x</article-id>
+			<article-categories>
+				<subj-group subj-group-type="heading">
+					<subject>Article</subject>
+				</subj-group>
+			</article-categories>
+			<title-group>
+				<article-title>Increased Asian aerosols drive a slowdown of Atlantic Meridional Overturning Circulation</article-title>
+			</title-group>
+			<contrib-group>
+				<contrib contrib-type="author" corresp="yes" equal-contrib="yes">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0002-0687-9568</contrib-id>
+					<name>
+						<surname>Liu</surname>
+						<given-names>Fukai</given-names>
+					</name>
+					<address>
+						<email>fliu@ouc.edu.cn</email>
+					</address>
+					<xref ref-type="aff" rid="Aff1">1</xref>
+				</contrib>
+				<contrib contrib-type="author" equal-contrib="yes">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0009-0005-6744-994X</contrib-id>
+					<name>
+						<surname>Li</surname>
+						<given-names>Xun</given-names>
+					</name>
+					<xref ref-type="aff" rid="Aff1">1</xref>
+				</contrib>
+				<contrib contrib-type="author" corresp="yes">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0001-9448-9684</contrib-id>
+					<name>
+						<surname>Luo</surname>
+						<given-names>Yiyong</given-names>
+					</name>
+					<address>
+						<email>yiyongluo@ouc.edu.cn</email>
+					</address>
+					<xref ref-type="aff" rid="Aff1">1</xref>
+				</contrib>
+				<contrib contrib-type="author">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0001-6520-0829</contrib-id>
+					<name>
+						<surname>Cai</surname>
+						<given-names>Wenju</given-names>
+					</name>
+					<xref ref-type="aff" rid="Aff1">1</xref>
+					<xref ref-type="aff" rid="Aff2">2</xref>
+					<xref ref-type="aff" rid="Aff3">3</xref>
+					<xref ref-type="aff" rid="Aff4">4</xref>
+				</contrib>
+				<contrib contrib-type="author">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0001-8245-6930</contrib-id>
+					<name>
+						<surname>Lu</surname>
+						<given-names>Jian</given-names>
+					</name>
+					<xref ref-type="aff" rid="Aff5">5</xref>
+				</contrib>
+				<contrib contrib-type="author">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0001-6335-1383</contrib-id>
+					<name>
+						<surname>Zheng</surname>
+						<given-names>Xiao-Tong</given-names>
+					</name>
+					<xref ref-type="aff" rid="Aff1">1</xref>
+				</contrib>
+				<contrib contrib-type="author">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0003-4635-275X</contrib-id>
+					<name>
+						<surname>Kang</surname>
+						<given-names>Sarah M.</given-names>
+					</name>
+					<xref ref-type="aff" rid="Aff6">6</xref>
+				</contrib>
+				<contrib contrib-type="author">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0003-3248-6968</contrib-id>
+					<name>
+						<surname>Wang</surname>
+						<given-names>Hai</given-names>
+					</name>
+					<xref ref-type="aff" rid="Aff1">1</xref>
+				</contrib>
+				<contrib contrib-type="author">
+					<contrib-id contrib-id-type="orcid">http://orcid.org/0000-0002-0433-3991</contrib-id>
+					<name>
+						<surname>Zhou</surname>
+						<given-names>Lei</given-names>
+					</name>
+					<xref ref-type="aff" rid="Aff7">7</xref>
+					<xref ref-type="aff" rid="Aff8">8</xref>
+				</contrib>
+				<aff id="Aff1"><label>1</label><institution-wrap><institution-id institution-id-type="ROR">https://ror.org/04rdtx186</institution-id><institution-id institution-id-type="GRID">grid.4422.0</institution-id><institution-id institution-id-type="ISNI">0000 0001 2152 3263</institution-id><institution>Frontiers Science Center for Deep Ocean Multispheres and Earth System, Physical Oceanography Laboratory, and Sanya Oceanographic Institution, </institution><institution>Ocean University of China, </institution></institution-wrap>Qingdao, China </aff>
+				<aff id="Aff2"><label>2</label>Laoshan Laboratory, Qingdao, China </aff>
+				<aff id="Aff3"><label>3</label><institution-wrap><institution-id institution-id-type="ROR">https://ror.org/00mcjh785</institution-id><institution-id institution-id-type="GRID">grid.12955.3a</institution-id><institution-id institution-id-type="ISNI">0000 0001 2264 7233</institution-id><institution>State Key Laboratory of Marine Environmental Science &amp; College of Ocean and Earth Sciences, </institution><institution>Xiamen University, </institution></institution-wrap>Xiamen, China </aff>
+				<aff id="Aff4"><label>4</label><institution-wrap><institution-id institution-id-type="GRID">grid.458457.f</institution-id><institution-id institution-id-type="ISNI">0000 0004 1792 8067</institution-id><institution>State Key Laboratory of Loess and Quaternary Geology, </institution><institution>Institute of Earth Environment, Chinese Academy of Sciences, </institution></institution-wrap>Xi&#x2019;an, China </aff>
+				<aff id="Aff5"><label>5</label><institution-wrap><institution-id institution-id-type="ROR">https://ror.org/05h992307</institution-id><institution-id institution-id-type="GRID">grid.451303.0</institution-id><institution-id institution-id-type="ISNI">0000 0001 2218 3491</institution-id><institution>Atmosphere, Climate, and Earth Sciences Division, </institution><institution>Pacific Northwest National Laboratory, </institution></institution-wrap>Richland, USA </aff>
+				<aff id="Aff6"><label>6</label><institution-wrap><institution-id institution-id-type="ROR">https://ror.org/05esem239</institution-id><institution-id institution-id-type="GRID">grid.450268.d</institution-id><institution-id institution-id-type="ISNI">0000 0001 0721 4552</institution-id><institution>Max Planck Institute for Meteorology, </institution></institution-wrap>Hamburg, Germany </aff>
+				<aff id="Aff7"><label>7</label><institution-wrap><institution-id institution-id-type="ROR">https://ror.org/0220qvk04</institution-id><institution-id institution-id-type="GRID">grid.16821.3c</institution-id><institution-id institution-id-type="ISNI">0000 0004 0368 8293</institution-id><institution>School of Oceanography, </institution><institution>Shanghai Jiao Tong University, </institution></institution-wrap>Shanghai, China </aff>
+				<aff id="Aff8"><label>8</label><institution-wrap><institution-id institution-id-type="ROR">https://ror.org/00y7mag53</institution-id><institution-id institution-id-type="GRID">grid.511004.1</institution-id><institution>Southern Marine Science and Engineering Guangdong Laboratory (Zhuhai), </institution></institution-wrap>Zhuhai, China </aff>
+			</contrib-group>
+			<pub-date pub-type="epub">
+				<day>2</day>
+				<month>1</month>
+				<year>2024</year>
+			</pub-date>
+			<pub-date pub-type="pmc-release">
+				<day>2</day>
+				<month>1</month>
+				<year>2024</year>
+			</pub-date>
+			<pub-date pub-type="collection">
+				<year>2024</year>
+			</pub-date>
+			<volume>15</volume>
+			<elocation-id>18</elocation-id>
+			<history>
+				<date date-type="received">
+					<day>6</day>
+					<month>7</month>
+					<year>2023</year>
+				</date>
+				<date date-type="accepted">
+					<day>20</day>
+					<month>12</month>
+					<year>2023</year>
+				</date>
+			</history>
+			<permissions>
+				<copyright-statement>&#xA9; The Author(s) 2024</copyright-statement>
+				<license>
+					<ali:license_ref specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref>
+					<license-p><bold>Open Access</bold> This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article&#x2019;s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article&#x2019;s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link>.</license-p>
+				</license>
+			</permissions>
+			<abstract id="Abs1">
+				<p id="Par1">Observational evidence and climate model experiments suggest a slowdown of the Atlantic Meridional Overturning Circulation (AMOC) since the mid-1990s. Increased greenhouse gases and the declined anthropogenic aerosols (AAs) over North America and Europe are believed to contribute to the AMOC slowdown. Asian AAs continue to increase but the associated impact has been unclear. Using ensembles of climate simulations, here we show that the radiative cooling resulting from increased Asian AAs drives an AMOC reduction. The increased AAs over Asia generate circumglobal stationary Rossby waves in the northern midlatitudes, which shift the westerly jet stream southward and weaken the subpolar North Atlantic westerlies. Consequently, reduced transport of cold air from North America hinders water mass transformation in the Labrador Sea and thus contributes to the AMOC slowdown. The link between increased Asian AAs and an AMOC slowdown is supported by different models with different configurations. Thus, reducing emissions of Asian AAs will not only lower local air pollution, but also help stabilize the AMOC.</p>
+			</abstract>
+			<abstract id="Abs2" abstract-type="web-summary">
+				<p id="Par2">Increased anthropogenic aerosol emissions from Asia generate circumglobal Rossby waves that contribute to the Atlantic Meridional Overturning Circulation slowdown by suppressing heat loss in the Labrador Sea.</p>
+			</abstract>
+			<kwd-group kwd-group-type="npg-subject">
+				<title>Subject terms</title>
+				<kwd>Climate and Earth system modelling</kwd>
+				<kwd>Attribution</kwd>
+				<kwd>Physical oceanography</kwd>
+			</kwd-group>
+			<funding-group>
+				<award-group>
+					<funding-source>
+						<institution-wrap>
+							<institution-id institution-id-type="FundRef">https://doi.org/10.13039/501100001809</institution-id>
+							<institution>National Natural Science Foundation of China (National Science Foundation of China)</institution>
+						</institution-wrap>
+					</funding-source>
+					<award-id>42230405</award-id>
+					<principal-award-recipient>
+						<name>
+							<surname>Liu</surname>
+							<given-names>Fukai</given-names>
+						</name>
+					</principal-award-recipient>
+				</award-group>
+			</funding-group>
+			<custom-meta-group>
+				<custom-meta>
+					<meta-name>issue-copyright-statement</meta-name>
+					<meta-value>&#xA9; Springer Nature Limited 2024</meta-value>
+				</custom-meta>
+			</custom-meta-group>
+		</article-meta>
+	</front>
+	<body>
+		<sec id="Sec1" sec-type="introduction">
+			<title>Introduction</title>
+			<p id="Par3">The Atlantic Meridional Overturning Circulation (AMOC) transports vast amounts of energy to the northern high latitudes, playing a pivotal role in modulating the global climate<sup><xref ref-type="bibr" rid="CR1">1</xref>&#x2013;<xref ref-type="bibr" rid="CR3">3</xref></sup>. Increasing lines of evidence indicate that the AMOC is declining over the modern climate record<sup><xref ref-type="bibr" rid="CR4">4</xref>&#x2013;<xref ref-type="bibr" rid="CR7">7</xref></sup>, although debates persist<sup><xref ref-type="bibr" rid="CR8">8</xref>&#x2013;<xref ref-type="bibr" rid="CR10">10</xref></sup>. Furthermore, numerical model simulations consistently project a slowdown or even collapse of the AMOC as a response to increasing greenhouse gases (GHGs) in the 21st century, as summarized by the Sixth Assessment Report of the United Nations Intergovernmental Panel on Climate Change (IPCC AR6)<sup><xref ref-type="bibr" rid="CR11">11</xref></sup>.</p>
+			<p id="Par4">However, GHGs are not the only external factor influencing AMOC strength, and anthropogenic aerosols (AAs) have also been found to play an important role (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">1a</xref>)<sup><xref ref-type="bibr" rid="CR12">12</xref>&#x2013;<xref ref-type="bibr" rid="CR18">18</xref></sup>. Compared to the globally well-mixed GHGs, AAs are highly variable in space and time due to their short residence time in the atmosphere. In contrast to the monotonically increasing GHGs since the industrial revolution, there is a two-stage temporal evolution of the global mean AAs (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">1b</xref>): prior to the late 1980s, the global mean AAs shows a monotonic increase due to ramping aerosol emissions from both the eastern and western hemispheres; after the early 1990s it remains stable due to a reversal of the emission trend in Europe and North America (an effect of the Clean Air Act). By contrast, the AAs emission over South and East Asia continues to increase.</p>
+			<p id="Par5">A growing number of literature recognizes the role of AAs in AMOC variations over the past century<sup><xref ref-type="bibr" rid="CR12">12</xref>&#x2013;<xref ref-type="bibr" rid="CR18">18</xref></sup>. In particular, a multi-model of single-forcing simulations, known as the Detection and Attribution Model Intercomparison Project (DAMIP)<sup><xref ref-type="bibr" rid="CR19">19</xref></sup>, reveals a two-stage evolution of the AAs-induced AMOC change<sup><xref ref-type="bibr" rid="CR15">15</xref></sup>: a monotonic steady strengthening before the mid-1990s and a rapid weakening thereafter (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">1a</xref>). Since AAs are known to be an important radiative forcing that cools the global climate and drives an increase in the surface water density over the North Atlantic<sup><xref ref-type="bibr" rid="CR18">18</xref>,<xref ref-type="bibr" rid="CR20">20</xref>,<xref ref-type="bibr" rid="CR21">21</xref></sup>, the AAs-induced AMOC decay in recent decades is presumably attributed to the decreased AAs emission over the adjacent North America and Europe<sup><xref ref-type="bibr" rid="CR13">13</xref>,<xref ref-type="bibr" rid="CR14">14</xref>,<xref ref-type="bibr" rid="CR21">21</xref>,<xref ref-type="bibr" rid="CR22">22</xref></sup>. In contrast, the increased AAs over the eastern hemisphere are anticipated to have a cooling effect, hypothetically strengthening the AMOC<sup><xref ref-type="bibr" rid="CR17">17</xref></sup>. However, owing to their inhomogeneous spatial distributions<sup><xref ref-type="bibr" rid="CR23">23</xref>&#x2013;<xref ref-type="bibr" rid="CR25">25</xref></sup>, changes in Asian AAs result in dynamic impacts on large-scale atmospheric circulations and have far-reaching effects on remote regions. A recent study, in particular, has demonstrated that increased Asian AAs can shift the westerly jet equatorward in the northern hemipshere<sup><xref ref-type="bibr" rid="CR26">26</xref></sup>. However, the influence of the increased Asian AAs on the AMOC and the underlying mechanisms remain unknown. Here, we find that far-field AAs over Asia weaken the AMOC despite local radiative cooling.</p>
+		</sec>
+		<sec id="Sec2" sec-type="results">
+			<title>Results</title>
+			<sec id="Sec3">
+				<title>Model set-up and experimental design</title>
+				<p id="Par6">As discussed above, aerosol optical depth evolution is marked by a clear spatial contrast with a positive trend over the eastern hemisphere and a negative trend over the western hemisphere (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1a</xref>), known as the zonal shift pattern of AAs emission<sup><xref ref-type="bibr" rid="CR17">17</xref>,<xref ref-type="bibr" rid="CR27">27</xref></sup>. To investigate the climatic effects of changes in eastern and western AAs changes, we perform idealized radiative perturbation experiments<sup><xref ref-type="bibr" rid="CR17">17</xref>,<xref ref-type="bibr" rid="CR28">28</xref>,<xref ref-type="bibr" rid="CR29">29</xref></sup> using a widely adopted fully-coupled climate model&#x2014;the Community Earth System Model version 1 (CESM1) (see &#x201C;CESM1 model&#x201D; in Methods), known for its ability to represent the main physical processes involved in AMOC variability<sup><xref ref-type="bibr" rid="CR3">3</xref>,<xref ref-type="bibr" rid="CR30">30</xref>&#x2013;<xref ref-type="bibr" rid="CR32">32</xref></sup>. Prior to the perturbation runs, we first integrate a 500-yr control (CTRL) by forcing the CESM1 with GHGs, AAs, and solar insolation fixed at the year 2000 levels. To mimic the radiative effect of the aerosol forcing, we separately reduce solar insolation by 10% over East Asia and South Asia (red box in Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1a</xref>) and North America and Europe (blue boxes in Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1a</xref>), hereafter referred to as EAST and WEST simulations, respectively. Assuming linearity, the sign of the response in WEST is reversed to mimic the radiative heating effect of the aerosol decrease after the 1980s. The annual-mean net radiative forcing amounts to ~30 <inline-formula id="IEq1"><alternatives><tex-math id="M1">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$W{m}^{-2}$$\end{document}</tex-math><mml:math id="M2"><mml:mi>W</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>2</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq1.gif"/></alternatives></inline-formula> in the perturbation experiments, which is three times larger in magnitude than the actual radiative forcing of the order 10 <inline-formula id="IEq2"><alternatives><tex-math id="M3">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$W{m}^{-2}$$\end{document}</tex-math><mml:math id="M4"><mml:mi>W</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>2</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq2.gif"/></alternatives></inline-formula><sup><xref ref-type="bibr" rid="CR17">17</xref></sup>, for the purpose of generating a robust response signal.<fig id="Fig1"><label>Fig. 1</label><caption><title>Simulated slowdown of the Atlantic Meridional Overturning Circulation (AMOC) due to Asian anthropogenic aerosols (AAs) changes.</title><p><bold>a</bold> Aerosol optical depth trends (unit: 0.01/year) between 1986&#x2013;2014. The red box denotes the perturbed region in EAST simulations (South Asia box: 8&#x2013;30<sup>o</sup>N, 65&#x2013;100<sup>o</sup>E, East Asia box: 15&#x2013;40<sup>o</sup>N, 100&#x2013;125<sup>o</sup>E), and the blue boxes denote the perturbed region in WEST simulations (North America box: 28&#x2013;48<sup>o</sup>N, 103&#x2013;68<sup>o</sup>W, Europe box: 45&#x2013;65<sup>o</sup>N, 0&#x2013;70<sup>o</sup>E). <bold>b</bold> Ensemble-mean evolution of annual-mean AMOC index (unit: Sv) in EAST smoothed with a 5-yr running-mean filter, with the thin curves denoting each member&#x2019;s anomalies. <bold>c</bold> AMOC streamfunction response (unit: Sv) in density coordinate in EAST averaged over model years 1-40, and superimposed black contours are the AMOC climatology in CTRL. <bold>d</bold>, <bold>e</bold> Same as <bold>b</bold>, <bold>c</bold>, but in WEST. The model simulated AMOC index in <bold>b</bold>, <bold>d</bold> is obtained as the maximum of streamfunction between latitudes 25&#xB0; N&#x2013;75&#xB0; N and between depths of 500 and 2000 m. The radiative cooling resulting from increased Asian AAs paradoxically drives an AMOC slowdown.</p></caption><graphic xlink:href="41467_2023_44597_Fig1_HTML" id="d32e494"/></fig></p>
+				<p id="Par7">According to paleoclimate proxy records and climate models, the AMOC exhibits decadal to multi-decadal variability<sup><xref ref-type="bibr" rid="CR33">33</xref>&#x2013;<xref ref-type="bibr" rid="CR36">36</xref></sup>. To ensure that the simulated changes are not the result of internal variability, a total of ten 100-yr ensemble members are generated for each of the CTRL, EAST, and WEST experiments branching out from year 350 of CTRL, where each member is realized by adding a small random perturbation to the initial surface temperature in each realization. Since we focus on how increased Asian AAs and the associated radiative cooling affect the AMOC through exciting atmospheric teleconnections during the transient response stage, the main analyses shown in this study are based on the difference between years 1&#x2013;40 of the ensemble perturbed runs and the corresponding 40 years of the ensemble CTRL. In addition, we provide an overview of the ensemble responses during the slow response phase averaged over years 51&#x2013;100 in Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">2</xref>, and the consistency between the results averaged over the first 40 years and the last 50 years suggests a short response timescale of the AMOC to changes in AAs.</p>
+			</sec>
+			<sec id="Sec4">
+				<title>Increased Asian aerosols weaken the AMOC</title>
+				<p id="Par8">It is somewhat surprising to see that the aerosol-induced cooling over Asia leads to a significant slowdown of the AMOC (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1b</xref>). This slowdown includes a rapid decrease of ~2.7&#x2009;Sv (1&#x2009;Sv=<inline-formula id="IEq3"><alternatives><tex-math id="M5">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${10}^{6}{m}^{3}{s}^{-1}$$\end{document}</tex-math><mml:math id="M6"><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mn>6</mml:mn></mml:mrow></mml:msup><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msup><mml:msup><mml:mrow><mml:mi>s</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq3.gif"/></alternatives></inline-formula>) within the first 40 years across all ensemble members (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1b</xref>, thin colored lines) and a gradual decline by ~0.6&#x2009;Sv over the subsequent 60 years. This result demonstrates that the simulated decline of the AMOC is a robust climate response and not related to internal climate variability. Regarding the temporal evolution of the AMOC response in the WEST (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1d</xref>), as expected, the AMOC is weakened by ~1.4&#x2009;Sv in the first four decades due to the warming effect of reduced AAs, and remains relatively stable around this value thereafter. Note that the magnitudes of both the transient and long-term responses of the AMOC in WEST are smaller than those in EAST, suggesting that the remote Asian forcing exerts an even stronger influence on the AMOC than the adjacent forcing over North America and Europe.</p>
+				<p id="Par9">The transient AMOC responses in density space (see &#x201C;AMOC in density space&#x201D; in Methods) in both EAST and WEST exhibit strikingly similar spatial patterns (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1</xref>c, <xref rid="Fig1" ref-type="fig">e</xref>). The reduction occurs in the lower limb of AMOC, between 36.80 and 37.00 <inline-formula id="IEq4"><alternatives><tex-math id="M7">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${kg}{m}^{-3}$$\end{document}</tex-math><mml:math id="M8"><mml:mi>k</mml:mi><mml:mi>g</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq4.gif"/></alternatives></inline-formula>. This reduction signifies a decrease in the transport of equatorward-flowing deep water, indicating not only an overall weakening but also a shallower AMOC. The wind-driven subtropical cells in the light upper limb (<inline-formula id="IEq5"><alternatives><tex-math id="M9">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${\sigma }_{2}$$\end{document}</tex-math><mml:math id="M10"><mml:msub><mml:mrow><mml:mi>&#x3C3;</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq5.gif"/></alternatives></inline-formula>&#x2009;&lt;&#x2009;33.5 <inline-formula id="IEq6"><alternatives><tex-math id="M11">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${kg}{m}^{-3}$$\end{document}</tex-math><mml:math id="M12"><mml:mi>k</mml:mi><mml:mi>g</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq6.gif"/></alternatives></inline-formula>) appear to be rarely affected by the radiative forcing, regardless of whether it originates from the eastern or western hemisphere. This demonstrates that the primary impact of aerosol changes is concentrated on the lower branch of the AMOC.</p>
+				<p id="Par10">As shown in the DAMIP single forcing experiments (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">1a</xref>), the rate of AAs-induced AMOC weakening after the 1990s (<inline-formula id="IEq7"><alternatives><tex-math id="M13">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M14"><mml:mo>&#x2212;</mml:mo></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq7.gif"/></alternatives></inline-formula>0.81&#x2009;Sv/decade during 1990&#x2013;2014) is 1.4 times greater than the AMOC strengthening before the 1990s (0.56&#x2009;Sv/decade during 1920&#x2013;1990), despite the limited changes in global mean AAs concentration since the 1980s. Our model experiments suggest that the simulated acceleration in AMOC weakening after the 1990s is likely a combined result of AAs changes in both the eastern and western hemispheres. While the radiative heating caused by aerosol reduction over North America and Europe weakening the AMOC is not surprising, the mechanism behind the AMOC slowdown induced by remote radiative cooling over Asia remains puzzling. Furthermore, the remote forcing appears to have an even stronger influence on the AMOC than the adjacent forcing surrounding the North Atlantic. Next, we will delve into the mechanisms behind the AMOC slowdown in EAST.</p>
+			</sec>
+			<sec id="Sec5">
+				<title>Circumglobal teleconnection excited by increased Asian Aerosols</title>
+				<p id="Par11">The impact of Asian AAs-induced radiative cooling on the AMOC is conducted by exciting stationary Rossby wave patterns. Initially, the cooling effect leads to the suppression of local convection and the development of upper-level convergence over broad regions in India and China (Fig.&#xA0;<xref rid="Fig2" ref-type="fig">2a</xref>), inducing quasi-stationary atmospheric planetary wave trains propagating poleward and eastward (Fig.&#xA0;<xref rid="Fig2" ref-type="fig">2b</xref>), manifested as an equatorward shift of the westerly jet in the northern mid-latitudes (Fig.&#xA0;<xref rid="Fig2" ref-type="fig">2d</xref>). The associated streamfunction anomalies predominantly exhibit zonal wavenumber 4-5, characterized by a few prominent centers over the Tibetan Plateau, North Pacific, North America, and western Europe, which are aligned within the waveguide of the westerly jet stream. This anomalous pattern of atmospheric circulation mainly occurs within the jet stream waveguide, resembling the well-known circumglobal teleconnection<sup><xref ref-type="bibr" rid="CR37">37</xref>,<xref ref-type="bibr" rid="CR38">38</xref></sup>. In this case, however, the centers for East Asia and the Indian regions are merged due to the idealized configuration of the radiative forcing, covering western, central, and eastern Asia. The circumglobal response triggered by the reduction in Asian AAs persists throughout the year (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">3a&#x2013;d</xref>), with its peak intensity occurring in summer, likely the result of the stronger convective feedback to external radiative forcing and hence a stronger diabatic wave source during the active Asian Monsoon season (i.e., summer) than winter (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">3e</xref>).<fig id="Fig2"><label>Fig. 2</label><caption><title>Circumglobal atmospheric responses excited by increased Asian anthropogenic aerosols (AAs).</title><p><bold>a</bold> Responses of precipitation (colors; unit:<inline-formula id="IEq8"><alternatives><tex-math id="M15">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${{mmday}}^{-1}$$\end{document}</tex-math><mml:math id="M16"><mml:msup><mml:mrow><mml:mi>m</mml:mi><mml:mi>m</mml:mi><mml:mi>d</mml:mi><mml:mi>a</mml:mi><mml:mi>y</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq8.gif"/></alternatives></inline-formula>) and vertical velocity (<inline-formula id="IEq9"><alternatives><tex-math id="M17">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$\Omega$$\end{document}</tex-math><mml:math id="M18"><mml:mi mathvariant="normal">&#x3A9;</mml:mi></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq9.gif"/></alternatives></inline-formula>) averaged over 200-1000 hPa (contour; unit: Pa/s) over South and East Asia. <bold>b</bold> Responses of 200-hPa streamfunction (colors; unit:<inline-formula id="IEq10"><alternatives><tex-math id="M19">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${10}^{6}{m}^{2}{s}^{-1}$$\end{document}</tex-math><mml:math id="M20"><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mn>6</mml:mn></mml:mrow></mml:msup><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msup><mml:msup><mml:mrow><mml:mi>s</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq10.gif"/></alternatives></inline-formula>) and rotational wind (vectors; unit:<inline-formula id="IEq11"><alternatives><tex-math id="M21">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$m{s}^{-1}$$\end{document}</tex-math><mml:math id="M22"><mml:mi>m</mml:mi><mml:msup><mml:mrow><mml:mi>s</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq11.gif"/></alternatives></inline-formula>) in the northern hemisphere, superimposed are the climatological 200-hPa zonal wind (contours; unit: unit: <inline-formula id="IEq12"><alternatives><tex-math id="M23">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$m{s}^{-1}$$\end{document}</tex-math><mml:math id="M24"><mml:mi>m</mml:mi><mml:msup><mml:mrow><mml:mi>s</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq12.gif"/></alternatives></inline-formula>). <bold>c</bold> Responses of sea level pressure (SLP; colors; unit: Pa) and surface wind (vector; unit:) over the North Atlantic. Blue and black vectors denote anomalous win<bold>d</bold>s that weaken and intensify the climatological winds. <bold>d</bold> Response of the zonal-mean zonal winds (colors; unit:) in the northern hemisphere, and superimposed is the corresponding climatology in CTRL. The increased Asian AAs weaken the westerlies over the subpolar North Atlantic by exciting circumglobal stationary Rossby waves in the mid-latitudes.</p></caption><graphic xlink:href="41467_2023_44597_Fig2_HTML" id="d32e743"/></fig></p>
+				<p id="Par12">The temporal evolution of streamfunction anomalies along the mean path of the stationary wave shows that the teleconnection response emerges within a few months and stabilizes in the first few years (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">4</xref>). This suggests a relatively short timescale for the northern hemisphere atmospheric circulation to respond to changes in Asian AAs. On this time scale, the oceanic feedback to the atmospheric circulation is expected to have a secondary influence. The response of the atmospheric circulation is largely barotropic. Over the subpolar North Atlantic, the induced sea level pressure response is characterized by a year-round meridional dipole (Fig.&#xA0;<xref rid="Fig2" ref-type="fig">2c</xref>, colors and Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">5</xref>), resembling the negative phase of the North Atlantic Oscillation (NAO). Notably, there are positive pressure anomalies over Iceland and negative anomalies in lower latitudes. These sea level pressure anomalies correspond to a weakening and equatorward shift of the prevailing westerlies located to the south of Greenland (Fig.&#xA0;<xref rid="Fig2" ref-type="fig">2c</xref>, vectors). The equatorward shift of the westerly jet over the North Atlantic since the 1980s has been observed and simulated<sup><xref ref-type="bibr" rid="CR23">23</xref>,<xref ref-type="bibr" rid="CR39">39</xref></sup>, and a recent study has pinpointed the primary role of increased Asian AAs in driving this shift in purposefully designed experiments<sup><xref ref-type="bibr" rid="CR26">26</xref></sup>, thus corroborating our findings. The next natural question is: How do these changes in atmospheric circulation weaken the AMOC?</p>
+			</sec>
+			<sec id="Sec6">
+				<title>Suppressed westerly winds hinder the deep water formation</title>
+				<p id="Par13">Atmospheric circulation changes over the North Atlantic (especially North Atlantic Oscillation-related changes) have been proven important in transforming upper ocean waters into the densest class of the North Atlantic Deep Water<sup><xref ref-type="bibr" rid="CR40">40</xref>&#x2013;<xref ref-type="bibr" rid="CR43">43</xref></sup>. To investigate the regional surface ocean drivers responsible for the reduced transport of lower limb waters (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1c</xref>), we conduct a winter-time surface water mass transformation (WMT) analysis (see &#x201C;Water mass transformation&#x201D; in Methods). Climatologically, the partitioning of the total WMT during winter into different regions varies significantly across different density classes (Fig.&#xA0;<xref rid="Fig3" ref-type="fig">3a</xref>). In particular, in the higher density range (&gt;36.80 <inline-formula id="IEq13"><alternatives><tex-math id="M25">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${kg}{m}^{-3}$$\end{document}</tex-math><mml:math id="M26"><mml:mi>k</mml:mi><mml:mi>g</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq13.gif"/></alternatives></inline-formula>), the WMT primarily occurs in the Labrador Sea, indicating its important role in maintaining the transport of the lower limb waters. The Greenland-Iceland-Norwegian Seas contribute to the WMT in a density range greater than 37.00 <inline-formula id="IEq14"><alternatives><tex-math id="M27">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${kg}{m}^{-3}$$\end{document}</tex-math><mml:math id="M28"><mml:mi>k</mml:mi><mml:mi>g</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq14.gif"/></alternatives></inline-formula>, which deviates a lot from the maximum AMOC densities (<inline-formula id="IEq15"><alternatives><tex-math id="M29">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${\sigma }_{2}\,$$\end{document}</tex-math><mml:math id="M30"><mml:msub><mml:mrow><mml:mi>&#x3C3;</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq15.gif"/></alternatives></inline-formula>=&#x2009;36.73 <inline-formula id="IEq16"><alternatives><tex-math id="M31">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${kg}{m}^{-3}$$\end{document}</tex-math><mml:math id="M32"><mml:mi>k</mml:mi><mml:mi>g</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq16.gif"/></alternatives></inline-formula>; Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1c</xref>, contours) and is thus unlikely to contribute to the AMOC. These climatological results agree well with previous modeling studies<sup><xref ref-type="bibr" rid="CR44">44</xref>,<xref ref-type="bibr" rid="CR45">45</xref></sup>. Although the contribution of the Labrador Sea to the mean deep convection may be overestimated in climate models<sup><xref ref-type="bibr" rid="CR46">46</xref></sup>, recent studies suggested that long-term changes in the AMOC are still dominated by changes in deep convection in the Labrador Sea<sup><xref ref-type="bibr" rid="CR45">45</xref>,<xref ref-type="bibr" rid="CR47">47</xref></sup>.<fig id="Fig3"><label>Fig. 3</label><caption><title>Winter Water Mass Transformation (WMT) responses over the subpolar North Atlantic to increased Asian anthropogenic aerosols.</title><p><bold>a</bold> Surface-forced WMT climatology (unit: Sv) over the subpolar North Atlantic (SPNA) and contributions from Irminger Sea, Labrador Sea, and Greenland-Iceland-Norwegian Seas (GIN). <bold>b</bold> Same as <bold>a</bold> but for the WMT response. <bold>c</bold> The thermal component of WMT response (SHF) averaged over the density range 36.85-36.98 (denoted by the dashed black lines in <bold>b</bold>), and its components due to shortwave radiation (SW), longwave radiation (LW), latent heat flux (LH) and sensible heat flux (SH). <bold>d</bold> Responses of latent heat flux and sensible heat flux (unit: <inline-formula id="IEq17"><alternatives><tex-math id="M33">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$W{m}^{-2}$$\end{document}</tex-math><mml:math id="M34"><mml:mi>W</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>2</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq17.gif"/></alternatives></inline-formula>; positive downward) over the Labrador Sea, and their decomposition into contributions from air-sea temperature difference (<inline-formula id="IEq18"><alternatives><tex-math id="M35">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${T}_{s-a}$$\end{document}</tex-math><mml:math id="M36"><mml:msub><mml:mrow><mml:mi>T</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi><mml:mo>&#x2212;</mml:mo><mml:mi>a</mml:mi></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq18.gif"/></alternatives></inline-formula>), surface wind speed (W), relative humidity (RH), SST (<inline-formula id="IEq19"><alternatives><tex-math id="M37">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${T}_{s}$$\end{document}</tex-math><mml:math id="M38"><mml:msub><mml:mrow><mml:mi>T</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq19.gif"/></alternatives></inline-formula>), and a residual term (RES). The weakened westerlies suppress evaporation by reducing air-sea temperature difference, which hinders water mass transformation at the deep convection sites and thus causes the Atlantic Meridional Overturning Circulation slowdown.</p></caption><graphic xlink:href="41467_2023_44597_Fig3_HTML" id="d32e940"/></fig></p>
+				<p id="Par14">In response to the radiative cooling over Asia, a pronounced reduction of the winter WMT occurs in the subpolar North Atlantic (Fig.&#xA0;<xref rid="Fig3" ref-type="fig">3b</xref>). This reduction is centered at <inline-formula id="IEq20"><alternatives><tex-math id="M39">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${\sigma }_{2}$$\end{document}</tex-math><mml:math id="M40"><mml:msub><mml:mrow><mml:mi>&#x3C3;</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq20.gif"/></alternatives></inline-formula>&#x2009;=&#x2009;36.88 <inline-formula id="IEq21"><alternatives><tex-math id="M41">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${kg}{m}^{-3}$$\end{document}</tex-math><mml:math id="M42"><mml:mi>k</mml:mi><mml:mi>g</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq21.gif"/></alternatives></inline-formula> and reaches a maximum value of 15.1&#x2009;Sv, and the annual-mean reduction (5.6&#x2009;Sv) matches the weakened AMOC in a similar density range. Among the four major deep convection sites, the Labrador Sea stands out as the dominant contributor to the WMT reduction, while the other basins have little contribution. In addition, the Labrador Sea experiences an enhancement of the WMT at lower density, with a peak value of 6.1&#x2009;Sv at <inline-formula id="IEq22"><alternatives><tex-math id="M43">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${\sigma }_{2}$$\end{document}</tex-math><mml:math id="M44"><mml:msub><mml:mrow><mml:mi>&#x3C3;</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq22.gif"/></alternatives></inline-formula>&#x2009;~&#x2009;36.78 <inline-formula id="IEq23"><alternatives><tex-math id="M45">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${kg}{m}^{-3}$$\end{document}</tex-math><mml:math id="M46"><mml:mi>k</mml:mi><mml:mi>g</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq23.gif"/></alternatives></inline-formula>. Therefore, the WMT anomaly in the Labrador Sea manifests as an overall shift towards a lower density range, and the simulated AMOC slowdown can be entirely attributed to the reduction of the WMT in the Labrador Sea.</p>
+				<p id="Par15">To investigate the driving mechanism behind the WMT reduction, we analyze the response of surface density flux in different basins, which measures the changes in surface buoyancy due to heat and freshwater exchanges between the atmosphere and the ocean (see &#x201C;Water mass transformation&#x201D; in Methods)<sup><xref ref-type="bibr" rid="CR48">48</xref></sup>. The reduced WMT almost entirely resulted from the suppressed heat loss in the surface Labrador Sea (Fig.&#xA0;<xref rid="Fig3" ref-type="fig">3c</xref>, also see Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">6</xref> for the negligible haline contribution), resulting in a more buoyant surface ocean that hinders the transformation of lighter upper waters into denser waters. By quantifying the thermally-driven WMT anomaly associated with different surface heat flux components, we find that the WMT reduction is mainly driven by reduced turbulent heat loss (also see Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">7a-b</xref> for their spatial patterns). Both latent and sensible heat fluxes contribute to the reduction in the Labrador Sea, with the former contributing <inline-formula id="IEq24"><alternatives><tex-math id="M47">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M48"><mml:mo>&#x2212;</mml:mo></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq24.gif"/></alternatives></inline-formula>3.5&#x2009;Sv and the latter <inline-formula id="IEq25"><alternatives><tex-math id="M49">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$-$$\end{document}</tex-math><mml:math id="M50"><mml:mo>&#x2212;</mml:mo></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq25.gif"/></alternatives></inline-formula>4.1&#x2009;Sv.</p>
+				<p id="Par16">The reduced turbulent heat flux over the Labrador Sea is primarily driven by the suppressed westerlies over the subpolar North Atlantic. The total turbulent heat flux changes (11.5 <inline-formula id="IEq26"><alternatives><tex-math id="M51">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$W{m}^{-2}$$\end{document}</tex-math><mml:math id="M52"><mml:mi>W</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>2</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq26.gif"/></alternatives></inline-formula>) can be linked to changes in SST, surface wind speed, surface relative humidity, and air-sea temperature difference (see &#x201C;Turbulent flux decomposition&#x201D; in Methods). The largest contribution arises from the reduction in the air-sea temperature difference (7.8 <inline-formula id="IEq27"><alternatives><tex-math id="M53">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$W{m}^{-2}$$\end{document}</tex-math><mml:math id="M54"><mml:mi>W</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>2</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq27.gif"/></alternatives></inline-formula>; Fig.&#xA0;<xref rid="Fig3" ref-type="fig">3d</xref>, second blue and yellow bars), which in turn can be attributed to the weakened surface westerlies south of Greenland (Fig.&#xA0;<xref rid="Fig2" ref-type="fig">2c</xref>). Specifically, the suppressed surface wind reduces the transport of cold air from the upstream North American continent to the deep convection site, generating an anomalously warmer boundary air than the surface ocean, and thus inducing an anomalously zonal warm temperature advection over a substantial region of the Labrador Sea (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">7c&#x2013;f</xref>). Moreover, the reduction in wind speed also acts to warm the surface ocean by suppressing heat loss from latent and sensible heat fluxes (2.9 <inline-formula id="IEq28"><alternatives><tex-math id="M55">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$W{m}^{-2}$$\end{document}</tex-math><mml:math id="M56"><mml:mi>W</mml:mi><mml:msup><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mn>2</mml:mn></mml:mrow></mml:msup></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq28.gif"/></alternatives></inline-formula>; Fig.&#xA0;<xref rid="Fig3" ref-type="fig">3d</xref>, third blue and yellow bars). Therefore, the suppressed westerlies lead to a decrease in both air-sea temperature difference and surface wind speed, collectively hindering turbulent heat loss and impeding the deep water formation in the Labrador Sea (Fig.&#xA0;<xref rid="Fig4" ref-type="fig">4</xref>).<fig id="Fig4"><label>Fig. 4</label><caption><title>Schematic of the weakened Atlantic Meridional Overturning Circulation (AMOC) due to increased anthropogenic aerosols (AAs) in Asia.</title><p>Highlighted are the responses in the surface, upper troposphere, and ocean in EAST. Increased AAs emissions over South and East Asia (purple shading) reduce the solar insolation and suppress local convection (red arrows), igniting a circumglobal Rossby wave train (blue shading and black arrows) propagating eastward and poleward and an equatorward shift of jet stream (gray arrows). The barotropic atmospheric circulation changes generate a negative North Atlantic Oscillation-like sea level pressure anomaly in the subpolar North Atlantic (orange high pressure center and blue low pressure center), suppressing the prevailing westerlies south of Greenland (light blue arrows). Through reducing air-sea temperature difference and wind speed, the wind changes inject anomalous turbulent heat into the surface Labrador Sea (red arrows), inhibiting the production of dense water masses that make up the southward flowing limb of the AMOC, and thus resulting in a weaker and shallower AMOC (blue shading in the ocean).</p></caption><graphic xlink:href="41467_2023_44597_Fig4_HTML" id="d32e1108"/></fig></p>
+				<p id="Par17">The rate of AMOC weakening slows down substantially as time progresses into the slow response stage (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1b</xref>). Given that the AMOC is responsible for most of the heat transport in the Atlantic basin, its weakening results in reduced poleward oceanic heat transport (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">8a</xref>). As a result, anomalously cold water (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">8b</xref>) propagates downstream along the cyclonic subpolar gyre, eventually reaching the Labrador Sea. This process acts as a negative feedback, balancing the surface heat gain in the Labrador Sea and preventing further reduction of deep water formation. Consequently, this self-limited process helps slow down the weakening of the AMOC.</p>
+			</sec>
+			<sec id="Sec7">
+				<title>Additional multi-model evidence confirming the Asian AAs-AMOC link</title>
+				<p id="Par18">The above responses in atmospheric teleconnection and surface-forced WMT identified for weakening the AMOC are behaviors expected from fundamental physical principles, but the results are based solely on the CESM1 model. It remains to be seen whether the main conclusion holds in different model settings. Therefore, we perform a comprehensive analysis including multi-model results and large-ensemble simulations to test the robustness of our findings.</p>
+				<p id="Par19">We use simulations from 10 models participating in the Aerosol Chemistry Model Intercomparison Project (AerChemMIP)<sup><xref ref-type="bibr" rid="CR49">49</xref></sup>, which is a subset of Coupled Model Intercomparison Project Phase 6 (CMIP6) dedicated to understanding the fast responses of the atmosphere to aerosol changes (see &#x201C;CMIP6 and CESM2-SF-LE simulations&#x201D; in Methods). We make use of two sets of AerChemMIP simulations, piClim-control and piClim-SO2, each spanning 30 years with fixed climatological mean SST and sea ice conditions corresponding to the pre-industrial levels. The only difference between these two sets of simulations is the emissions of anthropogenic aerosol precursors of SO<sub>2</sub>: while piClim-control employs preindustrial emissions fixed at 1850 levels, piClim-SO2 adopts emissions fixed at 2014 levels. Notably, due to the implementation of the Clean Air Act in Europe and North America, SO<sub>2</sub> emissions in the western hemisphere have already decreased significantly by 2014, making Asian emissions the predominant forcing in the piClim-SO2 simulations (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">9a</xref>, contours). Therefore, this 2014 sulfate forcing operates as a comparable agent to that used in our EAST simulations (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1a</xref>), albeit being more concentrated in East Asia.</p>
+				<p id="Par20">To assess the transient responses of atmospheric circulation to Asian AAs, we calculate the difference between the piClim-SO2 ensemble and the piClim-control ensemble for years 1&#x2013;30. Consistently, the AerChemMIP simulations show a similar atmospheric response pattern compared to our EAST simulations (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">9a</xref>, colors), especially the circumglobal teleconnection structure in the northern midlatitudes. The anomalous low-pressure centers of the teleconnection patterns in the AerChemMIP simulations are slightly shifted compared to those in our EAST simulations (Fig.&#xA0;<xref rid="Fig2" ref-type="fig">2b</xref>), due possibly to the differences in the distribution of aerosol forcing. Nevertheless, the equatorward shift of the westerly jet and the negative NAO-like response are evident (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">9b</xref>), accompanied by suppressed westerlies over the Labrador Sea. These agreements between the results of AerChemMIP and our CESM1 simulations provide support for the findings from our CESM1 simulations, adding confidence in the robustness of the atmospheric teleconnections excited by increased Asian AAs. However, the response of the AMOC is elusive in the AerChemMIP setting due to the absence of an active ocean model.</p>
+				<p id="Par21">Recognizing the limitations of AerChemMIP and the incapability of distinguishing the effects of aerosol changes between the eastern and western hemispheres in DAMIP experiments, we turn to the CESM2 Single Forcing Large Ensemble (CESM2-SF-LE). This ensemble extends its 15-member AAs-only simulations to the year 2050 under the shared socioeconomic pathways 3-7.0 scenario, referred to as SSP370-AAs simulations. In this scenario, Asian AAs emissions are projected to continue to increase in the future, while AAs in the western hemisphere show little change as they have already decreased to low levels (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">10b</xref>, contours). Consequently, the increased Asian AAs and the associated radiative cooling emerge as a dominant forcing during the period 2015 to 2050. This provides an analog to our EAST case (Fig.&#xA0;<xref rid="Fig1" ref-type="fig">1a</xref>) and adds some model diversity to our analysis.</p>
+				<p id="Par22">Consistent with our EAST case, the SSP370-AAs simulations also show a circumglobal teleconnection structure and a negative NAO-like trend in the atmospheric circulation (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">10b&#x2013;d</xref>). In addition, the weakened westerlies over the Labrador Sea lead to a reduction in heat loss through changes in turbulent fluxes, ultimately resulting in a weakening of the AMOC. In particular, the AMOC weakening also exhibits two distinct timescales (Supplementary Fig.&#xA0;<xref rid="MOESM1" ref-type="media">10a</xref>): an initial rapid decline followed by a relatively slower rate of change. Such an alignment of these results suggests that the relationship between Asian AAs and the AMOC is not unique to CESM1, lending more support to our conclusion that the increased Asian AAs can weaken the AMOC.</p>
+			</sec>
+		</sec>
+		<sec id="Sec8" sec-type="discussion">
+			<title>Discussion</title>
+			<p id="Par23">In this work, we find that the increased Asian AAs, despite causing a radiative cooling, drive a weakening of the AMOC. This finding is corroborated by the analysis of AerChemMIP and CESM2-SF-LE experiments with similar AA forcings. The pathway of this effect of Asian AAs starts with suppressed convection over South and East Asia, which excites a Rossby wave train propagating eastward and poleward. The barotropic atmospheric circulation anomaly generates a negative North Atlantic Oscillation-like response and suppresses westerly winds south of Greenland, which hinders the transformation of upper ocean waters in the Labrador Sea via turbulent heat fluxes and ultimately leads to the slowdown of the AMOC. A recent study<sup><xref ref-type="bibr" rid="CR17">17</xref></sup> employing a similar experimental setting has reported a contrasting result that increased Asian AAs could enhance the AMOC. The forcing in their experiment is placed over Siberia, and the induced cooling is potentially advected downstream to the subpolar North Atlantic by the mean westerlies, resulting in surface ocean cooling and thus AMOC strengthening. By contrast, in our study, the aerosol forcing located at lower latitudes affects the AMOC by inducing a circumglobal Rossby wave train. The contrasting result underscores high sensitivity to the location of the forcing<sup><xref ref-type="bibr" rid="CR29">29</xref></sup>. Our discovery of a link between increased Asian AAs and a weakened AMOC suggests that the combined effects of increased AAs in Asia and decreased AAs in North America and West Europe, which represent the most consequential changes in aerosol emissions over the past few decades, conspire to contribute to the slowdown of the AMOC, with the decreased Asian AAs having a larger effect.</p>
+		</sec>
+		<sec id="Sec9">
+			<title>Methods</title>
+			<sec id="Sec10">
+				<title>CMIP6 and CESM2-SF-LE simulations</title>
+				<p id="Par24">To estimate the impact of different anthropogenic forcing on the AMOC during the historical period, we use outputs of AMOC and aerosol optical depth at 550&#x2009;nm from the Detection and Attribution Model Intercomparison Project (DAMIP)<sup><xref ref-type="bibr" rid="CR19">19</xref></sup> based on data availability. The DAMIP simulations include scenarios with GHGs only (Hist-GHGs), AAs only (Hist-AAs) simulations and cover the period of 1850-2014.</p>
+				<p id="Par25">To validate the contributions of increased Asian AAs on atmospheric circulation changes, we use Aerosol Chemistry Model Intercomparison Project (AerChemMIP)<sup><xref ref-type="bibr" rid="CR49">49</xref></sup> outputs of aerosol optical depth at 550&#x2009;nm, zonal and meridional wind velocity, sea level pressure data from the piClim-control and piClim-SO2 simulations. These simulations are integrated for 30 years and are identical in all ways, except that piClim-control employs preindustrial SO<sub>2</sub> emissions, whereas piClim-SO2 adopts present-day SO<sub>2</sub> emissions. Only the first member of each model is used to ensure equal weight in the multi-model ensemble mean analysis. A detailed summary of these CMIP6 simulations can be found in Supplementary Table&#xA0;<xref rid="MOESM1" ref-type="media">1</xref>.</p>
+				<p id="Par26">In addition, to further validate the contributions of increased Asian AAs on AMOC weakening, we use CESM2 Single Forcing Large Ensemble (CESM2-SF-LE)<sup><xref ref-type="bibr" rid="CR50">50</xref></sup> outputs from 15 ensemble members of the AAs-only simulations. All simulations use the same AAs forcing based on the SSP370 scenario from 2015 to 2050. Ensemble members are generated by round-off level differences in their initial air temperature fields.</p>
+			</sec>
+			<sec id="Sec11">
+				<title>CESM1 model</title>
+				<p id="Par27">The model we use is the Community Earth System Model version 1 (CESM1)<sup><xref ref-type="bibr" rid="CR51">51</xref></sup>, with a gx1v6 global configuration that comprises an atmosphere (Community Atmosphere Model version 5), a land (Community Land Model version 4), an ocean (Parallel Ocean Program version 2), and a sea ice (Community Ice CodE) component model. The atmosphere and land models run on a nominal 2&#xB0; horizontal grid, and the sea ice and ocean models use an irregular horizontal grid of a nominal 1&#xB0; resolution, but telescoped meridionally to ~35&#x2013;50&#x2009;km around Greenland and the Labrador Sea (&#x201C;f19_gx1v6&#x201D; horizontal resolution). Vertically, the atmosphere model discretized on 30 uneven vertical levels, and the ocean model has 60 uneven levels with the thickness varying from 10&#x2009;m near the surface to 250&#x2009;m near the bottom.</p>
+			</sec>
+			<sec id="Sec12">
+				<title>AMOC in density space</title>
+				<p id="Par28">We present the spatial pattern of AMOC in density space, as it facilitates relating AMOC changes to variations in water mass transformation in the surface ocean. AMOC in density is calculated as<sup><xref ref-type="bibr" rid="CR45">45</xref></sup>:<disp-formula id="Equ1"><label>1</label><alternatives><tex-math id="M57">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${{{{{\rm{AMOC}}}}}}\left({\sigma }_{2},y,t\right)=-{\int }_{{x}_{W}}^{{x}_{E}}{\int }_{-h}^{z}v\left(x,y,z,t\right){dzdx},$$\end{document}</tex-math><mml:math id="M58"><mml:mi mathvariant="normal">AMOC</mml:mi><mml:mfenced close=")" open="("><mml:mrow><mml:msub><mml:mrow><mml:mi>&#x3C3;</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>,</mml:mo><mml:mi>y</mml:mi><mml:mo>,</mml:mo><mml:mi>t</mml:mi></mml:mrow></mml:mfenced><mml:mo>=</mml:mo><mml:mo>&#x2212;</mml:mo><mml:msubsup><mml:mrow><mml:mo>&#x222B;</mml:mo></mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mi>W</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mi>E</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:msubsup><mml:msubsup><mml:mrow><mml:mo>&#x222B;</mml:mo></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mi>h</mml:mi></mml:mrow><mml:mrow><mml:mi>z</mml:mi></mml:mrow></mml:msubsup><mml:mi>v</mml:mi><mml:mfenced close=")" open="("><mml:mrow><mml:mi>x</mml:mi><mml:mo>,</mml:mo><mml:mi>y</mml:mi><mml:mo>,</mml:mo><mml:mi>z</mml:mi><mml:mo>,</mml:mo><mml:mi>t</mml:mi></mml:mrow></mml:mfenced><mml:mi>d</mml:mi><mml:mi>z</mml:mi><mml:mi>d</mml:mi><mml:mi>x</mml:mi><mml:mo>,</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ1.gif" position="anchor"/></alternatives></disp-formula>where <inline-formula id="IEq29"><alternatives><tex-math id="M59">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${\sigma }_{2}$$\end{document}</tex-math><mml:math id="M60"><mml:msub><mml:mrow><mml:mi>&#x3C3;</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq29.gif"/></alternatives></inline-formula> is the potential density referenced to 2000 m, y is the latitude, t is time, <inline-formula id="IEq30"><alternatives><tex-math id="M61">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${x}_{E}$$\end{document}</tex-math><mml:math id="M62"><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mi>E</mml:mi></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq30.gif"/></alternatives></inline-formula> and <inline-formula id="IEq31"><alternatives><tex-math id="M63">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${x}_{W}$$\end{document}</tex-math><mml:math id="M64"><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mi>W</mml:mi></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq31.gif"/></alternatives></inline-formula> are the western and eastern longitudinal limits of the Atlantic basin, <inline-formula id="IEq32"><alternatives><tex-math id="M65">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$v$$\end{document}</tex-math><mml:math id="M66"><mml:mi>v</mml:mi></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq32.gif"/></alternatives></inline-formula> is the meridional velocity, and <inline-formula id="IEq33"><alternatives><tex-math id="M67">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$h$$\end{document}</tex-math><mml:math id="M68"><mml:mi>h</mml:mi></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq33.gif"/></alternatives></inline-formula> is the bottom depth.</p>
+			</sec>
+			<sec id="Sec13">
+				<title>Water mass transformation</title>
+				<p id="Par29">Because of the dominance of surface buoyancy exchange in driving the density-space overturning in the deep convection sites<sup><xref ref-type="bibr" rid="CR47">47</xref></sup>, surface-forced WMT analysis serves as a powerful tool for studying deep water formation and AMOC variation in both observations and models. Following the methodology in previous studies<sup><xref ref-type="bibr" rid="CR47">47</xref>,<xref ref-type="bibr" rid="CR48">48</xref>,<xref ref-type="bibr" rid="CR52">52</xref></sup>, the surface density flux (SDF) can be calculated as<disp-formula id="Equ2"><label>2</label><alternatives><tex-math id="M69">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${{{{{\rm{SDF}}}}}}=-\alpha \frac{Q}{{C}_{p}}-\beta \frac{F}{1-{{{{{\rm{S}}}}}}}{{{{{\rm{S}}}}}},$$\end{document}</tex-math><mml:math id="M70"><mml:mi mathvariant="normal">SDF</mml:mi><mml:mo>=</mml:mo><mml:mo>&#x2212;</mml:mo><mml:mi>&#x3B1;</mml:mi><mml:mfrac><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:mi>C</mml:mi></mml:mrow><mml:mrow><mml:mi>p</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfrac><mml:mo>&#x2212;</mml:mo><mml:mi>&#x3B2;</mml:mi><mml:mfrac><mml:mrow><mml:mi>F</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn><mml:mo>&#x2212;</mml:mo><mml:mi mathvariant="normal">S</mml:mi></mml:mrow></mml:mfrac><mml:mi mathvariant="normal">S</mml:mi><mml:mo>,</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ2.gif" position="anchor"/></alternatives></disp-formula>where the first term represents the thermal contribution related to surface heat fluxes (Q) and the second term is the haline contribution associated with freshwater fluxes (F). The thermal component includes contributions from latent and sensible heat fluxes, shortwave, and longwave radiations. The haline component mainly comprises precipitation, evaporation, runoff, melting flux, and salt flux due to sea ice formation/melt. <inline-formula id="IEq34"><alternatives><tex-math id="M71">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$\alpha$$\end{document}</tex-math><mml:math id="M72"><mml:mi>&#x3B1;</mml:mi></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq34.gif"/></alternatives></inline-formula> and <inline-formula id="IEq35"><alternatives><tex-math id="M73">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$\beta$$\end{document}</tex-math><mml:math id="M74"><mml:mi>&#x3B2;</mml:mi></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq35.gif"/></alternatives></inline-formula> are the thermal expansion and haline contraction coefficients as functions of time and location, <inline-formula id="IEq36"><alternatives><tex-math id="M75">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${C}_{p}$$\end{document}</tex-math><mml:math id="M76"><mml:msub><mml:mrow><mml:mi>C</mml:mi></mml:mrow><mml:mrow><mml:mi>p</mml:mi></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq36.gif"/></alternatives></inline-formula> is the specific heat capacity of seawater, and S is the sea surface salinity. To compute the surface-forced WMT as a function of density, the SDF is integrated over all surface density outcrop regions in each density bin:<disp-formula id="Equ3"><label>3</label><alternatives><tex-math id="M77">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${WMT}(\sigma )=\frac{1}{\varDelta \sigma }{\iint }_{\sigma }^{\sigma+\varDelta \sigma }{SDF}{dA},$$\end{document}</tex-math><mml:math id="M78"><mml:mi>W</mml:mi><mml:mi>M</mml:mi><mml:mi>T</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>&#x3C3;</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mn>1</mml:mn></mml:mrow><mml:mrow><mml:mi>&#x394;</mml:mi><mml:mi>&#x3C3;</mml:mi></mml:mrow></mml:mfrac><mml:msubsup><mml:mrow><mml:mi>&#x222C;</mml:mi></mml:mrow><mml:mrow><mml:mi>&#x3C3;</mml:mi></mml:mrow><mml:mrow><mml:mi>&#x3C3;</mml:mi><mml:mo>+</mml:mo><mml:mi>&#x394;</mml:mi><mml:mi>&#x3C3;</mml:mi></mml:mrow></mml:msubsup><mml:mi>S</mml:mi><mml:mi>D</mml:mi><mml:mi>F</mml:mi><mml:mi>d</mml:mi><mml:mi>A</mml:mi><mml:mo>,</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ3.gif" position="anchor"/></alternatives></disp-formula>Where <inline-formula id="IEq37"><alternatives><tex-math id="M79">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$\sigma$$\end{document}</tex-math><mml:math id="M80"><mml:mi>&#x3C3;</mml:mi></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq37.gif"/></alternatives></inline-formula> is the potential density referenced to 2000 m. The above analysis is based on monthly mean model outputs.</p>
+			</sec>
+			<sec id="Sec14">
+				<title>Turbulent flux decomposition</title>
+				<p id="Par30">The latent heat flux response can be decomposed to contributions from the air-sea surface temperature difference (<inline-formula id="IEq38"><alternatives><tex-math id="M81">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$\Delta {{{{{\rm{T}}}}}}$$\end{document}</tex-math><mml:math id="M82"><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi mathvariant="normal">T</mml:mi></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq38.gif"/></alternatives></inline-formula>), surface wind speed (W), relative humidity (RH), and SST (<inline-formula id="IEq39"><alternatives><tex-math id="M83">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${T}_{s}$$\end{document}</tex-math><mml:math id="M84"><mml:msub><mml:mrow><mml:mi>T</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq39.gif"/></alternatives></inline-formula>)<sup><xref ref-type="bibr" rid="CR53">53</xref></sup>:<disp-formula id="Equ4"><label>4</label><alternatives><tex-math id="M85">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${Q}_{{LH}}^{{\Delta T}^{{\prime} }}={\bar{Q}}_{{LH}}\frac{\beta \overline{{RH}}{e}^{-\beta \bar{\Delta T}}}{1-\overline{{RH}}{e}^{-\beta \bar{\Delta T}}}\Delta {T}^{{\prime} },$$\end{document}</tex-math><mml:math id="M86"><mml:msubsup><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>L</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mrow><mml:msup><mml:mrow><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>L</mml:mi><mml:mi>H</mml:mi></mml:mrow></mml:msub><mml:mfrac><mml:mrow><mml:mi>&#x3B2;</mml:mi><mml:mover accent="true"><mml:mrow><mml:mi>R</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mo accent="true">&#xAF;</mml:mo></mml:mover><mml:msup><mml:mrow><mml:mi>e</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mi>&#x3B2;</mml:mi><mml:mover accent="true"><mml:mrow><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow></mml:msup></mml:mrow><mml:mrow><mml:mn>1</mml:mn><mml:mo>&#x2212;</mml:mo><mml:mover accent="true"><mml:mrow><mml:mi>R</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mo accent="true">&#xAF;</mml:mo></mml:mover><mml:msup><mml:mrow><mml:mi>e</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mi>&#x3B2;</mml:mi><mml:mover accent="true"><mml:mrow><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow></mml:msup></mml:mrow></mml:mfrac><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:msup><mml:mrow><mml:mi>T</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup><mml:mo>,</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ4.gif" position="anchor"/></alternatives></disp-formula><disp-formula id="Equ5"><label>5</label><alternatives><tex-math id="M87">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${Q}_{{LH}}^{{W}^{{\prime} }}={\bar{Q}}_{{LH}}\frac{{W}^{{\prime} }}{\bar{W}},$$\end{document}</tex-math><mml:math id="M88"><mml:msubsup><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>L</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mrow><mml:msup><mml:mrow><mml:mi>W</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>L</mml:mi><mml:mi>H</mml:mi></mml:mrow></mml:msub><mml:mfrac><mml:mrow><mml:msup><mml:mrow><mml:mi>W</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>W</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow></mml:mfrac><mml:mo>,</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ5.gif" position="anchor"/></alternatives></disp-formula><disp-formula id="Equ6"><label>6</label><alternatives><tex-math id="M89">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${Q}_{{LH}}^{{{RH}}^{{\prime} }}=-{\bar{Q}}_{{LH}}\frac{{e}^{-\beta \bar{\Delta T}}}{1-\overline{{RH}}{e}^{-\beta \bar{\Delta T}}}{{RH}}^{{\prime} },$$\end{document}</tex-math><mml:math id="M90"><mml:msubsup><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>L</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mrow><mml:msup><mml:mrow><mml:mi>R</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:mo>&#x2212;</mml:mo><mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>L</mml:mi><mml:mi>H</mml:mi></mml:mrow></mml:msub><mml:mfrac><mml:mrow><mml:msup><mml:mrow><mml:mi>e</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mi>&#x3B2;</mml:mi><mml:mover accent="true"><mml:mrow><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow></mml:msup></mml:mrow><mml:mrow><mml:mn>1</mml:mn><mml:mo>&#x2212;</mml:mo><mml:mover accent="true"><mml:mrow><mml:mi>R</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mo accent="true">&#xAF;</mml:mo></mml:mover><mml:msup><mml:mrow><mml:mi>e</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2212;</mml:mo><mml:mi>&#x3B2;</mml:mi><mml:mover accent="true"><mml:mrow><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow></mml:msup></mml:mrow></mml:mfrac><mml:msup><mml:mrow><mml:mi>R</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup><mml:mo>,</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ6.gif" position="anchor"/></alternatives></disp-formula><disp-formula id="Equ7"><label>7</label><alternatives><tex-math id="M91">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${Q}_{{LH}}^{{o}^{{\prime} }}=\beta {\bar{Q}}_{{LH}}{T}_{s}^{{\prime} },$$\end{document}</tex-math><mml:math id="M92"><mml:msubsup><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>L</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mrow><mml:msup><mml:mrow><mml:mi>o</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:mi>&#x3B2;</mml:mi><mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>L</mml:mi><mml:mi>H</mml:mi></mml:mrow></mml:msub><mml:msubsup><mml:mrow><mml:mi>T</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msubsup><mml:mo>,</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ7.gif" position="anchor"/></alternatives></disp-formula>where <inline-formula id="IEq40"><alternatives><tex-math id="M93">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$$\beta={L}_{{{{{{\rm{v}}}}}}}/({R}_{{{{{{\rm{v}}}}}}}{{{{{{\rm{T}}}}}}}_{{{{{{\rm{S}}}}}}}^{2})$$\end{document}</tex-math><mml:math id="M94"><mml:mi>&#x3B2;</mml:mi><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mi>L</mml:mi></mml:mrow><mml:mrow><mml:mi mathvariant="normal">v</mml:mi></mml:mrow></mml:msub><mml:mo>/</mml:mo><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mrow><mml:mi>R</mml:mi></mml:mrow><mml:mrow><mml:mi mathvariant="normal">v</mml:mi></mml:mrow></mml:msub><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">T</mml:mi></mml:mrow><mml:mrow><mml:mi mathvariant="normal">S</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq40.gif"/></alternatives></inline-formula> with <inline-formula id="IEq41"><alternatives><tex-math id="M95">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${L}_{{{{{{\rm{v}}}}}}}$$\end{document}</tex-math><mml:math id="M96"><mml:msub><mml:mrow><mml:mi>L</mml:mi></mml:mrow><mml:mrow><mml:mi mathvariant="normal">v</mml:mi></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq41.gif"/></alternatives></inline-formula> the latent heat of condensation and <inline-formula id="IEq42"><alternatives><tex-math id="M97">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${R}_{{{{{{\rm{v}}}}}}}$$\end{document}</tex-math><mml:math id="M98"><mml:msub><mml:mrow><mml:mi>R</mml:mi></mml:mrow><mml:mrow><mml:mi mathvariant="normal">v</mml:mi></mml:mrow></mml:msub></mml:math><inline-graphic xlink:href="41467_2023_44597_Article_IEq42.gif"/></alternatives></inline-formula> the ideal gas constant for water vapor. The overbar represents the climatological state in CTRL, and the prime denotes the deviation from the climatological state. Similarly, the sensible heat flux response can be decomposed to contributions from the air-sea surface temperature difference and surface wind speed:<disp-formula id="Equ8"><label>8</label><alternatives><tex-math id="M99">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${Q}_{{SH}}^{{\Delta T}^{{\prime} }}={\bar{Q}}_{{SH}}\frac{{\Delta T}^{{\prime} }}{\bar{\Delta T}},$$\end{document}</tex-math><mml:math id="M100"><mml:msubsup><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>S</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mrow><mml:msup><mml:mrow><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>S</mml:mi><mml:mi>H</mml:mi></mml:mrow></mml:msub><mml:mfrac><mml:mrow><mml:msup><mml:mrow><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi mathvariant="normal">&#x394;</mml:mi><mml:mi>T</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow></mml:mfrac><mml:mo>,</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ8.gif" position="anchor"/></alternatives></disp-formula><disp-formula id="Equ9"><label>9</label><alternatives><tex-math id="M101">\documentclass[12pt]{minimal}
+				\usepackage{amsmath}
+				\usepackage{wasysym} 
+				\usepackage{amsfonts} 
+				\usepackage{amssymb} 
+				\usepackage{amsbsy}
+				\usepackage{mathrsfs}
+				\usepackage{upgreek}
+				\setlength{\oddsidemargin}{-69pt}
+				\begin{document}$${Q}_{{SH}}^{{W}^{{\prime} }}={\bar{Q}}_{{SH}}\frac{{W}^{{\prime} }}{\bar{W}}.$$\end{document}</tex-math><mml:math id="M102"><mml:msubsup><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>S</mml:mi><mml:mi>H</mml:mi></mml:mrow><mml:mrow><mml:msup><mml:mrow><mml:mi>W</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow></mml:msubsup><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>S</mml:mi><mml:mi>H</mml:mi></mml:mrow></mml:msub><mml:mfrac><mml:mrow><mml:msup><mml:mrow><mml:mi>W</mml:mi></mml:mrow><mml:mrow><mml:mo>&#x2032;</mml:mo></mml:mrow></mml:msup></mml:mrow><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>W</mml:mi></mml:mrow><mml:mo>&#xAF;</mml:mo></mml:mover></mml:mrow></mml:mfrac><mml:mo>.</mml:mo></mml:math><graphic xlink:href="41467_2023_44597_Article_Equ9.gif" position="anchor"/></alternatives></disp-formula></p>
+			</sec>
+		</sec>
+		<sec sec-type="supplementary-material">
+			<sec id="Sec15">
+				<title>Supplementary information</title>
+				<p>
+					<supplementary-material content-type="local-data" id="MOESM1">
+						<media xlink:href="41467_2023_44597_MOESM1_ESM.pdf">
+							<caption>
+								<p>Supplementary Information</p>
+							</caption>
+						</media>
+					</supplementary-material>
+					<supplementary-material content-type="local-data" id="MOESM2">
+						<media xlink:href="41467_2023_44597_MOESM2_ESM.pdf">
+							<caption>
+								<p>Peer Review File</p>
+							</caption>
+						</media>
+					</supplementary-material>
+				</p>
+			</sec>
+		</sec>
+	</body>
+	<back>
+		<fn-group>
+			<fn>
+				<p><bold>Publisher&#x2019;s note</bold> Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.</p>
+			</fn>
+			<fn>
+				<p>These authors contributed equally: Fukai Liu, Xun Li.</p>
+			</fn>
+		</fn-group>
+		<sec>
+			<title>Supplementary information</title>
+			<p>The online version contains supplementary material available at 10.1038/s41467-023-44597-x.</p>
+		</sec>
+		<ack>
+			<title>Acknowledgements</title>
+			<p>This work was supported by the National Natural Science Foundation of China (No. 42230405), the Science and Technology Innovation Foundation of Laoshan Laboratory (No. LSKJ202202401), and Fundamental Research Funds for the Central Universities (No. 202341016). F.L. is supported by the &#x201C;Youth Innovation Team Program&#x201D; Team in Colleges and Universities of Shandong Province (No. 2022KJ042). J.L. is supported by Office of Science, U.S. Department of Energy (DOE) Biological and Environmental Research as part of the Regional and Global Model Analysis program area.</p>
+		</ack>
+		<notes notes-type="author-contribution">
+			<title>Author contributions</title>
+			<p>F.L. conceived the initial idea, interpreted the results, and wrote the initial manuscript; X.L. participated in preliminary analysis and plotted the figures; Y.L. led the research and improved the manuscript; F.L. and X.L. performed the CESM1 experiments; W.C., J.L., and X.T.Z. contributed to interpreting the results and improving the manuscript. S.M.K., H.W, and L.Z. contributed to discussing the results and the manuscript.</p>
+		</notes>
+		<notes notes-type="peer-review">
+			<title>Peer review</title>
+			<sec id="FPar1">
+				<title>Peer review information</title>
+				<p id="Par31"><italic>Nature Communications</italic> thanks Rohit Ghosh and the other, anonymous, reviewer for their contribution to the peer review of this work. A peer review file is available.</p>
+			</sec>
+		</notes>
+		<notes notes-type="data-availability">
+			<title>Data availability</title>
+			<p>The CMIP6 data is publicly available at: <ext-link ext-link-type="uri" xlink:href="https://esgf-node.llnl.gov/">https://esgf-node.llnl.gov/</ext-link>. The CESM2-SF-LE data is publicly available at: <ext-link ext-link-type="uri" xlink:href="https://www.cesm.ucar.edu/community-projects/lens">https://www.cesm.ucar.edu/community-projects/lens</ext-link>. The RAPID data is publicly available at: <ext-link ext-link-type="uri" xlink:href="https://rapid.ac.uk/rapidmoc/">https://rapid.ac.uk/rapidmoc/</ext-link>. The CESM1 simulation data to support the analysis is available at 10.5281/zenodo.10374334.</p>
+		</notes>
+		<notes notes-type="data-availability">
+			<title>Code availability</title>
+			<p>The NCAR Command Language (NCL v6.5.0) is used for plotting. Codes to reproduce the figures are available at 10.5281/zenodo.10374334.</p>
+		</notes>
+		<notes id="FPar2" notes-type="COI-statement">
+			<title>Competing interests</title>
+			<p id="Par32">The authors declare no competing interests.</p>
+		</notes>
+		<ref-list id="Bib1">
+			<title>References</title>
+			<ref id="CR1">
+				<label>1.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Buckley</surname>
+							<given-names>MW</given-names>
+						</name>
+						<name>
+							<surname>Marshall</surname>
+							<given-names>J</given-names>
+						</name>
+					</person-group>
+					<article-title>Observations, inferences, and mechanisms of the Atlantic Meridional Overturning Circulation: A review</article-title>
+					<source>Rev. Geophys.</source>
+					<year>2016</year>
+					<volume>54</volume>
+					<fpage>5</fpage>
+					<lpage>63</lpage>
+					<pub-id pub-id-type="doi">10.1002/2015RG000493</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR2">
+				<label>2.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Zhang</surname>
+							<given-names>R</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>A Review of the Role of the Atlantic Meridional Overturning Circulation in Atlantic Multidecadal Variability and Associated Climate Impacts</article-title>
+					<source>Rev. Geophys.</source>
+					<year>2019</year>
+					<volume>57</volume>
+					<fpage>316</fpage>
+					<lpage>375</lpage>
+					<pub-id pub-id-type="doi">10.1029/2019RG000644</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR3">
+				<label>3.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Orihuela-Pinto</surname>
+							<given-names>B</given-names>
+						</name>
+						<name>
+							<surname>England</surname>
+							<given-names>MH</given-names>
+						</name>
+						<name>
+							<surname>Taschetto</surname>
+							<given-names>AS</given-names>
+						</name>
+					</person-group>
+					<article-title>Interbasin and interhemispheric impacts of a collapsed Atlantic Overturning Circulation</article-title>
+					<source>Nat. Clim. Change</source>
+					<year>2022</year>
+					<volume>12</volume>
+					<fpage>558</fpage>
+					<lpage>565</lpage>
+					<pub-id pub-id-type="doi">10.1038/s41558-022-01380-y</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR4">
+				<label>4.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Rahmstorf</surname>
+							<given-names>S</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>Exceptional twentieth-century slowdown in Atlantic Ocean overturning circulation</article-title>
+					<source>Nat. Clim. Change</source>
+					<year>2015</year>
+					<volume>5</volume>
+					<fpage>475</fpage>
+					<lpage>480</lpage>
+					<pub-id pub-id-type="doi">10.1038/nclimate2554</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR5">
+				<label>5.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Caesar</surname>
+							<given-names>L</given-names>
+						</name>
+						<name>
+							<surname>Rahmstorf</surname>
+							<given-names>S</given-names>
+						</name>
+						<name>
+							<surname>Robinson</surname>
+							<given-names>A</given-names>
+						</name>
+						<name>
+							<surname>Feulner</surname>
+							<given-names>G</given-names>
+						</name>
+						<name>
+							<surname>Saba</surname>
+							<given-names>V</given-names>
+						</name>
+					</person-group>
+					<article-title>Observed fingerprint of a weakening Atlantic Ocean overturning circulation</article-title>
+					<source>Nature</source>
+					<year>2018</year>
+					<volume>556</volume>
+					<fpage>191</fpage>
+					<lpage>196</lpage>
+					<pub-id pub-id-type="doi">10.1038/s41586-018-0006-5</pub-id>
+					<?supplied-pmid 29643485?>
+					<pub-id pub-id-type="pmid">29643485</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR6">
+				<label>6.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Bryden</surname>
+							<given-names>HL</given-names>
+						</name>
+						<name>
+							<surname>Longworth</surname>
+							<given-names>HR</given-names>
+						</name>
+						<name>
+							<surname>Cunningham</surname>
+							<given-names>SA</given-names>
+						</name>
+					</person-group>
+					<article-title>Slowing of the Atlantic meridional overturning circulation at 25&#xB0; N</article-title>
+					<source>Nature</source>
+					<year>2005</year>
+					<volume>438</volume>
+					<fpage>655</fpage>
+					<lpage>657</lpage>
+					<pub-id pub-id-type="doi">10.1038/nature04385</pub-id>
+					<?supplied-pmid 16319889?>
+					<pub-id pub-id-type="pmid">16319889</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR7">
+				<label>7.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Thornalley</surname>
+							<given-names>DJR</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>Anomalously weak Labrador Sea convection and Atlantic overturning during the past 150 years</article-title>
+					<source>Nature</source>
+					<year>2018</year>
+					<volume>556</volume>
+					<fpage>227</fpage>
+					<lpage>230</lpage>
+					<pub-id pub-id-type="doi">10.1038/s41586-018-0007-4</pub-id>
+					<?supplied-pmid 29643484?>
+					<pub-id pub-id-type="pmid">29643484</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR8">
+				<label>8.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Chen</surname>
+							<given-names>X</given-names>
+						</name>
+						<name>
+							<surname>Tung</surname>
+							<given-names>K-K</given-names>
+						</name>
+					</person-group>
+					<article-title>Global surface warming enhanced by weak Atlantic overturning circulation</article-title>
+					<source>Nature</source>
+					<year>2018</year>
+					<volume>559</volume>
+					<fpage>387</fpage>
+					<lpage>391</lpage>
+					<pub-id pub-id-type="doi">10.1038/s41586-018-0320-y</pub-id>
+					<?supplied-pmid 30022132?>
+					<pub-id pub-id-type="pmid">30022132</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR9">
+				<label>9.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Kilbourne</surname>
+							<given-names>KH</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>Atlantic circulation change still uncertain</article-title>
+					<source>Nat. Geosci.</source>
+					<year>2022</year>
+					<volume>15</volume>
+					<fpage>165</fpage>
+					<lpage>168</lpage>
+					<pub-id pub-id-type="doi">10.1038/s41561-022-00896-4</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR10">
+				<label>10.</label>
+				<mixed-citation publication-type="other">Fu, Y., Li, F., Karstensen, J. &amp; Wang, C. A stable Atlantic Meridional Overturning Circulation in a changing North Atlantic Ocean since the 1990s. <italic>Sci. Adv</italic>. <bold>6</bold>, eabc7836 (2020).</mixed-citation>
+			</ref>
+			<ref id="CR11">
+				<label>11.</label>
+				<mixed-citation publication-type="other">IPCC. Extremes, Abrupt Changes and Managing Risks. in <italic>The Ocean and Cryosphere in a Changing Climate</italic> 589&#x2013;656 (Cambridge University Press, 2022). 10.1017/9781009157964.014</mixed-citation>
+			</ref>
+			<ref id="CR12">
+				<label>12.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Cai</surname>
+							<given-names>W</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>Pan-oceanic response to increasing anthropogenic aerosols: Impacts on the Southern Hemisphere oceanic circulation</article-title>
+					<source>Geophys. Res. Lett.</source>
+					<year>2006</year>
+					<volume>33</volume>
+					<fpage>1</fpage>
+					<lpage>5</lpage>
+					<pub-id pub-id-type="doi">10.1029/2006GL027513</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR13">
+				<label>13.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Booth</surname>
+							<given-names>BBB</given-names>
+						</name>
+						<name>
+							<surname>Dunstone</surname>
+							<given-names>NJ</given-names>
+						</name>
+						<name>
+							<surname>Halloran</surname>
+							<given-names>PR</given-names>
+						</name>
+						<name>
+							<surname>Andrews</surname>
+							<given-names>T</given-names>
+						</name>
+						<name>
+							<surname>Bellouin</surname>
+							<given-names>N</given-names>
+						</name>
+					</person-group>
+					<article-title>Aerosols implicated as a prime driver of twentieth-century North Atlantic climate variability</article-title>
+					<source>Nature</source>
+					<year>2012</year>
+					<volume>484</volume>
+					<fpage>228</fpage>
+					<lpage>32</lpage>
+					<pub-id pub-id-type="doi">10.1038/nature10946</pub-id>
+					<?supplied-pmid 22498628?>
+					<pub-id pub-id-type="pmid">22498628</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR14">
+				<label>14.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Menary</surname>
+							<given-names>MB</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>Mechanisms of aerosol-forced AMOC variability in a state of the art climate model</article-title>
+					<source>J. Geophys. Res.: Oceans</source>
+					<year>2013</year>
+					<volume>118</volume>
+					<fpage>2087</fpage>
+					<lpage>2096</lpage>
+					<pub-id pub-id-type="doi">10.1002/jgrc.20178</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR15">
+				<label>15.</label>
+				<mixed-citation publication-type="other">Menary, M. B. et al. Aerosol-Forced AMOC Changes in CMIP6 Historical Simulations. <italic>Geophys. Res. Lett.</italic><bold>47</bold>, e2020GL088166 (2020).</mixed-citation>
+			</ref>
+			<ref id="CR16">
+				<label>16.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Ma</surname>
+							<given-names>X</given-names>
+						</name>
+						<name>
+							<surname>Liu</surname>
+							<given-names>W</given-names>
+						</name>
+						<name>
+							<surname>Allen</surname>
+							<given-names>RJ</given-names>
+						</name>
+						<name>
+							<surname>Huang</surname>
+							<given-names>G</given-names>
+						</name>
+						<name>
+							<surname>Li</surname>
+							<given-names>X</given-names>
+						</name>
+					</person-group>
+					<article-title>Dependence of regional ocean heat uptake on anthropogenic warming scenarios</article-title>
+					<source>Sci. Adv.</source>
+					<year>2020</year>
+					<volume>6</volume>
+					<fpage>4</fpage>
+					<lpage>13</lpage>
+					<pub-id pub-id-type="doi">10.1126/sciadv.abc0303</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR17">
+				<label>17.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Kang</surname>
+							<given-names>SM</given-names>
+						</name>
+						<name>
+							<surname>Xie</surname>
+							<given-names>SP</given-names>
+						</name>
+						<name>
+							<surname>Deser</surname>
+							<given-names>C</given-names>
+						</name>
+						<name>
+							<surname>Xiang</surname>
+							<given-names>B</given-names>
+						</name>
+					</person-group>
+					<article-title>Zonal mean and shift modes of historical climate response to evolving aerosol distribution</article-title>
+					<source>Sci. Bull.</source>
+					<year>2021</year>
+					<volume>66</volume>
+					<fpage>2405</fpage>
+					<lpage>2411</lpage>
+					<pub-id pub-id-type="doi">10.1016/j.scib.2021.07.013</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR18">
+				<label>18.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Hassan</surname>
+							<given-names>T</given-names>
+						</name>
+						<name>
+							<surname>Allen</surname>
+							<given-names>RJ</given-names>
+						</name>
+						<name>
+							<surname>Liu</surname>
+							<given-names>W</given-names>
+						</name>
+						<name>
+							<surname>Randles</surname>
+							<given-names>CA</given-names>
+						</name>
+					</person-group>
+					<article-title>Anthropogenic aerosol forcing of the Atlantic meridional overturning circulation and the associated mechanisms in CMIP6 models</article-title>
+					<source>Atmos. Chem. Phys.</source>
+					<year>2021</year>
+					<volume>21</volume>
+					<fpage>5821</fpage>
+					<lpage>5846</lpage>
+					<pub-id pub-id-type="doi">10.5194/acp-21-5821-2021</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR19">
+				<label>19.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Gillett</surname>
+							<given-names>NP</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>The Detection and Attribution Model Intercomparison Project (DAMIP v1.0) contribution to CMIP6</article-title>
+					<source>Geosci. Model Dev.</source>
+					<year>2016</year>
+					<volume>9</volume>
+					<fpage>3685</fpage>
+					<lpage>3697</lpage>
+					<pub-id pub-id-type="doi">10.5194/gmd-9-3685-2016</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR20">
+				<label>20.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Delworth</surname>
+							<given-names>TL</given-names>
+						</name>
+						<name>
+							<surname>Dixon</surname>
+							<given-names>KW</given-names>
+						</name>
+					</person-group>
+					<article-title>Have anthropogenic aerosols delayed a greenhouse gas-induced weakening of the North Atlantic thermohaline circulation?</article-title>
+					<source>Geophys. Res. Lett.</source>
+					<year>2006</year>
+					<volume>33</volume>
+					<fpage>3</fpage>
+					<lpage>6</lpage>
+					<pub-id pub-id-type="doi">10.1029/2005GL024980</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR21">
+				<label>21.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Robson</surname>
+							<given-names>J</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>The Role of Anthropogenic Aerosol Forcing in the 1850&#x2013;1985 Strengthening of the AMOC in CMIP6 Historical Simulations</article-title>
+					<source>J. Clim.</source>
+					<year>2022</year>
+					<volume>35</volume>
+					<fpage>3243</fpage>
+					<lpage>3263</lpage>
+					<pub-id pub-id-type="doi">10.1175/JCLI-D-22-0124.1</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR22">
+				<label>22.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Cowan</surname>
+							<given-names>T</given-names>
+						</name>
+						<name>
+							<surname>Cai</surname>
+							<given-names>W</given-names>
+						</name>
+					</person-group>
+					<article-title>The response of the large-scale ocean circulation to 20th century Asian and non-Asian aerosols</article-title>
+					<source>Geophys. Res. Lett.</source>
+					<year>2013</year>
+					<volume>40</volume>
+					<fpage>2761</fpage>
+					<lpage>2767</lpage>
+					<pub-id pub-id-type="doi">10.1002/grl.50587</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR23">
+				<label>23.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Dong</surname>
+							<given-names>B</given-names>
+						</name>
+						<name>
+							<surname>Sutton</surname>
+							<given-names>RT</given-names>
+						</name>
+					</person-group>
+					<article-title>Recent trends in summer atmospheric circulation in the North Atlantic/European Region: Is there a role for anthropogenic aerosols?</article-title>
+					<source>J. Clim.</source>
+					<year>2021</year>
+					<volume>34</volume>
+					<fpage>6777</fpage>
+					<lpage>6795</lpage>
+				</element-citation>
+			</ref>
+			<ref id="CR24">
+				<label>24.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Undorf</surname>
+							<given-names>S</given-names>
+						</name>
+						<name>
+							<surname>Bollasina</surname>
+							<given-names>MA</given-names>
+						</name>
+						<name>
+							<surname>Hegerl</surname>
+							<given-names>GC</given-names>
+						</name>
+					</person-group>
+					<article-title>Impacts of the 1900-74 increase in anthropogenic aerosol emissions from North America and Europe on Eurasian summer climate</article-title>
+					<source>J. Clim.</source>
+					<year>2018</year>
+					<volume>31</volume>
+					<fpage>8381</fpage>
+					<lpage>8399</lpage>
+					<pub-id pub-id-type="doi">10.1175/JCLI-D-17-0850.1</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR25">
+				<label>25.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Watanabe</surname>
+							<given-names>M</given-names>
+						</name>
+						<name>
+							<surname>Tatebe</surname>
+							<given-names>H</given-names>
+						</name>
+					</person-group>
+					<article-title>Reconciling roles of sulphate aerosol forcing and internal variability in Atlantic multidecadal climate changes</article-title>
+					<source>Clim. Dyn.</source>
+					<year>2019</year>
+					<volume>53</volume>
+					<fpage>4651</fpage>
+					<lpage>4665</lpage>
+					<pub-id pub-id-type="doi">10.1007/s00382-019-04811-3</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR26">
+				<label>26.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Diao</surname>
+							<given-names>C</given-names>
+						</name>
+						<name>
+							<surname>Xu</surname>
+							<given-names>Y</given-names>
+						</name>
+						<name>
+							<surname>Xie</surname>
+							<given-names>SP</given-names>
+						</name>
+					</person-group>
+					<article-title>Anthropogenic aerosol effects on tropospheric circulation and sea surface temperature (1980-2020): Separating the role of zonally asymmetric forcings</article-title>
+					<source>Atmos. Chem. Phys.</source>
+					<year>2021</year>
+					<volume>21</volume>
+					<fpage>18499</fpage>
+					<lpage>18518</lpage>
+					<pub-id pub-id-type="doi">10.5194/acp-21-18499-2021</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR27">
+				<label>27.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Wang</surname>
+							<given-names>H</given-names>
+						</name>
+						<name>
+							<surname>Wen</surname>
+							<given-names>YJ</given-names>
+						</name>
+					</person-group>
+					<article-title>Climate response to the spatial and temporal evolutions of anthropogenic aerosol forcing</article-title>
+					<source>Clim. Dyn.</source>
+					<year>2022</year>
+					<volume>59</volume>
+					<fpage>1579</fpage>
+					<lpage>1595</lpage>
+					<pub-id pub-id-type="doi">10.1007/s00382-021-06059-2</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR28">
+				<label>28.</label>
+				<mixed-citation publication-type="other">Xiang, B., Xie, S. P., Kang, S. M. &amp; Kramer, R. J. An emerging Asian aerosol dipole pattern reshapes the Asian summer monsoon and exacerbates northern hemisphere warming. <italic>npj Clim. Atmos. Sci.</italic><bold>6</bold>, 77 (2023).</mixed-citation>
+			</ref>
+			<ref id="CR29">
+				<label>29.</label>
+				<mixed-citation publication-type="other">Liu, F., Lu, J. &amp; Leung, L. R. Neutral Mode Dominates the Forced Global and Regional Surface Temperature Response in the Past and Future. <italic>Geophys. Res. Lett.</italic><bold>49</bold>, e2022GL098788 (2022).</mixed-citation>
+			</ref>
+			<ref id="CR30">
+				<label>30.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Danabasoglu</surname>
+							<given-names>G</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>Variability of the atlantic meridional overturning circulation in CCSM4</article-title>
+					<source>J. Clim.</source>
+					<year>2012</year>
+					<volume>25</volume>
+					<fpage>5153</fpage>
+					<lpage>5172</lpage>
+					<pub-id pub-id-type="doi">10.1175/JCLI-D-11-00463.1</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR31">
+				<label>31.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Liu</surname>
+							<given-names>W</given-names>
+						</name>
+						<name>
+							<surname>Fedorov</surname>
+							<given-names>AV</given-names>
+						</name>
+						<name>
+							<surname>Xie</surname>
+							<given-names>SP</given-names>
+						</name>
+						<name>
+							<surname>Hu</surname>
+							<given-names>S</given-names>
+						</name>
+					</person-group>
+					<article-title>Climate impacts of a weakened Atlantic meridional overturning circulation in a warming climate</article-title>
+					<source>Sci. Adv.</source>
+					<year>2020</year>
+					<volume>6</volume>
+					<fpage>1</fpage>
+					<lpage>9</lpage>
+				</element-citation>
+			</ref>
+			<ref id="CR32">
+				<label>32.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>S&#xE9;vellec</surname>
+							<given-names>F</given-names>
+						</name>
+						<name>
+							<surname>Fedorov</surname>
+							<given-names>AV</given-names>
+						</name>
+						<name>
+							<surname>Liu</surname>
+							<given-names>W</given-names>
+						</name>
+					</person-group>
+					<article-title>Arctic sea-ice decline weakens the Atlantic Meridional Overturning Circulation</article-title>
+					<source>Nat. Clim. Change</source>
+					<year>2017</year>
+					<volume>7</volume>
+					<fpage>604</fpage>
+					<lpage>610</lpage>
+					<pub-id pub-id-type="doi">10.1038/nclimate3353</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR33">
+				<label>33.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Delworth</surname>
+							<given-names>T</given-names>
+						</name>
+						<name>
+							<surname>Manabe</surname>
+							<given-names>S</given-names>
+						</name>
+						<name>
+							<surname>Stouffer</surname>
+							<given-names>RJ</given-names>
+						</name>
+					</person-group>
+					<article-title>Interdecadal variations of the thermohaline circulation in a coupled ocean-atmosphere model</article-title>
+					<source>J. Clim.</source>
+					<year>1993</year>
+					<volume>6</volume>
+					<fpage>1993</fpage>
+					<lpage>2011</lpage>
+					<pub-id pub-id-type="doi">10.1175/1520-0442(1993)006&lt;1993:IVOTTC&gt;2.0.CO;2</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR34">
+				<label>34.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Parker</surname>
+							<given-names>AO</given-names>
+						</name>
+						<name>
+							<surname>Schmidt</surname>
+							<given-names>MW</given-names>
+						</name>
+						<name>
+							<surname>Chang</surname>
+							<given-names>P</given-names>
+						</name>
+					</person-group>
+					<article-title>Tropical North Atlantic subsurface warming events as a fingerprint for AMOC variability during Marine Isotope Stage 3</article-title>
+					<source>Paleoceanography</source>
+					<year>2015</year>
+					<volume>30</volume>
+					<fpage>1425</fpage>
+					<lpage>1436</lpage>
+					<pub-id pub-id-type="doi">10.1002/2015PA002832</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR35">
+				<label>35.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Kwon</surname>
+							<given-names>YO</given-names>
+						</name>
+						<name>
+							<surname>Frankignoul</surname>
+							<given-names>C</given-names>
+						</name>
+					</person-group>
+					<article-title>Stochastically-driven multidecadal variability of the Atlantic meridional overturning circulation in CCSM3</article-title>
+					<source>Clim. Dyn.</source>
+					<year>2012</year>
+					<volume>38</volume>
+					<fpage>859</fpage>
+					<lpage>876</lpage>
+					<pub-id pub-id-type="doi">10.1007/s00382-011-1040-2</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR36">
+				<label>36.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Liu</surname>
+							<given-names>F</given-names>
+						</name>
+						<name>
+							<surname>Lu</surname>
+							<given-names>J</given-names>
+						</name>
+						<name>
+							<surname>Kwon</surname>
+							<given-names>Y</given-names>
+						</name>
+						<name>
+							<surname>Frankignoul</surname>
+							<given-names>C</given-names>
+						</name>
+						<name>
+							<surname>Luo</surname>
+							<given-names>Y</given-names>
+						</name>
+					</person-group>
+					<article-title>Freshwater Flux Variability Lengthens the Period of the Low&#x2010;Frequency AMOC Variability</article-title>
+					<source>Geophys. Res. Lett.</source>
+					<year>2022</year>
+					<volume>49</volume>
+					<fpage>2</fpage>
+					<lpage>31</lpage>
+					<pub-id pub-id-type="doi">10.1029/2022GL100136</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR37">
+				<label>37.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Branstator</surname>
+							<given-names>G</given-names>
+						</name>
+					</person-group>
+					<article-title>Circumglobal teleconnections, the jet stream waveguide, and the North Atlantic Oscillation</article-title>
+					<source>J. Clim.</source>
+					<year>2002</year>
+					<volume>15</volume>
+					<fpage>1893</fpage>
+					<lpage>1910</lpage>
+					<pub-id pub-id-type="doi">10.1175/1520-0442(2002)015&lt;1893:CTTJSW&gt;2.0.CO;2</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR38">
+				<label>38.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Ding</surname>
+							<given-names>Q</given-names>
+						</name>
+						<name>
+							<surname>Wang</surname>
+							<given-names>B</given-names>
+						</name>
+					</person-group>
+					<article-title>Circumglobal Teleconnection in the Northern Hemisphere Summer*</article-title>
+					<source>J. Clim.</source>
+					<year>2005</year>
+					<volume>18</volume>
+					<fpage>3483</fpage>
+					<lpage>3505</lpage>
+					<pub-id pub-id-type="doi">10.1175/JCLI3473.1</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR39">
+				<label>39.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Dong</surname>
+							<given-names>B</given-names>
+						</name>
+						<name>
+							<surname>Sutton</surname>
+							<given-names>RT</given-names>
+						</name>
+						<name>
+							<surname>Shaffrey</surname>
+							<given-names>L</given-names>
+						</name>
+						<name>
+							<surname>Harvey</surname>
+							<given-names>B</given-names>
+						</name>
+					</person-group>
+					<article-title>Recent decadal weakening of the summer Eurasian westerly jet attributable to anthropogenic aerosol emissions</article-title>
+					<source>Nat. Commun.</source>
+					<year>2022</year>
+					<volume>13</volume>
+					<fpage>1</fpage>
+					<lpage>10</lpage>
+					<pub-id pub-id-type="pmid">34983933</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR40">
+				<label>40.</label>
+				<mixed-citation publication-type="other">Sidorenko, D. et al. AMOC Variability and Watermass Transformations in the AWI Climate Model. <italic>J. Adv. Model. Earth Syst.</italic><bold>13</bold>, e2021MS002582 (2021).</mixed-citation>
+			</ref>
+			<ref id="CR41">
+				<label>41.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Yeager</surname>
+							<given-names>S</given-names>
+						</name>
+					</person-group>
+					<article-title>The abyssal origins of North Atlantic decadal predictability</article-title>
+					<source>Clim. Dyn.</source>
+					<year>2020</year>
+					<volume>55</volume>
+					<fpage>2253</fpage>
+					<lpage>2271</lpage>
+					<pub-id pub-id-type="doi">10.1007/s00382-020-05382-4</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR42">
+				<label>42.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Yang</surname>
+							<given-names>H</given-names>
+						</name>
+						<name>
+							<surname>Wang</surname>
+							<given-names>K</given-names>
+						</name>
+						<name>
+							<surname>Dai</surname>
+							<given-names>H</given-names>
+						</name>
+						<name>
+							<surname>Wang</surname>
+							<given-names>Y</given-names>
+						</name>
+						<name>
+							<surname>Li</surname>
+							<given-names>Q</given-names>
+						</name>
+					</person-group>
+					<article-title>Wind effect on the Atlantic meridional overturning circulation via sea ice and vertical diffusion</article-title>
+					<source>Clim. Dyn.</source>
+					<year>2016</year>
+					<volume>46</volume>
+					<fpage>3387</fpage>
+					<lpage>3403</lpage>
+					<pub-id pub-id-type="doi">10.1007/s00382-015-2774-z</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR43">
+				<label>43.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Jackson</surname>
+							<given-names>LC</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>The evolution of the North Atlantic Meridional Overturning Circulation since 1980</article-title>
+					<source>Nat. Rev. Earth Environ.</source>
+					<year>2022</year>
+					<volume>3</volume>
+					<fpage>241</fpage>
+					<lpage>254</lpage>
+					<pub-id pub-id-type="doi">10.1038/s43017-022-00263-2</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR44">
+				<label>44.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Oldenburg</surname>
+							<given-names>D</given-names>
+						</name>
+						<name>
+							<surname>Wills</surname>
+							<given-names>RCJ</given-names>
+						</name>
+						<name>
+							<surname>Armour</surname>
+							<given-names>KC</given-names>
+						</name>
+						<name>
+							<surname>Thompson</surname>
+							<given-names>LA</given-names>
+						</name>
+					</person-group>
+					<article-title>Resolution Dependence of Atmosphere&#x2013;Ocean Interactions and Water Mass Transformation in the North Atlantic</article-title>
+					<source>J. Geophys. Res.: Oceans</source>
+					<year>2022</year>
+					<volume>127</volume>
+					<fpage>1</fpage>
+					<lpage>18</lpage>
+					<pub-id pub-id-type="doi">10.1029/2021JC018102</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR45">
+				<label>45.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Oldenburg</surname>
+							<given-names>D</given-names>
+						</name>
+						<name>
+							<surname>Wills</surname>
+							<given-names>RCJ</given-names>
+						</name>
+						<name>
+							<surname>Armour</surname>
+							<given-names>KC</given-names>
+						</name>
+						<name>
+							<surname>Thompson</surname>
+							<given-names>L</given-names>
+						</name>
+						<name>
+							<surname>Jackson</surname>
+							<given-names>LC</given-names>
+						</name>
+					</person-group>
+					<article-title>Mechanisms of low-frequency variability in north atlantic ocean heat transport and AMOC</article-title>
+					<source>J. Clim.</source>
+					<year>2021</year>
+					<volume>34</volume>
+					<fpage>4733</fpage>
+					<lpage>4755</lpage>
+				</element-citation>
+			</ref>
+			<ref id="CR46">
+				<label>46.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Lozier</surname>
+							<given-names>MS</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>A sea change in our view of overturning in the subpolar North Atlantic</article-title>
+					<source>Science</source>
+					<year>2019</year>
+					<volume>363</volume>
+					<fpage>516</fpage>
+					<lpage>521</lpage>
+					<pub-id pub-id-type="doi">10.1126/science.aau6592</pub-id>
+					<?supplied-pmid 30705189?>
+					<pub-id pub-id-type="pmid">30705189</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR47">
+				<label>47.</label>
+				<mixed-citation publication-type="other">Yeager, S. et al. An outsized role for the Labrador Sea in the multidecadal variability of the Atlantic overturning circulation. <italic>Sci. Adv.</italic><bold>7</bold>, eabh3592 (2021).</mixed-citation>
+			</ref>
+			<ref id="CR48">
+				<label>48.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Liu</surname>
+							<given-names>W</given-names>
+						</name>
+						<name>
+							<surname>Xie</surname>
+							<given-names>SP</given-names>
+						</name>
+						<name>
+							<surname>Liu</surname>
+							<given-names>Z</given-names>
+						</name>
+						<name>
+							<surname>Zhu</surname>
+							<given-names>J</given-names>
+						</name>
+					</person-group>
+					<article-title>Overlooked possibility of a collapsed atlantic meridional overturning circulation in warming climate</article-title>
+					<source>Sci. Adv.</source>
+					<year>2017</year>
+					<volume>3</volume>
+					<fpage>1</fpage>
+					<lpage>8</lpage>
+					<pub-id pub-id-type="doi">10.1126/sciadv.1601666</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR49">
+				<label>49.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Collins</surname>
+							<given-names>JW</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>AerChemMIP: Quantifying the effects of chemistry and aerosols in CMIP6</article-title>
+					<source>Geosci. Model Dev.</source>
+					<year>2017</year>
+					<volume>10</volume>
+					<fpage>585</fpage>
+					<lpage>607</lpage>
+					<pub-id pub-id-type="doi">10.5194/gmd-10-585-2017</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR50">
+				<label>50.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Simpson</surname>
+							<given-names>IR</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>The CESM2 Single-Forcing Large Ensemble and Comparison to CESM1: Implications for Experimental Design</article-title>
+					<source>J. Clim.</source>
+					<year>2023</year>
+					<volume>36</volume>
+					<fpage>5687</fpage>
+					<lpage>5711</lpage>
+					<pub-id pub-id-type="doi">10.1175/JCLI-D-22-0666.1</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR51">
+				<label>51.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Hurrell</surname>
+							<given-names>JW</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>The Community Earth System Model: A Framework for Collaborative Research</article-title>
+					<source>Bull. Am. Meteorol. Soc.</source>
+					<year>2013</year>
+					<volume>94</volume>
+					<fpage>1339</fpage>
+					<lpage>1360</lpage>
+					<pub-id pub-id-type="doi">10.1175/BAMS-D-12-00121.1</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR52">
+				<label>52.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Speer</surname>
+							<given-names>K</given-names>
+						</name>
+						<name>
+							<surname>Tziperman</surname>
+							<given-names>E</given-names>
+						</name>
+					</person-group>
+					<article-title>Rates of Water Mass Formation in the North Atlantic Ocean</article-title>
+					<source>J. Phys. Oceanogr.</source>
+					<year>1992</year>
+					<volume>22</volume>
+					<fpage>93</fpage>
+					<lpage>104</lpage>
+					<pub-id pub-id-type="doi">10.1175/1520-0485(1992)022&lt;0093:ROWMFI&gt;2.0.CO;2</pub-id>
+				</element-citation>
+			</ref>
+			<ref id="CR53">
+				<label>53.</label>
+				<element-citation publication-type="journal">
+					<person-group person-group-type="author">
+						<name>
+							<surname>Xie</surname>
+							<given-names>S-P</given-names>
+						</name>
+						<etal/>
+					</person-group>
+					<article-title>Global Warming Pattern Formation: Sea Surface Temperature and Rainfall*</article-title>
+					<source>J. Clim.</source>
+					<year>2010</year>
+					<volume>23</volume>
+					<fpage>966</fpage>
+					<lpage>986</lpage>
+					<pub-id pub-id-type="doi">10.1175/2009JCLI3329.1</pub-id>
+				</element-citation>
+			</ref>
+		</ref-list>
+	</back>
+</article>

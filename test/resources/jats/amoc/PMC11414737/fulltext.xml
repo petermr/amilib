@@ -1,0 +1,948 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd"> 
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.3" xml:lang="en" article-type="research-article"><?DTDIdentifier.IdentifierValue -//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.2 20190208//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName JATS-archivearticle1.dtd?><?SourceDTD.Version 1.2?><?ConverterInfo.XSLTName jats2jats3.xsl?><?ConverterInfo.Version 1?><?properties open_access?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Sci Adv</journal-id><journal-id journal-id-type="iso-abbrev">Sci Adv</journal-id><journal-id journal-id-type="publisher-id">sciadv</journal-id><journal-id journal-id-type="hwp">advances</journal-id><journal-title-group><journal-title>Science Advances</journal-title></journal-title-group><issn pub-type="epub">2375-2548</issn><publisher><publisher-name>American Association for the Advancement of Science</publisher-name></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">11414737</article-id><article-id pub-id-type="pmid">39303032</article-id>
+<article-id pub-id-type="publisher-id">adp5156</article-id><article-id pub-id-type="doi">10.1126/sciadv.adp5156</article-id><article-categories><subj-group subj-group-type="article-type"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Earth, Environmental, Ecological, and Space Sciences</subject></subj-group><subj-group subj-group-type="legacy-article-type"><subject>SciAdv r-articles</subject></subj-group><subj-group subj-group-type="field"><subject>Climatology</subject><subject>Oceanography</subject></subj-group><subj-group subj-group-type="overline"><subject>Climatology</subject></subj-group></article-categories><title-group><article-title>Enhanced ocean heat storage efficiency during the last deglaciation</article-title><alt-title alt-title-type="short">Enhanced deglacial ocean heat storage efficiency</alt-title></title-group><contrib-group><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-9330-4294</contrib-id><name><surname>Zhu</surname><given-names>Chenyu</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Data curation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-data-curation/">Data curation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Formal analysis" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-formal-analysis/">Formal analysis</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Funding acquisition" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-funding-acquisition/">Funding acquisition</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Resources" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-resources/">Resources</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Software" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-software/">Software</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Visualization" vocab-term-identifier="https://web.archive.org/web/20180313224017/http://dictionary.credit.niso.org/Contributor_Roles/Visualization">Visualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - original draft" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-original-draft/">Writing - original draft</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="afn1" ref-type="author-notes">&#x02020;</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-7954-6932</contrib-id><name><surname>Sanchez</surname><given-names>Saray</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Data curation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-data-curation/">Data curation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Formal analysis" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-formal-analysis/">Formal analysis</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Funding acquisition" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-funding-acquisition/">Funding acquisition</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Project administration" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-project-administration/">Project administration</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Resources" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-resources/">Resources</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Software" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-software/">Software</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Visualization" vocab-term-identifier="https://web.archive.org/web/20180313224017/http://dictionary.credit.niso.org/Contributor_Roles/Visualization">Visualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff2" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="afn1" ref-type="author-notes">&#x02020;</xref></contrib><contrib contrib-type="author" corresp="yes"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-4554-2666</contrib-id><name><surname>Liu</surname><given-names>Zhengyu</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Data curation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-data-curation/">Data curation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Funding acquisition" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-funding-acquisition/">Funding acquisition</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Project administration" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-project-administration/">Project administration</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Supervision" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-supervision/">Supervision</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - original draft" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-original-draft/">Writing - original draft</role><xref rid="aff3" ref-type="aff">
+<sup>3</sup>
+</xref><xref rid="aff4" ref-type="aff">
+<sup>4</sup>
+</xref><xref rid="cor1" ref-type="corresp">*</xref></contrib><contrib contrib-type="author" corresp="yes"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-4752-6045</contrib-id><name><surname>Clark</surname><given-names>Peter U.</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Supervision" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-supervision/">Supervision</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff2" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="cor1" ref-type="corresp">*</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-1453-9691</contrib-id><name><surname>He</surname><given-names>Chengfei</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff5" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-7758-8629</contrib-id><name><surname>Wan</surname><given-names>Lingfeng</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Data curation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-data-curation/">Data curation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Resources" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-resources/">Resources</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Software" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-software/">Software</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><xref rid="aff6" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib contrib-type="author"><name><surname>Lu</surname><given-names>Jiuyou</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><xref rid="aff7" ref-type="aff">
+<sup>7</sup>
+</xref></contrib><contrib contrib-type="author"><name><surname>Zhu</surname><given-names>Chenguang</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Visualization" vocab-term-identifier="https://web.archive.org/web/20180313224017/http://dictionary.credit.niso.org/Contributor_Roles/Visualization">Visualization</role><xref rid="aff8" ref-type="aff">
+<sup>8</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-1818-6080</contrib-id><name><surname>Li</surname><given-names>Lingwei</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Visualization" vocab-term-identifier="https://web.archive.org/web/20180313224017/http://dictionary.credit.niso.org/Contributor_Roles/Visualization">Visualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff3" ref-type="aff">
+<sup>3</sup>
+</xref><xref rid="aff9" ref-type="aff">
+<sup>9</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-6569-9842</contrib-id><name><surname>Zhang</surname><given-names>Shaoqing</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff6" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-9854-0392</contrib-id><name><surname>Cheng</surname><given-names>Lijing</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Funding acquisition" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-funding-acquisition/">Funding acquisition</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="aff10" ref-type="aff">
+<sup>10</sup>
+</xref></contrib><aff id="aff1"><label><sup>1</sup></label>Earth System Numerical Simulation Science Center, Institute of Atmospheric Physics, Chinese Academy of Sciences, Beijing, China.</aff><aff id="aff2"><label><sup>2</sup></label>College of Earth, Ocean, and Atmospheric Sciences, Oregon State University, Corvallis, OR 97331, USA.</aff><aff id="aff3"><label><sup>3</sup></label>Department of Geography, Ohio State University, Columbus, OH 43210, USA.</aff><aff id="aff4"><label><sup>4</sup></label>School of Geography Science, Nanjing Normal University, Nanjing, China.</aff><aff id="aff5"><label><sup>5</sup></label>Rosenstiel School of Marine, Atmospheric, and Earth Science, University of Miami, Miami, FL 33149, USA.</aff><aff id="aff6"><label><sup>6</sup></label>Frontier Science Center for Deep Ocean Multispheres and Earth System (DOMES), Institute for Advanced Ocean Study (IAOS) and Key Laboratory of Physical Oceanography, MOE (POL), Ocean University of China, Qingdao, China.</aff><aff id="aff7"><label><sup>7</sup></label>Laoshan Laboratory, Qingdao, China.</aff><aff id="aff8"><label><sup>8</sup></label>School of Ocean Sciences, China University of Geosciences (Beijing), Beijing, China.</aff><aff id="aff9"><label><sup>9</sup></label>Institute of Arctic and Alpine Research, University of Colorado Boulder, Boulder, CO 80303, USA.</aff><aff id="aff10"><label><sup>10</sup></label>International Center for Climate and Environment Sciences, Institute of Atmospheric Physics, Chinese Academy of Sciences, Beijing, China.</aff></contrib-group><author-notes><corresp id="cor1"><label>*</label>Corresponding author. Email: <email xlink:href="liu.7022@osu.edu">liu.7022@osu.edu</email> (Z.L.); <email xlink:href="peter.clark@oregonstate.edu">peter.clark@oregonstate.edu</email> (P.U.C.)</corresp><fn id="afn1" fn-type="equal"><label>&#x02020;</label><p>These authors contributed equally to this work.</p></fn></author-notes><pub-date pub-type="collection"><day>20</day><month>9</month><year>2024</year></pub-date><pub-date publication-format="electronic" date-type="pub"><day>20</day><month>9</month><year>2024</year></pub-date><volume>10</volume><issue>38</issue><elocation-id>eadp5156</elocation-id><history>
+<date date-type="received"><day>28</day><month>3</month><year>2024</year></date>
+<date date-type="accepted"><day>13</day><month>8</month><year>2024</year></date>
+</history><permissions><copyright-statement>Copyright &#x000a9; 2024 The Authors, some rights reserved; exclusive licensee American Association for the Advancement of Science. No claim to original U.S. Government Works. Distributed under a Creative Commons Attribution NonCommercial License 4.0 (CC BY-NC).</copyright-statement><copyright-year>2024</copyright-year><copyright-holder>The Authors</copyright-holder><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbynclicense" start_date="2024-09-20">https://creativecommons.org/licenses/by-nc/4.0/</ali:license_ref><license-p>This is an open-access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial license</ext-link>, which permits use, distribution, and reproduction in any medium, so long as the resultant use is <bold>not</bold> for commercial advantage and provided the original work is properly cited.</license-p></license></permissions><self-uri content-type="pdf" xlink:href="sciadv.adp5156.pdf"/><abstract><p>Proxy reconstructions suggest that increasing global mean sea surface temperature (GMSST) during the last deglaciation was accompanied by a comparable or greater increase in global mean ocean temperature (GMOT), corresponding to a large heat storage efficiency (HSE; &#x02206;GMOT/&#x02206;GMSST). An increased GMOT is commonly attributed to surface warming at sites of deepwater formation, but winter sea ice covered much of these source areas during the last deglaciation, which would imply an HSE much less than 1. Here, we use climate model simulations and proxy-based reconstructions of ocean temperature changes to show that an increased deglacial HSE is achieved by warming of intermediate-depth waters forced by mid-latitude surface warming in response to greenhouse gas and ice sheet forcing as well as by reduced Atlantic meridional overturning circulation associated with meltwater forcing. These results, which highlight the role of surface warming and oceanic circulation changes, have implications for our understanding of long-term ocean heat storage change.</p></abstract><abstract abstract-type="teaser"><p>Deglacial ocean heat storage is enhanced by warming of intermediate-depth waters.</p></abstract><funding-group><award-group id="award1682070"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/100000001</institution-id><institution>National Science Foundation</institution></institution-wrap>
+</funding-source><award-id>AGS2202860</award-id></award-group><award-group id="award1682071"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/100000001</institution-id><institution>National Science Foundation</institution></institution-wrap>
+</funding-source><award-id>OPP2103032</award-id></award-group><award-group id="award1682072"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/100023581</institution-id><institution>National Science Foundation Graduate Research Fellowship Program</institution></institution-wrap>
+</funding-source><award-id>2234662</award-id></award-group><award-group id="award1682069"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/501100001809</institution-id><institution>National Natural Science Foundation of China</institution></institution-wrap>
+</funding-source><award-id>42106013</award-id></award-group><award-group id="award1690105"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/501100001809</institution-id><institution>National Natural Science Foundation of China</institution></institution-wrap>
+</funding-source><award-id>42130604</award-id></award-group><award-group id="award1690106"><funding-source>
+<institution-wrap><institution>Science and Technology Innovation Project of Laoshan Laboratory</institution></institution-wrap>
+</funding-source><award-id>LSKJ202203303</award-id></award-group><award-group id="award1690107"><funding-source>
+<institution-wrap><institution>Science and Technology Innovation Project of Laoshan Laboratory</institution></institution-wrap>
+</funding-source><award-id>LSKJ202203303</award-id></award-group><award-group id="award1690108"><funding-source>
+<institution-wrap><institution>Science and Technology Innovation Center of Laoshan Laboratory</institution></institution-wrap>
+</funding-source><award-id>LSKJ202203303</award-id></award-group></funding-group></article-meta></front><body><sec sec-type="introduction" disp-level="1"><title>INTRODUCTION</title><p>As one of the largest heat reservoirs in the climate system, the global ocean absorbs a large fraction of the excess energy generated by the Earth&#x02019;s energy imbalance (EEI) during transient climate change (<xref rid="R1" ref-type="bibr"><italic toggle="yes">1</italic></xref>, <xref rid="R2" ref-type="bibr"><italic toggle="yes">2</italic></xref>). Now, more than 90% of the excess energy from ongoing anthropogenic warming has accumulated in the ocean (<xref rid="R3" ref-type="bibr"><italic toggle="yes">3</italic></xref>&#x02013;<xref rid="R5" ref-type="bibr"><italic toggle="yes">5</italic></xref>), strongly buffering global warming as well as causing an increase in ocean temperature, ocean heat content, and sea level. Moreover, the lag in the climate response to a forcing is a function of the rate of ocean heat uptake (<xref rid="R2" ref-type="bibr"><italic toggle="yes">2</italic></xref>), with changes in that rate affecting the EEI (<xref rid="R6" ref-type="bibr"><italic toggle="yes">6</italic></xref>, <xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>). In the past century, the greatest warming from the EEI has occurred in the upper 500 m in the ocean (<xref rid="R4" ref-type="bibr"><italic toggle="yes">4</italic></xref>, <xref rid="R5" ref-type="bibr"><italic toggle="yes">5</italic></xref>, <xref rid="R8" ref-type="bibr"><italic toggle="yes">8</italic></xref>, <xref rid="R9" ref-type="bibr"><italic toggle="yes">9</italic></xref>), with relatively weak warming in the deep ocean because of its long response time (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>) and the lingering impact of previous cooling associated with the Little Ice Age (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>&#x02013;<xref rid="R13" ref-type="bibr"><italic toggle="yes">13</italic></xref>). This response can be expressed as a ratio between changes of global mean ocean temperature (&#x02206;GMOT) and global mean sea surface temperature (&#x02206;GMSST) or a measure of the ocean heat storage efficiency (HSE), with current HSE (&#x02206;GMOT/&#x02206;GMSST) &#x0003c;&#x0003c; 1 (~0.1).</p><p>Paleoceanographic observations, however, suggest that &#x02206;GMOT can be comparable to or even larger than &#x02206;GMSST on millennial and longer (near-equilibration) timescales. This implies that the ocean can serve as a far greater reservoir of energy in the climate system than implied by contemporary observations. Deep ocean temperature (DOT) proxies from marine sediment cores (<xref rid="R14" ref-type="bibr"><italic toggle="yes">14</italic></xref>&#x02013;<xref rid="R16" ref-type="bibr"><italic toggle="yes">16</italic></xref>) and GMOT proxies from Antarctic ice cores (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>, <xref rid="R17" ref-type="bibr"><italic toggle="yes">17</italic></xref>, <xref rid="R18" ref-type="bibr"><italic toggle="yes">18</italic></xref>) suggest that GMOT increased by ~2.8&#x000b0;C from the Last Glacial Maximum [LGM; ~26 to19 thousand years ago (ka)] to pre-Industrial (PI; <xref rid="F1" ref-type="fig">Fig. 1C</xref>), comparable to (slightly smaller than) the concurrent change in GMSST reconstructed from SST proxies of around ~3.0&#x000b0; &#x000b1; 0.2&#x000b0;C (<xref rid="F1" ref-type="fig">Fig. 1B</xref>) (<xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>&#x02013;<xref rid="R22" ref-type="bibr"><italic toggle="yes">22</italic></xref>). Recent air-sea disequilibrium studies suggest that the LGM ocean cooling reconstructed from noble gases in ice cores may be biased by &#x02212;0.38&#x000b0; &#x000b1; 0.37&#x000b0;C which is highly sensitive to model high-latitude winds [<xref rid="F1" ref-type="fig">Fig. 1C</xref>, (<xref rid="R23" ref-type="bibr"><italic toggle="yes">23</italic></xref>)]. Given the good agreement between two estimates for mean LGM DOT cooling relative to PI from marine proxy records [&#x02212;2.63&#x000b0;C from (<xref rid="R15" ref-type="bibr"><italic toggle="yes">15</italic></xref>); &#x02212;2.82&#x000b0; &#x000b1; 0.17&#x000b0;C from (<xref rid="R16" ref-type="bibr"><italic toggle="yes">16</italic></xref>)] and the ice core MOT estimate that neglects air-sea disequilibrium [&#x02212;2.83&#x000b0; &#x000b1; 0.5&#x000b0;C from the spline reconstruction of (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>)], we suggest that the effects of air-sea disequilibrium may be negligible. In any event, the overall GMOT warming magnitude is comparable to the increase in GMSST, leading to a deglacial ocean HSE of ~0.7 to 0.9, which is much closer to 1 (~1) (<xref rid="F1" ref-type="fig">Fig. 1D</xref>) compared to modern HSE. Furthermore, observations show that the HSE exceeds 1 during the millennial-scale deglacial events Heinrich Stadial 1 (HS1; ~18 to 14.7 ka) and the Younger Dryas (YD; 12.9 to 11.5 ka) (<xref rid="F1" ref-type="fig">Fig. 1D</xref>).</p><fig position="float" id="F1" fig-type="image" specific-use="distribute"><label>Fig. 1.</label><caption><title>Model-data comparison for deglacial ocean temperature evolution.</title><p>(<bold>A</bold>) Deglacial forcings in iTRACE: June solar insolation (SOLIN) at 45&#x000b0;N (orange), atmospheric CO<sub>2</sub> concentration (green) (<xref rid="R70" ref-type="bibr"><italic toggle="yes">70</italic></xref>), and meltwater fluxes (MWF) in the Northern (black) and Southern (gray) hemispheres. (<bold>B</bold>) Deglacial GMSST as deviations from PI in iTRACE (red line; centennial mean) and proxy-based reconstructions (blue) (<xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>, <xref rid="R20" ref-type="bibr"><italic toggle="yes">20</italic></xref>) and a reanalysis product (black) (<xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>). Reconstructions of the LGM GMSST cooling from Tierney <italic toggle="yes">et al.</italic> (<xref rid="R21" ref-type="bibr"><italic toggle="yes">21</italic></xref>) without (orange) and with data assimilation (DA) (green, with 95% confidence interval) and from Clark <italic toggle="yes">et al.</italic> (<xref rid="R22" ref-type="bibr"><italic toggle="yes">22</italic></xref>) (purple) are also shown. Shading/error bars: 1&#x003c3; uncertainty. (<bold>C</bold>) Deglacial GMOT as deviations from PI in iTRACE (red line; centennial mean) and our proxy-based global ocean temperature stack (orange line, Materials and Methods) as well as by noble gas&#x02013;based GMOT reconstructions (blue) (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>) in spline (line) and samples (dots) version. Also shown are DOT reconstructions for the last deglaciation (green squares) (<xref rid="R15" ref-type="bibr"><italic toggle="yes">15</italic></xref>) and for the LGM mean (blue and gray triangles) (<xref rid="R16" ref-type="bibr"><italic toggle="yes">16</italic></xref>, <xref rid="R23" ref-type="bibr"><italic toggle="yes">23</italic></xref>). Note that the LGM estimates in (B) and (C) represent averages over the LGM interval. (<bold>D</bold>) Ocean HSE in proxy reconstructions (blue) and in iTRACE (red). HSE is calculated as &#x02206;GMOT/&#x02206;GMSST with a threshold of 0.1&#x000b0;C for both &#x02206;GMSST and &#x02206;GMOT (relative to the LGM state). For proxy-based HSE, GMSST is from Shakun <italic toggle="yes">et al.</italic> (<xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>) and Marcott <italic toggle="yes">et al.</italic> (<xref rid="R20" ref-type="bibr"><italic toggle="yes">20</italic></xref>), and GMOT is from Shackleton <italic toggle="yes">et al.</italic> (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>). ppm, parts per million.</p></caption><graphic xlink:href="sciadv.adp5156-f1" position="float"/></fig><p>These observations raise several questions: What mechanisms are responsible for ocean heat uptake/storage and how large can the ocean HSE be? In particular, the mechanisms responsible for the large HSE during the last deglaciation (<xref rid="F1" ref-type="fig">Fig. 1D</xref>) are puzzling. Given the large volume of deep and abyssal waters (below 2000 m), the conventional view in paleoceanography is that warming of their source waters in the Southern Ocean and North Atlantic (<xref rid="R17" ref-type="bibr"><italic toggle="yes">17</italic></xref>, <xref rid="R24" ref-type="bibr"><italic toggle="yes">24</italic></xref>&#x02013;<xref rid="R26" ref-type="bibr"><italic toggle="yes">26</italic></xref>) would lead to a large increase in GMOT since the LGM. During the last deglaciation, however, proxy records suggest these source waters, especially those for the Antarctic Bottom water, were largely covered by sea ice in winter (<xref rid="R27" ref-type="bibr"><italic toggle="yes">27</italic></xref>, <xref rid="R28" ref-type="bibr"><italic toggle="yes">28</italic></xref>) when deep water forms, such that their temperatures should have remained near the freezing point (~&#x02212;1.8&#x000b0;C). We would thus expect a much weaker warming of the deep ocean than the surface ocean during the last deglaciation with an HSE much less than 1.</p><p>Here, we combine a transient climate simulation from the LGM to mid-Holocene (MH; 6 ka) with new proxy-based DOT reconstructions to show that the deglacial ocean heat storage is enhanced in intermediate-depth waters in response to increasing greenhouse gases (GHGs) and retreating ice sheets as well as reductions in the Atlantic meridional overturning circulation (AMOC) forced by meltwater. The resulting strong warming at these depths then substantially increases ocean HSE throughout the last deglaciation.</p></sec><sec sec-type="results" disp-level="1"><title>RESULTS</title><sec disp-level="2"><title>Enhanced deglacial ocean heat storage by warming of intermediate waters</title><p>To understand the deglacial ocean HSE, we first examine results from our isotope-enabled TRAnsient Climate Evolution (iTRACE) simulation which was performed using the Community Earth System Model version 1.3 (iCESM1) (<xref rid="R29" ref-type="bibr"><italic toggle="yes">29</italic></xref>). The simulation was forced by reconstructed ice sheets, solar insolation associated with orbital configurations (ORB), GHGs, and meltwater fluxes (MWF) (Materials and Methods) (<xref rid="R30" ref-type="bibr"><italic toggle="yes">30</italic></xref>). Starting from the LGM, our simulated GMSST and GMOT both increase by ~2.5&#x000b0;C during HS1, plateau during the B&#x000f8;lling-Aller&#x000f8;d (14.7 to 12.9 ka), and then increase again by ~1&#x000b0;C during the YD before reaching the relatively stable Holocene state, corresponding to an ocean HSE of ~1 for the LGM-MH transition (<xref rid="F1" ref-type="fig">Fig. 1, B to D</xref>). These changes in the timing and magnitude of GMSST and GMOT largely follow proxy reconstructions (<xref rid="F1" ref-type="fig">Fig. 1, B and C</xref>) (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>, <xref rid="R16" ref-type="bibr"><italic toggle="yes">16</italic></xref>&#x02013;<xref rid="R18" ref-type="bibr"><italic toggle="yes">18</italic></xref>, <xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>&#x02013;<xref rid="R22" ref-type="bibr"><italic toggle="yes">22</italic></xref>) and a reanalysis product (<xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>). The comparable deglacial (MH-LGM) changes of GMOT and GMSST (i.e., HSE of ~1) is robust across climate models as shown in another transient deglacial simulation TraCE-21k (Materials and Methods) (<xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>), a series of time-slice equilibrium simulations for the last deglaciation (<xref rid="R33" ref-type="bibr"><italic toggle="yes">33</italic></xref>), and equilibrium simulations in most Paleoclimate Modelling Intercomparison Project Phase 3 (PMIP3) models (<xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>) and in iCESM1, regardless of their differing climate sensitivities (fig. S1 and table S1).</p><p>Our model results show that the pattern of deglacial warming in the ocean interior is far from uniform (<xref rid="F2" ref-type="fig">Fig. 2</xref> and fig. S2A). As expected, we find that the global zonal mean MH-LGM temperature change in the abyss is indeed smaller than GMSST change (<xref rid="F2" ref-type="fig">Fig. 2A</xref>) due to source waters being largely covered by sea ice (<xref rid="F3" ref-type="fig">Fig. 3A</xref>). The interior warming is instead dominated by a core region of intermediate waters (300 to 1500 m) extending northward across the equator from the Southern Ocean, where the warming is greater than the GMSST warming by up to two times. This intermediate-depth warming occurs primarily in the Indo-Pacific Oceans which account for ~70% of the global ocean volume (<xref rid="F2" ref-type="fig">Fig. 2B</xref> and fig. S2B). A secondary core region of warming occurs at intermediate to mid-depths (300 to 3000 m) around the northern subpolar region (<xref rid="F2" ref-type="fig">Fig. 2A</xref>) which is caused predominantly by warming in the Atlantic sector (<xref rid="F2" ref-type="fig">Fig. 2C</xref>). While cores of warming in the Indo-Pacific and Atlantic reach different depths, these cores are related in that they both represent the depth of penetration of intermediate/deep water masses sourced at the surface in these regions. The overall warming of the global ocean is stronger than GMSST warming in the upper half of the ocean but similar to or weaker than GMSST warming in the lower half of the ocean, with the resulting GMOT warming being comparable to that of GMSST (HSE of ~1; <xref rid="F1" ref-type="fig">Fig. 1D</xref>). A similar vertical structure of warming with an even greater amplitude can also be seen at some other times, notably at HS1 (relative to LGM) with a greater warming contribution from the Atlantic sector (<xref rid="F2" ref-type="fig">Fig. 2, D to F</xref>), corresponding to an HSE greater than 1 (<xref rid="F1" ref-type="fig">Fig. 1D</xref>). Last, this ocean warming pattern of MH-LGM, accompanied by the large HSE, is also robust across most PMIP3 models (fig. S3 and table S1; Materials and Methods).</p><fig position="float" id="F2" fig-type="image" specific-use="distribute"><label>Fig. 2.</label><caption><title>Simulated and reconstructed deglacial subsurface temperature changes.</title><p>(<bold>A</bold> to <bold>C</bold>) Normalized zonal mean ocean temperature change between the MH (6.5 to 6 ka mean) and LGM (20 to 19 ka mean) states (T*, divided by MH-LGM GMSST change) in the global ocean (A), Indo-Pacific (B), and Atlantic (C). Contours in (A) show overturning stream function in the MH (interval of 4 Sv). (<bold>D</bold> to <bold>F</bold>) As (A) to (C) but for HS1 (16 to 15 ka mean) minus LGM. Symbols in (A) to (C) show location of sites used in our regional stack analysis. (<bold>G</bold> and <bold>H</bold>) Regional stacks for the Indo-Pacific (G) and Atlantic (H) (shading: 1&#x003c3; uncertainty; Materials and Methods). Also shown in (G) and (H) is the global stack for comparison. Note that the classification of water depths used in (G) and (H) are approximate since the sites are arranged not only by depth but also by latitude to assess the simulated pattern.</p></caption><graphic xlink:href="sciadv.adp5156-f2" position="float"/></fig><fig position="float" id="F3" fig-type="image" specific-use="distribute"><label>Fig. 3.</label><caption><title>Simulated deglacial surface temperature changes.</title><p>(<bold>A</bold>) Changes between the MH-LGM in annual mean SAT (green contour, interval of 5&#x000b0;C) and annual mean SST (color shading, &#x000b0;C). Blue and red lines indicate sea ice edge (SIC; defined as 15% annual sea ice coverage) in the LGM (blue) and MH (red), respectively. (<bold>B</bold>) Zonal mean change of annual SST. (<bold>C</bold>) As (B) but for SAT. (<bold>D</bold> to <bold>F</bold>) As (A) to (C) but for changes between HS1 and the LGM. Blue and red lines in (D) indicate SIC in the LGM (blue) and HS1 (red), respectively. Also shown in (B) and (C) are temperature changes in a reanalysis product (dashed lines) (<xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>).</p></caption><graphic xlink:href="sciadv.adp5156-f3" position="float"/></fig><p>Although existing global DOT (<xref rid="R15" ref-type="bibr"><italic toggle="yes">15</italic></xref>) and GMOT (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>) proxy reconstructions support a large deglacial ocean HSE (<xref rid="F1" ref-type="fig">Fig. 1D</xref>), they are unable to constrain the vertical temperature structure simulated in iTRACE (<xref rid="F2" ref-type="fig">Fig. 2, A to C</xref>). We addressed this issue by reconstructing deglacial &#x02206;DOT from 119 globally distributed, well-dated benthic &#x003b4;<sup>18</sup>O (&#x003b4;<sup>18</sup>O<sub>b</sub>) records archived in the Ocean Circulation and Carbon Cycling (OC3) database (<xref rid="F2" ref-type="fig">Fig. 2, B and C</xref>) (Materials and Methods) (<xref rid="R35" ref-type="bibr"><italic toggle="yes">35</italic></xref>). The site depths provided with the records cover intermediate to abyssal waters. We derived &#x02206;DOT by accounting for changes in the &#x003b4;<sup>18</sup>O of seawater (&#x003b4;<sup>18</sup>O<sub>sw</sub>) associated with the decrease in global ice volume. Independently derived &#x02206;DOT reconstructions that are available at several of our sites show similar changes as in our reconstructions (fig. S4). We also find that our basin-weighted global mean &#x02206;DOT (&#x02206;GMDOT) stack is in good agreement with the noble gas&#x02013;based &#x02206;GMOT reconstructions (<xref rid="F1" ref-type="fig">Fig. 1C</xref>), consistent with a recent assessment of the temperature and land ice seawater contributions to the global &#x003b4;<sup>18</sup>O<sub>b</sub> record (Materials and Methods) (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>). This agreement at local and global scales suggests that any effects of hydrographic changes on &#x003b4;<sup>18</sup>O<sub>sw</sub> were negligible (Materials and Methods).</p><p>To assess the vertical temperature structure simulated by iTRACE, we constructed regional &#x02206;DOT stacks from sites occurring in the areas where simulated ocean temperatures show lesser, similar, or greater amounts of change than GMSST (<xref rid="F2" ref-type="fig">Fig. 2, B and C</xref>). The zonal plots in <xref rid="F2" ref-type="fig">Fig. 2</xref> identify the simulated vertical temperature changes between the MH and LGM (<xref rid="F2" ref-type="fig">Fig. 2, A to C</xref>) and HS1 and LGM (<xref rid="F2" ref-type="fig">Fig. 2, D to F</xref>). Overall, the iTRACE stacks follow the reconstructed deglacial temperature evolution, although temperature variations at intermediate depths caused by AMOC reductions are overestimated in amplitude in the model (fig. S5). In the Atlantic basin, the regional stack showing the greatest warming corresponds to the area of greatest simulated warming, in the intermediate to mid-depths (generally &#x0003c;3000 m and &#x0003e;0&#x000b0;). Here, warming above &#x02206;GMDOT begins at the start of HS1 with the subsequent temperature evolution exhibiting pronounced millennial-scale variability (<xref rid="F2" ref-type="fig">Fig. 2H</xref>). The regional stack representing the remaining Atlantic basin north of 30&#x000b0;S is consistent with iTRACE in showing less warming beyond the core region of greatest warming. Our stacks from the Pacific basin similarly support the vertical structure in the iTRACE simulation, with greater warming than &#x02206;GMDOT at intermediate depths (&#x0003c;1500 m), little difference at mid-depths, and less warming than &#x02206;GMDOT in the abyss (<xref rid="F2" ref-type="fig">Fig. 2G</xref>). Further support for this vertical temperature structure is suggested from regional &#x003b4;<sup>18</sup>O<sub>b</sub> stacks constructed in (<xref rid="R36" ref-type="bibr"><italic toggle="yes">36</italic></xref>), with sites from 1000 to 2000 m depth being consistently lighter (i.e., warmer) than deeper sites (fig. S6). We thus conclude that the data support the iTRACE finding that the large HSE is caused by strong warming in the intermediate-depth waters.</p></sec><sec disp-level="2"><title>Enhanced deglacial HSE by GHGs and ice sheet forcing</title><p>Here, we show that substantial warming of intermediate-depth waters can be dynamically related to surface warming in response to GHGs and ice sheet forcing. In iTRACE, annual SSTs warm globally from the LGM to the MH except in the polar regions, with the greatest SST warming (~6&#x000b0;C) centered on ~50&#x000b0;S in the southern oceans and ~45&#x000b0;N in the North Pacific and North Atlantic oceans (<xref rid="F3" ref-type="fig">Fig. 3, A and B</xref>). A similar surface pattern is seen in proxy data (<xref rid="R37" ref-type="bibr"><italic toggle="yes">37</italic></xref>&#x02013;<xref rid="R39" ref-type="bibr"><italic toggle="yes">39</italic></xref>), combined data-model (data assimilation) reanalysis (<xref rid="F3" ref-type="fig">Fig. 3, B and C</xref>) (<xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>, <xref rid="R40" ref-type="bibr"><italic toggle="yes">40</italic></xref>, <xref rid="R41" ref-type="bibr"><italic toggle="yes">41</italic></xref>), and PMIP3 model simulations (fig. S7).</p><p>The deglacial SST warming pattern is forced primarily by increasing GHGs and retreating Northern Hemisphere (NH) ice sheets. This is demonstrated by the strong similarity of the SST warming pattern in iTRACE (<xref rid="F3" ref-type="fig">Fig. 3, A and B</xref>) and in the sensitivity experiment forced just by ice sheets, orbital forcing, and GHGs [continental ice sheets (ICE) + ORB + GHG] (Materials and Methods) (fig. S8). Radiative forcing from GHGs causes global surface warming that is characterized by polar amplification toward both poles in surface air temperature (SAT) (<xref rid="F3" ref-type="fig">Fig. 3, A and C</xref>, and fig. S8, D and F) (<xref rid="R42" ref-type="bibr"><italic toggle="yes">42</italic></xref>). However, at high latitudes in both hemispheres, the ocean surface is largely covered by sea ice, especially in the cold season (fig. S9) when deep water masses are formed by deep convection, such that SSTs remain around the freezing point with little change during the deglaciation (<xref rid="F3" ref-type="fig">Fig. 3, A and B</xref>, and figs. S8 and S9). This leads to peak SST warming in the mid-to-subpolar latitudes, in contrast to the peak SAT warming toward both poles. In the North Atlantic, warming of newly exposed surface waters in the Greenland-Iceland-Norwegian Seas forms another SST warming peak of 6&#x000b0;C at ~60&#x000b0;N (<xref rid="F3" ref-type="fig">Fig. 3, A and B</xref>, and figs. S7 to S9). At the same time, the lowered elevation and reduced albedo of retreating NH ice sheets induce surface warming over NH continents which is then advected downstream to the North Atlantic and North Pacific, enhancing peak SST warming at 45&#x000b0;N (<xref rid="F3" ref-type="fig">Fig. 3, A and B</xref>, and fig. S10, D to F). This response is confirmed by the sensitivity experiment ICE which is forced only by ice sheet change (fig. S10 and Materials and Methods). Peak SST warming at these latitudes is then ventilated into the ocean interior (fig. S8, A to C) mainly by the mean subduction (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>, <xref rid="R44" ref-type="bibr"><italic toggle="yes">44</italic></xref>), forming the maximum subsurface warming centered in the intermediate waters, primarily in the Antarctic Intermediate Water. The deeper warming in the North Atlantic associated with the mean North Atlantic Deep Water (NADW) formation does not contribute substantially to the GMOT change due to its small volume (fig. S8). Notably, the strong SST warming remains colocated with strong ventilation regions throughout the deglaciation (fig. S11) and highly correlated with heat flux into the ocean in mid-latitude, wind-driven subduction regions, thus enhancing the intermediate ocean heat storage (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>). Even with homogeneous surface warming, as the deep-water formation sites are largely ice covered, the intermediate water masses will enhance the HSE because they represent the main remaining pathway of ventilating the global ocean. Last, our sensitivity experiments show that orbital forcing has only a minor effect on global ocean temperature change during the last deglaciation (<xref rid="F4" ref-type="fig">Fig. 4B</xref>).</p><fig position="float" id="F4" fig-type="image" specific-use="distribute"><label>Fig. 4.</label><caption><title>Simulated and reconstructed deglacial evolution of AMOC and ocean temperature changes.</title><p>(<bold>A</bold>) AMOC transport simulated in iTRACE (red) and implied in observed <sup>231</sup>Pa/<sup>230</sup>Th from Bermuda Rise sediments (black) (<xref rid="R46" ref-type="bibr"><italic toggle="yes">46</italic></xref>). (<bold>B</bold>) GMSST (dotted line) and GMOT (solid line) change (&#x000b0;C, relative to the LGM state) in iTRACE (ICE + ORB + GHG + MWF) and the other three factorized-forcing sensitivity experiments. (<bold>C</bold>) As (B) but for ocean HSE. HSE is calculated as &#x02206;GMOT/&#x02206;GMSST with a threshold of 0.1&#x000b0;C for both &#x02206;GMSST and &#x02206;GMOT (both relative to the LGM state).</p></caption><graphic xlink:href="sciadv.adp5156-f4" position="float"/></fig></sec><sec disp-level="2"><title>Enhanced deglacial HSE by AMOC weakening</title><p>Although we find substantial warming of intermediate waters by surface warming associated with GHGs and ice sheet forcing, our sensitivity experiments demonstrate that reaching an ocean HSE of &#x02265;1 throughout the early deglaciation requires additional subsurface warming that is caused by weakening of the AMOC in response to meltwater forcing (<xref rid="F4" ref-type="fig">Fig. 4</xref>). Paleoceanographic proxies and modeling studies suggest that meltwater forcing from NH ice sheets impeded NADW formation during HS1 and the YD, causing a reduction in the AMOC (<xref rid="F4" ref-type="fig">Fig. 4A</xref>; <xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>, <xref rid="R45" ref-type="bibr"><italic toggle="yes">45</italic></xref>, <xref rid="R46" ref-type="bibr"><italic toggle="yes">46</italic></xref>). In response to the weakened AMOC, the northward heat transport was reduced, forming the SST bipolar seesaw pattern of NH cooling and SH warming (<xref rid="F3" ref-type="fig">Fig. 3, D to F</xref>, and figs. S12A and S13A) (<xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>, <xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>, <xref rid="R47" ref-type="bibr"><italic toggle="yes">47</italic></xref>&#x02013;<xref rid="R52" ref-type="bibr"><italic toggle="yes">52</italic></xref>). This SST pattern does not change GMSSTs substantially because the NH SST response nearly cancels the opposite SH SST response, as shown by the small increase in GMSST during HS1 and the YD that accompanied an AMOC reduction (~0.5&#x000b0;C; comparing iTRACE with ICE + ORB + GHG) (<xref rid="F4" ref-type="fig">Fig. 4, A and B</xref>). Furthermore, the small GMSST change caused by the AMOC reduction quickly disappears after the end of the meltwater forcing, as seen in GMSSTs being nearly the same after 10 ka in the experiments with (iTRACE) and without (ICE + ORB + GHG) meltwater forcing, such that there is little net effect of meltwater forcing on GMSST in the MH (<xref rid="F4" ref-type="fig">Fig. 4B</xref>).</p><p>In contrast to this GMSST response, a reduction of the AMOC generates a longer-term subsurface warming in both hemispheres. For example, during HS1, the reduced North Atlantic deep convection reduces the vertical mixing between colder surface and warmer subsurface waters, resulting in a cooling in the North Atlantic surface but a warming in the subsurface, which is a robust feature in reconstructions (<xref rid="R50" ref-type="bibr"><italic toggle="yes">50</italic></xref>&#x02013;<xref rid="R52" ref-type="bibr"><italic toggle="yes">52</italic></xref>) and model simulations (<xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>, <xref rid="R53" ref-type="bibr"><italic toggle="yes">53</italic></xref>, <xref rid="R54" ref-type="bibr"><italic toggle="yes">54</italic></xref>). The warming signal propagates southward along the Deep Western Boundary Current into the South Atlantic in hundreds of years, before leaking northward into other basins via the Southern Ocean (<xref rid="R55" ref-type="bibr"><italic toggle="yes">55</italic></xref>). This leads to strong subsurface warming that extends to mid-depths over much of the global ocean that persists throughout HS1 (<xref rid="F2" ref-type="fig">Figs. 2, D to F</xref>, and <xref rid="F4" ref-type="fig">4B</xref> and figs. S12 and S13) (<xref rid="R55" ref-type="bibr"><italic toggle="yes">55</italic></xref>). The strong subsurface warming may have also warmed abyssal waters through circulation and mixing processes (figs. S12E and S13E). In iTRACE, the weakening AMOC throughout HS1 contributes 2&#x000b0;C warming to GMOT, while the other combined forcings contribute another 0.5&#x000b0;C warming (<xref rid="F4" ref-type="fig">Fig. 4B</xref>). A similar AMOC-related GMOT warming also occurs during the YD but with a smaller magnitude due to its shorter duration (<xref rid="F4" ref-type="fig">Fig. 4, A and B</xref>). As such, during the early deglaciation, nearly 50% (1.8&#x000b0;C) of the total simulated GMOT increase (3.4&#x000b0;C) is contributed by the AMOC reduction (<xref rid="F4" ref-type="fig">Fig. 4B</xref>). By comparison, the HSE in the ICE + ORB + GHG experiment increases monotonically from ~0.2 during HS1 to ~0.9 during the MH (<xref rid="F4" ref-type="fig">Fig. 4C</xref>), reflecting a weaker ocean interior warming from the LGM to MH than in iTRACE (<xref rid="F2" ref-type="fig">Fig. 2, A to C</xref>, versus fig. S8, A to C). Given its small effect on GMSST but strong and long-term effect on GMOT, a decreased AMOC is thus highly effective in enhancing the HSE during the entire deglaciation, with particularly large increases during HS1 and the YD (<xref rid="F1" ref-type="fig">Figs. 1D</xref> and <xref rid="F4" ref-type="fig">4C</xref>). Moreover, in iTRACE, the heat accumulated in the global ocean by the AMOC reduction lasts for &#x0003e;4000 years after the termination of major meltwater forcing (<xref rid="F1" ref-type="fig">Fig. 1A</xref>), with a notable residual of 0.5&#x000b0;C in &#x02206;GMOT persisting until the MH (<xref rid="F4" ref-type="fig">Fig. 4B</xref>).</p></sec></sec><sec sec-type="discussion" disp-level="1"><title>DISCUSSION</title><p>Our iTRACE simulations and new proxy reconstructions of &#x02206;DOT demonstrate that the deglacial ocean HSE was substantially enhanced by subsurface warming at intermediate depths through the effects of increasing GHGs and retreating ice sheets on surface warming as well as by a weakening of the AMOC in response to meltwater forcing. We emphasize several implications of these results to our understanding of changes in MOT. First, we note that the warming in the Indo-Pacific Ocean around 2000 m is closest to the global mean value (fig. S2B), suggesting that reconstructions of past &#x02206;DOT from similar locations would closely monitor &#x02206;GMOT. Second, our results showing that millennial-scale AMOC variability and its lingering effect on ocean warming substantially enhanced ocean HSE to &#x0003e;1 suggest that persistent AMOC variability throughout a glacial cycle would do the same, whereas reduced variability would cause HSE to be &#x0003c;1. Third, our analyses suggest that different patterns of surface warming associated with different timescales may cause a substantially different ocean HSE. For example, maximum ocean heat uptake today is occurring at mid-latitudes (<xref rid="R5" ref-type="bibr"><italic toggle="yes">5</italic></xref>), but under the short-term anthropogenic forcing, the dominant large-scale surface warming is found in subtropical latitudes (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>, <xref rid="R56" ref-type="bibr"><italic toggle="yes">56</italic></xref>), which dominates the GMSST change given the large surface area of the subtropical ocean. Because transmission of this subtropical warming to depth is limited by the shallow subtropical cell and can only warm to depths &#x0003c;500 m, it has damped ocean heat uptake efficiency (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>) and thus contributed little to enhancing HSE at this early stage, leading to an HSE of &#x0003c;&#x0003c;1 (fig. S14). On millennial and longer (near-equilibration) timescales such as during the last deglaciation, if we assume that areas of strong surface warming remained colocated with globally dominant ventilation regions in mid- to subpolar latitudes like in iTRACE, then we should expect ventilation of the thicker intermediate-depth waters to enhance HSE. As a result, the ocean will sequester more heat from the atmosphere, potentially slowing the rate of atmospheric warming. Our study therefore suggests that the pattern effect not only influences climate sensitivity through atmospheric feedbacks (<xref rid="R57" ref-type="bibr"><italic toggle="yes">57</italic></xref>) but also influences ocean heat uptake/storage and its efficiency which can substantially modulate transient climate change (<xref rid="R58" ref-type="bibr"><italic toggle="yes">58</italic></xref>) and the Earth&#x02019;s energy budget (<xref rid="R59" ref-type="bibr"><italic toggle="yes">59</italic></xref>). In the future, if global warming continues as in the case of the longer-term (centennial to millennial timescale) warming investigated by Rugenstein <italic toggle="yes">et al.</italic> (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>), the HSE could be further enhanced (fig. S14) as the strong surface warming extends further poleward to subpolar latitudes where winter sea ice coverage will be substantially reduced.</p></sec><sec sec-type="materials|methods" disp-level="1"><title>MATERIALS AND METHODS</title><sec disp-level="2"><title>Proxy &#x02206;DOT records</title><p>We reconstructed deglacial &#x02206;DOT from 119 globally distributed, well-dated benthic &#x003b4;<sup>18</sup>O (&#x003b4;<sup>18</sup>O<sub>b</sub>) records. We selected 108 of these records from the 287 records that are archived in the OC3 database (<xref rid="R35" ref-type="bibr"><italic toggle="yes">35</italic></xref>) based on their resolution and <sup>14</sup>C age control. We also used the following &#x003b4;<sup>18</sup>O<sub>b</sub> records that are not in the OC3 database: ENAM93-21 (<xref rid="R60" ref-type="bibr"><italic toggle="yes">60</italic></xref>), EW9302-24GGC (<xref rid="R61" ref-type="bibr"><italic toggle="yes">61</italic></xref>), EW9302-25GGC (<xref rid="R61" ref-type="bibr"><italic toggle="yes">61</italic></xref>), EW9302-26GGC (<xref rid="R61" ref-type="bibr"><italic toggle="yes">61</italic></xref>), EW9302-2JPC (<xref rid="R50" ref-type="bibr"><italic toggle="yes">50</italic></xref>), MD95-2010 (<xref rid="R62" ref-type="bibr"><italic toggle="yes">62</italic></xref>), RAPID-10-1P (<xref rid="R62" ref-type="bibr"><italic toggle="yes">62</italic></xref>), U1308 (<xref rid="R62" ref-type="bibr"><italic toggle="yes">62</italic></xref>), KNR166-2-26JPC (<xref rid="R63" ref-type="bibr"><italic toggle="yes">63</italic></xref>), KNR197-3-46CDH (<xref rid="R63" ref-type="bibr"><italic toggle="yes">63</italic></xref>), and M35003-4 (<xref rid="R64" ref-type="bibr"><italic toggle="yes">64</italic></xref>).</p><p>The average resolution of the 119 records is 520 &#x000b1; 290 years, with 80 records having a resolution &#x0003c;600 years, and we interpolated all data to a 500-year resolution to reflect the average resolution of the data. Age models of all records used here are based on calibrated <sup>14</sup>C ages as opposed to some records in the database with age models derived by alignment to the LR04 &#x003b4;<sup>18</sup>O<sub>b</sub> stack. For most records, where the age models of records are based on several <sup>14</sup>C calibration schemes, we used the one based on the most recent calibration. For the following cores, we used the earlier Jonkers age model in the OC3 database as it was more consistent with other constraints: ODP-162-984, GIK23415_9, and SO213-2-82-1.</p><p>Benthic &#x003b4;<sup>18</sup>O records (&#x003b4;<sup>18</sup>O<sub>b</sub>) reflect some combination of the temperature of foraminifera calcification (&#x003b4;<sup>18</sup>O<sub>T</sub>) and the &#x003b4;<sup>18</sup>O of seawater (&#x003b4;<sup>18</sup>O<sub>sw</sub>), which in turn reflects global land ice volume and salinity. We derived &#x003b4;<sup>18</sup>O<sub>T</sub> by subtracting changes in &#x003b4;<sup>18</sup>O<sub>sw</sub> associated with the decrease in global ice volume from &#x003b4;<sup>18</sup>O<sub>b</sub> and assessed possible additional salinity contributions by comparison to independently derived temperature reconstructions (see below). We used the LGM constraints of a 1&#x02030; increase in &#x003b4;<sup>18</sup>O<sub>sw</sub> as established by pore water measurements in deep-sea cores (<xref rid="R65" ref-type="bibr"><italic toggle="yes">65</italic></xref>) and a sea-level lowering of &#x02212;134 m (<xref rid="R66" ref-type="bibr"><italic toggle="yes">66</italic></xref>) to derive the relationship 0.0075&#x02030; m<sup>&#x02212;1</sup> and applied it to a modeled sea-level reconstruction for the last 21 kyr (<xref rid="R66" ref-type="bibr"><italic toggle="yes">66</italic></xref>). The uncertainties on these constraints are small, and so we do not propagate them into our results as they would not affect our conclusions. We then converted the resulting &#x003b4;<sup>18</sup>O<sub>T</sub> to temperature (&#x02206;DOT) using the calibration from Marchitto <italic toggle="yes">et al.</italic> (<xref rid="R67" ref-type="bibr"><italic toggle="yes">67</italic></xref>) for <italic toggle="yes">Cibicidoides</italic> (<italic toggle="yes">n</italic> = 118) and <italic toggle="yes">Uvigerina</italic> (<italic toggle="yes">n</italic> = 1):</p><p><italic toggle="yes">T</italic> = [0.245&#x02013;SQRT (0.045461 + 0.0044 &#x003b4;<sup>18</sup>O<sub>T</sub>)]/0.0022.</p><p>The &#x02206;DOT time series was then normalized to 20 ka. We calculated the uncertainty on individual site records through a Monte Carlo simulation by using the average uncertainty (300 years) of the calibrated age models at each time interval (0 to 20 ka at 500-year resolution). We generated 1000 age models for each site by randomly adding or subtracting a Gaussian distribution of 300 years to each time interval and then created 1000 temperature records using the 1000 random age models. We then took the average and SD (1&#x003c3;) of the 1000 temperature records to calculate the Monte Carlo version of our temperature record.</p><p>To assess the vertical temperature structure simulated by iTRACE, we constructed regional &#x02206;DOT stacks from sites occurring in the areas where simulated ocean temperatures show lesser, similar, or greater amounts of change than GMSST (<xref rid="F2" ref-type="fig">Fig. 2, B to F</xref>). We used the jackknife procedure to recalculate each regional stack 1000 times after randomly removing 50% of the records in each iteration, with the SD of the resulting stacks being taken as the 1&#x003c3; age uncertainty. We applied an analytical uncertainty of 0.04&#x02030; to each stack, converted to temperature using 0.25 &#x02030; &#x000b0;C<sup>&#x02212;1</sup> (<xref rid="R68" ref-type="bibr"><italic toggle="yes">68</italic></xref>), resulting in an uncertainty of 0.16&#x000b0;C. Similarly, we applied a &#x003b4;<sup>18</sup>Osw error of 0.1&#x02030; (<xref rid="R65" ref-type="bibr"><italic toggle="yes">65</italic></xref>) to each stack corresponding to a 0.4&#x000b0;C uncertainty. We summed these uncertainties in quadrature to derive the total uncertainty on each regional stack.</p><p>We also calculated regional &#x02206;DOT stacks and their uncertainties (as described above) for the Atlantic and Indo-Pacific Oceans (there are no data from the Southern Ocean), weighted each by the respective volume of their ocean basins and normalized relative to the total ocean volume (26 and 74%, respectively) (fig. S2B), and then stacked them to generate the &#x02206;GMDOT stack. Similarly, to generate the global stack uncertainty, we weighted the jackknife regional uncertainties for each regional stack and added these in quadrature to the &#x003b4;<sup>18</sup>O<sub>b</sub> analytical error of 0.16&#x000b0;C and the &#x003b4;<sup>18</sup>Osw of porewater error of 0.4&#x000b0;C to derive the uncertainty on the entire stack.</p><p>We find that independently derived &#x02206;DOT reconstructions that are available at several of our sites show similar changes as in our reconstructions (fig. S4). Given our inferred contribution of &#x003b4;<sup>18</sup>O<sub>sw</sub> from global ice sheets, this agreement suggests a negligible contribution from local salinity changes at these sites. We also find that our basin-weighted &#x02206;GMDOT stack is in good agreement with the noble gas&#x02013;based &#x02206;GMOT reconstructions (<xref rid="F1" ref-type="fig">Fig. 1C</xref>).</p><p>Shackleton <italic toggle="yes">et al.</italic> (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>) converted the noble gas&#x02013;based &#x02206;GMOT reconstructions to &#x003b4;<sup>18</sup>O<sub>T</sub> and estimated the &#x003b4;<sup>18</sup>O<sub>sw</sub> component from land ice as &#x00394;&#x003b4;<sup>18</sup>O<sub>ice volume</sub> = &#x003b4;<sup>18</sup>O<sub>ice</sub>/(D/&#x00394;SL &#x02212; 1), where &#x003b4;<sup>18</sup>O<sub>ice</sub> is their assumed mean ice sheet &#x003b4;<sup>18</sup>O (&#x02212;30 &#x000b1; 2&#x02030;), D is the modern mean ocean depth, and &#x00394;SL is the global sea-level change from Lambeck <italic toggle="yes">et al.</italic> (<xref rid="R66" ref-type="bibr"><italic toggle="yes">66</italic></xref>). When applied to the last deglaciation, &#x00394;&#x003b4;<sup>18</sup>O<sub>ice volume</sub> is 1.02&#x02030; at 20 ka or the same as the pore water reconstruction (<xref rid="R65" ref-type="bibr"><italic toggle="yes">65</italic></xref>) used here. Summing their &#x003b4;<sup>18</sup>O<sub>T</sub> and &#x00394;&#x003b4;<sup>18</sup>O reconstructions gave a &#x003b4;<sup>18</sup>O record (predicted) that is the same, within uncertainty, as the LR04 &#x003b4;<sup>18</sup>O<sub>b</sub> record (observed) from 0 to 20 ka. The agreement of our independently derived global &#x003b4;<sup>18</sup>O<sub>T</sub> and &#x003b4;<sup>18</sup>O<sub>sw</sub> reconstructions with those in Shackleton <italic toggle="yes">et al.</italic> (<xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>) thus indicates that any additional contribution from salinity changes at the global scale is negligible.</p></sec><sec disp-level="2"><title>Model and simulations</title><p>iTRACE is a transient simulation of global climate and water isotopes during the last deglaciation (<xref rid="R30" ref-type="bibr"><italic toggle="yes">30</italic></xref>) conducted with iCESM1 (<xref rid="R29" ref-type="bibr"><italic toggle="yes">29</italic></xref>). The resolution of atmosphere and land surface is a nominal 2&#x000b0; (1.9&#x000b0; in latitude and 2.5&#x000b0; in longitude) with 30 vertical levels in the atmosphere; the resolution of the ocean and sea ice is a nominal 1&#x000b0; with 60 vertical levels in the ocean. Starting from the LGM (20 ka), four forcing factors, namely, the ICE, solar insolation associated with ORB, GHG, and MWF, were applied additively to simulate the deglacial climate change. Continental ice sheet configuration following the ICE-6G reconstruction (<xref rid="R69" ref-type="bibr"><italic toggle="yes">69</italic></xref>) was modified every 1000 year during the simulation. GHG concentrations (CO<sub>2</sub>, CH<sub>4</sub>, and N<sub>2</sub>O) were prescribed based on ice core reconstructions (<xref rid="R70" ref-type="bibr"><italic toggle="yes">70</italic></xref>). MWF was applied on the basis of sea-level reconstructions, largely following the scheme used in TraCE-21k (<xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>). Assuming linearity of the responses, the difference between different pairs of the factorized-forcing simulations can be used to estimate the impact of each individual forcing approximately. For example, (ICE + ORB + GHG + MWT) &#x02212; (ICE + ORB + GHG) isolates the effects of meltwater forcing (fig. S13). The set of iTRACE simulations have been shown to be able to reproduce many major features of the observed change of global climate and water masses during the early deglaciation (from 20 to 11 ka) (<xref rid="R30" ref-type="bibr"><italic toggle="yes">30</italic></xref>, <xref rid="R55" ref-type="bibr"><italic toggle="yes">55</italic></xref>, <xref rid="R71" ref-type="bibr"><italic toggle="yes">71</italic></xref>). Here, we used the model output of 20 to 6 ka, which is now available.</p><p>Besides iTRACE, another transient simulation TraCE-21k, the predecessor of iTRACE (<xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>, <xref rid="R72" ref-type="bibr"><italic toggle="yes">72</italic></xref>), and multiple equilibrium model simulations are also investigated. TraCE-21k was performed with a lower-resolution version of the Community Climate System Model version 3 (CCSM3). Similar to iTRACE, TraCE-21k is also forced by deglacial changes in ice sheets, solar insolation, GHGs, and MWF and captures many important features of deglacial climate in its all forcing experiment (<xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>, <xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>). More details of TraCE-21k simulation can be found in (<xref rid="R72" ref-type="bibr"><italic toggle="yes">72</italic></xref>). For equilibrium simulations, we use &#x0201c;PI,&#x0201d; &#x0201c;MH,&#x0201d; and &#x0201c;LGM&#x0201d; simulations performed with iCESM1 and seven PMIP3 models (<xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>). LongRunMIP simulations (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>) are also investigated to show the long-term ocean HSE under future anthropogenic warming.</p></sec><sec disp-level="2"><title>Calculation of GMOT, GMSST, and AMOC intensity</title><p>For model simulations, the three-dimensional ocean temperature fields are interpolated from their corresponding horizontal grids to 1&#x000b0; rectilinear latitude-longitude grids. The GMOT is calculated as the volume-weighted average over the entire ocean. GMSST is calculated as the area-weighted average over the ocean surface. Both GMOT and GMSST calculations use all ocean cells available including open sea cells and those covered by sea ice. AMOC intensity is defined as the maximum overturning stream function below 300 m over the section of 20&#x000b0; to 50&#x000b0;N in the Atlantic.</p></sec><sec disp-level="2"><title>Further model-data comparison</title><p>A further temperature-salinity diagram comparison of sites from Adkins <italic toggle="yes">et al.</italic> (<xref rid="R73" ref-type="bibr"><italic toggle="yes">73</italic></xref>) indicates that our iTRACE model faithfully reproduces the homogeneous glacial deep ocean temperature that around freezing point and larger deglacial warming (&#x0003e;4&#x000b0;C) in the deep Atlantic than in the deep Pacific and Southern Ocean (&#x0003c;2.5&#x000b0;C), similar to iTRACE (<xref rid="F2" ref-type="fig">Fig. 2, B and C</xref>) and TraCE-21k (<xref rid="R74" ref-type="bibr"><italic toggle="yes">74</italic></xref>).</p><p>There are some model-data discrepancies. Compared with observations, the evolution of the simulated GMSST experiences sharper peaks and troughs that are related to strong AMOC variability (<xref rid="F1" ref-type="fig">Figs. 1B</xref> and <xref rid="F4" ref-type="fig">4A</xref>). This high-frequency surface temperature variability, however, has little imprint in the broad global ocean temperature change, as indicated by the consistent GMOTs in iTRACE and observations. For GMSST records, the absence of these sharp peaks and troughs can be caused, partly, by the low temporal resolution and chronology uncertainty.</p><p>For PMIP3 models, we note that there are differences in the detailed ocean warming pattern, especially in the North Atlantic (fig. S3). This can be related to model differences in simulating the deep convection and the AMOC transport. Specifically, AMOC strength (relative to present day) at the LGM is highly uncertain among PMIP models (<xref rid="R75" ref-type="bibr"><italic toggle="yes">75</italic></xref>, <xref rid="R76" ref-type="bibr"><italic toggle="yes">76</italic></xref>) which will influence the temperature response at the LGM. However, as the North Atlantic only occupies a small fraction in volume, such difference makes only little differences to GMOT change.</p></sec></sec></body><back><ack><title>Acknowledgments</title><p>We acknowledge the high-performance computing support from NCAR&#x02019;s Computational and Information Systems Laboratory (CISL), Laoshan Laboratory, and the National Key Scientific and Technological Infrastructure project &#x0201c;Earth System Numerical Simulation Facility&#x0201d; (EarthLab).</p><sec><p><bold>Funding:</bold> This work was supported by National Natural Science Foundation of China (42106013 to Chenyu Zhu and 42130604 to L.W.), Science and Technology Innovation Project of Laoshan Laboratory (LSKJ202203303 to Chenyu Zhu, L.W., and J.L.), US National Science Foundation (AGS2202860 to Z.L. and OPP2103032 to P.U.C.), and US National Science Foundation Graduate Research Fellowship (2234662 to S.S.).</p></sec><sec><p><bold>Author contributions:</bold> Z.L. and P.U.C. conceived the study. Chenyu Zhu and S.S. performed the analysis. Chenyu Zhu drafted the manuscript with Z.L. Chenyu Zhu, C.H., L.W., and J.L. performed the iTRACE simulations. S.S. and P.U.C. performed the proxy data analysis. Chenguang Zhu and L.L. assisted in the model analysis. All authors discussed and revised the manuscript.</p></sec><sec><p><bold>Competing interests:</bold> The authors declare that they have no competing interests.</p></sec><sec><p><bold>Data and materials availability:</bold> All data needed to evaluate the conclusions in the paper are present in the paper and/or the Supplementary Materials. iTRACE (20 to 11 ka) and TraCE-21k data used in the present study are publicly available at <ext-link xlink:href="https://earthsystemgrid.org/dataset/ucar.cgd.ccsm4.iTRACE.html" ext-link-type="uri">https://earthsystemgrid.org/dataset/ucar.cgd.ccsm4.iTRACE.html</ext-link> and <ext-link xlink:href="https://earthsystemgrid.org/project/trace.html" ext-link-type="uri">https://earthsystemgrid.org/project/trace.html</ext-link>, respectively. PMIP3 model outputs for LGM, MH, and PI simulations can be downloaded at <ext-link xlink:href="https://aims2.llnl.gov/search/cmip5/" ext-link-type="uri">https://aims2.llnl.gov/search/cmip5/</ext-link>. LongRunMIP simulation dataset is available at <ext-link xlink:href="http://longrunmip.org/" ext-link-type="uri">http://longrunmip.org/</ext-link>. The new regional and global ocean temperature stacks are provided in the Supplementary Materials. iTRACE simulation data for <xref rid="F1" ref-type="fig">Figs. 1</xref> to <xref rid="F4" ref-type="fig">4</xref> are available at <ext-link xlink:href="https://figshare.com/authors/Chenyu_Zhu/17926523" ext-link-type="uri">https://figshare.com/authors/Chenyu_Zhu/17926523</ext-link>.</p></sec></ack><sec sec-type="supplementary-material"><title>Supplementary Materials</title><sec><title>The PDF file includes:</title><supplementary-material position="float" content-type="local-data"><caption><p>Figs. S1 to S14</p><p>Table S1</p><p>Legend for data S1</p><p>References</p></caption><media xlink:href="sciadv.adp5156_sm.pdf"/></supplementary-material></sec><sec><title>Other Supplementary Material for this manuscript includes the following:</title><supplementary-material position="float" content-type="local-data"><caption><p>Data S1</p></caption><media xlink:href="sciadv.adp5156_data_s1.zip"/></supplementary-material></sec></sec><ref-list><title>REFERENCES AND NOTES</title><ref id="R1"><label>1</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. M.</given-names>
+<surname>Gregory</surname></string-name>, <string-name><given-names>R. J.</given-names>
+<surname>Stouffer</surname></string-name>, <string-name><given-names>S. C. B.</given-names>
+<surname>Raper</surname></string-name>, <string-name><given-names>P. A.</given-names>
+<surname>Stott</surname></string-name>, <string-name><given-names>N. A.</given-names>
+<surname>Rayner</surname></string-name></person-group>, 
+<article-title>An observationally based estimate of the climate sensitivity</article-title>. <source>J. Climate</source>
+<volume>15</volume>, 
+<fpage>3117</fpage>&#x02013;<lpage>3121</lpage> (<year>2002</year>).</mixed-citation></ref><ref id="R2"><label>2</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Hansen</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Nazarenko</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Ruedy</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Sato</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Willis</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Del Genio</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Koch</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Lacis</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Lo</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Menon</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Novakov</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Perlwitz</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Russell</surname></string-name>, <string-name><given-names>G. A.</given-names>
+<surname>Schmidt</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Tausnev</surname></string-name></person-group>, 
+<article-title>Earth&#x02019;s energy imbalance: Confirmation and implications</article-title>. <source>Science</source>
+<volume>308</volume>, 
+<fpage>1431</fpage>&#x02013;<lpage>1435</lpage> (<year>2005</year>).<pub-id pub-id-type="pmid">15860591</pub-id>
+</mixed-citation></ref><ref id="R3"><label>3</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Levitus</surname></string-name>, <string-name><given-names>J. I.</given-names>
+<surname>Antonov</surname></string-name>, <string-name><given-names>T. P.</given-names>
+<surname>Boyer</surname></string-name>, <string-name><given-names>O. K.</given-names>
+<surname>Baranova</surname></string-name>, <string-name><given-names>H. E.</given-names>
+<surname>Garcia</surname></string-name>, <string-name><given-names>R. A.</given-names>
+<surname>Locarnini</surname></string-name>, <string-name><given-names>A. V.</given-names>
+<surname>Mishonov</surname></string-name>, <string-name><given-names>J. R.</given-names>
+<surname>Reagan</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Seidov</surname></string-name>, <string-name><given-names>E. S.</given-names>
+<surname>Yarosh</surname></string-name>, <string-name><given-names>M. M.</given-names>
+<surname>Zweng</surname></string-name></person-group>, 
+<article-title>World ocean heat content and thermosteric sea level change (0&#x02013;2000 m), 1955&#x02013;2010</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>39</volume>, <pub-id pub-id-type="doi">10.1029/2012GL051106</pub-id> (<year>2012</year>).</mixed-citation></ref><ref id="R4"><label>4</label><mixed-citation publication-type="other"><person-group person-group-type="author"><string-name><given-names>M.</given-names>
+<surname>Rhein</surname></string-name>, <string-name><given-names>S. R.</given-names>
+<surname>Rintoul</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Aoki</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Campos</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Chambers</surname></string-name>, <string-name><given-names>R. A.</given-names>
+<surname>Feely</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Gulev</surname></string-name>, <string-name><given-names>G. C.</given-names>
+<surname>Johnson</surname></string-name>, <string-name><given-names>S. A.</given-names>
+<surname>Josey</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Kostianoy</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Mauritzen</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Roemmich</surname></string-name>, <string-name><given-names>L. D.</given-names>
+<surname>Talley</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Wang</surname></string-name></person-group>, &#x0201c;Observations: Ocean&#x0201d; in <italic toggle="yes">Climate Change 2013: The Physical Science Basis. Contribution of Working Group I to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change</italic>, T. F. Stocker, D. Qin, G.-K. Plattner, M. Tignor, S. K. Allen, J. Boschung, A. Nauels, Y. Xia, V. Bex, P. M. Midgley, Eds. (Cambridge Univ. Press, 2013), pp. 255&#x02013;315.</mixed-citation></ref><ref id="R5"><label>5</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L.</given-names>
+<surname>Cheng</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Abraham</surname></string-name>, <string-name><given-names>K. E.</given-names>
+<surname>Trenberth</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Boyer</surname></string-name>, <string-name><given-names>M. E.</given-names>
+<surname>Mann</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Yu</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Locarnini</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Fasullo</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Zheng</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Wan</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Chen</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Feng</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Song</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Reseghetti</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Simoncelli</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Gouretski</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Chen</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Mishonov</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Reagan</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>von Schuckmann</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Pan</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Tan</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Wei</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Ren</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Cao</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Lu</surname></string-name></person-group>, 
+<article-title>New record ocean temperatures and related climate indicators in 2023</article-title>. <source>Adv. Atmos. Sci.</source>
+<volume>41</volume>, 
+<fpage>1068</fpage>&#x02013;<lpage>1082</lpage> (<year>2024</year>).</mixed-citation></ref><ref id="R6"><label>6</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E. D.</given-names>
+<surname>Galbraith</surname></string-name>, <string-name><given-names>T. M.</given-names>
+<surname>Merlis</surname></string-name>, <string-name><given-names>J. B.</given-names>
+<surname>Palter</surname></string-name></person-group>, 
+<article-title>Destabilization of glacial climate by the radiative impact of Atlantic meridional overturning circulation disruptions</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>43</volume>, 
+<fpage>8214</fpage>&#x02013;<lpage>8221</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R7"><label>7</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Shackleton</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Seltzer</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Baggenstos</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Lisiecki</surname></string-name></person-group>, 
+<article-title>Benthic &#x003b4;<sup>18</sup>O records Earth&#x02019;s energy imbalance</article-title>. <source>Nat. Geosci.</source>
+<volume>16</volume>, 
+<fpage>797</fpage>&#x02013;<lpage>802</lpage> (<year>2023</year>).</mixed-citation></ref><ref id="R8"><label>8</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>K.</given-names>
+<surname>von Schuckmann</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Mini&#x000e8;re</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Gues</surname></string-name>, <string-name><given-names>F. J.</given-names>
+<surname>Cuesta-Valero</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Kirchengast</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Adusumilli</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Straneo</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Ablain</surname></string-name>, <string-name><given-names>R. P.</given-names>
+<surname>Allan</surname></string-name>, <string-name><given-names>P. M.</given-names>
+<surname>Barker</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Beltrami</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Blazquez</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Boyer</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Cheng</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Church</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Desbruyeres</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Dolman</surname></string-name>, <string-name><given-names>C. M.</given-names>
+<surname>Domingues</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Garc&#x000ed;a-Garc&#x000ed;a</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Giglio</surname></string-name>, <string-name><given-names>J. E.</given-names>
+<surname>Gilson</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Gorfer</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Haimberger</surname></string-name>, <string-name><given-names>M. Z.</given-names>
+<surname>Hakuba</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Hendricks</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Hosoda</surname></string-name>, <string-name><given-names>G. C.</given-names>
+<surname>Johnson</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Killick</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>King</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Kolodziejczyk</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Korosov</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Krinner</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Kuusela</surname></string-name>, <string-name><given-names>F. W.</given-names>
+<surname>Landerer</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Langer</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Lavergne</surname></string-name>, <string-name><given-names>I.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lyman</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Marti</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Marzeion</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Mayer</surname></string-name>, <string-name><given-names>A. H.</given-names>
+<surname>MacDougall</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>McDougall</surname></string-name>, <string-name><given-names>D. P.</given-names>
+<surname>Monselesan</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Nitzbon</surname></string-name>, <string-name><given-names>I.</given-names>
+<surname>Otosaka</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Peng</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Purkey</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Roemmich</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Sato</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Sato</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Savita</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Schweiger</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Shepherd</surname></string-name>, <string-name><given-names>S. I.</given-names>
+<surname>Seneviratne</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Simons</surname></string-name>, <string-name><given-names>D. A.</given-names>
+<surname>Slater</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Slater</surname></string-name>, <string-name><given-names>A. K.</given-names>
+<surname>Steiner</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Suga</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Szekely</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Thiery</surname></string-name>, <string-name><given-names>M.-L.</given-names>
+<surname>Timmermans</surname></string-name>, <string-name><given-names>I.</given-names>
+<surname>Vanderkelen</surname></string-name>, <string-name><given-names>S. E.</given-names>
+<surname>Wjiffels</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Wu</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Zemp</surname></string-name></person-group>, 
+<article-title>Heat stored in the Earth system 1960&#x02013;2020: Where does the energy go?</article-title>
+<source>Earth Syst. Sci. Data</source>
+<volume>15</volume>, 
+<fpage>1675</fpage>&#x02013;<lpage>1709</lpage> (<year>2023</year>).</mixed-citation></ref><ref id="R9"><label>9</label><mixed-citation publication-type="other"><person-group person-group-type="author"><string-name><given-names>S. K.</given-names>
+<surname>Gulev</surname></string-name>, <string-name><given-names>P. W.</given-names>
+<surname>Thorne</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Ahn</surname></string-name>, <string-name><given-names>F. J.</given-names>
+<surname>Dentener</surname></string-name>, <string-name><given-names>C. M.</given-names>
+<surname>Domingues</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Gerland</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Gong</surname></string-name>, <string-name><given-names>D. S.</given-names>
+<surname>Kaufman</surname></string-name>, <string-name><given-names>H. C.</given-names>
+<surname>Nnamchi</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Quaas</surname></string-name>, <string-name><given-names>J. A.</given-names>
+<surname>Rivera</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Sathyendranath</surname></string-name>, <string-name><given-names>S. L.</given-names>
+<surname>Smith</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Trewin</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>von Schuckmann</surname></string-name>, <string-name><given-names>R. S.</given-names>
+<surname>Vose</surname></string-name></person-group>, &#x0201c;Changing state of the climate system&#x0201d; in <italic toggle="yes">Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change</italic>, V. Masson-Delmotte, P. Zhai, A. Pirani, S. L. Connors, C. P&#x000e9;an, S. Berger, N. Caud, Y. Chen, L. Goldfarb, M. I. Gomis, M. Huang, K. Leitzell, E. Lonnoy, J. B. R. Matthews, T. K. Maycock, T. Waterfield, O. Yelek&#x000e7;i, R. Yu, B. Zhou, Eds. (Cambridge Univ. Press, 2021), pp. 287&#x02212;422.</mixed-citation></ref><ref id="R10"><label>10</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M.</given-names>
+<surname>Rugenstein</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Bloch-Johnson</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Abe-Ouchi</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Andrews</surname></string-name>, <string-name><given-names>U.</given-names>
+<surname>Beyerle</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Cao</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Chadha</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Danabasoglu</surname></string-name>, <string-name><given-names>J.-L.</given-names>
+<surname>Dufresne</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Duan</surname></string-name>, <string-name><given-names>M.-A.</given-names>
+<surname>Foujols</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Fr&#x000f6;licher</surname></string-name>, <string-name><given-names>O.</given-names>
+<surname>Geoffroy</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Gregory</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Knutti</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Marzocchi</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Mauritsen</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Menary</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Moyer</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Nazarenko</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Paynter</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Saint-Martin</surname></string-name>, <string-name><given-names>G. A.</given-names>
+<surname>Schmidt</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Yamamoto</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Yang</surname></string-name></person-group>, 
+<article-title>LongRunMIP&#x02014;Motivation and design for a large collection of millennial-length GCM simulations</article-title>. <source>Bull. Am. Meteorol. Soc.</source>
+<volume>100</volume>, 
+<fpage>2551</fpage>&#x02013;<lpage>2570</lpage> (<year>2019</year>).</mixed-citation></ref><ref id="R11"><label>11</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Y.</given-names>
+<surname>Rosenthal</surname></string-name>, <string-name><given-names>B. K.</given-names>
+<surname>Linsley</surname></string-name>, <string-name><given-names>D. W.</given-names>
+<surname>Oppo</surname></string-name></person-group>, 
+<article-title>Pacific Ocean heat content during the past 10,000 years</article-title>. <source>Science</source>
+<volume>342</volume>, 
+<fpage>617</fpage>&#x02013;<lpage>620</lpage> (<year>2013</year>).<pub-id pub-id-type="pmid">24179224</pub-id>
+</mixed-citation></ref><ref id="R12"><label>12</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>G.</given-names>
+<surname>Gebbie</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Huybers</surname></string-name></person-group>, 
+<article-title>The Little Ice Age and 20th-century deep Pacific cooling</article-title>. <source>Science</source>
+<volume>363</volume>, 
+<fpage>70</fpage>&#x02013;<lpage>74</lpage> (<year>2019</year>).<pub-id pub-id-type="pmid">30606843</pub-id>
+</mixed-citation></ref><ref id="R13"><label>13</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Bagnell</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>DeVries</surname></string-name></person-group>, 
+<article-title>20<sup>th</sup> century cooling of the deep ocean contributed to delayed acceleration of Earth&#x02019;s energy imbalance</article-title>. <source>Nat. Commun.</source>
+<volume>12</volume>, 
+<fpage>4604</fpage> (<year>2021</year>).<pub-id pub-id-type="pmid">34326319</pub-id>
+</mixed-citation></ref><ref id="R14"><label>14</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>H.</given-names>
+<surname>Elderfield</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Ferretti</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Greaves</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Crowhurst</surname></string-name>, <string-name><given-names>I. N.</given-names>
+<surname>McCave</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Hodell</surname></string-name>, <string-name><given-names>A. M.</given-names>
+<surname>Piotrowski</surname></string-name></person-group>, 
+<article-title>Evolution of ocean temperature and ice volume through the mid-Pleistocene climate transition</article-title>. <source>Science</source>
+<volume>337</volume>, 
+<fpage>704</fpage>&#x02013;<lpage>709</lpage> (<year>2012</year>).<pub-id pub-id-type="pmid">22879512</pub-id>
+</mixed-citation></ref><ref id="R15"><label>15</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. D.</given-names>
+<surname>Shakun</surname></string-name>, <string-name><given-names>D. W.</given-names>
+<surname>Lea</surname></string-name>, <string-name><given-names>L. E.</given-names>
+<surname>Lisiecki</surname></string-name>, <string-name><given-names>M. E.</given-names>
+<surname>Raymo</surname></string-name></person-group>, 
+<article-title>An 800-kyr record of global surface ocean &#x003b4;<sup>18</sup>O and implications for ice volume-temperature coupling</article-title>. <source>Earth Planet. Sci. Lett.</source>
+<volume>426</volume>, 
+<fpage>58</fpage>&#x02013;<lpage>68</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R16"><label>16</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E. J.</given-names>
+<surname>Rohling</surname></string-name>, <string-name><given-names>G. L.</given-names>
+<surname>Foster</surname></string-name>, <string-name><given-names>T. M.</given-names>
+<surname>Gernon</surname></string-name>, <string-name><given-names>K. M.</given-names>
+<surname>Grant</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Heslop</surname></string-name>, <string-name><given-names>F. D.</given-names>
+<surname>Hibbert</surname></string-name>, <string-name><given-names>A. P.</given-names>
+<surname>Roberts</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yu</surname></string-name></person-group>, 
+<article-title>Comparison and synthesis of sea-level and deep-seatemperature variations over the past 40 million years</article-title>. <source>Rev. Geophys.</source>
+<volume>60</volume>, 
+<fpage>e2022RG000775</fpage> (<year>2022</year>).</mixed-citation></ref><ref id="R17"><label>17</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>B.</given-names>
+<surname>Bereiter</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Shackleton</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Baggenstos</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Kawamura</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Severinghaus</surname></string-name></person-group>, 
+<article-title>Mean global ocean temperatures during the last glacial transition</article-title>. <source>Nature</source>
+<volume>553</volume>, 
+<fpage>39</fpage>&#x02013;<lpage>44</lpage> (<year>2018</year>).<pub-id pub-id-type="pmid">29300008</pub-id>
+</mixed-citation></ref><ref id="R18"><label>18</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M.</given-names>
+<surname>H&#x000e4;berli</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Baggenstos</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Schmitt</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Grimmer</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Michel</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Kellerhals</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Fischer</surname></string-name></person-group>, 
+<article-title>Snapshots of mean ocean temperature over the last 700,000 years using noble gases in the EPICA Dome C ice core</article-title>. <source>Clim. Past</source>
+<volume>17</volume>, 
+<fpage>843</fpage>&#x02013;<lpage>867</lpage> (<year>2021</year>).</mixed-citation></ref><ref id="R19"><label>19</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. D.</given-names>
+<surname>Shakun</surname></string-name>, <string-name><given-names>P. U.</given-names>
+<surname>Clark</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>He</surname></string-name>, <string-name><given-names>S. A.</given-names>
+<surname>Marcott</surname></string-name>, <string-name><given-names>A. C.</given-names>
+<surname>Mix</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Schmittner</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Bard</surname></string-name></person-group>, 
+<article-title>Global warming preceded by increasing carbon dioxide concentrations during the last deglaciation</article-title>. <source>Nature</source>
+<volume>484</volume>, 
+<fpage>49</fpage>&#x02013;<lpage>54</lpage> (<year>2012</year>).<pub-id pub-id-type="pmid">22481357</pub-id>
+</mixed-citation></ref><ref id="R20"><label>20</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S. A.</given-names>
+<surname>Marcott</surname></string-name>, <string-name><given-names>J. D.</given-names>
+<surname>Shakun</surname></string-name>, <string-name><given-names>P. U.</given-names>
+<surname>Clark</surname></string-name>, <string-name><given-names>A. C.</given-names>
+<surname>Mix</surname></string-name></person-group>, 
+<article-title>A reconstruction of regional and global temperature for the past 11,300 years</article-title>. <source>Science</source>
+<volume>339</volume>, 
+<fpage>1198</fpage>&#x02013;<lpage>1201</lpage> (<year>2013</year>).<pub-id pub-id-type="pmid">23471405</pub-id>
+</mixed-citation></ref><ref id="R21"><label>21</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. E.</given-names>
+<surname>Tierney</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>King</surname></string-name>, <string-name><given-names>S. B.</given-names>
+<surname>Malevich</surname></string-name>, <string-name><given-names>G. J.</given-names>
+<surname>Hakim</surname></string-name>, <string-name><given-names>C. J.</given-names>
+<surname>Poulsen</surname></string-name></person-group>, 
+<article-title>Glacial cooling and climate sensitivity revisited</article-title>. <source>Nature</source>
+<volume>584</volume>, 
+<fpage>569</fpage>&#x02013;<lpage>573</lpage> (<year>2020</year>).<pub-id pub-id-type="pmid">32848226</pub-id>
+</mixed-citation></ref><ref id="R22"><label>22</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>P. U.</given-names>
+<surname>Clark</surname></string-name>, <string-name><given-names>J. D.</given-names>
+<surname>Shakun</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Rosenthal</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>K&#x000f6;hler</surname></string-name>, <string-name><given-names>P. J.</given-names>
+<surname>Bartlein</surname></string-name></person-group>, 
+<article-title>Global and regional temperature change over the past 4.5 million years</article-title>. <source>Science</source>
+<volume>383</volume>, 
+<fpage>884</fpage>&#x02013;<lpage>890</lpage> (<year>2024</year>).<pub-id pub-id-type="pmid">38386742</pub-id>
+</mixed-citation></ref><ref id="R23"><label>23</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A. M.</given-names>
+<surname>Seltzer</surname></string-name>, <string-name><given-names>P. W.</given-names>
+<surname>Davidson</surname></string-name>, <string-name><given-names>S. A.</given-names>
+<surname>Shackleton</surname></string-name>, <string-name><given-names>D. P.</given-names>
+<surname>Nicholson</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Khatiwala</surname></string-name></person-group>, 
+<article-title>Global ocean cooling of 2.3&#x000b0;C during the Last Glacial Maximum</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>51</volume>, 
+<fpage>e2024GL108866</fpage> (<year>2024</year>).</mixed-citation></ref><ref id="R24"><label>24</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>Emiliani</surname></string-name></person-group>, 
+<article-title>Temperatures of Pacific bottom waters and polar superficial waters during the Tertiary</article-title>. <source>Science</source>
+<volume>119</volume>, 
+<fpage>853</fpage>&#x02013;<lpage>855</lpage> (<year>1954</year>).<pub-id pub-id-type="pmid">17751537</pub-id>
+</mixed-citation></ref><ref id="R25"><label>25</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Hansen</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Sato</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Russell</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Kharecha</surname></string-name></person-group>, 
+<article-title>Climate sensitivity, sea level and atmospheric carbon dioxide</article-title>. <source>Phil. Trans. R. Soc. A.</source>
+<volume>371</volume>, 
+<fpage>20120294</fpage> (<year>2013</year>).<pub-id pub-id-type="pmid">24043864</pub-id>
+</mixed-citation></ref><ref id="R26"><label>26</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. E.</given-names>
+<surname>Hansen</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Sato</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Simons</surname></string-name>, <string-name><given-names>L. S.</given-names>
+<surname>Nazarenko</surname></string-name>, <string-name><given-names>I.</given-names>
+<surname>Sangha</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Kharecha</surname></string-name>, <string-name><given-names>J. C.</given-names>
+<surname>Zachos</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>von Schuckmann</surname></string-name>, <string-name><given-names>N. G.</given-names>
+<surname>Loeb</surname></string-name>, <string-name><given-names>M. B.</given-names>
+<surname>Osman</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Jin</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Tselioudis</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Jeong</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Lacis</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Ruedy</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Russell</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Cao</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Li</surname></string-name></person-group>, 
+<article-title>Global warming in the pipeline</article-title>. <source>Oxford Open Clim. Change</source>
+<volume>3</volume>, 
+<fpage>kgad008</fpage> (<year>2023</year>).</mixed-citation></ref><ref id="R27"><label>27</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>N.</given-names>
+<surname>Maffezzoli</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Vallelonga</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Edwards</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Saiz-Lopez</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Turetta</surname></string-name>, <string-name><given-names>H. A.</given-names>
+<surname>Kj&#x000e6;r</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Barbante</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Vinther</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Spolaor</surname></string-name></person-group>, 
+<article-title>A 120 000-year record of sea ice in the North Atlantic?</article-title>
+<source>Clim. Past</source>
+<volume>15</volume>, 
+<fpage>2031</fpage>&#x02013;<lpage>2051</lpage> (<year>2019</year>).</mixed-citation></ref><ref id="R28"><label>28</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>X.</given-names>
+<surname>Crosta</surname></string-name>, <string-name><given-names>K. E.</given-names>
+<surname>Kohfeld</surname></string-name>, <string-name><given-names>H. C.</given-names>
+<surname>Bostock</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Chadwick</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Du Vivier</surname></string-name>, <string-name><given-names>O.</given-names>
+<surname>Esper</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Etourneau</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Leventer</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>M&#x000fc;ller</surname></string-name>, <string-name><given-names>R. H.</given-names>
+<surname>Rhodes</surname></string-name>, <string-name><given-names>C. S.</given-names>
+<surname>Allen</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Ghadi</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Lamping</surname></string-name>, <string-name><given-names>C. B.</given-names>
+<surname>Lange</surname></string-name>, <string-name><given-names>K.-A.</given-names>
+<surname>Lawler</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Lund</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Marzocchi</surname></string-name>, <string-name><given-names>K. J.</given-names>
+<surname>Meissner</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Menviel</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Nair</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Patterson</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Pike</surname></string-name>, <string-name><given-names>J. G.</given-names>
+<surname>Prebble</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Riesselman</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Sadatzki</surname></string-name>, <string-name><given-names>L. C.</given-names>
+<surname>Sime</surname></string-name>, <string-name><given-names>S. K.</given-names>
+<surname>Shukla</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Th&#x000f6;le</surname></string-name>, <string-name><given-names>M.-E.</given-names>
+<surname>Vorrath</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Xiao</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yang</surname></string-name></person-group>, 
+<article-title>Antarctic sea ice over the past 130 000 years<monospace>&#x02014;</monospace>Part 1: A review of what proxy records tell us</article-title>. <source>Clim. Past</source>
+<volume>18</volume>, 
+<fpage>1729</fpage>&#x02013;<lpage>1756</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R29"><label>29</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E. C.</given-names>
+<surname>Brady</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Stevenson</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Bailey</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Noone</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Nusbaumer</surname></string-name>, <string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Tabor</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Tomas</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Wong</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name></person-group>, 
+<article-title>The connected isotopic water cycle in the Community Earth System Model version 1</article-title>. <source>J. Adv. Model. Earth Syst.</source>
+<volume>11</volume>, 
+<fpage>2547</fpage>&#x02013;<lpage>2566</lpage> (<year>2019</year>).</mixed-citation></ref><ref id="R30"><label>30</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>He</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>E. C.</given-names>
+<surname>Brady</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Tomas</surname></string-name>, <string-name><given-names>P. U.</given-names>
+<surname>Clark</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Jahn</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Gu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Nusbaumer</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Noone</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Cheng</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Yan</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Bao</surname></string-name></person-group>, 
+<article-title>Hydroclimate footprint of pan-Asian monsoon water isotope during the last deglaciation</article-title>. <source>Sci. Adv.</source>
+<volume>7</volume>, 
+<fpage>eabe2611</fpage> (<year>2021</year>).<pub-id pub-id-type="pmid">33523950</pub-id>
+</mixed-citation></ref><ref id="R31"><label>31</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M. B.</given-names>
+<surname>Osman</surname></string-name>, <string-name><given-names>J. E.</given-names>
+<surname>Tierney</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Tardif</surname></string-name>, <string-name><given-names>G. J.</given-names>
+<surname>Hakim</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>King</surname></string-name>, <string-name><given-names>C. J.</given-names>
+<surname>Poulsen</surname></string-name></person-group>, 
+<article-title>Globally resolved surface temperatures since the Last Glacial Maximum</article-title>. <source>Nature</source>
+<volume>599</volume>, 
+<fpage>239</fpage>&#x02013;<lpage>244</lpage> (<year>2021</year>).<pub-id pub-id-type="pmid">34759364</pub-id>
+</mixed-citation></ref><ref id="R32"><label>32</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>He</surname></string-name>, <string-name><given-names>E. C.</given-names>
+<surname>Brady</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Tomas</surname></string-name>, <string-name><given-names>P. U.</given-names>
+<surname>Clark</surname></string-name>, <string-name><given-names>A. E.</given-names>
+<surname>Carlson</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lynch-Stieglitz</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Curry</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Brook</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Erickson</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Jacob</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Kutzbach</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Cheng</surname></string-name></person-group>, 
+<article-title>Transient simulation of last deglaciation with a new mechanism for B&#x000f8;lling-Aller&#x000f8;d warming</article-title>. <source>Science</source>
+<volume>325</volume>, 
+<fpage>310</fpage>&#x02013;<lpage>314</lpage> (<year>2009</year>).<pub-id pub-id-type="pmid">19608916</pub-id>
+</mixed-citation></ref><ref id="R33"><label>33</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. R.</given-names>
+<surname>Alder</surname></string-name>, <string-name><given-names>S. W.</given-names>
+<surname>Hostetler</surname></string-name></person-group>, 
+<article-title>Global climate simulations at 3000-year intervals for the last 21 000 years with the GENMOM coupled atmosphere&#x02013;ocean model</article-title>. <source>Clim. Past</source>
+<volume>11</volume>, 
+<fpage>449</fpage>&#x02013;<lpage>471</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R34"><label>34</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>P.</given-names>
+<surname>Braconnot</surname></string-name>, <string-name><given-names>S. P.</given-names>
+<surname>Harrison</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Kageyama</surname></string-name>, <string-name><given-names>P. J.</given-names>
+<surname>Bartlein</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Masson-Delmotte</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Abe-Ouchi</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Zhao</surname></string-name></person-group>, 
+<article-title>Evaluation of climate models using palaeoclimatic data</article-title>. <source>Nat. Clim. Chang.</source>
+<volume>2</volume>, 
+<fpage>417</fpage>&#x02013;<lpage>424</lpage> (<year>2012</year>).</mixed-citation></ref><ref id="R35"><label>35</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Muglia</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Mulitza</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Repschl&#x000e4;ger</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Schmittner</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Lembke-Jene</surname></string-name></person-group>, L, Lisiecki, <person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Mix</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Saraswat</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Sikes</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Waelbroeck</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Gottschalk</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lippold</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Lund</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Martinez-Mendez</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Michel</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Muschitiello</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Naik</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Okazaki</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Stott</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Voelker</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Zhao</surname></string-name></person-group>, 
+<article-title>A global synthesis of high-resolution stable isotope data from benthic foraminifera of the last deglaciation</article-title>. <source>Sci. Data.</source>
+<volume>10</volume>, 
+<fpage>131</fpage> (<year>2023</year>).<pub-id pub-id-type="pmid">36899009</pub-id>
+</mixed-citation></ref><ref id="R36"><label>36</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L. E.</given-names>
+<surname>Lisiecki</surname></string-name>, <string-name><given-names>J. V.</given-names>
+<surname>Stern</surname></string-name></person-group>, 
+<article-title>Regional and global benthic &#x003b4;<sup>18</sup>O stacks for the last glacial cycle</article-title>. <source>Paleoceanography</source>
+<volume>31</volume>, 
+<fpage>1368</fpage>&#x02013;<lpage>1394</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R37"><label>37</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><collab>CLIMAP Project Members</collab></person-group>, 
+<article-title>The surface of the ice-age Earth: Quantitative geologic evidence is used to reconstruct boundary conditions for the climate 18,000 years ago</article-title>. <source>Science</source>
+<volume>191</volume>, 
+<fpage>1131</fpage>&#x02013;<lpage>1137</lpage> (<year>1976</year>).<pub-id pub-id-type="pmid">17781630</pub-id>
+</mixed-citation></ref><ref id="R38"><label>38</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M.</given-names>
+<surname>Kucera</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Weinelt</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Kiefer</surname></string-name>, <string-name><given-names>U.</given-names>
+<surname>Pflaumann</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Hayes</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Weinelt</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Chen</surname></string-name>, <string-name><given-names>A. C.</given-names>
+<surname>Mix</surname></string-name>, <string-name><given-names>T. T.</given-names>
+<surname>Barrows</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Cortijo</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Duprat</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Juggins</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Waelbroeck</surname></string-name></person-group>, 
+<article-title>Reconstruction of the glacial Atlantic and Pacific sea-surface temperatures from assemblages of planktonic foraminifera: Multi-technique approach based on geographically constrained calibration datasets</article-title>. <source>Quat. Sci. Rev.</source>
+<volume>24</volume>, 
+<fpage>951</fpage>&#x02013;<lpage>998</lpage> (<year>2005</year>).</mixed-citation></ref><ref id="R39"><label>39</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><collab>MARGO Project Members</collab></person-group>, 
+<article-title>Constraints on the magnitude and patterns of ocean cooling at the Last Glacial Maximum</article-title>. <source>Nat. Geosci.</source>
+<volume>2</volume>, 
+<fpage>127</fpage>&#x02013;<lpage>132</lpage> (<year>2009</year>).</mixed-citation></ref><ref id="R40"><label>40</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. D.</given-names>
+<surname>Annan</surname></string-name>, <string-name><given-names>J. C.</given-names>
+<surname>Hargreaves</surname></string-name></person-group>, 
+<article-title>A new global reconstruction of temperature changes at the Last Glacial Maximum</article-title>. <source>Clim. Past</source>
+<volume>9</volume>, 
+<fpage>367</fpage>&#x02013;<lpage>376</lpage> (<year>2013</year>).</mixed-citation></ref><ref id="R41"><label>41</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. D.</given-names>
+<surname>Annan</surname></string-name>, <string-name><given-names>J. C.</given-names>
+<surname>Hargreaves</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Mauritsen</surname></string-name></person-group>, 
+<article-title>A new global surface temperature reconstruction for the Last Glacial Maximum</article-title>. <source>Clim. Past</source>
+<volume>18</volume>, 
+<fpage>1883</fpage>&#x02013;<lpage>1896</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R42"><label>42</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L.</given-names>
+<surname>Back</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Russ</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Inoue</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name></person-group>, 
+<article-title>Global hydrological cycle response to rapid and slow global warming</article-title>. <source>J. Climate</source>
+<volume>22</volume>, 
+<fpage>8781</fpage>&#x02013;<lpage>8786</lpage> (<year>2013</year>).</mixed-citation></ref><ref id="R43"><label>43</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E.</given-names>
+<surname>Newsom</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Zanna</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Khatiwala</surname></string-name>, <string-name><given-names>J. M.</given-names>
+<surname>Gregory</surname></string-name></person-group>, 
+<article-title>The influence of warming patterns on passive ocean heat uptake</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>47</volume>, 
+<fpage>e2020GL088429</fpage> (<year>2020</year>).</mixed-citation></ref><ref id="R44"><label>44</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L.</given-names>
+<surname>Zanna</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Khatiwala</surname></string-name>, <string-name><given-names>J. M.</given-names>
+<surname>Gregory</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Ison</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Heimbach</surname></string-name></person-group>, 
+<article-title>Global reconstruction of historical ocean heat storage and transport</article-title>. <source>Proc. Natl. Acad. Sci. U.S.A.</source>
+<volume>116</volume>, 
+<fpage>1126</fpage>&#x02013;<lpage>1131</lpage> (<year>2019</year>).<pub-id pub-id-type="pmid">30617081</pub-id>
+</mixed-citation></ref><ref id="R45"><label>45</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. F.</given-names>
+<surname>McManus</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Francois</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Gherardi</surname></string-name>, <string-name><given-names>L. D.</given-names>
+<surname>Keigwin</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Brown-Leger</surname></string-name></person-group>, 
+<article-title>Collapse and rapid resumption of Atlantic meridional circulation linked to deglacial climate changes</article-title>. <source>Nature</source>
+<volume>428</volume>, 
+<fpage>834</fpage>&#x02013;<lpage>837</lpage> (<year>2004</year>).<pub-id pub-id-type="pmid">15103371</pub-id>
+</mixed-citation></ref><ref id="R46"><label>46</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Lippold</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>P&#x000f6;ppelmeier</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>S&#x000fc;fke</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Gutjahr</surname></string-name>, <string-name><given-names>T. J.</given-names>
+<surname>Goepfert</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Blaser</surname></string-name>, <string-name><given-names>O.</given-names>
+<surname>Friedrich</surname></string-name>, <string-name><given-names>J. M.</given-names>
+<surname>Link</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Wacker</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Rheinberger</surname></string-name>, <string-name><given-names>S. L.</given-names>
+<surname>Jaccard</surname></string-name></person-group>, 
+<article-title>Constraining the variability of the Atlantic meridional overturning circulation during the Holocene</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>46</volume>, 
+<fpage>11338</fpage>&#x02013;<lpage>11346</lpage> (<year>2019</year>).</mixed-citation></ref><ref id="R47"><label>47</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>W. S.</given-names>
+<surname>Broecker</surname></string-name></person-group>, 
+<article-title>Paleocean circulation during the last deglaciation: A bipolar seesaw?</article-title>
+<source>Paleoceanography</source>
+<volume>13</volume>, 
+<fpage>119</fpage>&#x02013;<lpage>121</lpage> (<year>1998</year>).</mixed-citation></ref><ref id="R48"><label>48</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>P. U.</given-names>
+<surname>Clark</surname></string-name>, <string-name><given-names>N. G.</given-names>
+<surname>Pisias</surname></string-name>, <string-name><given-names>T. F.</given-names>
+<surname>Stocker</surname></string-name>, <string-name><given-names>A. J.</given-names>
+<surname>Weaver</surname></string-name></person-group>, 
+<article-title>The role of the thermohaline circulation in abrupt climate change</article-title>. <source>Nature</source>
+<volume>415</volume>, 
+<fpage>863</fpage>&#x02013;<lpage>869</lpage> (<year>2002</year>).<pub-id pub-id-type="pmid">11859359</pub-id>
+</mixed-citation></ref><ref id="R49"><label>49</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T. F.</given-names>
+<surname>Stocker</surname></string-name>, <string-name><given-names>S. J.</given-names>
+<surname>Johnsen</surname></string-name></person-group>, 
+<article-title>A minimum thermodynamic model for the bipolar seesaw</article-title>. <source>Paleoceanography</source>
+<volume>18</volume>, 
+<fpage>1087</fpage> (<year>2003</year>).</mixed-citation></ref><ref id="R50"><label>50</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S. A.</given-names>
+<surname>Marcott</surname></string-name>, <string-name><given-names>P. U.</given-names>
+<surname>Clark</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Padman</surname></string-name>, <string-name><given-names>G. P.</given-names>
+<surname>Klinkhammer</surname></string-name>, <string-name><given-names>S. R.</given-names>
+<surname>Springer</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>A. E.</given-names>
+<surname>Carlson</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Ungerer</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Padman</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>He</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Cheng</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Schmittner</surname></string-name></person-group>, 
+<article-title>Ice-shelf collapse from subsurface warming as a trigger for Heinrich events</article-title>. <source>Proc. Natl. Acad. Sci. U.S.A.</source>
+<volume>108</volume>, 
+<fpage>13415</fpage>&#x02013;<lpage>13419</lpage> (<year>2011</year>).<pub-id pub-id-type="pmid">21808034</pub-id>
+</mixed-citation></ref><ref id="R51"><label>51</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Weldeab</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Friedrich</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Timmermann</surname></string-name>, <string-name><given-names>R. R.</given-names>
+<surname>Schneider</surname></string-name></person-group>, 
+<article-title>Strong middepth warming and weak radiocarbon imprints in the equatorial Atlantic during Heinrich 1 and Younger Dryas</article-title>. <source>Paleoceanography</source>
+<volume>31</volume>, 
+<fpage>1070</fpage>&#x02013;<lpage>1082</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R52"><label>52</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Barker</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Diz</surname></string-name></person-group>, 
+<article-title>Timing of the descent into the last Ice Age determined by the bipolar seesaw</article-title>. <source>Paleoceanography</source>
+<volume>29</volume>, 
+<fpage>489</fpage>&#x02013;<lpage>507</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R53"><label>53</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Mignot</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Ganopolski</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Levermann</surname></string-name></person-group>, 
+<article-title>Atlantic subsurface temperatures: Response to a shutdown of the overturning circulation and its recovery</article-title>. <source>J. Climate</source>
+<volume>20</volume>, 
+<fpage>4884</fpage>&#x02013;<lpage>4898</lpage> (<year>2007</year>).</mixed-citation></ref><ref id="R54"><label>54</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>He</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Gu</surname></string-name>, <string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Esther</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Jin</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Sun</surname></string-name></person-group>, 
+<article-title>North Atlantic subsurface temperature response controlled by effective freshwater input in &#x0201c;Heinrich&#x0201d; events</article-title>. <source>Earth Planet. Sci. Lett.</source>
+<volume>539</volume>, 
+<fpage>116247</fpage> (<year>2020</year>).</mixed-citation></ref><ref id="R55"><label>55</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>He</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Brady</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Tomas</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Wen</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Wu</surname></string-name></person-group>, 
+<article-title>Antarctic warming during Heinrich Stadial 1 in a transient isotope-enabled deglacial simulation</article-title>. <source>J. Climate</source>
+<volume>35</volume>, 
+<fpage>3753</fpage>&#x02013;<lpage>3765</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R56"><label>56</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>H.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Lohmann</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Stepanek</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>R. X.</given-names>
+<surname>Huang</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Shi</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Chen</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Zhong</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Bao</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>M&#x000fc;ller</surname></string-name></person-group>, 
+<article-title>Satellite-observed strong subtropical ocean warming as an early signature of global warming</article-title>. <source>Commun. Earth Environ.</source>
+<volume>4</volume>, 
+<fpage>178</fpage> (<year>2023</year>).</mixed-citation></ref><ref id="R57"><label>57</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T.</given-names>
+<surname>Andrews</surname></string-name>, <string-name><given-names>J. M.</given-names>
+<surname>Gregory</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Paynter</surname></string-name>, <string-name><given-names>L. G.</given-names>
+<surname>Silvers</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Zhou</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Mauritsen</surname></string-name>, <string-name><given-names>M. J.</given-names>
+<surname>Webb</surname></string-name>, <string-name><given-names>K. C.</given-names>
+<surname>Armour</surname></string-name>, <string-name><given-names>P. M.</given-names>
+<surname>Forster</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Titchner</surname></string-name></person-group>, 
+<article-title>Accounting for changing temperature patterns increases historical estimates of climate sensitivity</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>45</volume>, 
+<fpage>8490</fpage>&#x02013;<lpage>8499</lpage> (<year>2018</year>).</mixed-citation></ref><ref id="R58"><label>58</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M.</given-names>
+<surname>Winton</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Takahashi</surname></string-name>, <string-name><given-names>I. M.</given-names>
+<surname>Held</surname></string-name></person-group>, 
+<article-title>Importance of ocean heat uptake efficacy to transient climate change</article-title>. <source>J. Climate</source>
+<volume>23</volume>, 
+<fpage>2333</fpage>&#x02013;<lpage>2344</lpage> (<year>2010</year>).</mixed-citation></ref><ref id="R59"><label>59</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D.</given-names>
+<surname>Baggenstos</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>H&#x000e4;berli</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Schmitt</surname></string-name>, <string-name><given-names>S. A.</given-names>
+<surname>Shackleton</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Birner</surname></string-name>, <string-name><given-names>J. P.</given-names>
+<surname>Severinghaus</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Kellerhals</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Fischer</surname></string-name></person-group>, 
+<article-title>Earth&#x02019;s radiative imbalance from the Last Glacial Maximum to the present</article-title>. <source>Proc. Natl. Acad. Sci. U.S.A.</source>
+<volume>116</volume>, 
+<fpage>14881</fpage>&#x02013;<lpage>14886</lpage> (<year>2019</year>).<pub-id pub-id-type="pmid">31285336</pub-id>
+</mixed-citation></ref><ref id="R60"><label>60</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T. L.</given-names>
+<surname>Rasmussen</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Thomsen</surname></string-name>, <string-name><given-names>T. C. E.</given-names>
+<surname>van Weering</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Labeyrie</surname></string-name></person-group>, 
+<article-title>Rapid changes in surface and deep water conditions at the Faeroe Margin during the last 58,000 years</article-title>. <source>Paleoceanography</source>
+<volume>11</volume>, 
+<fpage>757</fpage>&#x02013;<lpage>772</lpage> (<year>1996</year>).</mixed-citation></ref><ref id="R61"><label>61</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D. W.</given-names>
+<surname>Oppo</surname></string-name>, <string-name><given-names>W. B.</given-names>
+<surname>Curry</surname></string-name>, <string-name><given-names>J. F.</given-names>
+<surname>McManus</surname></string-name></person-group>, 
+<article-title>What do benthic &#x003b4;<sup>13</sup>C and &#x003b4;<sup>18</sup>O data tell us about Atlantic circulation during Heinrich Stadial 1?</article-title>
+<source>Paleoceanography</source>
+<volume>30</volume>, 
+<fpage>353</fpage>&#x02013;<lpage>368</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R62"><label>62</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T.</given-names>
+<surname>Dokken</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Jansen</surname></string-name></person-group>, 
+<article-title>Rapid changes in the mechanism of ocean convection during the last glacial period</article-title>. <source>Nature</source>
+<volume>401</volume>, 
+<fpage>458</fpage>&#x02013;<lpage>461</lpage> (<year>1999</year>).</mixed-citation></ref><ref id="R63"><label>63</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D. W.</given-names>
+<surname>Oppo</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Lu</surname></string-name>, <string-name><given-names>K.-F.</given-names>
+<surname>Huang</surname></string-name>, <string-name><given-names>N. E.</given-names>
+<surname>Umling</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Guo</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yu</surname></string-name>, <string-name><given-names>W. B.</given-names>
+<surname>Curry</surname></string-name>, <string-name><given-names>T. M.</given-names>
+<surname>Marchitto</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Wang</surname></string-name></person-group>, 
+<article-title>Deglacial temperature and carbonate saturation state variability in the tropical Atlantic at Antarctic Intermediate Water depths</article-title>. <source>Paleoceanography</source>
+<volume>38</volume>, 
+<fpage>e2023PA004674</fpage> (<year>2023</year>).</mixed-citation></ref><ref id="R64"><label>64</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>R&#x000fc;hlemann</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Mulitza</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Lohmann</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Paul</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Prange</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Wefer</surname></string-name></person-group>, 
+<article-title>Intermediate depth warming in the tropical Atlantic related to weakened thermohaline circulation: Combining paleoclimate data and modeling results for the last deglaciation</article-title>. <source>Paleoceanography</source>
+<volume>19</volume>, 
+<fpage>PA1025</fpage> (<year>2004</year>).</mixed-citation></ref><ref id="R65"><label>65</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D. P.</given-names>
+<surname>Schrag</surname></string-name>, <string-name><given-names>J. F.</given-names>
+<surname>Adkins</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>McIntyre</surname></string-name>, <string-name><given-names>J. L.</given-names>
+<surname>Alexander</surname></string-name>, <string-name><given-names>D. A.</given-names>
+<surname>Hodell</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Charles</surname></string-name>, <string-name><given-names>J. F.</given-names>
+<surname>McManus</surname></string-name></person-group>, 
+<article-title>The oxygen isotopic composition of seawater during the Last Glacial Maximum</article-title>. <source>Quat. Sci. Rev.</source>
+<volume>21</volume>, 
+<fpage>331</fpage> (<year>2002</year>).</mixed-citation></ref><ref id="R66"><label>66</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>K.</given-names>
+<surname>Lambeck</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Rouby</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Purcell</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Sun</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Sambridge</surname></string-name></person-group>, 
+<article-title>Sea level and global ice volumes from the Last Glacial Maximum to the Holocene</article-title>. <source>Proc. Natl. Acad. Sci. U.S.A.</source>
+<volume>111</volume>, 
+<fpage>15296</fpage>&#x02013;<lpage>15303</lpage> (<year>2014</year>).<pub-id pub-id-type="pmid">25313072</pub-id>
+</mixed-citation></ref><ref id="R67"><label>67</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T. M.</given-names>
+<surname>Marchitto</surname></string-name>, <string-name><given-names>W. B.</given-names>
+<surname>Curry</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lynch-Stieglitz</surname></string-name>, <string-name><given-names>S. P.</given-names>
+<surname>Bryan</surname></string-name>, <string-name><given-names>K. M.</given-names>
+<surname>Cobb</surname></string-name>, <string-name><given-names>D. C.</given-names>
+<surname>Lund</surname></string-name></person-group>, 
+<article-title>Improved oxygen isotope temperature calibrations for cosmopolitan benthic foraminifera</article-title>. <source>Geochim. Cosmochim. Acta</source>
+<volume>130</volume>, 
+<fpage>1</fpage>&#x02013;<lpage>11</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R68"><label>68</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>N. J.</given-names>
+<surname>Shackleton</surname></string-name></person-group>, 
+<article-title>Attainment of isotopic equilibrium between ocean water and the benthonic foraminifera genus Uvigerina: Isotopic changes in the ocean during the last glacial</article-title>. <source>Colloques Internationaux du C.N.R.S</source>
+<volume>219</volume>, 
+<fpage>203</fpage>&#x02013;<lpage>209</lpage> (<year>1974</year>).</mixed-citation></ref><ref id="R69"><label>69</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>W. R.</given-names>
+<surname>Peltier</surname></string-name>, <string-name><given-names>D. F.</given-names>
+<surname>Argus</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Drummond</surname></string-name></person-group>, 
+<article-title>Space geodesy constrains ice age terminal deglaciation: The global ICE-6G_C (VM5a) model</article-title>. <source>J. Geophys. Res. Solid Earth</source>
+<volume>120</volume>, 
+<fpage>450</fpage>&#x02013;<lpage>487</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R70"><label>70</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D.</given-names>
+<surname>L&#x000fc;thi</surname></string-name>, <string-name><given-names>M. L.</given-names>
+<surname>Floch</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Bereiter</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Blunier</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Barnola</surname></string-name>, <string-name><given-names>U.</given-names>
+<surname>Siegenthaler</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Raynaud</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Jouzel</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Fischer</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Kawamura</surname></string-name>, <string-name><given-names>T. F.</given-names>
+<surname>Stocker</surname></string-name></person-group>, 
+<article-title>High-resolution carbon dioxide concentration record 650,000&#x02013;800,000 years before present</article-title>. <source>Nature</source>
+<volume>453</volume>, 
+<fpage>379</fpage>&#x02013;<lpage>382</lpage> (<year>2008</year>).<pub-id pub-id-type="pmid">18480821</pub-id>
+</mixed-citation></ref><ref id="R71"><label>71</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Gu</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>D. W.</given-names>
+<surname>Oppo</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lynch-Stieglitz</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Jahn</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Wu</surname></string-name></person-group>, 
+<article-title>Assessing the potential capability of reconstructing glacial Atlantic water masses and AMOC using multiple proxies in CESM</article-title>. <source>Earth Planet. Sci. Lett.</source>
+<volume>541</volume>, 
+<fpage>116294</fpage> (<year>2020</year>).</mixed-citation></ref><ref id="R72"><label>72</label><mixed-citation publication-type="thesis"><person-group person-group-type="author"><string-name><given-names>F.</given-names>
+<surname>He</surname></string-name></person-group>, &#x0201c;Simulating transient climate evolution of the last deglaciation with CCSM3,&#x0201d; thesis, University of Wisconsin-Madison (<year>2011</year>), pp. 171.</mixed-citation></ref><ref id="R73"><label>73</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. F.</given-names>
+<surname>Adkins</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>McIntyre</surname></string-name>, <string-name><given-names>D. P.</given-names>
+<surname>Schrag</surname></string-name></person-group>, 
+<article-title>The salinity, temperature and &#x003b4;<sup>18</sup>O of the glacial deep ocean</article-title>. <source>Science</source>
+<volume>298</volume>, 
+<fpage>1769</fpage>&#x02013;<lpage>1773</lpage> (<year>2002</year>).<pub-id pub-id-type="pmid">12459585</pub-id>
+</mixed-citation></ref><ref id="R74"><label>74</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Shin</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Webb</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Lewis</surname></string-name>, <string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name></person-group>, 
+<article-title>Atmospheric CO<sub>2</sub> forcing on glacial thermohaline and climate</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>32</volume>, 
+<fpage>L02706</fpage> (<year>2005</year>).</mixed-citation></ref><ref id="R75"><label>75</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>B. L.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Hewitt</surname></string-name>, <string-name><given-names>T. M.</given-names>
+<surname>Marchitto</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Brady</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Abe-Ouchi</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Crucifix</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Murakami</surname></string-name>, <string-name><given-names>S. L.</given-names>
+<surname>Weber</surname></string-name></person-group>, 
+<article-title>Last Glacial Maximum ocean thermohaline circulation: PMIP2 model intercomparisons and data constraints</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>34</volume>, 
+<fpage>L12706</fpage> (<year>2007</year>).</mixed-citation></ref><ref id="R76"><label>76</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Wu</surname></string-name></person-group>, 
+<article-title>Global oceanic overturning circulation forced by the competition between greenhouse gases and continental ice sheets during the last deglaciation</article-title>. <source>J. Climate</source>
+<volume>34</volume>, 
+<fpage>7555</fpage>&#x02013;<lpage>7570</lpage> (<year>2021</year>).</mixed-citation></ref><ref id="R77"><label>77</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S. G.</given-names>
+<surname>Valley</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lynch-Stieglitz</surname></string-name>, <string-name><given-names>T. M.</given-names>
+<surname>Marchitto</surname></string-name></person-group>, 
+<article-title>Intermediate water circulation changes in the Florida Straits from a 35 ka record of Mg/Li-derived temperature and Cd/Ca-derived seawater cadmium</article-title>. <source>Earth Planet. Sci. Lett.</source>
+<volume>523</volume>, 
+<fpage>115692</fpage> (<year>2019</year>).</mixed-citation></ref><ref id="R78"><label>78</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>N. E.</given-names>
+<surname>Umling</surname></string-name>, <string-name><given-names>D. W.</given-names>
+<surname>Oppo</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Chen</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yu</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Yan</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Gebbie</surname></string-name>, <string-name><given-names>D. C.</given-names>
+<surname>Lund</surname></string-name>, <string-name><given-names>K. R.</given-names>
+<surname>Pietro</surname></string-name>, <string-name><given-names>Z. D.</given-names>
+<surname>Jin</surname></string-name>, <string-name><given-names>K.-F.</given-names>
+<surname>Huang</surname></string-name>, <string-name><given-names>K. B.</given-names>
+<surname>Costa</surname></string-name>, <string-name><given-names>F. A. L.</given-names>
+<surname>Toledo</surname></string-name></person-group>, 
+<article-title>Atlantic circulation and ice sheet influences on upper South Atlantic temperatures during the Last Deglaciation</article-title>. <source>Paleoceanogr. Paleoclimatol.</source>
+<volume>34</volume>, 
+<fpage>990</fpage>&#x02013;<lpage>1005</lpage> (<year>2019</year>).</mixed-citation></ref></ref-list></back></article>

@@ -6,6 +6,7 @@ import pprint
 import re
 from io import StringIO
 from pathlib import Path
+from typing import Iterable, List
 from urllib.request import urlopen
 
 import chardet
@@ -16,6 +17,8 @@ import requests
 from lxml import etree as ET
 from lxml.etree import _Element, _ElementTree, _ElementUnicodeResult, XPathEvalError
 from lxml.html import HTMLParser
+
+from amilib.ami_util import AmiUtil
 # import tkinter as tk
 
 from amilib.file_lib import FileLib
@@ -932,7 +935,7 @@ class XmlLib:
             element, method=method, pretty_print=pretty_print).decode(encoding)
 
     @classmethod
-    def get_single_element(cls, element, xpath):
+    def get_single_element(cls, element:_Element, xpath):
         """
         Convenience method to avoid testing for len()
         gets a single element from xpath or returns None
@@ -943,14 +946,38 @@ class XmlLib:
         if element is None:
             logger.debug("element is None")
             return None
+        typex = type(element)
+        if typex != _Element:
+            logger.warning(f"element is not _Element, found {typex}")
+            return None
         if xpath is None:
             logger.debug("xpath is None ")
             return None
+
         results = element.xpath(xpath)
         if len(results) == 1:
             return results[0]
         else:
             return None
+
+    @classmethod
+    def get_xpath_results(cls, iterable:Iterable, xpath:str) -> List:
+        """
+        get list from evaluating xpath on an iterable of XML elements.
+        if component is None or not an element, list element is None
+        """
+        if iterable is None or not AmiUtil.is_iterable(iterable) or xpath is None:
+            return None
+        results = list()
+        for it in iterable:
+            result = None
+            try:
+                result = it.xpath(xpath)
+            except Exception:
+                pass
+            results.append(result)
+        return results
+
 
 
 class HtmlElement:

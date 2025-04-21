@@ -1,0 +1,716 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd"> 
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.3" xml:lang="en" article-type="research-article"><?DTDIdentifier.IdentifierValue -//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.2 20190208//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName JATS-archivearticle1.dtd?><?SourceDTD.Version 1.2?><?ConverterInfo.XSLTName jats2jats3.xsl?><?ConverterInfo.Version 1?><?properties open_access?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Sci Adv</journal-id><journal-id journal-id-type="iso-abbrev">Sci Adv</journal-id><journal-id journal-id-type="publisher-id">sciadv</journal-id><journal-id journal-id-type="hwp">advances</journal-id><journal-title-group><journal-title>Science Advances</journal-title></journal-title-group><issn pub-type="epub">2375-2548</issn><publisher><publisher-name>American Association for the Advancement of Science</publisher-name></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">11204210</article-id><article-id pub-id-type="publisher-id">adm7813</article-id><article-id pub-id-type="doi">10.1126/sciadv.adm7813</article-id><article-categories><subj-group subj-group-type="article-type"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Earth, Environmental, Ecological, and Space Sciences</subject></subj-group><subj-group subj-group-type="legacy-article-type"><subject>SciAdv r-articles</subject></subj-group><subj-group subj-group-type="field"><subject>Climatology</subject><subject>Oceanography</subject></subj-group><subj-group subj-group-type="overline"><subject>Oceanography</subject></subj-group></article-categories><title-group><article-title>Controlling factors for the global meridional overturning circulation: A lesson from the Paleozoic</article-title><alt-title alt-title-type="short">Controlling factors for the Paleozoic global meridional overturning circulation</alt-title></title-group><contrib-group><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-8154-4899</contrib-id><name><surname>Yuan</surname><given-names>Shuai</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Formal analysis" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-formal-analysis/">Formal analysis</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Software" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-software/">Software</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Visualization" vocab-term-identifier="https://web.archive.org/web/20180313224017/http://dictionary.credit.niso.org/Contributor_Roles/Visualization">Visualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - original draft" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-original-draft/">Writing - original draft</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="afn1" ref-type="author-notes">&#x02020;</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-8844-2185</contrib-id><name><surname>Liu</surname><given-names>Yonggang</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Data curation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-data-curation/">Data curation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Formal analysis" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-formal-analysis/">Formal analysis</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Funding acquisition" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-funding-acquisition/">Funding acquisition</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Project administration" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-project-administration/">Project administration</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Resources" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-resources/">Resources</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Supervision" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-supervision/">Supervision</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - original draft" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-original-draft/">Writing - original draft</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="aff2" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="afn1" ref-type="author-notes">&#x02020;</xref><xref rid="award1606094" ref-type="award"/></contrib><contrib contrib-type="author" corresp="yes"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-4003-4630</contrib-id><name><surname>Hu</surname><given-names>Yongyun</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Data curation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-data-curation/">Data curation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Funding acquisition" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-funding-acquisition/">Funding acquisition</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Project administration" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-project-administration/">Project administration</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Resources" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-resources/">Resources</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Supervision" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-supervision/">Supervision</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Visualization" vocab-term-identifier="https://web.archive.org/web/20180313224017/http://dictionary.credit.niso.org/Contributor_Roles/Visualization">Visualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="aff2" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="cor1" ref-type="corresp">*</xref><xref rid="award1606093" ref-type="award"/></contrib><contrib contrib-type="author"><name><surname>Mei</surname><given-names>Jie</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3717-0199</contrib-id><name><surname>Han</surname><given-names>Jing</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-3681-2089</contrib-id><name><surname>Bao</surname><given-names>Xiujuan</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="aff3" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-8670-9499</contrib-id><name><surname>Li</surname><given-names>Xiang</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Data curation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-data-curation/">Data curation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-6698-4984</contrib-id><name><surname>Lin</surname><given-names>Qifan</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-0588-6600</contrib-id><name><surname>Wei</surname><given-names>Mengyu</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-9135-1583</contrib-id><name><surname>Li</surname><given-names>Zhibo</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><name><surname>Yin</surname><given-names>Zihan</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-7026-1714</contrib-id><name><surname>Man</surname><given-names>Kai</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-0140-6550</contrib-id><name><surname>Guo</surname><given-names>Jiaqi</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0000-5430-5967</contrib-id><name><surname>Liu</surname><given-names>Yue</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0009-5312-6778</contrib-id><name><surname>Sun</surname><given-names>Yudong</given-names></name><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3630-9590</contrib-id><name><surname>Wu</surname><given-names>Jiacheng</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-5728-9066</contrib-id><name><surname>Zhang</surname><given-names>Jian</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - original draft" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-original-draft/">Writing - original draft</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-5625-477X</contrib-id><name><surname>Wei</surname><given-names>Qiang</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Software" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-software/">Software</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="aff4" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0001-6031-2485</contrib-id><name><surname>Yang</surname><given-names>Jun</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Formal analysis" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-formal-analysis/">Formal analysis</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Project administration" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-project-administration/">Project administration</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-9829-8604</contrib-id><name><surname>Nie</surname><given-names>Ji</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><aff id="aff1"><label><sup>1</sup></label>Laboratory for Climate and Ocean&#x02013;Atmosphere Studies, Department of Atmospheric and Oceanic Sciences, School of Physics, Peking University, Beijing, China.</aff><aff id="aff2"><label><sup>2</sup></label>Institute of Ocean Research, Peking University, Beijing, China.</aff><aff id="aff3"><label><sup>3</sup></label>Key Laboratory of Cenozoic Geology and Environment, Institute of Geology and Geophysics, Chinese Academy of Sciences, Beijing 100029, China.</aff><aff id="aff4"><label><sup>4</sup></label>State Key Laboratory of Tibetan Plateau Earth System, Environment and Resources (TPESER), Institute of Tibetan Plateau Research, Chinese Academy of Sciences, Beijing, China.</aff></contrib-group><author-notes><corresp id="cor1"><label>*</label>Corresponding author. Email: <email xlink:href="yyhu@pku.edu.cn">yyhu@pku.edu.cn</email></corresp><fn id="afn1" fn-type="equal"><label>&#x02020;</label><p>These authors contributed equally to this work.</p></fn></author-notes><pub-date pub-type="collection"><day>28</day><month>6</month><year>2024</year></pub-date><pub-date publication-format="electronic" date-type="pub"><day>26</day><month>6</month><year>2024</year></pub-date><volume>10</volume><issue>26</issue><elocation-id>eadm7813</elocation-id><history>
+<date date-type="received"><day>22</day><month>11</month><year>2023</year></date>
+<date date-type="accepted"><day>21</day><month>5</month><year>2024</year></date>
+</history><permissions><copyright-statement>Copyright &#x000a9; 2024 The Authors, some rights reserved; exclusive licensee American Association for the Advancement of Science. No claim to original U.S. Government Works. Distributed under a Creative Commons Attribution NonCommercial License 4.0 (CC BY-NC).</copyright-statement><copyright-year>2024</copyright-year><copyright-holder>The Authors</copyright-holder><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbynclicense" start_date="2024-06-26">https://creativecommons.org/licenses/by-nc/4.0/</ali:license_ref><license-p>This is an open-access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial license</ext-link>, which permits use, distribution, and reproduction in any medium, so long as the resultant use is <bold>not</bold> for commercial advantage and provided the original work is properly cited.</license-p></license></permissions><self-uri content-type="pdf" xlink:href="sciadv.adm7813.pdf"/><abstract><p>The global meridional overturning circulation (GMOC) is important for redistributing heat and, thus, determining global climate, but what determines its strength over Earth&#x02019;s history remains unclear. On the basis of two sets of climate simulations for the Paleozoic characterized by a stable GMOC direction, our research reveals that GMOC strength primarily depends on continental configuration while climate variations have a minor impact. In the mid- to high latitudes, the volume of continents largely dictates the speed of westerly winds, which in turn controls upwelling and the strength of the GMOC. At low latitudes, open seaways also play an important role in the strength of the GMOC. An open seaway in one hemisphere allows stronger westward ocean currents, which support higher sea surface heights (SSH) in this hemisphere than that in the other. The meridional SSH gradient drives a stronger cross-equatorial flow in the upper ocean, resulting in a stronger GMOC. This latter finding enriches the current theory for GMOC.</p></abstract><abstract abstract-type="teaser"><p>The continental configuration controls the global meridional overturning circulation during the Paleozoic.</p></abstract><funding-group><award-group id="award1606093"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/501100001809</institution-id><institution>National Natural Science Foundation of China</institution></institution-wrap>
+</funding-source><award-id>42488201</award-id></award-group><award-group id="award1606094"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef">http://dx.doi.org/10.13039/501100001809</institution-id><institution>National Natural Science Foundation of China</institution></institution-wrap>
+</funding-source><award-id>42225606</award-id></award-group></funding-group><custom-meta-group><custom-meta><meta-name>Copyeditor</meta-name><meta-value>Vivian Hernandez</meta-value></custom-meta></custom-meta-group></article-meta></front><body><sec sec-type="introduction" disp-level="1"><title>INTRODUCTION</title><p>The meridional overturning circulation (MOC) of the ocean, particularly the one associated with deep convection, plays a vital role in transporting heat from one hemisphere to the other (<xref rid="R1" ref-type="bibr"><italic toggle="yes">1</italic></xref>&#x02013;<xref rid="R3" ref-type="bibr"><italic toggle="yes">3</italic></xref>). On present-day Earth, the global ocean is divided into two major ocean basins that are roughly zonally aligned: the Atlantic basin and the Indo-Pacific basin. Deep water forms in the northern North Atlantic and upwells in the Southern Ocean, giving rise to a strong clockwise Atlantic MOC (AMOC). In contrast, no deep water forms in the northern Indo-Pacific basin, so the Pacific MOC is shallow (&#x0003c;1000 m) and weak, contributing little to cross-equatorial heat transport (<xref rid="R4" ref-type="bibr"><italic toggle="yes">4</italic></xref>). Even denser water than in either the Atlantic or Pacific, known as &#x0201c;bottom water,&#x0201d; forms around the Antarctic continent. However, the bottom water upwells over the Southern Ocean and, thus, has a very short upper branch and little effect on cross-equatorial heat transport. Consequently, most of the Pacific Ocean is filled with this bottom water and exhibits a weak counterclockwise circulation (<xref rid="R5" ref-type="bibr"><italic toggle="yes">5</italic></xref>). Overall, the global MOC (GMOC) in the upper and middle ocean is dominated by AMOC (<xref rid="R6" ref-type="bibr"><italic toggle="yes">6</italic></xref>, <xref rid="R7" ref-type="bibr"><italic toggle="yes">7</italic></xref>).</p><p>The present-day GMOC leads to a net global oceanic heat transport of about 0.7 PW from the Southern Hemisphere (SH) to the Northern Hemisphere (NH) (<xref rid="R1" ref-type="bibr"><italic toggle="yes">1</italic></xref>&#x02013;<xref rid="R3" ref-type="bibr"><italic toggle="yes">3</italic></xref>, <xref rid="R8" ref-type="bibr"><italic toggle="yes">8</italic></xref>). Numerical simulations have demonstrated that weakening of the AMOC can cause substantial NH cooling (<xref rid="R9" ref-type="bibr"><italic toggle="yes">9</italic></xref>, <xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>) and has been proposed as a key mechanism for triggering millenial-scale abrupt climate events (Dansgaard-Oeschgar events) (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>) or even glacial inception (<xref rid="R12" ref-type="bibr"><italic toggle="yes">12</italic></xref>). Throughout Earth&#x02019;s history, the GMOC has almost always existed, albeit with potential variations in direction and strength compared to the present-day AMOC. In addition, the cross-equatorial heat transport associated with the GMOC has been shown to have considerable influence on the latitudinal location of the intertropical convergence zone (<xref rid="R13" ref-type="bibr"><italic toggle="yes">13</italic></xref>&#x02013;<xref rid="R15" ref-type="bibr"><italic toggle="yes">15</italic></xref>). Therefore, understanding the factors controlling the direction and strength of the GMOC is crucial for both the present and the past.</p><p>Numerous studies have extensively explored the factors that affect the AMOC. These investigations have revealed that various factors, such as greenhouse gases (<xref rid="R16" ref-type="bibr"><italic toggle="yes">16</italic></xref>&#x02013;<xref rid="R18" ref-type="bibr"><italic toggle="yes">18</italic></xref>), aerosols and dust (<xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>, <xref rid="R20" ref-type="bibr"><italic toggle="yes">20</italic></xref>), freshwater (<xref rid="R9" ref-type="bibr"><italic toggle="yes">9</italic></xref>, <xref rid="R21" ref-type="bibr"><italic toggle="yes">21</italic></xref>&#x02013;<xref rid="R24" ref-type="bibr"><italic toggle="yes">24</italic></xref>), orbital configuration (<xref rid="R25" ref-type="bibr"><italic toggle="yes">25</italic></xref>), ice sheets (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>, <xref rid="R26" ref-type="bibr"><italic toggle="yes">26</italic></xref>, <xref rid="R27" ref-type="bibr"><italic toggle="yes">27</italic></xref>), rising of mountains (<xref rid="R28" ref-type="bibr"><italic toggle="yes">28</italic></xref>&#x02013;<xref rid="R30" ref-type="bibr"><italic toggle="yes">30</italic></xref>), and opening or closing of straits (<xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>&#x02013;<xref rid="R35" ref-type="bibr"><italic toggle="yes">35</italic></xref>) could affect the AMOC substantially. In many cases, these factors affect AMOC by modifying the surface ocean density through changing precipitation (<xref rid="R6" ref-type="bibr"><italic toggle="yes">6</italic></xref>, <xref rid="R18" ref-type="bibr"><italic toggle="yes">18</italic></xref>, <xref rid="R28" ref-type="bibr"><italic toggle="yes">28</italic></xref>), ocean salinity transport (<xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>, <xref rid="R36" ref-type="bibr"><italic toggle="yes">36</italic></xref>, <xref rid="R37" ref-type="bibr"><italic toggle="yes">37</italic></xref>), meltwater from either sea ice (<xref rid="R38" ref-type="bibr"><italic toggle="yes">38</italic></xref>, <xref rid="R39" ref-type="bibr"><italic toggle="yes">39</italic></xref>) or land ice (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>, <xref rid="R22" ref-type="bibr"><italic toggle="yes">22</italic></xref>, <xref rid="R27" ref-type="bibr"><italic toggle="yes">27</italic></xref>), etc. In others, shifts in the AMOC have been attributed to the change of westerly winds over the Southern Ocean (<xref rid="R4" ref-type="bibr"><italic toggle="yes">4</italic></xref>, <xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>, <xref rid="R40" ref-type="bibr"><italic toggle="yes">40</italic></xref>, <xref rid="R41" ref-type="bibr"><italic toggle="yes">41</italic></xref>). Many theoretical and idealized works have also explored how the MOC&#x02019;s strength depends on the vertical diffusivity (<xref rid="R42" ref-type="bibr"><italic toggle="yes">42</italic></xref>, <xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>), the westerly wind stress (<xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>, <xref rid="R40" ref-type="bibr"><italic toggle="yes">40</italic></xref>, <xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>, <xref rid="R44" ref-type="bibr"><italic toggle="yes">44</italic></xref>), and the density contrast between the two polar regions (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>, <xref rid="R45" ref-type="bibr"><italic toggle="yes">45</italic></xref>). Nevertheless, changes in the AMOC&#x02019;s controlling factors considered in previous studies are relatively minor compared to the wide range of changes that did occur throughout Earth&#x02019;s history. Two important ones, which have not yet been considered, are the evolution of continental configuration and dramatic changes in climate.</p><p>Here, we show that the strength of GMOC is fundamentally controlled by continental configuration over geological timescales based on two series of snapshot model simulations of the Paleozoic with evolutionary topographic boundary condition (<xref rid="R46" ref-type="bibr"><italic toggle="yes">46</italic></xref>). In the first series of simulations (group I), we varied the external forcings (atmospheric CO<sub>2</sub> concentration and solar constant) to ensure that the simulated climate is consistent with the climate reconstruction by Scotese (<xref rid="R47" ref-type="bibr"><italic toggle="yes">47</italic></xref>); in the other (group II), the external forcings were fixed so that the climate changed little (see Materials and Methods for more details). The Paleozoic began 541 Ma (million years) ago with the breakup of the Pannotia supercontinent and ended 252 Ma ago with the formation of the Pangaea supercontinent. Most of the continents were located in the SH during the early Paleozoic and gradually drifted northward (fig. S1) (<xref rid="R48" ref-type="bibr"><italic toggle="yes">48</italic></xref>, <xref rid="R49" ref-type="bibr"><italic toggle="yes">49</italic></xref>). Throughout this era, the climate swung dramatically between hot houses and ice houses, with the global mean surface temperature (GMST) fluctuating between 10&#x000b0; and 26&#x000b0;C (<xref rid="R47" ref-type="bibr"><italic toggle="yes">47</italic></xref>, <xref rid="R50" ref-type="bibr"><italic toggle="yes">50</italic></xref>). The Paleozoic provides a unique opportunity to study the controlling factors for the GMOC because (i) the direction of GMOC was stable over time, allowing us to focus on the change of strength, and (ii) the large climate fluctuations allow us to test how surface climate itself affects GMOC strength.</p><p>In addition to the controlling factors considered in previous work (<xref rid="R18" ref-type="bibr"><italic toggle="yes">18</italic></xref>, <xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>, <xref rid="R21" ref-type="bibr"><italic toggle="yes">21</italic></xref>, <xref rid="R25" ref-type="bibr"><italic toggle="yes">25</italic></xref>, <xref rid="R51" ref-type="bibr"><italic toggle="yes">51</italic></xref>), the realistic Paleozoic continental configuration used here allows us to identify a previously unknown factor that has important influence on GMOC strength but has never been considered before. Besides the traditional wisdom that high-latitude processes determine the strength of the GMOC, we find that low-latitude open seaways can also have a sizable influence on the strength of the GMOC. The discovery of this factor enriches our understanding of the driving mechanisms behind the GMOC and expands current theories on MOC strength.</p></sec><sec sec-type="results" disp-level="1"><title>RESULTS</title><sec disp-level="2"><title>The direction of Paleozoic GMOC</title><p>GMOCs in group I are characterized by a single counterclockwise circulation (<xref rid="F1" ref-type="fig">Fig. 1</xref>). The counterclockwise Paleozoic GMOC is primarily due to the fact that the circumpolar current is in the NH rather than SH (figs. S1 to S3), unlike that on modern Earth. A secondary contributing factor is that the maximum potential density (referenced to 2500 dbar; i.e., &#x003c3;<sub>2.5</sub>) of the polar water in the SH is larger than that in the NH in all periods except at 390 Ma (fig. S4). The higher NH polar density at 390 Ma does not change the direction of GMOC but just strengthens the clockwise bottom circulation, extending it further southward (<xref rid="F1" ref-type="fig">Fig. 1</xref>). This bottom circulation has negligible contribution to cross-equatorial heat transport, similar to its present-day counterpart, and is thus not the focus of the current study. The GMOC&#x02019;s direction during the Paleozoic in group II is the same as that in group I (fig. S5), indicating its stability against climate changes. The direction of the GMOC obtained here is also consistent with simulations using the models cGENIE by Pohl <italic toggle="yes">et al.</italic> (<xref rid="R52" ref-type="bibr"><italic toggle="yes">52</italic></xref>) [the Extended Data, figure 3A of (<xref rid="R52" ref-type="bibr"><italic toggle="yes">52</italic></xref>)] and HadCM3L by Valdes <italic toggle="yes">et al.</italic> (<xref rid="R53" ref-type="bibr"><italic toggle="yes">53</italic></xref>) (figs. S6 and S7), except that the latter starts to exhibit a clockwise GMOC near the end of Paleozoic. Many other studies that focused on only a certain period of the Paleozoic also obtained the same GMOC direction as we do here (<xref rid="R54" ref-type="bibr"><italic toggle="yes">54</italic></xref>&#x02013;<xref rid="R59" ref-type="bibr"><italic toggle="yes">59</italic></xref>).</p><fig position="float" id="F1" fig-type="image" specific-use="distribute"><label>Fig. 1.</label><caption><title>The stream functions of group I.</title><p>The GMOC is shown as stream functions (1 Sv = 10<sup>6</sup> m<sup>3</sup>/s). Time increases left to right and top to bottom; 540 Ma is in the top left, and the PI is in the bottom right.</p></caption><graphic xlink:href="sciadv.adm7813-f1" position="float"/></fig><p>Previous work emphasized the role of polar density, as the modern AMOC can collapse if the water density of the North Atlantic becomes too small (<xref rid="R23" ref-type="bibr"><italic toggle="yes">23</italic></xref>, <xref rid="R24" ref-type="bibr"><italic toggle="yes">24</italic></xref>). In extreme cases, previous work found that the direction of GMOC could even reverse (<xref rid="R9" ref-type="bibr"><italic toggle="yes">9</italic></xref>, <xref rid="R23" ref-type="bibr"><italic toggle="yes">23</italic></xref>, <xref rid="R60" ref-type="bibr"><italic toggle="yes">60</italic></xref>). Therefore, a relatively high polar density in the SH during the Paleozoic is crucial for efficient deep-water formation in the SH and a counterclockwise GMOC. This higher SH density is maintained by the higher surface salinity there (fig. S8), which itself is mainly due to the much less net precipitation over oceans in the southern SH (south of 30&#x000b0;S) than in the northern NH (north of 30&#x000b0;N; <xref rid="F2" ref-type="fig">Fig. 2A</xref>). Note that the river runoff in the SH exceeds that in the NH (the dashed curves in <xref rid="F2" ref-type="fig">Fig. 2B</xref> and fig. S9), decreasing the surface salinity near the coastal regions (fig. S8). However, because of the wideness of the ocean, high-salinity water can persist in the high-latitude SH (fig. S8). At present day, the northern North Atlantic Ocean is narrow, so its salinity is easily perturbed by freshwater input from melting of either Arctic sea ice (<xref rid="R38" ref-type="bibr"><italic toggle="yes">38</italic></xref>, <xref rid="R39" ref-type="bibr"><italic toggle="yes">39</italic></xref>) or continental ice (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>, <xref rid="R22" ref-type="bibr"><italic toggle="yes">22</italic></xref>, <xref rid="R27" ref-type="bibr"><italic toggle="yes">27</italic></xref>).</p><fig position="float" id="F2" fig-type="image" specific-use="distribute"><label>Fig. 2.</label><caption><title>Time series of the freshwater input into the mid- to high-latitude (30&#x000b0; ~ 90&#x000b0;) ocean.</title><p>Red curve, Southern Hemisphere; blue curve, Northern Hemisphere. (<bold>A</bold>) The net precipitation (precipitation minus evaporation). (<bold>B</bold>) Four forms of freshwater: precipitation (solid), evaporation (solid and dotted), runoff (dashed), and meltwater from sea ice (dotted).</p></caption><graphic xlink:href="sciadv.adm7813-f2" position="float"/></fig></sec><sec disp-level="2"><title>GMOC strength primarily varies because of midlatitude continents</title><p>The strength of simulated GMOCs (see Materials and Methods) in group I varies greatly during the Paleozoic (<xref rid="F1" ref-type="fig">Figs. 1</xref> and <xref rid="F3" ref-type="fig">3</xref>). Specifically, the GMOC index is around 20 Sv at the beginning of the Paleozoic, increases to a maximum of 32 Sv at 450 Ma, decreases to a minimum of 6 Sv at 290 Ma, and then increases again by 10 Sv toward the end of the Paleozoic (red solid curve in <xref rid="F3" ref-type="fig">Fig. 3A</xref>). In comparison, the modern AMOC has a strength of ~15 Sv at the equator (<xref rid="R1" ref-type="bibr"><italic toggle="yes">1</italic></xref>, <xref rid="R6" ref-type="bibr"><italic toggle="yes">6</italic></xref>). Strikingly, the strengths of the GMOC in both group I and group II remain remarkably consistent across all time periods (red curves in <xref rid="F3" ref-type="fig">Fig. 3A</xref>) despite substantial differences in the GMST between the two groups (black curves in <xref rid="F3" ref-type="fig">Fig. 3A</xref>). This indicates that the climate evolution plays a minor role in the evolution of GMOC. In other words, the evolution of continents controls the evolution of GMOC during the Paleozoic. This motivates us to investigate the relevant physical processes that drive GMOC evolution.</p><fig position="float" id="F3" fig-type="image" specific-use="distribute"><label>Fig. 3.</label><caption><title>Evolution of the GMOC and related analyses.</title><p>The correlation of GMOC (red) with GMST (black) (<bold>A</bold>), the difference of maximal potential density (referenced to 2500 dbar) between the SH and NH (&#x003c3;<sub>2.5</sub> Diff, gray) (<bold>B</bold>), the zonal westerly wind stress averaged between 30&#x000b0;N and 60&#x000b0;N (Tau_W, blue) (<bold>C</bold>), and the Ekman pumping flux etween 40&#x000b0;N and 70&#x000b0;N (Ekman pumping, purple) (<bold>D</bold>). The bottom two panels are the correlations of Tau_W with GMST (<bold>E</bold>) and the land volume between 30&#x000b0;N and 60&#x000b0;N (land volume, brown) (<bold>F</bold>). Solid curves are for group I, and dashed curves are for group II. The correlation indexes above each panel are for group I and group II, respectively.</p></caption><graphic xlink:href="sciadv.adm7813-f3" position="float"/></fig><p>The MOC strength has been shown to be positively correlated with the density difference between the two polar regions (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>, <xref rid="R45" ref-type="bibr"><italic toggle="yes">45</italic></xref>), the wind stress in the upwelling region (<xref rid="R40" ref-type="bibr"><italic toggle="yes">40</italic></xref>, <xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>), and the ocean&#x02019;s vertical diffusivity (<xref rid="R41" ref-type="bibr"><italic toggle="yes">41</italic></xref>&#x02013;<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>). Since vertical diffusivity is set to be the same in all simulations, this factor is not considered here. The difference in the maximum density of polar waters is not correlated with the variation of GMOC in either group of experiments (<xref rid="F3" ref-type="fig">Fig. 3B</xref>). Therefore, the only process left is the wind stress, the curl of which drives upwelling via Ekman pumping.</p><p>Although the upwelling is driven by the wind stress curl, the midlatitude wind stress is normally used in theoretical studies (the two are equivalent in idealized experimental configurations). Accordingly, we directly compare the wind stress to the GMOC. We find a high Pearson correlation coefficient between the GMOC indexes and the zonal westerly wind stress averaged between 30&#x000b0;N and 60&#x000b0;N (Tau_W) (<xref rid="F3" ref-type="fig">Fig. 3C</xref>), with a value close to 0.85 for both groups of simulations. This relationship remains robust regardless of the specific region chosen for wind stress averaging. This high linear correlation between GMOC strength and wind stress is consistent with the theoretical prediction by Nikurashin and Vallis (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>) under weak&#x02013;vertical diffusivity limit. As shown in Nikurashin and Vallis (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>), under weak&#x02013;vertical diffusivity limit, the MOC is predominantly wind driven and relatively insensitive to changes in vertical diffusivity or bipolar density contrast. The present-day AMOC is also roughly in this limit (<xref rid="R40" ref-type="bibr"><italic toggle="yes">40</italic></xref>, <xref rid="R41" ref-type="bibr"><italic toggle="yes">41</italic></xref>).</p><p>Unlike the present-day narrow northern North Atlantic, the Paleozoic ocean was wide even at high latitudes (fig. S8), making it very difficult to shut off the deep-water formation there. Sensitivity tests show that a large freshwater forcing of 1.7 Sv in the southern SH ocean weakens the GMOC at 460 Ma by 65%, and 3.4 Sv are needed to shut it off almost completely (not shown). In comparison, in many models, 0.1 Sv of freshwater forcing over the northern North Atlantic is sufficient to strongly perturb surface density and shut down the present-day AMOC (<xref rid="R23" ref-type="bibr"><italic toggle="yes">23</italic></xref>, <xref rid="R24" ref-type="bibr"><italic toggle="yes">24</italic></xref>, <xref rid="R61" ref-type="bibr"><italic toggle="yes">61</italic></xref>, <xref rid="R62" ref-type="bibr"><italic toggle="yes">62</italic></xref>).</p><p>Note that there is a spurious correlation (0.70) between GMOC indexes and GMST for group II (dashed curves in <xref rid="F3" ref-type="fig">Fig. 3A</xref>). This correlation exists because continental evolution (fig. S1B) simultaneously drives long-term cooling of global climate (<xref rid="R63" ref-type="bibr"><italic toggle="yes">63</italic></xref>) and a weakening of GMOC. The climate cooling is decoupled from the change of Tau_W in our simulations; a positive correlation (0.69) between Tau_W and GMST (<xref rid="F3" ref-type="fig">Fig. 3E</xref>) is contrary to the general understanding that a colder climate induces a larger midlatitude meridional temperature gradient and thus stronger westerly winds (<xref rid="R64" ref-type="bibr"><italic toggle="yes">64</italic></xref>). Climate change does have some minor influence on the GMOC. This influence is best seen by looking at a specific time slice. For example, at 450 or 440 Ma, the GMST in group I is much lower than in group II, and Tau_W is correspondingly stronger (<xref rid="F3" ref-type="fig">Fig. 3E</xref>). This stronger Tau_W drives a slightly stronger GMOC (<xref rid="F3" ref-type="fig">Fig. 3A</xref>). However, a similar relationship cannot be found for another cold period from 320 to 290 Ma, suggesting a complex interaction between GMOC and climate.</p><p>Rather than depending on global climate, Tau_W is found to be highly influenced by the continental configuration, more specifically, the land volume in the midlatitude region (<xref rid="F3" ref-type="fig">Fig. 3F</xref>). Only when the midlatitude land volume is stable that Tau_W shows a good relationship with either meridional temperature gradient (fig. S11) or GMST (<xref rid="F3" ref-type="fig">Fig. 3E</xref>). The surface topography blocks winds by form drag and slows down winds by increasing surface friction. Therefore, the more the land volume, the slower the westerly winds, decreasing Tau_W (<xref rid="R64" ref-type="bibr"><italic toggle="yes">64</italic></xref>, <xref rid="R65" ref-type="bibr"><italic toggle="yes">65</italic></xref>). Previous studies focused on the impact of the opening and depth of Drake Passage on the formation of a strong AMOC (<xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>, <xref rid="R33" ref-type="bibr"><italic toggle="yes">33</italic></xref>, <xref rid="R35" ref-type="bibr"><italic toggle="yes">35</italic></xref>) but overlooked the importance of gradually evolving continental topography. Our results show that the midlatitude land volume is better correlated with Tau_W and the strength of the GMOC than the land area (<xref rid="F3" ref-type="fig">Fig. 3F</xref> and fig. S12). The midlatitude meridional temperature gradient, hence, Tau_W has been suggested also to be influenced by the aspect ratio of ocean basin, but the relationship is not good for the hemisphere that has a zonally open channel (<xref rid="R66" ref-type="bibr"><italic toggle="yes">66</italic></xref>). Thus, the evolution of aspect ratio of ocean basin and its influence on Tau_W are not investigated in the current study.</p></sec><sec disp-level="2"><title>Importance of low-latitude continental configuration on GMOC strength</title><p>There is an obvious mismatch between total midlatitude Ekman upwelling and the GMOC indexes from 420 to 350 Ma; GMOC during this period is much stronger than would be expected from wind-driven upwelling (shaded area in <xref rid="F3" ref-type="fig">Fig. 3, C and D</xref>). This mismatch suggests that factors beyond Tau_W are at play. In addition, the subtropical cell (STC) circulation in the NH is abnormally strong and deep during this period (<xref rid="F1" ref-type="fig">Fig. 1</xref> and fig. S5). We speculate that such abnormal behavior of both GMOC and STC is due to the near absence of land in the NH low latitudes (figs. S1A and S13B).</p><p>Because of the lack of land, the NH experiences a much stronger westward zonal ocean current compared to the SH at low latitudes (<xref rid="F4" ref-type="fig">Fig. 4A</xref> and figs. S2 and S13C). This intensified westward flow is accompanied by a stronger northward Coriolis force, contributing to higher sea surface heights (SSH) over the corresponding NH region than that in the SH (<xref rid="F4" ref-type="fig">Fig. 4B</xref> and figs. S13D and S14). An SSH gradient forms across the equator, and a pressure gradient is generated in the upper ocean (noticeable even at 500-m depth; <xref rid="F4" ref-type="fig">Fig. 4C</xref>). Such pressure gradient drives a southward mass transport across the equator in the upper ocean, which must return via the lower ocean, enhancing GMOC. We confirm this expectation with the idealized experiments carried out using the Massachusetts Institute of Technology General Circulation Model (MITgcm) in which a shallow low-latitude seaway is opened in one of the hemispheres (see Materials and Methods; figs. S15 and S16).</p><fig position="float" id="F4" fig-type="image" specific-use="distribute"><label>Fig. 4.</label><caption><title>Evolution of hemispheric contrasts of various factors in low-latitude region and the result of binary linear regression.</title><p>The hemispheric contrasts are all calculated by the NH minus SH (<bold>A</bold> to <bold>C</bold>). The correlation of ocean surface zonal velocity (UVEL) contrast between equator and 30&#x000b0; latitude (black; it is weighted by Coriolis force parameters) with land area contrast between equator and 30&#x000b0; latitude (brown) (A), the SSH contrast between 10&#x000b0; and 30&#x000b0; latitude (blue) with UVEL contrast (B), the pressure contrast in the 500-m ocean depth between equator and 30&#x000b0; latitude (gray), and SSH contrast (C). (<bold>D</bold>) The result of binary linear regression of GMOC (red) using Ekman pumping between 40&#x000b0;N and 70&#x000b0;N and SSH contrast (purple). Solid curves are for group I, and dashed curves are for group II. The correlation indexes above each panel are for group I and group II, respectively.</p></caption><graphic xlink:href="sciadv.adm7813-f4" position="float"/></fig><p>When the Ekman upwelling (integrated over 40&#x000b0;N and 70&#x000b0;N) and the difference in low-latitude SSH (between 10&#x000b0; and 30&#x000b0; latitude) between NH and SH are combined linearly to construct the GMOC strength, it reproduces the model-simulated GMOC (<xref rid="F4" ref-type="fig">Fig. 4D</xref>) much better than that constructed by using the upwelling alone (<xref rid="F3" ref-type="fig">Fig. 3C</xref>). Therefore, we propose that the strength of GMOC is influenced not only by continental configuration within the westerlies region but also by that over the low-latitude region.</p></sec></sec><sec sec-type="discussion" disp-level="1"><title>DISCUSSION</title><p>On the basis of a series of simulations for the Paleozoic, we find that the GMOC is primarily controlled by freshwater input into ocean, wind-driven Ekman pumping in the midlatitudes, and the SSH anomaly in low latitudes (<xref rid="F5" ref-type="fig">Fig. 5</xref>). The latter two factors are especially important for the strength of the GMOC and are highly related to continental configuration. Our major conclusions find validation through Paleozoic climate simulations using the HadCM3 model by Valdes <italic toggle="yes">et al.</italic> (<xref rid="R53" ref-type="bibr"><italic toggle="yes">53</italic></xref>, <xref rid="R67" ref-type="bibr"><italic toggle="yes">67</italic></xref>) and a non-IPCC class model, FOAM, by Pohl <italic toggle="yes">et al.</italic> (<xref rid="R52" ref-type="bibr"><italic toggle="yes">52</italic></xref>) (figs. S17 and S18). This last study by Pohl <italic toggle="yes">et al.</italic> (<xref rid="R52" ref-type="bibr"><italic toggle="yes">52</italic></xref>) also pointed out the unfortunate absence of proxy data for validating the direction and magnitude of the Paleozoic GMOC.</p><fig position="float" id="F5" fig-type="image" specific-use="distribute"><label>Fig. 5.</label><caption><title>Schematic of controlling factors for the GMOC during the Paleozoic.</title><p>The schematic is based on the situation for 400 Ma. Three main factors are shown, the less net precipitation in the south SH; the strong westerlies, ocean surface current, and Ekman upwelling in the midlatitude region in NH; the SSH anomaly and associated pressure anomaly in the low-latitude region.</p></caption><graphic xlink:href="sciadv.adm7813-f5" position="float"/></fig><p>Although there has been tremendous interest in understanding the mechanisms that govern the MOC, surface topography in the westerlies region and the presence of an open seaway in the low-latitude region were previously largely overlooked. Our study thus draws attention to how the evolution of continents in these two regions affects the strength of MOC. Our study indicates that the traditional theory for MOC misses an important element, that is, the influence of a low-latitude seaway. Previous studies either did not have such a seaway (<xref rid="R1" ref-type="bibr"><italic toggle="yes">1</italic></xref>, <xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>, <xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>) or had a partial seaway that connected the present-day Atlantic Ocean and Pacific Ocean only (<xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>&#x02013;<xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>). Their focus was mostly on the strength of the AMOC and mechanism invoked generally involved freshwater and salinity only (<xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>, <xref rid="R33" ref-type="bibr"><italic toggle="yes">33</italic></xref>, <xref rid="R68" ref-type="bibr"><italic toggle="yes">68</italic></xref>), while as demonstrated above, a fully open low-latitude seaway affects the MOC in a fundamentally different way. Exploring how the width, depth, and latitudinal location of a low-latitude seaway affect the MOC will require detailed investigations in both theoretical and realistic experimental studies in the future.</p><p>The conclusions obtained in this study cannot be simply applied to the more recent era, such as the Mesozoic and Cenozoic. During most periods of the Mesozoic, the wide midlatitude zonal ocean channels were absent in both hemispheres; since the late Mesozoic, the world ocean began to split into a wide Pacific and a narrow Atlantic Ocean. Because of these differences in continental configuration, GMOCs during the Mesozoic and Cenozoic were presumably controlled by distinctly different mechanisms, analysis of which is underway.</p></sec><sec sec-type="materials|methods" disp-level="1"><title>MATERIALS AND METHODS</title><sec disp-level="2"><title>Numerical model and simulations</title><p>Here, we use a fully coupled version of the Community Earth System Model (CESM 1.2.2) (<xref rid="R69" ref-type="bibr"><italic toggle="yes">69</italic></xref>) to simulate the climate during the Paleozoic. The atmosphere and land share the same horizontal grid, which has a resolution of ~3.75&#x000b0; &#x000d7; 3.75&#x000b0;. The ocean and sea ice also share the same grid, which has a uniform spacing of 3.6&#x000b0; in the zonal direction. In the meridional direction, the grid spacing is ~0.6&#x000b0; near the equator and poles and 3.4&#x000b0; near the midlatitude. In the vertical, the atmosphere and ocean have 26 and 60 layers, respectively. The simulated GMOC in pre-industrial (PI) is consistent with that obtained by tracer inversion (<xref rid="R70" ref-type="bibr"><italic toggle="yes">70</italic></xref>), reanalysis data (<xref rid="R6" ref-type="bibr"><italic toggle="yes">6</italic></xref>), and other climate models (<xref rid="R71" ref-type="bibr"><italic toggle="yes">71</italic></xref>). The ocean bottom is set as a flat basin with the depth about 3500 m during the Paleozoic. This configuration is based on paleo-digital elevation model (<xref rid="R48" ref-type="bibr"><italic toggle="yes">48</italic></xref>) and is similar to that in other Paleozoic climate simulations (<xref rid="R53" ref-type="bibr"><italic toggle="yes">53</italic></xref>). The model configuration is the same as that in Li <italic toggle="yes">et al.</italic> (2022) and more detailed descriptions can be found there (<xref rid="R46" ref-type="bibr"><italic toggle="yes">46</italic></xref>, <xref rid="R72" ref-type="bibr"><italic toggle="yes">72</italic></xref>). Continental ice sheets are not considered in the simulations presented here, but sensitivity tests are done for 440 and 290 Ma, for which the ice sheets are obtained by an offline simulation using the ice-sheet model ISSM (<xref rid="R73" ref-type="bibr"><italic toggle="yes">73</italic></xref>). The results show that GMOC changes by only ~1 Sv in both cases (fig. S19).</p><p>The results from two groups of simulations are analyzed here. Group I is carried out by Li <italic toggle="yes">et al.</italic> (2022) from 540 to 250 Ma with a 10-Ma interval. In this group, the solar constant varies according to the solar model (<xref rid="R74" ref-type="bibr"><italic toggle="yes">74</italic></xref>), and the atmospheric CO<sub>2</sub> concentration is tuned to ensure that the simulated GMST can match the reconstructed ones (<xref rid="R47" ref-type="bibr"><italic toggle="yes">47</italic></xref>). Group II is forced by fixed CO<sub>2</sub> concentration [2800 parts per million (ppm)] and solar constant (1360.89 W/m<sup>2</sup>). In this group, only the continental configuration changes among experiments so as to distinguish the influence of climate evolution and continental evolution on GMOC. The results of group II have not been presented anywhere before. Besides, we also run a PI case, and the CO<sub>2</sub> concentration and solar constant are set as 280 ppm and 1360.89 W/m<sup>2</sup>.</p><p>All simulations are continued for longer than 2000 model years, with some of them over 5000 model years. The time series of globally mean temperature at the surface and 2649 m ocean, as well as the GMOC index, during the last 1000 years of all simulations are shown in figs. S20 to S23. The linear trends of temperature during the last 500 years are all smaller than 0.8&#x000b0;C/1000 years, and the trends of GMOC are generally smaller than 1.5 Sv/1000 years. Simulations with such small trends are normally considered to have reached equilibrium (<xref rid="R53" ref-type="bibr"><italic toggle="yes">53</italic></xref>).</p></sec><sec disp-level="2"><title>Definition of GMOC and GMOC strength</title><p>The GMOC is represented by the so-called baroclinic stream function, which is defined as the zonally integrated meridional transport (<xref rid="R1" ref-type="bibr"><italic toggle="yes">1</italic></xref>)<disp-formula id="E1"><mml:math id="m1" display="block" overflow="scroll"><mml:mi mathvariant="normal">&#x003c8;</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mi>y</mml:mi><mml:mo>,</mml:mo><mml:mi>z</mml:mi><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:munderover><mml:mo stretchy="true">&#x0222b;</mml:mo><mml:mi>z</mml:mi><mml:mi mathvariant="normal">&#x003b7;</mml:mi></mml:munderover><mml:munderover><mml:mo stretchy="true">&#x0222b;</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>w</mml:mi></mml:msub><mml:msub><mml:mi>x</mml:mi><mml:mi>e</mml:mi></mml:msub></mml:munderover><mml:mtext mathvariant="italic">vdxdz</mml:mtext></mml:math><label>(1)</label></disp-formula>where <italic toggle="yes">v</italic> is the residual meridional velocity, that is, the sum of Eulerian mean and eddy-induced velocity, and &#x003b7; is the surface height. For GMOC, <italic toggle="yes">x<sub>w</sub></italic> and <italic toggle="yes">x<sub>e</sub></italic> cover the whole longitudinal range. The strength of GMOC (GMOC index) is defined as the largest absolute value of the global ocean meridional stream function below 500 m at the equator. This definition is somewhat different from some previous definitions (<xref rid="R75" ref-type="bibr"><italic toggle="yes">75</italic></xref>&#x02013;<xref rid="R77" ref-type="bibr"><italic toggle="yes">77</italic></xref>), for we think this index is more indicative of cross-equatorial mass transport than the maximum value at the mid or high latitude. The evolutions of GMOC indexes in these two definitions are consistent (fig. S24).</p></sec><sec disp-level="2"><title>The Ekman pumping driven by wind stress</title><p>The Ekman pumping (in dimension of velocity) that is crucial for MOC is calculated as<disp-formula id="E2"><mml:math id="m2" display="block" overflow="scroll"><mml:mtext mathvariant="italic">Ekman pumping</mml:mtext><mml:mo>=</mml:mo><mml:mo>&#x02207;</mml:mo><mml:mo>&#x000d7;</mml:mo><mml:mrow><mml:mo stretchy="true">(</mml:mo><mml:mfrac><mml:mi mathvariant="normal">&#x003c4;</mml:mi><mml:mrow><mml:mi>f</mml:mi><mml:mi mathvariant="normal">&#x003c1;</mml:mi></mml:mrow></mml:mfrac><mml:mo stretchy="true">)</mml:mo></mml:mrow></mml:math><label>(2)</label></disp-formula>where &#x003c4; is the wind stress, <italic toggle="yes">f</italic> is the Coriolis parameter, and &#x003c1; is the seawater density. The upwelling in <xref rid="F3" ref-type="fig">Fig. 3D</xref> is the total Ekman pumping flux between 40&#x000b0;N and 70&#x000b0;N.</p></sec><sec disp-level="2"><title>The setup of idealized experiments using MITgcm</title><p>The idealized experiments are carried out using the MITgcm (<xref rid="R78" ref-type="bibr"><italic toggle="yes">78</italic></xref>), in a hydrostatic Boussinesq configuration. We use an ocean-only model with 2&#x000b0; &#x000d7; 2&#x000b0; horizontal resolution and 29 layers vertically. The domain&#x02019;s latitude is from 70&#x000b0;S to 70&#x000b0;N and only 70&#x000b0; of longitude. The zonal wind stress is fixed (fig. S15C), and the meridional wind stress is removed. To remove the effect of temperature and salinity, the surface temperature is hemispherical symmetrical (fig. S15D), and the ocean salinity is globally uniform. A deep channel (3000 m) is opened between 48&#x000b0;N and 70&#x000b0;N. Two cases are conducted, and the low-latitude channel is closed in ideal_ctl case (fig. S15A), while there is a shallow channel (330 m) between 10&#x000b0;N and 30&#x000b0;N in ideal_330m case (fig. S15B).</p></sec></sec></body><back><ack><title>Acknowledgments</title><p>We thank D. Koll for helping us improve the writing and the editor and anonymous reviewers for thorough evaluation and extremely constructive suggestions. Simulations are conducted at the High-performance Computing Platform of Peking University.</p><sec><p><bold>Funding:</bold> This work is supported by the National Natural Science Foundation of China, under grant 42488201 and 42225606.</p></sec><sec><p><bold>Author contributions:</bold> Conceptualization: Y.H. and Yo. Liu. CESM simulations: S.Y., X.B., X.L., Q.L., M.W., Z.L., Z.Y., K.M., J.G., Yu. Liu, J.H., J.Z., and Q.W. MITgcm simulations: J.M. ISSM simulations: Y.S. Investigation: S.Y. and Yo. Liu. Visualization: S.Y. and Yo. Liu. Supervision: Yo. Liu and Y.H. Writing&#x02014;original draft: S.Y., Yo. Liu, and Y.H. Writing&#x02014;review and editing: all authors.</p></sec><sec><p><bold>Competing interests:</bold> The authors declare that they have no competing interests.</p></sec><sec><p><bold>Data and materials availability:</bold> The data used in the present study are archived at <ext-link xlink:href="https://zenodo.org/records/10046290" ext-link-type="uri">https://zenodo.org/records/10046290</ext-link>. All data needed to evaluate the conclusions in the paper are present in the paper and/or the Supplementary Materials.</p></sec></ack><sec sec-type="supplementary-material"><title>Supplementary Materials</title><sec><title>This PDF file includes:</title><supplementary-material position="float" content-type="local-data"><caption><p>Figs. S1 to S24</p></caption><media xlink:href="sciadv.adm7813_sm.pdf"/></supplementary-material></sec></sec><ref-list><title>REFERENCES AND NOTES</title><ref id="R1"><label>1</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M. W.</given-names>
+<surname>Buckley</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Marshall</surname></string-name></person-group>, 
+<article-title>Observations, inferences, and mechanisms of the Atlantic meridional overturning circulation: A review</article-title>. <source>Rev. Geophys.</source>
+<volume>54</volume>, 
+<fpage>5</fpage>&#x02013;<lpage>63</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R2"><label>2</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>K. E.</given-names>
+<surname>Trenberth</surname></string-name>, <string-name><given-names>J. M.</given-names>
+<surname>Caron</surname></string-name></person-group>, 
+<article-title>Estimates of meridional atmosphere and ocean heat transports</article-title>. <source>J. Climate</source>
+<volume>14</volume>, 
+<fpage>3433</fpage>&#x02013;<lpage>3443</lpage> (<year>2001</year>).</mixed-citation></ref><ref id="R3"><label>3</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Y.</given-names>
+<surname>Zheng</surname></string-name>, <string-name><given-names>B. S.</given-names>
+<surname>Giese</surname></string-name></person-group>, 
+<article-title>Ocean heat transport in Simple Ocean Data Assimilation: Structure and mechanisms</article-title>. <source>Geophys. Res.</source>
+<volume>114</volume>, 
+<fpage>C11009</fpage> (<year>2009</year>).</mixed-citation></ref><ref id="R4"><label>4</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L. D.</given-names>
+<surname>Talley</surname></string-name></person-group>, 
+<article-title>Closure of the global overturning circulation through the Indian, Pacific, and Southern Oceans schematics and transports</article-title>. <source>Oceanography</source>
+<volume>26</volume>, 
+<fpage>80</fpage>&#x02013;<lpage>97</lpage> (<year>2013</year>).</mixed-citation></ref><ref id="R5"><label>5</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T.</given-names>
+<surname>Kawasaki</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Hasumi</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Tanaka</surname></string-name></person-group>, 
+<article-title>Role of tide-induced vertical mixing in the deep Pacific Ocean circulation</article-title>. <source>J. Oceanogr.</source>
+<volume>77</volume>, 
+<fpage>173</fpage>&#x02013;<lpage>184</lpage> (<year>2021</year>).</mixed-citation></ref><ref id="R6"><label>6</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D.</given-names>
+<surname>Ferreira</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Cessi</surname></string-name>, <string-name><given-names>H. K.</given-names>
+<surname>Coxall</surname></string-name>, <string-name><given-names>A. D.</given-names>
+<surname>Boer</surname></string-name>, <string-name><given-names>H. A.</given-names>
+<surname>Dijkstra</surname></string-name>, <string-name><given-names>S. S.</given-names>
+<surname>Drijfhout</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Eldevik</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Harnik</surname></string-name>, <string-name><given-names>J. F.</given-names>
+<surname>McManus</surname></string-name>, <string-name><given-names>D. P.</given-names>
+<surname>Marshall</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Nilsson</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Roquet</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Schneider</surname></string-name>, <string-name><given-names>R. C.</given-names>
+<surname>Wills</surname></string-name></person-group>, 
+<article-title>Atlantic-pacific asymmetry in deep water formation</article-title>. <source>Annu. Rev. Earth Planet. Sci.</source>
+<volume>46</volume>, 
+<fpage>327</fpage>&#x02013;<lpage>352</lpage> (<year>2018</year>).</mixed-citation></ref><ref id="R7"><label>7</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>P.</given-names>
+<surname>Scholz</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Sidorenko</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Danilov</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Koldunov</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Sein</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Jung</surname></string-name></person-group>, 
+<article-title>Assessment of the Finite-VolumE Sea ice&#x02013;Ocean Model (FESOM2.0) &#x02013; Part 2: Partial bottom cells, embedded sea ice and vertical mixing library CVMix</article-title>. <source>Geosci. Model Dev.</source>
+<volume>15</volume>, 
+<fpage>335</fpage>&#x02013;<lpage>363</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R8"><label>8</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>K. E.</given-names>
+<surname>Trenberth</surname></string-name>, <string-name><given-names>J. T.</given-names>
+<surname>Fasullo</surname></string-name></person-group>, 
+<article-title>Atlantic meridional heat transports computed from balancing Earth&#x02019;s energy locally</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>44</volume>, 
+<fpage>1919</fpage>&#x02013;<lpage>1927</lpage> (<year>2017</year>).</mixed-citation></ref><ref id="R9"><label>9</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>R. J.</given-names>
+<surname>Stouffer</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yin</surname></string-name>, <string-name><given-names>J. M.</given-names>
+<surname>Gregory</surname></string-name>, <string-name><given-names>K. W.</given-names>
+<surname>Dixon</surname></string-name>, <string-name><given-names>M. J.</given-names>
+<surname>Spelman</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Hurlin</surname></string-name>, <string-name><given-names>A. J.</given-names>
+<surname>Weaver</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Eby</surname></string-name>, <string-name><given-names>G. M.</given-names>
+<surname>Flato</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Hasumi</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>J. H.</given-names>
+<surname>Jungclaus</surname></string-name>, <string-name><given-names>I. V.</given-names>
+<surname>Kamenkovich</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Levermann</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Montoya</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Murakami</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Nawrath</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Oka</surname></string-name>, <string-name><given-names>W. R.</given-names>
+<surname>Peltier</surname></string-name>, <string-name><given-names>D. Y.</given-names>
+<surname>Robitaille</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Sokolov</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Vettoretti</surname></string-name>, <string-name><given-names>S. L.</given-names>
+<surname>Weber</surname></string-name></person-group>, 
+<article-title>Investigating the causes of the response of the thermohaline circulation to past and future climate changes</article-title>. <source>J. Climate</source>
+<volume>19</volume>, 
+<fpage>1365</fpage>&#x02013;<lpage>1387</lpage> (<year>2006</year>).</mixed-citation></ref><ref id="R10"><label>10</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L. C.</given-names>
+<surname>Jackson</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Kahana</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Graham</surname></string-name>, <string-name><given-names>M. A.</given-names>
+<surname>Ringer</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Woollings</surname></string-name>, <string-name><given-names>J. V.</given-names>
+<surname>Mecking</surname></string-name>, <string-name><given-names>R. A.</given-names>
+<surname>Wood</surname></string-name></person-group>, 
+<article-title>Global and European climate impacts of a slowdown of the AMOC in a high resolution GCM</article-title>. <source>Climate Dynam.</source>
+<volume>45</volume>, 
+<fpage>3299</fpage>&#x02013;<lpage>3316</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R11"><label>11</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>X.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Lohmann</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Knorr</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Purcell</surname></string-name></person-group>, 
+<article-title>Abrupt glacial climate shifts controlled by ice sheet changes</article-title>. <source>Nature</source>
+<volume>512</volume>, 
+<fpage>290</fpage>&#x02013;<lpage>294</lpage> (<year>2014</year>).<pub-id pub-id-type="pmid">25119027</pub-id>
+</mixed-citation></ref><ref id="R12"><label>12</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Q. Z.</given-names>
+<surname>Yin</surname></string-name>, <string-name><given-names>Z. P.</given-names>
+<surname>Wu</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Berger</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Goosse</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Hodell</surname></string-name></person-group>, 
+<article-title>Insolation triggered abrupt weakening of Atlantic circulation at the end of interglacials</article-title>. <source>Science</source>
+<volume>373</volume>, 
+<fpage>1035</fpage>&#x02013;<lpage>1040</lpage> (<year>2021</year>).<pub-id pub-id-type="pmid">34446606</pub-id>
+</mixed-citation></ref><ref id="R13"><label>13</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Han</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Nie</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>W. R.</given-names>
+<surname>Boos</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Yuan</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Guo</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lan</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Lin</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Bao</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Wei</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Man</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Yin</surname></string-name></person-group>, 
+<article-title>Continental drift shifts tropical rainfall by altering radiation and ocean heat transport</article-title>. <source>Sci. Adv.</source>
+<volume>9</volume>, 
+<fpage>eadf7209</fpage> (<year>2023</year>).<pub-id pub-id-type="pmid">36888715</pub-id>
+</mixed-citation></ref><ref id="R14"><label>14</label><mixed-citation publication-type="book">S.-P. Xie, <italic toggle="yes">Coupled Atmosphere-Ocean Dynamics: From El Ni&#x000f1;o to Climate Change</italic> (Elsevier, 2024).</mixed-citation></ref><ref id="R15"><label>15</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Timmermann</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Okumura</surname></string-name>, <string-name><given-names>S.-I.</given-names>
+<surname>An</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Clement</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Dong</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Guilyardi</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>J. H.</given-names>
+<surname>Jungclaus</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Renold</surname></string-name>, <string-name><given-names>T. F.</given-names>
+<surname>Stocker</surname></string-name>, <string-name><given-names>R. J.</given-names>
+<surname>Stouffer</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Sutton</surname></string-name>, <string-name><given-names>S.-P.</given-names>
+<surname>Xie</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yin</surname></string-name></person-group>, 
+<article-title>The influence of a weakening of the Atlantic meridional overturning circulation on ENSO</article-title>. <source>J. Climate</source>
+<volume>20</volume>, 
+<fpage>4899</fpage>&#x02013;<lpage>4919</lpage> (<year>2007</year>).</mixed-citation></ref><ref id="R16"><label>16</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Rahmstorf</surname></string-name>, <string-name><given-names>J. E.</given-names>
+<surname>Box</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Feulner</surname></string-name>, <string-name><given-names>M. E.</given-names>
+<surname>Mann</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Robinson</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Rutherford</surname></string-name>, <string-name><given-names>E. J.</given-names>
+<surname>Schaffernicht</surname></string-name></person-group>, 
+<article-title>Exceptional twentieth-century slowdown in Atlantic Ocean overturning circulation</article-title>. <source>Nat. Clim. Change</source>
+<volume>5</volume>, 
+<fpage>475</fpage>&#x02013;<lpage>480</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R17"><label>17</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L.</given-names>
+<surname>Caesar</surname></string-name>, <string-name><given-names>G. D.</given-names>
+<surname>McCarthy</surname></string-name>, <string-name><given-names>D. J. R.</given-names>
+<surname>Thornalley</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Cahill</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Rahmstorf</surname></string-name></person-group>, 
+<article-title>Current Atlantic meridional overturning circulation weakest in last millennium</article-title>. <source>Nat. Geosci.</source>
+<volume>14</volume>, 
+<fpage>118</fpage>&#x02013;<lpage>120</lpage> (<year>2021</year>).</mixed-citation></ref><ref id="R18"><label>18</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>X.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Knorr</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Lohmann</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Barker</surname></string-name></person-group>, 
+<article-title>Abrupt North Atlantic circulation changes in response to gradual CO<sub>2</sub> forcing in a glacial climate state</article-title>. <source>Nat. Geosci.</source>
+<volume>10</volume>, 
+<fpage>518</fpage>&#x02013;<lpage>523</lpage> (<year>2017</year>).</mixed-citation></ref><ref id="R19"><label>19</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M. B.</given-names>
+<surname>Menary</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Robson</surname></string-name>, <string-name><given-names>R. P.</given-names>
+<surname>Allan</surname></string-name>, <string-name><given-names>B. B. B.</given-names>
+<surname>Booth</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Cassou</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Gastineau</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Gregory</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Hodson</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Mignot</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Ringer</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Sutton</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Wilcox</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Zhang</surname></string-name></person-group>, 
+<article-title>Aerosol-forced AMOC changes in CMIP6 historical simulations</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>47</volume>, 
+<fpage>e2020GL088166</fpage> (<year>2020</year>).</mixed-citation></ref><ref id="R20"><label>20</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name></person-group>, 
+<article-title>Impact of dust on climate and AMOC during the last glacial maximum simulated by CESM1.2</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>49</volume>, 
+<fpage>e2021GL096672</fpage> (<year>2022</year>).</mixed-citation></ref><ref id="R21"><label>21</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L.</given-names>
+<surname>Tarasov</surname></string-name>, <string-name><given-names>W. R.</given-names>
+<surname>Peltier</surname></string-name></person-group>, 
+<article-title>Arctic freshwater forcing of the younger dryas cold reversal</article-title>. <source>Nature</source>
+<volume>435</volume>, 
+<fpage>662</fpage>&#x02013;<lpage>665</lpage> (<year>2005</year>).<pub-id pub-id-type="pmid">15931219</pub-id>
+</mixed-citation></ref><ref id="R22"><label>22</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>G. A.</given-names>
+<surname>Meehl</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Han</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yin</surname></string-name></person-group>, 
+<article-title>Transient response of the MOC and climate to potential melting of the Greenland ice sheet in the 21st century</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>36</volume>, 
+<fpage>L10707</fpage> (<year>2009</year>).</mixed-citation></ref><ref id="R23"><label>23</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>N.</given-names>
+<surname>Brown</surname></string-name>, <string-name><given-names>E. D.</given-names>
+<surname>Galbraith</surname></string-name></person-group>, 
+<article-title>Hosed vs. unhosed: Interruptions of the Atlantic meridional overturning circulation in a global coupled model, with and without freshwater forcing</article-title>. <source>Clim. Past</source>
+<volume>12</volume>, 
+<fpage>1663</fpage>&#x02013;<lpage>1679</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R24"><label>24</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L. C.</given-names>
+<surname>Jackson</surname></string-name>, <string-name><given-names>R. A.</given-names>
+<surname>Wood</surname></string-name></person-group>, 
+<article-title>Timescales of AMOC decline in response to fresh water forcing</article-title>. <source>Climate Dynam.</source>
+<volume>51</volume>, 
+<fpage>1333</fpage>&#x02013;<lpage>1350</lpage> (<year>2018</year>).</mixed-citation></ref><ref id="R25"><label>25</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>R. S.</given-names>
+<surname>Smith</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Gregory</surname></string-name></person-group>, 
+<article-title>The last glacial cycle: Transient simulations with an AOGCM</article-title>. <source>Climate Dynam.</source>
+<volume>38</volume>, 
+<fpage>1545</fpage>&#x02013;<lpage>1559</lpage> (<year>2012</year>).</mixed-citation></ref><ref id="R26"><label>26</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Sherriff-Tadano</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Abe-Ouchi</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Yoshimori</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Oka</surname></string-name>, <string-name><given-names>W.-L.</given-names>
+<surname>Chan</surname></string-name></person-group>, 
+<article-title>Influence of glacial ice sheets on the Atlantic meridional overturning circulation through surface wind change</article-title>. <source>Climate Dynam.</source>
+<volume>50</volume>, 
+<fpage>2881</fpage>&#x02013;<lpage>2903</lpage> (<year>2018</year>).</mixed-citation></ref><ref id="R27"><label>27</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>I.</given-names>
+<surname>Eisenman</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Liu</surname></string-name></person-group>, 
+<article-title>Linear weakening of the AMOC in response to receding glacial ice sheets in CCSM3</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>41</volume>, 
+<fpage>6252</fpage>&#x02013;<lpage>6258</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R28"><label>28</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>B.</given-names>
+<surname>Su</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Jiang</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Sepulchre</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Ramstein</surname></string-name></person-group>, 
+<article-title>Difference between the North Atlantic and Pacific meridional overturning circulation in response to the uplift of the Tibetan Plateau</article-title>. <source>Clim. Past</source>
+<volume>14</volume>, 
+<fpage>751</fpage>&#x02013;<lpage>762</lpage> (<year>2018</year>).</mixed-citation></ref><ref id="R29"><label>29</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>H.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Wen</surname></string-name></person-group>, 
+<article-title>Investigating the role of the Tibetan plateau in the formation of atlantic meridional overturning circulation</article-title>. <source>J. Climate</source>
+<volume>33</volume>, 
+<fpage>3585</fpage>&#x02013;<lpage>3601</lpage> (<year>2019</year>).</mixed-citation></ref><ref id="R30"><label>30</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>R.</given-names>
+<surname>Jiang</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Yang</surname></string-name></person-group>, 
+<article-title>Roles of the rocky mountains in the atlantic and pacific meridional overturning circulations</article-title>. <source>J. Climate</source>
+<volume>34</volume>, 
+<fpage>6691</fpage>&#x02013;<lpage>6703</lpage> (<year>2021</year>).</mixed-citation></ref><ref id="R31"><label>31</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. R.</given-names>
+<surname>Toggweiler</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Samuels</surname></string-name></person-group>, 
+<article-title>Effect of drake passage on the global thermohaline circulation</article-title>. <source>Deep-Sea Res. I Oceanogr. Res. Pap.</source>
+<volume>42</volume>, 
+<fpage>477</fpage>&#x02013;<lpage>500</lpage> (<year>1995</year>).</mixed-citation></ref><ref id="R32"><label>32</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D. J.</given-names>
+<surname>Lunt</surname></string-name>, <string-name><given-names>P. J.</given-names>
+<surname>Valdes</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Haywood</surname></string-name>, <string-name><given-names>I. C.</given-names>
+<surname>Rutt</surname></string-name></person-group>, 
+<article-title>Closure of the Panama Seaway during the Pliocene: Implications for climate and Northern Hemisphere glaciation</article-title>. <source>Climate Dynam.</source>
+<volume>30</volume>, 
+<fpage>1</fpage>&#x02013;<lpage>18</lpage> (<year>2008</year>).</mixed-citation></ref><ref id="R33"><label>33</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Galbraith</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Palter</surname></string-name></person-group>, 
+<article-title>Coupled climate impacts of the drake passage and the panama seaway</article-title>. <source>Climate Dynam.</source>
+<volume>43</volume>, 
+<fpage>37</fpage>&#x02013;<lpage>52</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R34"><label>34</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C. M.</given-names>
+<surname>Brierley</surname></string-name>, <string-name><given-names>A. V.</given-names>
+<surname>Fedorov</surname></string-name></person-group>, 
+<article-title>Comparing the impacts of Miocene&#x02013;Pliocene changes in inter-ocean gateways on climate: Central American Seaway, Bering Strait, and Indonesia</article-title>. <source>Earth Planet. Sci. Lett.</source>
+<volume>444</volume>, 
+<fpage>116</fpage>&#x02013;<lpage>130</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R35"><label>35</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. B.</given-names>
+<surname>Ladant</surname></string-name>, <string-name><given-names>C. J.</given-names>
+<surname>Poulsen</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Fluteau</surname></string-name>, <string-name><given-names>C. R.</given-names>
+<surname>Tabor</surname></string-name>, <string-name><given-names>K. G.</given-names>
+<surname>MacLeod</surname></string-name>, <string-name><given-names>E. E.</given-names>
+<surname>Martin</surname></string-name>, <string-name><given-names>S. J.</given-names>
+<surname>Haynes</surname></string-name>, <string-name><given-names>M. A.</given-names>
+<surname>Rostami</surname></string-name></person-group>, 
+<article-title>Paleogeographic controls on the evolution of Late Cretaceous ocean circulation</article-title>. <source>Clim. Past</source>
+<volume>16</volume>, 
+<fpage>973</fpage>&#x02013;<lpage>1006</lpage> (<year>2020</year>).</mixed-citation></ref><ref id="R36"><label>36</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>G. A.</given-names>
+<surname>Meehl</surname></string-name></person-group>, 
+<article-title>Bering Strait throughflow and the thermohaline circulation</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>32</volume>, 
+<fpage>L24610</fpage> (<year>2005</year>).</mixed-citation></ref><ref id="R37"><label>37</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>G. A.</given-names>
+<surname>Meehl</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Han</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Otto-Bliestner</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Abe-Ouchi</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Rosenbloom</surname></string-name></person-group>, 
+<article-title>Effects of the Bering Strait closure on AMOC and global climate under different background climates</article-title>. <source>Prog. Oceanogr.</source>
+<volume>132</volume>, 
+<fpage>174</fpage>&#x02013;<lpage>196</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R38"><label>38</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>F.</given-names>
+<surname>S&#x000e9;vellec</surname></string-name>, <string-name><given-names>A. V.</given-names>
+<surname>Fedorov</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Liu</surname></string-name></person-group>, 
+<article-title>Arctic sea-ice decline weakens the Atlantic meridional overturning circulation</article-title>. <source>Nat. Clim. Change</source>
+<volume>7</volume>, 
+<fpage>604</fpage>&#x02013;<lpage>610</lpage> (<year>2017</year>).</mixed-citation></ref><ref id="R39"><label>39</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Liu</surname></string-name></person-group>, 
+<article-title>AMOC response to global warming: Dependence on the background climate and response timescale</article-title>. <source>Climate Dynam.</source>
+<volume>44</volume>, 
+<fpage>3449</fpage>&#x02013;<lpage>3468</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R40"><label>40</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T.</given-names>
+<surname>Kuhlbrodt</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Griesel</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Montoya</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Levermann</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Hofmann</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Rahmstorf</surname></string-name></person-group>, 
+<article-title>On the driving processes of the Atlantic meridional overturning circulation</article-title>. <source>Rev. Geophys.</source>
+<volume>45</volume>, 
+<fpage>RG2001</fpage> (<year>2007</year>).</mixed-citation></ref><ref id="R41"><label>41</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Marshall</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Speer</surname></string-name></person-group>, 
+<article-title>Closure of the meridional overturning circulation through Southern Ocean upwelling</article-title>. <source>Nat. Geosci.</source>
+<volume>5</volume>, 
+<fpage>171</fpage>&#x02013;<lpage>180</lpage> (<year>2012</year>).</mixed-citation></ref><ref id="R42"><label>42</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>R.</given-names>
+<surname>Ferrari</surname></string-name>, <string-name><given-names>L.-P.</given-names>
+<surname>Nadeau</surname></string-name>, <string-name><given-names>D. P.</given-names>
+<surname>Marshall</surname></string-name>, <string-name><given-names>L. C.</given-names>
+<surname>Allison</surname></string-name>, <string-name><given-names>H. L.</given-names>
+<surname>Johnson</surname></string-name></person-group>, 
+<article-title>A model of the ocean overturning circulation with two closed basins and a reentrant channel</article-title>. <source>J. Phys. Oceanogr.</source>
+<volume>47</volume>, 
+<fpage>2887</fpage>&#x02013;<lpage>2906</lpage> (<year>2017</year>).</mixed-citation></ref><ref id="R43"><label>43</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M.</given-names>
+<surname>Nikurashin</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Vallis</surname></string-name></person-group>, 
+<article-title>A theory of the interhemispheric meridional overturning circulation and associated stratification</article-title>. <source>J. Phys. Oceanogr.</source>
+<volume>42</volume>, 
+<fpage>1652</fpage>&#x02013;<lpage>1667</lpage> (<year>2012</year>).</mixed-citation></ref><ref id="R44"><label>44</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>Wunsch</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Ferrari</surname></string-name></person-group>, 
+<article-title>Vertical mixing, energy, and the general circulation of theoceans</article-title>. <source>Annu. Rev. Fluid Mech.</source>
+<volume>36</volume>, 
+<fpage>281</fpage>&#x02013;<lpage>314</lpage> (<year>2004</year>).</mixed-citation></ref><ref id="R45"><label>45</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>F.</given-names>
+<surname>Bryan</surname></string-name></person-group>, 
+<article-title>High-latitude salinity effects and interhemispheric thermohaline circulations</article-title>. <source>Nature</source>
+<volume>323</volume>, 
+<fpage>301</fpage>&#x02013;<lpage>304</lpage> (<year>1986</year>).</mixed-citation></ref><ref id="R46"><label>46</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>X.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Guo</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lan</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Lin</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Bao</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Yuan</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Wei</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Man</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Yin</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Han</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Zhao</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Nie</surname></string-name></person-group>, 
+<article-title>A high-resolution climate simulation dataset for the past 540 million years</article-title>. <source>Sci. Data</source>
+<volume>9</volume>, 
+<fpage>371</fpage> (<year>2022</year>).<pub-id pub-id-type="pmid">35764652</pub-id>
+</mixed-citation></ref><ref id="R47"><label>47</label><mixed-citation publication-type="webpage">C. R. Scotese, Some thoughts on global climate change: The transition for icehouse to hothouse conditions. PALEOMAP Project (2016); <ext-link xlink:href="https://researchgate.net/publication/275277369_Some_Thoughts_on_Global_Climate_Change_The_Transition_for_Icehouse_to_Hothouse_Conditions/" ext-link-type="uri">https://researchgate.net/publication/275277369_Some_Thoughts_on_Global_Climate_Change_The_Transition_for_Icehouse_to_Hothouse_Conditions/</ext-link>.</mixed-citation></ref><ref id="R48"><label>48</label><mixed-citation publication-type="webpage">C. R. Scotese, N. Wright, PALEOMAP Paleodigital Elevation Models (PaleoDEMS) for the Phaerozoic PALEOMAP Project (2018); <ext-link xlink:href="https://earthbyte.org/paleodem-resource-scotese-and-wright-2018/" ext-link-type="uri">https://earthbyte.org/paleodem-resource-scotese-and-wright-2018/</ext-link>.</mixed-citation></ref><ref id="R49"><label>49</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Y.</given-names>
+<surname>Hu</surname></string-name></person-group>, 
+<article-title>The super-cycle of the global land-monsoon system</article-title>. <source>Natl. Sci. Rev.</source>
+<volume>11</volume>, 
+<fpage>nwae092</fpage> (<year>2024</year>).<pub-id pub-id-type="pmid">38633551</pub-id>
+</mixed-citation></ref><ref id="R50"><label>50</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>Scotese</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Song</surname></string-name>, <string-name><given-names>B. J. W.</given-names>
+<surname>Mills</surname></string-name>, <string-name><given-names>D. G.</given-names>
+<surname>van der Meer</surname></string-name></person-group>, 
+<article-title>Phanerozoic paleotemperatures: The earth&#x02019;s changing climate during the last 540 million years</article-title>. <source>Earth Sci. Rev.</source>
+<volume>215</volume>, 
+<fpage>103503</fpage> (<year>2021</year>).</mixed-citation></ref><ref id="R51"><label>51</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>H.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Jiang</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Wen</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Wu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Huang</surname></string-name></person-group>, 
+<article-title>The role of mountains in shaping the global meridional overturning circulation</article-title>. <source>Nat. Commun.</source>
+<volume>15</volume>, 
+<fpage>2602</fpage> (<year>2024</year>).<pub-id pub-id-type="pmid">38521775</pub-id>
+</mixed-citation></ref><ref id="R52"><label>52</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Pohl</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Ridgwell</surname></string-name>, <string-name><given-names>R. G.</given-names>
+<surname>Stockey</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Thomazo</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Keane</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Vennin</surname></string-name>, <string-name><given-names>C. R.</given-names>
+<surname>Scotese</surname></string-name></person-group>, 
+<article-title>Continental configuration controls ocean oxygenation during the Phanerozoic</article-title>. <source>Nature</source>
+<volume>608</volume>, 
+<fpage>523</fpage>&#x02013;<lpage>527</lpage> (<year>2022</year>).<pub-id pub-id-type="pmid">35978129</pub-id>
+</mixed-citation></ref><ref id="R53"><label>53</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>P. J.</given-names>
+<surname>Valdes</surname></string-name>, <string-name><given-names>C. R.</given-names>
+<surname>Scotese</surname></string-name>, <string-name><given-names>D. J.</given-names>
+<surname>Lunt</surname></string-name></person-group>, 
+<article-title>Deep ocean temperatures through time</article-title>. <source>Clim. Past</source>
+<volume>17</volume>, 
+<fpage>1483</fpage>&#x02013;<lpage>1506</lpage> (<year>2021</year>).</mixed-citation></ref><ref id="R54"><label>54</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Pohl</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Donnadieu</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Le Hir</surname></string-name>, <string-name><given-names>J. F.</given-names>
+<surname>Buoncristiani</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Vennin</surname></string-name></person-group>, 
+<article-title>Effect of the Ordovician paleogeography on the (in)stability of the climate</article-title>. <source>Clim. Past</source>
+<volume>10</volume>, 
+<fpage>2053</fpage>&#x02013;<lpage>2066</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R55"><label>55</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Pohl</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Donnadieu</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Le Hir</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Ferreira</surname></string-name></person-group>, 
+<article-title>The climatic significance of Late Ordovician-early Silurian black shales</article-title>. <source>Paleoceanography</source>
+<volume>32</volume>, 
+<fpage>397</fpage>&#x02013;<lpage>423</lpage> (<year>2017</year>).</mixed-citation></ref><ref id="R56"><label>56</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A. D.</given-names>
+<surname>Herrmann</surname></string-name>, <string-name><given-names>B. J.</given-names>
+<surname>Haupt</surname></string-name>, <string-name><given-names>M. E.</given-names>
+<surname>Patzkowsky</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Seidov</surname></string-name>, <string-name><given-names>R. L.</given-names>
+<surname>Slingerland</surname></string-name></person-group>, 
+<article-title>Response of Late Ordovician paleoceanography to changes in sea level, continental drift, and atmospheric pCO<sub>2</sub>: Potential causes for long-term cooling and glaciation</article-title>. <source>Palaeogeogr. Palaeoclimatol. Palaeoecol.</source>
+<volume>210</volume>, 
+<fpage>385</fpage>&#x02013;<lpage>401</lpage> (<year>2004</year>).</mixed-citation></ref><ref id="R57"><label>57</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Chen</surname></string-name>, <string-name><given-names>I. P.</given-names>
+<surname>Monta&#x000f1;ez</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>T. T.</given-names>
+<surname>Isson</surname></string-name>, <string-name><given-names>S. I.</given-names>
+<surname>Macarewich</surname></string-name>, <string-name><given-names>N. J.</given-names>
+<surname>Planavsky</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Rauzi</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Daviau</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Yao</surname></string-name>, <string-name><given-names>Y.-P.</given-names>
+<surname>Qi</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>J.-X.</given-names>
+<surname>Fan</surname></string-name>, <string-name><given-names>C. J.</given-names>
+<surname>Poulsen</surname></string-name>, <string-name><given-names>A. D.</given-names>
+<surname>Anbar</surname></string-name>, <string-name><given-names>S.-Z.</given-names>
+<surname>Shen</surname></string-name>, <string-name><given-names>X.-D.</given-names>
+<surname>Wang</surname></string-name></person-group>, 
+<article-title>Marine anoxia linked to abrupt global warming during Earth&#x02019;s penultimate icehouse</article-title>. <source>Proc. Natl. Acad. Sci. U.S.A.</source>
+<volume>119</volume>, 
+<fpage>e2115231119</fpage> (<year>2022</year>).<pub-id pub-id-type="pmid">35500118</pub-id>
+</mixed-citation></ref><ref id="R58"><label>58</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S. I.</given-names>
+<surname>Macarewich</surname></string-name>, <string-name><given-names>C. J.</given-names>
+<surname>Poulsen</surname></string-name></person-group>, 
+<article-title>Glacial-interglacial controls on ocean circulation and temperature during the permo-carboniferous</article-title>. <source>Paleoceanogr. Paleoclimatol.</source>
+<volume>37</volume>, 
+<fpage>e2022PA004417</fpage> (<year>2022</year>).</mixed-citation></ref><ref id="R59"><label>59</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>R. M.</given-names>
+<surname>Hotinski</surname></string-name>, <string-name><given-names>K. L.</given-names>
+<surname>Bice</surname></string-name>, <string-name><given-names>L. R.</given-names>
+<surname>Kump</surname></string-name>, <string-name><given-names>R. G.</given-names>
+<surname>Najjar</surname></string-name>, <string-name><given-names>M. A.</given-names>
+<surname>Arthur</surname></string-name></person-group>, 
+<article-title>Ocean stagnation and end-Permian anoxia</article-title>. <source>Geology</source>
+<volume>29</volume>, 
+<fpage>7</fpage>&#x02013;<lpage>10</lpage> (<year>2001</year>).</mixed-citation></ref><ref id="R60"><label>60</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.</given-names>
+<surname>Rahmstorf</surname></string-name></person-group>, 
+<article-title>Ocean circulation and climate during the past 120,000 years</article-title>. <source>Nature</source>
+<volume>419</volume>, 
+<fpage>207</fpage>&#x02013;<lpage>214</lpage> (<year>2002</year>).<pub-id pub-id-type="pmid">12226675</pub-id>
+</mixed-citation></ref><ref id="R61"><label>61</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>R. K.</given-names>
+<surname>Haskins</surname></string-name>, <string-name><given-names>K. I. C.</given-names>
+<surname>Oliver</surname></string-name>, <string-name><given-names>L. C.</given-names>
+<surname>Jackson</surname></string-name>, <string-name><given-names>R. A.</given-names>
+<surname>Wood</surname></string-name>, <string-name><given-names>S. S.</given-names>
+<surname>Drijfhout</surname></string-name></person-group>, 
+<article-title>Temperature domination of AMOC weakening due to freshwater hosing in two GCMs</article-title>. <source>Climate Dynam.</source>
+<volume>54</volume>, 
+<fpage>273</fpage>&#x02013;<lpage>286</lpage> (<year>2020</year>).</mixed-citation></ref><ref id="R62"><label>62</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L. C.</given-names>
+<surname>Jackson</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Alastru&#x000e9; de Asenjo</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Bellomo</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Danabasoglu</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Haak</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Jungclaus</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Lee</surname></string-name>, <string-name><given-names>V. L.</given-names>
+<surname>Meccia</surname></string-name>, <string-name><given-names>O.</given-names>
+<surname>Saenko</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Shao</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Swingedouw</surname></string-name></person-group>, 
+<article-title>Understanding AMOC stability: The North Atlantic hosing model intercomparison project</article-title>. <source>Geosci. Model Dev.</source>
+<volume>16</volume>, 
+<fpage>1975</fpage>&#x02013;<lpage>1995</lpage> (<year>2023</year>).</mixed-citation></ref><ref id="R63"><label>63</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>X.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Wei</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Guo</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lan</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Lin</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Yuan</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Wei</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Nie</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Xia</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Hu</surname></string-name></person-group>, 
+<article-title>Climate variations in the past 250 million years and contributing factors</article-title>. <source>Paleoceanogr. Paleoclimatol.</source>
+<volume>38</volume>, 
+<fpage>e2022PA004503</fpage> (<year>2023</year>).</mixed-citation></ref><ref id="R64"><label>64</label><mixed-citation publication-type="book">G. K. Vallis, <italic toggle="yes">Essentials of Atmospheric and Oceanic Dynamics</italic> (Cambridge Univ. Press, 2019).</mixed-citation></ref><ref id="R65"><label>65</label><mixed-citation publication-type="other">M. S. Singh, &#x0201c;The general circulation of the atmosphere,&#x0201c; Monash University Lessons Teaching Note (2022); <ext-link xlink:href="https://climateextremes.org.au/wp-content/uploads/2020/06/MartySingh_notes_WS20.pdf" ext-link-type="uri">https://climateextremes.org.au/wp-content/uploads/2020/06/MartySingh_notes_WS20.pdf</ext-link>.</mixed-citation></ref><ref id="R66"><label>66</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>K.</given-names>
+<surname>Gianchandani</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Maor</surname></string-name>, <string-name><given-names>O.</given-names>
+<surname>Adam</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Farnsworth</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Gildor</surname></string-name>, <string-name><given-names>D. J.</given-names>
+<surname>Lunt</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Paldor</surname></string-name></person-group>, 
+<article-title>Effects of paleogeographic changes and CO<sub>2</sub> variability on northern mid-latitudinal temperature gradients in the Cretaceous</article-title>. <source>Nat. Commun.</source>
+<volume>14</volume>, 
+<fpage>5193</fpage> (<year>2023</year>).<pub-id pub-id-type="pmid">37626029</pub-id>
+</mixed-citation></ref><ref id="R67"><label>67</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>P. J.</given-names>
+<surname>Valdes</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Armstrong</surname></string-name>, <string-name><given-names>M. P. S.</given-names>
+<surname>Badger</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Bradshaw</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Bragg</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Crucifix</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Davies-Barnard</surname></string-name>, <string-name><given-names>J. J.</given-names>
+<surname>Day</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Farnsworth</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Gordon</surname></string-name>, <string-name><given-names>P. O.</given-names>
+<surname>Hopcroft</surname></string-name>, <string-name><given-names>A. T.</given-names>
+<surname>Kennedy</surname></string-name>, <string-name><given-names>N. S.</given-names>
+<surname>Lord</surname></string-name>, <string-name><given-names>D. J.</given-names>
+<surname>Lunt</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Marzocchi</surname></string-name>, <string-name><given-names>L. M.</given-names>
+<surname>Parry</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Pope</surname></string-name>, <string-name><given-names>W. H. G.</given-names>
+<surname>Roberts</surname></string-name>, <string-name><given-names>E. J.</given-names>
+<surname>Stone</surname></string-name>, <string-name><given-names>G. J. L.</given-names>
+<surname>Tourte</surname></string-name>, <string-name><given-names>J. H. T.</given-names>
+<surname>Williams</surname></string-name></person-group>, 
+<article-title>The BRIDGE HadCM3 family of climate models: HadCM3@Bristol v1.0</article-title>. <source>Geosci. Model Dev.</source>
+<volume>10</volume>, 
+<fpage>3715</fpage>&#x02013;<lpage>3743</lpage> (<year>2017</year>).</mixed-citation></ref><ref id="R68"><label>68</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Z.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>K. H.</given-names>
+<surname>Nisancioglu</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Flat&#x000f8;y</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Bentsen</surname></string-name>, <string-name><given-names>I.</given-names>
+<surname>Bethke</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Wang</surname></string-name></person-group>, 
+<article-title>Tropical seaways played a more important role than high latitude seaways in Cenozoic cooling</article-title>. <source>Clim. Past</source>
+<volume>7</volume>, 
+<fpage>801</fpage>&#x02013;<lpage>813</lpage> (<year>2011</year>).</mixed-citation></ref><ref id="R69"><label>69</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. W.</given-names>
+<surname>Hurrell</surname></string-name>, <string-name><given-names>M. M.</given-names>
+<surname>Holland</surname></string-name>, <string-name><given-names>P. R.</given-names>
+<surname>Gent</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Ghan</surname></string-name>, <string-name><given-names>J. E.</given-names>
+<surname>Kay</surname></string-name>, <string-name><given-names>P. J.</given-names>
+<surname>Kushner</surname></string-name>, <string-name><given-names>J.-F.</given-names>
+<surname>Lamarque</surname></string-name>, <string-name><given-names>W. G.</given-names>
+<surname>Large</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Lindsay</surname></string-name>, <string-name><given-names>W. H.</given-names>
+<surname>Lipscomb</surname></string-name>, <string-name><given-names>M. C.</given-names>
+<surname>Long</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Mahowald</surname></string-name>, <string-name><given-names>D. R.</given-names>
+<surname>Marsh</surname></string-name>, <string-name><given-names>R. B.</given-names>
+<surname>Neale</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Rasch</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Vavrus</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Vertenstein</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Bader</surname></string-name>, <string-name><given-names>W. D.</given-names>
+<surname>Collins</surname></string-name>, <string-name><given-names>J. J.</given-names>
+<surname>Hack</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Kiehl</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Marshall</surname></string-name></person-group>, 
+<article-title>The community earth system model: A framework for collaborative research</article-title>. <source>Bull. Am. Meteorol. Soc.</source>
+<volume>94</volume>, 
+<fpage>1339</fpage>&#x02013;<lpage>1360</lpage> (<year>2013</year>).</mixed-citation></ref><ref id="R70"><label>70</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>R.</given-names>
+<surname>Lumpkin</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Speer</surname></string-name></person-group>, 
+<article-title>Global ocean meridional overturning</article-title>. <source>J. Phys. Oceanogr.</source>
+<volume>37</volume>, 
+<fpage>2550</fpage>&#x02013;<lpage>2562</lpage> (<year>2007</year>).</mixed-citation></ref><ref id="R71"><label>71</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>S.-K.</given-names>
+<surname>Lee</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Wu</surname></string-name>, <string-name><given-names>C. R.</given-names>
+<surname>Mechoso</surname></string-name></person-group>, 
+<article-title>A global perspective on CMIP5 climate model biases</article-title>. <source>Nat. Clim. Change</source>
+<volume>4</volume>, 
+<fpage>201</fpage>&#x02013;<lpage>205</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R72"><label>72</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Y.</given-names>
+<surname>Hu</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>W. R.</given-names>
+<surname>Boos</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Guo</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lan</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Lin</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Han</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Bao</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Yuan</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Wei</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Nie</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Guo</surname></string-name></person-group>, 
+<article-title>Emergence of the modern global monsoon from the Pangaea megamonsoon set by palaeogeography</article-title>. <source>Nat. Geosci.</source>
+<volume>16</volume>, 
+<fpage>1041</fpage>&#x02013;<lpage>1046</lpage> (<year>2023</year>).</mixed-citation></ref><ref id="R73"><label>73</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E.</given-names>
+<surname>Larour</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Seroussi</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Morlighem</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Rignot</surname></string-name></person-group>, 
+<article-title>Continental scale, high order, high spatial resolution, ice sheet modeling using the Ice Sheet System Model (ISSM)</article-title>. <source>J. Geophys. Res.</source>
+<volume>117</volume>, 
+<fpage>F01022</fpage> (<year>2012</year>).</mixed-citation></ref><ref id="R74"><label>74</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D. O.</given-names>
+<surname>Gough</surname></string-name></person-group>, 
+<article-title>Solar interior structure and luminosity variations</article-title>. <source>Solar Phys.</source>
+<volume>74</volume>, 
+<fpage>21</fpage>&#x02013;<lpage>34</lpage> (<year>1981</year>).</mixed-citation></ref><ref id="R75"><label>75</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>G. D.</given-names>
+<surname>McCarthy</surname></string-name>, <string-name><given-names>D. A.</given-names>
+<surname>Smeed</surname></string-name>, <string-name><given-names>W. E.</given-names>
+<surname>Johns</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Frajka-Williams</surname></string-name>, <string-name><given-names>B. I.</given-names>
+<surname>Moat</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Rayner</surname></string-name>, <string-name><given-names>M. O.</given-names>
+<surname>Baringer</surname></string-name>, <string-name><given-names>C. S.</given-names>
+<surname>Meinen</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Collins</surname></string-name>, <string-name><given-names>H. L.</given-names>
+<surname>Bryden</surname></string-name></person-group>, 
+<article-title>Measuring the Atlantic meridional overturning circulation at 26&#x000b0;N</article-title>. <source>Prog. Oceanogr.</source>
+<volume>130</volume>, 
+<fpage>91</fpage>&#x02013;<lpage>111</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R76"><label>76</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>Q.</given-names>
+<surname>Wen</surname></string-name></person-group>, 
+<article-title>AMOC and climate responses to dust reduction and greening of the Sahara during the mid-holocene</article-title>. <source>J. Climate</source>
+<volume>34</volume>, 
+<fpage>4893</fpage>&#x02013;<lpage>4912</lpage> (<year>2021</year>).</mixed-citation></ref><ref id="R77"><label>77</label><mixed-citation publication-type="other">C. Mack, Modelling the Late Devonian Climate: Implications for evolution and extinction, thesis, University of Oxford (2021); <ext-link xlink:href="https://ora.ox.ac.uk/objects/uuid:95ac6924-cf4b-43bb-9c02-fb9d37acb596" ext-link-type="uri">https://ora.ox.ac.uk/objects/uuid:95ac6924-cf4b-43bb-9c02-fb9d37acb596</ext-link>.</mixed-citation></ref><ref id="R78"><label>78</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Marshall</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Hill</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Perelman</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Adcroft</surname></string-name></person-group>, 
+<article-title>Hydrostatic, quasi-hydrostatic, and nonhydrostatic ocean modeling</article-title>. <source>J. Geophys. Res. Oceans</source>
+<volume>102</volume>, 
+<fpage>5733</fpage>&#x02013;<lpage>5752</lpage> (<year>1997</year>).</mixed-citation></ref></ref-list></back></article>

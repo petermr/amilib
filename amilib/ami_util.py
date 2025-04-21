@@ -362,6 +362,20 @@ class AmiUtil:
         logger.debug(f"confif {config} {config.keys()}")
         return config, sections
 
+    @classmethod
+    def is_iterable(cls, obj):
+        """
+        Is obj iterable? It's messy
+        see https://stackoverflow.com/questions/1952464/python-how-to-determine-if-an-object-is-iterable
+        :param obj: possible iterable.
+        :return: False if obj is None or not iterable
+        """
+        try:
+            some_object_iterator = iter(obj)
+        except TypeError as te:
+            # print(obj, 'is not iterable')
+            return False
+        return True
 
 
 class AmiJson:

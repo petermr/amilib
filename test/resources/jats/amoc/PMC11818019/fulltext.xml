@@ -1,0 +1,796 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd"> 
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.3" xml:lang="en" article-type="research-article"><?DTDIdentifier.IdentifierValue -//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.2 20190208//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName JATS-archivearticle1.dtd?><?SourceDTD.Version 1.2?><?ConverterInfo.XSLTName jats2jats3.xsl?><?ConverterInfo.Version 1?><?properties open_access?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Sci Adv</journal-id><journal-id journal-id-type="iso-abbrev">Sci Adv</journal-id><journal-id journal-id-type="publisher-id">sciadv</journal-id><journal-id journal-id-type="hwp">advances</journal-id><journal-title-group><journal-title>Science Advances</journal-title></journal-title-group><issn pub-type="epub">2375-2548</issn><publisher><publisher-name>American Association for the Advancement of Science</publisher-name></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">11818019</article-id><article-id pub-id-type="pmid">39937912</article-id>
+<article-id pub-id-type="publisher-id">adn8819</article-id><article-id pub-id-type="doi">10.1126/sciadv.adn8819</article-id><article-categories><subj-group subj-group-type="article-type"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Earth, Environmental, Ecological, and Space Sciences</subject></subj-group><subj-group subj-group-type="legacy-article-type"><subject>SciAdv r-articles</subject></subj-group><subj-group subj-group-type="field"><subject>Climatology</subject><subject>Geophysics</subject></subj-group><subj-group subj-group-type="overline"><subject>Climatology</subject></subj-group></article-categories><title-group><article-title>Continued permafrost ecosystem carbon loss under net-zero and negative emissions</article-title><alt-title alt-title-type="short">Permafrost carbon cycle under net-zero and negative emissions</alt-title></title-group><contrib-group><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-8203-8998</contrib-id><name><surname>Park</surname><given-names>So-Won</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Data curation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-data-curation/">Data curation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Formal analysis" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-formal-analysis/">Formal analysis</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Project administration" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-project-administration/">Project administration</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Software" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-software/">Software</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Supervision" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-supervision/">Supervision</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Visualization" vocab-term-identifier="https://web.archive.org/web/20180313224017/http://dictionary.credit.niso.org/Contributor_Roles/Visualization">Visualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - original draft" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-original-draft/">Writing - original draft</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0009-0004-9929-2820</contrib-id><name><surname>Mun</surname><given-names>Jin-Hyuk</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Formal analysis" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-formal-analysis/">Formal analysis</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Investigation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-investigation/">Investigation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Software" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-software/">Software</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Visualization" vocab-term-identifier="https://web.archive.org/web/20180313224017/http://dictionary.credit.niso.org/Contributor_Roles/Visualization">Visualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-2003-4377</contrib-id><name><surname>Lee</surname><given-names>Hanna</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Resources" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-resources/">Resources</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff2" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-2154-5857</contrib-id><name><surname>Steinert</surname><given-names>Norman J.</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff3" ref-type="aff">
+<sup>3</sup>
+</xref><xref rid="aff4" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-0003-429X</contrib-id><name><surname>An</surname><given-names>Soon-Il</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Validation" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-validation/">Validation</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff5" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0002-3199-7646</contrib-id><name><surname>Shin</surname><given-names>Jongsoo</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Formal analysis" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-formal-analysis/">Formal analysis</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff6" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib contrib-type="author" corresp="yes"><contrib-id contrib-id-type="orcid" authenticated="true">https://orcid.org/0000-0003-2251-2579</contrib-id><name><surname>Kug</surname><given-names>Jong-Seong</given-names></name><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Conceptualization" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-conceptualization/">Conceptualization</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Funding acquisition" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-funding-acquisition/">Funding acquisition</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Methodology" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-methodology/">Methodology</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Project administration" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-project-administration/">Project administration</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Supervision" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-supervision/">Supervision</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - original draft" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-original-draft/">Writing - original draft</role><role vocab="credit" vocab-identifier="https://credit.niso.org/term/contributor-roles/" vocab-term="Writing - review &#x00026; editing" vocab-term-identifier="https://credit.niso.org/term/contributor-roles-writing-review-editing/">Writing - review &#x00026; editing</role><xref rid="aff1" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="cor1" ref-type="corresp">*</xref></contrib><aff id="aff1"><label><sup>1</sup></label>School of Earth and Environmental Sciences, Seoul National University, Seoul, South Korea.</aff><aff id="aff2"><label><sup>2</sup></label>Department of Biology, Norwegian University of Science and Technology, Trondheim, Norway.</aff><aff id="aff3"><label><sup>3</sup></label>NORCE Climate and Environment, Bjerknes Centre for Climate Research, Bergen, Norway.</aff><aff id="aff4"><label><sup>4</sup></label>CICERO Center for International Climate Research, Oslo, Norway.</aff><aff id="aff5"><label><sup>5</sup></label>Department of Atmospheric Sciences/Irreversible Climate Change Research Center, Yonsei University, Seoul, South Korea.</aff><aff id="aff6"><label><sup>6</sup></label>Woods Hole Oceanographic Institution, Woods Hole, MA, USA.</aff></contrib-group><author-notes><corresp id="cor1"><label>*</label>Corresponding author. Email: <email xlink:href="jskug1@gmail.com">jskug1@gmail.com</email></corresp></author-notes><pub-date pub-type="collection"><day>14</day><month>2</month><year>2025</year></pub-date><pub-date publication-format="electronic" date-type="pub"><day>12</day><month>2</month><year>2025</year></pub-date><volume>11</volume><issue>7</issue><elocation-id>eadn8819</elocation-id><history>
+<date date-type="received"><day>05</day><month>1</month><year>2024</year></date>
+<date date-type="accepted"><day>10</day><month>1</month><year>2025</year></date>
+</history><permissions><copyright-statement>Copyright &#x000a9; 2025 The Authors, some rights reserved; exclusive licensee American Association for the Advancement of Science. No claim to original U.S. Government Works. Distributed under a Creative Commons Attribution License 4.0 (CC BY).</copyright-statement><copyright-year>2025</copyright-year><copyright-holder>The Authors</copyright-holder><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense" start_date="2025-02-12">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open-access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution license</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri content-type="pdf" xlink:href="sciadv.adn8819.pdf"/><abstract><p>The loss of ecosystem carbon (the sum of vegetation, litter, and soil carbon) may occur in a permafrost region under mitigation pathways, which could reduce the efficiency of carbon dioxide removal. Here, we investigate changes in permafrost under net-zero and negative emissions, based on idealized emission-driven simulations using a state-of-the-art Earth system model. While acting as a net ecosystem carbon sink during most of the positive emission phase, permafrost becomes a net ecosystem carbon source just before reaching net-zero and negative emissions. Permafrost slowly recovers, especially in regions with high organic carbon content, and net ecosystem carbon loss persists until the end of simulations, resulting in a cumulative net ecosystem carbon loss of approximately 14 petagrams of carbon (PgC) in both scenarios. In addition, methane emissions increase under net-zero and negative emissions, due to the irreversibility of the inundated areas. We conclude that the permafrost ecosystem carbon loss may continue under net-zero and negative emissions, which could hinder climate change mitigation efforts.</p></abstract><abstract abstract-type="teaser"><p>Permafrost ecosystem carbon loss may continue under net-zero and negative emissions, hindering climate mitigation efforts.</p></abstract><funding-group><award-group id="award1525741"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef"/><institution>Norwegian Research Council 436 of Norway project PRISM</institution></institution-wrap>
+</funding-source><award-id>209625</award-id></award-group><award-group id="award1905929"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef"/><institution>National Research Foundation (NRF) of Korea</institution></institution-wrap>
+</funding-source><award-id>NRF2022R1A3B1077622, NRF-2021M3I6A1086808</award-id></award-group><award-group id="award1905930"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef"/><institution>National Research Foundation (NRF) of Korea</institution></institution-wrap>
+</funding-source><award-id>NRF2022R1A3B1077622, NRF-2021M3I6A1086808</award-id></award-group><award-group id="award1905931"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef"/><institution>National Research Foundation (NRF) of Korea</institution></institution-wrap>
+</funding-source><award-id>NRF2022R1A3B1077622, NRF-2021M3I6A1086808</award-id></award-group><award-group id="award1905932"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef"/><institution>Research Council of Norway</institution></institution-wrap>
+</funding-source><award-id>328922</award-id></award-group><award-group id="award1905933"><funding-source>
+<institution-wrap><institution-id institution-id-type="FundRef"/><institution>National Research Foundation (NRF) of Korea</institution></institution-wrap>
+</funding-source><award-id>NRF-2018R1A5A1024958</award-id></award-group></funding-group></article-meta></front><body><sec sec-type="introduction" disp-level="1"><title>INTRODUCTION</title><p>Anthropogenic carbon dioxide (CO<sub>2</sub>) emissions have been causing long-term global warming with adverse effects on nature and people, which will continue to cause further changes in the climate system, ecosystem, and humanity (<xref rid="R1" ref-type="bibr"><italic toggle="yes">1</italic></xref>&#x02013;<xref rid="R4" ref-type="bibr"><italic toggle="yes">4</italic></xref>). To reduce climate-related risks, the 2015 Paris Agreement aims to pursue efforts to limit global warming to well below 2&#x000b0;C and preferably to 1.5&#x000b0;C, compared to the preindustrial level (<xref rid="R5" ref-type="bibr"><italic toggle="yes">5</italic></xref>). Most analyzed pathways, consistent with these climate targets, involve reaching net-zero emissions and transitioning to net-negative emissions through the use of carbon dioxide removal (CDR) techniques (<xref rid="R6" ref-type="bibr"><italic toggle="yes">6</italic></xref>&#x02013;<xref rid="R9" ref-type="bibr"><italic toggle="yes">9</italic></xref>). In assessing the effectiveness and potential risks of mitigation pathways that rely on CDR, the reversibility, hysteresis, or tipping points of the Earth&#x02019;s system are key factors to be considered (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>). It has been reported that many aspects of the physical climate system, such as temperature, precipitation, and sea ice, are largely reversible on the global scale, although in general with some hysteresis (dependence of the state of a system on its history) (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>&#x02013;<xref rid="R16" ref-type="bibr"><italic toggle="yes">16</italic></xref>). However, among several components of the Earth system, carbon (C) release from permafrost is expected to be irreversible, manifesting fully on longer timescales (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>, <xref rid="R17" ref-type="bibr"><italic toggle="yes">17</italic></xref>).</p><p>Permafrost-affected soils in the northern circumpolar permafrost region store approximately 1460 to 1600 PgC (<xref rid="R18" ref-type="bibr"><italic toggle="yes">18</italic></xref>, <xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>). As the Earth warms, permafrost thaw will lead to the decay of organic carbon in permafrost-affected soils, releasing additional greenhouse gases such as CO<sub>2</sub> and methane (CH<sub>4</sub>) into the atmosphere (<xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>&#x02013;<xref rid="R24" ref-type="bibr"><italic toggle="yes">24</italic></xref>). This carbon release from the permafrost-affected soils has the potential to further amplify human-induced global warming (<xref rid="R22" ref-type="bibr"><italic toggle="yes">22</italic></xref>, <xref rid="R25" ref-type="bibr"><italic toggle="yes">25</italic></xref>, <xref rid="R26" ref-type="bibr"><italic toggle="yes">26</italic></xref>). In addition, as the climate warms, plants are expected to grow faster and absorb more carbon from the atmosphere, which could help offset some of the carbon losses from the soil (<xref rid="R27" ref-type="bibr"><italic toggle="yes">27</italic></xref>, <xref rid="R28" ref-type="bibr"><italic toggle="yes">28</italic></xref>). Because of these opposing effects, the changes in permafrost net carbon balance in response to net-zero and negative emissions are expected to be complex. This has a critical impact on the future responses of the coupled carbon-climate system to anthropogenic emissions. Therefore, we need to understand the changes in a permafrost region under mitigation pathways: When and how much ecosystem carbon (sum of vegetation, litter, and soil C) will be emitted from the permafrost region and what is the ratio of CO<sub>2</sub> to CH<sub>4</sub>?</p><p>To date, the reversibility and hysteresis of permafrost extent and permafrost C cycle have been investigated on the basis of idealized CO<sub>2</sub> ramp-up and ramp-down forcing experiments using Earth system models (ESMs) (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>, <xref rid="R29" ref-type="bibr"><italic toggle="yes">29</italic></xref>). The permafrost area exhibits hysteresis as a function of CO<sub>2</sub> concentration and global mean surface temperature, with less permafrost extent in the CO<sub>2</sub> ramp-down period due to its slow recovery (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>, <xref rid="R30" ref-type="bibr"><italic toggle="yes">30</italic></xref>). It is also suggested that although the permafrost extent would eventually be reversible, the loss of organic carbon in permafrost while thawed would be irreversible (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>, <xref rid="R29" ref-type="bibr"><italic toggle="yes">29</italic></xref>, <xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>). However, the carbon-climate feedback is not fully considered in previous studies because they are based on idealized concentration-driven simulations (<xref rid="R32" ref-type="bibr"><italic toggle="yes">32</italic></xref>). In addition, the inferred emissions pathway is highly discontinuous and impractical (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>, <xref rid="R33" ref-type="bibr"><italic toggle="yes">33</italic></xref>). Therefore, it is still unclear how changes in permafrost and its carbon dynamics will affect the climate system under mitigation pathways.</p><p>Recent studies based on various emission-driven simulations involving net-zero and negative emissions phases have shown that changes in permafrost extent depend on temperature, which is influenced not only by radiative forcing but also by the behavior of the Atlantic Meridional Overturning Circulation (AMOC) (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>, <xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>). During the positive emission phase, permafrost degrades due to global warming, and then after the onset of net-zero and negative emissions, permafrost extent increases again with decreasing temperature (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>, <xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>). However, as the weakened AMOC begins to recover, surface warming occurs in the northern mid-to-high latitudes, which leads to the permafrost rethaw, although its timing and magnitude vary between scenarios and models. These pronounced temperature fluctuations in the northern high latitudes under net-zero and negative emissions would have ramifications on both Arctic ecosystems and permafrost soils, complicating the understanding of the net ecosystem C balance in permafrost regions.</p><p>Here, we aim to understand changes in permafrost depending on CDR options (net-zero or negative emissions) and its role in climate change. Accordingly, this study addresses the following questions: (i) How will permafrost extent and active layer thickness (ALT) change under net-zero and negative emissions? (ii) How much permafrost ecosystem carbon will be emitted or absorbed along the mitigation emission pathways? (iii) What are the major processes responsible for these changes? (iv) Does hysteresis of permafrost exist under net-zero and negative emissions, and if so, how will it affect the net ecosystem carbon balance?</p><p>To address these questions, we performed emission-driven simulations using a state-of-the-art ESM that includes a representation of permafrost dynamics [Community Earth System Model version 2 (CESM2) coupled with the Community Land Model version 5 (CLM5); see Materials and Methods] (<xref rid="R35" ref-type="bibr"><italic toggle="yes">35</italic></xref>). The simulations are based on two idealized and continuous emission pathways involving net-zero or negative emissions (Exp_zero or Exp_neg) after the positive anthropogenic CO<sub>2</sub> emissions (<xref rid="F1" ref-type="fig">Fig. 1A</xref>; see Materials and Methods). Here, near-surface permafrost is defined as areas where the simulated maximum ALT is shallower than 4 m (<xref rid="R19" ref-type="bibr"><italic toggle="yes">19</italic></xref>, <xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>, <xref rid="R36" ref-type="bibr"><italic toggle="yes">36</italic></xref>). The temperature and carbon stock in the permafrost region are calculated on the basis of the initial permafrost domain (fig. S1).</p><fig position="float" id="F1" fig-type="image" specific-use="distribute"><label>Fig. 1.</label><caption><title>Evolution of the climate system and permafrost area in idealized net-zero and negative emissions scenarios.</title><p>(<bold>A</bold>) Time series of annual anthropogenic CO<sub>2</sub> emissions, cumulative CO<sub>2</sub> emissions, and annual mean atmospheric CO<sub>2</sub> concentration. (<bold>B</bold>) Time series of the 11-year running mean of AMOC strength, permafrost area, and annual mean SAT. The AMOC strength is defined as the average of the annual mean Atlantic meridional ocean stream function from 35&#x000b0; to 45&#x000b0;N at a depth of 1000 m. The SAT is averaged over the initial permafrost domain. The solid and dashed lines show the ensemble mean values for Exp_neg and Exp_zero, respectively. The shading indicates the 95% confidence interval based on the bootstrap method. The peak of anthropogenic emissions and the onset of negative emissions are indicated by the gray dashed vertical line. The point of maximum CO<sub>2</sub> levels is indicated by the red dashed vertical line.</p></caption><graphic xlink:href="sciadv.adn8819-f1" position="float"/></fig></sec><sec sec-type="results" disp-level="1"><title>RESULTS</title><sec disp-level="2"><title>Changes in near-surface permafrost under net-zero and negative emission pathways</title><p>The near-surface air temperature (SAT) in the permafrost region almost follows the changes in atmospheric CO<sub>2</sub> concentrations (<xref rid="F1" ref-type="fig">Fig. 1</xref>). In addition, SAT is substantially affected by the behavior of the AMOC, mainly later in the experiments. SAT increases by ~4 K during the positive emissions phase and then decreases with decreasing CO<sub>2</sub> concentrations after the onset of net-zero and negative emissions. In Exp_zero, atmospheric CO<sub>2</sub> concentration declines gradually from its peak to the end of the simulation [730 to 610 parts per million (ppm)] but remains higher than its initial level, keeping permafrost regions warmer even beyond the peak of CO<sub>2</sub> levels. Despite declining CO<sub>2</sub> concentrations, the SAT rises slightly after year 2250 due to the partial recovery of the AMOC. These results are consistent with previous results shown in the shared socioeconomic pathway (SSP) SSP5-3.4-overshoot (SSP5-3.4) overshoot scenario and an idealized CO<sub>2</sub> ramp-up and ramp-down experiment (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>, <xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>, <xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>, <xref rid="R37" ref-type="bibr"><italic toggle="yes">37</italic></xref>, <xref rid="R38" ref-type="bibr"><italic toggle="yes">38</italic></xref>).</p><p>In Exp_neg, from the onset of the negative emissions phase, the CO<sub>2</sub> concentration gradually declines, results in surface cooling, and eventually reaches its initial state. At the time of the initial recovery of CO<sub>2</sub>, the temperature is about 1&#x000b0;C lower than its initial state due to the cooling caused by the weakening of the AMOC. Similarly, in Exp_zero, the SAT recovers faster than the rate of change of CO<sub>2</sub> due to the cooling induced by the AMOC. During the restoring period (phase of net-zero emissions) in Exp_neg, the AMOC exhibits a strong recovery unlike in Exp_zero, and thus, the temperature in the Northern Hemisphere increases considerably. As a result, considerable warming occurs in the permafrost region, comparable to its state at the CO<sub>2</sub> peak, although CO<sub>2</sub> concentrations increase slightly (~50 ppm) compared to the initial state. That is, if negative emission is deployed after the phase of positive emissions, then a strong temperature fluctuation would occur in the permafrost regions, which is consistent with previous studies (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>, <xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>).</p><p>The extent of near-surface permafrost highly depends on the SAT, consistent with previous studies (<xref rid="R11" ref-type="bibr"><italic toggle="yes">11</italic></xref>, <xref rid="R30" ref-type="bibr"><italic toggle="yes">30</italic></xref>, <xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>, <xref rid="R39" ref-type="bibr"><italic toggle="yes">39</italic></xref>). In Exp_zero, a thawing-refreezing pattern emerges according to the warming-cooling cycle. In Exp_neg, the temperature fluctuations (warming-cooling-warming) lead to a thawing-refreezing-rethawing cycle (<xref rid="F1" ref-type="fig">Fig. 1B</xref> and fig. S1). In Exp_zero, during the early phase of net-zero emissions (from year 2123 to 2197), the temperature recovers by ~49%, whereas the permafrost extent only recovers by 24%. In Exp_neg, it cannot fully recover despite the temperature in year 2197 being lower than the initial state, suggesting the presence of hysteresis in permafrost extent. Particularly along the initial boundary of permafrost zone in North America, the near-surface permafrost does not recover, resulting in a slow recovery of permafrost extent (fig. S1).</p></sec><sec disp-level="2"><title>Evolution of net ecosystem C balance in permafrost under mitigation pathways</title><p>Next, we examined the temporal evolution of the ecosystem carbon cycle in the permafrost region (<xref rid="F2" ref-type="fig">Fig. 2A</xref>). During the positive emissions phase, a consistent trend emerges with vegetation C pool steadily increasing, possibly due to the CO<sub>2</sub> fertilization effect and pan-Arctic warming (<xref rid="R27" ref-type="bibr"><italic toggle="yes">27</italic></xref>), while the sum of litter and soil C pool decreases. In the first half, vegetation C uptake exceeds the loss of litter and soil C through respiration, thereby increasing the total ecosystem C (fig. S2). However, from around year 2060, litter-soil C begins to decline sharply and thus overwhelms the increase in vegetation C, resulting in a net loss of ecosystem C in the permafrost region. As a result, the total ecosystem C anomaly returns to zero at the beginning of the net-zero and negative emissions.</p><fig position="float" id="F2" fig-type="image" specific-use="distribute"><label>Fig. 2.</label><caption><title>Changes in terrestrial carbon stocks in the permafrost region.</title><p>(<bold>A</bold>) Time series of the 11-year running mean of annual mean vegetation, litter-soil, and total ecosystem carbon pool anomalies relative to the year 2000. All values are averaged over the initial permafrost domain. Gray solid lines show the evolution of the permafrost area. (<bold>B</bold>) Litter-soil carbon pool anomaly in the year 2197 relative to the year 2000 in Exp_zero and (<bold>C</bold>) Exp_neg. The simulated permafrost boundaries for the years of 2000 and 2197 are shown as blue and green lines, respectively. Hatched areas indicate the permafrost extent for each period. (<bold>D</bold>) Initial soil carbon content in the northern mid-high latitudes. Regions with high organic content are defined by an organic matter content of &#x0003e;75 kgC/m<sup>2</sup>, and their boundary is shown as a red line. All calculations were conducted after taking the 11-year running mean and then averaging (ensemble mean).</p></caption><graphic xlink:href="sciadv.adn8819-f2" position="float"/></fig><p>After the cessation of the positive emissions in Exp_zero, net C uptake by vegetation, i.e., net primary production (NPP), begins to decrease as CO<sub>2</sub> concentration and temperature decline (<xref rid="F1" ref-type="fig">Fig. 1</xref> and fig. S2), but vegetation C remains stable, possibly due to the inherent lag in the terrestrial C pool (<xref rid="R40" ref-type="bibr"><italic toggle="yes">40</italic></xref>, <xref rid="R41" ref-type="bibr"><italic toggle="yes">41</italic></xref>). However, because of the continuous loss of litter and soil C pool caused by high temperature, the total ecosystem C gradually decreases, thereby resulting in a total ecosystem C loss of ~14 PgC by the end of the simulation (<xref rid="F2" ref-type="fig">Fig. 2A</xref>).</p><p>In Exp_neg, during the negative emission phase (from year 2124 to 2196), as CO<sub>2</sub> and SAT recover, NPP decreases and returns close to its initial state, which leads to the decline in vegetation carbon of ~3.5 PgC (<xref rid="F1" ref-type="fig">Figs. 1</xref> and <xref rid="F2" ref-type="fig">2A</xref> and fig. S2). In addition, during the same period, the respiratory C loss continues due to an incomplete recovery of permafrost extent, resulting in a reduction in litter-soil C of ~6.2 PgC (<xref rid="F1" ref-type="fig">Figs. 1B</xref> and <xref rid="F2" ref-type="fig">2</xref> and fig. S1). This reduction can also be partially attributed to the delayed increase in respiration resulting from the previously increased NPP (<xref rid="R29" ref-type="bibr"><italic toggle="yes">29</italic></xref>, <xref rid="R41" ref-type="bibr"><italic toggle="yes">41</italic></xref>). Although the permafrost area recovers more than twice as much in Exp_neg in the same time period, litter-soil C emissions are similar in the two scenarios. This is because the intensive respiratory C loss occurs prominently along the initial boundary of permafrost in North America, which exhibits slow recovery due to its high soil organic matter (SOM) content (<xref rid="F2" ref-type="fig">Fig. 2, B to D</xref>, and figs. S1 and S3).</p><p>In Exp_neg, during the restoring period, as the temperature increases due to the recovery of AMOC and CO<sub>2</sub> concentrations rebound, vegetation C slightly increases again. However, as temperature rises and permafrost degrades, litter and soil C continue to decrease until the end of the simulation. As a result, despite the deployment of artificial CO<sub>2</sub> removal of ~800 PgC only in Exp_neg, the magnitude of change in total ecosystem C by 2300 is similar between the two scenarios. In summary, during the positive emission period, permafrost acts as a net C sink but thereafter becomes a net C source. The ecosystem C loss in permafrost regions under net-zero and negative emissions can hinder our efforts in climate change mitigation.</p></sec><sec disp-level="2"><title>Irreversible changes in CH<sub>4</sub> emissions under net-zero and negative emissions</title><p>The temporal evolution of CH<sub>4</sub> production, oxidation, and CH<sub>4</sub> emission rates is quite similar (fig. S4). As the total production of CH<sub>4</sub> increased, the amount of oxidation of CH<sub>4</sub> to CO<sub>2</sub> and CH<sub>4</sub> released into the atmosphere would have increased. In CLM5, methane production is related to the estimate of heterotrophic respiration corrected by multiple factors associated with the inundated fraction, soil temperature, pH, and redox potential (<xref rid="R42" ref-type="bibr"><italic toggle="yes">42</italic></xref>, <xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>). In particular, changes in soil moisture are known to have a critical impact on CH<sub>4</sub> production. Soil drying decreases CH<sub>4</sub> emissions through a reduction of the inundated fraction and a deepening of the water table that reduces anoxia in the non-inundated fraction (<xref rid="R44" ref-type="bibr"><italic toggle="yes">44</italic></xref>). On the other hand, larger inundated fractions and a shallow water table lead to an increase in CH<sub>4</sub> emissions due to the use of an anaerobic decomposition pathway, but total C loss may decrease as a result of reduced heterotrophic respiration due to oxygen limitation (<xref rid="R45" ref-type="bibr"><italic toggle="yes">45</italic></xref>&#x02013;<xref rid="R47" ref-type="bibr"><italic toggle="yes">47</italic></xref>).</p><p>The CH<sub>4</sub> is initially released where heterotrophic respiration occurs, especially in regions with high SOM contents and large inundated fractions (<xref rid="F2" ref-type="fig">Figs. 2D</xref> and <xref rid="F3" ref-type="fig">3, A and D</xref>, and fig. S5). As the climate warms, ground ice melts, and surface water storage increases, the inundated fraction increases primarily in grid cells already partially saturated, which considerably overlap with the region dominated by organic soils (<xref rid="F2" ref-type="fig">Figs. 2D</xref> and <xref rid="F3" ref-type="fig">3, B and C</xref>). As a result, the increase in CH<sub>4</sub> emissions is concentrated in regions with significant increases in inundated areas and high SOM contents, i.e., in regions where CH<sub>4</sub> emissions are originally high (<xref rid="F3" ref-type="fig">Fig. 3, A to F</xref>).</p><fig position="float" id="F3" fig-type="image" specific-use="distribute"><label>Fig. 3.</label><caption><title>Regional differences in inundated fractions and CH<sub>4</sub> emissions.</title><p>(<bold>A</bold>) Initial state of the annual mean inundated fractions and (<bold>D</bold>) CH<sub>4</sub> emissions in the permafrost region. (<bold>B</bold> and <bold>C</bold>) Changes in annual mean inundated fractions and (<bold>E</bold> and <bold>F</bold>) CH<sub>4</sub> emissions in the year 2300 relative to year 2000 (B and E) in Exp_zero and (C and F) Exp_neg. (<bold>G</bold>) Time series of the 11-year running mean of annual mean inundated fractions, averaged over the initial permafrost domain with predominantly xorganic and mineral soils. Regions with high organic content (ORG) are defined by an organic matter content of &#x0003e;75 kgC/m<sup>2</sup>, and regions with relatively low organic matter content (MIN) are defined by an organic matter content of &#x0003c;25 kgC/m<sup>2</sup> based on de Vrese and Brovkin (<xref rid="R49" ref-type="bibr"><italic toggle="yes">49</italic></xref>).</p></caption><graphic xlink:href="sciadv.adn8819-f3" position="float"/></fig><p>Increased inundated fractions, mainly in organic soils, do not return to the previous state after the onset of net-zero and negative emissions, exhibiting irreversibility (<xref rid="F3" ref-type="fig">Fig. 3G</xref>). Most regions with high SOM content overlap with peatland areas (fig. S5), which have low-lying topography that hinders natural runoff drainage. This geomorphological condition likely leads to an irreversible increase in inundation fractions that persists until the end of the simulation (<xref rid="F3" ref-type="fig">Fig. 3</xref>). However, this needs to be verified through further studies. As a result, CH<sub>4</sub> emissions remain relatively high in organic soils with permanently larger inundated fractions despite the decreased heterotrophic respiration (<xref rid="F3" ref-type="fig">Fig. 3G</xref> and figs. S3 and S4). In Exp_neg, respiration declines by ~80% from the peak of CO<sub>2</sub> to the year 2197, but CH<sub>4</sub> emissions decrease relatively less by ~63%. These results suggest that under net-zero and negative emissions, the ratio of CH<sub>4</sub> to CO<sub>2</sub> may increase. As a result, the greenhouse gas forcing driven by permafrost degradation could increase due to the high global warming potential of CH<sub>4</sub>, placing additional burden on mitigation efforts (<xref rid="R44" ref-type="bibr"><italic toggle="yes">44</italic></xref>, <xref rid="R48" ref-type="bibr"><italic toggle="yes">48</italic></xref>).</p></sec><sec disp-level="2"><title>Hysteresis of near-surface permafrost and its carbon cycle</title><p>So far, we showed that the responses of the permafrost and its carbon cycle are not linear and strongly dependent on the pathway of the anthropogenic C emissions and climate conditions. This implies that the permafrost will show strong hysteresis behavior to CO<sub>2</sub> forcing. First of all, the area of near-surface permafrost shows a hysteresis with respect to both CO<sub>2</sub> concentration and SAT (<xref rid="F4" ref-type="fig">Fig. 4, A and E</xref>). As the CO<sub>2</sub> concentration decreases, the permafrost area recovers, but it is smaller at the same CO<sub>2</sub> concentration and temperature, compared to the period of increasing CO<sub>2</sub>. In detail, in Exp_neg, the average of permafrost extent during the entire period of decreasing CO<sub>2</sub> is 1.8 &#x000d7; 10<sup>6</sup> km<sup>2</sup> smaller than during the period of increasing CO<sub>2</sub>, despite the colder environment (<xref rid="F1" ref-type="fig">Figs. 1B</xref> and <xref rid="F4" ref-type="fig">4A</xref>). Even at the same temperature, the permafrost area is much smaller during the decreasing CO<sub>2</sub> period (<xref rid="F4" ref-type="fig">Fig. 4E</xref>). The ALT also exhibits a hysteresis similar to that of permafrost extent but to a greater extent (<xref rid="F4" ref-type="fig">Fig. 4, B and F</xref>). During the decreasing CO<sub>2</sub> period, in Exp_neg, the ALT is on average ~1.5 times deeper (~3.8 m) than during the increasing CO<sub>2</sub> period. These results suggest that permafrost continues to thaw to a greater depth during the decreasing CO<sub>2</sub> period, which may continue to amplify the decomposability of deep soil C.</p><fig position="float" id="F4" fig-type="image" specific-use="distribute"><label>Fig. 4.</label><caption><title>Hysteresis of permafrost response to changing CO<sub>2</sub> forcing and SAT.</title><p>(<bold>A</bold> and <bold>E</bold>) Permafrost area, (<bold>B</bold> and <bold>F</bold>) annual mean ALT, (<bold>C</bold> and <bold>G</bold>) annual mean total ecosystem carbon, and (<bold>D</bold> and <bold>H</bold>) annual CH<sub>4</sub> emissions (A to D) as a function of CO<sub>2</sub> concentrations and (E to H) SAT. Total ecosystem carbon is the sum of vegetation, litter, and soil carbon. All variables except for the permafrost area are averaged over the initial permafrost domain. All values are smoothed by the 11-year moving average. The dot colors indicate each period defined based on the evolution of atmospheric CO<sub>2</sub> concentrations (pink: increasing CO<sub>2</sub> period, orange and blue: decreasing CO<sub>2</sub> period in Exp_zero and Exp_neg, black: restoring period in Exp_neg).</p></caption><graphic xlink:href="sciadv.adn8819-f4" position="float"/></fig><p>Eliseev <italic toggle="yes">et al.</italic> (<xref rid="R30" ref-type="bibr"><italic toggle="yes">30</italic></xref>) showed that the slow recovery of permafrost in the cooling phase is related to the thermal inertia of soil water. The increased number of phase transition fronts due to the existence of talik (perennially thawed subsurface soils formed during the warming period) in the cooling phase further enhances the heat inertia of the soil column. The greater the organic carbon density, the greater the porosity and soil water, and thus the higher the thermal capacity in the soil column (<xref rid="R49" ref-type="bibr"><italic toggle="yes">49</italic></xref>). In regions with organic-rich soils, the high organic content of soil enhances the thermal inertia and thus exhibits twice slower recovery compared to that in mineral soils (fig. S3). We note that permafrost extent and ALT recover slowly, but these are eventually reversible. Given enough time to adjust, they return to their previous state, as shown by the restoring period in Exp_neg.</p><p>Total terrestrial ecosystem C in the permafrost region, however, exhibits an open loop with respect to both CO<sub>2</sub> and SAT (<xref rid="F4" ref-type="fig">Fig. 4, C and G</xref>), suggesting the irreversible changes at least until the year 2300 under these mitigation pathways (<xref rid="R50" ref-type="bibr"><italic toggle="yes">50</italic></xref>). The total ecosystem C increases during the positive emission phase. However, just before the CO<sub>2</sub> concentration starts to decline, the total ecosystem carbon begins to decrease continuously until the end of the simulations. The total cumulative C emissions from permafrost until the end of the simulation are similar between the two scenarios. The changes in CH<sub>4</sub> emissions also show an open loop, with higher emission rates after the cessation of positive emissions, suggesting a possibility of irreversible change (<xref rid="F4" ref-type="fig">Fig. 4, D and H</xref>). This hysteresis behavior of the permafrost carbon cycle is observed in regions with organic-rich soils not in mineral soils (<xref rid="F4" ref-type="fig">Fig. 4</xref> and fig. S3). These results suggest that the slow recovery of permafrost, due to the thermal inertia of organic soils, contributes to hysteresis in the permafrost carbon cycle. This could create a long-lasting positive feedback to climate system, hindering climate mitigation efforts.</p></sec></sec><sec sec-type="discussion" disp-level="1"><title>DISCUSSION</title><p>In this study, we conducted idealized emission-driven simulations to investigate the response of permafrost under net-zero and negative emission scenarios. After the cessation of positive emissions, permafrost extent and ALT begin to recover but the recovery is slow compared to the rate of temperature decrease due to the thermal inertia of the soil, especially in regions with high SOM content. The total ecosystem C anomaly in the permafrost region is positive during the positive emissions phase due to an increase in vegetation C uptake that outweighs soil respiration. However, after the onset of the net-zero and negative emissions, vegetation C remains stable or decreases, while respiratory C loss from the litter-soil C pool gradually increases, leading to net ecosystem C loss in the permafrost region. This continues until the end of the simulations, ultimately leading to irreversible loss of ecosystem C in permafrost regions. Continued ecosystem C loss after the onset of net-zero and negative emissions could be a potential risk that partially reduces the effectiveness of CDR, thereby inhibiting climate change mitigation.</p><p>The total amount of ecosystem C loss in the negative emissions scenario is similar to that in the net-zero emissions scenario. This is because vegetation C is reduced due to decreased CO<sub>2</sub> concentrations, and litter-soil C losses continue due to the slow recovery of permafrost under the negative emissions. In addition, even after the negative emissions cease, the AMOC overshoot causes surface warming, leading to further losses of litter-soil C. As a result, achieving negative emissions would not provide the additional benefit of preventing the loss of ecosystem C stored in permafrost.</p><p>Moreover, there is an irreversible change in CH<sub>4</sub> emissions, with an increase during the net-zero and negative emission phases compared to the positive emission phase. This is because even if the permafrost and ALT partially recover, the increased inundated fractions in organic soils due to permafrost degradation do not return to their original state.</p><p>In summary, net ecosystem C loss in the permafrost begins after the cessation of positive emissions and continues until the end of the experiment, with the same amount of release of ~14 PgC in both experiments. In addition, CH<sub>4</sub> emissions increase after the cessation of positive emissions, resulting in higher greenhouse gas forcing in the permafrost region. These results suggest that, contrary to our expectations, even if net-zero and negative emissions are achieved, permafrost may pose a considerable risk in efforts to mitigate climate change. Therefore, these changes in permafrost should be considered in long-term climate mitigation policies.</p><p>At the current state, our projections of permafrost ecosystem C emissions under net-zero and negative emissions contain uncertainties regarding changes in the permafrost and Arctic ecosystem and the AMOC-induced climate change. First, the amount of soil C emissions is uncertain due to poor understanding of decomposition dynamics in deep soils and soil C content, as well as incomplete representation of permafrost processes in the model (<xref rid="R28" ref-type="bibr"><italic toggle="yes">28</italic></xref>, <xref rid="R51" ref-type="bibr"><italic toggle="yes">51</italic></xref>, <xref rid="R52" ref-type="bibr"><italic toggle="yes">52</italic></xref>). Permafrost soil C pool simulated in CLM5 differs from field-based estimates or site-level observations and is unrealistically high in some grid cells due to the artificial initialization procedure (<xref rid="R29" ref-type="bibr"><italic toggle="yes">29</italic></xref>, <xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>, <xref rid="R53" ref-type="bibr"><italic toggle="yes">53</italic></xref>). In addition, the physical mixing of soil C by cryoturbation is simply represented by a diffusion equation proportional to the vertical gradient of soil C (see Materials and Methods). Therefore, during the positive emission period, high SOM gradient caused by increased litter fall could have potentially led to unnaturally fast rates of carbon burial into deep soil layers. An abrupt thawing in ice-rich permafrost, formation of thermokarst bog, impact of wildfires on permafrost thaw, and their impacts on soil C are not represented here, which may lead to considerable underestimation of future permafrost soil C loss (<xref rid="R46" ref-type="bibr"><italic toggle="yes">46</italic></xref>, <xref rid="R54" ref-type="bibr"><italic toggle="yes">54</italic></xref>&#x02013;<xref rid="R58" ref-type="bibr"><italic toggle="yes">58</italic></xref>). In addition, CH<sub>4</sub> emissions and their sensitivity to climate change are still uncertain due to the complexity of processes related to CH<sub>4</sub> biogeochemistry and interaction with soil moisture (<xref rid="R42" ref-type="bibr"><italic toggle="yes">42</italic></xref>, <xref rid="R44" ref-type="bibr"><italic toggle="yes">44</italic></xref>).</p><p>Second, many processes related to Arctic ecosystems are still poorly represented: simple vegetation community and static vegetation composition (<xref rid="R28" ref-type="bibr"><italic toggle="yes">28</italic></xref>, <xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>, <xref rid="R59" ref-type="bibr"><italic toggle="yes">59</italic></xref>). This may underestimate future C uptake by plants and also neglect the inertia effect of vegetation under net-zero or negative emissions.</p><p>Last, although most ESMs simulate similar behavior of the AMOC in overshoot scenarios or CO<sub>2</sub> ramp-up and ramp-down experiments, CESM2 shows a relatively strong decline and recovery of the AMOC (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>, <xref rid="R31" ref-type="bibr"><italic toggle="yes">31</italic></xref>, <xref rid="R34" ref-type="bibr"><italic toggle="yes">34</italic></xref>). This could lead to relatively strong temperature fluctuations in the Northern Hemisphere, with potentially distinctive impacts on permafrost and ecosystem processes. Therefore, there is a need for more accurate reestimation of changes in permafrost ecosystem C in the future through the improvement of model processes. In addition, it is important to assess the range of uncertainty in a multimodel framework, with efforts to include permafrost processes in other ESMs, and to consider this in long-term climate mitigation strategies.</p></sec><sec sec-type="materials|methods" disp-level="1"><title>MATERIALS AND METHODS</title><sec disp-level="2"><title>Model configuration</title><p>In this study, we used the CESM2, which comprises the atmosphere (The Community Atmosphere Model version 6), ocean (The Parallel Ocean Program version 2), sea ice (The Community Ice CodE version 5), and land models (CLM5) (<xref rid="R35" ref-type="bibr"><italic toggle="yes">35</italic></xref>). CLM5 is capable of simulating the key thermal, hydrological, and biogeochemical processes associated with permafrost and their response to climate warming (<xref rid="R60" ref-type="bibr"><italic toggle="yes">60</italic></xref>). CLM5 has improved its components, such as soil layer resolution, vertically resolved soil biogeochemistry, soil hydrology in cold regions, and snow density and insulation for a more realistic simulation of active layer dynamics, permafrost distribution, and hydrology (<xref rid="R60" ref-type="bibr"><italic toggle="yes">60</italic></xref>).</p><p>In permafrost-affected soils, the vertical mixing of soil C is accomplished by the cryoturbation scheme proposed by Koven <italic toggle="yes">et al.</italic> (<xref rid="R61" ref-type="bibr"><italic toggle="yes">61</italic></xref>), which uses a simple diffusion equation<disp-formula><mml:math id="m2" display="block" overflow="scroll"><mml:mrow><mml:mfrac><mml:mrow><mml:mi mathvariant="normal">&#x02202;</mml:mi><mml:msub><mml:mi>C</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mi mathvariant="normal">&#x02202;</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:mfrac><mml:mo>=</mml:mo><mml:mi>D</mml:mi><mml:mfrac><mml:mrow><mml:msup><mml:mi mathvariant="normal">&#x02202;</mml:mi><mml:mn>2</mml:mn></mml:msup><mml:msub><mml:mi>C</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mi mathvariant="normal">&#x02202;</mml:mi><mml:msup><mml:mi>z</mml:mi><mml:mn>2</mml:mn></mml:msup></mml:mrow></mml:mfrac></mml:mrow></mml:math></disp-formula>where <italic toggle="yes">C<sub>i</sub></italic> is the <italic toggle="yes">C</italic> concentration of <italic toggle="yes">C</italic> pool <italic toggle="yes">i</italic>, and D is the cryoturbation diffusive parameter (10<sup>&#x02212;3</sup>m<sup>2</sup>y<sup>&#x02212;1</sup>), which yields a mixing timescale of approximately 1000 years over the top meter of soil. The diffusivity parameter, <italic toggle="yes">D</italic>, is constant within the active layer but tapers linearly to zero at a depth of three times the ALT. This cryoturbation scheme allows soil C, generated near the surface, to move downward into deeper soil layers, leading to better agreement with estimates of high-latitude soil C stocks, where substantial amounts of carbon are found in permafrost regions, stored to depths of 3 m (<xref rid="R61" ref-type="bibr"><italic toggle="yes">61</italic></xref>, <xref rid="R62" ref-type="bibr"><italic toggle="yes">62</italic></xref>).</p><p>The CLM5 also includes a methane biogeochemical model, which represents a complex and interacting series of processes to simulate net surface CH<sub>4</sub> emissions: the production of CH<sub>4</sub> in anaerobic conditions, oxidation within the soil column, aerenchyma transport, ebullition, aqueous and gaseous diffusion, and fractional inundation (<xref rid="R42" ref-type="bibr"><italic toggle="yes">42</italic></xref>&#x02013;<xref rid="R44" ref-type="bibr"><italic toggle="yes">44</italic></xref>). Because CLM5 does not specifically simulate the wetland fraction or related soil biogeochemical processes, heterotrophic respiration is used to estimate the wetland decomposition rate. In each grid cell, the equations for CH<sub>4</sub> and O<sub>2</sub> are solved separately for the inundated and non-inundated fractions. Inundation fraction is calculated using water table depth and microtopographic distribution, normally distributed around the grid cell mean elevation. We note that changes in CH<sub>4</sub> emissions do not account for changes in wetland or lake distribution that could occur due to thermokarst formation or other thaw-related landscape dynamics (<xref rid="R42" ref-type="bibr"><italic toggle="yes">42</italic></xref>, <xref rid="R46" ref-type="bibr"><italic toggle="yes">46</italic></xref>, <xref rid="R54" ref-type="bibr"><italic toggle="yes">54</italic></xref>). We also note that the CLM5 does not include dynamic vegetation biogeography, and vegetation distributions are prescribed and held at the present-day condition (year 2000) (<xref rid="R43" ref-type="bibr"><italic toggle="yes">43</italic></xref>).</p></sec><sec disp-level="2"><title>Experimental design</title><p>To avoid discontinuity, we designed two idealized emission pathways, assuming a gradual reduction of emissions through the continuous development of CDR technology. They are subdivided based on whether net-zero (Exp_zero) or negative emissions (Exp_neg) are implemented immediately after the positive emissions (<xref rid="F1" ref-type="fig">Fig. 1A</xref> and table S1). In both experiments, anthropogenic CO<sub>2</sub> emissions increase linearly from 2000 to 2050, based on the SSP5-8.5 scenario (1.09 GtCO<sub>2</sub> increase per year), and then decrease at the same rate until 2123 (~1500 PgC of total cumulative emissions). Thereafter, in Exp_zero, net anthropogenic CO<sub>2</sub> emissions are held at zero until the end of the simulation (year 2300), whereas in Exp_neg, CO<sub>2</sub> emissions gradually decline at the same rate until the global mean surface atmospheric CO<sub>2</sub> concentration recovers to its initial value (~383 ppm; until year 2197): ~800 PgC of cumulative artificial CO<sub>2</sub> removal is required. Immediately after the initial recovery of CO<sub>2</sub> concentrations, net-zero emissions are maintained in Exp_neg until the end of the simulation.</p><p>On the basis of these scenarios, we performed simulations in emission-driven mode. Atmospheric CO<sub>2</sub> concentrations are determined not only by prescribed anthropogenic CO<sub>2</sub> emissions but also by terrestrial and oceanic CO<sub>2</sub> fluxes, thereby reflecting changes in CO<sub>2</sub> concentration through the carbon cycle-climate feedback. In Exp_zero, the atmospheric CO<sub>2</sub> level peaks decades before the onset of net-zero emissions (year 2107) when anthropogenic emissions become equal to natural C uptake and then begin to gradually decline due to continuous natural C uptake (<xref rid="R10" ref-type="bibr"><italic toggle="yes">10</italic></xref>, <xref rid="R63" ref-type="bibr"><italic toggle="yes">63</italic></xref>). For a detailed discussion of the evolution of CO<sub>2</sub> concentrations during the negative emission phases, we refer to Park <italic toggle="yes">et al.</italic> (<xref rid="R41" ref-type="bibr"><italic toggle="yes">41</italic></xref>). Here, we focus only on the permafrost response to net-zero and negative emissions. All non-CO<sub>2</sub> conditions, such as land use and non-CO<sub>2</sub> greenhouse gas forcings, are kept at the present-day (2000) level. We have run a total of seven ensemble members with slightly different initial conditions for each experiment.</p></sec></sec></body><back><ack><title>Acknowledgments</title><p><bold>Funding:</bold> S.-W.P., J.-H.M., and J.-S.K. were supported by the National Research Foundation (NRF) of Korea (NRF2022R1A3B1077622 and NRF-2021M3I6A1086808) and Korea Environment Industry &#x00026; Technology Institute (KEITI) through Project for developing an observation-based GHG emissions geospatial information map, funded by Korea Ministry of Environment (MOE) (RS-2023-00232066). H.L. was supported by the Research Council of Norway project CN-coESM (328922). N.J.S. was supported by the Research Council of Norway project PRISM (209625). The CESM2 simulations were conducted by H.-J. Shin and S.-E. Park and were carried out using the supercomputing resources provided by the National Center for Meteorological Supercomputer of the Korea Meteorological Administration (KMA), the National Supercomputing Center (KSC-2023-CHA-0001), and the Korea Research Environment Open NETwork (KREONET).</p><sec><p><bold>Author contributions:</bold> Conceptualization: S.-W.P., H.L., N.J.S., and J.-S.K. Methodology: S.-W.P., H.L., and J.-S.K. Investigation: S.-W.P. and J.-H.M. Visualization: S.-W.P. and J.-H.M. Supervision: S.-W.P. and J.-S.K. Writing&#x02014;original draft: S.-W.P. and J.-S.K. Writing&#x02014;review and editing: S.-W.P., J.-H.M., H.L., N.J.S., S.-I.A., J.S., and J.-S.K.</p></sec><sec><p><bold>Competing interests:</bold> The authors declare that they have no competing interests.</p></sec><sec><p><bold>Data and materials availability:</bold> All data needed to evaluate the conclusions of the paper are present in the paper, the Supplementary Materials, or figshare (<ext-link xlink:href="https://doi.org/10.6084/m9.figshare.26214821.v2" ext-link-type="uri">https://doi.org/10.6084/m9.figshare.26214821.v2</ext-link>).</p></sec></ack><sec sec-type="supplementary-material"><title>Supplementary Materials</title><sec><title>This PDF file includes:</title><supplementary-material position="float" content-type="local-data"><caption><p>Table S1</p><p>Figs. S1 to S5</p><p>References</p></caption><media xlink:href="sciadv.adn8819_sm.pdf"/></supplementary-material></sec></sec><ref-list><title>REFERENCES AND NOTES</title><ref id="R1"><label>1</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M. R.</given-names>
+<surname>Allen</surname></string-name>, <string-name><given-names>D. J.</given-names>
+<surname>Frame</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Huntingford</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>J. A.</given-names>
+<surname>Lowe</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Meinshausen</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Meinshausen</surname></string-name></person-group>, 
+<article-title>Warming caused by cumulative carbon emissions towards the trillionth tonne</article-title>. <source>Nature</source>
+<volume>458</volume>, 
+<fpage>1163</fpage>&#x02013;<lpage>1166</lpage> (<year>2009</year>).<pub-id pub-id-type="pmid">19407800</pub-id>
+</mixed-citation></ref><ref id="R2"><label>2</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T. A.</given-names>
+<surname>Carleton</surname></string-name>, <string-name><given-names>S. M.</given-names>
+<surname>Hsiang</surname></string-name></person-group>, 
+<article-title>Social and economic impacts of climate</article-title>. <source>Science</source>
+<volume>353</volume>, 
+<fpage>aad9837</fpage> (<year>2016</year>).<pub-id pub-id-type="pmid">27609899</pub-id>
+</mixed-citation></ref><ref id="R3"><label>3</label><mixed-citation publication-type="book">IPCC, Long-term climate change: Projections, commitments and irreversibility, in <italic toggle="yes">Climate Change 2013: The Physical Science Basis. Contribution of Working Group I to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change</italic>, T. F. Stocker, D. Qin, G.-K. Plattner, M. Tignor, S. K. Allen, J. Boschung, A. Nauels, Y. Xia, V. Bex, P. M. Midgley, Eds. (Cambridge Univ. Press, 2013), pp. 1029&#x02013;1136.</mixed-citation></ref><ref id="R4"><label>4</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>H.</given-names>
+<surname>Matthews</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Gillett</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Stott</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Zickfeld</surname></string-name></person-group>, 
+<article-title>The proportionality of global warming to cumulative carbon emissions</article-title>. <source>Nature</source>
+<volume>459</volume>, 
+<fpage>829</fpage>&#x02013;<lpage>832</lpage> (<year>2009</year>).<pub-id pub-id-type="pmid">19516338</pub-id>
+</mixed-citation></ref><ref id="R5"><label>5</label><mixed-citation publication-type="confproc">United Nations Framework on Climate Change (UNFCCC), Adoption of the Paris Agreement, 21st Conference of the Parties (2015); <ext-link xlink:href="http://unfccc.int/resource/docs/2015/cop21/eng/l09r01.pdf" ext-link-type="uri">http://unfccc.int/resource/docs/2015/cop21/eng/l09r01.pdf</ext-link>.</mixed-citation></ref><ref id="R6"><label>6</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T.</given-names>
+<surname>Gasser</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Guivarch</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Tachiiri</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Ciais</surname></string-name></person-group>, 
+<article-title>Negative emissions physically needed to keep global warming below 2&#x000b0;C</article-title>. <source>Nat. Commun.</source>
+<volume>6</volume>, 
+<fpage>7958</fpage> (<year>2015</year>).<pub-id pub-id-type="pmid">26237242</pub-id>
+</mixed-citation></ref><ref id="R7"><label>7</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E.</given-names>
+<surname>Kriegler</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Luderer</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Bauer</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Baumstark</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Fujimori</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Popp</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Rogelj</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Strefler</surname></string-name>, <string-name><given-names>D. P.</given-names>
+<surname>van Vuuren</surname></string-name></person-group>, 
+<article-title>Pathways limiting warming to 1.5&#x000b0;C: A tale of turning around in no time?</article-title>
+<source>Philos. Trans. A Math. Phys. Eng. Sci.</source>
+<volume>376</volume>, 
+<fpage>20160457</fpage> (<year>2018</year>).<pub-id pub-id-type="pmid">29610367</pub-id>
+</mixed-citation></ref><ref id="R8"><label>8</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Rogelj</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Schaeffer</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Friedlingstein</surname></string-name>, <string-name><given-names>N. P.</given-names>
+<surname>Gillett</surname></string-name>, <string-name><given-names>D. P.</given-names>
+<surname>Van Vuuren</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Riahi</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Allen</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Knutti</surname></string-name></person-group>, 
+<article-title>Differences between carbon budget estimates unravelled</article-title>. <source>Nat. Clim. Change</source>
+<volume>6</volume>, 
+<fpage>245</fpage>&#x02013;<lpage>252</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R9"><label>9</label><mixed-citation publication-type="webpage">IPCC, 2018: Summary for Policymakers in <italic toggle="yes">Global Warming of 1.5&#x000b0;C. An IPCC Special Report on the impacts of global warming of 1.5&#x000b0;C above pre-industrial levels and related global greenhouse gas emission pathways, in the context of strengthening the global response to the threat of climate change, sustainable development, and efforts to eradicate poverty</italic>, Masson-Delmotte, V., P. Zhai, H.-O. P&#x000f6;rtner, D. Roberts, J. Skea, P. R. Shukla, A. Pirani, W. Moufouma-Okia, C. P&#x000e9;an, R. Pidcock, S. Connors, J. B. R. Matthews, Y. Chen, X. Zhou, M. I. Gomis, E. Lonnoy, T. Maycock, M. Tignor, and T. Waterfield, Eds. (Cambridge Univ. Press, 2022), pp. 3&#x02013;24; <pub-id pub-id-type="doi">10.1017/9781009157940.001</pub-id>.</mixed-citation></ref><ref id="R10"><label>10</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Schwinger</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Asaadi</surname></string-name>, <string-name><given-names>N. J.</given-names>
+<surname>Steinert</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Lee</surname></string-name></person-group>, 
+<article-title>Emit now, mitigate later? Earth system reversibility under overshoots of different magnitudes and durations</article-title>. <source>Earth Syst. Dynam.</source>
+<volume>13</volume>, 
+<fpage>1641</fpage>&#x02013;<lpage>1665</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R11"><label>11</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>O.</given-names>
+<surname>Boucher</surname></string-name>, <string-name><given-names>P. R.</given-names>
+<surname>Halloran</surname></string-name>, <string-name><given-names>E. J.</given-names>
+<surname>Burke</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Doutriaux-Boucher</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lowe</surname></string-name>, <string-name><given-names>M. A.</given-names>
+<surname>Ringer</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Robertson</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Wu</surname></string-name></person-group>, 
+<article-title>Reversibility in an Earth System model in response to CO<sub>2</sub> concentration changes</article-title>. <source>Environ. Res. Lett.</source>
+<volume>7</volume>, 
+<fpage>024013</fpage> (<year>2012</year>).</mixed-citation></ref><ref id="R12"><label>12</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>L.</given-names>
+<surname>Cao</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Bala</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Caldeira</surname></string-name></person-group>, 
+<article-title>Why is there a short-term increase in global precipitation in response to diminished CO<sub>2</sub> forcing?</article-title>
+<source>Geophys. Res. Lett.</source>
+<volume>38</volume>, 
+<fpage>L06703</fpage> (<year>2011</year>).</mixed-citation></ref><ref id="R13"><label>13</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>T. L.</given-names>
+<surname>Fr&#x000f6;licher</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Joos</surname></string-name></person-group>, 
+<article-title>Reversible and irreversible impacts of greenhouse gas emissions in multi-century projections with the NCAR global coupled carbon cycle-climate model</article-title>. <source>Clim. Dyn.</source>
+<volume>35</volume>, 
+<fpage>1439</fpage>&#x02013;<lpage>1459</lpage> (<year>2010</year>).</mixed-citation></ref><ref id="R14"><label>14</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Jeltsch-th&#x000f6;mmes</surname></string-name>, <string-name><given-names>T. F.</given-names>
+<surname>Stocker</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Joos</surname></string-name></person-group>, 
+<article-title>Hysteresis of the Earth system under positive and negative CO<sub>2</sub> emissions</article-title>. <source>Environ. Res. Lett.</source>
+<volume>15</volume>, 
+<fpage>124026</fpage> (<year>2020</year>).</mixed-citation></ref><ref id="R15"><label>15</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>P.</given-names>
+<surname>Wu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Ridley</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Pardaens</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Levine</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lowe</surname></string-name></person-group>, 
+<article-title>The reversibility of CO<sub>2</sub> induced climate change</article-title>. <source>Clim. Dyn.</source>
+<volume>45</volume>, 
+<fpage>745</fpage>&#x02013;<lpage>754</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R16"><label>16</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>K. B.</given-names>
+<surname>Tokarska</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Zickfeld</surname></string-name></person-group>, 
+<article-title>The effectiveness of net negative carbon dioxide emissions in reversing anthropogenic climate change</article-title>. <source>Environ. Res. Lett.</source>
+<volume>10</volume>, 
+<fpage>094013</fpage> (<year>2015</year>).</mixed-citation></ref><ref id="R17"><label>17</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A. H.</given-names>
+<surname>MacDougall</surname></string-name></person-group>, 
+<article-title>Reversing climate warming by artificial atmospheric carbon-dioxide removal: Can a Holocene-like climate be restored?</article-title>
+<source>Geophys. Res. Lett.</source>
+<volume>40</volume>, 
+<fpage>5480</fpage>&#x02013;<lpage>5485</lpage> (<year>2013</year>).</mixed-citation></ref><ref id="R18"><label>18</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>Voigt</surname></string-name>, <string-name><given-names>M. E.</given-names>
+<surname>Marushchak</surname></string-name>, <string-name><given-names>B. W.</given-names>
+<surname>Abbott</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Biasi</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Elberling</surname></string-name>, <string-name><given-names>S. D.</given-names>
+<surname>Siciliano</surname></string-name>, <string-name><given-names>O.</given-names>
+<surname>Sonnentag</surname></string-name>, <string-name><given-names>K. J.</given-names>
+<surname>Stewart</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>P. J.</given-names>
+<surname>Martikainen</surname></string-name></person-group>, 
+<article-title>Nitrous oxide emissions from permafrost-affected soils</article-title>. <source>Nat. Rev. Earth Environ.</source>
+<volume>1</volume>, 
+<fpage>420</fpage>&#x02013;<lpage>434</lpage> (<year>2020</year>).</mixed-citation></ref><ref id="R19"><label>19</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E. A. G.</given-names>
+<surname>Schuur</surname></string-name>, <string-name><given-names>B. W.</given-names>
+<surname>Abbott</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Commane</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Ernakovich</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Euskirchen</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Hugelius</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Grosse</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Leshyk</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>M. M.</given-names>
+<surname>Loranty</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Mauritz</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Olefeldt</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Natali</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Rodenhizer</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Salmon</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Sch&#x000e4;del</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Strauss</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Treat</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Turetsky</surname></string-name></person-group>, 
+<article-title>Permafrost and climate change: Carbon cycle feedbacks from the warming arctic</article-title>. <source>Annu. Rev. Env. Resour.</source>
+<volume>47</volume>, 
+<fpage>343</fpage>&#x02013;<lpage>371</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R20"><label>20</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A. H.</given-names>
+<surname>MacDougall</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Zickfeld</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Knutti</surname></string-name>, <string-name><given-names>H. D.</given-names>
+<surname>Matthews</surname></string-name></person-group>, 
+<article-title>Sensitivity of carbon budgets to permafrost carbon feedbacks and non-CO<sub>2</sub> forcings</article-title>. <source>Environ. Res. Lett.</source>
+<volume>10</volume>, 
+<fpage>125003</fpage> (<year>2015</year>).</mixed-citation></ref><ref id="R21"><label>21</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E. A. G.</given-names>
+<surname>Schuur</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Bockheim</surname></string-name>, <string-name><given-names>J. G.</given-names>
+<surname>Canadell</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Euskirchen</surname></string-name>, <string-name><given-names>C. B.</given-names>
+<surname>Field</surname></string-name>, <string-name><given-names>S. V.</given-names>
+<surname>Goryachkin</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Hagemann</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Kuhry</surname></string-name>, <string-name><given-names>P. M.</given-names>
+<surname>Lafleur</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Lee</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Mazhitova</surname></string-name>, <string-name><given-names>F. E.</given-names>
+<surname>Nelson</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Rinke</surname></string-name>, <string-name><given-names>V. E.</given-names>
+<surname>Romanovsky</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Shiklomanov</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Tarnocai</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Venevsky</surname></string-name>, <string-name><given-names>J. G.</given-names>
+<surname>Vogel</surname></string-name>, <string-name><given-names>S. A.</given-names>
+<surname>Zimov</surname></string-name></person-group>, 
+<article-title>Vulnerability of permafrost carbon to climate change: Implications for the global carbon cycle</article-title>. <source>Bioscience</source>
+<volume>58</volume>, 
+<fpage>701</fpage>&#x02013;<lpage>714</lpage> (<year>2008</year>).</mixed-citation></ref><ref id="R22"><label>22</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E. A. G.</given-names>
+<surname>Schuur</surname></string-name>, <string-name><given-names>A. D.</given-names>
+<surname>McGuire</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Sch&#x000e4;del</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Grosse</surname></string-name>, <string-name><given-names>J. W.</given-names>
+<surname>Harden</surname></string-name>, <string-name><given-names>D. J.</given-names>
+<surname>Hayes</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Hugelius</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Kuhry</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>S. M.</given-names>
+<surname>Natali</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Olefeldt</surname></string-name>, <string-name><given-names>V. E.</given-names>
+<surname>Romanovsky</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Schaefer</surname></string-name>, <string-name><given-names>M. R.</given-names>
+<surname>Turetsky</surname></string-name>, <string-name><given-names>C. C.</given-names>
+<surname>Treat</surname></string-name>, <string-name><given-names>J. E.</given-names>
+<surname>Vonk</surname></string-name></person-group>, 
+<article-title>Climate change and the permafrost carbon feedback</article-title>. <source>Nature</source>
+<volume>520</volume>, 
+<fpage>171</fpage>&#x02013;<lpage>179</lpage> (<year>2015</year>).<pub-id pub-id-type="pmid">25855454</pub-id>
+</mixed-citation></ref><ref id="R23"><label>23</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E. J.</given-names>
+<surname>Burke</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Ekici</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Huang</surname></string-name>, <string-name><given-names>S. E.</given-names>
+<surname>Chadburn</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Huntingford</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Ciais</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Friedlingstein</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Peng</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Krinner</surname></string-name></person-group>, 
+<article-title>Quantifying uncertainties of permafrost carbon&#x02013;climate feedbacks</article-title>. <source>Biogeosciences</source>
+<volume>14</volume>, 
+<fpage>3051</fpage>&#x02013;<lpage>3066</lpage> (<year>2017</year>).</mixed-citation></ref><ref id="R24"><label>24</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. A.</given-names>
+<surname>Lowe</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Bernie</surname></string-name></person-group>, 
+<article-title>The impact of Earth system feedbacks on carbon budgets and climate response</article-title>. <source>Philos. Trans. R. Soc. A</source>
+<volume>376</volume>, 
+<fpage>20170263</fpage> (<year>2018</year>).</mixed-citation></ref><ref id="R25"><label>25</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>K.</given-names>
+<surname>Schaefer</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Lantuit</surname></string-name>, <string-name><given-names>V. E.</given-names>
+<surname>Romanovsky</surname></string-name>, <string-name><given-names>E. A. G.</given-names>
+<surname>Schuur</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Witt</surname></string-name></person-group>, 
+<article-title>The impact of the permafrost carbon feedback on global climate</article-title>. <source>Environ. Res. Lett.</source>
+<volume>9</volume>, 
+<fpage>085003</fpage> (<year>2014</year>).</mixed-citation></ref><ref id="R26"><label>26</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>K. R.</given-names>
+<surname>Miner</surname></string-name>, <string-name><given-names>M. R.</given-names>
+<surname>Turetsky</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Malina</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Bartsch</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Tamminen</surname></string-name>, <string-name><given-names>A. D.</given-names>
+<surname>McGuire</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Fix</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Sweeney</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Elder</surname></string-name>, <string-name><given-names>C. E.</given-names>
+<surname>Miller</surname></string-name></person-group>, 
+<article-title>Permafrost carbon emissions in a changing Arctic</article-title>. <source>Nat. Rev. Earth Environ.</source>
+<volume>3</volume>, 
+<fpage>55</fpage>&#x02013;<lpage>67</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R27"><label>27</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>Z.</given-names>
+<surname>Zhu</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Piao</surname></string-name>, <string-name><given-names>R. B.</given-names>
+<surname>Myneni</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Huang</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Zeng</surname></string-name>, <string-name><given-names>J. G.</given-names>
+<surname>Canadell</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Ciais</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Sitch</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Friedlingstein</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Arneth</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Cao</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Cheng</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Kato</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Lian</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Liu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Mao</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Pan</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Peng</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Pe&#x000f1;uelas</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Poulter</surname></string-name>, <string-name><given-names>T. A. M.</given-names>
+<surname>Pugh</surname></string-name>, <string-name><given-names>B. D.</given-names>
+<surname>Stocker</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Viovy</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Wang</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Xiao</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Yang</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Zaehle</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Zeng</surname></string-name></person-group>, 
+<article-title>Greening of the Earth and its drivers</article-title>. <source>Nat. Clim. Change</source>
+<volume>6</volume>, 
+<fpage>791</fpage>&#x02013;<lpage>795</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R28"><label>28</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C. D.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>W. J.</given-names>
+<surname>Riley</surname></string-name></person-group>, 
+<article-title>Permafrost carbon&#x02212;climate feedback is sensitive to deep soil carbon decomposability but not deep soil nitrogen dynamics</article-title>. <source>Proc. Natl. Acad. Sci. U.S.A.</source>
+<volume>112</volume>, 
+<fpage>3752</fpage>&#x02013;<lpage>3757</lpage> (<year>2015</year>).<pub-id pub-id-type="pmid">25775603</pub-id>
+</mixed-citation></ref><ref id="R29"><label>29</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.-W.</given-names>
+<surname>Park</surname></string-name>, <string-name><given-names>J.-S.</given-names>
+<surname>Kug</surname></string-name></person-group>, 
+<article-title>A decline in atmospheric CO<sub>2</sub> levels under negative emissions may enhance carbon retention in the terrestrial biosphere</article-title>. <source>Commun. Earth Environ.</source>
+<volume>3</volume>, 
+<fpage>289</fpage> (<year>2022</year>).</mixed-citation></ref><ref id="R30"><label>30</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A. V.</given-names>
+<surname>Eliseev</surname></string-name>, <string-name><given-names>P. F.</given-names>
+<surname>Demchenko</surname></string-name>, <string-name><given-names>M. M.</given-names>
+<surname>Arzhanov</surname></string-name>, <string-name><given-names>I. I.</given-names>
+<surname>Mokhov</surname></string-name></person-group>, 
+<article-title>Transient hysteresis of near-surface permafrost response to external forcing</article-title>. <source>Clim. Dyn.</source>
+<volume>42</volume>, 
+<fpage>1203</fpage>&#x02013;<lpage>1215</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R31"><label>31</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C. D.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>V. K.</given-names>
+<surname>Arora</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Cadule</surname></string-name>, <string-name><given-names>R. A.</given-names>
+<surname>Fisher</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lewis</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Lindsay</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Mathesius</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Meinshausen</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Mills</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Nicholls</surname></string-name>, <string-name><given-names>B. M.</given-names>
+<surname>Sanderson</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>S&#x000e9;f&#x000e9;rian</surname></string-name>, <string-name><given-names>N. C.</given-names>
+<surname>Swart</surname></string-name>, <string-name><given-names>W. R.</given-names>
+<surname>Wieder</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Zickfeld</surname></string-name></person-group>, 
+<article-title>Multi-century dynamics of the climate and carbon cycle under both high and net negative emissions scenarios</article-title>. <source>Earth Syst. Dynam.</source>
+<volume>13</volume>, 
+<fpage>885</fpage>&#x02013;<lpage>909</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R32"><label>32</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C. D.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Arora</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Friedlingstein</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Bopp</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Brovkin</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Dunne</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Graven</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Hoffman</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Ilyina</surname></string-name>, <string-name><given-names>J. G.</given-names>
+<surname>John</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Jung</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Kawamiya</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Pongratz</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Raddatz</surname></string-name>, <string-name><given-names>J. T.</given-names>
+<surname>Randerson</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Zaehle</surname></string-name></person-group>, 
+<article-title>C4MIP&#x02013;The Coupled Climate&#x02013;Carbon Cycle Model Intercomparison Project: Experimental protocol for CMIP6</article-title>. <source>Geosci. Model Dev.</source>
+<volume>9</volume>, 
+<fpage>2853</fpage>&#x02013;<lpage>2880</lpage> (<year>2016</year>).</mixed-citation></ref><ref id="R33"><label>33</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C. D.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>B. M.</given-names>
+<surname>Sanderson</surname></string-name>, <string-name><given-names>A. L. S.</given-names>
+<surname>Swann</surname></string-name></person-group>, 
+<article-title>Much of zero emissions commitment occurs before reaching net zero emissions</article-title>. <source>Environ. Res. Lett.</source>
+<volume>18</volume>, 
+<fpage>014017</fpage> (<year>2023</year>).</mixed-citation></ref><ref id="R34"><label>34</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Schwinger</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Asaadi</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Goris</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Lee</surname></string-name></person-group>, 
+<article-title>Possibility for strong northern hemisphere high-latitude cooling under negative emissions</article-title>. <source>Nat. Commun.</source>
+<volume>13</volume>, 
+<fpage>1095</fpage> (<year>2022</year>).<pub-id pub-id-type="pmid">35232955</pub-id>
+</mixed-citation></ref><ref id="R35"><label>35</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>G.</given-names>
+<surname>Danabasoglu</surname></string-name>, <string-name><given-names>J.-F.</given-names>
+<surname>Lamarque</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Bacmeister</surname></string-name>, <string-name><given-names>D. A.</given-names>
+<surname>Bailey</surname></string-name>, <string-name><given-names>A. K.</given-names>
+<surname>DuVivier</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Edwards</surname></string-name>, <string-name><given-names>L. K.</given-names>
+<surname>Emmons</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Fasullo</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Garcia</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Gettelman</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Hannay</surname></string-name>, <string-name><given-names>M. M.</given-names>
+<surname>Holland</surname></string-name>, <string-name><given-names>W. G.</given-names>
+<surname>Large</surname></string-name>, <string-name><given-names>P. H.</given-names>
+<surname>Lauritzen</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>J. T. M.</given-names>
+<surname>Lenaerts</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Lindsay</surname></string-name>, <string-name><given-names>W. H.</given-names>
+<surname>Lipscomb</surname></string-name>, <string-name><given-names>M. J.</given-names>
+<surname>Mills</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Neale</surname></string-name>, <string-name><given-names>K. W.</given-names>
+<surname>Oleson</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Otto-Bliesner</surname></string-name>, <string-name><given-names>A. S.</given-names>
+<surname>Phillips</surname></string-name>, <string-name><given-names>W.</given-names>
+<surname>Sacks</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Tilmes</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>van Kampenhout</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Vertenstein</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Bertini</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Dennis</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Deser</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Fischer</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Fox-Kemper</surname></string-name>, <string-name><given-names>J. E.</given-names>
+<surname>Kay</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Kinnison</surname></string-name>, <string-name><given-names>P. J.</given-names>
+<surname>Kushner</surname></string-name>, <string-name><given-names>V. E.</given-names>
+<surname>Larson</surname></string-name>, <string-name><given-names>M. C.</given-names>
+<surname>Long</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Mickelson</surname></string-name>, <string-name><given-names>J. K.</given-names>
+<surname>Moore</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Nienhouse</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Polvani</surname></string-name>, <string-name><given-names>P. J.</given-names>
+<surname>Rasch</surname></string-name>, <string-name><given-names>W. G.</given-names>
+<surname>Strand</surname></string-name></person-group>, 
+<article-title>The Community Earth System Model Version 2 (CESM2)</article-title>. <source>J. Adv. Model. Earth Syst.</source>
+<volume>12</volume>, 
+<fpage>e2019MS001916</fpage> (<year>2020</year>).</mixed-citation></ref><ref id="R36"><label>36</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>N.</given-names>
+<surname>Steinert</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Debolskiy</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Burke</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Garc&#x000ed;a-Pereira</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Lee</surname></string-name></person-group>, 
+<article-title>Evaluating permafrost definitions for global permafrost area estimates in CMIP6 climate models</article-title>. <source>Environ. Res. Lett.</source>
+<volume>19</volume>, 
+<fpage>014033</fpage> (<year>2023</year>).</mixed-citation></ref><ref id="R37"><label>37</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.-I.</given-names>
+<surname>An</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Shin</surname></string-name>, <string-name><given-names>S.-W.</given-names>
+<surname>Yeh</surname></string-name>, <string-name><given-names>S.-W.</given-names>
+<surname>Son</surname></string-name>, <string-name><given-names>J.-S.</given-names>
+<surname>Kug</surname></string-name>, <string-name><given-names>S.-K.</given-names>
+<surname>Min</surname></string-name>, <string-name><given-names>H.-J.</given-names>
+<surname>Kim</surname></string-name></person-group>, 
+<article-title>Global cooling hiatus driven by an AMOC overshoot in a carbon dioxide removal scenario</article-title>. <source>Earths Future</source>
+<volume><italic toggle="yes">9</italic></volume>, 
+<fpage>e2021EF002165</fpage> (<year>2021</year>).</mixed-citation></ref><ref id="R38"><label>38</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.-S.</given-names>
+<surname>Kug</surname></string-name>, <string-name><given-names>J.-H.</given-names>
+<surname>Oh</surname></string-name>, <string-name><given-names>S.-I.</given-names>
+<surname>An</surname></string-name>, <string-name><given-names>S.-W.</given-names>
+<surname>Yeh</surname></string-name>, <string-name><given-names>S.-K.</given-names>
+<surname>Min</surname></string-name>, <string-name><given-names>S.-W.</given-names>
+<surname>Son</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Kam</surname></string-name>, <string-name><given-names>Y.-G.</given-names>
+<surname>Ham</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Shin</surname></string-name></person-group>, 
+<article-title>Hysteresis of the intertropical convergence zone to CO<sub>2</sub> forcing</article-title>. <source>Nat. Clim. Change</source>
+<volume>12</volume>, 
+<fpage>47</fpage>&#x02013;<lpage>53</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R39"><label>39</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>H.</given-names>
+<surname>Lee</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Ekici</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Tjiputra</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Muri</surname></string-name>, <string-name><given-names>S. E.</given-names>
+<surname>Chadburn</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Schwinger</surname></string-name></person-group>, 
+<article-title>The response of permafrost and high-latitude ecosystems under large-scale stratospheric aerosol injection and its termination</article-title>. <source>Earths Future</source>
+<volume>7</volume>, 
+<fpage>605</fpage>&#x02013;<lpage>614</lpage> (<year>2019</year>).</mixed-citation></ref><ref id="R40"><label>40</label><mixed-citation publication-type="book">G. B. Bonan, <italic toggle="yes">Climate Change and Terrestrial Ecosystem Modeling</italic> (Cambridge Univ. Press, 2019).</mixed-citation></ref><ref id="R41"><label>41</label><mixed-citation publication-type="other">S.-W. Park, K. M. Noh, S.-I. An, J. Kam, E.-Y. Kwon, S.-K. Min, R. Park, S.-W. Son, S.-W. Yeh, J.-S. Kug, How will global carbon cycle respond to negative emissions? ESS Open Archive (2023).</mixed-citation></ref><ref id="R42"><label>42</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>W. J.</given-names>
+<surname>Riley</surname></string-name>, <string-name><given-names>Z. M.</given-names>
+<surname>Subin</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>S. C.</given-names>
+<surname>Swenson</surname></string-name>, <string-name><given-names>M. S.</given-names>
+<surname>Torn</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Meng</surname></string-name>, <string-name><given-names>N. M.</given-names>
+<surname>Mahowald</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Hess</surname></string-name></person-group>, 
+<article-title>Barriers to predicting changes in global terrestrial methane fluxes: Analyses using CLM4Me, a methane biogeochemistry model integrated in CESM</article-title>. <source>Biogeosciences.</source>
+<volume>8</volume>, 
+<fpage>1925</fpage>&#x02013;<lpage>1953</lpage> (<year>2011</year>).</mixed-citation></ref><ref id="R43"><label>43</label><mixed-citation publication-type="webpage">D. Lawrence, R. Fisher, C. Koven, K. Oleson, S. Swenson, M. Vertenstein, B. Andre, G. Bonan, B. Ghimire, L. van Kampenhout, D. Kennedy, E. Kluzek, R. Knox, P. Lawrence, F. Li, H. Li, D. Lombardozzi, Y. Lu, J. Perket, W. Riley, W. Sacks, M. Shi, W. Wieder, C. Xu, A. Ali, A. Badger, G. Bisht, P. Broxton, M. Brunke, J. Buzan, M. Clark, T. Craig, K. Dahlin, B. Drewniak, L. Emmons, J. Fisher, M. Flanner, P. Gentine, J. Lenaerts, S. Levis, Technical Description of version 5.0 of the Community Land Model (CLM) [National Center for Atmospheric Research (NCAR), 2018].</mixed-citation></ref><ref id="R44"><label>44</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>S. C.</given-names>
+<surname>Swenson</surname></string-name>, <string-name><given-names>W. J.</given-names>
+<surname>Riley</surname></string-name>, <string-name><given-names>A. G.</given-names>
+<surname>Slater</surname></string-name></person-group>, 
+<article-title>Permafrost thaw and resulting soil moisture changes regulate projected high-latitude CO<sub>2</sub> and CH<sub>4</sub> emissions</article-title>. <source>Environ. Res. Lett.</source>
+<volume>10</volume>, 
+<fpage>94011</fpage> (<year>2015</year>).</mixed-citation></ref><ref id="R45"><label>45</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D.</given-names>
+<surname>Olefeldt</surname></string-name>, <string-name><given-names>M. R.</given-names>
+<surname>Turetsky</surname></string-name>, <string-name><given-names>P. M.</given-names>
+<surname>Crill</surname></string-name>, <string-name><given-names>A. D.</given-names>
+<surname>McGuire</surname></string-name></person-group>, 
+<article-title>Environmental and physical controls on northern terrestrial methane emissions across permafrost zones</article-title>. <source>Glob. Change Biol.</source>
+<volume>19</volume>, 
+<fpage>589</fpage>&#x02013;<lpage>603</lpage> (<year>2013</year>).</mixed-citation></ref><ref id="R46"><label>46</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>H.</given-names>
+<surname>Lee</surname></string-name>, <string-name><given-names>S. C.</given-names>
+<surname>Swenson</surname></string-name>, <string-name><given-names>A. G.</given-names>
+<surname>Slater</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name></person-group>, 
+<article-title>Effects of excess ground ice on projections of permafrost in a warming climate</article-title>. <source>Environ. Res. Lett.</source>
+<volume>9</volume>, 
+<fpage>124006</fpage> (<year>2014</year>).</mixed-citation></ref><ref id="R47"><label>47</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C. C.</given-names>
+<surname>Treat</surname></string-name>, <string-name><given-names>S. M.</given-names>
+<surname>Natali</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Ernakovich</surname></string-name>, <string-name><given-names>C. M.</given-names>
+<surname>Iversen</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Lupascu</surname></string-name>, <string-name><given-names>A. D.</given-names>
+<surname>McGuire</surname></string-name>, <string-name><given-names>R. J.</given-names>
+<surname>Norby</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Roy Chowdhury</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Richter</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>&#x00160;antr&#x0016f;&#x0010d;kov&#x000e1;</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Sch&#x000e4;del</surname></string-name>, <string-name><given-names>E. A. G.</given-names>
+<surname>Schuur</surname></string-name>, <string-name><given-names>V. L.</given-names>
+<surname>Sloan</surname></string-name>, <string-name><given-names>M. R.</given-names>
+<surname>Turetsky</surname></string-name>, <string-name><given-names>M. P.</given-names>
+<surname>Waldrop</surname></string-name></person-group>, 
+<article-title>A pan-Arctic synthesis of CH<sub>4</sub> and CO<sub>2</sub> production from anoxic soil incubations</article-title>. <source>Glob. Change Biol.</source>
+<volume>21</volume>, 
+<fpage>2787</fpage>&#x02013;<lpage>2803</lpage> (<year>2015</year>).</mixed-citation></ref><ref id="R48"><label>48</label><mixed-citation publication-type="book">J. Huang, B. Mendoza, J. S. Daniel, C. J. Nielsen, L. Rotstayn, O. Wild, Anthropogenic and natural radiative forcing, <italic toggle="yes">Clim. Chang. 2013 Phys. Sci. Basis Work. Gr. I Contrib. to Fifth Assess. Rep. Intergov. Panel Clim. Chang.</italic> (Cambridge Univ. Press, 2013), pp. 659&#x02013;740, 9781107057999.</mixed-citation></ref><ref id="R49"><label>49</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>P.</given-names>
+<surname>de Vrese</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Brovkin</surname></string-name></person-group>, 
+<article-title>Timescales of the permafrost carbon cycle and legacy effects of temperature overshoot scenarios</article-title>. <source>Nat. Commun.</source>
+<volume>12</volume>, 
+<fpage>2688</fpage> (<year>2021</year>).<pub-id pub-id-type="pmid">33976172</pub-id>
+</mixed-citation></ref><ref id="R50"><label>50</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>S.-K.</given-names>
+<surname>Kim</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Shin</surname></string-name>, <string-name><given-names>S.-I.</given-names>
+<surname>An</surname></string-name>, <string-name><given-names>H.-J.</given-names>
+<surname>Kim</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Im</surname></string-name>, <string-name><given-names>S.-P.</given-names>
+<surname>Xie</surname></string-name>, <string-name><given-names>J.-S.</given-names>
+<surname>Kug</surname></string-name>, <string-name><given-names>S.-W.</given-names>
+<surname>Yeh</surname></string-name></person-group>, 
+<article-title>Widespread irreversible changes in surface temperature and precipitation in response to CO<sub>2</sub> forcing</article-title>. <source>Nat. Clim. Change</source>
+<volume>12</volume>, 
+<fpage>834</fpage>&#x02013;<lpage>840</lpage> (<year>2022</year>).</mixed-citation></ref><ref id="R51"><label>51</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>G.</given-names>
+<surname>Hugelius</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Strauss</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Zubrzycki</surname></string-name>, <string-name><given-names>J. W.</given-names>
+<surname>Harden</surname></string-name>, <string-name><given-names>E. A. G.</given-names>
+<surname>Schuur</surname></string-name>, <string-name><given-names>C.-L.</given-names>
+<surname>Ping</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Schirrmeister</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Grosse</surname></string-name>, <string-name><given-names>G. J.</given-names>
+<surname>Michaelson</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>J. A.</given-names>
+<surname>O&#x02019;Donnell</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Elberling</surname></string-name>, <string-name><given-names>U.</given-names>
+<surname>Mishra</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Camill</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Yu</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Palmtag</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Kuhry</surname></string-name></person-group>, 
+<article-title>Estimated stocks of circumpolar permafrost carbon with quantified uncertainty ranges and identified data gaps</article-title>. <source>Biogeosciences</source>
+<volume>11</volume>, 
+<fpage>6573</fpage>&#x02013;<lpage>6593</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R52"><label>52</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>G.</given-names>
+<surname>Hugelius</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Loisel</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Chadburn</surname></string-name>, <string-name><given-names>R. B.</given-names>
+<surname>Jackson</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>MacDonald</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Marushchak</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Olefeldt</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Packalen</surname></string-name>, <string-name><given-names>M. B.</given-names>
+<surname>Siewert</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Treat</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Turetsky</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Voigt</surname></string-name>, <string-name><given-names>Z.</given-names>
+<surname>Yu</surname></string-name></person-group>, 
+<article-title>Large stocks of peatland carbon and nitrogen are vulnerable to permafrost thaw</article-title>. <source>Proc. Natl. Acad. Sci. U.S.A.</source>
+<volume>117</volume>, 
+<fpage>20438</fpage>&#x02013;<lpage>20446</lpage> (<year>2020</year>).<pub-id pub-id-type="pmid">32778585</pub-id>
+</mixed-citation></ref><ref id="R53"><label>53</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>E. J.</given-names>
+<surname>Burke</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Zhang</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Krinner</surname></string-name></person-group>, 
+<article-title>Evaluating permafrost physics in the Coupled Model Intercomparison Project 6 (CMIP6) models and their sensitivity to climate change</article-title>. <source>Cryosphere</source>
+<volume>14</volume>, 
+<fpage>3155</fpage>&#x02013;<lpage>3174</lpage> (<year>2020</year>).</mixed-citation></ref><ref id="R54"><label>54</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A.</given-names>
+<surname>Ekici</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Lee</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>S. C.</given-names>
+<surname>Swenson</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Prigent</surname></string-name></person-group>, 
+<article-title>Ground subsidence effects on simulating dynamic high-latitude surface inundation under permafrost thaw using CLM5</article-title>. <source>Geosci. Model Dev.</source>
+<volume>12</volume>, 
+<fpage>5291</fpage>&#x02013;<lpage>5300</lpage> (<year>2019</year>).</mixed-citation></ref><ref id="R55"><label>55</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>M. R.</given-names>
+<surname>Turetsky</surname></string-name>, <string-name><given-names>B. W.</given-names>
+<surname>Abbott</surname></string-name>, <string-name><given-names>M. C.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>K. W.</given-names>
+<surname>Anthony</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Olefeldt</surname></string-name>, <string-name><given-names>E. A. G.</given-names>
+<surname>Schuur</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Grosse</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Kuhry</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Hugelius</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Gibson</surname></string-name>, <string-name><given-names>A. B. K.</given-names>
+<surname>Sannel</surname></string-name>, <string-name><given-names>A. D.</given-names>
+<surname>McGuire</surname></string-name></person-group>, 
+<article-title>Carbon release through abrupt permafrost thaw</article-title>. <source>Nat. Geosci.</source>
+<volume>13</volume>, 
+<fpage>138</fpage>&#x02013;<lpage>143</lpage> (<year>2020</year>).</mixed-citation></ref><ref id="R56"><label>56</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J.</given-names>
+<surname>Nitzbon</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Schneider von Deimling</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Aliyeva</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Chadburn</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Grosse</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Laboor</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Lee</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Lohmann</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Steinert</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Stuenzi</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Werner</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Westermann</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Langer</surname></string-name></person-group>, 
+<article-title>No respite from permafrost-thaw impacts in absence of a global tipping point</article-title>. <source>Nat. Clim. Change</source>
+<volume>14</volume>, 
+<fpage>573</fpage>&#x02013;<lpage>585</lpage> (<year>2023</year>).</mixed-citation></ref><ref id="R57"><label>57</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C. M.</given-names>
+<surname>Gibson</surname></string-name>, <string-name><given-names>L. E.</given-names>
+<surname>Chasmer</surname></string-name>, <string-name><given-names>D. K.</given-names>
+<surname>Thompson</surname></string-name>, <string-name><given-names>W. L.</given-names>
+<surname>Quinton</surname></string-name>, <string-name><given-names>M. D.</given-names>
+<surname>Flannigan</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Olefeldt</surname></string-name></person-group>, 
+<article-title>Wildfire as a major driver of recent permafrost thaw in boreal peatlands</article-title>. <source>Nat. Commun.</source>
+<volume>9</volume>, 
+<fpage>3041</fpage> (<year>2018</year>).<pub-id pub-id-type="pmid">30072751</pub-id>
+</mixed-citation></ref><ref id="R58"><label>58</label><mixed-citation publication-type="book">K. Van Huissteden, <italic toggle="yes">Thawing Permafrost: Permafrost Carbon in a Warming Arctic</italic> (Springer, 2020).</mixed-citation></ref><ref id="R59"><label>59</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. B.</given-names>
+<surname>Fisher</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Sikka</surname></string-name>, <string-name><given-names>W. C.</given-names>
+<surname>Oechel</surname></string-name>, <string-name><given-names>D. N.</given-names>
+<surname>Huntzinger</surname></string-name>, <string-name><given-names>J. R.</given-names>
+<surname>Melton</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Ahlstr&#x000f6;m</surname></string-name>, <string-name><given-names>M. A.</given-names>
+<surname>Arain</surname></string-name>, <string-name><given-names>I.</given-names>
+<surname>Baker</surname></string-name>, <string-name><given-names>J. M.</given-names>
+<surname>Chen</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Ciais</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Davidson</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Dietze</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>El-Masri</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Hayes</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Huntingford</surname></string-name>, <string-name><given-names>A. K.</given-names>
+<surname>Jain</surname></string-name>, <string-name><given-names>P. E.</given-names>
+<surname>Levy</surname></string-name>, <string-name><given-names>M. R.</given-names>
+<surname>Lomas</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Poulter</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Price</surname></string-name>, <string-name><given-names>A. K.</given-names>
+<surname>Sahoo</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Schaefer</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Tian</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Tomelleri</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Verbeeck</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Viovy</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Wania</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Zeng</surname></string-name>, <string-name><given-names>C. E.</given-names>
+<surname>Miller</surname></string-name></person-group>, 
+<article-title>Carbon cycle uncertainty in the Alaskan Arctic</article-title>. <source>Biogeosciences</source>
+<volume>11</volume>, 
+<fpage>4271</fpage>&#x02013;<lpage>4288</lpage> (<year>2014</year>).</mixed-citation></ref><ref id="R60"><label>60</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D. M.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>R. A.</given-names>
+<surname>Fisher</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>K. W.</given-names>
+<surname>Oleson</surname></string-name>, <string-name><given-names>S. C.</given-names>
+<surname>Swenson</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Bonan</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Collier</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Ghimire</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>van Kampenhout</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Kennedy</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Kluzek</surname></string-name>, <string-name><given-names>P. J.</given-names>
+<surname>Lawrence</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>H.</given-names>
+<surname>Li</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Lombardozzi</surname></string-name>, <string-name><given-names>W. J.</given-names>
+<surname>Riley</surname></string-name>, <string-name><given-names>W. J.</given-names>
+<surname>Sacks</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Shi</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Vertenstein</surname></string-name>, <string-name><given-names>W. R.</given-names>
+<surname>Wieder</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Xu</surname></string-name>, <string-name><given-names>A. A.</given-names>
+<surname>Ali</surname></string-name>, <string-name><given-names>A. M.</given-names>
+<surname>Badger</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Bisht</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>van den Broeke</surname></string-name>, <string-name><given-names>M. A.</given-names>
+<surname>Brunke</surname></string-name>, <string-name><given-names>S. P.</given-names>
+<surname>Burns</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Buzan</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Clark</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Craig</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Dahlin</surname></string-name>, <string-name><given-names>B.</given-names>
+<surname>Drewniak</surname></string-name>, <string-name><given-names>J. B.</given-names>
+<surname>Fisher</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Flanner</surname></string-name>, <string-name><given-names>A. M.</given-names>
+<surname>Fox</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Gentine</surname></string-name>, <string-name><given-names>F.</given-names>
+<surname>Hoffman</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Keppel-Aleks</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>Knox</surname></string-name>, <string-name><given-names>S.</given-names>
+<surname>Kumar</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Lenaerts</surname></string-name>, <string-name><given-names>L. R.</given-names>
+<surname>Leung</surname></string-name>, <string-name><given-names>W. H.</given-names>
+<surname>Lipscomb</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Lu</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Pandey</surname></string-name>, <string-name><given-names>J. D.</given-names>
+<surname>Pelletier</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Perket</surname></string-name>, <string-name><given-names>J. T.</given-names>
+<surname>Randerson</surname></string-name>, <string-name><given-names>D. M.</given-names>
+<surname>Ricciuto</surname></string-name>, <string-name><given-names>B. M.</given-names>
+<surname>Sanderson</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Slater</surname></string-name>, <string-name><given-names>Z. M.</given-names>
+<surname>Subin</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Tang</surname></string-name>, <string-name><given-names>R. Q.</given-names>
+<surname>Thomas</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Val Martin</surname></string-name>, <string-name><given-names>X.</given-names>
+<surname>Zeng</surname></string-name></person-group>, 
+<article-title>The Community Land Model Version 5: Description of new features, benchmarking, and impact of forcing uncertainty</article-title>. <source>J. Adv. Model Earth Syst.</source>
+<volume>11</volume>, 
+<fpage>4245</fpage>&#x02013;<lpage>4287</lpage> (<year>2019</year>).</mixed-citation></ref><ref id="R61"><label>61</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>C.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Friedlingstein</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Ciais</surname></string-name>, <string-name><given-names>D.</given-names>
+<surname>Khvorostyanov</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Krinner</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Tarnocai</surname></string-name></person-group>, 
+<article-title>On the formation of high-latitude soil carbon stocks: Effects of cryoturbation and insulation by organic matter in a land surface model</article-title>. <source>Geophys. Res. Lett.</source>
+<volume>36</volume>, 
+<fpage>L21501</fpage> (<year>2009</year>).</mixed-citation></ref><ref id="R62"><label>62</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>J. G.</given-names>
+<surname>Bockheim</surname></string-name>, <string-name><given-names>I. B.</given-names>
+<surname>Campbell</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>McLeod</surname></string-name></person-group>, 
+<article-title>Permafrost distribution and active-layer depths in the McMurdo Dry Valleys, Antarctica</article-title>. <source>Permafr. Periglac. Process.</source>
+<volume>18</volume>, 
+<fpage>217</fpage>&#x02013;<lpage>227</lpage> (<year>2007</year>).</mixed-citation></ref><ref id="R63"><label>63</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>A. H.</given-names>
+<surname>MacDougall</surname></string-name>, <string-name><given-names>T. L.</given-names>
+<surname>Fr&#x000f6;licher</surname></string-name>, <string-name><given-names>C. D.</given-names>
+<surname>Jones</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Rogelj</surname></string-name>, <string-name><given-names>H. D.</given-names>
+<surname>Matthews</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Zickfeld</surname></string-name>, <string-name><given-names>V. K.</given-names>
+<surname>Arora</surname></string-name>, <string-name><given-names>N. J.</given-names>
+<surname>Barrett</surname></string-name>, <string-name><given-names>V.</given-names>
+<surname>Brovkin</surname></string-name>, <string-name><given-names>F. A.</given-names>
+<surname>Burger</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Eby</surname></string-name>, <string-name><given-names>A. V.</given-names>
+<surname>Eliseev</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Hajima</surname></string-name>, <string-name><given-names>P. B.</given-names>
+<surname>Holden</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Jeltsch-Th&#x000f6;mmes</surname></string-name>, <string-name><given-names>C.</given-names>
+<surname>Koven</surname></string-name>, <string-name><given-names>N.</given-names>
+<surname>Mengis</surname></string-name>, <string-name><given-names>L.</given-names>
+<surname>Menviel</surname></string-name>, <string-name><given-names>M.</given-names>
+<surname>Michou</surname></string-name>, <string-name><given-names>I. I.</given-names>
+<surname>Mokhov</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Oka</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Schwinger</surname></string-name>, <string-name><given-names>R.</given-names>
+<surname>S&#x000e9;f&#x000e9;rian</surname></string-name>, <string-name><given-names>G.</given-names>
+<surname>Shaffer</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Sokolov</surname></string-name>, <string-name><given-names>K.</given-names>
+<surname>Tachiiri</surname></string-name>, <string-name><given-names>J.</given-names>
+<surname>Tjiputra</surname></string-name>, <string-name><given-names>A.</given-names>
+<surname>Wiltshire</surname></string-name>, <string-name><given-names>T.</given-names>
+<surname>Ziehn</surname></string-name></person-group>, 
+<article-title>Is there warming in the pipeline? A multi-model analysis of the Zero Emissions Commitment from CO<sub>2</sub></article-title>. <source>Biogeosciences</source>
+<volume>17</volume>, 
+<fpage>2987</fpage>&#x02013;<lpage>3016</lpage> (<year>2020</year>).</mixed-citation></ref><ref id="R64"><label>64</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>D. M.</given-names>
+<surname>Olson</surname></string-name>, <string-name><given-names>E.</given-names>
+<surname>Dinerstein</surname></string-name>, <string-name><given-names>E. D.</given-names>
+<surname>Wikramanayake</surname></string-name>, <string-name><given-names>N. D.</given-names>
+<surname>Burgess</surname></string-name>, <string-name><given-names>G. V. N.</given-names>
+<surname>Powell</surname></string-name>, <string-name><given-names>E. C.</given-names>
+<surname>Underwood</surname></string-name>, <string-name><given-names>J. A.</given-names>
+<surname>D&#x02019;amico</surname></string-name>, <string-name><given-names>I.</given-names>
+<surname>Itoua</surname></string-name>, <string-name><given-names>H. E.</given-names>
+<surname>Strand</surname></string-name>, <string-name><given-names>J. C.</given-names>
+<surname>Morrison</surname></string-name>, <string-name><given-names>C. J.</given-names>
+<surname>Loucks</surname></string-name>, <string-name><given-names>T. F.</given-names>
+<surname>Allnutt</surname></string-name>, <string-name><given-names>T. H.</given-names>
+<surname>Ricketts</surname></string-name>, <string-name><given-names>Y.</given-names>
+<surname>Kura</surname></string-name>, <string-name><given-names>J. F.</given-names>
+<surname>Lamoreux</surname></string-name>, <string-name><given-names>W. W.</given-names>
+<surname>Wettengel</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>Hedao</surname></string-name>, <string-name><given-names>K. R.</given-names>
+<surname>Kassem</surname></string-name></person-group>, 
+<article-title>Terrestrial ecoregions of the world: A new map of life on Earth: A new global map of terrestrial ecoregions provides an innovative tool for conserving biodiversity</article-title>. <source>Bioscience</source>
+<volume>51</volume>, 
+<fpage>933</fpage>&#x02013;<lpage>938</lpage> (<year>2001</year>).</mixed-citation></ref><ref id="R65"><label>65</label><mixed-citation publication-type="other">C. Tarnocai, I. M. Kettles, B. Lacelle, Peatlands of Canada, Geological Survey of Canada, Open File 6561, CD-ROM. (2011).</mixed-citation></ref><ref id="R66"><label>66</label><mixed-citation publication-type="journal"><person-group person-group-type="author"><string-name><given-names>B.</given-names>
+<surname>Lehner</surname></string-name>, <string-name><given-names>P.</given-names>
+<surname>D&#x000f6;ll</surname></string-name></person-group>, 
+<article-title>Development and validation of a global database of lakes, reservoirs and wetlands</article-title>. <source>J. Hydrol.</source>
+<volume>296</volume>, 
+<fpage>1</fpage>&#x02013;<lpage>22</lpage> (<year>2004</year>).</mixed-citation></ref></ref-list></back></article>

@@ -1,6 +1,7 @@
 import ast
 import collections
 import configparser
+import glob
 import logging
 import re
 import unittest
@@ -9,12 +10,12 @@ from re import RegexFlag
 import lxml.etree as ET
 from pathlib import Path
 import pandas as pd
-from lxml.etree import _Element
+from lxml.etree import _Element, XMLSyntaxError
 from lxml.html import HtmlElement
 
 from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, QUERY, STARTDATE, XML, \
                             EUPMC_RESULTS_JSON, PMCID, ABS_TEXT, EPMC_KEYS, JOURNAL_INFO, DOI, TITLE, AUTHOR_STRING,
-                            PUB_YEAR, JOURNAL_INFO_TITLE, Pygetpapers)
+                            PUB_YEAR, JOURNAL_INFO_TITLE, Pygetpapers, JATSDoc)
 from amilib.ami_html import HtmlUtil, HtmlLib, Datatables, SCROLL_PARENT, ANNOTATION
 from amilib.ami_util import AmiJson, AmiUtil
 from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer, CorpusQuery, HTML_WITH_IDS
@@ -1570,12 +1571,50 @@ in the tab_display section. Initially, all tables are hidden, and only the selec
 
 Feel free to modify the content and style as needed!
 
-
-
-
-
-
-
 ChatGPT can make mistakes. Check important info.
 ?
 """
+
+
+
+class JATSTest(AmiAnyTest):
+
+    """
+    EuropePMC output is JATS
+    """
+    def test_read_pmc_sections(self):
+        pass
+        amoc_dir = Path(Resources.TEST_RESOURCES_DIR, "jats", "amoc")
+        assert amoc_dir.exists()
+        pmcdirs = glob.glob(str(Path(amoc_dir, "./PMC*")))
+        assert len(pmcdirs) == 50
+        for pmcdir in pmcdirs:
+            path = Path(pmcdir, "fulltext.xml")
+            try:
+                xml = XmlLib.parse_xml_file_to_root(path)
+            except XMLSyntaxError as xmle:
+                logger.error(f"cannot parse {path}; error {xmle}")
+                continue
+            jats_doc = JATSDoc(xml)
+            secs, non_secs = jats_doc.get_body_secs_non_secs()
+            sec_xpath = f"./@{JATSDoc.SEC_TYPE}"
+            non_sec_xpath = f"local-name()"
+            if secs is not None:
+                sectype_list = [XmlLib.get_single_element(s, sec_xpath) for s in secs]
+                JATSDoc.get_titles_and_ids(secs)
+                try:
+                    non_sec_list = [ns.tag for ns in non_secs]
+                except Exception as e:
+                    logger.error(f"error {e} {f"non_sec {non_sec_xpath}"}")
+                    continue
+                logger.info(f"secs {len(secs)} {sectype_list} ; "
+                            f"non_secs {len(non_secs)} {non_sec_list}")
+            else:
+                logger.warn(f"no secs")
+
+
+
+
+
+
+
