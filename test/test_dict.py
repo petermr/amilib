@@ -24,7 +24,6 @@ from amilib.constants import LOCAL_CEV_OPEN_DICT_DIR
 from amilib.dict_args import AmiDictArgs
 from amilib.dict_args import MARKUP_FILE
 from amilib.file_lib import FileLib
-from amilib.search_args import AmiSearch
 from amilib.util import Util
 from amilib.wikimedia import WikidataSparql
 from amilib.xml_lib import XmlLib
@@ -1134,6 +1133,8 @@ class AmiDictionaryTest(AmiAnyTest):
         -------
 
         """
+        from amilib.search_args import AmiSearch
+
         stem = "carbon_cycle"
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
         chapter_outpath = Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html")

@@ -63,5 +63,5 @@ setup(
             'amilib=amilib.amix:main',
         ],
     },
-    python_requires='>=3.12', # numpy etc may be incompatible with 3.12
+    python_requires='>=3.9, <=3.12', # numpy etc may be incompatible with 3.12
 )
