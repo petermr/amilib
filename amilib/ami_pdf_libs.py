@@ -823,7 +823,8 @@ class PDFDebug:
         pdfplumber does NOT (yet) extract curve operators, only the points"""
         curves = page.get(CURVES)
         if curves and len(curves) > 0:
-            logger.info(f"n_curves {len(curves)}", end=" | ")
+            # logger.info(f"n_curves {len(curves)}", end=" | ")
+            logger.info(f"n_curves {len(curves)}")
             svg0 = AmiSVG.create_svg()
             for i, curve in enumerate(curves[:max_curve]):
                 # logger.info(f"keys: {curve.keys()}")

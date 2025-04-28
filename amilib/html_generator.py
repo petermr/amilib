@@ -50,7 +50,7 @@ class HtmlGenerator:
     def create_sections(
             cls, input_pdf=None, section_regexes=None, total_pages="total_pages", outdir=None,
             group_stem="groups", use_svg=True, debug=False):
-        """Messy. Requires writing html to pages and then stictching together
+        """Messy. Requires writing html to pages and then stitching together
         """
         svg_dir = None
         if type(input_pdf) is BytesIO:
@@ -82,10 +82,18 @@ class HtmlGenerator:
 
     @classmethod
     def read_pdf_convert_to_html(cls,
-                                 input_pdf=None, group_stem="dummy_group", section_regexes=None,
-                                 total_pages="total_pages", outdir=None, write=True,
-                                 svg_dir=None, max_edges=10000, param_dict=None, max_lines=10, page_json_dir=None,
-                                 debug=False):
+        input_pdf=None,
+        group_stem="dummy_group",
+        section_regexes=None,
+        total_pages="total_pages",
+        outdir=None,
+        write=True,
+        svg_dir=None,
+        max_edges=10000,
+        param_dict=None,
+        max_lines=10,
+        page_json_dir=None,
+        debug=False):
 
         if not input_pdf:
             raise FileNotFoundError("missing pdf")
@@ -229,7 +237,8 @@ class HtmlGenerator:
         if page_json_dir:
             cls.write_dict_as_json(ami_json_page, page_json_dir, page_no)
 
-        cls.broad_overview(ami_json_page, max_curves, max_rects)
+        if debug:
+            cls.broad_overview(ami_json_page, max_curves, max_rects)
 
         t1 = HtmlGenerator.pmr_time()
         # LINES, CURVES, TABLES

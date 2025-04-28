@@ -947,7 +947,7 @@ class XmlLib:
             logger.debug("element is None")
             return None
         typex = type(element)
-        if typex != _Element:
+        if typex != _Element and typex != _ElementTree:
             logger.warning(f"element is not _Element, found {typex}")
             return None
         if xpath is None:

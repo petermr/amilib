@@ -211,18 +211,34 @@ class PDFPlumberTest(AmiAnyTest):
         for c in x:
             logger.debug(f"c {c} {ord(c)}")
 
-    @unittest.skip("input file missing")
-    def test_misc_pdf(self):
-        """an aritrary NGO report The result"""
-        input_pdf = Path("/Users/pm286/workspace/misc/380981eng.pdf")
-        assert input_pdf.exists(), f"file should exist {input_pdf}"
-        output_page_dir = Path(AmiAnyTest.TEMP_DIR, "html", "misc", "380981")
+    # @unittest.skip("input file missing")
+    def test_climate_academy(self):
+        # """an aritrary NGO report The result"""
+        # input_pdf = Path("/Users/pm286/workspace/misc/380981eng.pdf")
+        # assert input_pdf.exists(), f"file should exist {input_pdf}"
+        # output_page_dir = Path(AmiAnyTest.TEMP_DIR, "html", "misc", "380981")
+
+        """Matthew Pye's 'ClimateAcademy' - only available on request"""
+        climate_academy = "ClimateAcademy"
+        student_book = "student_book_2025_02"
+        # in PMR's workspace dir, nit generally available
+        input_pdf = Path(Path(Resources.TEST_RESOURCES_DIR).parent.parent.parent,
+                         climate_academy, f"{student_book}.pdf")
+        if not input_pdf.exists():
+            logger.error("No cllimate book")
+            return
+        output_page_dir = Path(AmiAnyTest.TEMP_DIR, "html", climate_academy, student_book)
+
         output_page_dir.mkdir(exist_ok=True, parents=True)
         page_json_dir = output_page_dir
         # ami_pdfplumber = AmiPDFPlumber(param_dict=report_dict)
         ami_pdfplumber = AmiPDFPlumber(param_dict=None)
         HtmlGenerator.create_html_pages(
-            ami_pdfplumber, input_pdf=input_pdf, outdir=output_page_dir, page_json_dir=page_json_dir, debug=True)
+            ami_pdfplumber,
+            input_pdf=input_pdf,
+            outdir=output_page_dir,
+            page_json_dir=page_json_dir,
+            debug=False)
 
     @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
     def test_pdf_plumber_table(self):
@@ -258,6 +274,32 @@ class PDFPlumberTest(AmiAnyTest):
              output_stem="page",
 #             range_list=range(1, 9999999)
         )
+
+    def test_combining_characters(self):
+        """
+        reads accented French text with overprinting
+        The PDF does not use modern approaches
+        """
+
+        # dictionary of diacritic conversions for lowercase letters
+        # expand this with more accents and diacritics
+        dia_dict = {
+            "`a": "à",
+            "`e": "è",
+            "`u": "ù",
+            "´e": "é"
+        }
+        infile = Path(Resources.TEST_RESOURCES_DIR, "combining", "french.pdf")
+        with pdfplumber.open(infile) as pdf:
+            page0 = pdf.pages[0]
+            text = page0.extract_text()
+            print(f" text {text}")
+            for item in dia_dict.items():
+                text = re.sub(item[0], item[1], text )
+            print("--converts to-->>")
+            print(f" text {text}")
+
+
 
 class PDFTest(AmiAnyTest):
     MAX_PAGE = 5
@@ -372,6 +414,7 @@ class PDFTest(AmiAnyTest):
         creates spans with coordinates inside divs
         Uses AmiPage.create_html_pages() which uses AmiPage.chars_to_spans()
         creates Raw HTML
+        NOT FLOWABLE
 
         """
         output_stem = "raw_plumber"
@@ -385,6 +428,7 @@ class PDFTest(AmiAnyTest):
                                              output_dir=output_dir, output_stem=output_stem,
                                              range_list=[range(3, 8), range(129, 131)])
         assert output_dir.exists()
+        logger.debug(f"writing to dir: {output_dir}")
         assert Path(output_dir, f"{output_stem}_{5}.html").exists()
 
     def test_bmp_png_to_png(self):
@@ -487,7 +531,7 @@ class PDFTest(AmiAnyTest):
         pyami = AmiLib()
         pyami.run_command(args)
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skipUnless(AmiAnyTest.run_long() or True, "run occasionally")
     def test_make_ipcc_html_spans(self):
         """
         read some/all PDF pages in chapter
@@ -500,6 +544,8 @@ class PDFTest(AmiAnyTest):
         trim headers and footers and sides
         then
         creates and HtmlTidy to remove or edit unwanted span/div/br
+
+        CREATES ONE GIANT PARAGRAPH (unlikely to be useful)
 
 
         USED
@@ -538,6 +584,7 @@ class PDFTest(AmiAnyTest):
         logger.info(f"Converting chapter: {chapter}")
         chapter_dir = Path(chapters_dir, chapter)
         outdir = Path(AmiAnyTest.TEMP_DIR, "html", "ar6", f"{chapter}")
+        logger.info(f"wrote to dir {outdir}")
 
         pdf_args = PDFArgs.create_pdf_args_for_chapter(
             chapter=chapter,
@@ -1894,21 +1941,22 @@ Framing Climate Ch"""
         import pdfplumber
         infile = Path(Resources.TEST_RESOURCES_DIR, "pdf", "breward_1.pdf")
         assert infile.exists()
-        pdfplumb = pdfplumber.PDFPlumber()
-        pdfplumb.extract_words(
-            x_tolerance=3,
-            x_tolerance_ratio=None,
-            y_tolerance=3,
-            keep_blank_chars=False,
-            use_text_flow=False,
-            line_dir="ttb",
-            char_dir="ltr",
-            line_dir_rotated="ttb",
-            char_dir_rotated="ltr",
-            extra_attrs=[],
-            split_at_punctuation=False,
-            expand_ligatures=True,
-            return_chars=False)
+        with pdfplumber.open(infile) as pdf:
+            page0 = pdf.pages[0]
+            page0.extract_words(
+                x_tolerance=3,
+                x_tolerance_ratio=None,
+                y_tolerance=3,
+                keep_blank_chars=False,
+                use_text_flow=False,
+                line_dir="ttb",
+                char_dir="ltr",
+                line_dir_rotated="ttb",
+                char_dir_rotated="ltr",
+                extra_attrs=[],
+                split_at_punctuation=False,
+                expand_ligatures=True,
+                return_chars=False)
 
 
 
