@@ -45,7 +45,7 @@ This represents functionality at 2024-12-02. There are about non-trivial 1000 me
 
 # commands and subcommands
 
-`amilib` has an `argparse` dommand-set and 4 sub-command-sets. These exercise most of the functionality and are used by the commuity for many purposes. However it makes more sense to move some of the entry-points to `docanalysis` and this will occur gradually.
+`amilib` has an `argparse` dommand-set and 4 sub-command-sets. These exercise most of the functionality and are used by the community for many purposes. However it makes more sense to move some of the entry-points to `docanalysis` and this will occur gradually.
 
 ## top-level command
 
