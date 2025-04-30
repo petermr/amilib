@@ -1273,7 +1273,7 @@ class PDFHTMLTest(AmiAnyTest):
             f.write(lxml.etree.tostring(html_elem, method="html"))
 
     @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
-    def test_annotate_pdf_html_report_HACKATHON(self):
+    def test_annotate_pdf_html_report_HACKATHON_LONG(self):
         input_html = Path(Resources.TEST_IPCC_DIR, "syr", "lr", "pages", f"total_pages.html")
         html_elem = lxml.etree.parse(str(input_html)).getroot()
         annotator = HtmlAnnotator.create_ipcc_annotator()

@@ -83,7 +83,7 @@ class AmiNLP:
         try:
             tfidf = self.vectorizer.fit_transform([text1, text2])
         except Exception as e:
-            logger.error(f"cannot parse {text1} \n.......\n{text2}")
+            logger.error(f"{e} cannot vectorise and compare {text1} \nto\n{text2}")
             return None
         return ((tfidf * tfidf.T).A)[0, 1]
 

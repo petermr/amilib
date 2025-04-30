@@ -29,85 +29,210 @@ UNFCCC_DIR = Path(Resources.TEST_RESOURCES_DIR, "unfccc")
 UNFCCC_TEMP_DIR = Path(Resources.TEMP_DIR, "unfccc")
 UNFCCC_TEMP_DOC_DIR = Path(UNFCCC_TEMP_DIR, "unfcccdocuments1")
 
-# INLINE_DICT = {
-#     "decision": {
-#         "example": ["decision 1/CMA.2", "noting decision 1/CMA.2, paragraph 10 and ", ],
-#         "regex":
-#         # f"decision{WS}(?P<decision>{INT})/(?P<type>{CPTYPE}){DOT}(?P<session>{INT})",
-#         # f"decision{WS}(?P<decision>{INT})/(?P<type>{CPTYPE}){DOT}(?P<session>{INT})(,{WS}paragraph(?P<paragraph>{WS}{INT}))?",
-#             f"(?P<decision>{INT})/(?P<type>{CPTYPE}){DOT}(?P<session>{INT})",
-#         "href": "FOO_BAR",
-#         "split_span": True,
-#         "idgen": "NYI",
-#         "_parent_dir": f"{TARGET_DIR}",
-#         "span_range": [0, 99],
+ROMAN = "I|II|III|IIII|IV|V|VI|VII|VIII|IX|X|XI|XII|XIII|XIV|XV|XVI*"
+L_ROMAN = "i|ii|iii|iv|v|vi|vii|viii|ix|x|xi|xii|xiii|xiv|xv|xvi|xvii|xviii|xix|xx"
+INT = "\\d+"  # integer of any length
+DIGIT = "\\d"  # single digit
+DOT = f"\\."  # dot
+MINUS = "-"
+FLOAT = f"{MINUS}?{INT}({DOT}{INT})?"
+SP = "\\s"  # single space
+WS = "\\s+"  # spaces
+ANY = ".*"
+SL = "/"  # slash
+LP = "\\("  # left parenthesis
+RP = "\\)"  # right parenthesis
+LC = "[a-z]"  # single uppercase
+UC = "[A-Z]"  # single uppercase
 #
-#         # "href_template": f"{PARENT_DIR}/{{type}}_{{session}}/Decision_{{decision}}_{{type}}_{{session}}",
-#         # "href_template": f"../../{{type}}_{{session}}/Decision_{{decision}}_{{type}}_{{session}}",
-#         "href_template": f"{TARGET_DIR}/{{type}}_{{session}}/Decision_{{decision}}_{{type}}_{{session}}/{TARGET_STEM}.html",
-#     },
-#     "paragraph": {
-#         "example": [
-#             "paragraph 32 above",
-#             "paragraph 23 below",
-#             "paragraph 9 of decision 19/CMA.3",
-#             "paragraph 77(d)(iii)",
-#             "paragraph 37 of chapter VII of the annex",
-#         ],
-#         "regex": [f"paragraph (?P<paragraph>{INT} (above|below))",
-#                   f"paragraph (?P<paragraph>{INT}{LP}{LC}{RP}{LP}{L_ROMAN}{RP})"
-#                   ],
-#     },
-#     "exhort": {
-#         "regex": f"{RESERVED_WORDS1}",
-#         "href": "None",
-#     },
-#     "article": {
-#         "example": ["Article 4, paragraph 19, of the (Paris Agreement)",
-#                     "tenth preambular paragraph of the Paris Agreement",
-#                     "Article 6, paragraph 3"],
-#         "regex": f"Article (?P<article>{INT}), paragraph (?P<paragraph>{INT}), (of the (?P<agreement>Paris Agreement))?",
-#     },
-#     "trust_fund": {
-#         "regex": "Trust Fund for Supplementary Activities",
-#         "href_template": "https://unfccc.int/documents/472648",
-#     },
-#     "adaptation_fund": {
-#         "regex": "([Tt]he )?Adaptation Fund",
-#         "href_template": "https://unfccc.int/Adaptation-Fund",
-#     },
-#     "paris": {
-#         "regex": "([Tt]he )?Paris Agreement",
-#         "href_template": "https://unfccc.int/process-and-meetings/the-paris-agreement",
-#     },
-#     "cop": {
-#         "regex": "([Tt]he )?Conference of the Parties",
-#         "href_template": "https://unfccc.int/process/bodies/supreme-bodies/conference-of-the-parties-cop",
-#     },
-#     "sbi": {
-#         "regex": "([Tt]he )?Subsidiary Body for Implementation",
-#         "acronym": "SBI",
-#         "wiki": "https://en.wikipedia.org/wiki/Subsidiary_Body_for_Implementation",
-#         "href": "https://unfccc.int/process/bodies/subsidiary-bodies/sbi"
-#     },
-#     # data
-#     "temperature": {
-#         "example": "1.5 °C",
-#         "regex": f"{FLOAT}{WS}°C",
-#         "class": "temperature",
-#     },
-#     # date
-#     "date": {
-#         "example": "2019",
-#         "regex": f"20\\d\\d",
-#         "class": "date",
-#     }
-# }
+DECISION_SESS_RE = re.compile(
+    f"(?P<front>{ANY}\\D)(?P<dec_no>{INT})/(?P<body>{ANY}){DOT}(?P<sess_no>{INT}){DOT}?(?P<end>{ANY})")
 
+RESERVED_WORDS = {
+    'Recalling',
+    'Also recalling',
+    'Further recalling',
+    'Recognizing',
+    'Cognizant',
+    'Annex',
+    'Abbreviations and acronyms',
+    'Noting',
+    'Acknowledging',
+}
 
-# mocking
-INLINE_DICT = dict()
-MARKUP_DICT = dict()
+RESERVED_WORDS1 = "(Also|[Ff]urther )?([Rr]ecalling|[Rr]ecogniz(es|ing)|Welcomes|[Cc]ognizant|[Nn]ot(ing|es)" \
+                  "|Invit(es|ing)|Acknowledging|[Ex]pressing appreciation]|Recalls|Stresses|Urges|Requests|Expresses alarm)"
+
+CPTYPE = "CP|CMA|CMP"
+SUBPARA = f"({LP}?P<subpara>{LC}){RP}"
+SUBSUBPARA = f"({LP}?P<subsubpara>{L_ROMAN}){RP}"
+PARENT_DIR = "unfccc/unfcccdocuments1"  # probably temporary
+TARGET_DIR = "../../../../../temp/unfccc/unfcccdocuments1/"
+
+REPO_TOP = "https://raw.githubusercontent.com/petermr/pyamihtml/main"
+TEST_REPO = f"{REPO_TOP}/test/resources/unfccc/unfcccdocuments1"
+TEMP_REPO = f"{REPO_TOP}/temp/unfccc/unfcccdocuments1"
+
+# markup against terms in spans
+TARGET_STEM = "marked"  # was "split"
+
+INLINE_DICT = {
+    "decision": {
+        "example": ["decision 1/CMA.2", "noting decision 1/CMA.2, paragraph 10 and ", ],
+        "regex":
+        # f"decision{WS}(?P<decision>{INT})/(?P<type>{CPTYPE}){DOT}(?P<session>{INT})",
+        # f"decision{WS}(?P<decision>{INT})/(?P<type>{CPTYPE}){DOT}(?P<session>{INT})(,{WS}paragraph(?P<paragraph>{WS}{INT}))?",
+            f"(?P<decision>{INT})/(?P<type>{CPTYPE}){DOT}(?P<session>{INT})",
+        "href": "FOO_BAR",
+        "split_span": True,
+        "idgen": "NYI",
+        "_parent_dir": f"{TARGET_DIR}",
+        "span_range": [0, 99],
+
+        # "href_template": f"{PARENT_DIR}/{{type}}_{{session}}/Decision_{{decision}}_{{type}}_{{session}}",
+        # "href_template": f"../../{{type}}_{{session}}/Decision_{{decision}}_{{type}}_{{session}}",
+        "href_template": f"{TARGET_DIR}/{{type}}_{{session}}/Decision_{{decision}}_{{type}}_{{session}}/{TARGET_STEM}.html",
+    },
+    "paragraph": {
+        "example": [
+            "paragraph 32 above",
+            "paragraph 23 below",
+            "paragraph 9 of decision 19/CMA.3",
+            "paragraph 77(d)(iii)",
+            "paragraph 37 of chapter VII of the annex",
+        ],
+        "regex": [f"paragraph (?P<paragraph>{INT} (above|below))",
+                  f"paragraph (?P<paragraph>{INT}{LP}{LC}{RP}{LP}{L_ROMAN}{RP})"
+                  ],
+    },
+    "exhort": {
+        "regex": f"{RESERVED_WORDS1}",
+        "href": "None",
+    },
+    "article": {
+        "example": ["Article 4, paragraph 19, of the (Paris Agreement)",
+                    "tenth preambular paragraph of the Paris Agreement",
+                    "Article 6, paragraph 3"],
+        "regex": f"Article (?P<article>{INT}), paragraph (?P<paragraph>{INT}), (of the (?P<agreement>Paris Agreement))?",
+    },
+    "trust_fund": {
+        "regex": "Trust Fund for Supplementary Activities",
+        "href_template": "https://unfccc.int/documents/472648",
+    },
+    "adaptation_fund": {
+        "regex": "([Tt]he )?Adaptation Fund",
+        "href_template": "https://unfccc.int/Adaptation-Fund",
+    },
+    "paris": {
+        "regex": "([Tt]he )?Paris Agreement",
+        "href_template": "https://unfccc.int/process-and-meetings/the-paris-agreement",
+    },
+    "cop": {
+        "regex": "([Tt]he )?Conference of the Parties",
+        "href_template": "https://unfccc.int/process/bodies/supreme-bodies/conference-of-the-parties-cop",
+    },
+    "sbi": {
+        "regex": "([Tt]he )?Subsidiary Body for Implementation",
+        "acronym": "SBI",
+        "wiki": "https://en.wikipedia.org/wiki/Subsidiary_Body_for_Implementation",
+        "href": "https://unfccc.int/process/bodies/subsidiary-bodies/sbi"
+    },
+    # data
+    "temperature": {
+        "example": "1.5 °C",
+        "regex": f"{FLOAT}{WS}°C",
+        "class": "temperature",
+    },
+    # date
+    "date": {
+        "example": "2019",
+        "regex": f"20\\d\\d",
+        "class": "date",
+    }
+}
+# section dict
+MARKUP_DICT = {
+    "Decision": {
+        "level": 0,
+        "parent": [],
+        "example": ["Decision 1/CMA.1", "Decision 1/CMA.3"],
+        "regex": f"Decision (?P<Decision>{INT})/(?P<type>{CPTYPE})\\.(?P<session>{INT})",
+        "components": ["", ("Decision", f"{INT}"), "/", ("type", {CPTYPE}), f"{DOT}", ("session", f"{INT}"), ""],
+        "names": ["roman", "title"],
+        "class": "Decision",
+        "span_range": [0, 1],
+        "template": "Decision_{Decision}_{type}_{session}",
+    },
+    "Resolution": {
+        "level": 0,
+        "parent": [],
+        "example": ["Resolution 1/CMA.1", "Resolution 1/CMA.3"],
+        "regex": f"Resolution (?P<Resolution>{INT})/(?P<type>{CPTYPE})\\.(?P<session>{INT})",
+        "components": ["", ("Resolution", f"{INT}"), "/", ("type", {CPTYPE}), f"{DOT}", ("session", f"{INT}"), ""],
+        "names": ["roman", "title"],
+        "class": "Resolution",
+        "span_range": [0, 1],
+        "template": "Resolution{Resolution}_{type}_{session}",
+    },
+    "chapter": {
+        "level": 1,
+        "parent": ["Decision"],
+        "example": ["VIII.Collaboration", "I.Science and urgency"],
+        "regex": f"(?P<dummy>)(?P<roman>{ROMAN}){DOT}\\s*(?P<title>{UC}.*)",
+        "components": [("dummy", ""), ("roman", f"{ROMAN}"), f"{DOT}{WS}", ("title", f"{UC}{ANY}")],
+        "names": ["roman", "title"],
+        "class": "chapter",
+        "span_range": [0, 1],
+        "template": "chapter_{roman}",
+    },
+    "subchapter": {
+        "level": "C",
+        "parent": ["chapter"],
+        "example": ["B.Annual information"],
+        "regex": f"(?P<capital>{UC}){DOT}",
+        "names": ["subchapter"],
+        "class": "subchapter",
+        "span_range": [0, 1],
+        "template": "subchapter_{capital}",
+    },
+
+    "para": {
+        "level": 2,
+        "parent": ["chapter", "subchapter"],
+        "example": ["26. "],
+        "regex": f"(?P<para>{INT}){DOT}{SP}*",
+        "names": ["para"],
+        "class": "para",
+        "parent": "preceeding::div[@class='roman'][1]",
+        "idgen": {
+            "parent": "Decision",
+            "separator": ["_", "__"],
+        },
+        "span_range": [0, 1],
+        "template": "para_{para}",
+    },
+    "subpara": {
+        "level": 3,
+        "parent": ["para"],
+        "example": ["(a)Common time frames"],
+        "regex": f"{LP}(?P<subpara>{LC}){RP}",
+        "names": ["subpara"],
+        "class": "subpara",
+        "span_range": [0, 1],
+        "template": "subpara_{subpara}",
+
+    },
+    "subsubpara": {
+        "level": 4,
+        "parent": ["subpara"],
+        "example": ["(i)Methods for establishing"],
+        "regex": f"{LP}(?P<subsubpara>{L_ROMAN}){RP}",
+        "names": ["subsubpara"],
+        "class": "subsubpara",
+        "span_range": [0, 1],
+    },
+
+}
 DECISION_SESS_RE = ""
 #
 MAXPDF = 3
@@ -330,51 +455,6 @@ class TestUNFCCC(AmiAnyTest):
 
 
     # ========================== tests ==================
-
-    @unittest.skip("Spanish language")
-    def test_read_unfccc(self):
-        """Uses a file in Spanish"""
-        input_pdf = Path(UNFCCC_DIR, "cma2023_10a02S.pdf")
-        assert input_pdf.exists()
-        outdir = Path(Resources.TEMP_DIR, "unfccc")
-        outdir.mkdir(exist_ok=True)
-        # PDFDebug.debug_pdf(input_pdf, outdir, debug_options=[WORDS, IMAGES, TEXTS])
-        html_elem = HtmlGenerator.create_sections(input_pdf)
-        """decisión 2/CMA.3, anexo, capítulo IV.B"""
-        doclink = re.compile(
-            ".*decisión (?P<decision>\\d+)/CMA\\.(?P<cma>\\d+), (?P<anex>(anexo)), (?P<capit>(capítulo)) (?P<roman>[IVX]+)\\.?(?P<letter>[A-F])?.*")
-        texts = html_elem.xpath("//*/text()")
-        for text in texts:
-            match = re.match(doclink, text)
-            if match:
-                for (k, v) in match.groupdict().items():
-                    print(f"{k, v}", end="")
-                print()
-
-    @unittest.skip("probably obsolete")
-    def test_read_unfccc_many(self):
-        """
-        NOT YET WORKING
-        * reads MAXPDF unfccc reports in PDF,
-        * transdlates to HTML,
-        * adds semantic indexing for paragraphs
-        * extracts targets from running text (NYI)
-        * builds csv table (NYI)
-        which can be fed into pyvis to create a knowledge graph
-        """
-        """TODO needs markup_dict"""
-        """currently matches but does not output"""
-        input_dir = Path(UNFCCC_DIR, "unfcccdocuments")
-        pdf_list = FileLib.posix_glob(f"{input_dir}/*.pdf")[:MAXPDF]
-
-        span_marker = SpanMarker()
-        span_marker.indir = input_dir
-        span_marker.outdir = Path(Resources.TEMP_DIR, "unfcccOUT")
-        span_marker.outfile = "links.csv"
-        # span_marker.markup_dict = MARKUP_DICT
-        span_marker.markup_dict = INLINE_DICT
-        span_marker.read_and_process_pdfs(pdf_list)
-        span_marker.analyse_after_match_NOOP()
 
     # @unittest.skip("not the current approach. TODO add make to spanmarker pipeline")
     def test_read_unfccc_everything_MAINSTREAM(self):
@@ -613,48 +693,6 @@ class TestUNFCCC(AmiAnyTest):
         outfile = str(infile).replace("sections", "nested")
         HtmlLib.write_html_file(span_marker.inhtml, outfile, debug=True)
 
-    @unittest.skip("not sure this is useful")
-    def test_find_unfccc_decisions_multiple_documents(self, UNFCCC_TEMP_DIR=None):
-        """
-        looks for strings such as decision 20/CMA.3:
-        over a complete recursive directory
-
-        takes simple HTML element:
-        """
-
-        input_dir = Path(UNFCCC_DIR, "unfcccdocuments1")
-        pdf_glob = "/*C*/*.pdf"
-        # pdf_glob = "/CMA*/*.pdf"
-        pdf_files = FileLib.posix_glob(str(input_dir) + pdf_glob)[:MAXPDF]
-        assert len(pdf_files) > 0
-
-        for pdf_infile in pdf_files[:999]:
-            html_elem = HtmlGenerator.read_pdf_convert_to_html("foo", pdf_infile,
-                                                               section_regexes="")  # section_regexes forces styles
-            stem = Path(pdf_infile).stem
-            HtmlLib.write_html_file(html_elem, Path(UNFCCC_TEMP_DIR, "html", stem, f"{stem}.raw.html"), debug=True)
-            # html_infile = Path(input_dir, "1_CMA_3_section target.html")
-            # SpanMarker.parse_unfccc_doc(html_infile, debug=True)
-
-
-    @unittest.skip("maybe obsolete")
-    def test_split_infcc_on_decisions_multiple_file_not_finished(self):
-        span_marker = SpanMarker()
-        html_files = FileLib.posix_glob(str(Path(UNFCCC_TEMP_DIR, "html/*/*.raw.html")))
-        decision = "dummy_decis"
-        type = "dummy_type"
-        session = "dummy_session"
-        for html_file in html_files:
-            print(f"html file {html_file}")
-            span_marker.infile = str(html_file)
-            span_marker.parse_html(
-                splitter_re="Decision\\s+(?P<decision>\\d+)/(?P<type>CMA|CP|CMP)\\.(?P<session>\\d+)\\s*"
-                # ,split_files=f"{decision}_{type}_{session}"
-            )
-            if str(span_marker.infile).endswith(".decis.html"):
-                continue
-            outfile = span_marker.infile.replace(".raw.html", ".decis.html")
-            HtmlLib.write_html_file(span_marker.inhtml, outfile, debug=True)
 
     @unittest.skip("needs mending")
     def test_pipeline(self):
@@ -838,7 +876,9 @@ class TestUNFCCC(AmiAnyTest):
                 directory_maker=class_with_directory_maker,
                 markup_dict=MARKUP_DICT,
                 inline_dict=INLINE_DICT,
-                targets=targets)
+                debug=True,
+                targets=targets,
+            )
         decision = "Decision_1_CP_20"
         split_file = Path(out_sub_dir, decision, "split.html")
         logger.info(f"split file is {split_file}")

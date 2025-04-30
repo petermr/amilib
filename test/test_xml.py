@@ -116,37 +116,6 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
     """
 
     @classmethod
-    @unittest.skip("no XSLT file")
-    def test_xslt_italic(cls):
-        data = '''<p>essential oil extracted from
- <italic>T. bovei</italic> was comprised ... on the
- <italic>T. bovei</italic> activities ... activity.
-</p>'''
-        assert XmlTest.XSLT_FILE.exists()
-        logger.info("italic", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
-
-    @classmethod
-    @unittest.skip("no XSLT file")
-    def test_xslt_copy(cls):
-        data = """<ack>
- <title>Acknowledgements</title>
- <p>The authors acknowledge the assistance of the technicians Mohamad Arar and Linda Esa and for An-Najah National University and Birzeit University for their support.</p>
- <sec id="FPar1">
-  <title>Funding</title>
-  <p>None.</p>
- </sec>
- <boo>foo</boo>
- <sec id="FPar2">
-  <title>Availability of data and materials</title>
-  <p>Data are all contained within the article.</p>
- </sec>
-</ack>
-"""
-        assert XmlTest.XSLT_FILE.exists()
-
-        logger.info("copy", XmlLib.xslt_transform_tostring(data, XmlTest.XSLT_FILE))
-
-    @classmethod
     def test_jats2html(cls):
         logger.debug("test_jats2html")
         data = '''<everything>

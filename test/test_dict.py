@@ -715,7 +715,7 @@ class AmiDictionaryTest(AmiAnyTest):
         abb_dict = Resources.TEST_IPCC_CHAP02_ABB_DICT
         logger.info(f"dictionary in {abb_dict}")
         ami_dict = AmiDictionary.create_from_xml_file(abb_dict)
-UL        _term_id_list = ami_dict.get_disambiguated_raw_wikidata_ids()
+        _term_id_list = ami_dict.get_disambiguated_raw_wikidata_ids()
         assert len(_term_id_list) == 1
         assert _term_id_list[0] == ('GWP', ['Q901028'])
 
@@ -1734,7 +1734,8 @@ class DictionaryCreationTest(AmiAnyTest):
     def test_more_words(self):
         pass
 
-    def create_dict_for_word_file(self, stem, wiktionary=True, input_file=None, output_dict=None):
+    def create_dict_for_word_file(
+            self, stem, wiktionary=True, input_file=None, output_dict=None):
         """
         Reads a wordlist file and creates output dictionary with figures
         :param stem: stem of files, also used as title

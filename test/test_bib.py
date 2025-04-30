@@ -38,7 +38,7 @@ class AmiBibliographyTest(AmiAnyTest):
     #
     #     """
 
-    def test_iconize_references_FAIL(self):
+    def test_iconize_references(self):
         """
         find references and reduce to a single char
         """
@@ -588,72 +588,6 @@ class AmiCorpusTest(AmiAnyTest):
 
             logger.info(f"cleaned files {len(all_cleaned_files)} html_with_ids {len(all_html_id_files)}")
 
-    @unittest.skip("Obsolete")
-    def test_create_corpus_from_ipcc(self):
-        """
-        FAILS needs reletive file addressing
-        """
-
-        """
-        reads all IPCC htmls and creates a corpus/datatables
-        """
-        """https://github.com/semanticClimate/ipcc/tree/main/cleaned_content"""
-        # Github repository is https://github.com/semanticClimate/ipcc
-        # clone tnis
-        # *****top director on PMR's machine = needs altering for youu implementation*****
-
-        CLEAN_WORDPRESS_STEM = "de_wordpress"
-        CLEAN_GATSBY_STEM = "de_gatsby"
-        REPORT = "report"
-        REMOTE_CHAPTER = "remote_chapter"
-        REMOTE_PDF= "remote_PDF"
-        CHAPTER_ANY = "Chapter*"
-        ANY_HTML = "*.html"
-        CLEANED_CHAPTER = "cleaned_chapter"
-        CHAP_WITH_IDS = "chapter_with_ids"
-        HTML_WITH_IDS = "html_with_ids"
-        IPCC_CH = "https://www.ipcc.ch"
-        ROMAN_DICT = {"1": "I", "2": "II", "3": "III", }
-
-        cls = AmiCorpusTest
-
-        # ipcc_top = Path(Resources.TEST_RESOURCES_DIR, "..", "..", "..", "..", "projects", "ipcc")
-        # ipcc_top = Path(Resources.TEST_RESOURCES_DIR, )
-
-        # assert ipcc_top.exists(), f"{ipcc_top} should exist, you need to change this for your machine"
-        corpus_dir =  Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content") # cleans the filename (removes "..")
-        assert corpus_dir.exists()
-        corpus_files = FileLib.get_children(corpus_dir, dirx=True)
-        assert len(corpus_files) > 0, f"no files in {corpus_dir}"
-        labels = [REPORT, REMOTE_CHAPTER, REMOTE_PDF, CLEANED_CHAPTER, CHAP_WITH_IDS]
-
-        datatables = True
-        table_id = "table1"
-        htmlx, tbody = Datatables.create_table(labels, table_id)
-
-        ami_corpus = AmiCorpus()
-        for corpus_file in sorted(corpus_files):
-            corpus_text = AmiCorpusContainer(corpus_file, "stem")
-            report = Path(work).stem
-            arx = "report/ar6/" if report.startswith("wg") else ""
-            work = f"{IPCC_CH}/{arx}{report}"
-            roman = None
-            if report.startswith("wg"):
-                wg_no = report[2:]
-                roman = ROMAN_DICT.get(wg_no)
-
-            chapter_glob = f"{str(work)}/{CHAPTER_ANY}"
-            chapter_dirs = FileLib.posix_glob(chapter_glob, recursive=False)
-            for chapter_dir in sorted(chapter_dirs):
-                cls._output_chapter_row(work, chapter_dir, tbody)
-
-        if datatables:
-            Datatables.add_head_info(HtmlLib.get_head(htmlx), htmlx)
-            Datatables.add_body_scripts(HtmlLib.get_body(htmlx), table_id=table_id)
-
-
-        HtmlLib.write_html_file(htmlx, Path(corpus_dir, "datatables.html"), debug=True)
-
 
     def _output_chapter_row(cls, IPCC_CH, arx, chapter_dir, report, roman, tbody):
         cls = AmiCorpus
@@ -1181,37 +1115,6 @@ class AmiCorpusTest(AmiAnyTest):
     #
     # ================ NYI ===============
 
-    @unittest.skip("NYI")
-    def test_ipcc_add_figures_to_datatables(self):
-        """
-        get a column listing hyperlinks to documents from existing datatables file
-        create a new column pointing to subcomponents of the document
-        """
-        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
-        datatables_html = HtmlLib.parse_html(datatables_file)
-
-        # list to receive td's
-        # id_ref = "Executive"
-        new_content = "Figures"
-        new_column_title = "figures"
-        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_figures1.html")
-        Datatables.add_column_with_ahref_pointers_to_figures(
-            datatables_file, new_content, new_datatables_file, new_column_title)
-
-        # NYI
-    def test_ipcc_add_tables_to_datatables(self):
-        """
-        """
-        datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
-        datatables_html = HtmlLib.parse_html(datatables_file)
-
-        # list to receive td's
-        # id_ref = "Executive"
-        new_content = "Tables"
-        new_column_title = "tables"
-        new_datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables_tables.html")
-        Datatables.add_column_with_ahref_pointers_to_tables(datatables_file, new_content, new_datatables_file,
-                                                                 new_column_title)
 
     def test_make_toc_and_make_normalized_html(self):
         """

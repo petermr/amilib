@@ -174,23 +174,23 @@ class ExtractTextTest(AmiAnyTest):
         assert Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter03", "marked/kw_counter.txt").exists()
 
 
-    @unittest.skip("too long")
     def test_keybert_ipcc_wg1(self):
         """file:///Users/pm286/workspace/amilib/test/resources/ipcc/cleaned_content/wg1/Chapter03/html_with_ids.html"""
+
         wgdir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content","wg1")
         chapters = [
             "Chapter01",
             "Chapter02",
-            "Chapter03",
-            "Chapter04",
-            "Chapter05",
-            "Chapter06",
-            "Chapter07",
-            "Chapter08",
-            "Chapter09",
-            "Chapter10",
-            "Chapter11",
-            "Chapter12",
+            # "Chapter03",
+            # "Chapter04",
+            # "Chapter05",
+            # "Chapter06",
+            # "Chapter07",
+            # "Chapter08",
+            # "Chapter09",
+            # "Chapter10",
+            # "Chapter11",
+            # "Chapter12",
         ]
         all_words = Counter()
         for chapter in chapters:

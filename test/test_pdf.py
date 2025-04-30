@@ -164,8 +164,8 @@ class PDFPlumberTest(AmiAnyTest):
             ami_pdfplumber, input_pdf=input_pdf, outdir=output_page_dir, page_json_dir=page_json_dir,
             pages=[1, 2, 3, 4, 5, 6, 7])
 
-    # @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
-    @unittest.skip("documents not in distribution")
+    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    # @unittest.skip("documents not in distribution")
     def test_pdfplumber_doublecol_create_pages_for_WGs_HACKATHON(self):
         """
         creates AmiPDFPlumber and reads double-column pdf and debugs
@@ -241,7 +241,7 @@ class PDFPlumberTest(AmiAnyTest):
             debug=False)
 
     @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
-    def test_pdf_plumber_table(self):
+    def test_pdf_plumber_table_LONG(self):
         """haven't found any tables yet!
         tests DataFrames
         """
@@ -599,7 +599,9 @@ class PDFTest(AmiAnyTest):
         assert path.exists(), f"path exists {path}"
         AmiPage.create_page_from_pdf_html(path)
 
-    @unittest.skipUnless(VERYLONG, "why is this so long?")
+    # @unittest.skipUnless(VERYLONG, "why is this so long?")
+    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally; why is this so long?")
+
     def test_pdf_html_wg2_format(self):
 
         chapter_dict = {"wg2_03": {'pages': '14'}}
@@ -902,7 +904,7 @@ class PDFCharacterTest(test.test_all.AmiAnyTest):
     # https://stackoverflow.com/questions/34606382/pdfminer-extract-text-with-its-font-information
 
     @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
-    def test_final_ipcc_format_debug(self):
+    def test_final_ipcc_format_debug_LONG(self):
         """
         Reads final format of IPCC reports (double column)
         PDFPLUMBER
@@ -997,7 +999,8 @@ LTPage
         # this next debugs the character_stream
         show_ltitem_hierarchy(pages[0])
 
-    @unittest.skip("LONG; other methods may be better")
+    @unittest.skipUnless(AmiAnyTest.run_long(),
+                         "run occasionally; other methods may be better")
     def test_pdfminer_images(self):
         import pdfminer
         from pdfminer.image import ImageWriter
@@ -1463,7 +1466,7 @@ LTPage
     # wg2_3 is 20 Mb and has many vectors/boxes
 
     @unittest.skipUnless(PDFTest.VERYLONG or run_me, "complete chapter")
-    def test_page_properties_ipcc_wg2_3__debug(self):
+    def test_page_properties_ipcc_wg2_3__debug_LONG(self):
         """ high-level debug the PDF objects (crude) uses PDFDebug on large document with many graphics components
         PDFPLUMBER
         finds WORDS (count) and IMAGE details
@@ -1476,7 +1479,7 @@ LTPage
         pdf_debug.debug_pdf(infile, outdir, debug_options=[WORDS, IMAGES, CURVES, TEXTS], page_len=15)
 
     @unittest.skipUnless(PDFTest.VERYLONG, "complete chapter - has graphics")
-    def test_page_properties_ipcc_wg2__debug(self):
+    def test_page_properties_ipcc_wg2__debug_LONG(self):
         """ high-level debug the PDF objects (crude) uses PDFDebug on 5-page document
         finds WORDS (count) and IMAGE details
         """
@@ -1500,56 +1503,6 @@ LTPage
         outdir.mkdir(exist_ok=True)
         file = self.download_url(url, outdir=Path(UNHLAB_DIR, "downloads"))
         logger.debug(f"{file}")
-
-    @unittest.skip("Not currently doing UNLibrary")
-    def test_read_hlab_top(self):
-        hlab_html = lxml.etree.parse(str(Path(UNHLAB_DIR, "hlab.html")), parser=lxml.html.HTMLParser())
-        outdir = Path(UNHLAB_DIR, "downloads")
-        tables = hlab_html.xpath("//table")
-        logger.debug(f"{len(tables)}")
-        ntr = 0
-        for table in tables:
-            trs = table.xpath(".//tr[td]")
-            logger.debug(f"trs: {len(trs)}")
-
-            for tr in trs:
-                self.download_row(tr, outdir=outdir)
-
-    @unittest.skip("Not supporting UN Library ATM")
-    def test_convert_hlab_downloads_to_html(self):
-        indir = Path(UNHLAB_DIR, "downloads")
-        files = FileLib.posix_glob(str(indir) + "/*.pdf")
-        for file in files:
-            print(f" {file}")
-            stem = Path(file).stem
-            HtmlGenerator.read_pdf_convert_to_html(stem, file)
-
-    def test_copy_html_to_download_hlab(self):
-        indir = Path(UNHLAB_DIR, "downloads")
-        files = FileLib.posix_glob(str(indir) + "/*")
-        # are they html?
-        for file in files:
-            stem = Path(file).stem
-            try:
-                html_elem = lxml.etree.parse(file, parser=HTMLParser())
-                outfile = Path(indir, stem, "out.html")
-                HtmlLib.write_html_file(html_elem, outfile)
-            except Exception as e:
-                logger.warning(f"cannot parse {file}")
-
-    @unittest.skip("Not supporting UNLibrary ATM")
-    def test_download_convert_hlab_total_file(self):
-        """converts HLAB material to HTML. """
-        hlab_pdf = Path(UNHLAB_DIR, "56892_UNU_HLAB_report_Final_LOWRES.pdf")
-        assert hlab_pdf.exists(), f"file {hlab_pdf}"
-        hlab_html = HtmlGenerator.read_pdf_convert_to_html("hlab_h", hlab_pdf, section_regexes="foo")
-
-    #
-    # def test_lookup_wikidata(self):
-    #     """NYI"""
-    #     term = ""
-    #     wikidata = WikidataLookup()
-    #     result = wikidata.lookup_wikidata(term)
 
     def download_row(self, tr, outdir):
         a_elems = tr.xpath("td/a")
