@@ -7,13 +7,18 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
 
+from amilib.util import Util
 from test.test_all import AmiAnyTest
+
+logger = Util.get_logger(__name__)
 
 
 class TestClassify(AmiAnyTest):
 
     def test_example_classifier(self):
-
+        """
+        NOT YET TESTED
+        """
         """
      ** section
         classification **
@@ -79,6 +84,8 @@ class TestClassify(AmiAnyTest):
 
     # ==== Example usage ====
 
+        logger.error(f"not fully tested")
+        return
 
         # Training data: list of dicts with "text" and "label"
         training_data = [

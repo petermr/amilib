@@ -2691,10 +2691,13 @@ font-size: 12px;
         for style in styles:
             XmlLib.remove(style)
         if href:
-            link = ET.SubElement(HtmlLib.get_head(html_elem=html), "link")
+            head = HtmlLib.get_head(html_elem=html)
+            if head is None:
+                logger.error(f"no head")
+                return
+            link = ET.SubElement(head, "link")
             link.attrib["rel"] = "stylesheet"
             link.attrib["href"] = str(href)
-
 
 
 class Datatables:

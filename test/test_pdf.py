@@ -212,7 +212,7 @@ class PDFPlumberTest(AmiAnyTest):
             logger.debug(f"c {c} {ord(c)}")
 
     # @unittest.skip("input file missing")
-    def test_climate_academy(self):
+    def test_climate_academy_create_html_LONG(self):
         # """an aritrary NGO report The result"""
         # input_pdf = Path("/Users/pm286/workspace/misc/380981eng.pdf")
         # assert input_pdf.exists(), f"file should exist {input_pdf}"
@@ -532,7 +532,7 @@ class PDFTest(AmiAnyTest):
         pyami.run_command(args)
 
     @unittest.skipUnless(AmiAnyTest.run_long() or True, "run occasionally")
-    def test_make_ipcc_html_spans(self):
+    def test_make_ipcc_html_spans_LONG(self):
         """
         read some/all PDF pages in chapter
         parse with pdfplumber into raw_html

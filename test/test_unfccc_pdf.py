@@ -1,6 +1,8 @@
+import csv
 import logging
 import re
 import unittest
+from collections import Counter
 from pathlib import Path
 
 import lxml
@@ -102,6 +104,7 @@ UNFCCC_TEMP_DOC_DIR = Path(UNFCCC_TEMP_DIR, "unfcccdocuments1")
 #     }
 # }
 
+
 # mocking
 INLINE_DICT = dict()
 MARKUP_DICT = dict()
@@ -153,6 +156,180 @@ logger.setLevel(logging.INFO)
 class TestUNFCCC(AmiAnyTest):
     """Tests high level operations relating to UN content (currently SpanMarker and UN/IPCC)
     """
+
+    STYLES = [
+        #  <style classref="div">div {border: red solid 0.5px;}</style>
+        "span.temperature {border: purple solid 0.5px;}",
+        ".chapter {border: blue solid 0.8px; font-weight: bold; background: red;}",
+        ".subchapter {background: pink;}",
+        ".para {border: blue dotted 0.6px; margin: 0.3px;}",
+        ".subpara {border: blue solid 0.4px; margin: 0.2px; background: #eeeeee; opacity: 0.7}",
+        ".subsubpara {border: blue dashed 0.2px; margin: 2px; background: #dddddd; opacity: 0.3}",
+        "a[href] {background: #ffeecc;}",
+        "* {font-size: 7; font-family: helvetica;}",
+    ]
+
+    UNFCCC_DICT = {
+        # "1" : {
+        #
+        # },
+        # "*" : {
+        "name": "UNFCCC reports",
+        "footer_height": 50,  # from lowest href underlines
+        "header_height": 70,  # from 68.44
+        "header_bottom_line_xrange": [20, 700],
+        "footnote_top_line_xrange": [50, 300],
+        "box_as_line_height": 1
+    }
+
+    @classmethod
+    def create_initial_directories(cls, in_sub_dir, in_file, top_out_dir, out_stem=None, out_suffix="html"):
+        """creates initial directory structure from PDF files
+        in:
+        test/resources/unfccc/unfcccdocuments1/CMA_3/1_4_CMA_3.pdf
+        ............................top_in_dir| (implicit filename.parent.parent)
+        ....................................._in_file............|
+        ..................................in_sub_dir|
+                                                    |.........| = in_subdir_stem
+        out:
+        temp/unfccc/unfcccdocuments1/CMA_3/1_4_CMA_3/raw.html
+        .................top_outdir|
+        ........................out_subdir|
+        ...............................out_subsubdir|
+                                                    |...|= out_stem
+                                                         |....| = out_suffix
+
+        Create outsubdir with same stem as in in_subdir
+        create out_subsubdir from in_file stem
+        create any directories with mkdir()
+        :param in_sub_dir: subdirectory of corpus (session)
+        :param in_file: file has implict subsub in stem
+        :param top_out_dir: top of output directory (analogous to top_in_dir)
+        :param out_stem: no default
+        :param out_suffix: defaults to "html"
+        :return: out_subsubdir, outfile (None if out_stem not given)
+
+        thus
+        """
+        in_subdir_stem = Path(in_sub_dir).stem
+        out_subdir_stem = in_subdir_stem
+        out_subdir = Path(top_out_dir, out_subdir_stem)
+        out_subdir.mkdir(parents=True, exist_ok=True)
+        out_subsubdir = Path(out_subdir, in_file.stem)
+        out_subsubdir.mkdir(parents=True, exist_ok=True)
+        outfile = Path(out_subsubdir, out_stem + "." + out_suffix) if out_stem else None
+        return out_subsubdir, outfile
+
+    @classmethod
+    def run_pipeline_on_unfccc_session(
+            cls,
+            in_dir,
+            session_dir,
+            in_sub_dir=None,
+            top_out_dir=None,
+            file_splitter=None,
+            targets=None,
+            directory_maker=None,
+            markup_dict=None,
+            inline_dict=None,
+            param_dict=None,
+            styles=None
+    ):
+        """
+        directory structure is messy
+        """
+
+        session = Path(session_dir).stem
+        if in_sub_dir is None:
+            in_sub_dir = Path(in_dir, session)
+        pdf_list = FileLib.posix_glob(str(in_sub_dir) + "/*.pdf")
+        print(f"pdfs in session {session} => {pdf_list}")
+        if not pdf_list:
+            print(f"****no PDFs in {in_sub_dir}")
+        subsession_list = [Path(pdf).stem for pdf in pdf_list]
+        print(f"subsession_list {subsession_list}")
+        if not top_out_dir:
+            print(f"must give top_out_dir")
+            return
+        out_sub_dir = Path(top_out_dir, session)
+        skip_assert = True
+        if not file_splitter:
+            file_splitter = "span[@class='Decision']"  # TODO move to dictionary
+        if not targets:
+            targets = ["decision", "paris", "wmo", "temperature"]
+        if not directory_maker:
+            directory_maker = TestUNFCCC
+        if not markup_dict:
+            markup_dict = MARKUP_DICT
+        if not inline_dict:
+            inline_dict = INLINE_DICT
+        if not param_dict:
+            param_dict = TestUNFCCC.UNFCCC_DICT
+        if not styles:
+            styles = TestUNFCCC.STYLES
+        for subsession in subsession_list:
+            HtmlPipeline.stateless_pipeline(
+
+                file_splitter=file_splitter, in_dir=in_dir, in_sub_dir=in_sub_dir, instem=subsession,
+                out_sub_dir=out_sub_dir,
+                top_out_dir=top_out_dir,
+                page_json_dir=Path(top_out_dir, "json"),
+                directory_maker=directory_maker,
+                markup_dict=markup_dict,
+                inline_dict=inline_dict,
+                param_dict=param_dict,
+                targets=targets,
+                styles=styles,
+                force_make_pdf=True)
+
+    @classmethod
+    def create_decision_table(cls, in_dir, outcsv, outcsv_wt=None):
+        """create table of links, rather ad hoc"""
+        decision_files = TestUNFCCC.extract_decision_files_posix(in_dir)
+        weight_dict = Counter()
+        typex = "type"
+        for decision_file in decision_files:
+            decision_path = Path(decision_file)
+            a_els = TestUNFCCC.extract_hyperlinks_to_decisions(decision_file)
+            source_id = str(decision_path.parent.stem).replace("ecision", "")
+            for a_elem in a_els:
+                text = a_elem.text
+                splits = text.split(",")
+                # this should use idgen
+                target_id = splits[0].replace("d", "D").replace(" ", "_").replace("/", "_").replace(".", "_") \
+                    .replace("ecision", "")
+                para = splits[1] if len(splits) == 2 else ""
+                edge = (source_id, target_id, para)
+                weight_dict[edge] += 1
+        with open(outcsv, "w") as fw:
+            FileLib.force_mkdir(outcsv.parent)
+            csvwriter = csv.writer(fw)
+            csvwriter.writerow(["source", "link_type", "target", "para", "weight"])
+            for (edge, wt) in weight_dict.items():
+                csvwriter.writerow([edge[0], typex, edge[1], edge[2], wt])
+        print(f"wrote {outcsv}")
+
+    @classmethod
+    def extract_hyperlinks_to_decisions(self, marked_file):
+        """Currently hyperlinks are
+        file:///Users/pm286/workspace/pyamihtml_top/temp/unfccc/unfcccdocuments1//CP_21/Decision_1_CP_21/marked.html
+        <a href="../../../../../temp/unfccc/unfcccdocuments1//CMA_3/Decision_1_CMA_3/marked.html">1/CMA.3</a>
+        """
+
+        html_elem = lxml.etree.parse(str(marked_file))
+        a_elems = html_elem.xpath(".//a[@href[contains(.,'ecision')]]")
+        return a_elems
+
+    @classmethod
+    def extract_decision_files_posix(cls, in_dir, stem="marked"):
+        """extracts all files with "Decision" in file name
+        :param in_dir: top directory of corpus (immediate children are session directories e.g. CMP_3
+        :param stem: file stem, e.g. 'split', 'marked'"""
+        files = FileLib.posix_glob(str(in_dir) + f"/*/Decision*/{stem}.html")
+        return files
+
+
+    # ========================== tests ==================
 
     @unittest.skip("Spanish language")
     def test_read_unfccc(self):
@@ -548,7 +725,7 @@ class TestUNFCCC(AmiAnyTest):
         # targets = ["decision", "paris", "article", "temperature"]
         # debug = True
 
-        UNFCCC.run_pipeline_on_unfccc_session(
+        TestUNFCCC.run_pipeline_on_unfccc_session(
             in_dir,
             session_dir,
             top_out_dir=top_out_dir
@@ -574,9 +751,9 @@ class TestUNFCCC(AmiAnyTest):
         print(f">session_dirs {session_dirs}")
         assert len(session_dirs) >= 1
 
-        maxsession = 5  # otyherwise runs for ever
+        maxsession = 5  # otherwise runs for ever
         for session_dir in session_dirs[:maxsession]:
-            UNFCCC.run_pipeline_on_unfccc_session(
+            TestUNFCCC.run_pipeline_on_unfccc_session(
                 in_dir,
                 session_dir,
                 top_out_dir=top_out_dir
@@ -609,18 +786,18 @@ class TestUNFCCC(AmiAnyTest):
         a_elems = _extract_hyperlinks_to_decisions(marked_file)
         assert len(a_elems) > 12
 
-    def test_extract_decision_hyperlinks_from_CORPUS(self):
+    def test_extract_decision_hyperlinks_from_CORPUS_FAIL(self):
         """iterates over all marked.html and extracts hyperlinks to Decisions
         """
         sub_top = "unfcccdocuments1"
         in_dir = Path(UNFCCC_TEMP_DIR, sub_top)
         outcsv = Path(in_dir, "decision_links.csv")
         outcsv_wt = Path(in_dir, "decision_links_wt.csv")
-        UNFCCC.create_decision_table(in_dir, outcsv, outcsv_wt=None)
+        TestUNFCCC.create_decision_table(in_dir, outcsv, outcsv_wt=None)
 
         print(f"wrote csv {outcsv}")
 
-    def test_OBOE_error_for_split_to_marked(self):
+    def test_OBOE_error_for_split_to_marked_FAIL(self):
         """converting a list of split.html to marked.html loses the last element
         tests the pipeline
         """
@@ -637,15 +814,24 @@ class TestUNFCCC(AmiAnyTest):
 
         in_sub_dir = Path(in_dir, session)
         top_out_dir = Path(UNFCCC_TEMP_DIR, sub_top)
+        FileLib.force_mkdir(top_out_dir)
+        logger.info(f"top_out_dir is {top_out_dir}")
         out_sub_dir = Path(top_out_dir, session)
+        logger.info(f"out_sub_dir is {out_sub_dir}")
+        FileLib.force_mkdir(out_sub_dir)
         skip_assert = True
         file_splitter = "span[@class='Decision']"  # TODO move to dictionary
         targets = ["decision", "paris"]
-        class_with_directory_maker = UNFCCC
+
+        # this needs methods
+        class_with_directory_maker = TestUNFCCC
         for instem in instem_list:
 
             HtmlPipeline.stateless_pipeline(
-                file_splitter=file_splitter, in_dir=in_dir, in_sub_dir=in_sub_dir, instem=instem,
+                file_splitter=file_splitter,
+                in_dir=in_dir,
+                in_sub_dir=in_sub_dir,
+                instem=instem,
                 out_sub_dir=out_sub_dir,
                 # skip_assert=skip_assert,
                 top_out_dir=top_out_dir,
@@ -655,8 +841,10 @@ class TestUNFCCC(AmiAnyTest):
                 targets=targets)
         decision = "Decision_1_CP_20"
         split_file = Path(out_sub_dir, decision, "split.html")
+        logger.info(f"split file is {split_file}")
         assert split_file.exists()
         marked_file = Path(out_sub_dir, decision, "marked.html")
+        logger.info(f"marked file is {marked_file}")
         assert marked_file.exists()
 
     # def test_subcommands_simple(self):

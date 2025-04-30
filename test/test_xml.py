@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 import lxml.etree as ET
+import lxml.html
 
 from amilib.ami_html import HtmlStyle, HtmlLib, HtmlEditor
 from amilib.util import Util
@@ -212,6 +213,22 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
         assert len(foo.xpath("bar")) == 2
         barx = XmlLib.get_single_element(foo, "./bar")
         assert barx is None
+
+        htmlelem = lxml.html.HtmlElement("html")
+        body = XmlLib.get_single_element(htmlelem, "./body")
+        assert body is None
+
+        body = ET.SubElement(htmlelem, "body")
+        body = XmlLib.get_single_element(htmlelem, "./body")
+        assert body is not None
+
+        div1 = ET.SubElement(body, "div")
+        div1 = XmlLib.get_single_element(body, "./div")
+        assert div1 is not None
+
+        div2 = ET.SubElement(body, "div")
+        div2 = XmlLib.get_single_element(body, "./div")
+        assert div2 is None
 
 
 class SvgParser:

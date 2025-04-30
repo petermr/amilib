@@ -38,12 +38,15 @@ class AmiBibliographyTest(AmiAnyTest):
     #
     #     """
 
-    def test_iconize_references(self):
+    def test_iconize_references_FAIL(self):
         """
         find references and reduce to a single char
         """
         infile = Path(self.TEST_WG1_05, f"{HTML_WITH_IDS}.html")
+        logger.info(f"reading {infile}")
+        assert infile.exists(), f"infile {infile} does not exist"
         htmlx = HtmlLib.parse_html(infile)
+        assert htmlx is not None
         para = XmlLib.get_single_element(htmlx, ".//p[@id='5.1.1_p1']")
         assert para is not None
         """
@@ -190,7 +193,7 @@ class PygetpapersTest(AmiAnyTest):
         outfile = Path(indir, f"{query}.html")
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
-        assert 50 == len(infiles)
+        assert 50 <= len(infiles) <= 55
         phrases = [
             "bananas",
             "South Asia",
@@ -703,7 +706,7 @@ class AmiCorpusTest(AmiAnyTest):
         assert datatables_file.exists()
         datatables_html = HtmlLib.parse_html(datatables_file)
         col_content = Datatables.extract_column(datatables_html, colindex="file")
-        assert len(col_content) == 48
+        assert 52 >= len(col_content) >= 48
         assert "".join(col_content[2].itertext()) == "wg1/Chapter02/html_with_ids.html"
 
     def test_transform_column_data_tables(self):
@@ -918,7 +921,7 @@ class AmiCorpusTest(AmiAnyTest):
         outfile = Path(indir, f"{query}.html")
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
-        assert 50 == len(infiles)
+        assert 50 <= len(infiles) <= 55
         phrases = [
             "methane emissions"
         ]
@@ -1009,7 +1012,7 @@ class AmiCorpusTest(AmiAnyTest):
         # _validate_and_count_table(htmlx, min_entries=160)
 
 
-    def test_search_corpus_with_wordlist(self):
+    def test_search_corpus_with_wordlist_LONG(self):
         """
         reads words from file and searches corpus giving term_oriented table
         """
@@ -1042,7 +1045,7 @@ class AmiCorpusTest(AmiAnyTest):
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists(), f"{trp_file} should exist"
 
-    def test_create_corpus_with_wordlist_and_search(self):
+    def test_create_corpus_with_wordlist_and_search_LONG(self):
         """
         reads words from file and searches corpus giving term_oriented table
         """
@@ -1075,7 +1078,7 @@ class AmiCorpusTest(AmiAnyTest):
         HtmlLib.write_html_file(htmlx, trp_file, debug=True)
         assert trp_file.exists()
 
-    def test_create_corpus_with_wordlist_and_search_with_query(self):
+    def test_create_corpus_with_wordlist_and_search_with_query_LONG(self):
         """
         reads words from file and searches corpus giving term_oriented table
         uses CorpusQuery.

@@ -1341,11 +1341,13 @@ class AmiDictionary:
 
     def get_disambiguated_raw_wikidata_ids(self):
         """
+
         returns disambiguated list of (term, idlist) tuples for ambiguous raw@wikidataIDs
         iterates over all entry/raw@wikidataID attributes and disambiguates the IDs by matching
         against the entry name
         :return: list of (term, idlist) tuples if disambiguates
 
+        NOT SURE THIS WORKS or is USE
         """
         _entries = self.get_entries_with_raw_wikidata_ids()
         ami_entries = AmiEntry.create_from_elements(_entries)

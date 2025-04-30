@@ -5,11 +5,17 @@ published scholarly articles, or from authoritative sites such as UN IPCC or UNF
 
 # components and tests
 
-`amilib` is written as a set of libraries developed by test-driven-development (TDD). The main strategy is to tackle a real download/transform/analyse problem as a series of tests, and then abstract the tests into the library. The tests therefore act as a guide to functionality and simple how-tos. During development the libraries can be accessed through the command-line (`argparse`) and this is the current normal approach. (However we plan to move the main entry points for most users to `docanalysis`).
+`amilib` is written as a set of libraries developed by test-driven-development (TDD). 
+The main strategy is to tackle a real download/transform/analyse problem as a 
+series of tests, and then abstract the tests into the library. 
+The tests therefore act as a guide to functionality and simple how-tos. 
+During development the libraries can be accessed through the command-line (`argparse`) 
+and this is the current normal approach. 
+(However we plan to move the main entry points for most users to `docanalysis`).
 
 # main sub-libraries
 
-This represents functionality at 2024-12-02. There are about non-trivial 1000 methods.
+This represents functionality at 2024-12-02. There are about 1000 non-trivial methods.
 
 |Module|Function  |
 |-------|----  |

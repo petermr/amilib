@@ -935,28 +935,34 @@ class XmlLib:
             element, method=method, pretty_print=pretty_print).decode(encoding)
 
     @classmethod
-    def get_single_element(cls, element:_Element, xpath):
+    def get_single_element(cls, element:_Element, xpath, html=True):
         """
         Convenience method to avoid testing for len()
         gets a single element from xpath or returns None
-        :param element: lxml element to query
+        :param element: lxml element to query , includes lxml.html.HtmlElement
         :param xpath:
+        :param html: lxml.html.Element (default True)
         :return: single element or None
         """
+        if xpath is None:
+            logger.debug("xpath is None ")
+            return None
         if element is None:
             logger.debug("element is None")
             return None
         typex = type(element)
-        if typex != _Element and typex != _ElementTree:
-            logger.warning(f"element is not _Element, found {typex}")
-            return None
-        if xpath is None:
-            logger.debug("xpath is None ")
+        if (typex != _Element
+                and typex != _ElementTree
+                and (not html or typex != lxml.html.HtmlElement)):
+            logger.warning(f"element is not _Element, _ElementTree found {typex}")
             return None
 
         results = element.xpath(xpath)
         if len(results) == 1:
             return results[0]
+        elif len(results) > 1:
+            logger.warning(f"multiple hits for {xpath}")
+            return None
         else:
             return None
 

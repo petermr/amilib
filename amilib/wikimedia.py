@@ -875,13 +875,17 @@ class WikidataPage:
         return pred_obj_list
 
     def get_title(self):
-        """gets title (string preceeding Q/P number)
+        """
+        FRAGILE - depends on Wikipedia markup
+        gets title (string preceeding Q/P number)
         identical to label in language of browser (or only en?)
         """
         if self.root is None:
             return "No title"
         title_elem_list = self.root.xpath(
             f"/html/body/div/h1/span/span[normalize-space(@class)='wikibase-title-label']")
+        if len(title_elem_list) == 0:
+            return "No title"
         title = title_elem_list[0].text
         return title
 
@@ -1990,7 +1994,7 @@ class WiktionaryPage:
         :param term: term to search for (not sure about case sensitivity), spaces are normalised to "_"
         :return: normalised term prepended with WIKTIONARY_BASE
         """
-        logger.error(f"{term} type {type(term)}")
+        logger.error(f"{term[:100]} type {type(term)}")
         term = re.sub(r"\s+", "_", term)
         url = f"{cls.WIKTIONARY_BASE}{term}"
         # print(f"term: {term}")
@@ -2119,7 +2123,10 @@ class WiktionaryPage:
             return (None, None)
         try:
             res = requests.get(url)
-            html_element = HtmlLib.parse_html_string(res.content)
+            res_content = res.content
+            if res_content is None:
+                logger.error(f"No content for resource {url}")
+            html_element = HtmlLib.parse_html_string(res_content)
         except Exception as e:
             raise e
         if html_element is None:
@@ -2127,7 +2134,7 @@ class WiktionaryPage:
         body = HtmlLib.get_body(html_element)
         assert body is not None
         content = cls.get_content(body)
-        assert content is not None
+        assert content is not None, f"no content for {url}"
         body_content = XmlLib.get_single_element(content, "./div[@id='bodyContent']")
         assert body_content is not None
         h1_first_heading = XmlLib.get_single_element(content, ".//h1[@id='firstHeading']")
@@ -2138,11 +2145,12 @@ class WiktionaryPage:
 
     @classmethod
     def get_content(cls, body):
+
         # used to be div, now main?
         content = XmlLib.get_single_element(body, ".//*[@id='content']")
         if content is None:
-            print(ET.tostring(body, pretty_print=True))
-            pass
+            logger.error(f"no content {ET.tostring(body, pretty_print=True)[:500]}")
+            return None
         return content
 
     @classmethod
@@ -2685,7 +2693,8 @@ Contents
         :return: body
         """
         html_element, mw_content_text = WiktionaryPage.lookup_wiktionary_content(termx)
-        (toc_elem, content_elem) = WiktionaryPage.create_toc_and_main_content(language, part_of_speech, mw_content_text)
+        (toc_elem, content_elem) = WiktionaryPage.create_toc_and_main_content(
+            language, part_of_speech, mw_content_text)
         if content_elem is None:
             return None
         body = HtmlLib.get_body(htmlx) if htmlx is not None else ET.Element("body")
