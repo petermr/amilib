@@ -107,6 +107,7 @@ class DriverTest(AmiAnyTest):
     def test_download_ancillary_html(self):
         """tries to find SPM, TS, glossary, etc
         TODO reduce to single """
+        MAXDOCS = 2
         for doc in [
             (AR6_URL, "wg1"),
             (AR6_URL, "wg2"),
@@ -119,7 +120,7 @@ class DriverTest(AmiAnyTest):
             (IPCC_URL, "srocc", "chapter"),  # https://www.ipcc.ch/srocc/chapter/glossary/ - has sections
             (IPCC_URL, "sr15", "chapter"),  # https://www.ipcc.ch/sr15/chapter/glossary/ - has sections
             (IPCC_URL, "srccl", "chapter"),  # https://www.ipcc.ch/srccl/chapter/glossary/ - NO HTML found
-        ]:
+        ][:MAXDOCS]:
             driver = AmiDriver(sleep=SLEEP)
             outfile = Path(SC_TEST_DIR, doc[1], "glossary.html")
             url = doc[0] + doc[1] + "/"

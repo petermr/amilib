@@ -13,13 +13,10 @@ from lxml.etree import _Element
 from lxml.html import HTMLParser, HtmlElement
 
 from amilib.ami_bib import EUPMC_RESULTS_JSON, EUPMC_TRANSFORM
-# from amilib.ami_bib import SAVED, QUERY, STARTDATE, ENDDATE
 from amilib.ami_html import HtmlLib, HtmlUtil, Datatables
 from amilib.ami_util import AmiJson, AmiUtil
 from amilib.file_lib import FileLib
-# from amilib.ami_bib import DOI, AUTHOR_STRING, JOURNAL_INFO_TITLE, PUB_YEAR, ABS_TEXT, SAVED_CONFIG_INI, Pygetpapers
 from amilib.util import Util, TextUtil
-from test.resources import Resources
 
 DATATABLES_HTML = "datatables.html"
 SAVED_CONFIG_INI = "saved_config.ini"  # TODO cyclic import
@@ -435,8 +432,10 @@ outfile: {self.outfile}
 
         return self.datables_html
 
-    def make_infiles(self):
-        self.infiles = FileLib.posix_glob(self.globstr, recursive=True)
+    def make_infiles(self, maxfiles=999999999):
+        self.infiles = FileLib.posix_glob(self.globstr, recursive=True)[:maxfiles]
+        return self.infiles
+
 
     def make_globstr(self):
         pass
@@ -475,11 +474,12 @@ outfile: {self.outfile}
 
         return corpus_query
 
-    def search_files_with_queries(self, query_ids, debug=True):
+    def search_files_with_queries(self, query_ids: list[str], debug: bool =True) -> dict():
         """
         run queries. Assumed that queries have been loaded and recallable by id
         :param query_ids: single or list of ids
         """
+        html_by_query_id = dict()
         if type(query_ids) is str:
             query_ids = [query_ids]
         elif (t :=type(query_ids)) is not list:
@@ -497,11 +497,9 @@ outfile: {self.outfile}
             term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
             htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
             CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)
+            html_by_query_id[query_id] = htmlx
 
-            trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"xx_{query_id}_hits.html")
-            HtmlLib.write_html_file(htmlx, trp_file, debug=True)
-            assert trp_file.exists()
-
+        return html_by_query_id
             # AmiCorpus.search_files_with_phrases_write_results(self.infiles, phrases=query.phrases)
 
 TABLE_HITS_SUFFIX = "table_hits.html"

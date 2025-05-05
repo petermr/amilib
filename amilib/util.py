@@ -423,38 +423,39 @@ class Util:
             logger.debug(f"not b64: {s}")
             return False
 
-    @classmethod
-    def create_pyviz_graph(cls, incsv, anchor="anchor", target="target", outpath=None):
-        """creates network graph from CSV file
-        :param incsv: csv filename
-        :param anchor: name of anchor column (def 'anchor')
-        :param target: name of target column (def 'target')
-        :param outpath: file to draw graph to (def None)
-        uses pyvis_graph.force_atlas_2based() for layout (will give moer options later
-        """
-        import pyvis
-        try:
-            with open(str(incsv), "r") as f:
-                data = pd.read_csv(f)
-        except Exception as e:
-            logger.error(f"cannot read {incsv} because {e}")
-            return
-        anchors = cls.get_column(data, anchor, incsv)
-        targets = cls.get_column(data, target, incsv)
-        if anchors is None or targets is None:
-            logger.error(f"Cannot find anchors/targets in CSV {incsv}")
-            return None
-        pyvis_graph = pyvis.network.Network(notebook=True)
-        for a, t in zip(anchors, targets):
-            pyvis_graph.add_node(a, label=a)  # also color, size
-            pyvis_graph.add_node(t, label=t)
-            pyvis_graph.add_edge(a, t)  # also color
-        pyvis_graph.force_atlas_2based()
-        if outpath:
-            try:
-                pyvis_graph.show(str(outpath))
-            except Exception as e:
-                logger.error(f"Cannot write pyviz graph to {outpath} because {e}")
+    # removed pyvis - not used
+    # @classmethod
+    # def create_pyviz_graph(cls, incsv, anchor="anchor", target="target", outpath=None):
+    #     """creates network graph from CSV file
+    #     :param incsv: csv filename
+    #     :param anchor: name of anchor column (def 'anchor')
+    #     :param target: name of target column (def 'target')
+    #     :param outpath: file to draw graph to (def None)
+    #     uses pyvis_graph.force_atlas_2based() for layout (will give moer options later
+    #     """
+    #     import pyvis
+    #     try:
+    #         with open(str(incsv), "r") as f:
+    #             data = pd.read_csv(f)
+    #     except Exception as e:
+    #         logger.error(f"cannot read {incsv} because {e}")
+    #         return
+    #     anchors = cls.get_column(data, anchor, incsv)
+    #     targets = cls.get_column(data, target, incsv)
+    #     if anchors is None or targets is None:
+    #         logger.error(f"Cannot find anchors/targets in CSV {incsv}")
+    #         return None
+    #     pyvis_graph = pyvis.network.Network(notebook=True)
+    #     for a, t in zip(anchors, targets):
+    #         pyvis_graph.add_node(a, label=a)  # also color, size
+    #         pyvis_graph.add_node(t, label=t)
+    #         pyvis_graph.add_edge(a, t)  # also color
+    #     pyvis_graph.force_atlas_2based()
+    #     if outpath:
+    #         try:
+    #             pyvis_graph.show(str(outpath))
+    #         except Exception as e:
+    #             logger.error(f"Cannot write pyviz graph to {outpath} because {e}")
 
     @classmethod
     def get_column(cls, data, colname, csvname=None):

@@ -2,7 +2,7 @@
 ## quick instructions for experienced users
 cd
 cd workspace/amilib  # or whatever your top dir
-rm -rf dist
+rm -rf dist build amilib.egg-info
 # *** EDIT VERSION NUMBER (e.g. 0.0.2) IN setup.py AND amilib/amix.version() ***
 python setup.py sdist
 

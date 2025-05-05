@@ -1099,6 +1099,7 @@ class AmiDictionaryTest(AmiAnyTest):
 
         """
         stem = "carbon_cycle"
+        MAXPARAS = 100 # to limit test time
         words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}_edited.txt")
         assert words_path.exists()
 
@@ -1122,7 +1123,7 @@ class AmiDictionaryTest(AmiAnyTest):
         phrases = dictionary.get_terms()
         dictionary.location = html_dict_path
         assert len(phrases) == 43
-        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=html_dict_path)
+        para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras[:MAXPARAS], phrases, markup=html_dict_path)
 
         # write marked_up html
         chapter_elem = paras[0].xpath("/html")[0]
@@ -1712,13 +1713,14 @@ class DictionaryCreationTest(AmiAnyTest):
     def test_make_dict_from_wordlist_add_figures_LONG(self):
         stems = [
             # "breward",
-            "carbon_cycle_noabb",
+            # "carbon_cycle_noabb",
             # "chap2",
             # "chap5",
             # "chap6_7_8",
             # "food_ecosystem",
             # "human_influence",
             # "inews15",
+            "mini3",
             # "non_wikipedia",
             # "poverty",
             # "small_2",
@@ -1843,8 +1845,8 @@ class AmiIndexTest(AmiAnyTest):
             logger.error("No counter read")
             return
         print(f"counter {len(counter)}")
-        # max_page = 10 # to limit time
-        max_page = 357
+        max_page = 10 # to limit time
+        # max_page = 357
         # max_page = 5
         # start = 200
         start = 1

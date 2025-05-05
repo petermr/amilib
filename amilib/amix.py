@@ -424,6 +424,9 @@ class AmiLib:
         version = '0.3.11a5' # 2024-11-06 add corpus framework
         version = '0.4.1a1' # 2024-11-09 includes  datatables
         version = '0.4.2a1' # 2024-12-19 increase to Python 3.12
+        version = '0.5.1a1' # 2025-04-30 merged amiclimate,
+        version = '0.5.1a3' # 2025-04-30 merged amiclimate,
+        version = '0.5.1a4' # 2025-04-30 merged amiclimate,
         # logging.warn(f"VERSION {version}")
         return version
 

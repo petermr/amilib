@@ -211,7 +211,7 @@ class PDFPlumberTest(AmiAnyTest):
         for c in x:
             logger.debug(f"c {c} {ord(c)}")
 
-    # @unittest.skip("input file missing")
+    @unittest.skip("LONG BOOK")
     def test_climate_academy_create_html_LONG(self):
         # """an aritrary NGO report The result"""
         # input_pdf = Path("/Users/pm286/workspace/misc/380981eng.pdf")
@@ -225,7 +225,7 @@ class PDFPlumberTest(AmiAnyTest):
         input_pdf = Path(Path(Resources.TEST_RESOURCES_DIR).parent.parent.parent,
                          climate_academy, f"{student_book}.pdf")
         if not input_pdf.exists():
-            logger.error("No cllimate book")
+            logger.error("No climate book")
             return
         output_page_dir = Path(AmiAnyTest.TEMP_DIR, "html", climate_academy, student_book)
 

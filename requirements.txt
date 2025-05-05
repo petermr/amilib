@@ -4,7 +4,7 @@ idna
 graphviz~=0.20.3
 keybert
 lxml~=5.3.0
-matplotlib~=3.9.2
+~=3.9.2
 networkx~=3.4.2
 nltk~=3.9.1
 numpy~=2.2.0
@@ -14,7 +14,7 @@ pdfminer.six
 pdfplumber~=0.11.4
 Pillow~=11.0.0
 pytest~=8.3.3
-pyvis
+# pyvis
 # rake-nltk
 requests~=2.32.3
 scikit-learn~=1.5.2

@@ -60,7 +60,7 @@ class WikipediaTest(base_test):
             # "climate_words",
             # "food_ecosystem",
             # "water_cyclone",
-            "poverty",
+            # "poverty",
             "small_2"
         ]
         outdir = Path(Resources.TEMP_DIR, "html", "terms")

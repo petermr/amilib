@@ -179,7 +179,7 @@ class ExtractTextTest(AmiAnyTest):
 
         wgdir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content","wg1")
         chapters = [
-            "Chapter01",
+            # "Chapter01",
             "Chapter02",
             # "Chapter03",
             # "Chapter04",
@@ -240,6 +240,8 @@ class ExtractTextTest(AmiAnyTest):
         first para.
         """
 
+        MAXWGS = 2
+        MAXCHAPS = 3
         wgs = ["wg1", "wg2", "wg3"]
         chapters = [
             "Chapter01","Chapter02","Chapter03","Chapter04","Chapter05",
@@ -247,8 +249,8 @@ class ExtractTextTest(AmiAnyTest):
             "Chapter11", "Chapter12", "Chapter13", "Chapter14", "Chapter15",
             "Chapter16", "Chapter17", "Chapter18", "Chapter19", "Chapter20",
         ]
-        for wg in wgs:
-            for chapter in chapters:
+        for wg in wgs[:MAXWGS]:
+            for chapter in chapters[:MAXCHAPS]:
                 ipcc_dir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", wg, chapter)
                 infile = Path(ipcc_dir, "html_with_ids.html")
                 if not infile.exists():

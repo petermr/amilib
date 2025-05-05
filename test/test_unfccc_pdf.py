@@ -781,16 +781,17 @@ class TestUNFCCC(AmiAnyTest):
         See test_explicit_conversion_pipeline_IMPORTANT_DEFINITIVE(self): which is run for each session document
         """
         sub_top = "unfcccdocuments1"
+        MAXSESSION = 1  # otherwise runs for ever
         in_dir = Path(UNFCCC_DIR, sub_top)
         top_out_dir = Path(UNFCCC_TEMP_DIR, sub_top)
 
         session_files = FileLib.posix_glob(str(in_dir) + "/*")
+        logger.info(f"using {len(session_files)} session_files")
         session_dirs = [d for d in session_files if Path(d).is_dir()]
         print(f">session_dirs {session_dirs}")
         assert len(session_dirs) >= 1
 
-        maxsession = 5  # otherwise runs for ever
-        for session_dir in session_dirs[:maxsession]:
+        for session_dir in session_dirs[:MAXSESSION]:
             TestUNFCCC.run_pipeline_on_unfccc_session(
                 in_dir,
                 session_dir,

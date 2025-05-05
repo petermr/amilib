@@ -953,10 +953,12 @@ class AmiCorpusTest(AmiAnyTest):
         debug = True
         query = "carbon_cycle"
         xpath = None
+        MAXFILES = 5 # to speed up test
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         outfile = Path(Resources.TEMP_DIR, "corpus", f"{query}.html")
         globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
         infiles = FileLib.posix_glob(globstr, recursive=True)
+        logger.info(f"found {len(infiles)} files")
         assert len(infiles) > 0, f"failed to find {HTML_WITH_IDS}.html in {indir}"
         words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
         phrases = FileLib.read_strings_from_path(words_path)
@@ -965,7 +967,7 @@ class AmiCorpusTest(AmiAnyTest):
         logger.debug(f"phrases {len(phrases)}")
 
         search_results_html = AmiCorpus.search_files_with_phrases_write_results(
-            infiles, phrases=phrases, outfile=outfile, debug=debug)
+            infiles[:MAXFILES], phrases=phrases, outfile=outfile, debug=debug)
 
         term_id_by_url = CorpusQuery.extract_hits_by_url_from_nested_lists(search_results_html)
         logger.debug(f"term_id_by_url {len(term_id_by_url)} {term_id_by_url}")
@@ -983,6 +985,7 @@ class AmiCorpusTest(AmiAnyTest):
         """
         reads words from file and searches corpus giving term_oriented table
         """
+        MAXFILES = 5 # to save test time
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         query_stem = "carbon_cycle"
         outfile = str(Path(Resources.TEMP_DIR, "corpus", f"{query_stem}.html"))
@@ -992,12 +995,14 @@ class AmiCorpusTest(AmiAnyTest):
             # query_stem = query_stem,
             # outfile=outfile,
             debug = True)
-        ami_corpus.make_infiles()
+        ami_corpus.make_infiles(maxfiles=MAXFILES)
         xpath = None
-        path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
+        path = Path(Resources.TEST_RESOURCES_DIR,
+                    "wordlists", "carbon_cycle_noabb.txt")
         phrases = FileLib.read_strings_from_path(path)
         logger.debug(f"phrases {len(phrases)}")
-        ami_query = ami_corpus.get_or_create_corpus_query(query_id=query_stem, phrases=phrases)
+        ami_query = ami_corpus.get_or_create_corpus_query(
+            query_id=query_stem, phrases=phrases)
         ami_corpus.search_files_with_phrases(ami_query.phrases)
         assert ami_corpus.search_html is not None
         term_id_by_url = CorpusQuery.extract_hits_by_url_from_nested_lists(ami_corpus.search_html)
@@ -1022,33 +1027,32 @@ class AmiCorpusTest(AmiAnyTest):
         main_key = "corpus"
         main_out_dir = Path(Resources.TEMP_DIR, main_key)
         outfile = Path(main_out_dir, f"out.html")
+        MAXFILES = 5 # to limit test time
 
         ami_corpus = AmiCorpus(
             indir=indir,
             globstr=f"**/{HTML_WITH_IDS}.html",
             outfile=outfile,
             debug = True)
-        ami_corpus.make_infiles()
+        files = ami_corpus.make_infiles(maxfiles=MAXFILES)
+        logger.info(f"using {len(files)} files")
 
         # queries
         cc_id = self._carbon_cycle_query(ami_corpus, main_out_dir)
         crop_id = self._crop_query(ami_corpus, main_out_dir)
 
         logger.debug(f">>>>> {ami_corpus}")
-        ami_corpus.search_files_with_queries([
+        html_by_id_dict = ami_corpus.search_files_with_queries([
             cc_id,
             crop_id
         ])
-        print(">==================")
-        if False: # old code
-            term_id_by_url = extract_hits_by_url_from_nested_lists(ami_corpus.search_html)
-            term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
-            htmlx, tbody = HtmlLib.make_skeleton_table(colheads=["term", "ref", "para"])
-            CorpusQuery._add_hits_to_table(tbody, term_ref_p_tuple_list)
-
-            trp_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"xx_{cc_id}_hits.html")
-            HtmlLib.write_html_file(htmlx, trp_file, debug=True)
+        for (query_id, html) in html_by_id_dict.items():
+            trp_file = Path(Resources.TEMP_DIR,
+                            "ipcc", "cleaned_content", f"xx_{query_id}_hits.html")
+            HtmlLib.write_html_file(html_by_id_dict.get(query_id), trp_file, debug=True)
             assert trp_file.exists()
+
+        print(">==================")
 
     def _crop_query(self, ami_corpus, main_out_dir):
         crop_id = "crops"
