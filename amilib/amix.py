@@ -427,7 +427,10 @@ class AmiLib:
         version = '0.5.1a1' # 2025-04-30 merged amiclimate,
         version = '0.5.1a3' # 2025-04-30 merged amiclimate,
         version = '0.5.1a4' # 2025-04-30 merged amiclimate,
-        # logging.warn(f"VERSION {version}")
+        version = '0.5.1'   # 2025-04-30 merged pmr_aug,
+        version = '0.5.2'   # 2025-04-30 edited setup
+        version = '0.5.3'   # 2025-04-30 edited setup to avoid install bug
+        # logging.warning(f"VERSION {version}")
         return version
 
 
@@ -447,7 +450,7 @@ class AmiLibArgs(AbstractArgs):
 
     @abstractmethod
     def add_arguments(self):
-        logger.warn("add arguments")
+        logger.warning("add arguments")
 
         if self.parser is None:
             self.parser = argparse.ArgumentParser()

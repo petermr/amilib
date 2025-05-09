@@ -1520,7 +1520,7 @@ class JATSTest(AmiAnyTest):
                 logger.info(f"secs {len(secs)} {sectype_list} ; "
                             f"non_secs {len(non_secs)} {non_sec_list}")
             else:
-                logger.warn(f"no secs")
+                logger.warning(f"no secs")
 
 
 

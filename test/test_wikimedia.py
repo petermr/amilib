@@ -574,8 +574,9 @@ THIS SEEMS TO BE THE BEST
         img_elems = a_elem.xpath("img")
         assert len(img_elems) > 0
         # these URLs and their content are fragile
-        assert XmlLib.element_to_string(img_elems[0]) == \
-            '<img alt="Map of the Bay of Bengal" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/330px-Bay_of_Bengal_map.png" decoding="async" width="264" height="269" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/500px-Bay_of_Bengal_map.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/960px-Bay_of_Bengal_map.png 2x" data-file-width="1000" data-file-height="1019"/>\n'
+        assert "Bay_of_Bengal_map.png" in XmlLib.element_to_string(img_elems[0])
+        # assert XmlLib.element_to_string(img_elems[0]) == \
+        #     '<img alt="Map of the Bay of Bengal" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/330px-Bay_of_Bengal_map.png" decoding="async" width="264" height="269" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/500px-Bay_of_Bengal_map.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bay_of_Bengal_map.png/960px-Bay_of_Bengal_map.png 2x" data-file-width="1000" data-file-height="1019"/>\n'
 
     def test_clean_disambiguation_page(self):
         """

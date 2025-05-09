@@ -8,19 +8,11 @@ from nltk.corpus import stopwords
 import numpy as np
 import pandas as pd
 
-# from scikit-learn import manifold
-# from scikit-learn.cluster import AgglomerativeClustering, KMeans
-# from scikit-learn.feature_extraction.text import TfidfVectorizer
-# from scikit-learn.metrics.pairwise import cosine_similarity
-
 from sklearn import manifold
 from sklearn.cluster import AgglomerativeClustering, KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# from rake_nltk import Rake
-
-from amilib.file_lib import FileLib
 from amilib.util import Util
 
 logger = Util.get_logger(__name__)
@@ -42,7 +34,6 @@ class AmiNLP:
     def __init__(self):
         self.stemmer = nltk.stem.porter.PorterStemmer()
         self.remove_punctuation_map = dict((ord(char), None) for char in string.punctuation)
-        stop_words = N_ENGLISH
         stop_words = stopwords.words('english')
 
         stop_words.extend(
@@ -134,9 +125,6 @@ class AmiNLP:
 
         distance_matrix, similarity_matrix = self.create_distance_and_similarity_matrices(texts)
         self.calculate_and_display_agglom_clustering(distance_matrix, texts, ncases=50, n_clusters=n_clusters)
-
-        # kmeans cannot use distance matric whatever GPT says
-        # self.calculate_kmeans_and_display_cgpt_junk(distance_matrix, n_clusters, random_state, texts)
 
     def calculate_and_display_agglom_clustering(self, distance_matrix, texts, ncases=99999, n_clusters=10, distance_threshold=None):
         # Perform clustering using nearest neighbors

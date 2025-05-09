@@ -473,31 +473,6 @@ class DriverTest(AmiAnyTest):
                 print(f"ENDED")
 
 
-# def test_plot_mentions(self):
-#
-#     from pyvis.network import Network
-#     import networkx as nx
-#     nx_graph = nx.cycle_graph(10)
-#     nx_graph.nodes[1]['title'] = 'Number 1'
-#     nx_graph.nodes[1]['group'] = 1
-#     nx_graph.nodes[3]['title'] = 'I belong to a different group!'
-#     nx_graph.nodes[3]['group'] = 10
-#     nx_graph.add_node(20, size=20, title='couple', group=2)
-#     nx_graph.add_node(21, size=15, title='couple', group=2)
-#     nx_graph.add_edge(20, 21, weight=5)
-#     nx_graph.add_node(25, size=25, label='lonely', title='lonely node', group=3)
-#     nt = Network('500px', '500px')
-#     # populates the nodes and edges data structures
-#     nt.from_nx(nx_graph)
-#     nt.show('nx.html')
-
-
-# cleaned_ipcc_graph = pd.read_csv(str(Path(TOTAL_GLOSS_DIR, "mentions.csv")))
-#
-# # cleaned_ipcc_graph = cleaning_nan(mention_df, ['source', 'package','target', 'section'])
-# ipcc_graph_with_coloured_nodes = get_package_names(cleaned_ipcc_graph, "package.json")
-# ipcc_graph_with_coloured_nodes.to_csv('coloured.csv')
-# make_graph(ipcc_graph_with_coloured_nodes, source='source', target='target', colour ='node_colour')
 
 class Utils1Test:
 

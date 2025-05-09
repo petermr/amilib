@@ -1,18 +1,11 @@
 """
 tests networks and graphs
 """
-import json
 from pathlib import Path
-import re
-
-import graphviz
-import networkx as nx
 
 from amilib.ami_graph import AmiGraph
 from amilib.ami_html import HtmlLib, HtmlEditor
-from amilib.file_lib import FileLib
 from amilib.util import Util
-from amilib.xml_lib import XmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 

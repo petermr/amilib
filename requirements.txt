@@ -1,27 +1,26 @@
-chardet~=5.2.0
-idna
+chardet
+# idna
 # geopy
-graphviz~=0.20.3
+graphviz
 keybert
-lxml~=5.3.0
-~=3.9.2
-networkx~=3.4.2
-nltk~=3.9.1
-numpy~=2.2.0
-packaging
-pandas~=2.2.3
-pdfminer.six
-pdfplumber~=0.11.4
-Pillow~=11.0.0
-pytest~=8.3.3
+lxml
+networkx  # only used in AmiGraph and that is questionable
+nltk
+numpy
+# packaging
+pandas
+# pdfminer.six
+pdfplumber
+# Pillow
+pytest
 # pyvis
 # rake-nltk
-requests~=2.32.3
-scikit-learn~=1.5.2
-selenium~=4.25.0
-setuptools~=75.8.0
-SPARQLWrapper~=2.0.0
-tinycss
-tkinterweb
+requests
+scikit-learn
+selenium
+# setuptools
+SPARQLWrapper
+# tinycss
+# tkinterweb
 webdriver-manager
 # yake

@@ -433,7 +433,7 @@ class JATSDoc:
     def get_article_component(self, jats_doc_component):
         self.get_article()
         if self.article is None:
-            logger.warn(f"no self.article")
+            logger.warning(f"no self.article")
         component = XmlLib.get_single_element(
             element=self.article, xpath=f"./*[local-name()='{jats_doc_component}']")
         return component
@@ -476,7 +476,7 @@ class JATSDoc:
         """
         self.body = self.get_body()
         if self.body is None:
-            logger.warn(f"no body")
+            logger.warning(f"no body")
         else:
             self.body_secs = self.body.xpath(f"*[local-name()='{JATSDoc.SEC}']")
             self.body_non_secs = self.body.xpath(f"*[local-name()!='{JATSDoc.SEC}']")

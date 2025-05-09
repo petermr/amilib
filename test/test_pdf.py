@@ -611,7 +611,23 @@ class PDFTest(AmiAnyTest):
             chapter_dict=chapter_dict,
             outdir=Path(AmiAnyTest.TEMP_HTML_IPCC, "wg2", "chapter03"),
             unwanteds=None
-        ).convert_write()  # refactor, please
+        ).convert_write()
+
+    @unittest.skip("too complex to install")
+    def test_docling(self):
+        """explore docling for PDF
+        """
+        import docling
+        print("imported docling")
+        from docling.document_converter import DocumentConverter
+        source = "https://arxiv.org/pdf/2408.09869"
+        source = Path(Resources.TEST_RESOURCES_DIR, "pdf", "1758-2946-3-44.pdf")
+        assert source.exists()
+        converter = DocumentConverter()
+        result = converter.convert(source)
+        print(result.document.export_to_markdown())
+        # output: ## Docling Technical Report [...]"
+        # refactor, please
 
 
 class PDFChapterTest(test.test_all.AmiAnyTest):

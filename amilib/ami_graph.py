@@ -16,7 +16,7 @@ from test.resources import Resources
 
 class AmiGraph:
     """
-    grahs can be nested?
+    How valuable is this?
     """
 
     def __init__(self):
@@ -77,16 +77,16 @@ class AmiGraph:
         return self.graph
 
 
-        def add_ids_to_nodes(html_elem):
-            li_nodes = html_elem.findall(".//li")
-            for i, li_node in enumerate(li_nodes):
-                li_node.attrib["id"] = f"li_{i}"
-            print(f"li nodes {len(li_nodes)}")
-            ul_nodes = html_elem.findall(".//ul")
-            for i, ul_node in enumerate(ul_nodes):
-                ul_node.attrib["id"] = f"ul_{i}"
-            print(f"ul nodes {len(ul_nodes)}")
-
+    # def add_ids_to_nodes(html_elem):
+    #    never used???
+    #     li_nodes = html_elem.findall(".//li")
+    #     for i, li_node in enumerate(li_nodes):
+    #         li_node.attrib["id"] = f"li_{i}"
+    #     print(f"li nodes {len(li_nodes)}")
+    #     ul_nodes = html_elem.findall(".//ul")
+    #     for i, ul_node in enumerate(ul_nodes):
+    #         ul_node.attrib["id"] = f"ul_{i}"
+    #     print(f"ul nodes {len(ul_nodes)}")
 
     def add_nodes_to_network(self, ul):
         print(f"add_nodes {ul} {ul.attrib.get('id')}")

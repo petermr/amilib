@@ -1641,7 +1641,7 @@ class HtmlLib:
         start_ = text[0:match.start()]
         mid_ = text[match.start():match.end()]
         if len(mid_.strip()) == 0:
-            logger.warn("empty text {text}")
+            logger.warning("empty text {text}")
         end_ = text[match.end():]
 
         # might be a text (contained within lead) or tail following it
@@ -4512,7 +4512,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
         """
         styles = html.xpath(f"/html/head/style[contains(.,'.{clazz} ')]")
         if len(styles) == 0:
-            logger.warn(f"no styles for {clazz}")
+            logger.warning(f"no styles for {clazz}")
             return None
         head_style = styles[0]
         _, css_style = CSSStyle.create_css_style_from_html_head_style_elem(head_style)
@@ -4566,7 +4566,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             clazz = elem.attrib["class"]
             new_class = style_converter.get(clazz)
             if new_class is None:
-                logger.warn(f"cannot find replace for {clazz}")
+                logger.warning(f"cannot find replace for {clazz}")
                 continue
             html_class = HtmlClass(clazz)
             html_class.replace_class(clazz, new_class)
@@ -5133,7 +5133,7 @@ class URLCache:
                 html_elem = XmlLib.read_xml_element_from_github(github_url=github_url)
                 time.sleep(delay)
             except Exception as e:
-                logger.warn(f"cannot read {github_url} because {e}")
+                logger.warning(f"cannot read {github_url} because {e}")
                 return None
             self.url_dict[github_url] = html_elem
         else:
@@ -6256,7 +6256,7 @@ class SectionHierarchy:
             try:
                 parent_dict.pop(pop)  # remove non-numeric item
             except:
-                logger.warn("Cannot pop {pop}")
+                logger.warning("Cannot pop {pop}")
 
         root = Element(self.SECT)
         root.attrib[self.ID] = "4"
