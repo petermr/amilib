@@ -9,7 +9,7 @@ published scholarly articles, or from authoritative sites such as UN IPCC or UNF
 
 # main sub-libraries
 
-This represents functionality at 2024-12-02. There are about non-trivial 1000 methods.
+This represents functionality at 2024-12-02. There are about 1000 non-trivial methods.
 
 |Module|Function  |
 |-------|----  |
