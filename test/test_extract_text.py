@@ -1,6 +1,7 @@
+import logging
 import os
 import unittest
-from collections import Counter
+from collections import Counter, defaultdict
 import csv
 from pathlib import Path
 import lxml.etree as ET
@@ -25,13 +26,17 @@ class ExtractTextTest(AmiAnyTest):
         """
         read a chapter of slides (we don't have chaps 2-8)
         """
-        print(pdfplumber.__version__)
-        maxpage = 1
-        chapnos = range(1, maxpage + 1)
+        save_level = logger.level
+        logger.setLevel(logging.INFO)
+        print(f"pdfplumber: {pdfplumber.__version__}")
+        maxchap = 1 # (there are 8 in all, this is for speed)
+        chapnos = range(1, maxchap + 1)
+        chapters_by_chapnos = defaultdict(list)
         for chapno in chapnos:
             infile = Path(Resources.TEST_RESOURCES_DIR, "pdf", f"breward_{chapno}.pdf")
             print(f"======= {chapno} ========")
             pdf = pdfplumber.open(infile)
+            lines_by_page = defaultdict(list)
             for pageno, page in enumerate(pdf.pages):
                 # text = page.extract_text()
                 lines = page.extract_text_lines()
@@ -43,10 +48,13 @@ class ExtractTextTest(AmiAnyTest):
 
                 print("")
                 for line in lines:
-                    print(f"page {pageno} line {line['text']}")
-                    pass
-
-
+                    text_ = line['text']
+                    # print(f"page {pageno} line {text_}")
+                    lines_by_page[pageno].append(text_)
+            logger.info(f"lines by page {lines_by_page}")
+            chapters_by_chapnos[chapnos].append(lines_by_page)
+            logger.info(f"chapters: {chapters_by_chapnos}")
+        logger.setLevel(save_level)
 
     def test_keybert_breward_1(self):
         """
@@ -148,7 +156,7 @@ class ExtractTextTest(AmiAnyTest):
             chunks = html.xpath(chunk_xpath)
             # logger.info(f"chunks {chunk_xpath} => {len(chunks)}")
             if chunks is None or len(chunks) == 0:
-                logger.warn(f"no chunks for {chunk_xpath}")
+                logger.warning(f"no chunks for {chunk_xpath}")
                 continue
             # logger.info(f"chunking {file}")
             chunks_by_file[file] = chunks
@@ -203,8 +211,10 @@ class ExtractTextTest(AmiAnyTest):
         logger.info(f"all words {all_words.most_common()}")
         marked_dir = Path(wgdir, "marked")
         FileLib.force_mkdir(marked_dir)
-        with open(Path(marked_dir, "keywords.txt"), "w") as f:
+        outpath = Path(marked_dir, "keywords.txt")
+        with open(outpath, "w") as f:
             f.write(str(all_words))
+        assert outpath.exists(), f"{outpath} should exist"
 
     def test_extract_title_id_para_from_ipcc_syr(self):
         """
@@ -271,6 +281,15 @@ class ExtractTextTest(AmiAnyTest):
                     wg=wg,
                     chap=f"ch{chapter[-2:]}"
                 )
+                assert csvout.exists(), f"csvout {csvout} should exist"
+                # test it's a CSV file
+                expected_rows = 500 # this is fragile not sure why
+                with open (csvout, "r") as csvf:
+                    csvreader = csv.reader(csvf)
+                    rows = [row for row in csvreader]
+                    nrows = len(rows)
+                    assert nrows >= expected_rows, f"found {nrows}"
+
 
     # -------------------------------------------------
 
@@ -323,13 +342,13 @@ class MiscLib:
             logger.info(f"no text for {pid}")
             return
         text_ = "".join(p_text)
-        if text_ is None or len(text_) == 0:
-            logger.info(f"empty text for {pid}")
-            return
         if pid:
             full_pid = f"{wg}_{chap}_{pid}"
-            logger.info(f"{chap}:{full_pid}")
+            # logger.info(f"{chap}:{full_pid}")
             # print(f"{pid}: [{title}] {text_}")
+            if text_ is None or len(text_) == 0:
+                logger.info(f"empty text for {pid}")
+                return
             row = [full_pid, div_title, text_]
             csvwriter.writerow(row)
 

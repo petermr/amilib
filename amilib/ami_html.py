@@ -3001,7 +3001,7 @@ class HtmlEditor:
 
 
 
-    def read_html(self, inpath: Path | str) -> _Element:
+    def read_html(self, inpath) -> _Element:
         """
         parse html
         fails if file does not exist or not parsable HTML

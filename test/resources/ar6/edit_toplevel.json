@@ -28,14 +28,11 @@
     "xpath":  "//div[@class='nav2']"}
   },
   {"delete": {
-    "xpath":  "//div[count(*)=0]"}
+    "xpath":  "//div[count(*)=0]"},
+    "comment": "empty divs"
   },
   {"delete": {
     "xpath":  "//div[img]"}
-  },
-  {
-    "delete": {
-      "xpath": "//div[count(*)=0]"}
   },
   {
     "style":

@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dictionary title="climate_words">
+  <entry name="UNFCCC" term="UNFCCC"/>
+  <entry name="greenhouse gas" term="greenhouse gas"/>
+  <entry name="carbon dioxide removal" term="carbon dioxide removal"/>
+  <entry name="cop_26" term="COP26"/>
+  <entry name="AMOC" term="AMOC"/>
+  <entry name="SIDS" term="SIDS"/>
+  <entry name="LULUCF" term="LULUCF"/>
+  <entry name="radiative forcing" term="radiative forcing"/>
+  <entry name="methane" term="methane"/>
+  <entry name="antimicrobial resistance" term="antimicrobial resistance"/>
+  <entry name="Paleoclimate" term="Paleoclimate"/>
+  <entry name="Spatial hotspot" term="Spatial hotspot"/>
+  <entry name="permafrost" term="permafrost"/>
+</dictionary>

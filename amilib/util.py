@@ -198,7 +198,9 @@ class Util:
         sys.argv.extend(args)
 
     @classmethod
-    def create_name_value(cls, arg: str, delim: str = "=") -> tuple | None:
+    # def create_name_value(cls, arg: str, delim: str = "=") -> tuple | None:
+    def create_name_value(cls, arg: str, delim: str = "="):
+
         """create name-value from argument
         if arg is simple string, set value to True
         if arg contains delimeter (e.g. "=") split at that

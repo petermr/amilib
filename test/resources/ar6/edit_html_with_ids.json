@@ -1,0 +1,32 @@
+{
+  "commands": [
+    {
+      "delete": {
+        "xpath": [
+          "//noscript",
+          "//meta[@data-react-helmet]",
+          "//span[count(*)=0 and not(text())]"
+        ]
+      }
+    },
+    {
+      "delete": {
+        "xpath": "//script",
+        "debug": "true"
+      }
+    },
+    {
+      "delete": {
+        "xpath": "//a[@href]",
+        "debug": "true"
+      }
+    },
+    {
+      "edit": {
+        "xpath": "//",
+        "debug": "true"
+      }
+    }
+
+  ]
+}
