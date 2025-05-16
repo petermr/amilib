@@ -55,7 +55,7 @@ force = True
 logger = Util.get_logger(__name__)
 
 # force = True # uncomment to run tests with this keyword
-@unittest.skipUnless(AmiAnyTest.IS_PMR, "headless browsing still giving intermittent problems that PMR has to solve")
+# @unittest.skipUnless(AmiAnyTest.IS_PMR, "headless browsing still giving intermittent problems that PMR has to solve")
 class DriverTest(AmiAnyTest):
     """ Currently 8 minutes"""
     """
