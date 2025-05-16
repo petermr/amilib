@@ -1,0 +1,28 @@
+{"commands": [
+  {"delete":
+	  {"xpath":
+		  [
+            ".//div[contains(@class,'gx-3') and contains(@class,'gy-5') and contains(@class,'ps-2')]",
+            ".//*[@id='___gatsby']",
+            ".//*[@id='gatsby-focus-wrapper']/div",
+            ".//*[@id='gatsby-focus-wrapper']",
+            ".//*[@id='footnote-tooltip']",
+            ".//div[contains(@class,'s9-widget-wrapper') and contains(@class,'mt-3') and contains(@class,'mb-3')]",
+            ".//div[contains(@class,'chapter-figures')]",
+            ".//header/div/div/div/div",
+            ".//header/div/div/div",
+            ".//header/div/div",
+            ".//header/div",
+            ".//section[contains(@class,'mb-5') and contains(@class, 'mt-5')]",
+            ".//div[contains(@class,'container') and contains(@class, 'chapters') and contains(@class, 'chapter-')]",
+            ".//*[contains(@id, 'footnote-tooltip-text')]",
+            ".//div[@id='chapter-figures']/div/div/div/div",
+            ".//div[@id='chapter-figures']/div/div/div",
+            ".//div[@id='chapter-figures']/div/div",
+            ".//div[@id='chapter-figures']/div",
+            ".//div[@id='chapter-figures']//div[@class='row']"
+          ]
+       }
+     }
+   ]
+}

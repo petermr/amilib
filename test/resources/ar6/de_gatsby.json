@@ -1,0 +1,29 @@
+{"commands": [
+  {"delete":
+	  {"xpath":
+		  [
+            "//noscript",
+            "//meta",
+            "//iframe",
+            "//script",
+            "//style",
+            "//link",
+            "//div[not(*) and not(text())]",
+            "//footer",
+            "//span[@class='arrow-up' or @class='arrow-down' or @class='share-block']",
+            "//div[@class='ch-figure-button-cont'",
+            "//div[h3='Explore more']",
+            "//div[a[button[span='Read more']]]",
+            "//div[nav]",
+            "//button[.='Expand section']",
+            "//div[@class='ref-tooltip' or @class='share-tooltip']",
+            "//div[@id='section-tooltip']",
+            "//div[div[@class='dropdown']]",
+            "//button[span='View']",
+            "//div[a[button='Open figure']]"
+
+          ]
+       }
+     }
+   ]
+}

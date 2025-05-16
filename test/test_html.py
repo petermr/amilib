@@ -2565,3 +2565,24 @@ class HtmlEditorTest(AmiAnyTest):
         outpath = Path(OUT_WG, "edited_toplevel.html")
         HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
 
+    def test_de_gatsby_with_commands(self):
+        """
+        use HtmlEditor commands to remove gatsby markup
+        """
+        inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc",
+                        "cleaned_content", "wg2", "CrossChapters", "ccp5", "gatsby_raw.html")
+        assert inpath.exists()
+        editor = HtmlEditor()
+        editor.read_html(inpath)
+        json_path = Path(Resources.TEST_RESOURCES_DIR, "ar6", "de_gatsby.json")
+        assert json_path.exists()
+        logger.info(f"json commands {json_path}")
+        editor.read_commands(json_path)
+        editor.execute_commands()
+
+        outpath = Path(Resources.TEMP_DIR, "ipcc", "wg2", "CrossChapters",
+                       "ccp5", "de_gatsby.html")
+        HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+
+
+
