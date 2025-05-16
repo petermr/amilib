@@ -50,6 +50,7 @@ EXPAND_SECTION_PARAS = [
 
 run_test = False
 force = False
+force = True
 
 logger = Util.get_logger(__name__)
 
@@ -471,6 +472,47 @@ class DriverTest(AmiAnyTest):
                     csvwriter.writerow(out_row)
 
                 print(f"ENDED")
+
+    def test_download_wg2_cross_chapters(self):
+        """
+        Some reports (such as wg2) contain cross chapters and this tests whether
+        we can download them
+        """
+        """https://www.ipcc.ch/report/ar6/wg2/chapter/ccp1/"""
+
+        CHAP_PREF = "Chapter"
+        wg = 2
+        logger.debug(f"wg = {wg}")
+        wg_url = AR6_URL + f"wg{wg}/"
+        logger.info(f"downloading from {wg_url}")
+        for ccp in range(1, 8): # chapters 1-7
+            ccp = str(ccp)
+            driver = AmiDriver(sleep=SLEEP)
+            ch_url = wg_url + f"chapter/ccp{ccp}/"
+            logger.debug(f"downloading {ch_url}")
+
+            outfile = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "raw.html")
+            # outfile_clean = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "clean.html")
+            outfile_figs = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "figs.html")
+            wg_dict = {
+                f"wg{wg}_ch":
+                    {
+                        URL: ch_url,
+                        XPATH: None,  # no expansiom
+                        OUTFILE: outfile
+                    },
+            }
+            AmiDriver().run_from_dict(outfile, wg_dict, keys=wg_dict.keys())
+            htmlx = HtmlLib.create_html_with_empty_head_body()
+            # create a new div to receive the driver output
+            div = ET.SubElement(HtmlLib.get_body(htmlx), "div")
+            outxml = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", str(wg), "CrossChapters", ccp, "raw.xml")
+            # remove some clutter
+            if driver.lxml_root_elem is not None:
+                XmlLib.write_xml(driver.lxml_root_elem, outxml)
+                assert outxml.exists()
+
+            driver.quit()
 
 
 # def test_plot_mentions(self):
