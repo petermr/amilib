@@ -19,6 +19,7 @@ class AmixTest(unittest.TestCase):
         logger.error("ERROR")
         logger.fatal("FATAL!!")
 
+    @unittest.skip("only works on PMR machine")
     def test_logger(self):
         """
         logger outputs 2 messages (2024-09-16) - this is to debug it

@@ -2545,6 +2545,24 @@ class AnnotateTest(AmiAnyTest):
             logger.debug(f"A {a_elem=}")
 
 class HtmlEditorTest(AmiAnyTest):
+
+    def test_create_element(self):
+        editor = HtmlEditor(create_skeleton=True)
+        editor.add_element("//body", "div")
+        assert ET.tostring(editor.html) == b'<html><head/><body><div/></body></html>'
+
+    def test_create_element_and_add_text_and_attributes(self):
+        """
+        create a div with a[@href]
+        """
+        editor = HtmlEditor(create_skeleton=True)
+
+        editor.add_element("//body", "a", text="text", attrs={"href":"_blank", "title": "href",})
+
+        assert ET.tostring(editor.html) == \
+            b'<html><head/><body><a href="_blank" title="href">text</a></body></html>'
+
+
     def test_execute_commands(self):
         editor = HtmlEditor()
         wg = "wg1"
@@ -2563,7 +2581,7 @@ class HtmlEditorTest(AmiAnyTest):
         editor.execute_commands()
 
         outpath = Path(OUT_WG, "edited_toplevel.html")
-        HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+        HtmlLib.write_html_file(editor.html, outpath, debug=True)
 
     def test_de_gatsby_with_commands(self):
         """
@@ -2582,7 +2600,120 @@ class HtmlEditorTest(AmiAnyTest):
 
         outpath = Path(Resources.TEMP_DIR, "ipcc", "wg2", "CrossChapters",
                        "ccp5", "de_gatsby.html")
-        HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+        HtmlLib.write_html_file(editor.html, outpath, debug=True)
 
+    def test_clean_de_gatsby_with_commands(self):
+        """
+        cleans html with unnecessary divs
+        """
+        inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "CrossChapters",
+                       "ccp5", "de_gatsby.html")
+        assert inpath.exists()
+        editor = HtmlEditor()
+        editor.read_html(inpath)
+        json_path = Path(Resources.TEST_RESOURCES_DIR, "ar6", "de_gatsby1.json")
+        assert json_path.exists()
+        editor.read_commands(json_path)
+        editor.execute_commands()
+
+        outpath = Path(Resources.TEMP_DIR, "ipcc", "wg2", "CrossChapters",
+                       "ccp5", "de_gatsby.html")
+        HtmlLib.write_html_file(editor.html, outpath, debug=True)
+        assert outpath.exists()
+
+    def test_remove_single_child_divs_in_hierarchy_div3(self):
+        """
+        remove divs with single child elements in branched structure
+        """
+        editor = self._create_div3()
+        assert (ss := ET.tostring(editor.html)) == b'<html><head/><body><div id="d1"><div id="d2"><div id="d3"/></div></div></body></html>'
+        assert len(HtmlLib.find_single_child_divs(editor.html)) == 2
+        removed = editor.remove_single_child_divs_in_hierarchy()
+        assert removed == 2
+        # try to recurse but no further possibility
+        assert len(HtmlLib.find_single_child_divs(editor.html)) == 0
+        assert ET.tostring(editor.html) == b'<html><head/><body><div id="d3"/></body></html>'
+        removed = editor.remove_single_child_divs_in_hierarchy()
+        assert removed == 0
+        assert ET.tostring(editor.html) == b'<html><head/><body><div id="d3"/></body></html>'
+
+    def test_remove_single_child_divs_in_hierarchy_div3_branch(self):
+        """
+        remove div with single child elements
+        (D(D(D,D),D(D)))
+        """
+        editor = self._create_div3_branch()
+        # assert ET.tostring(editor.html) == (
+        assert editor.to_bytes() == (
+           b'<html>'
+              b'<head/>'
+              b'<body>'
+                b'<div id="d1">'
+                  b'<div id="d1.1">'
+                    b'<div id="d1.1.1"/>'
+                    b'<div id="d1.1.2"/>'
+                  b'</div>'
+                  b'<div id="d1.2">'
+                    b'<div id="d1.2.1"/>'
+                  b'</div>'
+                b'</div>'
+              b'</body>'
+            b'</html>')
+        # removed = HtmlLib.remove_single_child_divs_in_hierarchy(editor.html)
+        removed = editor.remove_single_child_divs_in_hierarchy()
+        assert removed == 1
+        # try to recurse but no further possibility
+        assert len(HtmlLib.find_single_child_divs(editor.html)) == 0
+        assert ET.tostring(editor.html) == (
+            b'<html>'
+              b'<head/>'
+              b'<body>'
+                b'<div id="d1">'
+                  b'<div id="d1.1">'
+                    b'<div id="d1.1.1"/>'
+                    b'<div id="d1.1.2"/>'
+                  b'</div>'
+                  b'<div id="d1.2.1"/>'
+                b'</div>'
+              b'</body>'
+            b'</html>')
+        removed = HtmlLib.remove_single_child_divs_in_hierarchy(editor.html)
+        assert removed == 0
+        assert ET.tostring(editor.html) == (
+            b'<html>'
+              b'<head/>'
+              b'<body>'
+                b'<div id="d1">'
+                  b'<div id="d1.1">'
+                    b'<div id="d1.1.1"/>'
+                    b'<div id="d1.1.2"/>'
+                  b'</div>'
+                  b'<div id="d1.2.1"/>'
+                b'</div>'
+              b'</body>'
+            b'</html>')
+
+    def _create_div3(self):
+        """html for test
+        hierarchy of 3 divs
+        """
+        editor = HtmlEditor()
+        editor.add_element("//body", "div", attrs={'id': 'd1', })
+        editor.add_element("//body/div", "div", attrs={'id': 'd2', })
+        editor.add_element("//body/div/div", "div", attrs={'id': 'd3', })
+        return editor
+
+    def _create_div3_branch(self):
+        """html for test
+        hierarchy of 3 levels, branches at level 2
+        """
+        editor = HtmlEditor()
+        editor.add_element("//body", "div", attrs={'id': 'd1', })
+        editor.add_element("//body/div", "div", attrs={'id': 'd1.1', })
+        editor.add_element("//body/div", "div", attrs={'id': 'd1.2', })
+        editor.add_element("//body/div/div[@id='d1.1']", "div", attrs={'id': 'd1.1.1', })
+        editor.add_element("//body/div/div[@id='d1.1']", "div", attrs={'id': 'd1.1.2', })
+        editor.add_element("//body/div/div[@id='d1.2']", "div", attrs={'id': 'd1.2.1', })
+        return editor
 
 

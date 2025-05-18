@@ -2639,20 +2639,21 @@ font-size: 12px;
         return single_child_divs
 
     @classmethod
-    def remove_single_child_divs(cls, html_elem):
+    def remove_single_child_divs_in_hierarchy(cls, html_elem):
 
         """
         remove all divs with a single child element
         and transfer the child to the parent
         :param html_elem: element to remove single child divs from
-        :return: None
+        :return: number of single child divs removed
         """
         if html_elem is None:
             logger.warning(f"html_elem is None")
-            return None
+            return 0
         single_child_divs = HtmlLib.find_single_child_divs(html_elem)
         for div in single_child_divs:
             HtmlUtil.remove_element_in_hierarchy(div)
+        return len(single_child_divs)
 
     @classmethod
     def extract_styles_to_css_file(cls, html, css_file=None, link=False):
@@ -2971,10 +2972,17 @@ class HtmlEditor:
         :param create_skeleton: create minimal html element
                  self.html, and self.head, self.body
         """
+        self.html = None
+        self.head = None
+        self.body = None
+        if create_skeleton:
+            self.create_skeleton_html()
+        self.commands = None
+
+    def create_skeleton_html(self):
         self.html = ET.Element("html")
         self.head = ET.SubElement(self.html, "head")
         self.body = ET.SubElement(self.html, "body")
-        self.commands = None
 
     def write(self, file, debug=True):
         """
@@ -3005,15 +3013,15 @@ class HtmlEditor:
         """
         parse html
         fails if file does not exist or not parsable HTML
-        if success , creates self.html_elem
+        if success , creates self.html
         :param
         """
         if not inpath.exists():
             raise FileNotFoundError(inpath)
-        self.html_elem = HtmlLib.parse_html(inpath)
-        if self.html_elem is None:
+        self.html = HtmlLib.parse_html(inpath)
+        if self.html is None:
             raise ValueError("Cannot parse HTML")
-        return self.html_elem
+        return self.html
 
     def read_commands(self, command_path):
         """
@@ -3031,8 +3039,8 @@ class HtmlEditor:
         if self.commands is None:
             logger.warning("No commands, no action")
             return
-        if self.html_elem is None:
-            logger.warning("No html_elem, no action")
+        if self.html is None:
+            logger.warning("No html, no action")
             return
 
         commands = self.commands.get("commands")
@@ -3044,7 +3052,7 @@ class HtmlEditor:
 
     def execute_command(self, command):
         if c := command.get("delete"):
-            self._delete_elements(c)
+            self.delete_elements(c)
         elif c := command.get("style"):
             logger.warning("style NYI (not yet implemented)")
         elif c := command.get("no-op"):
@@ -3052,37 +3060,78 @@ class HtmlEditor:
         else:
             print(f"bad command {command}")
 
-    def _delete_elements(self, command):
+    def delete_elements(self, command):
+        """
+        delete all elements specified by command
+        1) if xpath, deletes all elements resulting from applying xpath
+        """
         xpath = command.get("xpath")
         if xpath is None:
             logger.warning("delete requires xpath")
             return
         #  convenience library routine to remove all elements selected by xpath
-        XmlLib.remove_all(self.html_elem, xpath)
+        XmlLib.remove_all(self.html, xpath)
 
-    def add_element(self, parent_xpath, tag, text=None):
+    def move_elements(self, command):
+        """
+        delete all elements specified by command
+        1) if xpath, deletes all elements resulting from applying xpath
+        """
+        xpath = command.get("xpath")
+        target = command.get("target")
+        if xpath is None or target is None:
+            logger.warning("delete requires xpath and target")
+            return
+        #  convenience library routine to remove all elements selected by xpath
+        XmlLib.move_all(self.html, xpath, target)
+
+
+    def add_element(self, parent_xpath, tag, text=None, attrs=None):
         """
         adds an element, currently experimental
         :param parent_xpath: parent of new element
         :param tag: element name
         :param text: child text (if None, no text)
+        :param attrs: attributes as dict
+        :return: None if fails
         """
+        new_element = None
         if tag is None:
             logger.warning(f"tag required")
             return None
-        parent_elem = XmlLib.get_single_element(self.html_elem, parent_xpath)
+        if self.html is None:
+            self.create_skeleton_html()
+
+        parent_elem = XmlLib.get_single_element(self.html, parent_xpath)
         if parent_elem is None:
             logger.warning(f"cannot find parent element {parent_xpath}")
-            return None
+            return new_element
         try:
             new_element = ET.SubElement(parent_elem, tag)
         except Exception as e:
             logger.error(f"Cannot add element because {e}")
-        if new_element is not None and type(text) is str:
+            return new_element
+        if type(text) is str:
             new_element.text = text
+        if attrs is not None:
+            # logger.info(f"attrs {type(attrs)} {attrs.keys()}")
+            for key in attrs.keys():
+                value = attrs.get(key)
+                # logger.debug(f"k {key} {type(key)} {value} {type(value)}")
+                new_element.attrib[key] = value
         return new_element
 
+    def remove_single_child_divs_in_hierarchy(self):
+        """
+        removes all divs with single child.
+        """
+        return HtmlLib.remove_single_child_divs_in_hierarchy(self.html)
 
+    def to_bytes(self):
+        """
+        export self.html as bytes
+        """
+        return None if self.html is None else ET.tostring(self.html)
 
 
 class HtmlUtil:
@@ -3885,6 +3934,29 @@ class HtmlUtil:
         for elem in elems:
             HtmlUtil.remove_element_in_hierarchy(elem)
         return elems
+
+    @classmethod
+    def remove_elements_in_hierachy_by_xpaths(cls, html, removable_xpaths=None):
+        """
+        when cleaning framework-generated HTML (e.g. from web page generators)
+        there are frequently elements in the hierarchy which have no semantic function
+        for the content.
+        :param html: element to remove (descendant) elements from
+        :param removable_xpaths: xpaths to generate removable elements
+
+        May leave empty elements
+
+        """
+        if removable_xpaths is None or html is None:
+            return None
+        removables = set()
+        for xpath in removable_xpaths:
+            for elem in html.xpath(xpath):
+                removables.add(elem)
+        for removable in removables:
+            HtmlUtil.remove_element_in_hierarchy(removable)
+
+
 
     @classmethod
     def parse_html_lxml(cls, infile):

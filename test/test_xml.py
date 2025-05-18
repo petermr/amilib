@@ -199,6 +199,43 @@ b'<?xml version="1.0"?>\n<foo>A</foo>\n'
         div2 = XmlLib.get_single_element(body, "./div")
         assert div2 is None
 
+    def test_move_all(self):
+        """
+        tests commands to move compoents of XML files
+        """
+        html_s = """
+<html>
+<head/>
+<body>
+<h2>first h2</h2>
+<div id="d1">
+<p>para 1.1</p>
+<p>para 1.2</p>
+</div>    
+<h2>second h2</h2>
+<div id="d2">
+<p>para 2.1</p>
+<p>para 2.2</p>
+</div>
+</body>
+</html>
+            """
+        #  test the logic
+        html = ET.fromstring(html_s)
+        h2 = html.xpath("//h2")[0]
+        follow_div = h2.xpath("following-sibling::div[1]")[0]
+        logger.info(f"fd {follow_div}")
+        follow_div.insert(0, h2)
+        logger.info(f"created {ET.tostring(html)}")
+        print("===========")
+        # rerun
+        html = ET.fromstring(html_s)
+        logger.info(f"created {ET.tostring(html)}")
+        moved = XmlLib.move_all(html, "//h2",
+                                "following-sibling::div[1]")
+        assert moved == 2
+        logger.info(f"created {ET.tostring(html)}")
+
 
 class SvgParser:
     """

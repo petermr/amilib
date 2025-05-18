@@ -984,6 +984,43 @@ class XmlLib:
             results.append(result)
         return results
 
+    @classmethod
+    def move_all(cls, elem, xpath, target_xpath, insert_pos=0):
+        """
+        :param elem: reference for xpath
+        :param xpath: to identify elements
+        :param target_xpath: element relative to xpath results to which they are used
+        :param insert_pos: insertion position (default = 0, i.e. first child)
+            Don't think it works
+        :return: number of moves made
+
+        Example:
+        moved = XmlLib.move_all(html, "//h2", "following-sibling::div[1]")
+        moves all <h2>xxx</h2><div><p>...<p></div> to
+        <div><h2>xxx</h2><p>...<p></div>
+
+          target_xpath = "../../" and xpath = "//p" moves all p to be child of grandparent
+              (and so sibling of parent). User is responsible for making sute it makes sense
+        """
+        if elem is None:
+            logger.error("no elem")
+            return None
+        if xpath is None:
+            logger.error("no xpath")
+            return None
+        if target_xpath is None:
+            logger.error("no target_xpath")
+            return None
+        elems = elem.xpath(xpath)
+        count = 0
+        for el in elems:
+            if type(el) is _Element:
+                target_elems = el.xpath(target_xpath)
+                if len(target_elems) > 0:
+                    target_elems[0].insert(0, el)
+                    count += 1
+        print(f"fs >>> {ET.tostring(elem)}")
+        return count
 
 
 class HtmlElement:

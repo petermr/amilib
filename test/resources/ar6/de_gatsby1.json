@@ -1,0 +1,19 @@
+{"commands": [
+  {
+    "delete": {
+      "xpath": "//div[h1 and count(*)=1]",
+      "comment": "div with single child is redundant",
+      "keep": "descendants",
+      "iterate": "99"
+    }
+  },
+  {
+    "delete": {
+      "xpath": "//div[count(*)=0 and count(text()=0)]",
+      "comment": "empty div",
+      "iterate": "99"
+    }
+  }
+
+   ]
+}
