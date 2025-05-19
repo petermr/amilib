@@ -480,18 +480,20 @@ class DriverTest(AmiAnyTest):
         """
         """https://www.ipcc.ch/report/ar6/wg2/chapter/ccp1/"""
 
-        CHAP_PREF = "Chapter"
+        CHAP_PREF = "cross_chapters"
         wg = 2
         logger.debug(f"wg = {wg}")
         wg_url = AR6_URL + f"wg{wg}/"
         logger.info(f"downloading from {wg_url}")
+        # iterate over 7 cross-chapters (1-based)
         for ccp in range(1, 8): # chapters 1-7
             ccp = str(ccp)
+            # driver contains the headless browser
             driver = AmiDriver(sleep=SLEEP)
             ch_url = wg_url + f"chapter/ccp{ccp}/"
             logger.debug(f"downloading {ch_url}")
 
-            outfile = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "raw.html")
+            outfile = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}", f"ccp{ccp}", "raw.html")
             # outfile_clean = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "clean.html")
             outfile_figs = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "figs.html")
             wg_dict = {
