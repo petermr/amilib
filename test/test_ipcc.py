@@ -1109,7 +1109,7 @@ class TestIPCC(AmiAnyTest):
         outdir = f"{Path(Resources.TEMP_DIR, 'queries')}"
         output = f"{Path(outdir, query_name)}.html"
         AMIClimate().run_command(
-            ['IPCC', '--input', str(infiles2[0]), '--output', str(output)])
+            ['IPCC', '--inpath', str(infiles2[0]), '--outpath', str(output)])
         # assert Path(output).exists(), f"{output} should exist"
 
     def test_commandline_search(self):
@@ -1133,8 +1133,8 @@ class TestIPCC(AmiAnyTest):
         print(f"writing to {output}")
 
         AMIClimate().run_command(
-            ['IPCC', '--input', infiles, '--query', queries,
-             '--output', output])
+            ['IPCC', '--inpath', infiles, '--query', queries,
+             '--outpath', output])
         assert Path(output).exists()
 
     def test_commandline_search_with_indir(self):
@@ -1148,8 +1148,8 @@ class TestIPCC(AmiAnyTest):
         outdir = f"{Path(Resources.TEMP_DIR, 'queries')}"
         output = f"{Path(outdir, query_name)}.html"
         AMIClimate().run_command(
-            ['IPCC', '--indir', str(indir_path), '--input', infile, '--query', queries,
-             '--output', output])
+            ['IPCC', '--indir', str(indir_path), '--inpath', infile, '--query', queries,
+             '--outpath', output])
         assert Path(output).exists()
 
     def test_commandline_search_with_wildcards(self):
@@ -1167,7 +1167,7 @@ class TestIPCC(AmiAnyTest):
         outdir = f"{Path(Resources.TEMP_DIR, 'queries')}"
         output = f"{Path(outdir, query_name)}.html"
         AMIClimate().run_command(
-            ['IPCC', '--input', infiles, '--query', queries, '--output', output])
+            ['IPCC', '--inpath', infiles, '--query', queries, '--outpath', output])
 
         assert Path(output).exists()
         assert len(ET.parse(output).xpath("//ul")) > 0
@@ -1202,14 +1202,14 @@ class TestIPCC(AmiAnyTest):
 
         output = f"{Path(outdir, 'methane_all')}.html"
         AMIClimate().run_command(
-            ['IPCC', '--input', infile, '--query', query, '--output', output])
+            ['IPCC', '--inpath', infile, '--query', query, '--outpath', output])
         html_tree = ET.parse(output)
         assert (pp := len(html_tree.xpath(".//a[@href]"))) >= 11, f"found {pp} paras in {output}"
 
         output = f"{Path(outdir, 'methane_ref')}.html"
         xpath_ref = "//p[@id and ancestor::*[@id='references']]"
         AMIClimate().run_command(
-            ['IPCC', '--input', infile, '--query', query, '--output', output, '--xpath', xpath_ref])
+            ['IPCC', '--inpath', infile, '--query', query, '--outpath', output, '--xpath', xpath_ref])
         html_tree = ET.parse(output)
         assert (pp := len(html_tree.xpath(".//a[@href]"))) >= 5, f"found {pp} paras in {output}"
 
@@ -1217,7 +1217,7 @@ class TestIPCC(AmiAnyTest):
         output = f"{Path(outdir, 'methane_noref')}.html"
         xpath_ref = "//p[@id and not(ancestor::*[@id='references'])]"
         AMIClimate().run_command(
-            ['IPCC', '--input', infile, '--query', query, '--output', output, '--xpath', xpath_ref])
+            ['IPCC', '--inpath', infile, '--query', query, '--outpath', output, '--xpath', xpath_ref])
         self.check_output_tree(output, xpath=".//a[@href]")
 
     def test_symbolic_xpaths(self):
@@ -1229,12 +1229,12 @@ class TestIPCC(AmiAnyTest):
 
         output = f"{Path(outdir, 'methane_refs1')}.html"
         AMIClimate().run_command(
-            ['IPCC', '--input', infile, '--query', query, '--output', output, '--xpath', "_REFS"])
+            ['IPCC', '--inpath', infile, '--query', query, '--outpath', output, '--xpath', "_REFS"])
         self.check_output_tree(output, expected=7, xpath=".//a[@href]")
 
         output = f"{Path(outdir, 'methane_norefs1')}.html"
         AMIClimate().run_command(
-            ['IPCC', '--input', infile, '--query', query, '--output', output, '--xpath', "_NOREFS"])
+            ['IPCC', '--inpath', infile, '--query', query, '--outpath', output, '--xpath', "_NOREFS"])
         # self.check_output_tree(output, expected=[2,8], xpath=".//a[@href]")
         self.check_output_tree(output, xpath=".//a[@href]")
 
@@ -1246,8 +1246,8 @@ class TestIPCC(AmiAnyTest):
         query = "methane"
 
         AMIClimate().run_command(
-            ['IPCC', '--indir', "_IPCC_REPORTS", '--input', "_HTML_IDS", '--query', "methane", '--outdir', "_QUERY_OUT",
-             "--output", output, '--xpath',
+            ['IPCC', '--indir', "_IPCC_REPORTS", '--inpath', "_HTML_IDS", '--query', "methane", '--outdir', "_QUERY_OUT",
+             "--outpath", output, '--xpath',
              "_NOREFS"])
         self.check_output_tree(output, expected=[60, 300], xpath=".//a[@href]")
 
@@ -1264,8 +1264,8 @@ class TestIPCC(AmiAnyTest):
         outdir = f"{Path(Resources.TEMP_DIR, 'queries')}"
         output = f"{Path(outdir, query_name)}.html"
         AMIClimate().run_command(
-            ['IPCC', '--indir', str(indir_path), '--input', input, '--query', queries,
-             '--output', output])
+            ['IPCC', '--indir', str(indir_path), '--inpath', input, '--query', queries,
+             '--outpath', output])
         assert Path(output).exists()
         assert len(ET.parse(output).xpath("//ul")) > 0
 
@@ -1279,24 +1279,24 @@ class TestIPCC(AmiAnyTest):
 
     def test_output_bug(self):
         """PMR only, fails if output does not exist"""
-        """IPCC --input /Users/pm286/workspace/pyamihtml/test/resources/ipcc/cleaned_content/**/html_with_ids.html --query "south asia"
-          --output /Users/pm286/workspace/pyamihtml/temp/queries/south_asiax.html --outdir /Users/pm286/ --xpath "//p[@id and ancestor::*[@id='frequently-asked-questions']]
+        """IPCC --inpath /Users/pm286/workspace/pyamihtml/test/resources/ipcc/cleaned_content/**/html_with_ids.html --query "south asia"
+          --outpath /Users/pm286/workspace/pyamihtml/temp/queries/south_asiax.html --outdir /Users/pm286/ --xpath "//p[@id and ancestor::*[@id='frequently-asked-questions']]
         """
         AMIClimate().run_command(
             ['IPCC',
-             "--input", f"{CLEANED_CONTENT}/**/html_with_ids.html",
+             "--inpath", f"{CLEANED_CONTENT}/**/html_with_ids.html",
              "--query", "south asia",
-             "--output", f"{QUERIES_DIR}/south_asia.html",
+             "--outpath", f"{QUERIES_DIR}/south_asia.html",
              "--xpath", "//p[@id and ancestor::*[@id='frequently-asked-questions']]",
              ]
         )
         print("=======================================================")
 
         AMIClimate().run_command(
-            ['IPCC', "--input",
+            ['IPCC', "--inpath",
              f"{CLEANED_CONTENT}/**/html_with_ids.html",
              "--query", "south asia",
-             "--output", f"{QUERIES_DIR}/south_asia_not_exist.html",
+             "--outpath", f"{QUERIES_DIR}/south_asia_not_exist.html",
              "--xpath", "//p[@id and ancestor::*[@id='frequently-asked-questions']]",
              ]
         )
@@ -1304,10 +1304,10 @@ class TestIPCC(AmiAnyTest):
     def test_faq_xpath(self):
         """"""
         AMIClimate().run_command(
-            ['IPCC', "--input",
+            ['IPCC', "--inpath",
              f"{CLEANED_CONTENT}/**/html_with_ids.html",
              "--query", "asia",
-             "--output", f"{QUERIES_DIR}/asia_faq.html",
+             "--outpath", f"{QUERIES_DIR}/asia_faq.html",
              "--xpath", "_FAQ",
              ]
         )
@@ -1539,7 +1539,7 @@ class TestIPCC(AmiAnyTest):
         editor.execute_commands()
 
         outpath = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", "wg1", "Chapter01", "edited_html_with_ids.html")
-        HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+        HtmlLib.write_html_file(editor.html, outpath, debug=True)
         assert outpath.exists(), f"output {outpath} must exist"
 
 
