@@ -996,6 +996,7 @@ class HtmlTest(AmiAnyTest):
         then add child paras and also CSS style (in head)
         """
         editor = HtmlEditor()
+        editor.create_skeleton_html()
         editor.write(Path(Resources.TEMP_DIR, "html", "editor_0.html"), debug=True)
         # get complete html object
         html = editor.html
@@ -1715,7 +1716,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         """
         inpath = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "edited_toplevel.html")
         html_elem = HtmlLib.parse_html(inpath)
-        HtmlLib.remove_single_child_divs(html_elem)
+        HtmlLib.remove_single_child_divs_in_hierarchy(html_elem)
         outfile = Path(Resources.TEMP_DIR, "ipcc", "wg1", "stripped_toplevel.html")
         HtmlLib.write_html_file(html_elem, outfile, debug=True)
         assert outfile.exists()

@@ -36,9 +36,10 @@ class AMIClimate:
     """runs commands - dummy at present"""
 
     def run_command(self, args):
-        print(f"command NYI {args} {self}")
-        if args[0] == 'IPCC':
-            args[0] = "SEARCH"
+        # print(f"command NYI {args} {self}")
+        # return
+        # if args[0] == 'IPCC':
+        #     args[0] = "SEARCH"
         AmiLib().run_command(args)
 
 

@@ -274,13 +274,16 @@ class SearchArgs(AbstractArgs):
             dikt = AmiDictionary.read_dictionary(self.dictfile)
             self.words = dikt.get_terms()
 
+        if self.words is None:
+            logger.warning("NO WORDS!")
+
         logger.info(f"read arguments\n"
                     f"inpath: {self.inpath}\n"
                     f"dictfile: {self.dictfile}\n"
                     f"outpath: {self.outpath}\n"
                     f"operation: {self.operation}\n"
                     f"title: {self.title}\n"
-                    f"words: {len(self.words)}:{self.words[:20]}...\n"
+                    f"words: {'None' if self.words is None else self.words[:20]}...\n"
                     )
 
 
