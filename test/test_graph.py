@@ -90,7 +90,7 @@ class AmiGraphTest(AmiAnyTest):
             editor.add_element(parent_xpath="/html/head", tag="style", text="div {border: solid 1px red; margin: 5px;}")
 
             outpath = Path(OUT_WG, "toplevel.html")
-            HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+            HtmlLib.write_html_file(editor.html, outpath, debug=True)
             assert outpath.exists()
 
     def test_strip_single_child_divs(self):
@@ -101,7 +101,7 @@ class AmiGraphTest(AmiAnyTest):
         for wg in ["wg1" , "wg2", "wg3"]:
             inpath = Path(Resources.TEST_RESOURCES_DIR, "ar6", wg, "edited_toplevel.html")
             html_elem = HtmlLib.parse_html(inpath)
-            HtmlLib.remove_single_child_divs(html_elem)
+            HtmlLib.remove_single_child_divs_in_hierarchy(html_elem)
             outfile = Path(Resources.TEMP_DIR, "ipcc", wg, "stripped_toplevel.html")
             HtmlLib.write_html_file(html_elem, outfile, debug=True)
 
@@ -142,13 +142,13 @@ class AmiGraphTest(AmiAnyTest):
             editor.add_element(parent_xpath="/html/head", tag="style", text="div {border: solid 1px red; margin: 5px;}")
 
             outpath = Path(OUT_WG, "edited_toplevel.html")
-            HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+            HtmlLib.write_html_file(editor.html, outpath, debug=True)
 
             #  read what we have written
 
             inpath = outpath
             html_elem = HtmlLib.parse_html(inpath)
-            HtmlLib.remove_single_child_divs(html_elem)
+            HtmlLib.remove_single_child_divs_in_hierarchy(html_elem)
             outfile = Path(Resources.TEMP_DIR, "ipcc", wg, "stripped_toplevel.html")
             HtmlLib.write_html_file(html_elem, outfile, debug=True)
 
@@ -220,11 +220,11 @@ class AmiGraphTest(AmiAnyTest):
 #
 #         #Constructs the output file path inside the TEMP directory
 #         outpath = Path(OUT_WG, "toplevel.html")
-#         HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+#         HtmlLib.write_html_file(editor.html, outpath, debug=True)
 #
 #         #Constructs a path to save the edited HTML in the original Working Group folder
 #         edited_path = Path(IN_WG, "edited_toplevel.html")
-#         HtmlLib.write_html_file(editor.html_elem, edited_path, debug=True)
+#         HtmlLib.write_html_file(editor.html edited_path, debug=True)
 #
 # def test_strip_single_child_divs1(self):
 #     """
@@ -304,7 +304,7 @@ class AmiGraphTest(AmiAnyTest):
             editor.add_element(parent_xpath="/html/head", tag="style", text="div {border: solid 1px red; margin: 5px;}")
 
             outpath = Path(OUT_WG, "edited_toplevel.html")
-            HtmlLib.write_html_file(editor.html_elem, outpath, debug=True)
+            HtmlLib.write_html_file(editor.html, outpath, debug=True)
 
 
 
@@ -315,7 +315,7 @@ class AmiGraphTest(AmiAnyTest):
             """
             inpath = outpath
             html_elem = HtmlLib.parse_html(inpath)
-            HtmlLib.remove_single_child_divs(html_elem)
+            HtmlLib.remove_single_child_divs_in_hierarchy(html_elem)
             outfile = Path(Resources.TEMP_DIR, "ipcc", wg, "stripped_toplevel.html")
             HtmlLib.write_html_file(html_elem, outfile, debug=True)
 

@@ -23,6 +23,7 @@ REPORTPATH = "report"
 SEARCH = "SEARCH"
 TITLE = "title"
 WORDS = "words"
+XPATH = "xpath"
 
 UNKNOWN = "unknown"
 
@@ -225,7 +226,12 @@ class SearchArgs(AbstractArgs):
                                  nargs="+",
                                  default=None,
                                  help="(list of) words/phrases to search with; phrases with spaces must be quoted. "
-                                      )
+                                 )
+        self.parser.add_argument(f"--{XPATH}", type=str,
+                                 nargs="+",
+                                 default=None,
+                                 help="xpath se3lection within HTML tree, default=None "
+                                 )
         self.parser.epilog = """
         Examples:
         SEARCH --operation annotate --inpath infile --dict dictfile --outpath outfile  # uses dictfile to annotate words in infile and write outfile\n

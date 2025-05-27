@@ -313,10 +313,16 @@ class ExtractTextTest(AmiAnyTest):
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(["id", "title", "text"])
             for i, file in enumerate(files):
+                if Path(file).is_dir():
+                    continue
+                logger.info(f"makespace_file: {file}")
                 filename = Path(file).stem
                 path = Path(makespacedir, filename)
                 if not path.exists():
                     logger.error(f"Cannot read {path}")
+                    continue
+                if path.is_dir():
+                    logger.warning(f"Skipped directory {path}")
                     continue
                 with open(path, "r") as f:
                     strings = f.readlines()

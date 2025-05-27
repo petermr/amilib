@@ -585,17 +585,20 @@ class Util:
         :return: list of words/phrases
 
         """
-        if type(words) is not list:
-            wordpath = Path(words)
-            if not wordpath.exists():
-                words = [words]
-            else:
-                with open(wordpath, "r") as f:
-                    words = []
-                    for line in f.readlines():
-                        line = line.strip()
-                        if line != "" and not line.startswith("#"):
-                            words.append(line)
+        if type(words) is list:
+            return words
+        #  read from file?
+        wordpath = Path(words)
+        if not wordpath.exists():
+            #  treat as single word/phrase
+            words = [words]
+        else:
+            with open(wordpath, "r") as f:
+                words = []
+                for line in f.readlines():
+                    line = line.strip()
+                    if line != "" and not line.startswith("#"):
+                        words.append(line)
         return words
 
 

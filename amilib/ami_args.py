@@ -1,8 +1,10 @@
 import argparse
+import io
 import json
 from abc import ABC, abstractmethod
 from collections import Counter
 import logging
+from contextlib import redirect_stderr
 from pathlib import Path
 
 from amilib.util import Util
@@ -145,11 +147,6 @@ class AbstractArgs(ABC):
         # Overrides add_arguments
         pass
 
-    # @property
-    # def module_stem(self):
-    #     """name of module"""
-    #     return Path(__file__).stem
-    #
     def get_operation(self):
         """
         NOT USED, maybe it should be
@@ -235,6 +232,43 @@ class AbstractArgs(ABC):
         logger.debug(f"subclass_parser for {subclass} is {subclass.parser}")
         subclass.add_arguments()
         return subclass.parser
+
+    @classmethod
+    def parse_error(cls, parser, args, split_string="error: "):
+        """
+        captures stderr from parser.parse(args) , splits at split_string
+        and returns cause of error. split_string is probably machine/os-specific
+        on my Mac was "_jb_pytest_runner.py:<error message>"
+        :param parser: argparser
+        :param args: args to parse
+        :param split_string: string after which machine-independent error is found
+               (default'error:')
+        :return:None if no error or the error_string
+        The string is of the form
+        error: argument --operation: invalid choice: 'search' (choose from ...
+        and we start after "error: "
+        """
+        if parser is None or args is None:
+            logger.error("must give parser and args")
+            return "bad arguments to parse_error()"
+        stderr = io.StringIO()
+        with redirect_stderr(stderr):
+            try:
+                parser.parse_args(args)
+            except TypeError as te:
+                return f"args: {args} \ngives error: {te}"
+            except SystemExit:
+                error_output = stderr.getvalue()
+                logger.error(f"Captured argparse error:\n<<{error_output}>>")
+                if error_output is None or error_output.strip() == '':
+                    return None
+                splits = error_output.split(split_string)
+                if (splits is None or len(splits) == 1):
+                    return f"Unparsable: {error_output}"
+                return splits[1]
+        return None
+
+
 
 class ArgParseBuilder:
     """

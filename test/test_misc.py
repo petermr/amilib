@@ -7,6 +7,8 @@ from collections import Counter
 from pathlib import Path
 
 import pytest
+
+from amilib.ami_args import AbstractArgs
 # from geopy.geocoders import Nominatim
 
 from amilib.ami_html import HtmlUtil
@@ -217,3 +219,59 @@ class MiscTest(AmiAnyTest):
 
         print("\n===== SOLUTION KEY =====")
         print(grid_to_text(solution_grid))
+
+class ArgsTest(AmiAnyTest):
+    """
+    test argparse stuff
+    """
+    def test_capture_errors(self):
+        """capture errors on stderr
+        If you don't want to subclass but still want to capture what argparse prints,
+        you can redirect sys.stderr:
+
+
+        """
+        import argparse
+        import sys
+        import io
+        from contextlib import redirect_stderr
+
+        def try_parse(args=None):
+            parser = argparse.ArgumentParser(description="My CLI")
+            parser.add_argument(
+                "--value",
+                type=int,
+                required=True,
+                help="value of value"
+            )
+            parser.add_argument(
+                "--operation",
+                choices=["annotate", "counts", "index", "no_input_styles"],
+                required=True,
+                help="Type of operation to perform"
+            )
+            """
+            Captured argparse error:
+usage: _jb_pytest_runner.py [-h] --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: argument --operation: invalid choice: 'search' (choose from annotate, counts, index, no_input_styles)
+            """
+
+            err = AbstractArgs.parse_error(parser, args)
+            return err
+
+        # valid args
+        err = try_parse(["--value", "3", "--operation", "index"])
+        assert err is None
+
+        # missing arg
+        err = try_parse(["--value", "3"])
+        assert err == "the following arguments are required: --operation\n"
+
+        # arg with wrong type
+        err = try_parse(["--value", "foo", "--operation", "index"])
+        assert err == "argument --value: invalid int value: 'foo'\n"
+
+        # arg with wring choice value
+        err = try_parse(["--operation", "search"])
+        assert err and err.strip() == "argument --operation: invalid choice: 'search' (choose from annotate, counts, index, no_input_styles)"

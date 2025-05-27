@@ -36,11 +36,23 @@ class AMIClimate:
     """runs commands - dummy at present"""
 
     def run_command(self, args):
-        # print(f"command NYI {args} {self}")
-        # return
-        # if args[0] == 'IPCC':
-        #     args[0] = "SEARCH"
-        AmiLib().run_command(args)
+        parser = argparse.ArgumentParser()
+        if type(args) is str:
+            args = args.split()
+        logger.info(f"args: {args}")
+        err = AbstractArgs.parse_error(parser, args)
+        pyami = AmiLib()
+        if err:
+            logger.error(f"BAD COMMAND: {err}")
+            print("======== allowed args ==========")
+            pyami.run_command(f"--help")
+            print("================================")
+            pyami.run_command(f"{args[0]} --help")
+            print("================================")
+            # raise ValueError(f"{args} gives error:\n {err}")
+            return
+        logger.info(f"running command {args}")
+        pyami.run_command(args)
 
 
 class IPCCCommand:
@@ -471,7 +483,13 @@ class IPCC:
                     hit_dict[hit].append(url)
 
     @classmethod
-    def create_hit_html_with_ids(cls, infiles, phrases=None, outfile=None, xpath=None, debug=False):
+    def create_hit_html_with_ids(
+            cls,
+            infiles,
+            phrases=None,
+            outfile=None,
+            xpath=None,
+            debug=False):
         """
 
         Parameters
@@ -489,9 +507,12 @@ class IPCC:
         all_paras = []
         all_dict = dict()
         hit_dict = defaultdict(list)
+        if type(infiles) is str:
+            infiles = [infiles]
         if type(phrases) is not list:
             phrases = [phrases]
         for infile in infiles:
+            logger.info(f">>> html file {infile}")
             assert Path(infile).exists(), f"{infile} does not exist"
             html_tree = lxml.etree.parse(str(infile), HTMLParser())
             paras = HtmlLib.find_paras_with_ids(html_tree, para_xpath=xpath)
@@ -544,6 +565,7 @@ class IPCC:
 
     @classmethod
     def find_analyse_curly_refs(cls, para_with_ids):
+        CURLY_RE = ".*\\{(?P<links>.+)\\}.*"  # any matched non-empty curlies {...}
         for para in para_with_ids:
             text = ''.join(para.itertext()).strip()
             match = re.match(CURLY_RE, text)
@@ -618,7 +640,7 @@ class IPCC:
     def _create_href(cls, report, chapter, section):
         report = cls.normalize_report(report)
         chapter = cls.normalize_chapter(chapter)
-        file = f"../../{report}/{chapter}/{HTML_WITH_IDS_HTML}#{section}"
+        file = f"../../{report}/{chapter}/{HTML_WITH_IDS}#{section}"
         return file
         # print(f">> {file}")
 

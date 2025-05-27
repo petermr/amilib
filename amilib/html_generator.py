@@ -131,11 +131,22 @@ class HtmlGenerator:
     # class HtmlGenerator
 
     @classmethod
-    def create_html_pages(cls, ami_pdfplumber, input_pdf=None, outdir=None, pages=None, debug=False,
-                          outstem="total_pages", svg_dir=None, max_edges=10000, max_lines=100,
-                          tidy_prims=True, page_json_dir=None):
+    def create_html_pages(
+        cls,
+        ami_pdfplumber,
+        input_pdf=None,
+        outdir=None,
+        pages=None,
+        debug=False,
+        outstem="total_pages",
+        svg_dir=None,
+        max_edges=10000,
+        max_lines=100,
+        tidy_prims=True,
+        page_json_dir=None):
         """
         :param tidy_primitives: convert thin rects to lines, and other layout stuff
+        :return:html object
         """
 
         pre_plumber = HtmlGenerator.pmr_time()
@@ -413,7 +424,7 @@ class HtmlGenerator:
         output_page_dir = report_dict[cls.OUTPUT_PAGE_DIR]
         output_page_dir.mkdir(exist_ok=True, parents=True)
         ami_pdfplumber = AmiPDFPlumber(param_dict=report_dict)
-        HtmlGenerator.create_html_pages(
+        html = HtmlGenerator.create_html_pages(
             ami_pdfplumber,
             input_pdf=input_pdf,
             outdir=output_page_dir,
@@ -421,4 +432,5 @@ class HtmlGenerator:
             page_json_dir=output_page_dir,
             outstem=cls.TOTAL_PAGES
         )
+        return html
 

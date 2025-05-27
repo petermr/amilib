@@ -1330,8 +1330,13 @@ class HtmlLib:
         if html_elem is None:
             html_elem = HtmlLib.create_html_with_empty_head_body()
             print(f"html {html_elem}")
-        bodys = html_elem.xpath("./body")
-        return bodys[0] if len(bodys) == 1 else None
+
+        try:
+            bodys = html_elem.xpath("./body")
+            return bodys[0] if len(bodys) == 1 else None
+        except AssertionError as e:
+            logger.error(f"bad html file {e}")
+            return None
 
     @classmethod
     def get_head(cls, html_elem=None):
@@ -1545,6 +1550,9 @@ class HtmlLib:
         if html is None:
             return paras
         body = HtmlLib.get_body(html)
+        if body is None:
+            logger.error(f"no body in HTML file")
+            return []
         if not para_xpath:
             para_xpath = ".//p[@id]"
         paras = body.xpath(para_xpath)
@@ -2980,9 +2988,12 @@ class HtmlEditor:
         self.commands = None
 
     def create_skeleton_html(self):
-        self.html = ET.Element("html")
-        self.head = ET.SubElement(self.html, "head")
-        self.body = ET.SubElement(self.html, "body")
+        if self.html is None:
+            self.html = ET.Element("html")
+        if self.head is None:
+            self.head = ET.SubElement(self.html, "head")
+        if self.body is None:
+            self.body = ET.SubElement(self.html, "body")
 
     def write(self, file, debug=True):
         """
@@ -3003,7 +3014,7 @@ class HtmlEditor:
         htmlx.add_style(selector, value)
 
         """
-
+        self.create_skeleton_html()
         style = ET.SubElement(self.head, "style")
         style.text = f"{selector} {value}"
 

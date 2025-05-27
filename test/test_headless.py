@@ -315,7 +315,7 @@ class DriverTest(AmiAnyTest):
                 decoded_text = text.encode(encoding).decode('utf-8')
                 logger.info(f"Decoded with {encoding}: {decoded_text}")
             except UnicodeDecodeError as e1:
-                logger.debug(f"Failed to decode with {encoding} goves {e1}")
+                logger.debug(f"Failed to decode with {encoding} gives {e1}")
             except UnicodeEncodeError as e2:
                 logger.warning(f"failed encode with {encoding} gives {e2}")
 
