@@ -4759,7 +4759,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             clazz = elem.attrib["class"]
             new_class = style_converter.get(clazz)
             if new_class is None:
-                logger.warn(f"cannot find replace for {clazz}")
+                logger.warning(f"cannot find replace for {clazz}")
                 continue
             html_class = HtmlClass(clazz)
             html_class.replace_class(clazz, new_class)
