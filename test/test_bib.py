@@ -636,10 +636,13 @@ class AmiCorpusTest(AmiAnyTest):
         get a column from existing datatables file
         """
         datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
+        logger.info(f"datatables filename: {datatables_file.absolute()} {datatables_file.stat()}")
         # logger.info(f"datatables is: {datatables_file}")
         assert datatables_file.exists()
         datatables_html = HtmlLib.parse_html(datatables_file)
+        logger.info(f"1000 characters {ET.tostring(datatables_html)[:1000]}")
         col_content = Datatables.extract_column(datatables_html, colindex="file")
+        logger.info(f"col_content[2] {ET.tostring(col_content[2])}")
         assert 52 >= len(col_content) >= 48
         assert "".join(col_content[2].itertext()) == "wg1/Chapter02/html_with_ids.html"
 

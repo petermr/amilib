@@ -2793,7 +2793,7 @@ class Datatables:
         """
         :param datatables_html: datatables html elemnt, with table/thead and table/tbody
         :param colindex:index (either index of row or title of row
-        :return: list of elements in columnn in body (NO thead id)
+        :return: list of elements in column in body (NO thead id)
         """
         table = datatables_html.xpath("/html/body/table")[0]
         h_rows = table.xpath("thead/tr")
