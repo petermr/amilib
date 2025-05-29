@@ -633,7 +633,8 @@ class AmiCorpusTest(AmiAnyTest):
 
     def test_get_column_from_data_tables(self):
         """
-        get a column from existing datatables file
+        test that datatables.html contains the correct information
+        get a column from existing datatables file with filenames and extract
         """
         datatables_file = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "datatables.html")
         logger.info(f"datatables filename: {datatables_file.absolute()} {datatables_file.stat()}")

@@ -361,7 +361,7 @@ class MiscLib:
     @classmethod
     def _write_csv(cls, csvout, divs_with_p_with_ids, para_xpath, title_xpath, wg, chap):
 
-        with (open(csvout, 'w', ) as csvfile):
+        with (open(csvout, 'w', encoding="UTF-8") as csvfile):
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(["id", "title", "text"])
             for div in divs_with_p_with_ids:
