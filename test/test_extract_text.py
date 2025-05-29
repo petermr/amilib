@@ -101,7 +101,7 @@ class ExtractTextTest(AmiAnyTest):
         marked_out_dir = Path(list(spans_by_file.keys())[0].parent, "marked")
         FileLib.force_mkdir(marked_out_dir)
         counter_path = Path(marked_out_dir, "kw_counter.txt")
-        with open(counter_path, "w") as f:
+        with open(counter_path, "w", encoding="UTF-8") as f:
             logger.info(f"wrote {counter_path}")
             f.write(str(kw_counter))
         self._output_marked_html_files(kw_counter, html_by_file, spans_by_file)
@@ -212,7 +212,7 @@ class ExtractTextTest(AmiAnyTest):
         marked_dir = Path(wgdir, "marked")
         FileLib.force_mkdir(marked_dir)
         outpath = Path(marked_dir, "keywords.txt")
-        with open(outpath, "w") as f:
+        with open(outpath, "w", encoding="UTF-8") as f:
             f.write(str(all_words))
         assert outpath.exists(), f"{outpath} should exist"
 
@@ -284,7 +284,7 @@ class ExtractTextTest(AmiAnyTest):
                 assert csvout.exists(), f"csvout {csvout} should exist"
                 # test it's a CSV file
                 expected_rows = 500 # this is fragile not sure why
-                with open (csvout, "r") as csvf:
+                with open (csvout, "r", encoding="UTF-8") as csvf:
                     csvreader = csv.reader(csvf)
                     rows = [row for row in csvreader]
                     nrows = len(rows)
@@ -309,7 +309,7 @@ class ExtractTextTest(AmiAnyTest):
         FileLib.force_mkdir(outdir)
         csvout = Path(outdir, "makespace.csv")
         files = os.listdir(str(Path(makespacedir)))
-        with (open(csvout, 'w', ) as csvfile):
+        with (open(csvout, 'w', encoding="UTF-8") as csvfile):
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(["id", "title", "text"])
             for i, file in enumerate(files):
@@ -324,7 +324,7 @@ class ExtractTextTest(AmiAnyTest):
                 if path.is_dir():
                     logger.warning(f"Skipped directory {path}")
                     continue
-                with open(path, "r") as f:
+                with open(path, "r", encoding="UTF-8") as f:
                     strings = f.readlines()
                 # print(f"strings {strings}")
                 text_ = "".join(list(strings))
