@@ -293,6 +293,7 @@ class ExtractTextTest(AmiAnyTest):
 
     # -------------------------------------------------
 
+    @unittest.skip("only for PMR")
     def test_extract_title_id_para_from_makespace(self):
         """
         read makespace pages and extract text with titles
@@ -304,7 +305,7 @@ class ExtractTextTest(AmiAnyTest):
 
         makespacedir = Path(Path(__file__).parent.parent.parent,
                             "ollama_langchain_rag", "AI-ML-Prj1", "MSWebScrape", "2025March")
-        assert makespacedir.exists()
+        assert makespacedir.exists(), f"makespacedir {makespacedir} should exist"
         outdir = Path(Resources.TEMP_DIR, "csv", "makespace")
         FileLib.force_mkdir(outdir)
         csvout = Path(outdir, "makespace.csv")

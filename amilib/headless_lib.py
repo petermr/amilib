@@ -340,7 +340,7 @@ class HeadlessLib:
 
     @classmethod
     def extract_mention_links(cls, entry_html_list, filename):
-        with open(filename, 'w') as csvfile:
+        with open(filename, 'w', encoding="UTF-8") as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(["source", "role", "target", ])
             for (entry_html, _) in entry_html_list:
@@ -352,7 +352,7 @@ class HeadlessLib:
 
     @classmethod
     def extract_parent_subterms(cls, entry_html_list, filename):
-        with open(filename, 'w') as csvfile:
+        with open(filename, 'w', encoding="UTF-8") as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(["source", "role", "target", ])
             for role_name, role in [("Parent-term", "parent"), ("Sub-terms", "subterm")]:
