@@ -1,3 +1,7 @@
+
+# COMMENTED OUT AS ami_nlp is deprecated
+
+
 import collections
 import logging
 import string

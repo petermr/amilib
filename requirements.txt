@@ -2,13 +2,12 @@ chardet~=5.2.0
 idna
 # geopy
 graphviz~=0.20.3
-keybert
+#keybert
 lxml~=5.3.0
-~=3.9.2
 networkx~=3.4.2
-nltk~=3.9.1
+# nltk~=3.9.1
 numpy~=2.2.0
-packaging
+# packaging
 pandas~=2.2.3
 pdfminer.six
 pdfplumber~=0.11.4
@@ -17,11 +16,11 @@ pytest~=8.3.3
 # pyvis
 # rake-nltk
 requests~=2.32.3
-scikit-learn~=1.5.2
+# scikit-learn~=1.5.2 # do we need this?
 selenium~=4.25.0
 setuptools~=75.8.0
 SPARQLWrapper~=2.0.0
 tinycss
-tkinterweb
+# tkinterweb # do we need this?
 webdriver-manager
 # yake

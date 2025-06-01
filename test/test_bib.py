@@ -1515,7 +1515,7 @@ class JATSTest(AmiAnyTest):
                 try:
                     non_sec_list = [ns.tag for ns in non_secs]
                 except Exception as e:
-                    logger.error(f"error {e} {f"non_sec {non_sec_xpath}"}")
+                    logger.error(f"error {e} non_sec {non_sec_xpath}")
                     continue
                 logger.info(f"secs {len(secs)} {sectype_list} ; "
                             f"non_secs {len(non_secs)} {non_sec_list}")

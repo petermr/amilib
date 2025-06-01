@@ -1,6 +1,6 @@
 import unittest
+@unittest.skip("not the right place to classify")
 
-from bs4 import BeautifulSoup
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
@@ -8,10 +8,14 @@ from sklearn.preprocessing import LabelEncoder
 import numpy as np
 
 from amilib.util import Util
+from amilib.xml_lib import XmlLib
 from test.test_all import AmiAnyTest
 
 logger = Util.get_logger(__name__)
 
+"""
+I don't think we need this class
+"""
 
 class TestClassify(AmiAnyTest):
 
@@ -37,11 +41,15 @@ class TestClassify(AmiAnyTest):
 
         def extract_sections(xml_path):
             """Extracts sections and their titles/content from a PMC XML file."""
+
             with open(xml_path, "r", encoding="utf-8") as file:
-                soup = BeautifulSoup(file, "lxml")
+                # soup = BeautifulSoup(file, "lxml")
+                html = XmlLib.parse_xml_file_to_root()
+                if html is None:
+                    return None
 
             sections = []
-            for sec in soup.find_all("sec"):
+            for sec in html.find_all("sec"):
                 title = sec.title.get_text(strip=True) if sec.title else ""
                 paragraphs = " ".join(p.get_text(strip=True) for p in sec.find_all("p"))
                 full_text = f"{title} {paragraphs}".strip()

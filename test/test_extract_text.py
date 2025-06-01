@@ -309,7 +309,7 @@ class ExtractTextTest(AmiAnyTest):
         FileLib.force_mkdir(outdir)
         csvout = Path(outdir, "makespace.csv")
         files = os.listdir(str(Path(makespacedir)))
-        with (open(csvout, 'w', ) as csvfile):
+        with open(csvout, 'w', encoding="UTF-8") as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(["id", "title", "text"])
             for i, file in enumerate(files):
