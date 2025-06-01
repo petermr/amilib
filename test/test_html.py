@@ -47,11 +47,13 @@ HTML_SUBSECTION_REF = """<span>to national level (4.2.2.3) and subnational</span
 # chunk of HTML from pdf2html on IPCC chapter
 MINI_IPCC_PATH = Path(Resources.TEST_IPCC_CHAP06, "mini.html")
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(os.path.basename(__file__))
-logger.setLevel(logging.INFO)
-logger.warning("*****Test logger {logger}****")
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(os.path.basename(__file__))
+# logger.setLevel(logging.INFO)
+# logger.warning("*****Test logger {logger}****")
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 """
@@ -2583,10 +2585,11 @@ class HtmlEditorTest(AmiAnyTest):
 
         outpath = Path(OUT_WG, "edited_toplevel.html")
         HtmlLib.write_html_file(editor.html, outpath, debug=True)
+        pass
 
     def test_de_gatsby_with_commands(self):
         """
-        use HtmlEditor commands to remove gatsby markup
+        use HtmlEditor commands to remove gatsby markup (creates 'de_gatsby.html')
         """
         inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc",
                         "cleaned_content", "wg2", "CrossChapters", "ccp5", "gatsby_raw.html")
@@ -2605,7 +2608,7 @@ class HtmlEditorTest(AmiAnyTest):
 
     def test_clean_de_gatsby_with_commands(self):
         """
-        cleans html with unnecessary divs
+        cleans de_gatsby.html removing unnecessary divs
         """
         inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg2", "CrossChapters",
                        "ccp5", "de_gatsby.html")

@@ -2960,7 +2960,7 @@ class HtmlEditor:
     .head - the head
     .style - a style stub in head (add others with SubElement)
     .body - a stub body
-    (To create other elemnts you have to use SubElement or append)
+    (To create other elements you have to use SubElement or append)
 
     example:
     skel = HtmlSkeleton()
@@ -3068,10 +3068,12 @@ class HtmlEditor:
             self.move_elements(cmd)
         elif cmd := command.get("add_ids"):
             self.add_ids(cmd)
+        elif c := command.get("style"):
+            logger.warning(f"'style' not yet Implemented (NYI)")
         elif c := command.get("no-op"):
             logger.info("No-op")
         else:
-            print(f"bad command {command}")
+            raise ValueError(f"bad command {command}")
 
     def delete_elements(self, command):
         """
