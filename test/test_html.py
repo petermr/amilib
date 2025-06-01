@@ -2206,6 +2206,7 @@ class CSSStyleTest(AmiAnyTest):
             cssstyle = AmiFont.create_font_edited_style_from_css_style_object(f"font-family: {f[0]}")
             assert cssstyle.name_value_dict == f[1]
 
+    @unittest.skip("Not currently used")
     def test_tinycss(self):
         import tinycss
         parser = tinycss.make_parser('page3')

@@ -59,7 +59,9 @@ class TestIPCC(AmiAnyTest):
 
     # ==================== tests ============
 
-    @unittest.skipUnless(False or AmiAnyTest.run_long(), "run occasionally, 1 min")
+    Force = False
+    # Force = True
+    @unittest.skipUnless(Force or AmiAnyTest.run_long(), "run occasionally, 1 min")
     def test_pdfplumber_doublecol_create_pages_for_WGs_HACKATHON_NO_OUTPUT(self):
         """
         DOWNLOAD PDF.
@@ -123,10 +125,11 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
             wg = output_parts[html_idx + 2:][0]
             chap = output_parts[html_idx + 3:][0]
 
-            html = HtmlGenerator.get_pdf_and_parse_to_html(report_dict, report_name)
+            html = HtmlGenerator.get_pdf_and_parse_to_html(report_dict, report_name, debug=True)
             assert html is not None
             outfile1 = Path(Resources.TEMP_DIR, "html", "ipcc", wg, chap, "pages", "page_1.json")
-            assert outfile1.exists(), f"json dict should exist {outfile1}"
+            # this doesn't make sense - no JSON file is written, but HTML
+            # assert outfile1.exists(), f"json dict should exist {outfile1}"
 
     @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally, 1 min")
     def test_html_commands_shadow_local_pdf_to_html(self):

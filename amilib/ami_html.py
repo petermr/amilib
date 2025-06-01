@@ -3068,9 +3068,11 @@ class HtmlEditor:
             self.move_elements(cmd)
         elif cmd := command.get("add_ids"):
             self.add_ids(cmd)
-        elif c := command.get("style"):
+        elif cmd := command.get("edit"):
+            logger.warning(f"'edit' not yet Implemented (NYI)")
+        elif cmd := command.get("style"):
             logger.warning(f"'style' not yet Implemented (NYI)")
-        elif c := command.get("no-op"):
+        elif cmd := command.get("no-op"):
             logger.info("No-op")
         else:
             raise ValueError(f"bad command {command}")
