@@ -8,7 +8,7 @@ import logging
 import os
 import re
 import shutil
-from pathlib import Path, PurePath, PurePosixPath
+from pathlib import Path, PurePath, PurePosixPath, PosixPath
 
 import chardet
 import errno
@@ -715,8 +715,8 @@ class FileLib:
         if refpath is None:
             return None
         # ensure we are working with Paths
-        pathx = Path(pathx)
-        refpath = Path(refpath)
+        pathx = PosixPath(pathx)
+        refpath = PosixPath(refpath)
 
         if walk_up:
             try:

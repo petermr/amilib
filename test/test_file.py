@@ -4,7 +4,7 @@ import os
 import logging
 import unittest
 
-from pathlib import Path
+from pathlib import Path, PosixPath
 
 from amilib.file_lib import FileLib
 from amilib.util import Util
@@ -106,12 +106,12 @@ class File0Test(AmiAnyTest):
         file1 = Path(top_dir, "file1")
         file1.touch()
         assert file1.exists()
-        files = [str(f) for f in FileLib.get_children(top_dir)]
+        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir)]
         assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/dir1',
                                  '/Users/pm286/workspace/amilib/temp/test_files/file1']
-        files = [str(f) for f in FileLib.get_children(top_dir, dirx=True)]
+        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=True)]
         assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/dir1']
-        files = [str(f) for f in FileLib.get_children(top_dir, dirx=False)]
+        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=False)]
         assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/file1']
 
     @classmethod
@@ -237,8 +237,8 @@ class File0Test(AmiAnyTest):
         convert absolute pathname to relative to another path
         some of this is in Python 3.12 but we'll support earlier versions
         """
-        abspath = Path("/a/b/c/d/e.txt")
-        refpath = Path("/a/b/c/")
+        abspath = PosixPath("/a/b/c/d/e.txt")
+        refpath = PosixPath("/a/b/c/")
         diffpath = FileLib.get_reletive_path(abspath, refpath)
         assert str(diffpath) == "d/e.txt"
 
