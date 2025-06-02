@@ -2793,7 +2793,7 @@ class Datatables:
         """
         :param datatables_html: datatables html elemnt, with table/thead and table/tbody
         :param colindex:index (either index of row or title of row
-        :return: list of elements in columnn in body (NO thead id)
+        :return: list of elements in column in body (NO thead id)
         """
         table = datatables_html.xpath("/html/body/table")[0]
         h_rows = table.xpath("thead/tr")
@@ -4763,7 +4763,7 @@ Some spans are not joined, x1 on one span and x0 on following are equal
             clazz = elem.attrib["class"]
             new_class = style_converter.get(clazz)
             if new_class is None:
-                logger.warn(f"cannot find replace for {clazz}")
+                logger.warning(f"cannot find replace for {clazz}")
                 continue
             html_class = HtmlClass(clazz)
             html_class.replace_class(clazz, new_class)

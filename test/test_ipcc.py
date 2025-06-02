@@ -182,7 +182,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         output_dir = Path(Resources.TEMP_DIR, "html", "ipcc", "wg2", "spm", "pages")
         output_dir.mkdir(exist_ok=True, parents=True)
         section_file = Path(output_dir, 'sections.csv')
-        with open(section_file, 'w', newline='') as csvfile:
+        with open(section_file, 'w', encoding="UTF-8", newline='') as csvfile:
             csvwriter = csv.writer(csvfile, quotechar='|')
             csvwriter.writerow(["qid", "Len", "P1"])
             for file, spanlist in total_spanlist:

@@ -530,7 +530,7 @@ class IPCC:
         outfile.parent.mkdir(exist_ok=True, parents=True)
         html1 = cls.create_html_from_hit_dict(hit_dict)
         if outfile:
-            with open(outfile, "w") as f:
+            with open(outfile, "w", encoding="UTF-8") as f:
                 if debug:
                     print(f" hitdict {hit_dict}")
                 HtmlLib.write_html_file(html1, outfile, debug=True)

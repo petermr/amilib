@@ -272,6 +272,6 @@ _jb_pytest_runner.py: error: argument --operation: invalid choice: 'search' (cho
         err = try_parse(["--value", "foo", "--operation", "index"])
         assert err == "argument --value: invalid int value: 'foo'\n"
 
-        # arg with wring choice value
+        # arg with wrong choice value
         err = try_parse(["--operation", "search"])
         assert err and err.strip() == "argument --operation: invalid choice: 'search' (choose from annotate, counts, index, no_input_styles)"

@@ -426,7 +426,7 @@ class TestUNFCCC(AmiAnyTest):
                 para = splits[1] if len(splits) == 2 else ""
                 edge = (source_id, target_id, para)
                 weight_dict[edge] += 1
-        with open(outcsv, "w") as fw:
+        with open(outcsv, "w", encoding="UTF-8") as fw:
             FileLib.force_mkdir(outcsv.parent)
             csvwriter = csv.writer(fw)
             csvwriter.writerow(["source", "link_type", "target", "para", "weight"])
