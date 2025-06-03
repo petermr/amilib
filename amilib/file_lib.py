@@ -8,7 +8,7 @@ import logging
 import os
 import re
 import shutil
-from pathlib import Path, PurePath, PurePosixPath, PosixPath
+from pathlib import Path, PurePath, PurePosixPath, PosixPath, PureWindowsPath
 
 import chardet
 import errno
@@ -54,7 +54,6 @@ S_XML = "xml"
 # FULLTEXT_PAGE = "fulltext-page*"
 # CHANNEL_STAR = "channel*"
 # RAW = "raw"
-
 
 
 # def get_logger_old(cls, filename, file_level=2, suffix=".py", level=logging.INFO):
@@ -109,7 +108,7 @@ S_XML = "xml"
 #         logger.info(f"created logger {module} {logger}")
 #         return logger
 #
-logger = Util.get_logger( __name__)
+logger = Util.get_logger(__name__)
 
 
 class FileLib:
@@ -127,8 +126,6 @@ class FileLib:
             except Exception as e:
                 logger.error(f"cannot make dirx {dirx} , {e}")
                 logger.debug(f"cannot make dirx {dirx}, {e}")
-
-
 
     @classmethod
     def force_mkparent(cls, file):
@@ -278,14 +275,28 @@ class FileLib:
                 raise FileNotFoundError(str(file) + " should exist")
 
     @classmethod
-    def copyanything(cls, src, dst):
+    def copyanything(cls, src, dst, mkdir=True):
         """copy file or directory
         (from StackOverflow)
         :param src: source file/directory
         :param dst: destination
+        :param mkdir: make dst directory if not exists
         """
+        if src is None:
+            raise ValueError("src is None")
+        src = Path(src)
+        if not src.exists():
+            raise FileExistsError(f"src {src} does not exist")
+        if dst is None:
+            raise ValueError("dst is None")
+        dst = Path(dst)
+        if mkdir:
+            if src.is_dir():
+                FileLib.force_mkdir(dst)
+            else:
+                FileLib.force_mkdir(dst.parent)
         try:
-            shutil.copytree(src, dst)
+            shutil.copytree(src, dst, dirs_exist_ok=mkdir)
         except OSError as exc:  # python >2.5
             if exc.errno in (errno.ENOTDIR, errno.EINVAL):
                 shutil.copy(src, dst)
@@ -293,12 +304,31 @@ class FileLib:
                 raise exc
 
     @classmethod
-    def copy_file(cls, file, src, dst):
+    def copy_file(cls, file, src, dst, mkdir=True):
         """
         :param file: filename in src dir
         :param src: source directory
-        :oaram dst: destinatiom diecrtory
+        :oaram dst: destination directory
+        :param mkdir: if true force dst to exist
         """
+        if file is None:
+            logger.error(f"file is None")
+            return None
+        if src is None:
+            logger.error(f"src is None")
+            return None
+        if dst is None:
+            logger.error(f"dst is None")
+            return None
+        if not src.exists():
+            logger.error(f"src {src} does not exist")
+            return None
+        if not Path(src, file) .exists():
+            logger.error(f"file {file} does not exist")
+            return None
+        FileLib.force_mkdir(dst)
+
+
         FileLib.copyanything(Path(src, file), Path(dst, file))
 
     @classmethod
@@ -310,7 +340,7 @@ class FileLib:
         :return None:
         """
         if not dirx or not Path(dirx).exists():
-            print (f"no directory given or found {dirx}")
+            print(f"no directory given or found {dirx}")
             return
         if delete_directory:
             shutil.rmtree(dirx)
@@ -395,7 +425,6 @@ class FileLib:
         posix_files = [PurePosixPath(f) for f in file_list]
         return posix_files
 
-
     @classmethod
     def delete_file(cls, file):
         """delete file (uses unlink) and asserts it has worked
@@ -420,7 +449,8 @@ class FileLib:
             logger.debug(f"wrote dictionary to {path}")
 
     @classmethod
-    def read_string_with_user_agent(self, url, user_agent='my-app/0.0.1', encoding="UTF-8", encoding_scheme="chardet", debug=False):
+    def read_string_with_user_agent(self, url, user_agent='my-app/0.0.1', encoding="UTF-8", encoding_scheme="chardet",
+                                    debug=False):
         """
         allows request.get() to use a user_agent
         :param url: url to read
@@ -438,7 +468,8 @@ class FileLib:
         if debug:
             logger.debug(f"apparent encoding: {response.apparent_encoding}")
         if encoding is None:
-            encoding = chardet.detect(content)['encoding'] if encoding_scheme == "chardet" else response.apparent_encoding
+            encoding = chardet.detect(content)[
+                'encoding'] if encoding_scheme == "chardet" else response.apparent_encoding
         content = content.decode(encoding)
         return content, encoding
 
@@ -496,13 +527,13 @@ class FileLib:
         parent = Path(parent)
         files = list(parent.iterdir())
         if dirx is not None:
-            files = [f for f in files if dirx==f.is_dir()]
+            files = [f for f in files if dirx == f.is_dir()]
         if hidden is not None:
             logger.warning(f"hidden option {hidden} is NYI")
         return files
 
     @classmethod
-    def posix_glob(cls, glob_str, recursive = True):
+    def posix_glob(cls, glob_str, recursive=True):
         """expands glob and ensure all output is posix
         :param glob_str: glob or list of globs to expand
         :param recursive: use recursive glob
@@ -535,7 +566,6 @@ class FileLib:
         except AssertionError as e:
             if abort:
                 raise e
-
 
     @classmethod
     def get_home(cls):
@@ -634,7 +664,6 @@ class FileLib:
                 strings_read = sss
             strings_out.extend(strings_read)
 
-
         # else:
         #     strings_out = strings_in
         return strings_out
@@ -669,8 +698,6 @@ class FileLib:
         :param logger: standard logger
         """
         logger.error(e, exc_info=True)
-
-
 
     @classmethod
     def write_temp_html(cls, htmlx, temp_dir, temp_file="junk.html", pretty_print=True, debug=True):
@@ -740,6 +767,18 @@ class FileLib:
         diffpath = PurePath(*new_parts)
         return diffpath
 
+    @classmethod
+    def normalize_to_posix(cls, path_str):
+        """
+        :param path_str: filename or part filename
+        :return: posix-normalized filename
+        """
+        # If it contains backslashes, it's likely Windows-style
+        if "\\" in path_str:
+            return PureWindowsPath(path_str).as_posix()
+        else:
+            # Already POSIX-like, normalize using PurePosixPath to remove redundant slashes, etc.
+            return PurePosixPath(path_str).as_posix()
 
 
 # see https://realpython.com/python-pathlib/
@@ -758,6 +797,7 @@ else:
     #    logger.debug("running file_lib main anyway")
     #    main()
     pass
+
 
 # examples of regex for filenames
 

@@ -2799,13 +2799,17 @@ class Datatables:
         h_rows = table.xpath("thead/tr")
         colheads = [t.text for t in h_rows[0].xpath("th")]
         if type(colindex) is str:
-            colindex = colheads.index(colindex)
+            if colindex not in colheads:
+                raise ValueError(f"column index '{colindex}' not in {colheads}")
+            colnum = colheads.index(colindex)
+            logger.info(f"column index for {colindex} is: {colnum}")
         b_rows = table.xpath("tbody/tr")
-        if colindex < 0 or colindex >= len(b_rows):
-            return None
+        # if colnum < 0 or colnum >= len(b_rows):
+        #     return None
         col_content = []
         for row in b_rows:
-            td_index_content = row.xpath("td")[colindex]
+            tdlist = row.xpath("td")
+            td_index_content = "None" if colnum >= len(tdlist) else tdlist[colnum]
             col_content.append(td_index_content)
         return col_content
 

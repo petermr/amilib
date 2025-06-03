@@ -6,7 +6,7 @@ import csv
 from pathlib import Path
 import lxml.etree as ET
 import pdfplumber
-from keybert import KeyBERT
+# from keybert import KeyBERT
 from lxml.html import HTMLParser
 
 from amilib.ami_html import HtmlLib
@@ -56,6 +56,7 @@ class ExtractTextTest(AmiAnyTest):
             logger.info(f"chapters: {chapters_by_chapnos}")
         logger.setLevel(save_level)
 
+    @unittest.skip("not using keybert")
     def test_keybert_breward_1(self):
         """
         uses keyBERT to extract phrases/words
@@ -172,6 +173,7 @@ class ExtractTextTest(AmiAnyTest):
         # logger.info(f"kw_counter {kw_counter}")
         return kw_counter, html_by_file, chunks_by_file
 
+    @unittest.skip("no longer supporting KEYBERT in amilib")
     def test_keybert_ipcc_wg1_3(self):
         """file:///Users/pm286/workspace/amilib/test/resources/ipcc/cleaned_content/wg1/Chapter03/html_with_ids.html"""
         indir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content","wg1", "Chapter03")
@@ -182,6 +184,7 @@ class ExtractTextTest(AmiAnyTest):
         assert Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter03", "marked/kw_counter.txt").exists()
 
 
+    @unittest.skip("no longer supporting KEYBERT in amilib")
     def test_keybert_ipcc_wg1(self):
         """file:///Users/pm286/workspace/amilib/test/resources/ipcc/cleaned_content/wg1/Chapter03/html_with_ids.html"""
 
