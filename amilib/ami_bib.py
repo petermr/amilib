@@ -1,6 +1,7 @@
 """manages bibligraphy and related stuff"""
 import datetime
 import json
+from enum import Enum
 from typing import List
 
 import lxml.etree as ET
@@ -156,6 +157,7 @@ class Biblioref:
                         total_bibliorefs.append(biblioref)
         return total_bibliorefs
 
+
 # EPMC keys
 
 ABS_TEXT = 'abstractText'
@@ -255,7 +257,32 @@ EUPMC_TRANSFORM = {
         }
     }
 }
+
+OPENALEX_TRANSFORM = {
+    "doi": {
+        "url": {
+            "prefix": "https://www.doi.org/",
+        }
+    },
+    "authorString": {
+        "text": {
+            "split": ",",
+        }
+    },
+    "abstractText": {
+        "text": {
+            "truncate": 200,
+        }
+    }
+}
+
+
+class ApiEnum(Enum):
+    EPMC = 1,
+    OPENALEX = 2
+
 class Pygetpapers:
+
 
     @classmethod
     def get_saved_section(cls, inpath):
@@ -269,8 +296,8 @@ class Pygetpapers:
         return saved_section, section_names
 
     @classmethod
-    def read_json_create_write_html_table(
-            cls, infile, outfile_h, wanted_keys,
+    def read_metadata_json_create_write_html_table(
+            cls, infile, outfile_h, wanted_keys, api=ApiEnum.EPMC,
             styles=None, datatables=None, table_id=None, config_ini=None):
         """
         read pygetpapers output, select columns and create HTML table
@@ -284,7 +311,7 @@ class Pygetpapers:
         :return: html table
         """
         if styles is None:
-            styles=["td {border:solid 1px black;}"]
+            styles = ["td {border:solid 1px black;}"]
         if table_id is None:
             table_id = "my_table"
 
@@ -295,13 +322,18 @@ class Pygetpapers:
         papers = jsonx.get("papers")
         assert papers is not None, f"cannot find papers"
         # specific keys we want
+        # put these in
+        if api == ApiEnum.EPMC:
+            transform_dict = EUPMC_TRANSFORM
+        elif api == ApiEnum.OPENALEX:
+            transform_dict = OPENALEX_TRANSFORM
+
         dict_by_id = AmiJson.create_json_table(papers, wanted_keys)
         htmlx, table = HtmlLib.create_html_table(
-            dict_by_id, transform_dict=EUPMC_TRANSFORM,
+            dict_by_id, transform_dict=transform_dict,
             styles=styles, datatables=datatables, table_id=table_id
         )
         Pygetpapers.add_query_as_caption(config_ini, table)
-
 
         HtmlUtil.write_html_elem(htmlx, outfile_h, debug=True)
 
@@ -338,6 +370,7 @@ class Publication:
     @classmethod
     def is_chapter_or_tech_summary(cls, span_text):
         return span_text.startswith(Publication.CHAPTER) or span_text.startswith(Publication.TECHNICAL_SUMMARY)
+
 
 # EPMC_PYGETPAPERS
 SAVED_CONFIG_INI = "saved_config.ini"
@@ -404,6 +437,7 @@ SECTION_KEYS = {
 }
 JOURNAL_INFO_TITLE = "journalInfo.journal.title"
 
+
 class JATSSection:
     """
     a section in JATS file.
@@ -411,6 +445,8 @@ class JATSSection:
     may have an ID and/or sec-type
     <sec sec-type = 'introduction' ...>
     """
+
+
 class JATSDoc:
     """holds data for JATS file (possibly including parsed XML
     """
@@ -421,6 +457,7 @@ class JATSDoc:
     FRONT = "front"
     SEC = 'sec'
     SEC_TYPE = 'sec-type'
+
     def __init__(self, xml):
         self.xml = xml
         self.article = self.get_article()
@@ -438,8 +475,6 @@ class JATSDoc:
             element=self.article, xpath=f"./*[local-name()='{jats_doc_component}']")
         return component
 
-
-
     def get_article(self):
         """
         get <article> which must be root element
@@ -447,7 +482,6 @@ class JATSDoc:
         self.article = XmlLib.get_single_element(
             element=self.xml, xpath=f"/*[local-name()='{JATSDoc.ARTICLE}']")
         return self.article
-
 
     def get_front(self):
         """
@@ -483,7 +517,7 @@ class JATSDoc:
         return self.body_secs, self.body_non_secs
 
     @classmethod
-    def get_titles_and_ids(cls, sec_list:List):
+    def get_titles_and_ids(cls, sec_list: List):
         """get titles from sections
         Assume <title> child
         """
@@ -510,4 +544,3 @@ class JATSDoc:
             title = XmlLib.get_single_element(sec, "./*[local-name()='title']")
             title_text = None if title is None else "".join(title.itertext())
         return title_text, id
-

@@ -2,6 +2,7 @@ import ast
 import collections
 import configparser
 import glob
+import json
 import logging
 import re
 import unittest
@@ -19,7 +20,7 @@ from amilib.ami_bib import (SAVED, SAVED_CONFIG_INI, SECTION_KEYS, API, LIMIT, Q
                             PUB_YEAR, JOURNAL_INFO_TITLE, Pygetpapers, JATSDoc)
 from amilib.ami_html import HtmlUtil, HtmlLib, Datatables, SCROLL_PARENT, ANNOTATION
 from amilib.ami_util import AmiJson, AmiUtil
-from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer, CorpusQuery, HTML_WITH_IDS
+from amilib.ami_corpus import AmiCorpus, AmiCorpusContainer, CorpusQuery, HTML_WITH_IDS, OpenAlex
 from amilib.amix import AmiLib
 from amilib.file_lib import FileLib
 from amilib.util import Util, TextUtil
@@ -396,34 +397,6 @@ crop_query = {
         }
 
 
-# def create_markup_test_datatable(corpus_query):
-#     corpus_query.debug = True
-#     corpus_query.query_id = "methane_emissions"
-#     corpus_query.para_xpath = None
-#     corpus_query.indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
-#     corpus_query.outfile = Path(corpus_query.indir, f"{corpus_query.query_id}.html")
-#     corpus_query.globstr = f"{str(corpus_query.indir)}/**/{HTML_WITH_IDS}.html"
-#     corpus_query.infiles = FileLib.posix_glob(corpus_query.globstr, recursive=True)
-#     # assert 50 == len(infiles)
-#     corpus_query.phrases = ["methane emissions"]
-#     corpus_query.colheads = ["term", "ref", "para"]
-#
-#     html_markup = AmiCorpus.search_files_with_phrases_write_results(
-#         corpus_query.infiles, phrases=corpus_query.phrases, para_xpath=corpus_query.para_xpath, outfile=corpus_query.outfile, debug=corpus_query.debug)
-#     term_id_by_url = extract_hits_by_url_from_nested_lists(html_markup)
-#     term_ref_p_tuple_list = CorpusQuery.get_hits_as_term_ref_p_tuple_list(term_id_by_url)
-#     htmlx, table_body = HtmlLib.make_skeleton_table(colheads=corpus_query.colheads)
-#     CorpusQuery._add_hits_to_table(table_body, term_ref_p_tuple_list)
-#     table_file = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", f"{corpus_query.query_id}_table_hits.html")
-#     HtmlLib.write_html_file(htmlx, table_file, debug=True)
-#     htmlx, table_body = HtmlLib.make_skeleton_table(colheads=corpus_query.colheads)
-#     new_term_ref_p_list = []
-#     for (term, ref, para) in term_ref_p_tuple_list:
-#         has_markup = HtmlLib.find_and_markup_phrases(
-#             para, term, ignore_case=True, markup=True, flags=RegexFlag.IGNORECASE)
-#         new_term_ref_p_list.append((term, ref, para))
-#     CorpusQuery._add_hits_to_table(table_body, new_term_ref_p_list)
-#     return htmlx, corpus_query.query_id
 
 def _validate_and_count_table(htmlx, min_entries=10, num_columns = 3):
     """
@@ -472,6 +445,28 @@ def _validate_and_count_table(htmlx, min_entries=10, num_columns = 3):
             pass
     if len(missing_markup) > 0:
         logger.error(f"missing markup for {len(missing_markup)} {missing_markup[:20]}...")
+
+
+class OpenAlexTest:
+    pass
+    def __init__(self):
+        pass
+
+    @classmethod
+    def read_json_create_write_html_table(cls, infile: Path, outfile: Path, wanted_keys: list[str]) -> dict:
+        """
+        :param infile: input containing JSON metadata from OpenAlex
+        :param outfile: tabular metadata in datatables format
+        :param wanted_keys: list of openalex keys
+
+        start_key
+        JSON_KEY = "papers"
+        JSON_KEY = "total_json_output"
+        """
+        with open(infile, "r", encoding="UTF-8") as f:
+            input_dict = json.loads(f.read())
+            return input_dict
+
 
 
 class AmiCorpusTest(AmiAnyTest):
@@ -1256,6 +1251,63 @@ class AmiCorpusTest(AmiAnyTest):
             a = ET.SubElement(h3, "a")
             a.attrib["href"] = f"#{caption}"
             a.text = a_text
+
+    def test_read_eupmc_json_create_write_datatables_html(self):
+        """
+        Reads a eupmc_results.json and creates and write an HTML datatables.html
+        """
+        infile = Path(Resources.TEST_RESOURCES_DIR, "pygetpapers", "wildlife", "eupmc_results.json")
+        assert infile.exists()
+        outfile = Path(Resources. TEMP_DIR, "pygetpapers", "wildlife", "datatables.html")
+        AmiCorpus.read_json_create_write_html_table(infile, outfile,
+                                wanted_keys=["doi", "fullTextIdList", "title"])
+
+    def test_read_single_openalex_json(self):
+        """
+        Reads an openalex metadata file and creates and writes an HTML datatables.html
+        """
+        infile = Path(Resources.TEST_RESOURCES_DIR, "openalex", "openalex-result.json")
+        logger.info(f"infile {infile}")
+        assert infile.exists()
+        outfile = Path(Resources.TEMP_DIR, "openalex", "openalex-datatable.html")
+        dikt = OpenAlexTest.read_json_create_write_html_table(infile, outfile, wanted_keys=["doi", "title"])
+        assert dikt is not None
+        assert "doi" in dikt.keys()
+
+    def test_read_total_openalex_json(self):
+        """
+        Reads an openalex metadata file and creates and writes an HTML datatables.html
+        """
+        infile = Path(Resources.TEST_RESOURCES_DIR, "openalex", "openalex-results.json")
+        logger.info(f"infile {infile}")
+        assert infile.exists()
+        outfile = Path(Resources.TEMP_DIR, "openalex", "openalex-datatable.html")
+        dikt = OpenAlexTest.read_json_create_write_html_table(infile, outfile, wanted_keys=["doi", "title"])
+        assert dikt is not None
+        assert "total_json_output" in dikt.keys(), f"keys {dikt.keys()}"
+
+        # assert outfile.exists(), f"{outfile} should have been created"
+
+    def test_read_single_open_alex_files(self):
+        """
+        iterate over a directory and try to read all open alex metadata
+        only works for PMR
+
+        """
+        indir = Path(Path(Resources.TEST_RESOURCES_DIR).parent.parent.parent, "pygetpapers")
+        assert indir.exists(), f"{indir} should exist"
+        pygetpapers_test = Path(indir, "invasive_plant_species_test" )
+        assert pygetpapers_test.exists(), f"{pygetpapers_test} should exist"
+        dirs = pygetpapers_test.iterdir()
+        for dir in dirs:
+            openalex = Path(dir, "openalex-result.json")
+            if not openalex.exists():
+                logger.error(f"no {openalex}")
+            else:
+                with open(openalex, "r") as f:
+                    pydict = json.loads(f.read())
+                    logger.info(f"{pydict.keys()}")
+
 
 
 # ===================== snippets ===================

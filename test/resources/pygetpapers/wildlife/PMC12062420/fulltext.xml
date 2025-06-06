@@ -1,0 +1,140 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd"> 
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.3" id="ecy70094" xml:lang="en" article-type="data-paper"><?DTDIdentifier.IdentifierValue -//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with OASIS Tables with MathML3 v1.1 20151215//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName JATS-archive-oasis-article1-mathml3.dtd?><?SourceDTD.Version 1.1?><?ConverterInfo.XSLTName jats-oasis2jats3.xsl?><?ConverterInfo.Version 1?><?properties open_access?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Ecology</journal-id><journal-id journal-id-type="iso-abbrev">Ecology</journal-id><journal-id journal-id-type="doi">10.1002/(ISSN)1939-9170</journal-id><journal-id journal-id-type="publisher-id">ECY</journal-id><journal-title-group><journal-title>Ecology</journal-title></journal-title-group><issn pub-type="ppub">0012-9658</issn><issn pub-type="epub">1939-9170</issn><publisher><publisher-name>John Wiley &#x00026; Sons, Inc.</publisher-name><publisher-loc>Hoboken, USA</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">12062420</article-id><article-id pub-id-type="doi">10.1002/ecy.70094</article-id><article-id pub-id-type="publisher-id">ECY70094</article-id><article-categories><subj-group subj-group-type="overline"><subject>Data Paper</subject></subj-group><subj-group subj-group-type="heading"><subject>Data Paper</subject></subj-group></article-categories><title-group><article-title>Rhode Island wildlife camera trap survey 2018 to 2023</article-title><alt-title alt-title-type="right-running-head">Rhode Island wildlife camera trap survey 2018 to 2023</alt-title><alt-title alt-title-type="left-running-head">Mayer et al.</alt-title></title-group><contrib-group><contrib id="ecy70094-cr-0001" contrib-type="author" corresp="yes"><name><surname>Mayer</surname><given-names>Amy E.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-1032-5111</contrib-id><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>agottfried@uri.edu</email></address></contrib><contrib id="ecy70094-cr-0002" contrib-type="author"><name><surname>Ganoe</surname><given-names>Laken S.</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="ecy70094-cr-0003" contrib-type="author"><name><surname>Brown</surname><given-names>Charles</given-names></name><xref rid="ecy70094-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="ecy70094-cr-0004" contrib-type="author"><name><surname>Rezendes</surname><given-names>Kylie</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="ecy70094-curr-0001" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="ecy70094-cr-0005" contrib-type="author"><name><surname>Burr</surname><given-names>Jessica</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="ecy70094-cr-0006" contrib-type="author"><name><surname>Paton</surname><given-names>Emerson</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="ecy70094-curr-0002" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib id="ecy70094-cr-0007" contrib-type="author"><name><surname>Wampole</surname><given-names>Erin</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-9788-461X</contrib-id><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="ecy70094-curr-0003" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="ecy70094-cr-0008" contrib-type="author"><name><surname>Rivera</surname><given-names>Kimberly</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="ecy70094-curr-0004" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib id="ecy70094-cr-0009" contrib-type="author"><name><surname>Stift</surname><given-names>Allison M.</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="ecy70094-cr-0010" contrib-type="author"><name><surname>Noe</surname><given-names>Krista L.</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="ecy70094-curr-0005" ref-type="aff">
+<sup>7</sup>
+</xref></contrib><contrib id="ecy70094-cr-0011" contrib-type="author"><name><surname>Carey</surname><given-names>Arianna E.</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="ecy70094-cr-0012" contrib-type="author"><name><surname>Hughes</surname><given-names>Adriana</given-names></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="ecy70094-cr-0013" contrib-type="author"><name><surname>McGreevy</surname><given-names>Thomas J.</given-names><suffix>Jr.</suffix></name><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="ecy70094-cr-0014" contrib-type="author"><name><surname>Gerber</surname><given-names>Brian D.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-9285-9784</contrib-id><xref rid="ecy70094-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib></contrib-group><aff id="ecy70094-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Natural Resources Science</named-content>
+<institution>University of Rhode Island</institution>
+<city>Kingston</city>
+<named-content content-type="country-part">Rhode Island</named-content>
+<country country="US">USA</country>
+</aff><aff id="ecy70094-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<institution>Rhode Island Department of Environmental Management, Division of Fish and Wildlife</institution>
+<city>West Kingston</city>
+<named-content content-type="country-part">Rhode Island</named-content>
+<country country="US">USA</country>
+</aff><aff id="ecy70094-curr-0001"><label>
+<sup>3</sup>
+</label>Present address:
+<institution>University of Texas&#x02010;El Paso</institution>
+<city>El Paso</city>
+<named-content content-type="country-part">Texas</named-content>
+<country country="US">USA</country>
+</aff><aff id="ecy70094-curr-0002"><label>
+<sup>4</sup>
+</label>Present address:
+<institution>Resources Management and Science, Yosemite National Park</institution>
+<city>El Portal</city>
+<named-content content-type="country-part">California</named-content>
+<country country="US">USA</country>
+</aff><aff id="ecy70094-curr-0003"><label>
+<sup>5</sup>
+</label>Present address:
+<institution>Washington Department of Fish and Wildlife</institution>
+<city>Ellensburg</city>
+<named-content content-type="country-part">Washington</named-content>
+<country country="US">USA</country>
+</aff><aff id="ecy70094-curr-0004"><label>
+<sup>6</sup>
+</label>Present address:
+<named-content content-type="organisation-division">Department of Conservation and Science</named-content>
+<institution>Lincoln Park Zoo</institution>
+<city>Chicago</city>
+<named-content content-type="country-part">Illinois</named-content>
+<country country="US">USA</country>
+</aff><aff id="ecy70094-curr-0005"><label>
+<sup>7</sup>
+</label>Present address:
+<institution>West Virginia Natural Heritage Program, West Virginia Division of Natural Resources</institution>
+<city>Elkins</city>
+<named-content content-type="country-part">West Virginia</named-content>
+<country country="US">USA</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence</bold>
+<break/>
+Amy E. Mayer<break/>
+Email: <email>agottfried@uri.edu</email>
+<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>08</day><month>5</month><year>2025</year></pub-date><pub-date pub-type="ppub"><month>5</month><year>2025</year></pub-date><volume>106</volume><issue seq="50">5</issue><issue-id pub-id-type="doi">10.1002/ecy.v106.5</issue-id><elocation-id>e70094</elocation-id><history>
+<date date-type="rev-recd"><day>17</day><month>12</month><year>2024</year></date>
+<date date-type="received"><day>16</day><month>2</month><year>2024</year></date>
+<date date-type="accepted"><day>03</day><month>3</month><year>2025</year></date>
+</history><permissions><!--&#x000a9; 2025 The Ecological Society of America--><copyright-statement content-type="article-copyright">&#x000a9; 2025 The Author(s). <italic toggle="yes">Ecology</italic> published by Wiley Periodicals LLC on behalf of The Ecological Society of America.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri content-type="pdf" xlink:href="file:ECY-106-e70094.pdf"/><abstract><title>Abstract</title><p>Monitoring wildlife populations through the collection of abundance and distribution data across climatic seasons and multiple years is critical to understanding wildlife spatiotemporal dynamics. This is especially important in landscapes faced with natural and anthropogenic disturbances, which include the state of Rhode Island, USA. Rhode Island is the second most densely populated state in the United States, yet the landscape remains highly forested. Similar to many areas in the region, land cover change and conversion to non&#x02010;habitat cover types continue to be an issue as a result of increased anthropogenic disturbance, in addition to recent natural disturbance including forest structural changes from the spongy moth caterpillar (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Lymantria dispar</italic>
+</styled-content>). These changes in land cover types and landscape patterns have the potential to positively or negatively affect wildlife communities, and thus, it is increasingly important to monitor wildlife populations. Camera traps provide an efficient way to inventory and monitor a large spatial area and record detections of a wide variety of terrestrial vertebrates. We began surveying the state of Rhode Island as part of a focal study on bobcats (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Lynx rufus</italic>
+</styled-content>, 2018&#x02013;2020) and later fishers (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Pekania pennanti</italic>
+</styled-content>, 2020&#x02013;2023) while documenting all species of terrestrial vertebrates detected at camera survey locations. We placed cameras in areas with land cover appropriate for the original target species&#x02014;primarily forests and forested wetlands&#x02014;and avoided placing cameras directly along hiking trails or roads. The state was divided into two sections&#x02014;west and east&#x02014;to maximize study area coverage with limited equipment. Cameras were deployed for at least six weeks in each survey period and section. In total, we monitored 249 survey sites in the state over 12 survey periods (six winter seasons, five summer seasons, and one spring season). We collected 244,013 unique detections from 39 terrestrial vertebrate species (25 mammal species, 13 bird species, and non&#x02010;personnel humans) throughout the study. These data provide spatial and temporal detection information that is useful for investigating the changes in wildlife populations over time and varying degrees of development through analyses including single species, multi&#x02010;species, dynamic, and diel occupancy modeling. Results of these analyses can be used to understand how a changing landscape impacts wildlife species. The data are openly available for reuse, and please cite this data paper when these data are used in other materials.</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="ecy70094-kwd-0001">camera traps</kwd><kwd id="ecy70094-kwd-0002">mammals</kwd><kwd id="ecy70094-kwd-0003">multi&#x02010;season survey</kwd><kwd id="ecy70094-kwd-0004">Northeastern United States</kwd><kwd id="ecy70094-kwd-0005">occupancy modeling</kwd><kwd id="ecy70094-kwd-0006">Rhode Island</kwd><kwd id="ecy70094-kwd-0007">species distribution</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source><institution-wrap><institution>Rhode Island Department of Environmental Management
+</institution><institution-id institution-id-type="doi">10.13039/100020460</institution-id></institution-wrap></funding-source><award-id>W23R</award-id><award-id>F19F01093</award-id></award-group></funding-group><counts><fig-count count="0"/><table-count count="0"/><page-count count="2"/><word-count count="700"/></counts><custom-meta-group><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>May 2025</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.5.6 mode:remove_FC converted:08.05.2025</meta-value></custom-meta></custom-meta-group></article-meta><notes><p content-type="self-citation">
+<mixed-citation publication-type="journal" id="ecy70094-cit-9001">
+<string-name>
+<surname>Mayer</surname>, <given-names>Amy E.</given-names>
+</string-name>, <string-name>
+<given-names>Laken S.</given-names>
+<surname>Ganoe</surname>
+</string-name>, <string-name>
+<given-names>Charles</given-names>
+<surname>Brown</surname>
+</string-name>, <string-name>
+<given-names>Kylie</given-names>
+<surname>Rezendes</surname>
+</string-name>, <string-name>
+<given-names>Jessica</given-names>
+<surname>Burr</surname>
+</string-name>, <string-name>
+<given-names>Emerson</given-names>
+<surname>Paton</surname>
+</string-name>, <string-name>
+<given-names>Erin</given-names>
+<surname>Wampole</surname>
+</string-name>, et al. <year>2025</year>. &#x0201c;<article-title>Rhode Island Wildlife Camera Trap Survey 2018 to 2023</article-title>.&#x0201d; <source>Ecology</source>
+<volume>106</volume>(<issue>5</issue>): <elocation-id>e70094</elocation-id>. <pub-id pub-id-type="doi">10.1002/ecy.70094</pub-id>
+</mixed-citation>
+</p><fn-group id="ecy70094-ntgp-0001"><fn id="ecy70094-note-0001"><p>
+<bold>Handling Editor:</bold> Simona Picardi</p></fn></fn-group></notes></front><body id="ecy70094-body-0001"><sec sec-type="COI-statement" id="ecy70094-sec-0001"><title>CONFLICT OF INTEREST STATEMENT</title><p>The authors declare no conflicts of interest.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="ecy70094-supitem-0001" position="float" content-type="local-data"><caption><p>
+Data S1.
+</p></caption><media xlink:href="ECY-106-e70094-s001.zip"/></supplementary-material></sec></body><back><sec sec-type="data-availability" id="ecy70094-sec-0003"><title>DATA AVAILABILITY STATEMENT</title><p>The dataset is available as Supporting Information to this paper (Data&#x000a0;<xref rid="ecy70094-supitem-0001" ref-type="supplementary-material">S1</xref>) and is also available on Zenodo at <ext-link xlink:href="https://doi.org/10.5281/zenodo.10610602" ext-link-type="uri" specific-use="dataset is-supplemented-by">https://doi.org/10.5281/zenodo.10610602</ext-link>. The raw images used to compile the dataset are owned by the University of Rhode Island Department of Natural Resources Science and are available to qualified researchers by contacting the University of Rhode Island Department of Natural Resources Science Quest/Gerber Lab Manager (current email: <email>agottfried@uri.edu</email>) and requesting Rhode Island camera survey data from 2020 through 2023.</p></sec></back></article>

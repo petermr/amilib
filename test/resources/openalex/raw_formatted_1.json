@@ -1,0 +1,1073 @@
+{
+	"total_json_output": {
+		"f10_1016_j_ijsbe_2017_10_003": {
+			"id": "https://openalex.org/W2772005084",
+			"doi": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+			"title": "Urban sprawl and its impact on landuse/land cover dynamics of Dehradun City, India",
+			"display_name": "Urban sprawl and its impact on landuse/land cover dynamics of Dehradun City, India",
+			"relevance_score": 855.5195,
+			"publication_year": 2017,
+			"publication_date": "2017-12-01",
+			"ids": {
+				"openalex": "https://openalex.org/W2772005084",
+				"doi": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+				"mag": "2772005084"
+			},
+			"language": "en",
+			"primary_location": {
+				"is_oa": true,
+				"landing_page_url": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+				"pdf_url": null,
+				"source": {
+					"id": "https://openalex.org/S2764990248",
+					"display_name": "International Journal of Sustainable Built Environment",
+					"issn_l": "2212-6090",
+					"issn": [
+						"2212-6090",
+						"2212-6104"
+					],
+					"is_oa": false,
+					"is_in_doaj": false,
+					"is_indexed_in_scopus": false,
+					"is_core": true,
+					"host_organization": "https://openalex.org/P4310320990",
+					"host_organization_name": "Elsevier BV",
+					"host_organization_lineage": [
+						"https://openalex.org/P4310320990"
+					],
+					"host_organization_lineage_names": [
+						"Elsevier BV"
+					],
+					"type": "journal"
+				},
+				"license": "cc-by-nc-nd",
+				"license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+				"version": "publishedVersion",
+				"is_accepted": true,
+				"is_published": true
+			},
+			"type": "article",
+			"type_crossref": "journal-article",
+			"indexed_in": [
+				"crossref"
+			],
+			"open_access": {
+				"is_oa": true,
+				"oa_status": "hybrid",
+				"oa_url": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+				"any_repository_has_fulltext": false
+			},
+			"authorships": [
+				{
+					"author_position": "first",
+					"author": {
+						"id": "https://openalex.org/A5073926030",
+						"display_name": "Parvaiz A. Bhat",
+						"orcid": null
+					},
+					"institutions": [
+						{
+							"id": "https://openalex.org/I2534966",
+							"display_name": "Patna University",
+							"ror": "https://ror.org/04ysp6769",
+							"country_code": "IN",
+							"type": "education",
+							"lineage": [
+								"https://openalex.org/I2534966"
+							]
+						}
+					],
+					"countries": [
+						"IN"
+					],
+					"is_corresponding": false,
+					"raw_author_name": "Parvaiz A. Bhat",
+					"raw_affiliation_strings": [
+						"Department of Geography, Patna University, Bihar, India"
+					],
+					"affiliations": [
+						{
+							"raw_affiliation_string": "Department of Geography, Patna University, Bihar, India",
+							"institution_ids": [
+								"https://openalex.org/I2534966"
+							]
+						}
+					]
+				},
+				{
+					"author_position": "middle",
+					"author": {
+						"id": "https://openalex.org/A5005533740",
+						"display_name": "Mifta ul Shafiq",
+						"orcid": "https://orcid.org/0000-0002-0185-4919"
+					},
+					"institutions": [
+						{
+							"id": "https://openalex.org/I135388327",
+							"display_name": "University of Kashmir",
+							"ror": "https://ror.org/032xfst36",
+							"country_code": "IN",
+							"type": "education",
+							"lineage": [
+								"https://openalex.org/I135388327"
+							]
+						}
+					],
+					"countries": [
+						"IN"
+					],
+					"is_corresponding": false,
+					"raw_author_name": "Mifta ul Shafiq",
+					"raw_affiliation_strings": [
+						"Department of Geography and Regional Development, University of Kashmir, Srinagar, India"
+					],
+					"affiliations": [
+						{
+							"raw_affiliation_string": "Department of Geography & Regional Development, University of Kashmir, Srinagar, India",
+							"institution_ids": [
+								"https://openalex.org/I135388327"
+							]
+						}
+					]
+				},
+				{
+					"author_position": "middle",
+					"author": {
+						"id": "https://openalex.org/A5079676074",
+						"display_name": "Abaas Ahmad Mir",
+						"orcid": null
+					},
+					"institutions": [
+						{
+							"id": "https://openalex.org/I135388327",
+							"display_name": "University of Kashmir",
+							"ror": "https://ror.org/032xfst36",
+							"country_code": "IN",
+							"type": "education",
+							"lineage": [
+								"https://openalex.org/I135388327"
+							]
+						}
+					],
+					"countries": [
+						"IN"
+					],
+					"is_corresponding": false,
+					"raw_author_name": "Abaas A. Mir",
+					"raw_affiliation_strings": [
+						"Department of Geography & Regional Development, University of Kashmir, Srinagar, India"
+					],
+					"affiliations": [
+						{
+							"raw_affiliation_string": "Department of Geography & Regional Development, University of Kashmir, Srinagar, India",
+							"institution_ids": [
+								"https://openalex.org/I135388327"
+							]
+						}
+					]
+				},
+				{
+					"author_position": "last",
+					"author": {
+						"id": "https://openalex.org/A5034175708",
+						"display_name": "Pervez Ahmed",
+						"orcid": "https://orcid.org/0009-0005-6899-1001"
+					},
+					"institutions": [
+						{
+							"id": "https://openalex.org/I135388327",
+							"display_name": "University of Kashmir",
+							"ror": "https://ror.org/032xfst36",
+							"country_code": "IN",
+							"type": "education",
+							"lineage": [
+								"https://openalex.org/I135388327"
+							]
+						}
+					],
+					"countries": [
+						"IN"
+					],
+					"is_corresponding": true,
+					"raw_author_name": "Pervez Ahmed",
+					"raw_affiliation_strings": [
+						"Department of Geography and Regional Development, University of Kashmir, Srinagar, India"
+					],
+					"affiliations": [
+						{
+							"raw_affiliation_string": "Department of Geography & Regional Development, University of Kashmir, Srinagar, India",
+							"institution_ids": [
+								"https://openalex.org/I135388327"
+							]
+						}
+					]
+				}
+			],
+			"institution_assertions": [
+
+			],
+			"countries_distinct_count": 1,
+			"institutions_distinct_count": 2,
+			"corresponding_author_ids": [
+				"https://openalex.org/A5034175708"
+			],
+			"corresponding_institution_ids": [
+				"https://openalex.org/I135388327"
+			],
+			"apc_list": null,
+			"apc_paid": null,
+			"fwci": 4.696,
+			"has_fulltext": true,
+			"fulltext_origin": "ngrams",
+			"cited_by_count": 171,
+			"citation_normalized_percentile": {
+				"value": 0.857633,
+				"is_in_top_1_percent": false,
+				"is_in_top_10_percent": false
+			},
+			"cited_by_percentile_year": {
+				"min": 98,
+				"max": 99
+			},
+			"biblio": {
+				"volume": "6",
+				"issue": "2",
+				"first_page": "513",
+				"last_page": "521"
+			},
+			"is_retracted": false,
+			"is_paratext": false,
+			"primary_topic": {
+				"id": "https://openalex.org/T10226",
+				"display_name": "Land Use and Ecosystem Services",
+				"score": 0.9997,
+				"subfield": {
+					"id": "https://openalex.org/subfields/2306",
+					"display_name": "Global and Planetary Change"
+				},
+				"field": {
+					"id": "https://openalex.org/fields/23",
+					"display_name": "Environmental Science"
+				},
+				"domain": {
+					"id": "https://openalex.org/domains/3",
+					"display_name": "Physical Sciences"
+				}
+			},
+			"topics": [
+				{
+					"id": "https://openalex.org/T10226",
+					"display_name": "Land Use and Ecosystem Services",
+					"score": 0.9997,
+					"subfield": {
+						"id": "https://openalex.org/subfields/2306",
+						"display_name": "Global and Planetary Change"
+					},
+					"field": {
+						"id": "https://openalex.org/fields/23",
+						"display_name": "Environmental Science"
+					},
+					"domain": {
+						"id": "https://openalex.org/domains/3",
+						"display_name": "Physical Sciences"
+					}
+				},
+				{
+					"id": "https://openalex.org/T13890",
+					"display_name": "Remote Sensing and Land Use",
+					"score": 0.9977,
+					"subfield": {
+						"id": "https://openalex.org/subfields/1902",
+						"display_name": "Atmospheric Science"
+					},
+					"field": {
+						"id": "https://openalex.org/fields/19",
+						"display_name": "Earth and Planetary Sciences"
+					},
+					"domain": {
+						"id": "https://openalex.org/domains/3",
+						"display_name": "Physical Sciences"
+					}
+				},
+				{
+					"id": "https://openalex.org/T10111",
+					"display_name": "Remote Sensing in Agriculture",
+					"score": 0.9972,
+					"subfield": {
+						"id": "https://openalex.org/subfields/2303",
+						"display_name": "Ecology"
+					},
+					"field": {
+						"id": "https://openalex.org/fields/23",
+						"display_name": "Environmental Science"
+					},
+					"domain": {
+						"id": "https://openalex.org/domains/3",
+						"display_name": "Physical Sciences"
+					}
+				}
+			],
+			"keywords": [
+				{
+					"id": "https://openalex.org/keywords/urban-sprawl",
+					"display_name": "Urban sprawl",
+					"score": 0.96147776
+				},
+				{
+					"id": "https://openalex.org/keywords/land-cover",
+					"display_name": "Land Cover",
+					"score": 0.548139
+				}
+			],
+			"concepts": [
+				{
+					"id": "https://openalex.org/C487182",
+					"wikidata": "https://www.wikidata.org/wiki/Q192042",
+					"display_name": "Urban sprawl",
+					"level": 3,
+					"score": 0.96147776
+				},
+				{
+					"id": "https://openalex.org/C205649164",
+					"wikidata": "https://www.wikidata.org/wiki/Q1071",
+					"display_name": "Geography",
+					"level": 0,
+					"score": 0.702088
+				},
+				{
+					"id": "https://openalex.org/C2908647359",
+					"wikidata": "https://www.wikidata.org/wiki/Q2625603",
+					"display_name": "Population",
+					"level": 2,
+					"score": 0.59353405
+				},
+				{
+					"id": "https://openalex.org/C77352025",
+					"wikidata": "https://www.wikidata.org/wiki/Q386191",
+					"display_name": "Population growth",
+					"level": 3,
+					"score": 0.59116876
+				},
+				{
+					"id": "https://openalex.org/C39853841",
+					"wikidata": "https://www.wikidata.org/wiki/Q161078",
+					"display_name": "Urbanization",
+					"level": 2,
+					"score": 0.5907757
+				},
+				{
+					"id": "https://openalex.org/C2780648208",
+					"wikidata": "https://www.wikidata.org/wiki/Q3001793",
+					"display_name": "Land cover",
+					"level": 3,
+					"score": 0.548139
+				},
+				{
+					"id": "https://openalex.org/C4792198",
+					"wikidata": "https://www.wikidata.org/wiki/Q1165944",
+					"display_name": "Land use",
+					"level": 2,
+					"score": 0.5316706
+				},
+				{
+					"id": "https://openalex.org/C49545453",
+					"wikidata": "https://www.wikidata.org/wiki/Q69883",
+					"display_name": "Urban planning",
+					"level": 2,
+					"score": 0.4758156
+				},
+				{
+					"id": "https://openalex.org/C118518473",
+					"wikidata": "https://www.wikidata.org/wiki/Q11451",
+					"display_name": "Agriculture",
+					"level": 2,
+					"score": 0.47045434
+				},
+				{
+					"id": "https://openalex.org/C48824518",
+					"wikidata": "https://www.wikidata.org/wiki/Q396340",
+					"display_name": "Agricultural economics",
+					"level": 1,
+					"score": 0.37982264
+				},
+				{
+					"id": "https://openalex.org/C45355965",
+					"wikidata": "https://www.wikidata.org/wiki/Q1643441",
+					"display_name": "Socioeconomics",
+					"level": 1,
+					"score": 0.33166113
+				},
+				{
+					"id": "https://openalex.org/C91375879",
+					"wikidata": "https://www.wikidata.org/wiki/Q15473274",
+					"display_name": "Environmental planning",
+					"level": 1,
+					"score": 0.32878888
+				},
+				{
+					"id": "https://openalex.org/C50522688",
+					"wikidata": "https://www.wikidata.org/wiki/Q189833",
+					"display_name": "Economic growth",
+					"level": 1,
+					"score": 0.282874
+				},
+				{
+					"id": "https://openalex.org/C149923435",
+					"wikidata": "https://www.wikidata.org/wiki/Q37732",
+					"display_name": "Demography",
+					"level": 1,
+					"score": 0.08476049
+				},
+				{
+					"id": "https://openalex.org/C162324750",
+					"wikidata": "https://www.wikidata.org/wiki/Q8134",
+					"display_name": "Economics",
+					"level": 0,
+					"score": 0.077216536
+				},
+				{
+					"id": "https://openalex.org/C147176958",
+					"wikidata": "https://www.wikidata.org/wiki/Q77590",
+					"display_name": "Civil engineering",
+					"level": 1,
+					"score": 0.07160878
+				},
+				{
+					"id": "https://openalex.org/C127413603",
+					"wikidata": "https://www.wikidata.org/wiki/Q11023",
+					"display_name": "Engineering",
+					"level": 0,
+					"score": 0.059443593
+				},
+				{
+					"id": "https://openalex.org/C166957645",
+					"wikidata": "https://www.wikidata.org/wiki/Q23498",
+					"display_name": "Archaeology",
+					"level": 1,
+					"score": 0.0
+				},
+				{
+					"id": "https://openalex.org/C144024400",
+					"wikidata": "https://www.wikidata.org/wiki/Q21201",
+					"display_name": "Sociology",
+					"level": 0,
+					"score": 0.0
+				}
+			],
+			"mesh": [
+
+			],
+			"locations_count": 1,
+			"locations": [
+				{
+					"is_oa": true,
+					"landing_page_url": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+					"pdf_url": null,
+					"source": {
+						"id": "https://openalex.org/S2764990248",
+						"display_name": "International Journal of Sustainable Built Environment",
+						"issn_l": "2212-6090",
+						"issn": [
+							"2212-6090",
+							"2212-6104"
+						],
+						"is_oa": false,
+						"is_in_doaj": false,
+						"is_indexed_in_scopus": false,
+						"is_core": true,
+						"host_organization": "https://openalex.org/P4310320990",
+						"host_organization_name": "Elsevier BV",
+						"host_organization_lineage": [
+							"https://openalex.org/P4310320990"
+						],
+						"host_organization_lineage_names": [
+							"Elsevier BV"
+						],
+						"type": "journal"
+					},
+					"license": "cc-by-nc-nd",
+					"license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+					"version": "publishedVersion",
+					"is_accepted": true,
+					"is_published": true
+				}
+			],
+			"best_oa_location": {
+				"is_oa": true,
+				"landing_page_url": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+				"pdf_url": null,
+				"source": {
+					"id": "https://openalex.org/S2764990248",
+					"display_name": "International Journal of Sustainable Built Environment",
+					"issn_l": "2212-6090",
+					"issn": [
+						"2212-6090",
+						"2212-6104"
+					],
+					"is_oa": false,
+					"is_in_doaj": false,
+					"is_indexed_in_scopus": false,
+					"is_core": true,
+					"host_organization": "https://openalex.org/P4310320990",
+					"host_organization_name": "Elsevier BV",
+					"host_organization_lineage": [
+						"https://openalex.org/P4310320990"
+					],
+					"host_organization_lineage_names": [
+						"Elsevier BV"
+					],
+					"type": "journal"
+				},
+				"license": "cc-by-nc-nd",
+				"license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+				"version": "publishedVersion",
+				"is_accepted": true,
+				"is_published": true
+			},
+			"sustainable_development_goals": [
+
+			],
+			"grants": [
+
+			],
+			"datasets": [
+
+			],
+			"versions": [
+
+			],
+			"referenced_works_count": 54,
+			"referenced_works": [
+				"https://openalex.org/W1212601590",
+				"https://openalex.org/W1605259370",
+				"https://openalex.org/W1972023946",
+				"https://openalex.org/W1972477301",
+				"https://openalex.org/W1973314334",
+				"https://openalex.org/W1974409017",
+				"https://openalex.org/W1975245372",
+				"https://openalex.org/W1984143623",
+				"https://openalex.org/W1987895342",
+				"https://openalex.org/W1993189327",
+				"https://openalex.org/W1993835029",
+				"https://openalex.org/W2000167781",
+				"https://openalex.org/W2002793321",
+				"https://openalex.org/W2004801592",
+				"https://openalex.org/W2007140250",
+				"https://openalex.org/W2012670902",
+				"https://openalex.org/W2021953243",
+				"https://openalex.org/W2026212122",
+				"https://openalex.org/W2029109413",
+				"https://openalex.org/W2031800002",
+				"https://openalex.org/W2032495587",
+				"https://openalex.org/W2034435505",
+				"https://openalex.org/W2036798369",
+				"https://openalex.org/W2039853831",
+				"https://openalex.org/W2044044088",
+				"https://openalex.org/W2059314487",
+				"https://openalex.org/W2060041035",
+				"https://openalex.org/W2069351648",
+				"https://openalex.org/W2079034062",
+				"https://openalex.org/W2083231614",
+				"https://openalex.org/W2083985526",
+				"https://openalex.org/W2088967222",
+				"https://openalex.org/W2094363096",
+				"https://openalex.org/W2105536892",
+				"https://openalex.org/W2123759405",
+				"https://openalex.org/W2133341703",
+				"https://openalex.org/W2140023211",
+				"https://openalex.org/W2154929422",
+				"https://openalex.org/W2159065679",
+				"https://openalex.org/W2165577558",
+				"https://openalex.org/W2181469445",
+				"https://openalex.org/W2185157623",
+				"https://openalex.org/W218523963",
+				"https://openalex.org/W2188303112",
+				"https://openalex.org/W2264591002",
+				"https://openalex.org/W2265414043",
+				"https://openalex.org/W2294038847",
+				"https://openalex.org/W2319224732",
+				"https://openalex.org/W2516818516",
+				"https://openalex.org/W2538421267",
+				"https://openalex.org/W2573691892",
+				"https://openalex.org/W3152365219",
+				"https://openalex.org/W4253647052",
+				"https://openalex.org/W4285719527"
+			],
+			"related_works": [
+				"https://openalex.org/W656121716",
+				"https://openalex.org/W4377822983",
+				"https://openalex.org/W3153406193",
+				"https://openalex.org/W3009416822",
+				"https://openalex.org/W2985845971",
+				"https://openalex.org/W2359152176",
+				"https://openalex.org/W2349314038",
+				"https://openalex.org/W2095278931",
+				"https://openalex.org/W2056014006",
+				"https://openalex.org/W1690951327"
+			],
+			"abstract_inverted_index": {
+				"The": [
+					0,
+					15
+				],
+				"world": [
+					1
+				],
+				"has": [
+					2,
+					98,
+					134
+				],
+				"seen": [
+					3
+				],
+				"the": [
+					4,
+					24,
+					27,
+					126
+				],
+				"development": [
+					5,
+					20
+				],
+				"and": [
+					6,
+					19,
+					79,
+					91,
+					109,
+					124,
+					161,
+					170,
+					180
+				],
+				"growth": [
+					7,
+					18
+				],
+				"of": [
+					8,
+					29,
+					43,
+					56,
+					63,
+					75,
+					87,
+					94,
+					102,
+					111,
+					142,
+					144,
+					150
+				],
+				"urban": [
+					9,
+					17,
+					31,
+					66,
+					127,
+					164,
+					182
+				],
+				"areas": [
+					10
+				],
+				"at": [
+					11
+				],
+				"a": [
+					12,
+					118
+				],
+				"faster": [
+					13
+				],
+				"pace.": [
+					14
+				],
+				"rapid": [
+					16
+				],
+				"have": [
+					21
+				],
+				"resulted": [
+					22,
+					99
+				],
+				"in": [
+					23,
+					26,
+					36,
+					50,
+					65,
+					85,
+					100,
+					173
+				],
+				"increase": [
+					25,
+					64
+				],
+				"share": [
+					28
+				],
+				"India’s": [
+					30,
+					44,
+					57
+				],
+				"population": [
+					32,
+					46,
+					67
+				],
+				"from": [
+					33,
+					77,
+					153
+				],
+				"79": [
+					34
+				],
+				"million": [
+					35,
+					49
+				],
+				"1961": [
+					37
+				],
+				"that": [
+					38,
+					52
+				],
+				"was": [
+					39
+				],
+				"about": [
+					40
+				],
+				"17.92": [
+					41
+				],
+				"percent": [
+					42,
+					55
+				],
+				"total": [
+					45,
+					58
+				],
+				"to": [
+					47,
+					71,
+					82,
+					121,
+					137,
+					155,
+					162
+				],
+				"388": [
+					48
+				],
+				"2011": [
+					51
+				],
+				"is": [
+					53,
+					68,
+					117
+				],
+				"31.30": [
+					54
+				],
+				"population.": [
+					59
+				],
+				"This": [
+					60
+				],
+				"fast": [
+					61
+				],
+				"rate": [
+					62
+				],
+				"mainly": [
+					69
+				],
+				"due": [
+					70
+				],
+				"large": [
+					72
+				],
+				"scale": [
+					73
+				],
+				"migration": [
+					74
+				],
+				"people": [
+					76
+				],
+				"rural": [
+					78
+				],
+				"smaller": [
+					80
+				],
+				"towns": [
+					81
+				],
+				"bigger": [
+					83
+				],
+				"cities": [
+					84
+				],
+				"search": [
+					86
+				],
+				"better": [
+					88,
+					92,
+					177
+				],
+				"employment": [
+					89
+				],
+				"opportunities": [
+					90
+				],
+				"quality": [
+					93
+				],
+				"life.": [
+					95
+				],
+				"Urban": [
+					96
+				],
+				"sprawl": [
+					97,
+					165
+				],
+				"loss": [
+					101,
+					110
+				],
+				"productive": [
+					103
+				],
+				"agricultural": [
+					104
+				],
+				"lands,": [
+					105
+				],
+				"open": [
+					106
+				],
+				"green": [
+					107
+				],
+				"spaces": [
+					108
+				],
+				"surface": [
+					112
+				],
+				"water": [
+					113
+				],
+				"bodies.": [
+					114
+				],
+				"Hence,": [
+					115
+				],
+				"there": [
+					116
+				],
+				"dire": [
+					119
+				],
+				"need": [
+					120
+				],
+				"study,": [
+					122,
+					131
+				],
+				"understand": [
+					123
+				],
+				"quantify": [
+					125
+				],
+				"sprawl.": [
+					128
+				],
+				"In": [
+					129
+				],
+				"this": [
+					130
+				],
+				"an": [
+					132
+				],
+				"attempt": [
+					133
+				],
+				"been": [
+					135
+				],
+				"made": [
+					136
+				],
+				"monitor": [
+					138
+				],
+				"land": [
+					139
+				],
+				"use/land": [
+					140
+				],
+				"cover": [
+					141
+				],
+				"part": [
+					143
+				],
+				"Dehradun": [
+					145
+				],
+				"city": [
+					146
+				],
+				"over": [
+					147
+				],
+				"two": [
+					148
+				],
+				"periods": [
+					149
+				],
+				"time": [
+					151
+				],
+				"i.e.,": [
+					152
+				],
+				"2004": [
+					154
+				],
+				"2014": [
+					156
+				],
+				"for": [
+					157,
+					176
+				],
+				"change": [
+					158
+				],
+				"detection": [
+					159
+				],
+				"analysis": [
+					160
+				],
+				"assess": [
+					163
+				],
+				"using": [
+					166
+				],
+				"IRS": [
+					167
+				],
+				"P-6": [
+					168
+				],
+				"data": [
+					169
+				],
+				"topographic": [
+					171
+				],
+				"sheets,": [
+					172
+				],
+				"GIS": [
+					174
+				],
+				"environment": [
+					175
+				],
+				"decision": [
+					178
+				],
+				"making": [
+					179
+				],
+				"sustainable": [
+					181
+				],
+				"growth.": [
+					183
+				]
+			},
+			"abstract_inverted_index_v3": null,
+			"cited_by_api_url": "https://api.openalex.org/works?filter=cites:W2772005084",
+			"counts_by_year": [
+				{
+					"year": 2025,
+					"cited_by_count": 6
+				},
+				{
+					"year": 2024,
+					"cited_by_count": 34
+				},
+				{
+					"year": 2023,
+					"cited_by_count": 33
+				},
+				{
+					"year": 2022,
+					"cited_by_count": 31
+				},
+				{
+					"year": 2021,
+					"cited_by_count": 32
+				},
+				{
+					"year": 2020,
+					"cited_by_count": 22
+				},
+				{
+					"year": 2019,
+					"cited_by_count": 10
+				},
+				{
+					"year": 2018,
+					"cited_by_count": 3
+				}
+			],
+			"updated_date": "2025-05-31T06:49:16.032219",
+			"created_date": "2017-12-22",
+			"downloaded": false,
+			"pdfdownloaded": false,
+			"jsondownloaded": false,
+			"csvmade": false,
+			"htmlmade": false
+		},
+	},
+	"total_hits": 1,
+	"cursor_mark": "Ils0NTAuODEzNjMsIDE1NzI5MTIwMDAwMDAsICdodHRwczovL29wZW5hbGV4Lm9yZy9XMjk4NjA2NjgyOSddIg=="
+}

@@ -1,5 +1,6 @@
 """tests for file_lib"""
 import glob
+import json
 import os
 import logging
 import unittest
@@ -371,6 +372,22 @@ class File0Test(AmiAnyTest):
             self.test_dir = Path(Resources.TEMP_DIR, "test_files")
         self.test_dir.mkdir(exist_ok=True)
         return self.test_dir
+
+    def test_read_python_dictionary(self):
+        """
+        writes a JSON string to temporary file and reads back into a python dictionary
+        """
+        pydict_str = '{"a" : "foo"}'
+        file_lib_dir = Path(Resources.TEMP_DIR, "file_lib")
+        FileLib.force_mkdir(file_lib_dir)
+        tempdictfile = Path(file_lib_dir, "pydict.txt")
+        logger.info(f"wrote json dict {tempdictfile}")
+        with open (tempdictfile, "w", encoding="UTF-8") as f:
+            f.write(pydict_str)
+        pydict = json.load(tempdictfile)
+        assert pydict is not None
+        assert type(pydict) is dict
+        assert pydict.get("a") == "foo"
 
 
 def main():

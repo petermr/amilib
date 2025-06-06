@@ -1,0 +1,990 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd"> 
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.3" id="cobi70049" xml:lang="en" article-type="other"><?DTDIdentifier.IdentifierValue -//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with OASIS Tables with MathML3 v1.1 20151215//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName JATS-archive-oasis-article1-mathml3.dtd?><?SourceDTD.Version 1.1?><?ConverterInfo.XSLTName jats-oasis2jats3.xsl?><?ConverterInfo.Version 1?><?properties open_access?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Conserv Biol</journal-id><journal-id journal-id-type="iso-abbrev">Conserv Biol</journal-id><journal-id journal-id-type="doi">10.1111/(ISSN)1523-1739</journal-id><journal-id journal-id-type="publisher-id">COBI</journal-id><journal-title-group><journal-title>Conservation Biology</journal-title></journal-title-group><issn pub-type="ppub">0888-8892</issn><issn pub-type="epub">1523-1739</issn><publisher><publisher-name>John Wiley and Sons Inc.</publisher-name><publisher-loc>Hoboken</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">12124168</article-id><article-id pub-id-type="pmid">40289901</article-id>
+<article-id pub-id-type="doi">10.1111/cobi.70049</article-id><article-id pub-id-type="publisher-id">COBI70049</article-id><article-categories><subj-group subj-group-type="overline"><subject>Practice and Policy</subject></subj-group><subj-group subj-group-type="heading"><subject>Special Issue: Evolution of People&#x02010;centered Conservation in Brazil</subject><subj-group subj-group-type="heading"><subject>Practice and Policy</subject></subj-group></subj-group></article-categories><title-group><article-title>Including the urbanization gradient in people&#x02010;centered wildlife conservation in Amazonia</article-title><alt-title alt-title-type="left-running-head">LEMOS <sc>et&#x000a0;al.</sc>
+</alt-title></title-group><contrib-group><contrib id="cobi70049-cr-0001" contrib-type="author" corresp="yes"><name><surname>Lemos</surname><given-names>L&#x000ed;sley P.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-2037-1549</contrib-id><xref rid="cobi70049-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="cobi70049-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="cobi70049-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref><xref rid="cobi70049-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref><address><email>lisley@vt.edu</email></address></contrib><contrib id="cobi70049-cr-0002" contrib-type="author"><name><surname>Valle</surname><given-names>Denis</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-9830-8876</contrib-id><xref rid="cobi70049-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="cobi70049-cr-0003" contrib-type="author"><name><surname>Morcatty</surname><given-names>Tha&#x000ed;s Queiroz</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-3095-7052</contrib-id><xref rid="cobi70049-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="cobi70049-aff-0006" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib id="cobi70049-cr-0004" contrib-type="author"><name><surname>Chaves</surname><given-names>Willandia</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-5487-3822</contrib-id><xref rid="cobi70049-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib></contrib-group><aff id="cobi70049-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Fish and Wildlife Conservation</named-content>
+<institution>Virginia Polytechnic Institute and State University (Virginia Tech)</institution>
+<city>Blacksburg</city>
+<named-content content-type="country-part">Virginia</named-content>
+<country country="US">USA</country>
+</aff><aff id="cobi70049-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Rede de Pesquisa para Estudos sobre Diversidade</named-content>
+<institution>Conserva&#x000e7;&#x000e3;o e Uso da Fauna na Amaz&#x000f4;nia (RedeFauna)</institution>
+<city>Manaus</city>
+<country country="BR">Brazil</country>
+</aff><aff id="cobi70049-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<institution>Mamirau&#x000e1; Sustainable Development Institute</institution>
+<city>Tef&#x000e9;</city>
+<country country="BR">Brazil</country>
+</aff><aff id="cobi70049-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<named-content content-type="organisation-division">Center for Biology and Society</named-content>
+<institution>Arizona State University</institution>
+<city>Tempe</city>
+<named-content content-type="country-part">Arizona</named-content>
+<country country="US">USA</country>
+</aff><aff id="cobi70049-aff-0005">
+<label>
+<sup>5</sup>
+</label>
+<named-content content-type="organisation-division">School of Forest, Fisheries, and Geomatics Sciences</named-content>
+<institution>University of Florida</institution>
+<city>Gainesville</city>
+<named-content content-type="country-part">Florida</named-content>
+<country country="US">USA</country>
+</aff><aff id="cobi70049-aff-0006">
+<label>
+<sup>6</sup>
+</label>
+<named-content content-type="organisation-division">Department of Geography</named-content>
+<institution>University College London</institution>
+<city>London</city>
+<country country="GB">UK</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence</bold>
+<break/>L&#x000ed;sley P. Lemos, Department of Fish and Wildlife Conservation, Virginia Polytechnic Institute and State University, Cheatham Hall, RM100, 310 West Campus Drive (MC0321), Blacksburg, VA 24061, USA.<break/> Email: <email>lisley@vt.edu</email>
+<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>28</day><month>4</month><year>2025</year></pub-date><pub-date pub-type="ppub"><month>6</month><year>2025</year></pub-date><volume>39</volume><issue seq="40">3</issue><issue-id pub-id-type="doi">10.1111/cobi.v39.3</issue-id><elocation-id>e70049</elocation-id><history>
+<date date-type="rev-recd"><day>25</day><month>11</month><year>2024</year></date>
+<date date-type="received"><day>29</day><month>2</month><year>2024</year></date>
+<date date-type="accepted"><day>05</day><month>3</month><year>2025</year></date>
+</history><permissions><!--&#x000a9; 2025, Society for Conservation Biology.--><copyright-statement content-type="article-copyright">&#x000a9; 2025 The Author(s). <italic toggle="yes">Conservation Biology</italic> published by Wiley Periodicals LLC on behalf of Society for <italic toggle="yes">Conservation Biology</italic>.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri content-type="pdf" xlink:href="file:COBI-39-e70049.pdf"/><abstract><title>Abstract</title><p>Conservation policy in the Amazon traditionally focuses on rural areas, overlooking the socioecological roles of urban populations. This oversight can hinder sustainability by neglecting rural&#x02013;urban connections. We compared the prevalence and quantity of wild meat consumed, bartered, and traded commercially in rural, peri&#x02010;urban, and urban areas of the Brazilian Amazon to inform policies aimed at including local people in conservation. We also examined social factors influencing wildlife access. These factors included household management (single vs. dual adult households), household dependency (ratio of minors to working adults), residence status (single&#x02010;sited vs. multisited households), frequency of rural area visits by urban residents, and market access by peri&#x02010;urban and rural residents. We surveyed 782 households in Manaus and Carauari (Manaus: 299 urban, 90 peri&#x02010;urban, 120 rural; Carauari: 159 urban, 41 peri&#x02010;urban, 73 rural) about social factors related to wildlife used that are linked to urbanization. Results revealed widespread wildlife use across urbanization categories. The percentage of urban households that consumed (Manaus 22%, Carauari 57%), bartered (Manaus 17%, Carauari 30%), and traded (Manaus 21%, Carauari 7%) wildlife was substantial. Market access was higher in Manaus than in Carauari. Commercial trade in chelonians and barter of mammals and birds increased as access to markets increased. Commercial wildlife trade was present in urban households (Carauari 21% [95% CI 7&#x02013;34], Manaus 16% [95% CI 6&#x02013;26]) but higher in peri&#x02010;urban Manaus (chelonian trade 44% [95% CI 22&#x02013;62]). Given these high prevalence levels, especially near expanding urban areas, such as Manaus, wildlife barter and commercial trade likely contribute to unsustainable harvesting pressures, affecting people's sovereignty. Our research underscores the need for inclusive policies that regulate subsistence hunting to uphold rural rights; integration of fish and wildlife management in community&#x02010;based conservation frameworks to enhance food security and reduce wildlife dependence; and inclusion of wildlife users in integrated development programs through community&#x02010;based conservation to curtail wildlife trade, ultimately creating sustainable and just pathways for the urbanizing Amazonia.</p></abstract><trans-abstract xml:lang="es"><p>Inclusi&#x000f3;n del gradiente de urbanizaci&#x000f3;n en la conservaci&#x000f3;n de fauna enfocada en personas en la Amazonia</p><sec id="cobi70049-sec-0020"><title>Resumen</title><p>La pol&#x000ed;tica de conservaci&#x000f3;n en la Amazonia se centra tradicionalmente en las zonas rurales, ignorando las funciones socioecol&#x000f3;gicas de las poblaciones urbanas. Este descuido puede obstaculizar la sostenibilidad al descuidar las conexiones entre las zonas rurales y urbanas. Comparamos la prevalencia y la cantidad de carne silvestre consumida, intercambiada y comercializada en zonas rurales, periurbanas y urbanas de la Amazonia brasile&#x000f1;a con el fin de fundamentar las pol&#x000ed;ticas destinadas a incluir a la poblaci&#x000f3;n local en la conservaci&#x000f3;n. Tambi&#x000e9;n analizamos los factores sociales que influyen en el acceso a la fauna. Estos factores inclu&#x000ed;an la gesti&#x000f3;n de los hogares (hogares unipersonales frente a hogares con dos adultos), la dependencia de los hogares (proporci&#x000f3;n de menores frente a adultos que trabajan), el estatus de residencia (hogares unipersonales frente a hogares multisede), la frecuencia de las visitas a las zonas rurales por parte de los residentes urbanos y el acceso al mercado por parte de los residentes periurbanos y rurales. Encuestamos a 782 hogares de Manaos y Carauari (Manaos: 299 urbanos, 90 periurbanos, 120 rurales; Carauari: 159 urbanos, 41 periurbanos, 73 rurales) sobre factores sociales relacionados con el uso de la fauna vinculados a la urbanizaci&#x000f3;n. Los resultados revelaron un uso generalizado de la fauna silvestre en todas las categor&#x000ed;as de urbanizaci&#x000f3;n. El porcentaje de hogares urbanos que consum&#x000ed;an (Manaos, 22%; Carauari, 57%), intercambiaban (Manaos, 17%; Carauari, 30%) y comerciaban (Manaos, 21%; Carauari, 7%) con animales silvestres fue considerable. El acceso al mercado fue mayor en Manaos que en Carauari. El comercio de quelonios y el trueque de mam&#x000ed;feros y aves aumentaron a medida que aumentaba el acceso a los mercados. El comercio de fauna silvestre estaba presente en los hogares urbanos (Carauari 21% [IC 95%: 7&#x02010;34], Manaus 16% [IC 95%: 6&#x02010;26]), pero era mayor en la zona periurbana de Manaus (comercio de quelonios 44% [IC 95%: 22&#x02010;62]). Dados estos altos niveles de prevalencia, especialmente cerca de zonas urbanas en expansi&#x000f3;n, como Manaos, es probable que el trueque y el comercio de especies silvestres contribuyan a presiones de recolecci&#x000f3;n insostenibles, afectando a la soberan&#x000ed;a de las personas. Nuestra investigaci&#x000f3;n subraya la necesidad de pol&#x000ed;ticas inclusivas que regulen la caza de subsistencia para defender los derechos rurales; la integraci&#x000f3;n de la gesti&#x000f3;n de la pesca y la vida silvestre en marcos de conservaci&#x000f3;n comunitarios para mejorar la seguridad alimentaria y reducir la dependencia de la vida silvestre; y la inclusi&#x000f3;n de los usuarios de la vida silvestre en programas de desarrollo integrados a trav&#x000e9;s de la conservaci&#x000f3;n comunitaria para reducir el comercio de vida silvestre, creando en &#x000fa;ltima instancia v&#x000ed;as sostenibles y justas para la Amazonia en proceso de urbanizaci&#x000f3;n.</p></sec></trans-abstract><trans-abstract xml:lang="zh"><title>&#x05c06;&#x057ce;&#x05e02;&#x05316;&#x068af;&#x05ea6;&#x07eb3;&#x05165;&#x04e9a;&#x09a6c;&#x0900a;&#x05730;&#x0533a;&#x04ee5;&#x04eba;&#x04e3a;&#x04e2d;&#x05fc3;&#x07684;&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x04fdd;&#x062a4;&#x05de5;&#x04f5c;</title><p>
+<bold>&#x03010;&#x06458;&#x08981;&#x03011;</bold> &#x04f20;&#x07edf;&#x07684;&#x04e9a;&#x09a6c;&#x0900a;&#x05730;&#x0533a;&#x07684;&#x04fdd;&#x062a4;&#x0653f;&#x07b56;&#x04fa7;&#x091cd;&#x04e8e;&#x0519c;&#x06751;&#x05730;&#x0533a;, &#x0800c;&#x05ffd;&#x089c6;&#x04e86;&#x057ce;&#x05e02;&#x04eba;&#x053e3;&#x05728;&#x0793e;&#x04f1a;&#x0751f;&#x06001;&#x065b9;&#x09762;&#x07684;&#x05f71;&#x054cd;&#x03002;&#x08fd9;&#x053ef;&#x080fd;&#x04f1a;&#x056e0;&#x05ffd;&#x089c6;&#x057ce;&#x04e61;&#x08054;&#x07cfb;&#x0800c;&#x0963b;&#x0788d;&#x053ef;&#x06301;&#x07eed;&#x053d1;&#x05c55;&#x03002;&#x0672c;&#x07814;&#x07a76;&#x06bd4;&#x08f83;&#x04e86;&#x05df4;&#x0897f;&#x04e9a;&#x09a6c;&#x0900a;&#x05730;&#x0533a;&#x0519c;&#x06751;&#x03001;&#x057ce;&#x05e02;&#x05468;&#x08fb9;&#x0548c;&#x057ce;&#x05e02;&#x05730;&#x0533a;&#x07684;&#x091ce;&#x05473;&#x098df;&#x07528;&#x03001;&#x07269;&#x07269;&#x04ea4;&#x06362;&#x0548c;&#x05546;&#x04e1a;&#x04ea4;&#x06613;&#x07684;&#x0666e;&#x0904d;&#x07a0b;&#x05ea6;&#x0548c;&#x06570;&#x091cf;, &#x04ee5;&#x06307;&#x05bfc;&#x065e8;&#x05728;&#x063a8;&#x052a8;&#x05f53;&#x05730;&#x0793e;&#x0533a;&#x053c2;&#x04e0e;&#x07684;&#x04fdd;&#x062a4;&#x0653f;&#x07b56;&#x03002;&#x06211;&#x04eec;&#x08fd8;&#x05206;&#x06790;&#x04e86;&#x04eba;&#x04eec;&#x0662f;&#x05426;&#x083b7;&#x053d6;&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x07684;&#x0793e;&#x04f1a;&#x05f71;&#x054cd;&#x056e0;&#x07d20;, &#x05305;&#x062ec;&#x05bb6;&#x05ead;&#x07ba1;&#x07406;(&#x05355;&#x04eb2;&#x05bb6;&#x05ead;&#x04e0e;&#x053cc;&#x04eb2;&#x05bb6;&#x05ead;)&#x03001;&#x05bb6;&#x05ead;&#x04f9d;&#x08d56;&#x06027;(&#x0672a;&#x06210;&#x05e74;&#x04eba;&#x04e0e;&#x05de5;&#x04f5c;&#x06210;&#x05e74;&#x04eba;&#x07684;&#x06bd4;&#x04f8b;)&#x03001;&#x05c45;&#x04f4f;&#x072b6;&#x051b5;(&#x05355;&#x04f4f;&#x05740;&#x05bb6;&#x05ead;&#x04e0e;&#x0591a;&#x04f4f;&#x05740;&#x05bb6;&#x05ead;)&#x03001;&#x057ce;&#x05e02;&#x05c45;&#x06c11;&#x08bbf;&#x095ee;&#x0519c;&#x06751;&#x05730;&#x0533a;&#x07684;&#x09891;&#x07387;, &#x04ee5;&#x053ca;&#x057ce;&#x05e02;&#x05468;&#x08fb9;&#x0548c;&#x0519c;&#x06751;&#x05c45;&#x06c11;&#x08bbf;&#x095ee;&#x096c6;&#x05e02;&#x07684;&#x060c5;&#x051b5;&#x03002;&#x07814;&#x07a76;&#x05171;&#x08c03;&#x067e5;&#x04e86;&#x09a6c;&#x07459;&#x065af;&#x0548c;&#x05361;&#x052b3;&#x0963f;&#x091cc;&#x07684;782&#x04e2a;&#x05bb6;&#x05ead;(&#x09a6c;&#x07459;&#x065af;:299&#x04e2a;&#x057ce;&#x05e02;&#x05bb6;&#x05ead;, 90&#x04e2a;&#x057ce;&#x05e02;&#x05468;&#x08fb9;&#x05bb6;&#x05ead;, 120&#x04e2a;&#x0519c;&#x06751;&#x05bb6;&#x05ead;;&#x05361;&#x052b3;&#x0963f;&#x091cc;:159&#x04e2a;&#x057ce;&#x05e02;&#x05bb6;&#x05ead;, 41&#x04e2a;&#x057ce;&#x05e02;&#x05468;&#x08fb9;&#x05bb6;&#x05ead;, 73&#x04e2a;&#x0519c;&#x06751;&#x05bb6;&#x05ead;), &#x04ee5;&#x05206;&#x06790;&#x04e0e;&#x057ce;&#x05e02;&#x05316;&#x076f8;&#x05173;&#x07684;&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x05229;&#x07528;&#x07684;&#x0793e;&#x04f1a;&#x056e0;&#x07d20;&#x03002;&#x07ed3;&#x0679c;&#x0663e;&#x0793a;, &#x091ce;&#x0751f;&#x052a8;&#x07269;&#x05229;&#x07528;&#x05728;&#x04e0d;&#x0540c;&#x057ce;&#x05e02;&#x05316;&#x07c7b;&#x0578b;&#x07684;&#x05bb6;&#x05ead;&#x04e2d;&#x090fd;&#x05341;&#x05206;&#x0666e;&#x0904d;&#x03002;&#x098df;&#x07528;(&#x09a6c;&#x07459;&#x065af;22%, &#x05361;&#x052b3;&#x0963f;&#x091cc;57%)&#x03001;&#x07269;&#x07269;&#x04ea4;&#x06362;(&#x09a6c;&#x07459;&#x065af;17%, &#x05361;&#x052b3;&#x0963f;&#x091cc;30%)&#x0548c;&#x04ea4;&#x06613;(&#x09a6c;&#x07459;&#x065af;21%, &#x05361;&#x052b3;&#x0963f;&#x091cc;7%)&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x07684;&#x057ce;&#x05e02;&#x05bb6;&#x05ead;&#x05360;&#x05f88;&#x05927;&#x06bd4;&#x04f8b;&#x03002;&#x05728;&#x09a6c;&#x07459;&#x065af;&#x08bbf;&#x095ee;&#x096c6;&#x05e02;&#x07684;&#x0673a;&#x04f1a;&#x0591a;&#x04e8e;&#x05361;&#x052b3;&#x0963f;&#x091cc;&#x03002;&#x0968f;&#x07740;&#x08bbf;&#x095ee;&#x096c6;&#x05e02;&#x07684;&#x0673a;&#x04f1a;&#x0589e;&#x052a0;, &#x09f9f;&#x09cd6;&#x07c7b;&#x07684;&#x05546;&#x04e1a;&#x08d38;&#x06613;&#x04ee5;&#x053ca;&#x054fa;&#x04e73;&#x052a8;&#x07269;&#x0548c;&#x09e1f;&#x07c7b;&#x07684;&#x07269;&#x07269;&#x04ea4;&#x06362;&#x04e5f;&#x05728;&#x0589e;&#x052a0;&#x03002;&#x057ce;&#x05e02;&#x05bb6;&#x05ead;&#x05b58;&#x05728;&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x05546;&#x04e1a;&#x08d38;&#x06613;&#x07684;&#x0884c;&#x04e3a;(&#x05361;&#x052b3;&#x0963f;&#x091cc;21%, 95%&#x07f6e;&#x04fe1;&#x0533a;&#x095f4;&#x04e3a;7&#x02013;34%;&#x09a6c;&#x07459;&#x065af;16%, 95%&#x07f6e;&#x04fe1;&#x0533a;&#x095f4;&#x04e3a;6&#x02013;26%), &#x04f46;&#x05728;&#x09a6c;&#x07459;&#x065af;&#x05468;&#x08fb9;&#x066f4;&#x09ad8;(&#x09f9f;&#x09cd6;&#x07c7b;&#x08d38;&#x06613;&#x05360;44%, 95%&#x07f6e;&#x04fe1;&#x0533a;&#x095f4;&#x04e3a;22&#x02013;62%)&#x03002;&#x08003;&#x08651;&#x05230;&#x08fd9;&#x04e9b;&#x06d3b;&#x052a8;&#x05982;&#x06b64;&#x06d41;&#x0884c;, &#x05c24;&#x05176;&#x0662f;&#x05728;&#x09a6c;&#x07459;&#x065af;&#x07b49;&#x04e0d;&#x065ad;&#x06269;&#x05927;&#x07684;&#x057ce;&#x05e02;&#x05730;&#x0533a;&#x09644;&#x08fd1;, &#x091ce;&#x0751f;&#x052a8;&#x07269;&#x07684;&#x07269;&#x07269;&#x04ea4;&#x06362;&#x0548c;&#x05546;&#x04e1a;&#x08d38;&#x06613;&#x05f88;&#x053ef;&#x080fd;&#x04f1a;&#x04ea7;&#x0751f;&#x04e0d;&#x053ef;&#x06301;&#x07eed;&#x07684;&#x06355;&#x0730e;&#x0538b;&#x0529b;, &#x05f71;&#x054cd;&#x04eba;&#x04eec;&#x07684;&#x04e3b;&#x06743;&#x03002;&#x06211;&#x04eec;&#x07684;&#x07814;&#x07a76;&#x05f3a;&#x08c03;, &#x09700;&#x08981;&#x05236;&#x05b9a;&#x05305;&#x05bb9;&#x06027;&#x0653f;&#x07b56;, &#x089c4;&#x08303;&#x05316;&#x0751f;&#x08ba1;&#x072e9;&#x0730e;, &#x04ee5;&#x07ef4;&#x062a4;&#x0519c;&#x06751;&#x05730;&#x0533a;&#x07684;&#x06743;&#x05229;;&#x05c06;&#x09c7c;&#x07c7b;&#x0548c;&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x07ba1;&#x07406;&#x07eb3;&#x05165;&#x057fa;&#x04e8e;&#x0793e;&#x0533a;&#x07684;&#x04fdd;&#x062a4;&#x06846;&#x067b6;, &#x04ee5;&#x052a0;&#x05f3a;&#x07cae;&#x098df;&#x05b89;&#x05168;, &#x051cf;&#x05c11;&#x05bf9;&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x07684;&#x04f9d;&#x08d56;;&#x0901a;&#x08fc7;&#x057fa;&#x04e8e;&#x0793e;&#x0533a;&#x07684;&#x04fdd;&#x062a4;, &#x05c06;&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x04f7f;&#x07528;&#x08005;&#x07eb3;&#x05165;&#x07efc;&#x05408;&#x053d1;&#x05c55;&#x08ba1;&#x05212;, &#x04ee5;&#x0904f;&#x05236;&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x04ea4;&#x06613;, &#x06700;&#x07ec8;&#x04e3a;&#x04e9a;&#x09a6c;&#x0900a;&#x05730;&#x0533a;&#x07684;&#x057ce;&#x05e02;&#x05316;&#x05f00;&#x08f9f;&#x053ef;&#x06301;&#x07eed;&#x053d1;&#x05c55;&#x07684;&#x0516c;&#x06b63;&#x09053;&#x08def;&#x03002;<bold>&#x03010;&#x07ffb;&#x08bd1;:&#x080e1;&#x06021;&#x0601d;;&#x05ba1;&#x06821;:&#x08042;&#x06c38;&#x0521a;&#x03011;</bold>
+</p></trans-abstract><kwd-group kwd-group-type="author-generated"><kwd id="cobi70049-kwd-0001">indirect questions</kwd><kwd id="cobi70049-kwd-0002">multisited households</kwd><kwd id="cobi70049-kwd-0003">peri&#x02010;urban</kwd><kwd id="cobi70049-kwd-0004">policy</kwd><kwd id="cobi70049-kwd-0005">rural</kwd><kwd id="cobi70049-kwd-0006">wild meat</kwd><kwd id="cobi70049-kwd-0007">wildlife use</kwd><kwd id="cobi70056-kwd-0008">carne silvestre</kwd><kwd id="cobi70056-kwd-0009">hogares multisede</kwd><kwd id="cobi70056-kwd-0010">periurbano</kwd><kwd id="cobi70056-kwd-0011">pol&#x000ed;ticas</kwd><kwd id="cobi70056-kwd-0012">preguntas indirectas</kwd><kwd id="cobi70056-kwd-0013">rural</kwd><kwd id="cobi70056-kwd-0014">uso de fauna</kwd><kwd id="cobi70072-kwd-0015">&#x095f4;&#x063a5;&#x095ee;&#x09898;</kwd><kwd id="cobi70056-kwd-0016">&#x0591a;&#x04f4f;&#x05740;&#x05bb6;&#x05ead;</kwd><kwd id="cobi70056-kwd-0017">&#x057ce;&#x05e02;&#x05468;&#x08fb9;</kwd><kwd id="cobi70056-kwd-0018">&#x0519c;&#x06751;</kwd><kwd id="cobi70056-kwd-0019">&#x091ce;&#x05473;</kwd><kwd id="cobi70056-kwd-0020">&#x091ce;&#x0751f;&#x052a8;&#x07269;&#x05229;&#x07528;</kwd><kwd id="cobi70056-kwd-0021">&#x0653f;&#x07b56;</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source><institution-wrap><institution>Virginia Polytechnic Institute and State University
+</institution><institution-id institution-id-type="doi">10.13039/100007263</institution-id></institution-wrap></funding-source></award-group><award-group id="funding-0002"><funding-source>Global Change Center</funding-source></award-group></funding-group><counts><fig-count count="4"/><table-count count="1"/><page-count count="12"/><word-count count="8516"/></counts><custom-meta-group><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>June 2025</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.5.6 mode:remove_FC converted:30.05.2025</meta-value></custom-meta></custom-meta-group></article-meta><notes><p content-type="self-citation">
+<mixed-citation publication-type="journal" id="cobi70049-cite-0001">
+<string-name>
+<surname>Lemos</surname>, <given-names>L. P.</given-names>
+</string-name>, <string-name>
+<surname>Valle</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Morcatty</surname>, <given-names>T. Q.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Chaves</surname>, <given-names>W.</given-names>
+</string-name> (<year>2025</year>). <article-title>Including the urbanization gradient in people&#x02010;centered wildlife conservation in Amazonia</article-title>. <source>Conservation Biology</source>, <volume>39</volume>, <elocation-id>e70049</elocation-id>. <pub-id pub-id-type="doi">10.1111/cobi.70049</pub-id>
+</mixed-citation>
+</p><fn-group><fn id="cobi70049-note-0001"><p>
+<bold>Article impact statement</bold>: Integrated policies that benefit Amazonian peoples and biodiversity conservation should include urban, peri&#x02010;urban, and rural populations.</p></fn></fn-group></notes></front><body><sec id="cobi70049-sec-0030"><title>INTRODUCTION</title><p>Contemporary conservation efforts prioritize expanding local initiatives to curb the effects of rapid human growth, deleterious industries, and large&#x02010;scale degradation (IPBES, <xref rid="cobi70049-bib-0034" ref-type="bibr">2019</xref>). In Amazonia, pathways to upscale conservation initiatives to promote positive outcomes for biodiversity and human populations include being locally grounded, encompassing sectorial diversity, and promoting interactions across landscapes (Londres et&#x000a0;al., <xref rid="cobi70049-bib-0037" ref-type="bibr">2023</xref>). Thus, conservation strategies that include interconnectedness between rural and urban areas are crucial to addressing global environmental change (Elmqvist et&#x000a0;al., <xref rid="cobi70049-bib-0023" ref-type="bibr">2021</xref>).</p><p>Urbanization in the Brazilian Amazon is characterized by the interconnectedness of rural and urban systems, but unfortunately, integrated environmental policies are lacking (Pinho et&#x000a0;al., <xref rid="cobi70049-bib-0048" ref-type="bibr">2014</xref>). Frequently, urban areas are referred to as &#x0201c;urbanized forest&#x0201d; (Becker, <xref rid="cobi70049-bib-0004" ref-type="bibr">2005</xref>) or &#x0201c;rural cities&#x0201d; (Padoch et&#x000a0;al., <xref rid="cobi70049-bib-0042" ref-type="bibr">2008</xref>), emphasizing rural economies in urban centers. Throughout Amazonia, rural&#x02010;to&#x02010;urban migration and peri&#x02010;urbanization&#x02014;the absorption of rural areas into city regions (Phadke, <xref rid="cobi70049-bib-0047" ref-type="bibr">2020</xref>)&#x02014;have blurred the rural&#x02013;urban divide. This continual transition challenges biodiversity conservation. A better grasp of how urbanization affects biodiversity use is critical to addressing threats and delineating adequate policies.</p><p>Blurred rural&#x02013;urban boundaries in Amazonia offer insight into diverse wildlife uses. Urban hunters illustrate this diversity in their strategies, such as adapting transportation systems to access peripheric hunting areas, changing communication to circumvent enforcement (Van Vliet et&#x000a0;al., <xref rid="cobi70049-bib-0056" ref-type="bibr">2015</xref>), and reusing abandoned rural areas to hunt (Parry et&#x000a0;al., <xref rid="cobi70049-bib-0045" ref-type="bibr">2009</xref>). Wild meat consumption, though traditionally considered rural, occurs in Amazonian cities and feeds clandestine economies (El Bizri et&#x000a0;al., <xref rid="cobi70049-bib-0022" ref-type="bibr">2020</xref>). Staggeringly, around 1.7 million turtles and tortoises were estimated to be consumed annually in urban areas of Amazonas state alone (Chaves, et&#x000a0;al., <xref rid="cobi70049-bib-0016" ref-type="bibr">2021</xref>), but most conservation initiatives focus on rural consumers. This indicates that although growing urban demand may affect rural sovereignty, addressing wildlife&#x02010;related issues across urbanization gradients emerges as a pathway for collaborative policies (Ingram et&#x000a0;al., <xref rid="cobi70049-bib-0032" ref-type="bibr">2021</xref>). Wild meat reliance in rural Amazonian households is among the highest in the Global South, both for consumption and income (Nielsen et&#x000a0;al., <xref rid="cobi70049-bib-0039" ref-type="bibr">2018</xref>). Yet, rural&#x02013;urban migration also facilitates urban access, linking gradient extremes. With high internal migration, nearly two thirds of the Brazilian Amazon's population lived in urban areas in the 2010s (IBGE, <xref rid="cobi70049-bib-0029" ref-type="bibr">2022</xref>). New rural&#x02013;urban migrants tend to consume more wildlife (Torres et al., <xref rid="cobi70049-bib-0013" ref-type="bibr">2022</xref>). People who use resources from and work in both rural and urban areas further promote rural&#x02013;urban flows and demand for wild foods through their activities in both settings (Padoch et&#x000a0;al., <xref rid="cobi70049-bib-0042" ref-type="bibr">2008</xref>).</p><p>We surveyed adult wildlife users in rural, peri&#x02010;urban, and urban areas of Manaus and Carauari on the prevalence and quantity of wild meat (meat from wild animals) they used to examine social factors affecting wildlife access. We define access to wildlife as people's ability to obtain and benefit from using meat from turtles, tortoises (hereafter chelonians), mammals, and birds (Ribot &#x00026; Peluso, <xref rid="cobi70049-bib-0051" ref-type="bibr">2003</xref>). We aimed to determine how social factors affect rural, peri&#x02010;urban, and urban use of wild meat to inform inclusive, people&#x02010;centered conservation. We considered urbanization a multidimensional process characterized by urban growth primarily driven by rural&#x02010;to&#x02010;urban migration (Browder &#x00026; Godfrey, <xref rid="cobi70049-bib-0010" ref-type="bibr">1997</xref>) and assessed it based on categories (rural, peri&#x02010;urban, urban) and municipality size (small town, large city) (Figure&#x000a0;<xref rid="cobi70049-fig-0001" ref-type="fig">1</xref>). We also considered the effect of residence status (defined in &#x0201c;METHODS&#x0201d;) on social factors affecting wildlife use (Figure&#x000a0;<xref rid="cobi70049-fig-0001" ref-type="fig">1</xref>). We investigated the effect of urbanization on social factors and examined how these factors influence wildlife use across rural, peri&#x02010;urban, and urban areas (Figure&#x000a0;<xref rid="cobi70049-fig-0001" ref-type="fig">1</xref>).</p><fig position="float" fig-type="FIGURE" id="cobi70049-fig-0001"><label>FIGURE 1</label><caption><p>Conceptual framework of factors influencing access to wildlife and household wildlife use across rural, peri&#x02010;urban, and urban areas in the Brazilian Amazon. Residence status refers to whether people used natural resources and worked near the site of the residence (single&#x02010;sited households) or used both urban and non&#x02010;urban areas (multisited households).</p></caption><graphic xlink:href="COBI-39-e70049-g003" position="anchor" id="jats-graphic-1"/></fig></sec><sec id="cobi70049-sec-0040"><title>METHODS</title><sec id="cobi70049-sec-0050"><title>Study sites</title><p>We used a comparative design to assess how urbanization affects the prevalence and quantity of meat from wild animals consumed, bartered, and commercially traded in rural, peri&#x02010;urban, and urban areas. We surveyed households on their wildlife use in Manaus, the largest city in the Amazon basin, and Carauari, a remote municipality in Amazonas state (Figure&#x000a0;<xref rid="cobi70049-fig-0002" ref-type="fig">2</xref>). These sites were selected to represent extremes of urbanization levels in the Brazilian Amazon based on urban area (Manaus 487&#x000a0;km<sup>2</sup>, Carauari 10&#x000a0;km<sup>2</sup>) and population size (Manaus 2,063,689 inhabitants, Carauari 28,742 inhabitants) (IBGE, <xref rid="cobi70049-bib-0029" ref-type="bibr">2022</xref>).</p><fig position="float" fig-type="FIGURE" id="cobi70049-fig-0002"><label>FIGURE 2</label><caption><p>Sites and the urbanization gradient in Manaus and Carauari where people were surveyed relative to (a) studied municipalities, Amazonas state, and South American countries; (b) municipalities and areas sampled in Amazonas state; (c) surveyed rural, peri&#x02010;urban, and urban areas in Carauari; (d) surveyed rural, peri&#x02010;urban, and urban areas in Manaus; (e) urban districts and random survey locations in Carauari; and (f) urban districts and random survey locations in Manaus.</p></caption><graphic xlink:href="COBI-39-e70049-g001" position="anchor" id="jats-graphic-3"/></fig><p>We defined the urban area as the urbanized portion within municipal boundaries (IBGE, <xref rid="cobi70049-bib-0028" ref-type="bibr">2010</xref>), peri&#x02010;urban area as the area ranging from the border of the urban area up to 40&#x000a0;km out (or 12&#x000a0;h by boat during the wet season), and rural area as anywhere beyond the peri&#x02010;urban border (Hutchings et&#x000a0;al., <xref rid="cobi70049-bib-0027" ref-type="bibr">2022</xref>). We used these categories as proxies for a rural&#x02013;urban gradient (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S4</xref>) but recognize this is a spatial simplification of the complex nature of urbanization and peri&#x02010;urbanization processes (Gon&#x000e7;alves et&#x000a0;al., <xref rid="cobi70049-bib-0024" ref-type="bibr">2017</xref>).</p></sec><sec id="cobi70049-sec-0060"><title>Household surveys</title><p>We conducted our surveys from May to August 2022. Our study design was approved by the Institutional Review Board (protocol 1040) and by the Comit&#x000ea; de &#x000c9;tica em Pesquisa (CAAE 6.0000.8117). We also obtained consent from local organizations and research participants prior to administering the surveys.</p><p>People are likely to underreport wildlife use due to its illegality in Brazil (Brasil, <xref rid="cobi70049-bib-0007" ref-type="bibr">1967</xref>, <xref rid="cobi70049-bib-0008" ref-type="bibr">1998</xref>). To obtain more honest answers on wildlife use, we used a randomized response technique known as an unrelated question design (Blair et&#x000a0;al., <xref rid="cobi70049-bib-0005" ref-type="bibr">2015</xref>). This indirect technique anonymizes the responses of research participants, decreasing bias in reported wild meat use (Chaves, et&#x000a0;al., <xref rid="cobi70049-bib-0017" ref-type="bibr">2021</xref>).</p><p>In each sampled household, we asked participants questions that could be related to either illegal (sensitive) or legally obtained (nonsensitive) items. We used dominoes as randomizers. One domino (out of 6) was chosen randomly from a cloth bag by participants. Four dominoes had 2 dots. Participants who drew 2 dots answered questions about sensitive items (wild meat). Two dominoes had one dot. Participants who drew one dot answered questions about nonsensitive items (legal food items and merchandise). Participants answered general questions (e.g., &#x0201c;How many units of this item did you consume in the dry/wet season?&#x0201d;) without explicitly naming the item, ensuring the interviewer did not know the outcome of the randomization (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S1</xref>). Survey questions were tested before being applied and are available in Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S2</xref>.</p><p>We assessed the following social factors potentially affected by urbanization and that may influence wildlife use: whether the household was managed by one adult or 2 adults and the level of dependency in the household (i.e., number of people &#x0003c;18&#x000a0;years old divided by the number of working people &#x02265;18&#x000a0;years old). We also assessed access to natural resources as the number of visits to a rural area by any urban household member in the wet season. Similarly, we assessed access to urban markets as of visits by any peri&#x02010;urban or rural household member to the closest urban center in the wet season. We assessed household residence status as multisited or single sited. Single&#x02010;sited households used natural resources and worked near the site of the residence. People from multisited households used both urban and rural areas.</p></sec><sec id="cobi70049-sec-0070"><title>Sampling design</title><p>We conducted 782 household surveys, 509 in Manaus (120 rural, 90 peri&#x02010;urban, 299 urban area) and 273 in Carauari (73 rural, 41 peri&#x02010;urban, 159 urban area). We randomly selected households in each area (sampling design in Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S1</xref>). Adults aged 18&#x02013;85&#x000a0;years provided household information and chose who answered the survey.</p></sec><sec id="cobi70049-sec-0080"><title>Data analyses</title><p>We used a negative binomial regression to assess the effect of municipality, urbanization categories, and residence status on the frequency of visits to the urban center by rural and peri&#x02010;urban households and of visits to rural and peri&#x02010;urban areas by urban households. We used the dplyr package (Wickham et&#x000a0;al., <xref rid="cobi70049-bib-0058" ref-type="bibr">2021</xref>) and fitted models with the glmmTMB package (Brooks et&#x000a0;al., <xref rid="cobi70049-bib-0009" ref-type="bibr">2017</xref>).</p><p>We used a logistic regression to assess the effect of urbanization on the prevalence of single&#x02010; or dual&#x02010;adult households, using the same set of predictors described above. We used a logistic regression to assess the effect of municipality, urbanization categories, and residence status on the prevalence of dependents over working&#x02010;age adults.</p><p>We used customized Bayesian models to estimate the prevalence of consumption, barter, and commercial trade of wild mammals, birds, and chelonians by household in Manaus and Carauari for each urbanization category during the dry and wet seasons. To do this, we used the JAGS modeling platform (Plummer, <xref rid="cobi70049-bib-0049" ref-type="bibr">2003</xref>) with 25,000 samples from the posterior distribution. We discarded the first 50,000 iterations from the burn&#x02010;in period. We focused on wildlife use (binary variable) and assumed a Bernoulli distribution (Chaves, et&#x000a0;al., <xref rid="cobi70049-bib-0016" ref-type="bibr">2021</xref>). We also estimated the quantity used (kilograms or units used per month) by households with ordered logistic regression (statistical model in Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S1</xref>).</p><p>We used ordered logistic regression models to look at additional factors associated with the consumption, barter, and commercial trade of wild meat (see Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S1</xref> and Table&#x000a0;<xref rid="cobi70049-tbl-0001" ref-type="table">1</xref> for details). Our first model included spatial factors, and the second model included social factors associated with wildlife use. We ran separate models for rural access and market access because each included a different set of households. Season (dry and wet) was included in all models. All analyses were conducted in RStudio (R Core Team, <xref rid="cobi70049-bib-0050" ref-type="bibr">2020</xref>).</p><table-wrap position="float" id="cobi70049-tbl-0001" content-type="TABLE"><label>TABLE 1</label><caption><p>Models and variables used to assess the effects of urbanization and social factors on wildlife use across rural, peri&#x02010;urban, and urban areas in the Brazilian Amazon.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><thead><tr style="border-bottom:solid 1px #000000"><th align="left" rowspan="1" colspan="1">Model</th><th align="left" rowspan="1" colspan="1">Type of analysis</th><th align="left" rowspan="1" colspan="1">Response variable</th><th align="left" rowspan="1" colspan="1">Predictor variable</th></tr></thead><tbody><tr><td align="left" rowspan="1" colspan="1">Spatial factors associated with access to urban markets by rural and peri&#x02010;urban households</td><td align="left" rowspan="1" colspan="1">Negative binomial regression</td><td align="left" rowspan="1" colspan="1">Number of visits to the urban center</td><td align="left" rowspan="1" colspan="1">
+<p>Municipality (Manaus&#x000a0;=&#x000a0;1, Carauari&#x000a0;=&#x000a0;0)</p>
+<p>Residence status (multisited&#x000a0;=&#x000a0;1, single&#x02010;sited&#x000a0;=&#x000a0;0)</p>
+<p>Urbanization gradient (peri&#x02010;urban&#x000a0;=&#x000a0;1, urban&#x000a0;=&#x000a0;0)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Spatial factors associated with access to rural resources by urban households</td><td align="left" rowspan="1" colspan="1">Negative binomial regression</td><td align="left" rowspan="1" colspan="1">Number of visits to the rural area</td><td align="left" rowspan="1" colspan="1">
+<p>Municipality (Manaus&#x000a0;=&#x000a0;1, Carauari&#x000a0;=&#x000a0;0)</p>
+<p>Residence status (multisited&#x000a0;=&#x000a0;1, single&#x02010;sited&#x000a0;=&#x000a0;0)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Spatial factors associated with social factors</td><td align="left" rowspan="1" colspan="1">Logistic regression</td><td align="left" rowspan="1" colspan="1">Prevalence of dual&#x02010;adult households</td><td align="left" rowspan="1" colspan="1">
+<p>Municipality (Manaus&#x000a0;=&#x000a0;1, Carauari&#x000a0;=&#x000a0;0)</p>
+<p>Residence status (multisited&#x000a0;=&#x000a0;1, single&#x02010;sited&#x000a0;=&#x000a0;0)</p>
+<p>Urbanization gradient (peri&#x02010;urban&#x000a0;=&#x000a0;1, urban&#x000a0;=&#x000a0;0 and rural&#x000a0;=&#x000a0;1, urban&#x000a0;=&#x000a0;0)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="left" rowspan="1" colspan="1">Logistic regression&#x000a0;</td><td align="left" rowspan="1" colspan="1">Prevalence of dependents (&#x0003c;18&#x000a0;years old) over working&#x02010;age adults (&#x02265;18&#x000a0;years old)<xref rid="cobi70049-tbl1-note-0001" ref-type="table-fn">
+<sup>a</sup>
+</xref>
+</td><td align="left" rowspan="1" colspan="1">
+<p>Municipality (Manaus&#x000a0;=&#x000a0;1, Carauari&#x000a0;=&#x000a0;0)</p>
+<p>Residence status (multisited&#x000a0;=&#x000a0;1, single&#x02010;sited&#x000a0;=&#x000a0;0)</p>
+<p>Urbanization gradient (peri&#x02010;urban&#x000a0;=&#x000a0;1, urban&#x000a0;=&#x000a0;0 and rural&#x000a0;=&#x000a0;1, urban&#x000a0;=&#x000a0;0)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Spatial factors associated with wildlife consumption, barter or commercial trade</td><td align="left" rowspan="1" colspan="1">Ordinal logistic regression</td><td align="left" rowspan="1" colspan="1">Kilograms of mammal and bird meat used per month or units of turtles and tortoises used per month</td><td align="left" rowspan="1" colspan="1">
+<p>Municipality (Manaus&#x000a0;=&#x000a0;1, Carauari&#x000a0;=&#x000a0;0)</p>
+<p>Residence status (multisited&#x000a0;=&#x000a0;1, single&#x02010;sited&#x000a0;=&#x000a0;0)</p>
+<p>Urbanization gradient (peri&#x02010;urban&#x000a0;=&#x000a0;1, urban&#x000a0;=&#x000a0;0 and rural&#x000a0;=&#x000a0;1, urban&#x000a0;=&#x000a0;0)</p>
+<p>Season (dry season&#x000a0;=&#x000a0;1, wet season&#x000a0;=&#x000a0;0)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Visits to the rural area and wildlife consumption, barter or commercial trade</td><td align="left" rowspan="1" colspan="1"/><td align="left" rowspan="1" colspan="1"/><td align="left" rowspan="1" colspan="1">
+<p>Rural access (number of visits to the rural or peri&#x02010;urban areas in the last season)</p>
+<p>Season (dry season&#x000a0;=&#x000a0;1, wet season&#x000a0;=&#x000a0;0)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Visits to the urban area and wildlife consumption, barter or commercial trade</td><td align="left" rowspan="1" colspan="1"/><td align="left" rowspan="1" colspan="1"/><td align="left" rowspan="1" colspan="1">
+<p>Rural access (number of visits to the urban area in the last season)</p>
+<p>Season (dry season&#x000a0;=&#x000a0;1, wet season&#x000a0;=&#x000a0;0)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Social factors associated with wildlife consumption, barter or commercial trade</td><td align="left" rowspan="1" colspan="1"/><td align="left" rowspan="1" colspan="1"/><td align="left" rowspan="1" colspan="1">
+<p>Household status (dual&#x02010;adult&#x000a0;=&#x000a0;1, single&#x02010;adult&#x000a0;=&#x000a0;0)</p>
+<p>Number of dependents</p>
+<p>Season (dry season&#x000a0;=&#x000a0;1, wet season&#x000a0;=&#x000a0;0)</p>
+</td></tr></tbody></table><table-wrap-foot><fn id="cobi70049-tbl1-note-0001"><label>
+<sup>a</sup>
+</label><p>Households with a greater number of people younger than 18&#x000a0;years old than older than 18&#x000a0;=&#x000a0;1; households with a greater number of people 18&#x000a0;years old and older than 18 years old&#x000a0;=&#x000a0;0.</p></fn></table-wrap-foot><permissions><copyright-holder>John Wiley &#x00026; Sons, Ltd.</copyright-holder></permissions></table-wrap></sec></sec><sec id="cobi70049-sec-0090"><title>RESULTS</title><sec id="cobi70049-sec-0100"><title>Prevalence of wildlife use</title><p>For clarity, we present results for the dry season, when wildlife use was higher (Figure&#x000a0;<xref rid="cobi70049-fig-0003" ref-type="fig">3</xref>) (see Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S6</xref> for the wet season). Wildlife consumption, barter, and commercial trade occurred across the urbanization categories (Figure&#x000a0;<xref rid="cobi70049-fig-0003" ref-type="fig">3</xref>). Wildlife use was higher for rural than urban households. Percentage of urban households that consumed (Manaus 22%, Carauari 57%), bartered (17% in Manaus, 30% in Carauari), and traded (Manaus 21%, Carauari 7%) meat from mammals and birds and that consumed (Manaus 28%, Carauari 61%), bartered (Manaus 14%, Carauari 20%), and traded (Manaus 16%, Carauari 21%) chelonians was not negligible. The percentage of peri&#x02010;urban households using wildlife did not differ from rural households. However, chelonians were bartered (79%, 95% confidence interval [CI] 57&#x02013;95) and traded (44%, 95% CI 26&#x02013;62) by a greater percentage of peri&#x02010;urban than urban households (barter in urban Carauari 20%, 95% CI 8&#x02013;34; trade in urban Manaus 16%, 95% CI 6&#x02013;26). In Carauari, a greater percentage of rural households traded mammal and bird meat (46%, 95% CI 26&#x02013;65) than urban households (7%, 95% CI 0.4&#x02013;19). The percentage of households that consumed wildlife was higher in Carauari than in Manaus (Figure&#x000a0;<xref rid="cobi70049-fig-0003" ref-type="fig">3</xref>). The percentage of peri&#x02010;urban households that bartered chelonians was greater in Carauari (79%, 95% CI 57&#x02013;95) than in Manaus (13%, 95% CI 1&#x02013;30). The percentage of households that traded wild meat did not differ among the municipalities sampled.</p><fig position="float" fig-type="FIGURE" id="cobi70049-fig-0003"><label>FIGURE 3</label><caption><p>Percentage of households that used turtle and tortoise meat in (a) Carauari, a small town, and (b) Manaus, a large city, and that used birds and mammal meat in (c) Carauari and (d) Manaus across the gradient of urbanization during the dry season (June&#x02013;December) of 2021 (error bars, 95% credible intervals).</p></caption><graphic xlink:href="COBI-39-e70049-g004" position="anchor" id="jats-graphic-5"/></fig><fig position="float" fig-type="FIGURE" id="cobi70049-fig-0004"><label>FIGURE 4</label><caption><p>Effects of social mechanisms on wildlife use across the rural&#x02010;to&#x02010;urban gradient in the Brazilian Amazon and associated policy implications for participatory wildlife conservation. At the bottom are key social mechanisms affecting wildlife use: increased barter and commercial wildlife trade associated with visits between rural and urban areas; increased wildlife consumption and barter associated with multisited households (households accessing both urban and rural resources); higher dependency levels (ratio of minors to working adults); and dual&#x02010;adult households. Based on these mechanisms, 3 policy implications are proposed (top): regulate subsistence hunting, strengthen community&#x02010;based management of alternative food sources, and integrate wildlife users into development programs. Illustration by Norberto T. Ferreira.</p></caption><graphic xlink:href="COBI-39-e70049-g002" position="anchor" id="jats-graphic-7"/></fig><p>The percentage of households that consumed mammals and birds was higher than the percentage of households that traded mammals and bird meat in rural Manaus and rural and urban Carauari (Figure&#x000a0;<xref rid="cobi70049-fig-0003" ref-type="fig">3</xref>). The percentage of households that consumed chelonians was higher than the percentage of households that traded chelonians in rural and urban Carauari (Figure&#x000a0;<xref rid="cobi70049-fig-0003" ref-type="fig">3</xref>). Peri&#x02010;urban wildlife use did not vary across uses (Figure&#x000a0;<xref rid="cobi70049-fig-0003" ref-type="fig">3</xref>). Finally, the percentage of households using wildlife did not vary by season (Figure&#x000a0;<xref rid="cobi70049-fig-0003" ref-type="fig">3</xref>, Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S6</xref>).</p></sec><sec id="cobi70049-sec-0110"><title>Urbanization effects on social factors</title><p>Access to urban markets and rural resources was affected by the rural&#x02013;urban gradient. Number of urban visits by households from rural and peri&#x02010;urban areas of Manaus was 30% greater than in Carauari (incidence rate ratio [IRR] 1.30, 95% CI 1.03&#x02013;1.64), while the number of rural visits by urban households of Manaus was 75.8% lower than visits by urban households of Carauari (IRR 0.24, 95% CI 0.15&#x02013;0.39). Finally, the number of urban visits by peri&#x02010;urban households was 3 times greater than rural households (IRR 3.02, 95% CI 2.42&#x02013;3.77).</p><p>Nineteen percent of households were multisited; 63.3% had a primary urban residence. The number of visits to rural areas by multisited households with urban primary residence was 4&#x02010;fold greater than by single&#x02010;sited households (IRR 4.78, 95% CI 2.79&#x02013;8.18). Number of visits to urban areas by rural households was not associated with residence status (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>).</p><p>The probability of being a dual&#x02010;adult household was 59% lower in Manaus (odds ratio [OR] 0.41, 95% CI 0.27&#x02013;0.61) than in the small town. The odds of being a dual&#x02010;adult household were 60% greater for rural (OR 1.60, 95% CI 1.06&#x02013;2.43) and more than 3 times greater for peri&#x02010;urban (OR 3.25, 95% CI 1.78&#x02013;5.94) than urban households.</p><p>The prevalence of dependents over working&#x02010;age adults was strongly associated with municipality and urbanization categories. The odds of having a greater number of dependents over working&#x02010;age adults in the household was 48% lower in Manaus (OR 0.54, 95% CI 0.39&#x02013;0.75) than in Carauari. The odds of having a greater number of dependents over working&#x02010;age adults were higher for rural and peri&#x02010;urban households (OR 1.94, 95% CI 1.34&#x02013;2.82 rural and 1.26&#x02013;3.4 peri&#x02010;urban) than urban households.</p></sec><sec id="cobi70049-sec-0120"><title>Wild meat consumption</title><p>The urbanization categories and residence status were associated with wild meat consumption. Rural households consumed meat from mammals and birds 7 times more (OR 7.56, 95% CI 3.94&#x02013;15.02) and chelonians 13 times more (OR 13.04, 95% CI 5.87&#x02013;30.26) than urban households. Peri&#x02010;urban households consumed mammals and bird meat 3 times more (OR 3.42, 95% CI 1.64&#x02013;7.23) and chelonians 6 times more (OR 6.64, 95% CI 2.82&#x02013;16.73) than urban households. Multisited households consumed 2 times more meat from mammals and birds than single&#x02010;sited households (OR 2.51, 95% CI 1.38&#x02013;4.54). Residence status did not affect chelonian consumption (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>). Living in Manaus was associated with 86% lower amount of meat from mammals and birds consumed (OR 0.14, 95% CI 0.07&#x02013;0.25) and with 96% lower number of chelonians consumed (OR 0.04, 95% CI 0.02&#x02013;0.1) than living in Carauari (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>). The amount of mammal and bird meat consumed was 55% greater (OR 1.55, 95% CI 1.05&#x02013;2.34) and of chelonians was 7&#x02010;fold greater in dry (OR 7.09, 95% CI 3.91&#x02013;14.04) than in the wet season.</p><p>As the number of rural visits by urban households increased by 1 SD (equivalent to 6.56 visits/season), the quantity of mammals and birds consumed increased by 36% (OR 1.36, 95% CI 1.08&#x02013;1.77) and of chelonians increased almost 3&#x02010;fold (OR 2.94, 95% CI 1.69&#x02013;4.83). Market access was not associated with wild meat consumption (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>). Level of dependency was positively associated with chelonians consumption. For each increase of 1 SD (equivalent to 0.2 level of dependency), the quantity of chelonians consumed increased by 42% (OR 1.42, 95% CI 1.08&#x02013;1.97). Chelonian consumption was higher during dry than wet season (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>). The remaining variables included in the model were not associated with chelonian consumption (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>).</p></sec><sec id="cobi70049-sec-0130"><title>Wild meat barter</title><p>The urbanization categories were associated with wild meat barter, residence status affected barter of mammals and birds, and season affected chelonian barter. Rural households bartered 82&#x02010;fold more mammal and bird meat (OR 82.72, 95% CI 19.36&#x02013;554.18) and 5&#x02010;fold more chelonians (OR 5.12, 95% CI 2.02&#x02013;12.95) than urban households. Peri&#x02010;urban households bartered 43 times more meat from mammals and birds (OR 43.81, 95% CI 9.46&#x02013;298.95) and over 5 times more chelonians (OR 5.77, 95% CI 2.26&#x02013;15.96) than urban households. Multisited households bartered 86% less mammal and bird meat than single&#x02010;sited households (OR 0.14, 95% CI 0.03&#x02013;0.47). Households in Manaus bartered 99% less mammal and bird meat (OR 0.01, 95% CI 0.001&#x02013;0.07) and 77% fewer chelonians (OR 0.23, 95% CI 0.08&#x02013;0.54) than households in Carauari. More chelonians were bartered in the dry season (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>).</p><p>Among the factors assessed, dual&#x02010;adult households and market access were positively associated with the quantity of mammal and bird meat bartered. Dual&#x02010;adult households bartered 10 times more mammal and bird meat than single&#x02010;adult households (OR 0.13, 95% CI 1.42&#x02013;167.63). An increase of 1 SD in the number of visits to the urban area (equivalent to 21.76 visits per season) was associated with 4&#x02010;fold more mammal and bird meat bartered (OR 4.12, 95% CI 1.11&#x02013;17.91). As the number of dependents increased by 1 SD, the number of chelonians bartered increased by 53% (OR 1.53, 95% CI 1.12&#x02013;2.05). Finally, the quantity of chelonians bartered in the dry season was greater than in the wet season (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>).</p></sec><sec id="cobi70049-sec-0140"><title>Wild meat commercial trade</title><p>Urbanization effects on trade depended on the type of wildlife. The quantity of mammals and birds traded was 8 times greater for rural households than urban households (OR 8.35, 95% CI 2.62&#x02013;34.59). The number of chelonians traded was 70% lower for households in Manaus than in Carauari (OR 0.30, 95% CI 0.11&#x02013;0.72).</p><p>The level of dependency affected the quantity of mammals and birds commercially traded, whereas market access affected chelonian trade. The amount of mammal and bird meat traded was 52% greater for every increase of 0.2 in dependency level (OR 1.52, 95% CI 1.06&#x02013;2.12). The quantity of chelonians traded was 2 times greater for every increase in 21.76 visits/season to urban areas (OR 2.39, 95% CI 1.04&#x02013;6.55). The dry season was associated with higher commercial trade than the wet season, and this relationship was stronger for chelonians than mammals and birds (Appendix <xref rid="cobi70049-supinfo-0001" ref-type="">S15</xref>).</p></sec></sec><sec id="cobi70049-sec-0150"><title>DISCUSSION</title><p>We investigated how urbanization was associated with wildlife use. Our findings have implications for the inclusion of urban, peri&#x02010;urban, and rural populations in people&#x02010;centered conservation in the Brazilian Amazon. Wildlife use was widespread across the urbanization gradient, and wild meat use was associated with urbanization, municipality, residence status, and social factors. Although urbanization in Carauari (a small town) does not mirror urbanization in Manaus (a big city) exactly, the comparison provides insights into how social factors may influence wildlife use based on varying degrees of urbanization across these sites. The quantity of wild meat used was greater for rural and peri&#x02010;urban households than for urban households. However, urban demand for wild meat was substantial, highlighting the persistence of rural practices in urban contexts, especially in small towns. In Carauari, wildlife use was predominantly influenced by rural areas, whereas in Manaus, the urban area shaped rural and peri&#x02010;urban access to markets. This led to an increase in barter of species of lower market value (i.e., mammals and birds) and in commercial trade of species of higher market value (i.e., chelonians). Urban wild meat use increased as rural access by urban or multisited households increased. Finally, peri&#x02010;urban household proximity to wildlife and urban markets resulted in greater wildlife trade levels, especially closer to Manaus. These interlinked spatial and social processes have important, but largely overlooked, implications for wildlife policies.</p><sec id="cobi70049-sec-0160"><title>Wildlife trade and the urban frontier</title><p>We uncovered evidence of wildlife trade occurring in households across large and small urban areas. An average of 21% (7&#x02013;34% Carauari) and 16% (6&#x02013;26% Manaus) of urban households participated in trade. Urban households are engaged in transactions with other households, adding complexity to monitoring wild meat trade and enforcing regulations (Hughes et&#x000a0;al., <xref rid="cobi70049-bib-0027a" ref-type="bibr">2023</xref>). Participation of peri&#x02010;urban households in wildlife trade was substantial. Peri&#x02010;urban households engaged in diverse economic activities, often relying on access to both rural and urban markets. Their dynamic livelihood strategies and geographic position facilitate trade, and their involvement in the urban economy boosts wild meat demand (Torreset al., <xref rid="cobi70049-bib-0013" ref-type="bibr">2022</xref>). Peri&#x02010;urban households visited urban areas more often than they visited rural areas, suggesting stronger urban ties. Any conservation strategy concerning wildlife use should consider dynamics occurring in peri&#x02010;urban areas, including how inhabitants access wild meat.</p></sec><sec id="cobi70049-sec-0170"><title>Embedded urbanization and urban&#x02010;to&#x02010;rural connections</title><p>We hypothesized that municipality size and household residence status are associated with access to wild meat and wildlife use, after accounting for urbanization categories. We found that small&#x02010;town households had higher rural access and higher wildlife use than Manaus residents, which is consistent with wildlife use literature in Amazonia (Torreset al., <xref rid="cobi70049-bib-0013" ref-type="bibr">2022</xref>; Chaves et&#x000a0;al., <xref rid="cobi70049-bib-0018" ref-type="bibr">2017</xref>; Parry et&#x000a0;al., <xref rid="cobi70049-bib-0046" ref-type="bibr">2010</xref>). In Manaus, however, urban access was greater than in Carauari. The diverse associations between rural access in small towns and market access in large cities stem from historical connectivity patterns among Amazonian cities and the process of &#x0201c;embedded urbanization&#x0201d; (Hecht et&#x000a0;al., <xref rid="cobi70049-bib-0026" ref-type="bibr">2021</xref>). Small towns exhibit a subregional hierarchy, characterized by strong connections to local markets and natural resource exploitation (Guedes et&#x000a0;al., <xref rid="cobi70049-bib-0025" ref-type="bibr">2009</xref>), suggesting a greater connection between small&#x02010;town inhabitants and wild meat. In contrast, large cities likely drive access across other urban dimensions, attracting people to markets and labor (Kanai, <xref rid="cobi70049-bib-0035" ref-type="bibr">2014</xref>).</p><p>Residence status had distinct effects on wildlife use. Multisited residents were consumers rather than intermediaries in wildlife barter, implying a straightforward network for wildlife products along the rural&#x02013;urban continuum. This contrasts with the intricate and branched structure observed in other wildlife trade networks (e.g., commercial trade [Pantoja&#x02010;Lima et&#x000a0;al., <xref rid="cobi70049-bib-0043" ref-type="bibr">2014</xref>]). Moreover, multisited residence increased rural access by urban households without a corresponding increase in urban access by rural households. These findings imply people's mobility across the urban&#x02013;rural frontier by their residence status shapes access to wildlife, as evidenced elsewhere (Torreset al., <xref rid="cobi70049-bib-0013" ref-type="bibr">2022</xref>).</p></sec><sec id="cobi70049-sec-0180"><title>Social factors affecting access to and use of wildlife</title><p>Visits to rural and urban areas, which are secondary effects of urbanization (Christiaensen &#x00026; Todo, <xref rid="cobi70049-bib-0019" ref-type="bibr">2014</xref>), distinctly shaped wildlife use and could lead to an increase in wild meat consumption in urban areas and drive barter and commercial trade in rural and peri&#x02010;urban regions. Chelonian trading increased as market access increased. Mammals and birds, however, were bartered, a finding that contributes to evidence of a specific role for certain species. Although types of wildlife use for particular species have been identified in urban settings (Chaves et&#x000a0;al., <xref rid="cobi70049-bib-0015" ref-type="bibr">2023</xref>), residents in rural and peri&#x02010;urban areas likely favor bartering cheaper food items, reserving commercial transactions for economically valuable species, such as chelonians (El Bizri et&#x000a0;al., <xref rid="cobi70049-bib-0022" ref-type="bibr">2020</xref>). Thus, household wildlife use involves social and economic mechanisms, and the species affects the type of use.</p><p>Intrahousehold factors also influenced wildlife use. Dual&#x02010;adult households consumed and bartered more bird and mammal meat than single&#x02010;adult households. This suggests that dual&#x02010;adult households tend to access wildlife and facilitate others&#x02019; access to wildlife through food&#x02010;sharing practices. With 2 adults, the capacity to engage in hunting or wildlife acquisition activities, either directly or through social networks, is enhanced (Wood &#x00026; Marlowe, <xref rid="cobi70049-bib-0059" ref-type="bibr">2013</xref>). Conversely, it suggests that single&#x02010;adult households are vulnerable to food shortages if they rely on wild meat or that single&#x02010;sited households may rely on domesticated meat. Single&#x02010;adult households&#x02019; participation in urban markets was higher than dual&#x02010;adult households, possibly because of their prevalence in Manaus. This may be associated with reduced access to wild meat.</p><p>High rates of barter among households with greater dependency levels might mean greater reliance on social networks (Barbieri et&#x000a0;al., <xref rid="cobi70049-bib-0003" ref-type="bibr">2021</xref>). In fact, participating in wild meat barter likely extends benefits beyond intrahousehold food security to community well&#x02010;being and expansion of rural&#x02013;urban networks (Carigiano Torres et&#x000a0;al., <xref rid="cobi70049-bib-0012" ref-type="bibr">2022</xref>; Chaves et&#x000a0;al., <xref rid="cobi70049-bib-0015" ref-type="bibr">2023</xref>). In addition, wild meat sharing can be a safety net during periods of food scarcity (Valle Nunes et&#x000a0;al., <xref rid="cobi70049-bib-0054" ref-type="bibr">2019</xref>). Then, households with more dependents might cope with food availability fluctuations by bartering meat, consequently fostering reciprocity outside the household.</p><p>We also found that household dependency level increased chelonian consumption and barter. This finding challenges the association of chelonian consumption with wealth, despite expectations of economic strain in such households. This relationship warrants further investigation, particularly because we did not detect an effect of dependency level on trade. It is possible, however, that people are investing efforts to maintain chelonian barter, thereby increasing the availability of these species in the household (El Bizri et&#x000a0;al., <xref rid="cobi70049-bib-0020" ref-type="bibr">2023</xref>).</p></sec><sec id="cobi70049-sec-0190"><title>Integrating the urbanization gradient in participatory wildlife policies</title><p>Conservation in Brazil highlights the participation of people in research, yet it often lacks frameworks to effectively integrate wildlife users in decision&#x02010;making (Bragagnolo et&#x000a0;al., <xref rid="cobi70049-bib-0006" ref-type="bibr">2019</xref>). Aside from policies supporting Indigenous wildlife use, fair and effective interventions are rare (Antunes et&#x000a0;al., <xref rid="cobi70049-bib-0001" ref-type="bibr">2019</xref>). For example, although 84% of protected areas in the Brazilian Amazon are comanaged by traditional communities, a review of 30 management plans showed that less than half considered people legitimate users (Lemos et&#x000a0;al., <xref rid="cobi70049-bib-0036" ref-type="bibr">2023</xref>). Additionally, efforts to include people in wildlife policy are often biased toward rural areas (i.e., extractive reserves [ICMBIO, <xref rid="cobi70049-bib-0030" ref-type="bibr">2002</xref>]) and toward specific taxa (i.e., caimans [CEMAAM, <xref rid="cobi70049-bib-0014" ref-type="bibr">2011</xref>] and chelonians [ICMBIO, <xref rid="cobi70049-bib-0031" ref-type="bibr">2022</xref>]). Plans to address wildlife stewardship must be accompanied by a transformation in environmental governance with a framework that addresses the relationships between rural and urban populations, prioritizes harvesting of resilient species, and helps alleviate poverty (Parry et&#x000a0;al., <xref rid="cobi70049-bib-0044" ref-type="bibr">2014</xref>). Therefore, a structural shift is required toward a sustainable and just wildlife use sector in conservation. We propose 3 recommendations to promote this shift that are based on wildlife use as ongoing across the urbanization gradient, despite legal restrictions.</p><p>We applied a social justice framework that places human rights at the center of conservation (Milner&#x02010;Gulland, <xref rid="cobi70049-bib-0038" ref-type="bibr">2024</xref>). Hunting regulations in the Brazilian Amazon must accommodate the fundamental role of hunting in rural subsistence economies (Antunes et&#x000a0;al., <xref rid="cobi70049-bib-0001" ref-type="bibr">2019</xref>). The prevalence of rural households consuming wild meat, ranging from 50% (in Manaus) to 92% (in Carauari) in our study, underscores the critical subsistence role of wild meat. In rural Amazonia, wild meat consumption alleviates child malnutrition, enhances food security, and is a vital resource for populations facing economic and social constraints (Bachmann et&#x000a0;al., <xref rid="cobi70049-bib-0002" ref-type="bibr">2019</xref>; Carigiano Torres et&#x000a0;al., <xref rid="cobi70049-bib-0012" ref-type="bibr">2022</xref>; Nunes et&#x000a0;al., <xref rid="cobi70049-bib-0040" ref-type="bibr">2019</xref>). Despite its importance to 26% of the Amazonian population in Brazil (IBGE, <xref rid="cobi70049-bib-0028" ref-type="bibr">2010</xref>), wild meat use remains largely unregulated, leaving people subject to contradictory rules and policies (Van Vliet, <xref rid="cobi70049-bib-0055" ref-type="bibr">2018</xref>). Considering the prevalence of rural wild meat consumption, we recommend the adoption of an inclusive legal framework that regulates subsistence hunting and guarantees rural people the right to comanage wildlife populations in their territories (Figure <xref rid="cobi70049-fig-0004" ref-type="fig">4</xref>, number 1).</p><p>Ensuring sustainable rural wild meat use requires complementary strategies that encourage livelihood diversification and uphold territorial sovereignty (Wicander &#x00026; Coad, <xref rid="cobi70049-bib-0057" ref-type="bibr">2018</xref>). Therefore, we recommend that conservation policies encompass Amazonian food systems comprehensively and prioritize reinforcement of community&#x02010;based management approaches for alternative wild food sources, such as fish (Figure <xref rid="cobi70049-fig-0004" ref-type="fig">4</xref>, number 2). Fish are an abundant and reliable food and nutrient source for Amazonian communities compared with wild meat (Tregidgo et&#x000a0;al., <xref rid="cobi70049-bib-0053" ref-type="bibr">2020</xref>). Thus, coupled wildlife&#x02013;fish stock management should support rural communities, particularly when populations of consumed species fluctuate. Moreover, fish management initiatives will likely benefit terrestrial species using these managed systems due to the territorial protection they promote (Campos&#x02010;Silva et&#x000a0;al., <xref rid="cobi70049-bib-0011" ref-type="bibr">2018</xref>). Integrating fish and wildlife management in a community&#x02010;based framework would significantly enhance cooperation and collective action, thereby fostering robust local institutions capable of deliberating on wildlife use and rural sustainable development.</p><p>Peri&#x02010;urban areas emerged as significant contributors to the integration of rural wildlife stocks in urban markets, facilitating wildlife barter and commercial trade, particularly in Manaus where demand for wildlife is likely unsustainable (Chaves et&#x000a0;al., <xref rid="cobi70049-bib-0016" ref-type="bibr">2021</xref>). Peri&#x02010;urban regions are focal points for market integration and infrastructural development as urban areas expand (Hutchings et&#x000a0;al., <xref rid="cobi70049-bib-0027" ref-type="bibr">2022</xref>). However, peri&#x02010;urban expansion often occurs without adequate planning (Allen, <xref rid="cobi70049-bib-0001" ref-type="bibr">2003</xref>). Given that the growth of peri&#x02010;urban areas can accelerate demand for wild meat and contribute to the depletion of wildlife populations near urban centers (Sampaio et&#x000a0;al., <xref rid="cobi70049-bib-0052" ref-type="bibr">2022</xref>) and that urban hunters may also harvest wildlife for other purposes not addressed here (i.e., sport; Oliveira et&#x000a0;al., <xref rid="cobi70049-bib-0041" ref-type="bibr">2023</xref>), we recommend including wildlife users in integrated development programs through community&#x02010;based conservation efforts to mitigate rural and peri&#x02010;urban participation in wildlife markets (Figure <xref rid="cobi70049-fig-0004" ref-type="fig">4</xref>, number 3). Consequently, integrated wildlife conservation plans should encompass broader considerations related to urban expansion and local development policies. Municipal master plans, for instance, could significantly contribute to wildlife conservation efforts by adopting a regional approach that includes people across the urbanization spectrum, which could also prevent unsustainable urban growth. We recognize that a more nuanced, multidimensional approach (e.g., incorporating socioeconomic, infrastructural, and ecological variables) would provide richer insights into the urban&#x02013;rural continuum effects on wildlife use.</p><p>Bridging the historical divide between urban and rural conservation strategies is paramount. Aside from a 2006 attempt to cocreate policy for wildlife use, known as the &#x0201c;Amazonian Wildlife Policy&#x0201d; (IBAMA, <xref rid="cobi70049-bib-0033" ref-type="bibr">2006</xref>), few conservation initiatives proposed structural changes to enhance sustainable rural&#x02013;urban intersections. Notable exceptions include regulations on sport hunting (Law 10,056;94) and on hunting invasive species (IBAMA Normative Instruction 03/2013; El Bizri et&#x000a0;al., <xref rid="cobi70049-bib-0021" ref-type="bibr">2015</xref>). Despite these localized efforts, rural and urban wildlife users should play roles in decision&#x02010;making processes so that policies that reduce dependence on wildlife and address food sovereignty and well&#x02010;being are developed. Rural institutions have shown adaptability in addressing the effects of urbanization, such as market integration (Hecht et&#x000a0;al., <xref rid="cobi70049-bib-0026" ref-type="bibr">2021</xref>). For urban residents, wildlife policies should focus on voluntary demand reduction initiatives and target enforcement of unsustainable trade markets. We found that populations in the peri&#x02010;urban areas of Manaus sustain illegal trade, which reinforces people's vulnerability. Critically, integrated yet targeted policies should produce clear conservation outcomes that encompass social and ecological dimensions and focus on the inclusion of vulnerable, yet overlooked, urban, peri&#x02010;urban, and rural residents. Ultimately, a collaborative approach recognizing the interconnectedness of rural and urban spheres can create sustainable pathways for an urbanizing Amazonia.</p></sec></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="cobi70049-supinfo-0001" position="float" content-type="local-data"/><supplementary-material id="cobi70049-supitem-0001" position="float" content-type="local-data"><caption><p>Supporting Information</p></caption><media xlink:href="COBI-39-e70049-s001.docx"/></supplementary-material></sec></body><back><ack id="cobi70049-sec-0200"><title>ACKNOWLEDGMENTS</title><p>We thank research participants and stakeholders, specifically ASPROC, ASMAMJ, AMARU, Instituto Juru&#x000e1;, WCS Brasil, CEQUA/INPA, SEMA/AM, SEMMAS/Manaus, ICMBio, protected areas&#x02019; leaders, J. Valsecchi, and R. Mayrink. We also thank V.T.&#x02019;s Writing Center, ASU's Biology and Society students, C. Comer, B. Mowry, and A. Akhtar for reviewing this manuscript. We thank L. B. Prado, J. Keany, and W. Yang for the spatial analysis. We thank research assistants, V.T.&#x02019;s Department of Fish and Wildlife Conservation, and Global Change Center for supporting this research.</p></ack><ref-list id="cobi70049-bibl-0001"><title>REFERENCES</title><ref id="cobi70049-bib-0001a"><mixed-citation publication-type="journal" id="cobi70049-cite-0002a">
+<string-name>
+<surname>Allen</surname>, <given-names>A.</given-names>
+</string-name> (<year>2003</year>). <article-title>Environmental planning and management of the peri&#x02010;urban interface: perspectives on an emerging field</article-title>. <source>Environment &#x00026; Urbanization</source>, <volume>15</volume>(<issue>1</issue>), <fpage>13</fpage>.</mixed-citation></ref><ref id="cobi70049-bib-0001"><mixed-citation publication-type="journal" id="cobi70049-cite-0002">
+<string-name>
+<surname>Antunes</surname>, <given-names>A. P.</given-names>
+</string-name>, <string-name>
+<surname>Reb&#x000ea;lo</surname>, <given-names>G. H.</given-names>
+</string-name>, <string-name>
+<surname>Pezzuti</surname>, <given-names>J. C. B.</given-names>
+</string-name>, <string-name>
+<surname>Vieira</surname>, <given-names>M. A. R. D. M.</given-names>
+</string-name>, <string-name>
+<surname>Constantino</surname>, <given-names>P. D. A. L.</given-names>
+</string-name>, <string-name>
+<surname>Campos&#x02010;Silva</surname>, <given-names>J. V.</given-names>
+</string-name>, <string-name>
+<surname>Fonseca</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Durigan</surname>, <given-names>C. C.</given-names>
+</string-name>, <string-name>
+<surname>Ramos</surname>, <given-names>R. M.</given-names>
+</string-name>, <string-name>
+<surname>Amaral</surname>, <given-names>J. V. D.</given-names>
+</string-name>, <string-name>
+<surname>Camps Pimenta</surname>, <given-names>N.</given-names>
+</string-name>, <string-name>
+<surname>Ranzi</surname>, <given-names>T. J. D.</given-names>
+</string-name>, <string-name>
+<surname>Lima</surname>, <given-names>N. A. S.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Shepard</surname>, <given-names>G. H.</given-names>
+</string-name> (<year>2019</year>). <article-title>A conspiracy of silence: Subsistence hunting rights in the Brazilian Amazon</article-title>. <source>Land Use Policy</source>, <volume>84</volume>, <fpage>1</fpage>&#x02013;<lpage>11</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0002"><mixed-citation publication-type="journal" id="cobi70049-cite-0003">
+<string-name>
+<surname>Bachmann</surname>, <given-names>M. E.</given-names>
+</string-name>, <string-name>
+<surname>Junker</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Mundry</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Nielsen</surname>, <given-names>M. R.</given-names>
+</string-name>, <string-name>
+<surname>Haase</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Cohen</surname>, <given-names>H.</given-names>
+</string-name>, <string-name>
+<surname>Kouassi</surname>, <given-names>J. A. K.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>K&#x000fc;hl</surname>, <given-names>H. S.</given-names>
+</string-name> (<year>2019</year>). <article-title>Disentangling economic, cultural, and nutritional motives to identify entry points for regulating a wildlife commodity chain</article-title>. <source>Biological Conservation</source>, <volume>238</volume>, Article <elocation-id>108177</elocation-id>.</mixed-citation></ref><ref id="cobi70049-bib-0003"><mixed-citation publication-type="journal" id="cobi70049-cite-0004">
+<string-name>
+<surname>Barbieri</surname>, <given-names>A. F.</given-names>
+</string-name>, <string-name>
+<surname>Guedes</surname>, <given-names>G. R.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Onofre Dos Santos</surname>, <given-names>R.</given-names>
+</string-name> (<year>2021</year>). <article-title>Land use systems and livelihoods in demographically heterogeneous frontier stages in the amazon</article-title>. <source>Environmental Development</source>, <volume>38</volume>, Article <elocation-id>100587</elocation-id>.</mixed-citation></ref><ref id="cobi70049-bib-0004"><mixed-citation publication-type="journal" id="cobi70049-cite-0005">
+<string-name>
+<surname>Becker</surname>, <given-names>B.</given-names>
+</string-name> (<year>2005</year>). <article-title>Geopol&#x000ed;tica da Amaz&#x000f4;nia</article-title>. <source>Estududos Avan&#x000e7;ados</source>, <volume>19</volume>(<issue>53</issue>), <fpage>71</fpage>&#x02013;<lpage>86</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0005"><mixed-citation publication-type="journal" id="cobi70049-cite-0006">
+<string-name>
+<surname>Blair</surname>, <given-names>G.</given-names>
+</string-name>, <string-name>
+<surname>Imai</surname>, <given-names>K.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Zhou</surname>, <given-names>Y.&#x02010;Y.</given-names>
+</string-name> (<year>2015</year>). <article-title>Design and analysis of the randomized response technique</article-title>. <source>Journal of the American Statistical Association</source>, <volume>110</volume>, <fpage>1304</fpage>&#x02013;<lpage>1319</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0006"><mixed-citation publication-type="journal" id="cobi70049-cite-0007">
+<string-name>
+<surname>Bragagnolo</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<surname>Gama</surname>, <given-names>G. M.</given-names>
+</string-name>, <string-name>
+<surname>Vieira</surname>, <given-names>F. A. S.</given-names>
+</string-name>, <string-name>
+<surname>Campos&#x02010;Silva</surname>, <given-names>J. V.</given-names>
+</string-name>, <string-name>
+<surname>Bernard</surname>, <given-names>E.</given-names>
+</string-name>, <string-name>
+<surname>Malhado</surname>, <given-names>A. C. M.</given-names>
+</string-name>, <string-name>
+<surname>Correia</surname>, <given-names>R. A.</given-names>
+</string-name>, <string-name>
+<surname>Jepson</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>De Carvalho</surname>, <given-names>S. H. C.</given-names>
+</string-name>, <string-name>
+<surname>Efe</surname>, <given-names>M. A.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Ladle</surname>, <given-names>R. J.</given-names>
+</string-name> (<year>2019</year>). <article-title>Hunting in Brazil: What are the options?</article-title>
+<source>Perspectives in Ecology and Conservation</source>, <volume>17</volume>, <fpage>71</fpage>&#x02013;<lpage>79</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0007"><mixed-citation publication-type="miscellaneous" id="cobi70049-cite-0008">
+<collab collab-type="authors">Brasil</collab>
+. (<year>1967</year>). <article-title>
+Disp&#x000f5;e sobre a prote&#x000e7;&#x000e3;o &#x000e0; fauna e d&#x000e1; outras provid&#x000ea;ncias
+</article-title>. <ext-link xlink:href="http://www.planalto.gov.br/ccivil_03/leis/L5197.htm" ext-link-type="uri">http://www.planalto.gov.br/ccivil_03/leis/L5197.htm</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0008"><mixed-citation publication-type="miscellaneous" id="cobi70049-cite-0009">
+<collab collab-type="authors">Brasil</collab>
+. (<year>1998</year>). <article-title>
+Disp&#x000f5;e sobre as san&#x000e7;&#x000f5;es penais e administrativas derivadas de condutas e atividades lesivas ao meio ambiente, e d&#x000e1; outras provid&#x000ea;ncias
+</article-title>. <ext-link xlink:href="http://www.planalto.gov.br/ccivil_03/leis/L5197.htm" ext-link-type="uri">http://www.planalto.gov.br/ccivil_03/leis/L5197.htm</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0009"><mixed-citation publication-type="journal" id="cobi70049-cite-0010">
+<string-name>
+<surname>Brooks</surname>, <given-names>M. E.</given-names>
+</string-name>, <string-name>
+<surname>Kristensen</surname>, <given-names>K.</given-names>
+</string-name>, <string-name>
+<surname>Benthem</surname>, <given-names>K. J. V.</given-names>
+</string-name>, <string-name>
+<surname>Magnusson</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Berg</surname>, <given-names>C. W.</given-names>
+</string-name>, <string-name>
+<surname>Nielsen</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Skaug</surname>, <given-names>H. J.</given-names>
+</string-name>, <string-name>
+<surname>M&#x000e4;chler</surname>, <given-names>M.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Bolker</surname>, <given-names>B. M.</given-names>
+</string-name> (<year>2017</year>). <article-title>glmmTMB balances speed and flexibility among packages for zero&#x02010;inflated generalized linear mixed modeling</article-title>. <source>The R Journal</source>, <volume>9</volume>, <fpage>378</fpage>&#x02013;<lpage>400</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0010"><mixed-citation publication-type="book" id="cobi70049-cite-0011">
+<string-name>
+<surname>Browder</surname>, <given-names>J. O.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Godfrey</surname>, <given-names>B. J.</given-names>
+</string-name> (<year>1997</year>). <source>Rainforest cities: Urbanization, development, and globalization of the Brazilian Amazon</source>. <publisher-name>Columbia University Press</publisher-name>.</mixed-citation></ref><ref id="cobi70049-bib-0011"><mixed-citation publication-type="journal" id="cobi70049-cite-0012">
+<string-name>
+<surname>Campos&#x02010;Silva</surname>, <given-names>J. V.</given-names>
+</string-name>, <string-name>
+<surname>Hawes</surname>, <given-names>J. E.</given-names>
+</string-name>, <string-name>
+<surname>Andrade</surname>, <given-names>P. C. M.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Peres</surname>, <given-names>C. A.</given-names>
+</string-name> (<year>2018</year>). <article-title>Unintended multispecies co&#x02010;benefits of an Amazonian community&#x02010;based conservation programme</article-title>. <source>Nature Sustainability</source>, <volume>1</volume>, <fpage>650</fpage>&#x02013;<lpage>656</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0012"><mixed-citation publication-type="journal" id="cobi70049-cite-0013">
+<string-name>
+<surname>Carignano Torres</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>Morsello</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<surname>Orellana</surname>, <given-names>J. D. Y.</given-names>
+</string-name>, <string-name>
+<surname>Almeida</surname>, <given-names>O.</given-names>
+</string-name>, <string-name>
+<surname>De Moraes</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Chac&#x000f3;n&#x02010;Montalv&#x000e1;n</surname>, <given-names>E. A.</given-names>
+</string-name>, <string-name>
+<surname>Pinto</surname>, <given-names>M. A. T.</given-names>
+</string-name>, <string-name>
+<surname>Fink</surname>, <given-names>M. G. S.</given-names>
+</string-name>, <string-name>
+<surname>Freire</surname>, <given-names>M. P.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Parry</surname>, <given-names>L.</given-names>
+</string-name> (<year>2022</year>). <article-title>Wildmeat consumption and child health in Amazonia</article-title>. <source>Scientific Reports</source>, <volume>12</volume>, Article <fpage>5213</fpage>.<pub-id pub-id-type="pmid">35388037</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0013"><mixed-citation publication-type="journal" id="cobi70049-cite-0014">
+<string-name>
+<surname>Carignano Torres</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>Morsello</surname>, <given-names>C.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Parry</surname>, <given-names>L.</given-names>
+</string-name> (<year>2022</year>). <article-title>Rural&#x02013;urban mobility influences wildmeat access and consumption in the Brazilian Amazon</article-title>. <source>Oryx</source>, <volume>56</volume>, <fpage>864</fpage>&#x02013;<lpage>876</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0014"><mixed-citation publication-type="book" id="cobi70049-cite-0015">
+<collab collab-type="authors">CEMAAM</collab>
+. (<year>2011</year>). <article-title>
+Estabelece os crit&#x000e9;rios t&#x000e9;cnicos para o manejo de jacar&#x000e9;, oriundo de unidades de conserva&#x000e7;&#x000e3;o de uso sustent&#x000e1;vel do Estado do Amazonas
+</article-title>. <publisher-name>Author</publisher-name>.</mixed-citation></ref><ref id="cobi70049-bib-0015"><mixed-citation publication-type="journal" id="cobi70049-cite-0016">
+<string-name>
+<surname>Chaves</surname>, <given-names>W.</given-names>
+</string-name>, <string-name>
+<surname>Carignano Torres</surname>, <given-names>P.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Parry</surname>, <given-names>L.</given-names>
+</string-name> (<year>2023</year>). <article-title>The species&#x02010;specific role of wildlife in the Amazonian food system</article-title>. <source>Ecology and Society</source>, <volume>28</volume>, Article <fpage>28</fpage>.</mixed-citation></ref><ref id="cobi70049-bib-0016"><mixed-citation publication-type="journal" id="cobi70049-cite-0017">
+<string-name>
+<surname>Chaves</surname>, <given-names>W. A.</given-names>
+</string-name>, <string-name>
+<surname>Valle</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Tavares</surname>, <given-names>A. S.</given-names>
+</string-name>, <string-name>
+<surname>Morcatty</surname>, <given-names>T. Q.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Wilcove</surname>, <given-names>D. S.</given-names>
+</string-name> (<year>2021</year>). <article-title>Impacts of rural to urban migration, urbanization, and generational change on consumption of wild animals in the Amazon</article-title>. <source>Conservation Biology</source>, <volume>35</volume>, <fpage>1186</fpage>&#x02013;<lpage>1197</lpage>.<pub-id pub-id-type="pmid">33124717</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0017"><mixed-citation publication-type="journal" id="cobi70049-cite-0018">
+<string-name>
+<surname>Chaves</surname>, <given-names>W. A.</given-names>
+</string-name>, <string-name>
+<surname>Valle</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Tavares</surname>, <given-names>A. S.</given-names>
+</string-name>, <string-name>
+<surname>von M&#x000fc;hlen</surname>, <given-names>E. M.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Wilcove</surname>, <given-names>D. S.</given-names>
+</string-name> (<year>2021</year>). <article-title>Investigating illegal activities that affect biodiversity: The case of wildlife consumption in the Brazilian Amazon</article-title>. <source>Ecological Applications</source>, <volume>31</volume>, Article <elocation-id>e02402</elocation-id>.<pub-id pub-id-type="pmid">34233059</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0018"><mixed-citation publication-type="journal" id="cobi70049-cite-0019">
+<string-name>
+<surname>Chaves</surname>, <given-names>W. A.</given-names>
+</string-name>, <string-name>
+<surname>Wilkie</surname>, <given-names>D. S.</given-names>
+</string-name>, <string-name>
+<surname>Monroe</surname>, <given-names>M. C.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Sieving</surname>, <given-names>K. E.</given-names>
+</string-name> (<year>2017</year>). <article-title>Market access and wild meat consumption in the central Amazon, Brazil</article-title>. <source>Biological Conservation</source>, <volume>212</volume>, <fpage>240</fpage>&#x02013;<lpage>248</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0019"><mixed-citation publication-type="journal" id="cobi70049-cite-0020">
+<string-name>
+<surname>Christiaensen</surname>, <given-names>L.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Todo</surname>, <given-names>Y.</given-names>
+</string-name> (<year>2014</year>). <article-title>Poverty reduction during the rural&#x02013;urban transformation&#x02014;The role of the missing middle</article-title>. <source>World Development</source>, <volume>63</volume>, <fpage>43</fpage>&#x02013;<lpage>58</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0020"><mixed-citation publication-type="journal" id="cobi70049-cite-0021">
+<string-name>
+<surname>El Bizri</surname>, <given-names>H. R.</given-names>
+</string-name>, <string-name>
+<surname>Morcatty</surname>, <given-names>T. Q.</given-names>
+</string-name>, <string-name>
+<surname>Ferreira</surname>, <given-names>J. C.</given-names>
+</string-name>, <string-name>
+<surname>Mayor</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>Vasconcelos Neto</surname>, <given-names>C. F. A.</given-names>
+</string-name>, <string-name>
+<surname>Valsecchi</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Nijman</surname>, <given-names>V.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Fa</surname>, <given-names>J. E.</given-names>
+</string-name> (<year>2023</year>). <article-title>Social and biological correlates of wild meat consumption and trade by rural communities in the Juta&#x000ed; River Basin, Central Amazonia</article-title>. <source>Journal of Ethnobiology</source>, <volume>40</volume>, <fpage>183</fpage>&#x02013;<lpage>201</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0021"><mixed-citation publication-type="journal" id="cobi70049-cite-0022">
+<string-name>
+<surname>El Bizri</surname>, <given-names>H. R.</given-names>
+</string-name>, <string-name>
+<surname>Morcatty</surname>, <given-names>T. Q.</given-names>
+</string-name>, <string-name>
+<surname>Lima</surname>, <given-names>J. J. S.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Valsecchi</surname>, <given-names>J.</given-names>
+</string-name> (<year>2015</year>). <article-title>The thrill of the chase: Uncovering illegal sport hunting in Brazil through YouTube&#x02122; posts</article-title>. <source>Ecology and Society</source>, <volume>20</volume>, Article <fpage>30</fpage>.</mixed-citation></ref><ref id="cobi70049-bib-0022"><mixed-citation publication-type="journal" id="cobi70049-cite-0023">
+<string-name>
+<surname>El Bizri</surname>, <given-names>H. R.</given-names>
+</string-name>, <string-name>
+<surname>Morcatty</surname>, <given-names>T. Q.</given-names>
+</string-name>, <string-name>
+<surname>Valsecchi</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Mayor</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>Ribeiro</surname>, <given-names>J. E. S.</given-names>
+</string-name>, <string-name>
+<surname>Vasconcelos Neto</surname>, <given-names>C. F. A.</given-names>
+</string-name>, <string-name>
+<surname>Oliveira</surname>, <given-names>J. S.</given-names>
+</string-name>, <string-name>
+<surname>Furtado</surname>, <given-names>K. M.</given-names>
+</string-name>, <string-name>
+<surname>Ferreira</surname>, <given-names>U. C.</given-names>
+</string-name>, <string-name>
+<surname>Miranda</surname>, <given-names>C. F. S.</given-names>
+</string-name>, <string-name>
+<surname>Silva</surname>, <given-names>C. H.</given-names>
+</string-name>, <string-name>
+<surname>Lopes</surname>, <given-names>V. L.</given-names>
+</string-name>, <string-name>
+<surname>Lopes</surname>, <given-names>G. P.</given-names>
+</string-name>, <string-name>
+<surname>Florindo</surname>, <given-names>C. C. F.</given-names>
+</string-name>, <string-name>
+<surname>Chagas</surname>, <given-names>R. C.</given-names>
+</string-name>, <string-name>
+<surname>Nijman</surname>, <given-names>V.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Fa</surname>, <given-names>J. E.</given-names>
+</string-name> (<year>2020</year>). <article-title>Urban wild meat consumption and trade in central Amazonia</article-title>. <source>Conservation Biology</source>, <volume>34</volume>, <fpage>438</fpage>&#x02013;<lpage>448</lpage>.<pub-id pub-id-type="pmid">31538670</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0023"><mixed-citation publication-type="journal" id="cobi70049-cite-0024">
+<string-name>
+<surname>Elmqvist</surname>, <given-names>T.</given-names>
+</string-name>, <string-name>
+<surname>Andersson</surname>, <given-names>E.</given-names>
+</string-name>, <string-name>
+<surname>Mcphearson</surname>, <given-names>T.</given-names>
+</string-name>, <string-name>
+<surname>Bai</surname>, <given-names>X.</given-names>
+</string-name>, <string-name>
+<surname>Bettencourt</surname>, <given-names>L.</given-names>
+</string-name>, <string-name>
+<surname>Brondizio</surname>, <given-names>E.</given-names>
+</string-name>, <string-name>
+<surname>Colding</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Daily</surname>, <given-names>G.</given-names>
+</string-name>, <string-name>
+<surname>Folke</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<surname>Grimm</surname>, <given-names>N.</given-names>
+</string-name>, <string-name>
+<surname>Haase</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Ospina</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Parnell</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>Polasky</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>Seto</surname>, <given-names>K. C.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Van Der Leeuw</surname>, <given-names>S.</given-names>
+</string-name> (<year>2021</year>). <article-title>Urbanization in and for the Anthropocene</article-title>. <source>Urban Sustainability</source>, <volume>1</volume>, Article <fpage>6</fpage>.</mixed-citation></ref><ref id="cobi70049-bib-0024"><mixed-citation publication-type="journal" id="cobi70049-cite-0025">
+<string-name>
+<surname>Gon&#x000e7;alves</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Gomes</surname>, <given-names>M. C.</given-names>
+</string-name>, <string-name>
+<surname>Ezequiel</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>Moreira</surname>, <given-names>F.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Loupa&#x02010;Ramos</surname>, <given-names>I.</given-names>
+</string-name> (<year>2017</year>). <article-title>Differentiating peri&#x02010;urban areas: A transdisciplinary approach towards a typology</article-title>. <source>Land Use Policy</source>, <volume>63</volume>, <fpage>331</fpage>&#x02013;<lpage>341</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0025"><mixed-citation publication-type="journal" id="cobi70049-cite-0026">
+<string-name>
+<surname>Guedes</surname>, <given-names>G.</given-names>
+</string-name>, <string-name>
+<surname>Costa</surname>, <given-names>S.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Brond&#x000ed;zio</surname>, <given-names>E.</given-names>
+</string-name> (<year>2009</year>). <article-title>Revisiting the hierarchy of urban areas in the Brazilian Amazon: A multilevel approach</article-title>. <source>Population and Environment</source>, <volume>30</volume>, <fpage>159</fpage>&#x02013;<lpage>192</lpage>.<pub-id pub-id-type="pmid">23129877</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0026"><mixed-citation publication-type="book" id="cobi70049-cite-0027">
+<string-name>
+<surname>Hecht</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>Schmink</surname>, <given-names>M.</given-names>
+</string-name>, <string-name>
+<surname>Abers</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Assad</surname>, <given-names>E. D.</given-names>
+</string-name>, <string-name>
+<surname>Bebbington</surname>, <given-names>D. H.</given-names>
+</string-name>, <string-name>
+<surname>Brondizio</surname>, <given-names>E. S.</given-names>
+</string-name>, <string-name>
+<surname>Costa</surname>, <given-names>F. A.</given-names>
+</string-name>, <string-name>
+<surname>Calisto</surname>, <given-names>A. M. D.</given-names>
+</string-name>, <string-name>
+<surname>Fearnside</surname>, <given-names>P. M.</given-names>
+</string-name>, <string-name>
+<surname>Garrett</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Heilpern</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>McGrath</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Oliveira</surname>, <given-names>G.</given-names>
+</string-name>, <string-name>
+<surname>Pereira</surname>, <given-names>H. S.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Pinedo&#x02010;Vazquez</surname>, <given-names>M.</given-names>
+</string-name> (<year>2021</year>). <part-title>Chapter 14: Amazon in Motion: Changing politics, development strategies, peoples, landscapes, and livelihoods</part-title>. In <person-group person-group-type="editor">
+<string-name>
+<given-names>C.</given-names>
+<surname>Nobre</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>A.</given-names>
+<surname>Encalada</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>E.</given-names>
+<surname>Anderson</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>F. H.</given-names>
+<surname>Roca Alcazar</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>M.</given-names>
+<surname>Bustamante</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>C.</given-names>
+<surname>Mena</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>M.</given-names>
+<surname>Pe&#x000f1;a&#x02010;Claros</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>G.</given-names>
+<surname>Poveda</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>J. P.</given-names>
+<surname>Rodriguez</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>S.</given-names>
+<surname>Saleska</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>S.</given-names>
+<surname>Trumbore</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>A. L.</given-names>
+<surname>Val</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>L.</given-names>
+<surname>Villa Nova</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>R.</given-names>
+<surname>Abramovay</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>A.</given-names>
+<surname>Alencar</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>C.</given-names>
+<surname>Rodr&#x000ed;guez Alzza</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>D.</given-names>
+<surname>Armenteras</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>P.</given-names>
+<surname>Artaxo</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>S.</given-names>
+<surname>Athayde</surname>
+</string-name>
+</person-group>, &#x02026; <person-group person-group-type="editor">
+<string-name>
+<given-names>G.</given-names>
+<surname>Zapata&#x02010;R&#x000ed;os</surname>
+</string-name>
+</person-group> (Eds.), <source>Amazon Assessment Report 2021</source> (<edition>1st ed.</edition>). <publisher-name>UN Sustainable Development Solutions Network (SDSN)</publisher-name>. <ext-link xlink:href="https://www.theamazonwewant.org/amazon-assessment-report-2021/" ext-link-type="uri">https://www.theamazonwewant.org/amazon&#x02010;assessment&#x02010;report&#x02010;2021/</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0027"><mixed-citation publication-type="journal" id="cobi70049-cite-0028">
+<string-name>
+<surname>Hutchings</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>Willcock</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>Lynch</surname>, <given-names>K.</given-names>
+</string-name>, <string-name>
+<surname>Bundhoo</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Brewer</surname>, <given-names>T.</given-names>
+</string-name>, <string-name>
+<surname>Cooper</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>Keech</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Mekala</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>Mishra</surname>, <given-names>P. P.</given-names>
+</string-name>, <string-name>
+<surname>Parker</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Shackleton</surname>, <given-names>C. M.</given-names>
+</string-name>, <string-name>
+<surname>Venkatesh</surname>, <given-names>K.</given-names>
+</string-name>, <string-name>
+<surname>Vicario</surname>, <given-names>D. R.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Welivita</surname>, <given-names>I.</given-names>
+</string-name> (<year>2022</year>). <article-title>Understanding rural&#x02013;urban transitions in the Global South through peri&#x02010;urban turbulence</article-title>. <source>Nature Sustainability</source>, <volume>5</volume>, <fpage>924</fpage>&#x02013;<lpage>930</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0027a"><mixed-citation publication-type="journal" id="cobi70049-cite-0028a">
+<string-name>
+<surname>Hughes</surname>, <given-names>L. J.</given-names>
+</string-name>, <string-name>
+<surname>Morton</surname>, <given-names>O.</given-names>
+</string-name>, <string-name>
+<surname>Scheffers</surname>, <given-names>B. R.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Edwards</surname>, <given-names>D. P.</given-names>
+</string-name> (<year>2023</year>). <article-title>The ecological drivers and consequences of wildlife trade</article-title>. <source>Biological reviews of the Cambridge Philosophical Society</source>, <volume>98</volume>(<issue>3</issue>), <fpage>775</fpage>&#x02013;<lpage>791</lpage>. <pub-id pub-id-type="doi">10.1111/brv.12929</pub-id>
+<pub-id pub-id-type="pmid">36572536</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0028"><mixed-citation publication-type="miscellaneous" id="cobi70049-cite-0029">
+<collab collab-type="authors">IBGE</collab>
+. (<year>2010</year>). <article-title>
+Cidades@
+</article-title>. <ext-link xlink:href="http://www.cidades.ibge.gov.br/xtras/home.php" ext-link-type="uri">http://www.cidades.ibge.gov.br/xtras/home.php</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0029"><mixed-citation publication-type="miscellaneous" id="cobi70049-cite-0030">
+<collab collab-type="authors">IBGE</collab>
+. (<year>2022</year>). <article-title>
+Population
+</article-title>. <ext-link xlink:href="https://www.ibge.gov.br/en/statistics/social/population.html" ext-link-type="uri">https://www.ibge.gov.br/en/statistics/social/population.html</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0030"><mixed-citation publication-type="book" id="cobi70049-cite-0031">
+<collab collab-type="authors">ICMBio</collab>
+. (<year>2002</year>). <article-title>
+Estabelece normas para o uso sustent&#x000e1;vel da fauna silvestre brasileira aut&#x000f3;ctone n&#x000e3;o amea&#x000e7;ada de extin&#x000e7;&#x000e3;o, tradicionalmente utilizada pelas popula&#x000e7;&#x000f5;es tradicionais em Reservas Extrativistas
+</article-title>. <publisher-name>Author</publisher-name>.</mixed-citation></ref><ref id="cobi70049-bib-0031"><mixed-citation publication-type="book" id="cobi70049-cite-0032">
+<collab collab-type="authors">ICMBio</collab>
+. (<year>2022</year>). <article-title>
+Estabelece normas e procedimentos para o manejo comunit&#x000e1;rio de quel&#x000f4;nios das esp&#x000e9;cies tartaruga&#x02010;da&#x02010;amaz&#x000f4;nia (Podocnemis expansa) e tracaj&#x000e1; (Podocnemis unifilis), em Floresta Nacional (Flona), Reserva Extrativista (Resex) e Reserva de Desenvolvimento Sustent&#x000e1;vel (RDS) federais, nas &#x000e1;reas de ocorr&#x000ea;ncia natural das esp&#x000e9;cies, e d&#x000e1; outras provid&#x000ea;ncias
+</article-title>. <publisher-name>Author</publisher-name>.</mixed-citation></ref><ref id="cobi70049-bib-0032"><mixed-citation publication-type="journal" id="cobi70049-cite-0033">
+<string-name>
+<surname>Ingram</surname>, <given-names>D. J.</given-names>
+</string-name>, <string-name>
+<surname>Coad</surname>, <given-names>L.</given-names>
+</string-name>, <string-name>
+<surname>Milner&#x02010;Gulland</surname>, <given-names>E. J.</given-names>
+</string-name>, <string-name>
+<surname>Parry</surname>, <given-names>L.</given-names>
+</string-name>, <string-name>
+<surname>Wilkie</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Bakarr</surname>, <given-names>M. I.</given-names>
+</string-name>, <string-name>
+<surname>Ben&#x000ed;tez&#x02010;L&#x000f3;pez</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Bennett</surname>, <given-names>E. L.</given-names>
+</string-name>, <string-name>
+<surname>Bodmer</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Cowlishaw</surname>, <given-names>G.</given-names>
+</string-name>, <string-name>
+<surname>El Bizri</surname>, <given-names>H. R.</given-names>
+</string-name>, <string-name>
+<surname>Eves</surname>, <given-names>H. E.</given-names>
+</string-name>, <string-name>
+<surname>Fa</surname>, <given-names>J. E.</given-names>
+</string-name>, <string-name>
+<surname>Golden</surname>, <given-names>C. D.</given-names>
+</string-name>, <string-name>
+<surname>Iponga</surname>, <given-names>D. M.</given-names>
+</string-name>, <string-name>
+<surname>Minh</surname>, <given-names>N. V.</given-names>
+</string-name>, <string-name>
+<surname>Morcatty</surname>, <given-names>T. Q.</given-names>
+</string-name>, <string-name>
+<surname>Mwinyihali</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Nasi</surname>, <given-names>R.</given-names>
+</string-name>, &#x02026; <string-name>
+<surname>Abernethy</surname>, <given-names>K.</given-names>
+</string-name> (<year>2021</year>). <article-title>Wild meat is still on the menu: Progress in wild meat research, policy, and practice from 2002 to 2020</article-title>. <source>Annual Review of Environment and Resources</source>, <volume>46</volume>, <fpage>221</fpage>&#x02013;<lpage>254</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0033"><mixed-citation publication-type="book" id="cobi70049-cite-0034">
+<collab collab-type="authors">Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renov&#x000e1;veis (IBAMA)</collab>
+. (<year>2006</year>). <article-title>
+Politica de fauna silvestre da Amaz&#x000f4;nia
+</article-title>. <publisher-name>Author</publisher-name>.</mixed-citation></ref><ref id="cobi70049-bib-0034"><mixed-citation publication-type="book" id="cobi70049-cite-0035">
+<collab collab-type="authors">Intergovernmental Science&#x02010;Policy Platform on Biodiversity and Ecosystem Services (IPBES)</collab>
+. (<year>2019</year>). <source>Summary for policymakers of the global assessment report on biodiversity and ecosystem services of the Intergovernmental Science&#x02010;Policy Platform on Biodiversity and Ecosystem Services</source>. <publisher-name>IPBES Secretariat</publisher-name>. <pub-id pub-id-type="doi">10.5281/zenodo.3553579</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0035"><mixed-citation publication-type="journal" id="cobi70049-cite-0036">
+<string-name>
+<surname>Kanai</surname>, <given-names>J. M.</given-names>
+</string-name> (<year>2014</year>). <article-title>On the peripheries of planetary urbanization: Globalizing Manaus and its expanding impact</article-title>. <source>Environment and Planning D: Society and Space</source>, <volume>32</volume>, <fpage>1071</fpage>&#x02013;<lpage>1087</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0036"><mixed-citation publication-type="book" id="cobi70049-cite-0037">
+<string-name>
+<surname>Lemos</surname>, <given-names>L. P.</given-names>
+</string-name>, <string-name>
+<surname>Ferreira</surname>, <given-names>D. S.</given-names>
+</string-name>, <string-name>
+<surname>Oliveira</surname>, <given-names>M. A.</given-names>
+</string-name>, <string-name>
+<surname>Morcatty</surname>, <given-names>T. Q.</given-names>
+</string-name>, <string-name>
+<surname>Antunes</surname>, <given-names>A. P.</given-names>
+</string-name>, <string-name>
+<surname>de Souza Jesus</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>El Bizri</surname>, <given-names>H. R.</given-names>
+</string-name>, <string-name>
+<surname>Pezzuti</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Ramos</surname>, <given-names>R. M.</given-names>
+</string-name>, <string-name>
+<surname>Santos&#x02010;Fita</surname>, <given-names>D.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Pimenta</surname>, <given-names>N. C.</given-names>
+</string-name> (<year>2023</year>). <part-title>Subsistence hunting and wild meat trade in Brazilian Amazonia</part-title>. In <person-group person-group-type="editor">
+<string-name>
+<given-names>W. R.</given-names>
+<surname>Spironello</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>A. A.</given-names>
+<surname>Barnett</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>J. W.</given-names>
+<surname>Lynch</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>P. E. D.</given-names>
+<surname>Bobrowiec</surname>
+</string-name>
+</person-group>, &#x00026; <person-group person-group-type="editor">
+<string-name>
+<given-names>S. A.</given-names>
+<surname>Boyle</surname>
+</string-name>
+</person-group> (Eds.), <source>Amazonian mammals</source> (pp. <fpage>241</fpage>&#x02013;<lpage>274</lpage>). <publisher-name>Springer International Publishing</publisher-name>. <ext-link xlink:href="https://link.springer.com/10.1007/978-3-031-43071-8_9" ext-link-type="uri">https://link.springer.com/10.1007/978&#x02010;3&#x02010;031&#x02010;43071&#x02010;8_9</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0037"><mixed-citation publication-type="journal" id="cobi70049-cite-0038">
+<string-name>
+<surname>Londres</surname>, <given-names>M.</given-names>
+</string-name>, <string-name>
+<surname>Salk</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<surname>Andersson</surname>, <given-names>K. P.</given-names>
+</string-name>, <string-name>
+<surname>Teng&#x000f6;</surname>, <given-names>M.</given-names>
+</string-name>, <string-name>
+<surname>Brondizio</surname>, <given-names>E. S.</given-names>
+</string-name>, <string-name>
+<surname>Russo Lopes</surname>, <given-names>G.</given-names>
+</string-name>, <string-name>
+<surname>Siani</surname>, <given-names>S. M. O.</given-names>
+</string-name>, <string-name>
+<surname>Molina&#x02010;Garz&#x000f3;n</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Sonetti&#x02010;Gonz&#x000e1;lez</surname>, <given-names>T.</given-names>
+</string-name>, <string-name>
+<surname>Montoya</surname>, <given-names>D. R.</given-names>
+</string-name>, <string-name>
+<surname>Futemma</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<surname>De Castro</surname>, <given-names>F.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Tourne</surname>, <given-names>D. C. M.</given-names>
+</string-name> (<year>2023</year>). <article-title>Place&#x02010;based solutions for global social&#x02010;ecological dilemmas: An analysis of locally grounded, diversified, and cross&#x02010;scalar initiatives in the Amazon</article-title>. <source>Global Environmental Change</source>, <volume>82</volume>, Article <elocation-id>102718</elocation-id>.</mixed-citation></ref><ref id="cobi70049-bib-0038"><mixed-citation publication-type="journal" id="cobi70049-cite-0039">
+<string-name>
+<surname>Milner&#x02010;Gulland</surname>, <given-names>E. J.</given-names>
+</string-name> (<year>2024</year>). <article-title>Now is the time for conservationists to stand up for social justice</article-title>. <source>PLoS Biology</source>, <volume>22</volume>, Article <elocation-id>e3002657</elocation-id>.<pub-id pub-id-type="pmid">38857193</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0039"><mixed-citation publication-type="journal" id="cobi70049-cite-0040">
+<string-name>
+<surname>Nielsen</surname>, <given-names>M. R.</given-names>
+</string-name>, <string-name>
+<surname>Meilby</surname>, <given-names>H.</given-names>
+</string-name>, <string-name>
+<surname>Smith&#x02010;Hall</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<surname>Pouliot</surname>, <given-names>M.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Treue</surname>, <given-names>T.</given-names>
+</string-name> (<year>2018</year>). <article-title>The importance of wild meat in the Global South</article-title>. <source>Ecological Economics</source>, <volume>146</volume>, <fpage>696</fpage>&#x02013;<lpage>705</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0040"><mixed-citation publication-type="journal" id="cobi70049-cite-0041">
+<string-name>
+<surname>Nunes</surname>, <given-names>A. V.</given-names>
+</string-name>, <string-name>
+<surname>Peres</surname>, <given-names>C. A.</given-names>
+</string-name>, <string-name>
+<surname>Constantino</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>Santos</surname>, <given-names>B. A.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Fischer</surname>, <given-names>E.</given-names>
+</string-name> (<year>2019</year>). <article-title>Irreplaceable socioeconomic value of wild meat extraction to local food security in rural Amazonia</article-title>. <source>Biological Conservation</source>, <volume>236</volume>, <fpage>171</fpage>&#x02013;<lpage>179</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0041"><mixed-citation publication-type="journal" id="cobi70049-cite-0042">
+<string-name>
+<surname>Oliveira</surname>, <given-names>M. A.</given-names>
+</string-name>, <string-name>
+<surname>El Bizri</surname>, <given-names>H. R.</given-names>
+</string-name>, <string-name>
+<surname>Morcatty</surname>, <given-names>T. Q.</given-names>
+</string-name>, <string-name>
+<surname>Braga&#x02010;Pereira</surname>, <given-names>F.</given-names>
+</string-name>, <string-name>
+<surname>Fa</surname>, <given-names>J. E.</given-names>
+</string-name>, <string-name>
+<surname>Messias</surname>, <given-names>M. R.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Da Costa Doria</surname>, <given-names>C. R.</given-names>
+</string-name> (<year>2023</year>). <article-title>The role of religion, wealth, and livelihoods in the hunting practices of urban and rural inhabitants in Western Amazonia</article-title>. <source>Human Ecology</source>, <volume>51</volume>, <fpage>1239</fpage>&#x02013;<lpage>1252</lpage>. <pub-id pub-id-type="doi">10.1007/s10745-023-00467-0</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0042"><mixed-citation publication-type="journal" id="cobi70049-cite-0043">
+<string-name>
+<surname>Padoch</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<surname>Brondizio</surname>, <given-names>E.</given-names>
+</string-name>, <string-name>
+<surname>Costa</surname>, <given-names>S.</given-names>
+</string-name>, <string-name>
+<surname>Pinedo&#x02010;Vasquez</surname>, <given-names>M.</given-names>
+</string-name>, <string-name>
+<surname>Sears</surname>, <given-names>R. R.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Siqueira</surname>, <given-names>A.</given-names>
+</string-name> (<year>2008</year>). <article-title>Urban forest and rural cities: Multi&#x02010;sited households, consumption patterns, and forest resources in Amazonia</article-title>. <source>Ecology and Society</source>, <volume>13</volume>, Article <fpage>2</fpage>.</mixed-citation></ref><ref id="cobi70049-bib-0043"><mixed-citation publication-type="journal" id="cobi70049-cite-0044">
+<string-name>
+<surname>Pantoja&#x02010;Lima</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Aride</surname>, <given-names>P. H.</given-names>
+</string-name>, <string-name>
+<surname>De Oliveira</surname>, <given-names>A. T.</given-names>
+</string-name>, <string-name>
+<surname>F&#x000e9;lix&#x02010;Silva</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Pezzuti</surname>, <given-names>J. C.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Reb&#x000ea;lo</surname>, <given-names>G. H.</given-names>
+</string-name> (<year>2014</year>). <article-title>Chain of commercialization of <italic toggle="yes">Podocnemis</italic> spp. turtles (Testudines: Podocnemididae) in the Purus River, Amazon basin, Brazil: Current status and perspectives</article-title>. <source>Journal of Ethnobiology and Ethnomedicine</source>, <volume>10</volume>, Article <fpage>8</fpage>.<pub-id pub-id-type="pmid">24467796</pub-id>
+</mixed-citation></ref><ref id="cobi70049-bib-0044"><mixed-citation publication-type="journal" id="cobi70049-cite-0045">
+<string-name>
+<surname>Parry</surname>, <given-names>L.</given-names>
+</string-name>, <string-name>
+<surname>Barlow</surname>, <given-names>J.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Pereira</surname>, <given-names>H.</given-names>
+</string-name> (<year>2014</year>). <article-title>Wildlife harvest and consumption in Amazonia's urbanized wilderness</article-title>. <source>Conservation Letters</source>, <volume>7</volume>, <fpage>565</fpage>&#x02013;<lpage>574</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0045"><mixed-citation publication-type="journal" id="cobi70049-cite-0046">
+<string-name>
+<surname>Parry</surname>, <given-names>L.</given-names>
+</string-name>, <string-name>
+<surname>Barlow</surname>, <given-names>J.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Peres</surname>, <given-names>C. A.</given-names>
+</string-name> (<year>2009</year>). <article-title>Allocation of hunting effort by Amazonian smallholders: Implications for conserving wildlife in mixed&#x02010;use landscapes</article-title>. <source>Biological Conservation</source>, <volume>142</volume>, <fpage>1777</fpage>&#x02013;<lpage>1786</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0046"><mixed-citation publication-type="journal" id="cobi70049-cite-0047">
+<string-name>
+<surname>Parry</surname>, <given-names>L.</given-names>
+</string-name>, <string-name>
+<surname>Day</surname>, <given-names>B.</given-names>
+</string-name>, <string-name>
+<surname>Amaral</surname>, <given-names>S.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Peres</surname>, <given-names>C. A.</given-names>
+</string-name> (<year>2010</year>). <article-title>Drivers of rural exodus from Amazonian headwaters</article-title>. <source>Population and Environment</source>, <volume>32</volume>, <fpage>137</fpage>&#x02013;<lpage>176</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0047"><mixed-citation publication-type="book" id="cobi70049-cite-0048">
+<string-name>
+<surname>Phadke</surname>, <given-names>A.</given-names>
+</string-name> (<year>2020</year>). <part-title>Peri&#x02010;urbanization, Global South</part-title>. In <person-group person-group-type="editor">
+<string-name>
+<given-names>A.</given-names>
+<surname>Kobayashi</surname>
+</string-name>
+</person-group> (Ed.), <source>International encyclopedia of human geography</source> (pp. <fpage>71</fpage>&#x02013;<lpage>77</lpage>). <publisher-name>Elsevier</publisher-name>. <ext-link xlink:href="https://linkinghub.elsevier.com/retrieve/pii/B9780081022955106778" ext-link-type="uri">https://linkinghub.elsevier.com/retrieve/pii/B9780081022955106778</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0048"><mixed-citation publication-type="journal" id="cobi70049-cite-0049">
+<string-name>
+<surname>Pinho</surname>, <given-names>P. F.</given-names>
+</string-name>, <string-name>
+<surname>Patenaude</surname>, <given-names>G.</given-names>
+</string-name>, <string-name>
+<surname>Ometto</surname>, <given-names>J. P.</given-names>
+</string-name>, <string-name>
+<surname>Meir</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>Toledo</surname>, <given-names>P. M.</given-names>
+</string-name>, <string-name>
+<surname>Coelho</surname>, <given-names>A.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Young</surname>, <given-names>C. E. F.</given-names>
+</string-name> (<year>2014</year>). <article-title>Ecosystem protection and poverty alleviation in the tropics: Perspective from a historical evolution of policy&#x02010;making in the</article-title>. <source>Brazilian Amazon. Ecosystem Services</source>, <volume>8</volume>, <fpage>97</fpage>&#x02013;<lpage>109</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0049"><mixed-citation publication-type="book" id="cobi70049-cite-0050">
+<string-name>
+<surname>Plummer</surname>, <given-names>M.</given-names>
+</string-name> (<year>2003</year>). <article-title>JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling</article-title>. In <person-group person-group-type="editor">
+<string-name>
+<given-names>K.</given-names>
+<surname>Hornik</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name>
+<given-names>F.</given-names>
+<surname>Leisch</surname>
+</string-name>
+</person-group>, &#x00026; <person-group person-group-type="editor">
+<string-name>
+<given-names>A.</given-names>
+<surname>Zeileis</surname>
+</string-name>
+</person-group> (Eds.), <source>Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003), Vienna, 20&#x02010;22 March 2003</source> (pp. <fpage>1</fpage>&#x02013;<lpage>10</lpage>). <publisher-name>Technische Universit&#x000e4;t Wien</publisher-name>.</mixed-citation></ref><ref id="cobi70049-bib-0050"><mixed-citation publication-type="book" id="cobi70049-cite-0051">
+<collab collab-type="authors">R Core Team</collab>
+. (<year>2020</year>). <article-title>
+R: A language and environment for statistical computing
+</article-title>. <publisher-name>R Foundation for Statistical Computing</publisher-name>. <ext-link xlink:href="https://www.R-project.org/" ext-link-type="uri">https://www.R&#x02010;project.org/</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0051"><mixed-citation publication-type="journal" id="cobi70049-cite-0052">
+<string-name>
+<surname>Ribot</surname>, <given-names>J. C.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Peluso</surname>, <given-names>N. L.</given-names>
+</string-name> (<year>2003</year>). <article-title>A theory of access</article-title>. <source>Rural Sociology</source>, <volume>68</volume>, <fpage>153</fpage>&#x02013;<lpage>181</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0052"><mixed-citation publication-type="journal" id="cobi70049-cite-0053">
+<string-name>
+<surname>Sampaio</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Morato</surname>, <given-names>R. G.</given-names>
+</string-name>, <string-name>
+<surname>Abrahams</surname>, <given-names>M. I.</given-names>
+</string-name>, <string-name>
+<surname>Peres</surname>, <given-names>C. A.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Chiarello</surname>, <given-names>A. G.</given-names>
+</string-name> (<year>2022</year>). <article-title>Physical geography trumps legal protection in driving the perceived sustainability of game hunting in Amazonian local communities</article-title>. <source>Journal for Nature Conservation</source>, <volume>67</volume>, Article <elocation-id>126175</elocation-id>.</mixed-citation></ref><ref id="cobi70049-bib-0053"><mixed-citation publication-type="journal" id="cobi70049-cite-0054">
+<string-name>
+<surname>Tregidgo</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Barlow</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Pompeu</surname>, <given-names>P. S.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Parry</surname>, <given-names>L.</given-names>
+</string-name> (<year>2020</year>). <article-title>Tough fishing and severe seasonal food insecurity in Amazonian flooded forests</article-title>. <source>People and Nature</source>, <volume>2</volume>, <fpage>468</fpage>&#x02013;<lpage>482</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0054"><mixed-citation publication-type="journal" id="cobi70049-cite-0055">
+<string-name>
+<surname>Valle Nunes</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Guariento</surname>, <given-names>R. D.</given-names>
+</string-name>, <string-name>
+<surname>Santos</surname>, <given-names>B. A.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Fischer</surname>, <given-names>E.</given-names>
+</string-name> (<year>2019</year>). <article-title>Wild meat sharing among non&#x02010;indigenous people in the southwestern Amazon</article-title>. <source>Behavioral Ecology and Sociobiology</source>, <volume>73</volume>, Article <fpage>26</fpage>.</mixed-citation></ref><ref id="cobi70049-bib-0055"><mixed-citation publication-type="journal" id="cobi70049-cite-0056">
+<string-name>
+<surname>Van Vliet</surname>, <given-names>N.</given-names>
+</string-name> (<year>2018</year>). <article-title>&#x0201c;Bushmeat crisis&#x0201d; and &#x0201c;cultural imperialism&#x0201d; in wildlife management? Taking value orientations into account for a more sustainable and culturally acceptable wildmeat sector</article-title>. <source>Frontiers in Ecology and Evolution</source>, <volume>6</volume>, Article <fpage>112</fpage>.</mixed-citation></ref><ref id="cobi70049-bib-0056"><mixed-citation publication-type="journal" id="cobi70049-cite-0057">
+<string-name>
+<surname>Van Vliet</surname>, <given-names>N.</given-names>
+</string-name>, <string-name>
+<surname>Quiceno</surname>, <given-names>M. P.</given-names>
+</string-name>, <string-name>
+<surname>Cruz</surname>, <given-names>D.</given-names>
+</string-name>, <string-name>
+<surname>Jonhson Neves De Aquino</surname>, <given-names>L.</given-names>
+</string-name>, <string-name>
+<surname>Yag&#x000fc;e</surname>, <given-names>B.</given-names>
+</string-name>, <string-name>
+<surname>Schor</surname>, <given-names>T.</given-names>
+</string-name>, <string-name>
+<surname>Hernandez</surname>, <given-names>S.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Nasi</surname>, <given-names>R.</given-names>
+</string-name> (<year>2015</year>). <article-title>Bushmeat networks link the forest to urban areas in the trifrontier region between Brazil, Colombia, and Peru</article-title>. <source>Ecology and Society</source>, <volume>20</volume>, Article <fpage>21</fpage>.</mixed-citation></ref><ref id="cobi70049-bib-0057"><mixed-citation publication-type="journal" id="cobi70049-cite-0058">
+<string-name>
+<surname>Wicander</surname>, <given-names>S.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Coad</surname>, <given-names>L.</given-names>
+</string-name> (<year>2018</year>). <article-title>Can the provision of alternative livelihoods reduce the impact of wild meat hunting in West and Central Africa?</article-title>
+<source>Conservation and Society</source>, <volume>16</volume>, <fpage>441</fpage>&#x02013;<lpage>458</lpage>.</mixed-citation></ref><ref id="cobi70049-bib-0058"><mixed-citation publication-type="miscellaneous" id="cobi70049-cite-0059">
+<string-name>
+<surname>Wickham</surname>, <given-names>H.</given-names>
+</string-name>, <string-name>
+<surname>Fran&#x000e7;ois</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Henry</surname>, <given-names>L.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>M&#x000fc;ller</surname>, <given-names>K.</given-names>
+</string-name> (<year>2021</year>). <article-title>
+dplyr: A grammar of data manipulation
+</article-title>. <ext-link xlink:href="https://CRAN.R-project.org/package=dplyr" ext-link-type="uri">https://CRAN.R&#x02010;project.org/package=dplyr</ext-link>
+</mixed-citation></ref><ref id="cobi70049-bib-0059"><mixed-citation publication-type="journal" id="cobi70049-cite-0060">
+<string-name>
+<surname>Wood</surname>, <given-names>B. M.</given-names>
+</string-name>, &#x00026; <string-name>
+<surname>Marlowe</surname>, <given-names>F. W.</given-names>
+</string-name> (<year>2013</year>). <article-title>Household and kin provisioning by Hadza Men</article-title>. <source>Human Nature</source>, <volume>24</volume>, <fpage>280</fpage>&#x02013;<lpage>317</lpage>.<pub-id pub-id-type="pmid">23813245</pub-id>
+</mixed-citation></ref></ref-list></back></article>

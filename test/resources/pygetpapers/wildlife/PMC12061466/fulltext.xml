@@ -1,0 +1,247 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd"> 
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.3" id="ece371422" xml:lang="en" article-type="research-article"><?DTDIdentifier.IdentifierValue -//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with OASIS Tables with MathML3 v1.1 20151215//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName JATS-archive-oasis-article1-mathml3.dtd?><?SourceDTD.Version 1.1?><?ConverterInfo.XSLTName jats-oasis2jats3.xsl?><?ConverterInfo.Version 1?><?properties open_access?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Ecol Evol</journal-id><journal-id journal-id-type="iso-abbrev">Ecol Evol</journal-id><journal-id journal-id-type="doi">10.1002/(ISSN)2045-7758</journal-id><journal-id journal-id-type="publisher-id">ECE3</journal-id><journal-title-group><journal-title>Ecology and Evolution</journal-title></journal-title-group><issn pub-type="epub">2045-7758</issn><publisher><publisher-name>John Wiley and Sons Inc.</publisher-name><publisher-loc>Hoboken</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">12061466</article-id><article-id pub-id-type="pmid">40342701</article-id>
+<article-id pub-id-type="doi">10.1002/ece3.71422</article-id><article-id pub-id-type="publisher-id">ECE371422</article-id><article-id pub-id-type="other">ECE-2024-11-02485.R1</article-id><article-categories><subj-group subj-group-type="overline"><subject>Nature Notes</subject></subj-group><subj-group subj-group-type="heading"><subject>Nature Notes</subject></subj-group></article-categories><title-group><article-title>First Camera Trap Detection of a Gray Wolf Movement Into Nevada</article-title></title-group><contrib-group><contrib id="ece371422-cr-0001" contrib-type="author" corresp="yes"><name><surname>Sultaire</surname><given-names>Sean M.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-1474-0187</contrib-id><xref rid="ece371422-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>sultaires@gmail.com</email></address></contrib><contrib id="ece371422-cr-0002" contrib-type="author"><name><surname>Montgomery</surname><given-names>Robert A.</given-names></name><xref rid="ece371422-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="ece371422-cr-0003" contrib-type="author"><name><surname>Jackson</surname><given-names>Patrick J.</given-names></name><xref rid="ece371422-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="ece371422-cr-0004" contrib-type="author"><name><surname>Millspaugh</surname><given-names>Joshua J.</given-names></name><xref rid="ece371422-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="ece371422-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib></contrib-group><aff id="ece371422-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Wildlife Biology Program</named-content>
+<institution>W.A. Franke College of Forestry and Conservation, University of Montana</institution>
+<city>Missoula</city>
+<named-content content-type="country-part">Montana</named-content>
+<country country="US">USA</country>
+</aff><aff id="ece371422-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Institute of Science and Environment</named-content>
+<institution>University of Cumbria</institution>
+<city>Ambleside</city>
+<country country="GB">UK</country>
+</aff><aff id="ece371422-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<institution>Nevada Department of Wildlife</institution>
+<city>Reno</city>
+<named-content content-type="country-part">Nevada</named-content>
+<country country="US">USA</country>
+</aff><aff id="ece371422-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<named-content content-type="organisation-division">Department of Environmental Biology</named-content>
+<institution>State University of New York, College of Environmental Science and Forestry</institution>
+<city>Syracuse</city>
+<named-content content-type="country-part">New York</named-content>
+<country country="US">USA</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+Sean M. Sultaire (<email>sultaires@gmail.com</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>08</day><month>5</month><year>2025</year></pub-date><pub-date pub-type="collection"><month>5</month><year>2025</year></pub-date><volume>15</volume><issue seq="132">5</issue><issue-id pub-id-type="doi">10.1002/ece3.v15.5</issue-id><elocation-id>e71422</elocation-id><history>
+<date date-type="rev-recd"><day>23</day><month>4</month><year>2025</year></date>
+<date date-type="received"><day>02</day><month>12</month><year>2024</year></date>
+<date date-type="accepted"><day>24</day><month>4</month><year>2025</year></date>
+</history><permissions><!--&#x000a9; 2025 Published by John Wiley & Sons Ltd.--><copyright-statement content-type="article-copyright">&#x000a9; 2025 The Author(s). <italic toggle="yes">Ecology and Evolution</italic> published by British Ecological Society and John Wiley &#x00026; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri content-type="pdf" xlink:href="file:ECE3-15-e71422.pdf"/><abstract><title>ABSTRACT</title><p>Following gray wolf (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Canis lupus</italic>
+</styled-content>) reintroduction to Yellowstone National Park and central Idaho, USA, in the mid&#x02010;1990s, the species range has expanded into western Montana, eastern Oregon, and eastern Washington. By 2011, wolves reached northern California and formed multiple packs within a decade of their arrival in the state. Gray wolf observations have been sporadic, however, in the comparatively open and nonforested ecosystems such as the nearby northern Great Basin. During a broad&#x02010;scale, camera&#x02010;trapping study, we detected a gray wolf on an unbaited camera trap in northwest Nevada. This observation represents the 2nd confirmed sighting of a gray wolf in the state of Nevada since the 1920s and the first documented camera trap detection for the species in the state. We discuss this observation in the context of historical gray wolf presence in Nevada and the potential for the species to establish in the northern Great Basin.</p></abstract><abstract abstract-type="graphical"><p>This photo of a gray wolf, captured in northern Nevada during a camera trapping survey, represents the second recorded sighting of the species in the state since extirpation. Wolf recolonization in western North America has generally followed forest cover and it remains undetermined whether the species can establish in steppe dominated regions like northern Nevada.<boxed-text position="anchor" content-type="graphic" id="ece371422-blkfxd-0001"><graphic xlink:href="ECE3-15-e71422-g002.jpg" position="anchor" id="jats-graphic-1"/></boxed-text>
+</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="ece371422-kwd-0001">camera trap</kwd><kwd id="ece371422-kwd-0002"><styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Canis lupus</italic>
+</styled-content></kwd><kwd id="ece371422-kwd-0003">dispersal</kwd><kwd id="ece371422-kwd-0004">gray wolf</kwd><kwd id="ece371422-kwd-0005">Great Basin</kwd><kwd id="ece371422-kwd-0006">large carnivore expansion</kwd><kwd id="ece371422-kwd-0007">Nevada</kwd><kwd id="ece371422-kwd-0008">wildlife monitoring</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source><institution-wrap><institution>Nevada Department of Wildlife
+</institution><institution-id institution-id-type="doi">10.13039/100010427</institution-id></institution-wrap></funding-source></award-group></funding-group><counts><fig-count count="3"/><table-count count="0"/><page-count count="4"/><word-count count="2200"/></counts><custom-meta-group><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>May 2025</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.5.6 mode:remove_FC converted:27.05.2025</meta-value></custom-meta></custom-meta-group></article-meta><notes><fn-group id="ece371422-ntgp-0001"><fn fn-type="funding" id="ece371422-note-0001"><p>
+<bold>Funding:</bold> We thank the Nevada Department of Wildlife and the $3 Predator Fee program for funding the field research that resulted in this observation.</p></fn></fn-group></notes></front><body id="ece371422-body-0001"><sec id="ece371422-sec-0001"><label>1</label><title>Introduction</title><p>The abundance and distribution of most species of large carnivores are declining worldwide in response to human persecution, overhunting of prey species, and habitat loss and degradation from the rapidly expanding human footprint (Ripple et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0015" ref-type="bibr">2014</xref>). Given their position towards the top of trophic systems, the loss of large carnivores can trigger cascading effects that have implications for ecosystem processes and the structure and composition of mammalian, avian, and plant communities (Estes et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0006" ref-type="bibr">2011</xref>). Accordingly, restoring large carnivores across their historical ranges, although challenging and controversial, has become a primary goal among wildlife managers and ecologists.</p><p>After gray wolf (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Canis lupus</italic>
+</styled-content>) extirpation from the western U.S. in the 1920s, the species was reintroduced to Yellowstone National Park and central Idaho in the late 20th century (Fritts et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0007" ref-type="bibr">1997</xref>). Thereafter, gray wolf populations expanded into forested areas of Montana, eastern Oregon, and eastern Washington (Oakleaf et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0013" ref-type="bibr">2006</xref>; Carroll et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0004" ref-type="bibr">2012</xref>). Eventually, wolves reached northern California in 2011 (Nickel and Walther&#x000a0;<xref rid="ece371422-bib-0012" ref-type="bibr">2019</xref>), where at least 6 packs were established as of early 2025 and several dispersing individuals were detected capable of establishing in new areas (California Department of Fish and Wildlife&#x000a0;<xref rid="ece371422-bib-0003" ref-type="bibr">2025</xref>). Despite gray wolves occurring in a diversity of habitats globally and the contiguous U.S. historically, wolf pack recolonization in the western U.S. has largely been constrained by the availability of forest cover (Oakleaf et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0013" ref-type="bibr">2006</xref>; Mech&#x000a0;<xref rid="ece371422-bib-0011" ref-type="bibr">2017</xref>). For example, gray wolves have yet to establish in more arid ecosystems such as the northern Great Basin.</p><p>On February 7th, 2023, we captured a photo of a gray wolf with black pelage in northwestern Nevada (Figure&#x000a0;<xref rid="ece371422-fig-0001" ref-type="fig">1</xref>) on a camera trap located on Petersen Mountain, at an elevation of 1790&#x02009;m (Figure&#x000a0;<xref rid="ece371422-fig-0002" ref-type="fig">2</xref>). The location was approximately 30&#x02009;km northwest of Reno, Nevada, and 1&#x02009;km east of the border with Lassen County, California. The vegetation there is characteristic of Petersen Mountain, consisting of montane shrub steppe, with bitterbrush (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Purshia tridentata</italic>
+</styled-content>), desert peach (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Prunus andersonii</italic>
+</styled-content>) and nonnative crested wheatgrass (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Agropyron cristatum</italic>
+</styled-content>). Small areas of juniper woodland (<italic toggle="yes">Juniperus</italic> sp.), with isolated Jeffrey (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Pinus jeffreyi</italic>
+</styled-content>) and Ponderosa pines (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Pinus ponderosa</italic>
+</styled-content>) were present nearby, but overall, forest and woodland only comprised 5% of the land cover on Petersen Mountain (LANDFIRE: LANDFIRE Existing Vegetation Type Layer&#x000a0;<xref rid="ece371422-bib-0010" ref-type="bibr">2019</xref>). Other mammals detected on this camera since December 2020 included mule deer (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Odocoileus hemionus</italic>
+</styled-content>), coyote (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Canis latrans</italic>
+</styled-content>), bobcat (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Lynx rufus</italic>
+</styled-content>), and feral horse (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Equus ferus</italic>
+</styled-content>). The closest wolf pack in California at the time of the detection and where this individual might have originated was the Beckwourth Pack in Plumas County, approximately 25&#x02009;km to the northwest (territory edge). The camera was facing north, and the wolf was moving northwest towards the California border when detected. This camera was deployed as part of a regional&#x02010;scale study that included more than 200 cameras in western Nevada, from Reno north to the Oregon border, but no bait or lure was applied to attract wildlife to the camera.</p><fig position="float" fig-type="FIGURE" id="ece371422-fig-0001"><label>FIGURE 1</label><caption><p>The first of three camera trap photographs in a sequence that captured a gray wolf (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Canis lupus</italic>
+</styled-content>) in northwest Nevada in February 2023. This photo represents the 2nd verified gray wolf sighting in Nevada since the 1920s.</p></caption><graphic xlink:href="ECE3-15-e71422-g003" position="anchor" id="jats-graphic-3"/></fig><fig position="float" fig-type="FIGURE" id="ece371422-fig-0002"><label>FIGURE 2</label><caption><p>Map showing the location of the gray wolf (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Canis lupus</italic>
+</styled-content>) we detected with a camera trap in February 2023 on Petersen Mountain (back oval), in northwest Nevada near the border with California. This region coincides with the ecotone between the Sierra Nevada and Great Basin Desert, with the green area coarsely representing the distribution of forest cover and white indicating open habitats, primarily sagebrush steppe.</p></caption><graphic xlink:href="ECE3-15-e71422-g001" position="anchor" id="jats-graphic-5"/></fig><p>This detection represents just the 2nd confirmed sighting of a gray wolf in Nevada since the 1920s, the third recent record of the species in the state (one GPS location, see below), and the first recorded camera trap detection for the species in the state. The previous contemporary gray wolf sighting in Nevada consisted of a video observation from November 2016, later confirmed through fecal DNA by the Nevada Department of Wildlife (Spillman&#x000a0;<xref rid="ece371422-bib-0017" ref-type="bibr">2017</xref>). This observation also occurred in the northwest part of the state near Fox Mountain, at approximately 284,904&#x02009;E, 4, 544,725&#x02009;N, which is 145&#x02009;km northeast of our camera&#x02010;trap detection. Furthermore, in January 2021, a wolf that was GPS&#x02010;collared in Oregon briefly entered northwest Nevada from California near Verdi (~30&#x02009;km south of our observation) and later Topaz Lake, prior to moving back into California (Patrick Jackson, personal obs.). This individual, however, was not directly observed or photographed.</p><p>Despite these recent detections, considerable ambiguity exists with regard to the historical extent of gray wolf range in Nevada and California (Shelton and Weckerly&#x000a0;<xref rid="ece371422-bib-0016" ref-type="bibr">2007</xref>). The only verified historical record for the species in Nevada was located in the northeastern corner of the state in 1922, with an additional unverified record (no specimen) from northwest Nevada in the 1910s (Hall&#x000a0;<xref rid="ece371422-bib-0008" ref-type="bibr">1946</xref>). Although a lack of historical reports in the Great Basin may be attributed to other factors, such as misidentification as coyotes, wolves appear to have been uncommon in the region preceding their extirpation in the early 20th century. Low densities of suitable prey may explain wolf scarcity historically; for example, elk (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Cervus canadensis</italic>
+</styled-content>) were not present in the western Great Basin, and mule deer may have been uncommon (Berger and Wehausen&#x000a0;<xref rid="ece371422-bib-0002" ref-type="bibr">1991</xref>). However, ungulate species composition has shifted substantially in the Great Basin since European settlement, with mule deer likely more abundant (Berger and Wehausen&#x000a0;<xref rid="ece371422-bib-0002" ref-type="bibr">1991</xref>) and feral horses considered overabundant (Beever&#x000a0;<xref rid="ece371422-bib-0001" ref-type="bibr">2003</xref>; Coates et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0005" ref-type="bibr">2021</xref>; Stoner et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0018" ref-type="bibr">2021</xref>). Based solely on deer, estimates of prey biomass for the area (0.19 deer/km<sup>2</sup>; Sultaire, S.M. unpublished data) are below those reported elsewhere (0.73&#x02013;12 deer/km<sup>2</sup>; Kuzyk and Hatter&#x000a0;<xref rid="ece371422-bib-0009" ref-type="bibr">2014</xref>), but feral horses are preyed upon by wolves elsewhere (Parr and McCrory&#x000a0;<xref rid="ece371422-bib-0014" ref-type="bibr">2022</xref>) and could serve as alternative prey. Increases in the biomass of these prey species could favor wolf establishment in the northern Great Basin, especially given evidence that cougars (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">Puma concolor</italic>
+</styled-content>), a competing large carnivore, have increased in the Great Basin since European settlement (Berger and Wehausen&#x000a0;<xref rid="ece371422-bib-0002" ref-type="bibr">1991</xref>; Sweitzer et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0019" ref-type="bibr">1997</xref>).</p><p>Although northern Nevada has atypical habitat compared to areas wolves have recently recolonized in the western U.S. (e.g., lower forest cover; Oakleaf et&#x000a0;al.&#x000a0;<xref rid="ece371422-bib-0013" ref-type="bibr">2006</xref>), proximity to established packs in California suggests that wolves are likely to disperse regularly into the northwest Great Basin. Even if Nevada proves to be low&#x02010;quality habitat, wolf movement in the region could facilitate connectivity between wolf populations in California and those in the Rocky Mountains and southwest U.S. Our observation and previous detections of the species in northwest Nevada indicate that wildlife managers should closely monitor the area for signs of wolf pack establishment. Since this detection, two more wolf packs have established in this area in nearby California (California Department of Fish and Wildlife&#x000a0;<xref rid="ece371422-bib-0003" ref-type="bibr">2025</xref>), providing more potential source packs from which a Nevada colonization could originate. This gray wolf detection further emphasizes the value of broad&#x02010;scale camera trap networks (~17,000&#x02009;km<sup>2</sup>) for passively detecting long&#x02010;distance movements and potential range expansion of large carnivores.</p></sec><sec id="ece371422-sec-0006"><title>Author Contributions</title><p>
+<bold>Sean M. Sultaire:</bold> conceptualization (equal), visualization (lead), writing &#x02013; original draft (lead). <bold>Robert A. Montgomery:</bold> conceptualization (equal), writing &#x02013; original draft (equal), writing &#x02013; review and editing (equal). <bold>Patrick J. Jackson:</bold> conceptualization (equal), writing &#x02013; original draft (supporting), writing &#x02013; review and editing (supporting). <bold>Joshua J. Millspaugh:</bold> conceptualization (equal), writing &#x02013; original draft (equal), writing &#x02013; review and editing (equal).</p></sec><sec sec-type="COI-statement" id="ece371422-sec-0003"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec></body><back><ack id="ece371422-sec-0002"><title>Acknowledgements</title><p>We thank the Nevada Department of Wildlife and the $3 Predator Fee program for funding the field research that resulted in this observation.</p></ack><sec sec-type="data-availability" id="ece371422-sec-0005"><title>Data Availability Statement</title><p>The authors have nothing to report.</p></sec><ref-list content-type="cited-references" id="ece371422-bibl-0001"><title>References</title><ref id="ece371422-bib-0001"><mixed-citation publication-type="journal" id="ece371422-cit-0001">
+<string-name>
+<surname>Beever</surname>, <given-names>E.</given-names>
+</string-name>
+<year>2003</year>. &#x0201c;<article-title>Management Implications of the Ecology of Free&#x02010;Roaming Horses in Semi&#x02010;Arid Ecosystems of the Western United States</article-title>.&#x0201d; <source>Wildlife Society Bulletin</source>
+<volume>31</volume>: <fpage>887</fpage>&#x02013;<lpage>895</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0002"><mixed-citation publication-type="journal" id="ece371422-cit-0002">
+<string-name>
+<surname>Berger</surname>, <given-names>J.</given-names>
+</string-name>, and <string-name>
+<given-names>J.</given-names>
+<surname>Wehausen</surname>
+</string-name>. <year>1991</year>. &#x0201c;<article-title>Consequences of a Mammalian Predator&#x02010;Prey Disequilibrium in the Great Basin Desert</article-title>.&#x0201d; <source>Conservation Biology</source>
+<volume>5</volume>: <fpage>243</fpage>&#x02013;<lpage>248</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0003"><mixed-citation publication-type="miscellaneous" id="ece371422-cit-0003">
+<collab collab-type="authors">California Department of Fish and Wildlife</collab>
+. <year>2025</year>. <article-title>&#x0201c;Gray Wolf.&#x0201d;</article-title>
+<ext-link xlink:href="https://wildlife.ca.gov/Conservation/Mammals/Gray-Wolf#559682743-wolf-distribution-maps" ext-link-type="uri">https://wildlife.ca.gov/Conservation/Mammals/Gray&#x02010;Wolf#559682743&#x02010;wolf&#x02010;distribution&#x02010;maps</ext-link>.</mixed-citation></ref><ref id="ece371422-bib-0004"><mixed-citation publication-type="journal" id="ece371422-cit-0004">
+<string-name>
+<surname>Carroll</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<given-names>B. H.</given-names>
+<surname>McRae</surname>
+</string-name>, and <string-name>
+<given-names>A.</given-names>
+<surname>Brookes</surname>
+</string-name>. <year>2012</year>. &#x0201c;<article-title>Use of Linkage Mapping and Centrality Analysis Across Habitat Gradients to Conserve Connectivity of Gray Wolf Populations in Western North America</article-title>.&#x0201d; <source>Conservation Biology</source>
+<volume>26</volume>, no. <issue>1</issue>: <fpage>78</fpage>&#x02013;<lpage>87</lpage>.<pub-id pub-id-type="pmid">22010832</pub-id>
+</mixed-citation></ref><ref id="ece371422-bib-0005"><mixed-citation publication-type="journal" id="ece371422-cit-0005">
+<string-name>
+<surname>Coates</surname>, <given-names>P. S.</given-names>
+</string-name>, <string-name>
+<given-names>S. T.</given-names>
+<surname>O'neil</surname>
+</string-name>, <string-name>
+<given-names>D. A.</given-names>
+<surname>Mu&#x000d1;oz</surname>
+</string-name>, <string-name>
+<given-names>I. A.</given-names>
+<surname>Dwight</surname>
+</string-name>, and <string-name>
+<given-names>J. C.</given-names>
+<surname>Tull</surname>
+</string-name>. <year>2021</year>. &#x0201c;<article-title>Sage&#x02010;Grouse Population Dynamics Are Adversely Affected by Overabundant Feral Horses</article-title>.&#x0201d; <source>Journal of Wildlife Management</source>
+<volume>85</volume>, no. <issue>6</issue>: <fpage>1132</fpage>&#x02013;<lpage>1149</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0006"><mixed-citation publication-type="journal" id="ece371422-cit-0006">
+<string-name>
+<surname>Estes</surname>, <given-names>J. A.</given-names>
+</string-name>, <string-name>
+<given-names>J.</given-names>
+<surname>Terborgh</surname>
+</string-name>, <string-name>
+<given-names>J. S.</given-names>
+<surname>Brashares</surname>
+</string-name>, et&#x000a0;al. <year>2011</year>. &#x0201c;<article-title>Trophic Downgrading of Planet Earth</article-title>.&#x0201d; <source>Science</source>
+<volume>333</volume>: <fpage>301</fpage>&#x02013;<lpage>306</lpage>.<pub-id pub-id-type="pmid">21764740</pub-id>
+</mixed-citation></ref><ref id="ece371422-bib-0007"><mixed-citation publication-type="journal" id="ece371422-cit-0007">
+<string-name>
+<surname>Fritts</surname>, <given-names>S. H.</given-names>
+</string-name>, <string-name>
+<given-names>E. E.</given-names>
+<surname>Bangs</surname>
+</string-name>, <string-name>
+<given-names>J. A.</given-names>
+<surname>Fontaine</surname>
+</string-name>, et&#x000a0;al. <year>1997</year>. &#x0201c;<article-title>Planning and Implementing a Reintroduction of Wolves to Yellowstone National Park and Central Idaho</article-title>.&#x0201d; <source>Restoration Ecology</source>
+<volume>5</volume>: <fpage>7</fpage>&#x02013;<lpage>27</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0008"><mixed-citation publication-type="book" id="ece371422-cit-0008">
+<string-name>
+<surname>Hall</surname>, <given-names>E. R.</given-names>
+</string-name>
+<year>1946</year>. <source>Mammals of Nevada</source>. <publisher-name>University of California Press</publisher-name>.</mixed-citation></ref><ref id="ece371422-bib-0009"><mixed-citation publication-type="journal" id="ece371422-cit-0009">
+<string-name>
+<surname>Kuzyk</surname>, <given-names>G. W.</given-names>
+</string-name>, and <string-name>
+<given-names>I. W.</given-names>
+<surname>Hatter</surname>
+</string-name>. <year>2014</year>. &#x0201c;<article-title>Using Ungulate Biomass to Estimate Abundance of Wolves in British Columbia</article-title>.&#x0201d; <source>Wildlife Society Bulletin</source>
+<volume>38</volume>, no. <issue>4</issue>: <fpage>878</fpage>&#x02013;<lpage>883</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0010"><mixed-citation publication-type="miscellaneous" id="ece371422-cit-0010">
+<collab collab-type="authors">LANDFIRE: LANDFIRE Existing Vegetation Type layer</collab>
+. <year>2019</year>. <article-title>&#x0201c;U.S. Department of Interior, Geological Survey, and U.S. Department of Agriculture.&#x0201d;</article-title>
+<ext-link xlink:href="http://landfire.cr.usgs.gov/viewer/" ext-link-type="uri">http://landfire.cr.usgs.gov/viewer/</ext-link>.</mixed-citation></ref><ref id="ece371422-bib-0011"><mixed-citation publication-type="journal" id="ece371422-cit-0011">
+<string-name>
+<surname>Mech</surname>, <given-names>L. D.</given-names>
+</string-name>
+<year>2017</year>. &#x0201c;<article-title>Where Can Wolves Live and How Can We Live With Them?</article-title>&#x0201d; <source>Biological Conservation</source>
+<volume>210</volume>: <fpage>310</fpage>&#x02013;<lpage>317</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0012"><mixed-citation publication-type="journal" id="ece371422-cit-0012">
+<string-name>
+<surname>Nickel</surname>, <given-names>T.</given-names>
+</string-name>, and <string-name>
+<given-names>S.</given-names>
+<surname>Walther</surname>
+</string-name>. <year>2019</year>. &#x0201c;<article-title>Recolonizing Gray Wolves (<italic toggle="yes">Canis lupus</italic>) in Northern California: Preliminary Analysis of Suitable Areas for Reoccupancy</article-title>.&#x0201d; <source>Natural Areas Journal</source>
+<volume>39</volume>: <fpage>384</fpage>&#x02013;<lpage>390</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0013"><mixed-citation publication-type="journal" id="ece371422-cit-0013">
+<string-name>
+<surname>Oakleaf</surname>, <given-names>J. K.</given-names>
+</string-name>, <string-name>
+<given-names>D. L.</given-names>
+<surname>Murray</surname>
+</string-name>, <string-name>
+<given-names>J. R.</given-names>
+<surname>Oakleaf</surname>
+</string-name>, et&#x000a0;al. <year>2006</year>. &#x0201c;<article-title>Habitat Selection by Recolonizing Wolves in the Northern Rocky Mountains of the United States</article-title>.&#x0201d; <source>Journal of Wildlife Management</source>
+<volume>70</volume>: <fpage>554</fpage>&#x02013;<lpage>563</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0014"><mixed-citation publication-type="journal" id="ece371422-cit-0014">
+<string-name>
+<surname>Parr</surname>, <given-names>S.</given-names>
+</string-name>, and <string-name>
+<given-names>W. P.</given-names>
+<surname>McCrory</surname>
+</string-name>. <year>2022</year>. &#x0201c;<article-title>Gray Wolves (<italic toggle="yes">Canis lupus</italic>) Consume Free&#x02010;Ranging Horses (<italic toggle="yes">Equus ferus caballus</italic>) on the Chilcotin Plateau, British Columbia</article-title>.&#x0201d; <source>Canadian Field&#x02010;Naturalist</source>
+<volume>136</volume>: <fpage>237</fpage>&#x02013;<lpage>246</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0015"><mixed-citation publication-type="journal" id="ece371422-cit-0015">
+<string-name>
+<surname>Ripple</surname>, <given-names>W. J.</given-names>
+</string-name>, <string-name>
+<given-names>J. A.</given-names>
+<surname>Estes</surname>
+</string-name>, <string-name>
+<given-names>R. L.</given-names>
+<surname>Beschta</surname>
+</string-name>, et&#x000a0;al. <year>2014</year>. &#x0201c;<article-title>Status and Ecological Effects of the World's Largest Carnivores</article-title>.&#x0201d; <source>Science</source>
+<volume>343</volume>: <elocation-id>1241484</elocation-id>.<pub-id pub-id-type="pmid">24408439</pub-id>
+</mixed-citation></ref><ref id="ece371422-bib-0016"><mixed-citation publication-type="journal" id="ece371422-cit-0016">
+<string-name>
+<surname>Shelton</surname>, <given-names>S. L.</given-names>
+</string-name>, and <string-name>
+<given-names>F. W.</given-names>
+<surname>Weckerly</surname>
+</string-name>. <year>2007</year>. &#x0201c;<article-title>Inconsistencies in Historical Geographic Range Maps: The Gray Wolf as Example</article-title>.&#x0201d; <source>California Fish &#x00026; Game</source>
+<volume>93</volume>, no. <issue>4</issue>: <fpage>224</fpage>.</mixed-citation></ref><ref id="ece371422-bib-0017"><mixed-citation publication-type="miscellaneous" id="ece371422-cit-0017">
+<string-name>
+<surname>Spillman</surname>, <given-names>B.</given-names>
+</string-name>
+<year>2017</year>. <article-title>&#x0201c;Video: Nevada's Lone Wolf Endures Inhospitable Terrain.&#x0201d;</article-title> Reno&#x02010;Gazette Journal. <ext-link xlink:href="https://www.rgj.com/story/life/outdoors/2017/03/28/video-nevadas-lone-wolf-endures-inhospitable-terrain/99749274/" ext-link-type="uri">https://www.rgj.com/story/life/outdoors/2017/03/28/video&#x02010;nevadas&#x02010;lone&#x02010;wolf&#x02010;endures&#x02010;inhospitable&#x02010;terrain/99749274/</ext-link>.</mixed-citation></ref><ref id="ece371422-bib-0018"><mixed-citation publication-type="journal" id="ece371422-cit-0018">
+<string-name>
+<surname>Stoner</surname>, <given-names>D. C.</given-names>
+</string-name>, <string-name>
+<given-names>M. T.</given-names>
+<surname>Anderson</surname>
+</string-name>, <string-name>
+<given-names>C. A.</given-names>
+<surname>Schroeder</surname>
+</string-name>, <string-name>
+<given-names>C. A.</given-names>
+<surname>Bleke</surname>
+</string-name>, and <string-name>
+<given-names>E. T.</given-names>
+<surname>Thacker</surname>
+</string-name>. <year>2021</year>. &#x0201c;<article-title>Distribution of Competition Potential Between Native Ungulates and Free&#x02010;Roaming Equids on Western Rangelands</article-title>.&#x0201d; <source>Journal of Wildlife Management</source>
+<volume>85</volume>, no. <issue>6</issue>: <fpage>1062</fpage>&#x02013;<lpage>1073</lpage>.</mixed-citation></ref><ref id="ece371422-bib-0019"><mixed-citation publication-type="journal" id="ece371422-cit-0019">
+<string-name>
+<surname>Sweitzer</surname>, <given-names>R. A.</given-names>
+</string-name>, <string-name>
+<given-names>S. H.</given-names>
+<surname>Jenkins</surname>
+</string-name>, and <string-name>
+<given-names>J.</given-names>
+<surname>Berger</surname>
+</string-name>. <year>1997</year>. &#x0201c;<article-title>Near&#x02010;Extinction of Porcupines by Mountain Lions and Consequences of Ecosystem Change in the Great Basin Desert</article-title>.&#x0201d; <source>Conservation Biology</source>
+<volume>11</volume>: <fpage>1407</fpage>&#x02013;<lpage>1417</lpage>.</mixed-citation></ref></ref-list></back></article>

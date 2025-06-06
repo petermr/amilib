@@ -1,0 +1,54 @@
+{
+	"total_json_output": {
+		"f10_1016_j_ijsbe_2017_10_003": {
+			"id": "https://openalex.org/W2772005084",
+			"doi": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+			"title": "Urban sprawl and its impact on landuse/land cover dynamics of Dehradun City, India",
+			"display_name": "Urban sprawl and its impact on landuse/land cover dynamics of Dehradun City, India",
+			"relevance_score": 855.5195,
+			"publication_year": 2017,
+			"publication_date": "2017-12-01",
+			"ids": {
+				"openalex": "https://openalex.org/W2772005084",
+				"doi": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+				"mag": "2772005084"
+			},
+			"language": "en",
+			"primary_location": {
+				"is_oa": true,
+				"landing_page_url": "https://doi.org/10.1016/j.ijsbe.2017.10.003",
+				"pdf_url": null,
+				"source": {
+					"id": "https://openalex.org/S2764990248",
+					"display_name": "International Journal of Sustainable Built Environment",
+					"issn_l": "2212-6090",
+					"issn": [
+						"2212-6090",
+						"2212-6104"
+					],
+					"is_oa": false,
+					"is_in_doaj": false,
+					"is_indexed_in_scopus": false,
+					"is_core": true,
+					"host_organization": "https://openalex.org/P4310320990",
+					"host_organization_name": "Elsevier BV",
+					"host_organization_lineage": [
+						"https://openalex.org/P4310320990"
+					],
+					"host_organization_lineage_names": [
+						"Elsevier BV"
+					],
+					"type": "journal"
+				},
+				"license": "cc-by-nc-nd",
+				"license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+				"version": "publishedVersion",
+				"is_accepted": true,
+				"is_published": true
+			},
+			"type": "article"
+		}
+	},
+	"total_hits": 2,
+	"cursor_mark": "Ils0NTAuODEzNjMsIDE1NzI5MTIwMDAwMDAsICdodHRwczovL29wZW5hbGV4Lm9yZy9XMjk4NjA2NjgyOSddIg=="
+}

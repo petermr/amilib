@@ -1,0 +1,454 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd"> 
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.3" id="age70005" xml:lang="en" article-type="review-article"><?DTDIdentifier.IdentifierValue -//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with OASIS Tables with MathML3 v1.1 20151215//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName JATS-archive-oasis-article1-mathml3.dtd?><?SourceDTD.Version 1.1?><?ConverterInfo.XSLTName jats-oasis2jats3.xsl?><?ConverterInfo.Version 1?><?properties open_access?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Anim Genet</journal-id><journal-id journal-id-type="iso-abbrev">Anim Genet</journal-id><journal-id journal-id-type="doi">10.1111/(ISSN)1365-2052</journal-id><journal-id journal-id-type="publisher-id">AGE</journal-id><journal-title-group><journal-title>Animal Genetics</journal-title></journal-title-group><issn pub-type="ppub">0268-9146</issn><issn pub-type="epub">1365-2052</issn><publisher><publisher-name>John Wiley and Sons Inc.</publisher-name><publisher-loc>Hoboken</publisher-loc></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">11850956</article-id><article-id pub-id-type="doi">10.1111/age.70005</article-id><article-id pub-id-type="publisher-id">AGE70005</article-id><article-id pub-id-type="other">AnGen-24-09-0238.R1</article-id><article-categories><subj-group subj-group-type="overline"><subject>Review</subject></subj-group><subj-group subj-group-type="heading"><subject>Review</subject></subj-group></article-categories><title-group><article-title>Standards in wildlife forensic science, with a focus on non&#x02010;human <styled-content style="fixed-case" toggle="no">DNA</styled-content> analysis</article-title><alt-title alt-title-type="right-running-head">Standards in wildlife forensic science</alt-title><alt-title alt-title-type="left-running-head">Frankham et&#x000a0;al.</alt-title></title-group><contrib-group><contrib id="age70005-cr-0001" contrib-type="author" corresp="yes"><name><surname>Frankham</surname><given-names>Greta J.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-0585-6700</contrib-id><xref rid="age70005-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>greta.frankham@australian.museum</email></address></contrib><contrib id="age70005-cr-0002" contrib-type="author"><name><surname>Ogden</surname><given-names>Rob</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-2831-0428</contrib-id><xref rid="age70005-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="age70005-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="age70005-cr-0003" contrib-type="author"><name><surname>Baker</surname><given-names>Barry W.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-7037-5682</contrib-id><xref rid="age70005-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib id="age70005-cr-0004" contrib-type="author"><name><surname>Ewart</surname><given-names>Kyle M.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-0871-3369</contrib-id><xref rid="age70005-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="age70005-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="age70005-cr-0005" contrib-type="author"><name><surname>Johnson</surname><given-names>Rebecca N.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-3035-2827</contrib-id><xref rid="age70005-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="age70005-cr-0006" contrib-type="author"><name><surname>Kuiper</surname><given-names>Irene</given-names></name><xref rid="age70005-aff-0006" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib id="age70005-cr-0007" contrib-type="author"><name><surname>Lindquist</surname><given-names>Christina D.</given-names></name><xref rid="age70005-aff-0007" ref-type="aff">
+<sup>7</sup>
+</xref></contrib><contrib id="age70005-cr-0008" contrib-type="author"><name><surname>Moore</surname><given-names>M. Katherine</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-7799-1760</contrib-id><xref rid="age70005-aff-0008" ref-type="aff">
+<sup>8</sup>
+</xref></contrib><contrib id="age70005-cr-0009" contrib-type="author"><name><surname>Ndiaye</surname><given-names>Arame</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-9403-9130</contrib-id><xref rid="age70005-aff-0009" ref-type="aff">
+<sup>9</sup>
+</xref></contrib><contrib id="age70005-cr-0010" contrib-type="author"><name><surname>Webster</surname><given-names>Lucy M. I.</given-names></name><address><email>lucy.webster@sasa.gov.scot</email></address><xref rid="age70005-aff-0010" ref-type="aff">
+<sup>10</sup>
+</xref></contrib></contrib-group><aff id="age70005-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<institution>Australian Museum Research Institute</institution>
+<city>Sydney</city>
+<named-content content-type="country-part">New South Wales</named-content>
+<country country="AU">Australia</country>
+</aff><aff id="age70005-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<institution>TRACE Wildlife Forensics Network</institution>
+<city>Edinburgh</city>
+<country country="GB">UK</country>
+</aff><aff id="age70005-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<named-content content-type="organisation-division">Royal (Dick) School of Veterinary Studies and the Roslin Institute</named-content>
+<institution>University of Edinburgh</institution>
+<city>Edinburgh</city>
+<country country="GB">UK</country>
+</aff><aff id="age70005-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<named-content content-type="organisation-division">U.S. Fish &#x00026; Wildlife Service, Office of Law Enforcement</named-content>
+<institution>U.S. National Fish and Wildlife Forensic Laboratory</institution>
+<city>Ashland</city>
+<named-content content-type="country-part">Oregon</named-content>
+<country country="US">USA</country>
+</aff><aff id="age70005-aff-0005">
+<label>
+<sup>5</sup>
+</label>
+<named-content content-type="organisation-division">National Museum of Natural History</named-content>
+<institution>Smithsonian Institution</institution>
+<city>Washington</city>
+<named-content content-type="country-part">DC</named-content>
+<country country="US">USA</country>
+</aff><aff id="age70005-aff-0006">
+<label>
+<sup>6</sup>
+</label>
+<institution>Netherlands Forensic Institute</institution>
+<city>The Hague</city>
+<country country="NL">The Netherlands</country>
+</aff><aff id="age70005-aff-0007">
+<label>
+<sup>7</sup>
+</label>
+<named-content content-type="organisation-division">Veterinary Genetics Laboratory</named-content>
+<institution>University of California at Davis</institution>
+<city>Davis</city>
+<named-content content-type="country-part">California</named-content>
+<country country="US">USA</country>
+</aff><aff id="age70005-aff-0008">
+<label>
+<sup>8</sup>
+</label>
+<named-content content-type="organisation-division">US National Oceanic and Atmospheric Administration, Northwest Fisheries Science Center, Conservation Biology Division</named-content>
+<institution>Marine Forensic Laboratory</institution>
+<city>Charleston</city>
+<named-content content-type="country-part">South Carolina</named-content>
+<country country="US">USA</country>
+</aff><aff id="age70005-aff-0009">
+<label>
+<sup>9</sup>
+</label>
+<institution>African Wildlife Forensics Network</institution>
+<city>Dakar</city>
+<country country="SN">Senegal</country>
+</aff><aff id="age70005-aff-0010">
+<label>
+<sup>10</sup>
+</label>
+<institution>Wildlife DNA Forensic Unit, SASA</institution>
+<city>Edinburgh</city>
+<country country="GB">UK</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence</bold>
+<break/>
+Greta J. Frankham, Australian Museum Research Institute, 1 William Street, Sydney 2010, Australia.<break/>
+Email: <email>greta.frankham@australian.museum</email>
+<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>24</day><month>2</month><year>2025</year></pub-date><pub-date pub-type="ppub"><month>4</month><year>2025</year></pub-date><volume>56</volume><issue seq="450">2</issue><issue-id pub-id-type="doi">10.1111/age.v56.2</issue-id><elocation-id>e70005</elocation-id><history>
+<date date-type="rev-recd"><day>28</day><month>1</month><year>2025</year></date>
+<date date-type="received"><day>11</day><month>9</month><year>2024</year></date>
+<date date-type="accepted"><day>07</day><month>2</month><year>2025</year></date>
+</history><permissions><!--Copyright &#x000a9; 2025 Stichting International Foundation for Animal Genetics--><copyright-statement content-type="article-copyright">&#x000a9; 2025 The Author(s). <italic toggle="yes">Animal Genetics</italic> published by John Wiley &#x00026; Sons Ltd on behalf of Stichting International Foundation for Animal Genetics.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbynclicense">https://creativecommons.org/licenses/by-nc/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by-nc/4.0/">http://creativecommons.org/licenses/by-nc/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited and is not used for commercial purposes.</license-p></license></permissions><self-uri content-type="pdf" xlink:href="file:AGE-56-0.pdf"/><abstract><title>Abstract</title><p>For genetic data to be used in forensic casework, it has to be produced within a controlled environment that follows strict quality standards. However, recent reviews have suggested that wildlife forensic laboratories are behind in the development and adherence to appropriate standards for casework. This paper will address these concerns by documenting the standards that have been produced, highlighting the systems of assessment and competency testing available, and reviewing the status of validated reference genetic databases. Networks of dedicated wildlife forensic scientists across the globe, represented in part by the author list for this paper, illustrate the strides taken to build capacity in this field, and an ongoing commitment to present quality wildlife forensic evidence in court.</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="age70005-kwd-0007">accreditation</kwd><kwd id="age70005-kwd-0001">forensic standards</kwd><kwd id="age70005-kwd-0002">non&#x02010;human DNA</kwd><kwd id="age70005-kwd-0003">proficiency</kwd><kwd id="age70005-kwd-0004">quality assurance</kwd><kwd id="age70005-kwd-0005">Society for Wildlife Forensic Science</kwd><kwd id="age70005-kwd-0006">wildlife forensic science</kwd></kwd-group><counts><fig-count count="0"/><table-count count="1"/><page-count count="8"/><word-count count="5600"/></counts><custom-meta-group><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>April 2025</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.5.4 mode:remove_FC converted:25.02.2025</meta-value></custom-meta></custom-meta-group></article-meta><notes><p content-type="self-citation">
+<mixed-citation publication-type="journal" id="AGE70005-cit-2001">
+<string-name>
+<surname>Frankham</surname>, <given-names>G.J.</given-names>
+</string-name>, <string-name>
+<surname>Ogden</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Baker</surname>, <given-names>B.W.</given-names>
+</string-name>, <string-name>
+<surname>Ewart</surname>, <given-names>K.M.</given-names>
+</string-name>, <string-name>
+<surname>Johnson</surname>, <given-names>R.N.</given-names>
+</string-name>, <string-name>
+<surname>Kuiper</surname>, <given-names>I.</given-names>
+</string-name> et al. (<year>2025</year>) <article-title>Standards in wildlife forensic science, with a focus on non&#x02010;human <styled-content style="fixed-case" toggle="no">DNA</styled-content> analysis</article-title>. <source>Animal Genetics</source>, <volume>56</volume>, <elocation-id>e70005</elocation-id>. Available from: <pub-id pub-id-type="doi">10.1111/age.70005</pub-id>
+</mixed-citation>
+</p></notes></front><body id="age70005-body-0001"><sec id="age70005-sec-0001"><title>INTRODUCTION</title><p>The discipline of wildlife DNA forensic science can be traced back to the earliest applications of DNA fingerprinting for examining individual relatedness (Shorrock,&#x000a0;<xref rid="age70005-bib-0037" ref-type="bibr">1998</xref>) and DNA sequencing for identifying species in trade (Cronin et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0009" ref-type="bibr">1991</xref>). Since the early 1990s, it has developed alongside human DNA forensics, albeit at a slower pace due to its lower enforcement priority and associated reduced resources, but also because of the much broader taxonomic scope of wildlife evidence. Much as human forensics genetics grew out of ongoing academic work on human relatedness and population genetics (e.g. Jeffreys et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0019" ref-type="bibr">1985</xref>; Wyman &#x00026; White,&#x000a0;<xref rid="age70005-bib-0041" ref-type="bibr">1980</xref>), wildlife forensic genetics relies on and retains close ties to academic fields such as conservation genetics (Ogden et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0031" ref-type="bibr">2009</xref>). Conservation geneticists' work to develop markers and assays for non&#x02010;model organisms and establish biobanking resources, infrastructure, and associated reference materials continues to provide a strong foundation for wildlife forensic geneticists' work. Numerous reviews of wildlife DNA forensics have highlighted technical developments and relevant investigative uses over the past 15&#x02009;years (Alacs et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0002" ref-type="bibr">2010</xref>; Johnson et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0020" ref-type="bibr">2014</xref>; Linacre &#x00026; Tobe,&#x000a0;<xref rid="age70005-bib-0023" ref-type="bibr">2011</xref>; Meiklejohn et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0025" ref-type="bibr">2021</xref>; Moore &#x00026; Frazier,&#x000a0;<xref rid="age70005-bib-0027" ref-type="bibr">2019</xref>; Ogden et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0031" ref-type="bibr">2009</xref>; Ogden &#x00026; Linacre,&#x000a0;<xref rid="age70005-bib-0032" ref-type="bibr">2015</xref>), charting its progress towards becoming a mainstream forensic discipline. A recent review by Kanthaswamy&#x000a0;(<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>) on DNA&#x02010;based wildlife forensics suggested that one of the main challenges for wildlife forensic science was the lack of standardisation across the field and the lack of progress since the 2012 development of the Scientific Working Group for Wildlife Forensic Science (SWGWILD) Standards and Guidelines (SWGWILD,&#x000a0;<xref rid="age70005-bib-0036" ref-type="bibr">2012</xref>). This criticism reiterated a similar sentiment put forward by Amorim&#x000a0;(<xref rid="age70005-bib-0003" ref-type="bibr">2019</xref>) in his review of non&#x02010;human forensic genetics. While the wildlife DNA forensic community welcomes critical review, these publications indicate a lack of awareness within the wider scientific community of the significant progress made to develop and implement quality assurance in the field of non&#x02010;human forensic genetics as a whole and wildlife DNA forensic applications in particular. This review seeks to highlight existing standards for wildlife forensics, and in doing so address outdated concerns raised by Kanthaswamy&#x000a0;(<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>) and signpost resources that demonstrate the current state of play in wildlife DNA forensic science.</p></sec><sec id="age70005-sec-0002"><title>WILDLIFE FORENSIC SCIENCE&#x02014;WHAT IS IT AND WHEN IS IT USED?</title><p>It is important to first define wildlife forensic science, and the scenarios in which it is applied, as we do not agree that the wide range of activities described in Kanthaswamy&#x000a0;(<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>) and Amorim&#x000a0;(<xref rid="age70005-bib-0003" ref-type="bibr">2019</xref>) constitute wildlife forensic science. For the purpose of this review, we will use the definition agreed upon by the Society for Wildlife Forensic Science (SWFS), that wildlife forensic science is <italic toggle="yes">the application of a range of scientific disciplines to legal cases involving non&#x02010;human biological evidence</italic>. Wildlife forensic scientists, as with all forensic scientists, provide impartial analysis of evidentiary items in service of the court, and do not perform investigative duties such as carrying out interviews, surveillance, or undercover work as suggested by Kanthaswamy&#x000a0;(<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>), or conservation monitoring as suggested by Amorim&#x000a0;(<xref rid="age70005-bib-0003" ref-type="bibr">2019</xref>). Importantly, while wildlife forensics relies on taxonomy, casework does not involve &#x0201c;naming, describing and classifying organisms&#x0201d; (Kanthaswamy,&#x000a0;<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>); it involves specimen identification, not species discovery (as defined by Collins &#x00026; Cruickshank,&#x000a0;<xref rid="age70005-bib-0008" ref-type="bibr">2013</xref>).</p><p>As with human forensic science, there are multiple analytical tools that can be applied to wildlife evidence, but molecular genetic analysis is currently the most widely used, focusing on different investigative questions. Typically, a wildlife forensic scientist using DNA methods will carry out DNA analysis for the purpose of species identification, sex determination, individualisation, geographic source, and/or estimating the number of individuals contributing to evidence in a case (Moore &#x00026; Frazier,&#x000a0;<xref rid="age70005-bib-0027" ref-type="bibr">2019</xref>). The genetic markers used are selected to provide the appropriate resolution (e.g. species, population, or individual) required for the investigative questions at hand. Mitochondrial or chloroplast DNA sequence analysis enables species identification across a wide range of taxa and is an analysis common to most wildlife forensic laboratories. For higher&#x02010;resolution analysis, such as population&#x02010;level applications, typically nuclear DNA markers including short tandem repeats (STRs) or single nucleotide polymorphisms (SNPs) are used, which require extensive validation for forensic application and the construction of reference databases from which to calculate statistical support. For further details on the application of DNA analysis in wildlife forensics, we recommend the reviews by Moore and Frazier&#x000a0;(<xref rid="age70005-bib-0027" ref-type="bibr">2019</xref>), Meiklejohn et&#x000a0;al.&#x000a0;(<xref rid="age70005-bib-0025" ref-type="bibr">2021</xref>), and Robertson et&#x000a0;al.&#x000a0;(<xref rid="age70005-bib-0035" ref-type="bibr">2020</xref>).</p></sec><sec id="age70005-sec-0003"><title>STANDARDS IN WILDLIFE FORENSIC SCIENCE&#x02014;A BRIEF HISTORY</title><p>While forensic casework has always demanded high standards, the rapid development and increasing impact of forensic science in law enforcement around the turn of the century led to greater focus on scientific rigour and quality assurance, with pressure to define and improve standards across all forensic science disciplines exemplified by a US National Academy of Sciences report (NRC,&#x000a0;<xref rid="age70005-bib-0029" ref-type="bibr">2009</xref>) that was broadly critical of the field. Laboratories that carry out forensic science are now increasingly encouraged to be accredited to the ISO/IEC 17025 testing standard, which can incorporate a dedicated module (e.g. ILAC: G&#x02013;19 06/2022,&#x000a0;<xref rid="age70005-bib-0017" ref-type="bibr">n.d.</xref>; ANSI/ANAB, AR 3125,&#x000a0;<xref rid="age70005-bib-0004" ref-type="bibr">2023</xref>) that adds additional specific forensic quality assurance components. A specific ISO standard for forensic laboratories is also in development (ISO 21043). However, these standards remain rather generic and do not accommodate the detailed considerations required for the wildlife forensic science discipline. Initial calls for wildlife forensic genetics to adhere to standards developed for and by human forensic geneticists are not appropriate; although there are similarities in laboratory methods, the purpose of the testing and the reference data required are very different (Linacre et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0022" ref-type="bibr">2011</xref>; Moore &#x00026; Frazier,&#x000a0;<xref rid="age70005-bib-0027" ref-type="bibr">2019</xref>).</p><p>To support the professional development of wildlife forensic science, existing practitioners came together to form the SWFS in the USA in 2009 and the European Network of Forensic Science Institutes Animal, Plant and Soil Traces working group (ENFSI&#x02010;APST) in 2010 (Table&#x000a0;<xref rid="age70005-tbl-0001" ref-type="table">1</xref>). Through SWFS, the SWGWILD produced Standards and Guidelines in 2012 (SWGWILD,&#x000a0;<xref rid="age70005-bib-0036" ref-type="bibr">2012</xref>). This was followed by the ENFSI&#x02010;APST Best Practice Manual for the application of molecular methods for the forensic examination of non&#x02010;human biological traces in 2015 (ENFSI APST,&#x000a0;<xref rid="age70005-bib-0012" ref-type="bibr">2015</xref>). The efforts of SWGWILD led to wildlife forensics being included as a standalone discipline within the Organisation of Scientific Area Committees for Forensic Sciences (OSAC) in the USA, when this was established in 2014. Subsequently, SWGWILD was re&#x02010;organised into two parts&#x02014;the OSAC Wildlife Forensics Biology Subcommittee (WFBS), which works on standardisation within the USA, and the SWFS Technical Working Group (TWG; Table&#x000a0;<xref rid="age70005-tbl-0001" ref-type="table">1</xref>) which seeks to disseminate globally applicable consensus&#x02010;based standards, guidelines, best practices, and recommendations (e.g. Webster et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0039" ref-type="bibr">2024</xref>).</p><table-wrap position="float" id="age70005-tbl-0001" content-type="TABLE"><label>TABLE 1</label><caption><p>Organisations involved in the development of wildlife forensic science standards globally.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Organisation</th><th align="left" valign="bottom" rowspan="1" colspan="1">Est.</th><th align="left" valign="bottom" rowspan="1" colspan="1">Membership</th><th align="left" valign="bottom" rowspan="1" colspan="1">Purpose</th><th align="left" valign="bottom" rowspan="1" colspan="1">Roles from within authorship</th><th align="left" valign="bottom" rowspan="1" colspan="1">Website</th></tr></thead><tbody valign="top"><tr><td align="left" colspan="6" valign="top" rowspan="1">Volunteer based</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">Society for Wildlife Forensic Science (SWFS)</td><td align="left" valign="top" rowspan="1" colspan="1">2009</td><td align="left" valign="top" rowspan="1" colspan="1">Paid membership, open to wildlife forensic science practitioners, academics, students and enforcement</td><td align="left" valign="top" rowspan="1" colspan="1">An international science&#x02010;based society that supports practitioners and promotes best practice in wildlife forensic science</td><td align="left" valign="top" rowspan="1" colspan="1">Rebecca Johnson (President), Kyle Ewart (Director), Greta Frankham (Director) Most other authors are SWFS members</td><td align="left" valign="top" rowspan="1" colspan="1">
+<ext-link xlink:href="https://www.wildlifeforensicscience.org/" ext-link-type="uri">https://www.wildlifeforensicscience.org/</ext-link>
+</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">European Network of Forensic Science Institutes Animal, Plant and Soil Traces working group (ENFSI&#x02010;APST)</td><td align="left" valign="top" rowspan="1" colspan="1">2010</td><td align="left" valign="top" rowspan="1" colspan="1">Open to membership by ENFSI institutes and associate membership for non&#x02010;ENFSI institutes, provided they are active in non&#x02010;profit laboratories involved in forensic examinations instructed by prosecution and law enforcement in Europe</td><td align="left" valign="top" rowspan="1" colspan="1">To ensure the quality of development and delivery of forensic science throughout Europe for all biological traces of non&#x02010;human origin and soil traces</td><td align="left" valign="top" rowspan="1" colspan="1">Irene Kuiper (Chair), Lucy Webster (associate member)</td><td align="left" valign="top" rowspan="1" colspan="1">
+<ext-link xlink:href="https://enfsi.eu/about-enfsi/structure/working-groups/animal-plant-and-soil-traces/" ext-link-type="uri">https://enfsi.eu/about&#x02010;enfsi/structure/working&#x02010;groups/animal&#x02010;plant&#x02010;and&#x02010;soil&#x02010;traces/</ext-link>
+</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">Scientific Working Group for Wildlife Forensic Sciences (SWGWILD)</td><td align="left" valign="top" rowspan="1" colspan="1">2011&#x02013;2016</td><td align="left" valign="top" rowspan="1" colspan="1">Invited group of wildlife forensic experts</td><td align="left" valign="top" rowspan="1" colspan="1">To standardise and promulgate best practices across the diverse species and evidence types unique to the wildlife forensics field</td><td align="left" valign="top" rowspan="1" colspan="1">Barry Baker, Katherine Moore, Christina Lindquist, and Rob Ogden&#x000a0;are past members</td><td align="left" valign="top" rowspan="1" colspan="1">N/A</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">Organisation of Scientific Area Committees for Forensic Sciences Wildlife Forensics Biology subcommittee</td><td align="left" valign="top" rowspan="1" colspan="1">2014</td><td align="left" valign="top" rowspan="1" colspan="1">Invited group of US&#x02010;based forensic science practitioners, laboratory managers, academic researchers, and experts in statistics, legal, and quality infrastructure, as well as invited international experts</td><td align="left" valign="top" rowspan="1" colspan="1">To establish US&#x02010;centric forensic standards and best practices within and between disciplines related to terminology, methodologies, and training</td><td align="left" valign="top" rowspan="1" colspan="1">Christina Lindquist (Chair), Barry Baker (affiliate), Katherine Moore (affiliate), Rob Ogden (past member)</td><td align="left" valign="top" rowspan="1" colspan="1">
+<ext-link xlink:href="https://www.nist.gov/osac/subcommittees/wildlife-forensic-biology" ext-link-type="uri">https://www.nist.gov/osac/subcommittees/wildlife&#x02010;forensic&#x02010;biology</ext-link>
+</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">SWFS Technical Working Group</td><td align="left" valign="top" rowspan="1" colspan="1">2016</td><td align="left" valign="top" rowspan="1" colspan="1">Sub&#x02010;group of SWFS members, endorsed by the SWFS Board of Directors</td><td align="left" valign="top" rowspan="1" colspan="1">Develop and disseminate globally applicable consensus&#x02010;based standards, guidelines, best practices, and recommendations</td><td align="left" valign="top" rowspan="1" colspan="1">Greta Frankham (Chair), Katherine Moore (member), Lucy Webster (member)</td><td align="left" valign="top" rowspan="1" colspan="1">
+<ext-link xlink:href="https://www.wildlifeforensicscience.org/sample-page/twg/" ext-link-type="uri">https://www.wildlifeforensicscience.org/sample&#x02010;page/twg/</ext-link>
+</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">African Wildlife Forensics Network (AWFN)</td><td align="left" valign="top" rowspan="1" colspan="1">2016</td><td align="left" valign="top" rowspan="1" colspan="1">Practitioners in Africa working in the fields of wildlife crime scene investigation, wildlife forensic laboratory analysis and wildlife prosecution</td><td align="left" valign="top" rowspan="1" colspan="1">To develop and facilitate an active network of wildlife forensics stakeholders, and support access to forensic science and crime scene services across the African continent</td><td align="left" valign="top" rowspan="1" colspan="1">Arame Ndiaye (project officer), Irene Kuiper (steering committee)</td><td align="left" valign="top" rowspan="1" colspan="1">
+<ext-link xlink:href="http://www.africanwildlifeforensics.org" ext-link-type="uri">www.africanwildlifeforensics.org</ext-link>
+</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">Forensic Science Regulator&#x02014;non&#x02010;human biology subgroup</td><td align="left" valign="top" rowspan="1" colspan="1">2024</td><td align="left" valign="top" rowspan="1" colspan="1">Invited membership from across the spectrum of non&#x02010;human biology disciplines in the UK including DNA, morphology, soil, veterinary pathology, and specialist crime scene examiners</td><td align="left" valign="top" rowspan="1" colspan="1">To support the Regulator by providing advice on the requirements for laboratory standards and all matters related to the recovery of non&#x02010;human biological material for potential forensic examination</td><td align="left" valign="top" rowspan="1" colspan="1">Lucy Webster (Co&#x02010;chair)</td><td align="left" valign="top" rowspan="1" colspan="1">
+<ext-link xlink:href="https://www.gov.uk/government/organisations/forensic-science-regulator" ext-link-type="uri">https://www.gov.uk/government/organisations/forensic&#x02010;science&#x02010;regulator</ext-link>
+</td></tr><tr><td align="left" colspan="6" valign="top" rowspan="1">Non&#x02010;profit organisations</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">TRACE Wildlife Forensics Network</td><td align="left" valign="top" rowspan="1" colspan="1">2006</td><td align="left" valign="top" rowspan="1" colspan="1">Staff are a diverse, international team of wildlife forensic specialists</td><td align="left" valign="top" rowspan="1" colspan="1">Non&#x02010;profit organisation dedicated to the promotion of forensic science in wildlife conservation and law enforcement with a global remit for the development, dissemination, and implementation of forensic tools to help tackle wildlife crime</td><td align="left" valign="top" rowspan="1" colspan="1">Rob Ogden (Director), Kyle Ewart (Forensic research manager)</td><td align="left" valign="top" rowspan="1" colspan="1">
+<ext-link xlink:href="https://www.tracenetwork.org/" ext-link-type="uri">https://www.tracenetwork.org/</ext-link>
+</td></tr></tbody></table></table-wrap><p>The 2012 SWGWILD Standards and Guidelines were revised by the TWG in 2019, re&#x02010;named as the SWFS Standards and Guidelines, translated into six languages (French, Spanish, Mandarin, Thai, Vietnamese, and Malay), and published in 2021 (Moore et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0026" ref-type="bibr">2021</xref>). These standards cover over 150 criteria ranging from ethics, education, and facility infrastructure to detailed technical criteria for genetic and morphological analysis of flora and fauna. Within the DNA section, these revised standards included sections for DNA sequencing, STRs and SNPs. To date the OSAC WFBS has authored seven wildlife forensic standards, from general standards through to method validation and reporting, which have subsequently been published by the American Academy of Forensic Sciences' Academy Standards Board (AAFS ASB) and listed on the OSAC registry (OSAC,&#x000a0;<xref rid="age70005-bib-0033" ref-type="bibr">n.d.</xref>). The OSAC WFBS also has additional standards in development (<ext-link xlink:href="https://www.nist.gov/osac/subcommittees/wildlife-forensic-biology" ext-link-type="uri">https://www.nist.gov/osac/subcommittees/wildlife&#x02010;forensic&#x02010;biology</ext-link>) and has co&#x02010;authored several training standards with the OSAC Human Forensic Biology Subcommittee. All the aforementioned standards are complemented by a number of resources to assist with the development of laboratory quality management systems, such as a SWFS Template Quality Manual, standard operating procedures, and forms, which are actively shared within the SWFS membership.</p><p>Standards follow a cycle of review and improvement, which is particularly relevant in a field such as DNA analysis where technology rapidly advances. However, forensic science cannot adopt novel methods until they have been formally validated (Ogden et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0031" ref-type="bibr">2009</xref>; Webster et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0039" ref-type="bibr">2024</xref>). For instance, mass parallel sequencing technologies are not addressed in the current SWFS Standards and Guidelines (Moore et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0026" ref-type="bibr">2021</xref>), and while these methods are commonly used in academic research, there is limited use of these technologies in current wildlife forensic casework. However as more validation studies are published for wildlife forensic applications (e.g. Vasiljevic et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0038" ref-type="bibr">2021</xref>), they are likely to be incorporated into future standards and guidelines across our field. It is the remit of the TWG to regularly review the standards in the light of new methods which have been validated and peer reviewed. In the USA, the AAFS ASB also conducts regular review and updating of its wildlife forensic standards. By working together, our community can harmonise the relevant standards for laboratories across the world (Table&#x000a0;<xref rid="age70005-tbl-0001" ref-type="table">1</xref>).</p><p>In 2023 the Forensic Science Regulator (FSR) for England and Wales was granted statutory powers to enforce compliance with their Code of Practice (Forensic Science Regulator,&#x000a0;<xref rid="age70005-bib-0014" ref-type="bibr">2023</xref>). This code includes standards for wildlife forensic fields, and a subgroup for the FSR (Table&#x000a0;<xref rid="age70005-tbl-0001" ref-type="table">1</xref>) has been recently set up to provide advice to the regulator on requirements for forensic analysis of non&#x02010;human biological material, which will inform future iterations of the code. In the USA, the <italic toggle="yes">DNA Identification Act of 1994</italic> established DNA databases and mandated standardisation of human forensic genetic analysis in the USA, as well as enabling US government funding to support such standardisation. Though DNA analyses in wildlife forensics is necessarily more diverse than that in human forensics, the <italic toggle="yes">DNA Identification Act of 1994</italic> and the FSR provide models for other countries to consider in implementing their own high&#x02010;quality systems.</p></sec><sec id="age70005-sec-0004"><title>ACCREDITATION AND ALTERNATIVE FORMS OF ASSESSMENT</title><p>All forensic laboratories, whether they deal with non&#x02010;human or human forensic applications, should operate a system of continual improvement through their internal quality management system (QMS). The QMS should be regularly audited against agreed standards, as these themselves emerge and evolve. The process of accreditation, through which a laboratory gains external recognition for the implementation of its QMS via an accreditation body, enables these laboratories to demonstrate adherence to specific standards (e.g. ISO/IEC 17025: International Organization for Standardization, <xref rid="age70005-bib-0018" ref-type="bibr">2017</xref>). However, as Kanthaswamy&#x000a0;(<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>) states, and we agree, it is a huge financial burden to obtain and retain formal accreditation to these standards, which many small laboratories cannot afford. It is therefore important to acknowledge that, while accreditation to ISO standards is the &#x02018;gold standard&#x02019; for a forensic laboratory, if this is not financially viable for a laboratory, especially in the developmental phase, there are other options for laboratories to be recognised as delivering quality&#x02010;assured wildlife forensic testing.</p><p>To help recognise the laboratories which adopt the SWFS Standards and Guidelines, SWFS established the SWFS Assessment Program in 2018. The SWFS Assessment Program is not an accreditation service but is an independent assessment against the SWFS Standards and Guidelines (Moore et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0026" ref-type="bibr">2021</xref>), which also focuses on requirements that are unique to the field of wildlife forensics, and not considered by ISO standards. The assessments and resultant outcomes are confidential and thus laboratories may or may not choose to disclose if they have undergone assessment. However, the results of assessments can be used by laboratories to demonstrate the quality of work they provide and give confidence to their customers (e.g. enforcement agencies and the judiciary), or to help build a business case to obtain the resources needed to fill any gaps that still exist within their QMS. To date, nine wildlife forensic laboratories have undergone assessment by SWFS, including the Marine Forensic Laboratory at the National Oceanic and Atmospheric Administration's Northwest Fisheries Science Center (Seattle, WA and Charleston, SC, USA) and Vietnam's wildlife forensic laboratory, based at the Institute of Ecology and Biological Resources in Hanoi, both of which deal with a wide range of illegal wildlife trade casework (e.g. Ewart et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0013" ref-type="bibr">2018</xref>; Martinsohn et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0024" ref-type="bibr">2019</xref>; Moore &#x00026; Frazier,&#x000a0;<xref rid="age70005-bib-0027" ref-type="bibr">2019</xref>).</p></sec><sec id="age70005-sec-0005"><title>TRAINING AND COMPETENCE IN WILDLIFE FORENSIC SCIENCE</title><p>Considerable efforts have also been made by SWFS and ENFSI&#x02010;APST in developing training, professional development and competency resources aimed at analysts at the individual level, arising from the emphasis on training and competence in ISO/IEC: 17025 and in the field of forensic science in general.</p><p>Proficiency tests are designed to evaluate participant performance against pre&#x02010;established criteria by means of interlaboratory comparisons (ENFSI,&#x000a0;<xref rid="age70005-bib-0011" ref-type="bibr">2023</xref>). Proficiency testing is an essential part of any forensic scientist's demonstration of ongoing competency. Both SWFS and ENFSI&#x02010;APST offer annual wildlife identification proficiency tests (involving species identification, sex determination, and/or individualisation testing), which are regularly undertaken by 30&#x02013;40 laboratories worldwide. Collaborative Exercises are interlaboratory exercises designed to address issues and may also monitor laboratory performance (ENFSI,&#x000a0;<xref rid="age70005-bib-0011" ref-type="bibr">2023</xref>). The African Wildlife Forensics Network (AWFN), along with TRACE Wildlife Forensics Network, coordinates Collaborative Exercises for DNA&#x02010;based species identification among wildlife forensic laboratory practitioners across Africa. Both the AWFN and SWFS run in&#x02010;person morphological ivory identification training and proficiency testing, and SWFS is currently developing a timber identification proficiency test.</p><p>One of the recommendations from the National Research Council report&#x000a0;(<xref rid="age70005-bib-0029" ref-type="bibr">2009</xref>) was that forensic scientists become certified in their specialist forensic disciplines. In response, the SWFS certification programme for the wildlife forensics community was launched in 2013. Through this programme, applicants are peer assessed to ensure they are conducting and satisfactorily completing annual proficiency tests, have the appropriate education, training, and casework experience, and are using methods accepted within the community for the casework they are undertaking. Certification lasts 3&#x02009;years, upon which they must undergo re&#x02010;assessment to retain their certification. Currently there are 18 analysts assessed as Certified Wildlife Forensic Scientists across the globe.</p></sec><sec id="age70005-sec-0006"><title>VALIDATED REFERENCE GENETIC DATA FOR FORENSIC APPLICATION</title><p>Kanthaswamy&#x000a0;(<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>) correctly identifies the availability of validated reference genetic data as an issue in wildlife DNA forensics, and it is a concern that the wildlife forensic community is actively addressing. There are two principal data types to consider: (i) reference DNA sequence data; and (ii) individual DNA profile data. Reference DNA sequence data are primarily used for species identification but can also be used for broad&#x02010;scale geographic origin assignment. Individual DNA profile data are used for sample matching/exclusion, parentage and geographic provenance identification. The establishment of population DNA profile databases are required for statistical inference of profile matches, familial relationships, and fine&#x02010;scale geographic origin assignment tools.</p><sec id="age70005-sec-0007"><title>
+<styled-content style="fixed-case" toggle="no">DNA</styled-content> sequence data</title><p>Species identification relies on the availability of comparative sequence databases, primarily mitochondrial or chloroplast DNA markers. The largest and most accessible sequence databases with the greatest species representation are also the least validated and contain the most errors (e.g. GenBank). The potential issues with using publicly available sequence data for species identification highlighted by Kanthaswamy&#x000a0;(<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>) are well understood across the wildlife forensic community (Meiklejohn et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0025" ref-type="bibr">2021</xref>), and guidelines have been developed to assist in the interpretation of identifications that use these data (Patel et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0034" ref-type="bibr">2023</xref>). Although there are initiatives for developing validated sequence data specifically for wildlife forensic identification (e.g. Ahlers et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0001" ref-type="bibr">2017</xref>; Baxter et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0006" ref-type="bibr">2024</xref>), most databases are generated and curated in&#x02010;house, and are seldom made available to the public for a number of reasons (e.g. data sharing constraints, commercial viability). It is recognised that not all wildlife forensics laboratories have the resources, capacity or access to appropriate sample material to develop their own in&#x02010;house reference databases. This is why one of the current priorities of the TWG is to develop a mitochondrial DNA reference database for species identification that holds data verified for forensic applications. This reference database will contain data vetted on various quality assurance criteria, and in some cases private data that cannot be shared on publicly available databases. Its purpose will be for wildlife forensic laboratories to carry out species identification only and data will not be available for research purposes. In the meantime, to address the ongoing and necessary use of databases such as GenBank in forensic casework, the OSAC WFBS authored and AAFS ASB subsequently published <italic toggle="yes">Standard for the Selection and Evaluation of GenBank&#x000ae; Results for Taxonomic Assignment of Wildlife</italic> (ANSI/ASB Standard 180,&#x000a0;<xref rid="age70005-bib-0005" ref-type="bibr">2024</xref>). Additionally, a published interlaboratory study demonstrated the successful use of this standard as a framework for using GenBank in casework (Patel et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0034" ref-type="bibr">2023</xref>).</p></sec><sec id="age70005-sec-0008"><title>Individual <styled-content style="fixed-case" toggle="no">DNA</styled-content> profile data</title><p>The development and validation of nuclear DNA STR or SNP marker profiling systems in forensic science requires considerable investment of both time and resources. There are a number of species globally that have had these developed for forensic purposes, including dogs (Berger et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0007" ref-type="bibr">2014</xref>), white&#x02010;tailed deer (Hamlin et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0015" ref-type="bibr">2021</xref>), roe deer (Morf et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0028" ref-type="bibr">2021</xref>), African rhinoceros (Harper,&#x000a0;<xref rid="age70005-bib-0016" ref-type="bibr">2021</xref>), big leaf maple (Dormontt et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0010" ref-type="bibr">2020</xref>), and birch trees (Wesselink et&#x000a0;al.,&#x000a0;<xref rid="age70005-bib-0040" ref-type="bibr">2018</xref>). DNA profiling systems are typically species&#x02010;specific, which creates challenges in wildlife forensics where investigative questions involve many different species, often in quite localised enforcement contexts. This has historically limited the publication of individual DNA profiling validation studies to relatively few species of widespread interest, with further challenges to inter&#x02010;laboratory transfer of data, due to a lack of allelic ladders or positive control genotypes. However, some of this may be remedied by ensuring publication of newly developed and validated assays as well as profile reference databases and allele frequencies. Recognising these challenges, OSAC standards for development of non&#x02010;human STR panels, interpretation of STR results in the absence of an allelic ladder, and validation of multi&#x02010;locus databases are in preparation (<ext-link xlink:href="https://www.nist.gov/osac/subcommittees/wildlife-forensic-biology" ext-link-type="uri">https://www.nist.gov/osac/subcommittees/wildlife&#x02010;forensic&#x02010;biology</ext-link>). The ongoing transition to more transferable SNP&#x02010;based profiling systems in wildlife forensics (Ogden,&#x000a0;<xref rid="age70005-bib-0030" ref-type="bibr">2011</xref>) will further aid the dissemination of DNA test methods.</p></sec></sec><sec id="age70005-sec-0009"><title>GLOBAL WILDLIFE FORENSICS CAPACITY AND NETWORKS</title><p>Wildlife DNA forensics emerged in a number of countries simultaneously in the 1990s and has since spread internationally. Interestingly, given its primary application to inform the enforcement of wildlife protection legislation, the need for wildlife DNA forensics is arguably higher in biodiverse countries that have retained wildlife populations of value to illegal criminal networks, rather than in countries where the discipline enjoys the strongest infrastructure. The largest gaps for wildlife DNA forensic capacity are therefore often in Africa, Asia, and South America, where human DNA forensic capacity is also arguably lowest. This creates needs for international coordination and capacity building, which have both received significant attention over the past decade.</p><p>Since 2016, the Secretariat of the Convention on International Trade in Endangered Species of Wild Flora and Fauna has maintained a directory of approved laboratories that are willing and able to undertake international wildlife forensic casework, which currently lists 13 ISO&#x02010;accredited services across North America, Europe, East and Southeast Asia, and Australasia. Other accredited wildlife forensic laboratories are not listed as they focus solely on national service delivery, such as those within the US Customs and Border Protection agency and the Forensic Science Service in Botswana. Throughout Europe, wildlife DNA forensic analysis is delivered by existing forensic service providers that are committed to the development and execution of best practices through ENFSI&#x02010;APST.</p><p>However, the vast majority of wildlife DNA forensic laboratories provide national services which, alhough not yet accredited, demonstrate their commitment to quality service delivery through implementation of their internal QMSs. In Africa, for example, this includes laboratories in Gabon, Kenya, South Africa, Tanzania, Uganda, Zambia, and Zimbabwe, with more laboratories at earlier stages of development. The importance of establishing and maintaining rigorous quality assured processes is widely recognised by the community, which is why organisations such as the AWFN have been created, bringing together early career practitioners and highly experienced forensic scientists to support the development of and access to wildlife forensic services across the African continent. Operating since 2016, AWFN has practitioner members from 15 African nations working in partnership with wildlife forensic scientists from around the world. Other networks and partnerships exist in Southeast Asia, China, Russia and central Asia, and on the Indian subcontinent. Scientists from many of these regions are also members of the SWFS, which meets every 2&#x02009;years to bring the community together. The 2024 SWFS meeting held in Malaysia hosted 120 participants from 29 countries. At the 2023 meeting of the International Association of Forensic Sciences, two dedicated wildlife forensic sessions served to illustrate the seriousness with which the discipline is now regarded.</p></sec><sec sec-type="conclusions" id="age70005-sec-0010"><title>CONCLUSION</title><p>This brief review of standards in wildlife forensic science serves to demonstrate that the discipline is increasingly meeting or exceeding the quality assurance thresholds demanded by the international forensic science community, and is considerably further along this road than other reviews have suggested (Amorim,&#x000a0;<xref rid="age70005-bib-0003" ref-type="bibr">2019</xref>; Kanthaswamy,&#x000a0;<xref rid="age70005-bib-0021" ref-type="bibr">2024</xref>). As an applied field, it is perhaps harder to communicate such developments, as they do not always appear in the scientific literature but are instead published by standards organisations and disseminated through practitioner networks associated with groups such as SWFS and ENFSI&#x02010;APST. It is hoped that this review raises awareness of progress in wildlife forensic standards and effectively signposts resources for any International Society for Animal Genetics laboratories who have an interest in this field but are not already involved. While there is always room for continual improvement, quality assurance is at the core of wildlife forensic science, and as practitioners we will continue to face this challenge head on by engaging with other forensic disciplines as well as the wider scientific community.</p></sec><sec id="age70005-sec-0013"><title>AUTHOR CONTRIBUTIONS</title><p>
+<bold>Greta J. Frankham:</bold> Conceptualization; writing &#x02013; original draft. <bold>Rob Ogden:</bold> Conceptualization; writing &#x02013; original draft. <bold>Barry W. Baker:</bold> Writing &#x02013; review and editing. <bold>Kyle M. Ewart:</bold> Writing &#x02013; review and editing. <bold>Rebecca N. Johnson:</bold> Writing &#x02013; review and editing. <bold>Irene Kuiper:</bold> Writing &#x02013; review and editing. <bold>Christina D. Lindquist:</bold> Writing &#x02013; review and editing. <bold>M. Katherine Moore:</bold> Writing &#x02013; review and editing. <bold>Arame Ndiaye:</bold> Writing &#x02013; review and editing. <bold>Lucy M. I. Webster:</bold> Conceptualization; writing &#x02013; original draft.</p></sec><sec sec-type="COI-statement" id="age70005-sec-0012"><title>CONFLICT OF INTEREST STATEMENT</title><p>The authors declare that they have no conflict of interest.</p></sec></body><back><ack id="age70005-sec-0011"><title>ACKNOWLEDGMENTS</title><p>The authors would like to thank members of SWFS, ENFSI&#x02010;APST, and other colleagues in the wildlife forensic community for discussions that contributed to the preparation of this manuscript. The findings and conclusions in this article are those of the authors and do not necessarily represent the views of the US Fish and Wildlife Service or the National Oceanographic and Atmospheric Administration.</p></ack><sec sec-type="data-availability" id="age70005-sec-0114"><title>DATA AVAILABILITY STATEMENT</title><p>No new data were generated or analysed as part of this review.</p></sec><ref-list content-type="cited-references" id="age70005-bibl-0001"><title>REFERENCES</title><ref id="age70005-bib-0001"><mixed-citation publication-type="journal" id="age70005-cit-0001">
+<string-name>
+<surname>Ahlers</surname>, <given-names>N.</given-names>
+</string-name>, <string-name>
+<surname>Creecy</surname>, <given-names>J.</given-names>
+</string-name>, <string-name>
+<surname>Frankham</surname>, <given-names>G.</given-names>
+</string-name>, <string-name>
+<surname>Johnson</surname>, <given-names>R.N.</given-names>
+</string-name>, <string-name>
+<surname>Kotze</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Linacre</surname>, <given-names>A.</given-names>
+</string-name> et&#x000a0;al. (<year>2017</year>) <article-title>ForCyt'DNA database of wildlife species</article-title>. <source>Forensic Science International: Genetics Supplement Series</source>, <volume>6</volume>, <fpage>e466</fpage>&#x02013;<lpage>e468</lpage>.</mixed-citation></ref><ref id="age70005-bib-0002"><mixed-citation publication-type="journal" id="age70005-cit-0002">
+<string-name>
+<surname>Alacs</surname>, <given-names>E.A.</given-names>
+</string-name>, <string-name>
+<surname>Georges</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>FitzSimmons</surname>, <given-names>N.N.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Robertson</surname>, <given-names>J.</given-names>
+</string-name> (<year>2010</year>) <article-title>DNA detective: a review of molecular approaches to wildlife forensics</article-title>. <source>Forensic Science, Medicine, and Pathology</source>, <volume>6</volume>, <fpage>180</fpage>&#x02013;<lpage>194</lpage>.<pub-id pub-id-type="pmid">20013321</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0003"><mixed-citation publication-type="journal" id="age70005-cit-0003">
+<string-name>
+<surname>Amorim</surname>, <given-names>A.</given-names>
+</string-name> (<year>2019</year>) <article-title>Nonhuman forensic genetics</article-title>. <source>Forensic Science International: Genetics Supplement Series</source>, <volume>7</volume>(<issue>1</issue>), <fpage>44</fpage>&#x02013;<lpage>46</lpage>.</mixed-citation></ref><ref id="age70005-bib-0004"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0004">
+<collab collab-type="authors">ANSI/ANAB</collab>
+. (<year>2023</year>) <article-title>
+<italic toggle="yes">Accreditation Requirements for Forensic Testing and Calibration</italic>, AR 3125</article-title>.</mixed-citation></ref><ref id="age70005-bib-0005"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0005">
+<collab collab-type="authors">ANSI/ASB Standard 180</collab>
+. (<year>2024</year>) <article-title>Standard <italic toggle="yes">for the Selection and Evaluation of GenBank&#x000ae; Results for Taxonomic Assignment of Wildlife</italic>, 1st Edition</article-title>.</mixed-citation></ref><ref id="age70005-bib-0006"><mixed-citation publication-type="journal" id="age70005-cit-0006">
+<string-name>
+<surname>Baxter</surname>, <given-names>J.R.</given-names>
+</string-name>, <string-name>
+<surname>Kotze</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>de Bruyn</surname>, <given-names>M.</given-names>
+</string-name>, <string-name>
+<surname>Matlou</surname>, <given-names>K.</given-names>
+</string-name>, <string-name>
+<surname>Labuschagne</surname>, <given-names>K.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Mwale</surname>, <given-names>M.</given-names>
+</string-name> (<year>2024</year>) <article-title>DNA barcoding of southern African mammal species and construction of a reference library for forensic application</article-title>. <source>Genome</source>, <volume>67</volume>, <fpage>378</fpage>&#x02013;<lpage>391</lpage>.<pub-id pub-id-type="pmid">38996389</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0007"><mixed-citation publication-type="journal" id="age70005-cit-0007">
+<string-name>
+<surname>Berger</surname>, <given-names>B.</given-names>
+</string-name>, <string-name>
+<surname>Berger</surname>, <given-names>C.</given-names>
+</string-name>, <string-name>
+<surname>Hecht</surname>, <given-names>W.</given-names>
+</string-name>, <string-name>
+<surname>Hellmann</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Rohleder</surname>, <given-names>U.</given-names>
+</string-name>, <string-name>
+<surname>Schleenbecker</surname>, <given-names>U.</given-names>
+</string-name> et&#x000a0;al. (<year>2014</year>) <article-title>Validation of two canine STR multiplex&#x02010;assays following the ISFG recommendations for non&#x02010;human DNA analysis</article-title>. <source>Forensic Science International: Genetics</source>, <volume>8</volume>(<issue>1</issue>), <fpage>90</fpage>&#x02013;<lpage>100</lpage>.<pub-id pub-id-type="pmid">24315595</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0008"><mixed-citation publication-type="journal" id="age70005-cit-0008">
+<string-name>
+<surname>Collins</surname>, <given-names>R.A.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Cruickshank</surname>, <given-names>R.H.</given-names>
+</string-name> (<year>2013</year>) <article-title>The seven deadly sins of DNA barcoding</article-title>. <source>Molecular Ecology Resources</source>, <volume>13</volume>(<issue>6</issue>), <fpage>969</fpage>&#x02013;<lpage>975</lpage>.<pub-id pub-id-type="pmid">23280099</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0009"><mixed-citation publication-type="journal" id="age70005-cit-0009">
+<string-name>
+<surname>Cronin</surname>, <given-names>M.A.</given-names>
+</string-name>, <string-name>
+<surname>Palmisciano</surname>, <given-names>D.A.</given-names>
+</string-name>, <string-name>
+<surname>Vyse</surname>, <given-names>E.R.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Cameron</surname>, <given-names>D.G.</given-names>
+</string-name> (<year>1991</year>) <article-title>Mitochondrial DNA in wildlife forensic science: species identification of tissues</article-title>. <source>Wildlife Society Bulletin (1973&#x02013;2006)</source>, <volume>19</volume>(<issue>1</issue>), <fpage>94</fpage>&#x02013;<lpage>105</lpage>.</mixed-citation></ref><ref id="age70005-bib-0010"><mixed-citation publication-type="journal" id="age70005-cit-0010">
+<string-name>
+<surname>Dormontt</surname>, <given-names>E.E.</given-names>
+</string-name>, <string-name>
+<surname>Jardine</surname>, <given-names>D.I.</given-names>
+</string-name>, <string-name>
+<surname>van Dijk</surname>, <given-names>K.J.</given-names>
+</string-name>, <string-name>
+<surname>Dunker</surname>, <given-names>B.F.</given-names>
+</string-name>, <string-name>
+<surname>Dixon</surname>, <given-names>R.R.M.</given-names>
+</string-name>, <string-name>
+<surname>Hipkins</surname>, <given-names>V.D.</given-names>
+</string-name> et&#x000a0;al. (<year>2020</year>) <article-title>Forensic validation of a SNP and INDEL panel for individualisation of timber from bigleaf maple (<italic toggle="yes">Acer macrophyllum</italic> Pursch)</article-title>. <source>Forensic Science International: Genetics</source>, <volume>46</volume>, <elocation-id>102252</elocation-id>.<pub-id pub-id-type="pmid">32032910</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0011"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0011">
+<collab collab-type="authors">ENFSI</collab>
+. (<year>2023</year>) <article-title>Framework for the conduct of proficiency tests and collaborative exercises within ENFSI. QCC&#x02010;FWK&#x02010;004</article-title>. <ext-link xlink:href="http://enfsi.eu/documents/best-practice-manuals/" ext-link-type="uri">http://enfsi.eu/documents/best&#x02010;practice&#x02010;manuals/</ext-link>
+</mixed-citation></ref><ref id="age70005-bib-0012"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0012">
+<collab collab-type="authors">ENFSI APST</collab>
+. (<year>2015</year>) <article-title>Best Practice Manual for the Application of Molecular Methods for the Forensic Examination of Non&#x02010;Human Biological Traces</article-title>. <ext-link xlink:href="http://enfsi.eu/documents/best-practice-manuals/" ext-link-type="uri">http://enfsi.eu/documents/best&#x02010;practice&#x02010;manuals/</ext-link>
+</mixed-citation></ref><ref id="age70005-bib-0013"><mixed-citation publication-type="journal" id="age70005-cit-0013">
+<string-name>
+<surname>Ewart</surname>, <given-names>K.M.</given-names>
+</string-name>, <string-name>
+<surname>Frankham</surname>, <given-names>G.J.</given-names>
+</string-name>, <string-name>
+<surname>McEwing</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Webster</surname>, <given-names>L.M.</given-names>
+</string-name>, <string-name>
+<surname>Ciavaglia</surname>, <given-names>S.A.</given-names>
+</string-name>, <string-name>
+<surname>Linacre</surname>, <given-names>A.M.</given-names>
+</string-name> et&#x000a0;al. (<year>2018</year>) <article-title>An internationally standardized species identification test for use on suspected seized rhinoceros horn in the illegal wildlife trade</article-title>. <source>Forensic Science International: Genetics</source>, <volume>32</volume>, <fpage>33</fpage>&#x02013;<lpage>39</lpage>.<pub-id pub-id-type="pmid">29035720</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0014"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0014">
+<collab collab-type="authors">Forensic Science Regulator</collab>
+. (<year>2023</year>) <article-title>Code of Practice</article-title>. <ext-link xlink:href="https://assets.publishing.service.gov.uk/media/64da431cc8dee4000d7f1c1e/FINAL_2023.1.18_Code_of_Practice.pdf" ext-link-type="uri">https://assets.publishing.service.gov.uk/media/64da431cc8dee4000d7f1c1e/FINAL_2023.1.18_Code_of_Practice.pdf</ext-link>
+</mixed-citation></ref><ref id="age70005-bib-0015"><mixed-citation publication-type="journal" id="age70005-cit-0015">
+<string-name>
+<surname>Hamlin</surname>, <given-names>B.C.</given-names>
+</string-name>, <string-name>
+<surname>Meredith</surname>, <given-names>E.P.</given-names>
+</string-name>, <string-name>
+<surname>Rodzen</surname>, <given-names>J.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Strand</surname>, <given-names>J.M.</given-names>
+</string-name> (<year>2021</year>) <article-title>OdoPlex: an STR multiplex panel optimized and validated for forensic identification and sex determination of north American mule deer (<italic toggle="yes">Odocoileus hemionus</italic>) and white&#x02010;tailed deer (<italic toggle="yes">Odocoileus virginianus</italic>)</article-title>. <source>Forensic Science International: Animals and Environments</source>, <volume>1</volume>, <elocation-id>100026</elocation-id>.</mixed-citation></ref><ref id="age70005-bib-0016"><mixed-citation publication-type="book" id="age70005-cit-0016">
+<string-name>
+<surname>Harper</surname>, <given-names>C.K.</given-names>
+</string-name> (<year>2021</year>) <part-title>RhODIS&#x000ae; (The Rhinoceros DNA Index System): the application of simple forensic and genetic tools help conserve African rhinoceros</part-title>. In: <source>Wildlife Biodiversity Conservation: Multidisciplinary and Forensic Approaches</source>. <publisher-loc>Cham</publisher-loc>: <publisher-name>Springer International Publishing</publisher-name>, pp. <fpage>463</fpage>&#x02013;<lpage>485</lpage>.</mixed-citation></ref><ref id="age70005-bib-0017"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0017">
+<collab collab-type="authors">ILAC</collab>
+. <article-title>ILAC G19:06/2022 Modules in a Forensic Science Process</article-title>.</mixed-citation></ref><ref id="age70005-bib-0018"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0018">
+<collab collab-type="authors">International Organization for Standardization</collab>
+. (<year>2017</year>) <article-title>General requirements for the competence of testing and calibration laboratories (ISO Standard number 17025:2017)</article-title>.</mixed-citation></ref><ref id="age70005-bib-0019"><mixed-citation publication-type="journal" id="age70005-cit-0019">
+<string-name>
+<surname>Jeffreys</surname>, <given-names>A.J.</given-names>
+</string-name>, <string-name>
+<surname>Wilson</surname>, <given-names>V.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Thein</surname>, <given-names>S.L.</given-names>
+</string-name> (<year>1985</year>) <article-title>Hypervariable &#x02018;minisatellite&#x02019; regions in human DNA</article-title>. <source>Nature</source>, <volume>314</volume>(<issue>6006</issue>), <fpage>67</fpage>&#x02013;<lpage>73</lpage>.<pub-id pub-id-type="pmid">3856104</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0020"><mixed-citation publication-type="journal" id="age70005-cit-0020">
+<string-name>
+<surname>Johnson</surname>, <given-names>R.N.</given-names>
+</string-name>, <string-name>
+<surname>Wilson&#x02010;Wilde</surname>, <given-names>L.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Linacre</surname>, <given-names>A.</given-names>
+</string-name> (<year>2014</year>) <article-title>Current and future directions of DNA in wildlife forensic science</article-title>. <source>Forensic Science International: Genetics</source>, <volume>10</volume>, <fpage>1</fpage>&#x02013;<lpage>11</lpage>.<pub-id pub-id-type="pmid">24680123</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0021"><mixed-citation publication-type="journal" id="age70005-cit-0021">
+<string-name>
+<surname>Kanthaswamy</surname>, <given-names>S.</given-names>
+</string-name> (<year>2024</year>) <article-title>Wildlife forensic genetics&#x02014;biological evidence, DNA markers, analytical approaches, and challenges</article-title>. <source>Animal Genetics</source>, <volume>55</volume>(<issue>2</issue>), <fpage>177</fpage>&#x02013;<lpage>192</lpage>.<pub-id pub-id-type="pmid">38123142</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0022"><mixed-citation publication-type="journal" id="age70005-cit-0022">
+<string-name>
+<surname>Linacre</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Gusm&#x000e3;o</surname>, <given-names>L.</given-names>
+</string-name>, <string-name>
+<surname>Hecht</surname>, <given-names>W.</given-names>
+</string-name>, <string-name>
+<surname>Hellmann</surname>, <given-names>A.P.</given-names>
+</string-name>, <string-name>
+<surname>Mayr</surname>, <given-names>W.R.</given-names>
+</string-name>, <string-name>
+<surname>Parson</surname>, <given-names>W.</given-names>
+</string-name> et&#x000a0;al. (<year>2011</year>) <article-title>ISFG: recommendations regarding the use of non&#x02010;human (animal) DNA in forensic genetic investigations</article-title>. <source>Forensic Science International: Genetics</source>, <volume>5</volume>(<issue>5</issue>), <fpage>501</fpage>&#x02013;<lpage>505</lpage>.<pub-id pub-id-type="pmid">21106449</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0023"><mixed-citation publication-type="journal" id="age70005-cit-0023">
+<string-name>
+<surname>Linacre</surname>, <given-names>A.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Tobe</surname>, <given-names>S.S.</given-names>
+</string-name> (<year>2011</year>) <article-title>An overview to the investigative approach to species testing in wildlife forensic science</article-title>. <source>Investigative Genetics</source>, <volume>2</volume>(<issue>1</issue>), <fpage>1</fpage>&#x02013;<lpage>9</lpage>.<pub-id pub-id-type="pmid">21208434</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0024"><mixed-citation publication-type="journal" id="age70005-cit-0024">
+<string-name>
+<surname>Martinsohn</surname>, <given-names>J.T.</given-names>
+</string-name>, <string-name>
+<surname>Raymond</surname>, <given-names>P.</given-names>
+</string-name>, <string-name>
+<surname>Knott</surname>, <given-names>T.</given-names>
+</string-name>, <string-name>
+<surname>Glover</surname>, <given-names>K.A.</given-names>
+</string-name>, <string-name>
+<surname>Nielsen</surname>, <given-names>E.E.</given-names>
+</string-name>, <string-name>
+<surname>Eriksen</surname>, <given-names>L.B.</given-names>
+</string-name> et&#x000a0;al. (<year>2019</year>) <article-title>DNA&#x02010;analysis to monitor fisheries and aquaculture: too costly?</article-title>
+<source>Fish and Fisheries</source>, <volume>20</volume>(<issue>2</issue>), <fpage>391</fpage>&#x02013;<lpage>401</lpage>.</mixed-citation></ref><ref id="age70005-bib-0025"><mixed-citation publication-type="journal" id="age70005-cit-0025">
+<string-name>
+<surname>Meiklejohn</surname>, <given-names>K.A.</given-names>
+</string-name>, <string-name>
+<surname>Burnham&#x02010;Curtis</surname>, <given-names>M.K.</given-names>
+</string-name>, <string-name>
+<surname>Straughan</surname>, <given-names>D.J.</given-names>
+</string-name>, <string-name>
+<surname>Giles</surname>, <given-names>J.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Moore</surname>, <given-names>M.K.</given-names>
+</string-name> (<year>2021</year>) <article-title>Current methods, future directions and considerations of DNA&#x02010;based taxonomic identification in wildlife forensics</article-title>. <source>Forensic Sci Int Anim Environ</source>, <volume>1</volume>, <elocation-id>100030</elocation-id>.</mixed-citation></ref><ref id="age70005-bib-0026"><mixed-citation publication-type="journal" id="age70005-cit-0026">
+<string-name>
+<surname>Moore</surname>, <given-names>M.K.</given-names>
+</string-name>, <string-name>
+<surname>Baker</surname>, <given-names>B.W.</given-names>
+</string-name>, <string-name>
+<surname>Bauman</surname>, <given-names>T.L.</given-names>
+</string-name>, <string-name>
+<surname>Burnham&#x02010;Curtis</surname>, <given-names>M.K.</given-names>
+</string-name>, <string-name>
+<surname>Espinoza</surname>, <given-names>E.O.</given-names>
+</string-name>, <string-name>
+<surname>Ferrell</surname>, <given-names>C.S.</given-names>
+</string-name> et&#x000a0;al. (<year>2021</year>) <article-title>The Society for Wildlife Forensic Science standards and guidelines</article-title>. <source>Forensic Science International: Animals and Environment</source>, <volume>1</volume>, <elocation-id>100015</elocation-id>.</mixed-citation></ref><ref id="age70005-bib-0027"><mixed-citation publication-type="journal" id="age70005-cit-0027">
+<string-name>
+<surname>Moore</surname>, <given-names>M.K.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Frazier</surname>, <given-names>K.</given-names>
+</string-name> (<year>2019</year>) <article-title>Humans are animals, too: critical commonalities and differences between human and wildlife forensic genetics</article-title>. <source>Journal of Forensic Sciences</source>, <volume>64</volume>(<issue>6</issue>), <fpage>1603</fpage>&#x02013;<lpage>1621</lpage>.<pub-id pub-id-type="pmid">31150128</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0028"><mixed-citation publication-type="journal" id="age70005-cit-0028">
+<string-name>
+<surname>Morf</surname>, <given-names>N.V.</given-names>
+</string-name>, <string-name>
+<surname>Kopps</surname>, <given-names>A.M.</given-names>
+</string-name>, <string-name>
+<surname>Nater</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Lendvay</surname>, <given-names>B.</given-names>
+</string-name>, <string-name>
+<surname>Vasiljevic</surname>, <given-names>N.</given-names>
+</string-name>, <string-name>
+<surname>Webster</surname>, <given-names>L.M.</given-names>
+</string-name> et&#x000a0;al. (<year>2021</year>) <article-title>STRoe deer: a validated forensic STR profiling system for the European roe deer (<italic toggle="yes">Capreolus capreolus</italic>)</article-title>. <source>Forensic Science International: Animals and Environments</source>, <volume>1</volume>, <elocation-id>100023</elocation-id>.</mixed-citation></ref><ref id="age70005-bib-0029"><mixed-citation publication-type="book" id="age70005-cit-0029">
+<collab collab-type="authors">NRC &#x02013; National Research Council &#x02013; Committee on Identifying the Needs of the Forensic Sciences Community</collab>
+. (<year>2009</year>) <source>Strengthening forensic science in the United States: a path forward</source>. <publisher-loc>Washington, DC, USA</publisher-loc>: <publisher-name>National Academies Press</publisher-name>.</mixed-citation></ref><ref id="age70005-bib-0030"><mixed-citation publication-type="journal" id="age70005-cit-0030">
+<string-name>
+<surname>Ogden</surname>, <given-names>R.</given-names>
+</string-name> (<year>2011</year>) <article-title>Unlocking the potential of genomic technologies for wildlife forensics</article-title>. <source>Molecular Ecology Resources</source>, <volume>11</volume>, <fpage>109</fpage>&#x02013;<lpage>116</lpage>.<pub-id pub-id-type="pmid">21429167</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0031"><mixed-citation publication-type="journal" id="age70005-cit-0031">
+<string-name>
+<surname>Ogden</surname>, <given-names>R.</given-names>
+</string-name>, <string-name>
+<surname>Dawnay</surname>, <given-names>N.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>McEwing</surname>, <given-names>R.</given-names>
+</string-name> (<year>2009</year>) <article-title>Wildlife DNA forensics&#x02014;bridging the gap between conservation genetics and law enforcement</article-title>. <source>Endangered Species Research</source>, <volume>9</volume>(<issue>3</issue>), <fpage>179</fpage>&#x02013;<lpage>195</lpage>.</mixed-citation></ref><ref id="age70005-bib-0032"><mixed-citation publication-type="journal" id="age70005-cit-0032">
+<string-name>
+<surname>Ogden</surname>, <given-names>R.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Linacre</surname>, <given-names>A.</given-names>
+</string-name> (<year>2015</year>) <article-title>Wildlife forensic science: a review of genetic geographic origin assignment</article-title>. <source>Forensic Science International: Genetics</source>, <volume>18</volume>, <fpage>152</fpage>&#x02013;<lpage>159</lpage>.<pub-id pub-id-type="pmid">25795277</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0033"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0033">
+<collab collab-type="authors">OSAC</collab>
+. <article-title>Wildlife Forensic Biology Subcommittee (OSAC)</article-title>. <ext-link xlink:href="https://www.nist.gov/osac/subcommittees/wildlife-forensic-biology" ext-link-type="uri">https://www.nist.gov/osac/subcommittees/wildlife&#x02010;forensic&#x02010;biology</ext-link>. Accessed January 8, 2025.</mixed-citation></ref><ref id="age70005-bib-0034"><mixed-citation publication-type="journal" id="age70005-cit-0034">
+<string-name>
+<surname>Patel</surname>, <given-names>K.K.</given-names>
+</string-name>, <string-name>
+<surname>Scheible</surname>, <given-names>M.K.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Meiklejohn</surname>, <given-names>K.A.</given-names>
+</string-name> (<year>2023</year>) <article-title>Interlaboratory study to assess the practical utility of OSAC proposed standard 2021&#x02010;S&#x02010;0006: standard for the use of GenBank for taxonomic assignment of wildlife</article-title>. <source>Forensic Science International: Animals and Environments</source>, <volume>4</volume>, <fpage>100067</fpage>.</mixed-citation></ref><ref id="age70005-bib-0035"><mixed-citation publication-type="book" id="age70005-cit-0035">
+<string-name>
+<surname>Robertson</surname>, <given-names>J.M.</given-names>
+</string-name>, <string-name>
+<surname>Damaso</surname>, <given-names>N.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Meiklejohn</surname>, <given-names>K.A.</given-names>
+</string-name> (<year>2020</year>) <part-title>DNA&#x02010;based analysis of plant material in forensic investigations</part-title>. In: <source>Handbook of DNA Profiling</source>. <publisher-loc>Singapore</publisher-loc>: <publisher-name>Springer</publisher-name>, pp. <fpage>1</fpage>&#x02013;<lpage>32</lpage>. <ext-link xlink:href="https://www.nist.gov/osac/subcommittees/wildlife-forensic-biology" ext-link-type="uri">https://www.nist.gov/osac/subcommittees/wildlife&#x02010;forensic&#x02010;biology</ext-link>
+</mixed-citation></ref><ref id="age70005-bib-0036"><mixed-citation publication-type="miscellaneous" id="age70005-cit-0036">
+<collab collab-type="authors">Scientific Working Group for Wildlife Forensic Science (SWGWILD)</collab>
+. (<year>2012</year>) <article-title>Standards and guidelines (version 2.0&#x02010;accepted by SWGWILD December 19, 2012)</article-title>.</mixed-citation></ref><ref id="age70005-bib-0037"><mixed-citation publication-type="journal" id="age70005-cit-0037">
+<string-name>
+<surname>Shorrock</surname>, <given-names>G.</given-names>
+</string-name> (<year>1998</year>) <article-title>The success of DNA profiling in wildlife law enforcement</article-title>. <source>International Journal of Biosciences and the Law</source>, <volume>1</volume>, <fpage>327</fpage>&#x02013;<lpage>342</lpage>.</mixed-citation></ref><ref id="age70005-bib-0038"><mixed-citation publication-type="journal" id="age70005-cit-0038">
+<string-name>
+<surname>Vasiljevic</surname>, <given-names>N.</given-names>
+</string-name>, <string-name>
+<surname>Lim</surname>, <given-names>M.</given-names>
+</string-name>, <string-name>
+<surname>Humble</surname>, <given-names>E.</given-names>
+</string-name>, <string-name>
+<surname>Seah</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Kratzer</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Morf</surname>, <given-names>N.V.</given-names>
+</string-name> et&#x000a0;al. (<year>2021</year>) <article-title>Developmental validation of Oxford nanopore technology MinION sequence data and the NGSpeciesID bioinformatic pipeline for forensic genetic species identification</article-title>. <source>Forensic Science International: Genetics</source>, <volume>53</volume>, <fpage>102493</fpage>.<pub-id pub-id-type="pmid">33770699</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0039"><mixed-citation publication-type="journal" id="age70005-cit-0039">
+<string-name>
+<surname>Webster</surname>, <given-names>L.M.</given-names>
+</string-name>, <string-name>
+<surname>Prigge</surname>, <given-names>T.L.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Frankham</surname>, <given-names>G.J.</given-names>
+</string-name> (<year>2024</year>) <article-title>A guide for the validation of DNA based species identification in forensic casework</article-title>. <source>Forensic Science International: Animals and Environments</source>, <volume>5</volume>, <elocation-id>100080</elocation-id>.</mixed-citation></ref><ref id="age70005-bib-0040"><mixed-citation publication-type="journal" id="age70005-cit-0040">
+<string-name>
+<surname>Wesselink</surname>, <given-names>M.</given-names>
+</string-name>, <string-name>
+<surname>Dragutinovic</surname>, <given-names>A.</given-names>
+</string-name>, <string-name>
+<surname>Noordhoek</surname>, <given-names>J.W.</given-names>
+</string-name>, <string-name>
+<surname>Bergwerff</surname>, <given-names>L.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>Kuiper</surname>, <given-names>I.</given-names>
+</string-name> (<year>2018</year>) <article-title>DNA typing of birch: development of a forensic STR system for <italic toggle="yes">Betula pendula</italic> and <italic toggle="yes">Betula pubescens</italic>
+</article-title>. <source>Forensic Science International: Genetics</source>, <volume>35</volume>, <fpage>70</fpage>&#x02013;<lpage>81</lpage>.<pub-id pub-id-type="pmid">29677577</pub-id>
+</mixed-citation></ref><ref id="age70005-bib-0041"><mixed-citation publication-type="journal" id="age70005-cit-0041">
+<string-name>
+<surname>Wyman</surname>, <given-names>A.R.</given-names>
+</string-name> &#x00026; <string-name>
+<surname>White</surname>, <given-names>R.</given-names>
+</string-name> (<year>1980</year>) <article-title>A highly polymorphic locus in human DNA</article-title>. <source>Proceedings of the National Academy of Sciences</source>, <volume>77</volume>(<issue>11</issue>), <fpage>6754</fpage>&#x02013;<lpage>6758</lpage>.</mixed-citation></ref></ref-list></back></article>

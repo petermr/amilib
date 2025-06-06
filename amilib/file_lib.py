@@ -216,14 +216,19 @@ class FileLib:
         return None if file is None else PurePath(file).parent
 
     @classmethod
-    def read_pydictionary(cls, file):
-        """read a JSON path into a python dictionary
-        :param file: JSON file to read
+    def read_pydictionary_using_ast(cls, file: Path) -> dict:
+        """read a dumped dictionary into a python dictionary
+        when a dict is serialised it is not JSON and needs this
+        to read it.
+
+        :param file: dictionary file to read
         :return: JSON dictionary (created by ast.literal_eval)
         """
         with open(file, "r") as f:
-            pydict = ast.literal_eval(f.read())
+            read = f.read()
+            pydict = ast.literal_eval(read)
         return pydict
+
 
     @classmethod
     def punct2underscore(cls, text):

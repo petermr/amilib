@@ -986,7 +986,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         assert len(phrases) == 13
         para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras, phrases, markup=path)
         html_elem = paras[0].xpath("/html")[0]
-        path1 = Path(Resources.TEMP_DIR, "ipcc", "Chapter03", "markerd_up.html", debug=True)
+        path1 = Path(Resources.TEMP_DIR, "ipcc", "Chapter03", "marked_up.html")
         HtmlLib.write_html_file(html_elem, path1, debug=True)
         # pprint.pp(para_phrase_dict)
 

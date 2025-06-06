@@ -150,12 +150,13 @@ outfile: {self.outfile}
             container.make_descendants()
 
     def make_special(self, kwargs):
-        """Horrible - us dependency injectiom
+        """manges repository specific stuff (e.g. for EUPMC)"""
+        """Horrible - use dependency injectiom
         """
         if "eupmc" in kwargs:
             self.eupmc_results = kwargs["eupmc"]
 
-    def get_datatables(self):
+    def get_datatables_from_eupmc_results(self):
         """
         deprecated
         create a JQuery datatables from eumpc_reults.json
@@ -200,11 +201,21 @@ outfile: {self.outfile}
             outfile_h = Path(outdir, DATATABLES_HTML)
         # wanted_keys = [PMCID, DOI, TITLE, AUTHOR_STRING, JOURNAL_INFO_TITLE, PUB_YEAR, ABS_TEXT]
         config_ini = Path(indir, SAVED_CONFIG_INI)
-        infile = Path(indir, EUPMC_RESULTS_JSON)
         outdir.mkdir(parents=True, exist_ok=True)
         datatables = True
-        AmiCorpus.read_json_create_write_html_table(
-            infile, outfile_h, wanted_keys=None, datatables=datatables, table_id=None, config_ini=config_ini)
+        epmc_infile = Path(indir, EUPMC_RESULTS_JSON)
+        openalex_infile = Path(indir, OpenAlex.RESULTS_JSON)
+        if epmc_infile.exists():
+
+            AmiCorpus.read_json_create_write_html_table(
+                epmc_infile, outfile_h, wanted_keys=None, datatables=datatables,
+                table_id=None, config_ini=config_ini)
+            return
+        infile = Path(indir, EUPMC_RESULTS_JSON)
+        if infile.exists():
+            AmiCorpus.read_json_create_write_html_table(
+                infile, outfile_h, wanted_keys=None, datatables=datatables, table_id=None, config_ini=config_ini)
+            return
 
     @classmethod
     def read_json_create_write_html_table(
@@ -930,5 +941,434 @@ if __name__ == "__main__":
 # allowing you to manage the hierarchical structure effectively.
 
 
+class OpenAlex:
+    """
+    Trimmed JSON example
+    {
+	"total_json_output": {
+		"10.1126_science.287.5452.443": {
+			"id": "https://openalex.org/W2150891147",
+			"doi": "https://doi.org/10.1126/science.287.5452.443",
+			"title": "Emerging Infectious Diseases of Wildlife-- Threats to Biodiversity and Human Health",
+			"display_name": "Emerging Infectious Diseases of Wildlife-- Threats to Biodiversity and Human Health",
+			"relevance_score": 1916.973,
+			"publication_year": 2000,
+			"publication_date": "2000-01-21",
+			"ids": {
+				"openalex": "https://openalex.org/W2150891147",
+				"doi": "https://doi.org/10.1126/science.287.5452.443",
+				"mag": "2150891147",
+				"pmid": "https://pubmed.ncbi.nlm.nih.gov/10642539"
+			},
+			"language": "en",
+			"primary_location": {
+				"is_oa": false,
+				"landing_page_url": "https://doi.org/10.1126/science.287.5452.443",
+				"pdf_url": null,
+				"source": {
+					"id": "https://openalex.org/S3880285",
+					"display_name": "Science",
+					"issn_l": "0036-8075",
+					"issn": [
+						"0036-8075",
+						"1095-9203"
+					],
+					"is_oa": false,
+					"is_in_doaj": false,
+					"is_indexed_in_scopus": true,
+					"is_core": true,
+					"host_organization": "https://openalex.org/P4310315823",
+					"host_organization_name": "American Association for the Advancement of Science",
+					"host_organization_lineage": [
+						"https://openalex.org/P4310315823"
+					],
+					"host_organization_lineage_names": [
+						"American Association for the Advancement of Science"
+					],
+					"type": "journal"
+				},
+				"license": null,
+				"license_id": null,
+				"version": null,
+				"is_accepted": false,
+				"is_published": false
+			},
+			"type": "review",
+			"type_crossref": "journal-article",
+			"indexed_in": [
+				"crossref",
+				"pubmed"
+			],
+			"open_access": {
+				"is_oa": false,
+				"oa_status": "closed",
+				"oa_url": null,
+				"any_repository_has_fulltext": false
+			},
+			"authorships": [
+				{
+					"author_position": "first",
+					"author": {
+						"id": "https://openalex.org/A5050075935",
+						"display_name": "Peter Daszak",
+						"orcid": "https://orcid.org/0000-0002-2046-5695"
+					},
+					"institutions": [
+						{
+							"id": "https://openalex.org/I165733156",
+							"display_name": "University of Georgia",
+							"ror": "https://ror.org/00te3t702",
+							"country_code": "US",
+							"type": "funder",
+							"lineage": [
+								"https://openalex.org/I165733156"
+							]
+						}
+					],
+					"countries": [
+						"US"
+					],
+					"is_corresponding": true,
+					"raw_author_name": "Peter Daszak",
+					"raw_affiliation_strings": [
+						"Infectious Disease and Pathology Activity, Division of Viral and Rickettsial Diseases, National Center for Infectious Diseases, Centers for Disease Control and Prevention, Atlanta, GA 30333, USA.",
+						"Institute of Ecology, University of Georgia, Athens, GA 30602, USA."
+					],
+					"affiliations": [
+						{
+							"raw_affiliation_string": "Institute of Ecology, University of Georgia, Athens, GA 30602, USA.",
+							"institution_ids": [
+								"https://openalex.org/I165733156"
+							]
+						},
+						{
+							"raw_affiliation_string": "Infectious Disease and Pathology Activity, Division of Viral and Rickettsial Diseases, National Center for Infectious Diseases, Centers for Disease Control and Prevention, Atlanta, GA 30333, USA.",
+							"institution_ids": [
+								"https://openalex.org/I4210160401",
+								"https://openalex.org/I1289490764"
+							]
+						}
+					]
+				},
+				{
+					"author_position": "middle",
+					"author": {
+						"id": "https://openalex.org/A5027770167",
+						"display_name": "Andrew A. Cunningham",
+						"orcid": "https://orcid.org/0000-0002-3543-6504"
+					},
+					"institutions": [
+						{
+							"id": "https://openalex.org/I1321067030",
+							"display_name": "Zoological Society of London",
+							"ror": "https://ror.org/03px4ez74",
+							"country_code": "GB",
+							"type": "nonprofit",
+							"lineage": [
+								"https://openalex.org/I1321067030"
+							]
+						}
+					],
+					"countries": [
+						"GB"
+					],
+					"is_corresponding": false,
+					"raw_author_name": "Andrew A. Cunningham",
+					"raw_affiliation_strings": [
+						"Institute of Zoology, Zoological Society of London, Regent's Park, London NW1 4RY, UK."
+					],
+					"affiliations": [
+						{
+							"raw_affiliation_string": "Institute of Zoology, Zoological Society of London, Regent's Park, London NW1 4RY, UK.",
+							"institution_ids": [
+								"https://openalex.org/I1321067030"
+							]
+						}
+					]
+				},
+				{
+					"author_position": "last",
+					"author": {
+						"id": "https://openalex.org/A5110165479",
+						"display_name": "Alex D. Hyatt",
+						"orcid": null
+					},
+					"institutions": [
+						{
+							"id": "https://openalex.org/I1292875679",
+							"display_name": "Commonwealth Scientific and Industrial Research Organisation",
+							"ror": "https://ror.org/03qn8fb07",
+							"country_code": "AU",
+							"type": "government",
+							"lineage": [
+								"https://openalex.org/I1292875679",
+								"https://openalex.org/I2801453606",
+								"https://openalex.org/I4387156119"
+							]
+						},
+						{
+							"id": "https://openalex.org/I1338668087",
+							"display_name": "Australian Centre for Disease Preparedness",
+							"ror": "https://ror.org/02aseym49",
+							"country_code": "AU",
+							"type": "facility",
+							"lineage": [
+								"https://openalex.org/I2801453606",
+								"https://openalex.org/I4387156119"
+							]
+						}
+					],
+					"countries": [
+						"AU"
+					],
+					"is_corresponding": false,
+					"raw_author_name": "Alex D. Hyatt",
+					"raw_affiliation_strings": [
+						"Australian Animal Health Laboratory, CSIRO, Private Bag 24, Geelong, Victoria 3220, Australia."
+					],
+					"affiliations": [
+						{
+							"raw_affiliation_string": "Australian Animal Health Laboratory, CSIRO, Private Bag 24, Geelong, Victoria 3220, Australia.",
+							"institution_ids": [
+								"https://openalex.org/I1292875679",
+								"https://openalex.org/I1338668087"
+							]
+						}
+					]
+				}
+			],
+			"institution_assertions": [
 
+			],
+			"countries_distinct_count": 3,
+			"institutions_distinct_count": 6,
+			"corresponding_author_ids": [
+				"https://openalex.org/A5050075935"
+			],
+			"corresponding_institution_ids": [
+				"https://openalex.org/I165733156",
+				"https://openalex.org/I4210160401",
+				"https://openalex.org/I1289490764"
+			],
+			"apc_list": null,
+			"apc_paid": null,
+			"fwci": 20.016,
+			"has_fulltext": true,
+			"fulltext_origin": "ngrams",
+			"cited_by_count": 4120,
+			"citation_normalized_percentile": {
+				"value": 0.998267,
+				"is_in_top_1_percent": true,
+				"is_in_top_10_percent": true
+			},
+			"cited_by_percentile_year": {
+				"min": 99,
+				"max": 100
+			},
+			"biblio": {
+				"volume": "287",
+				"issue": "5452",
+				"first_page": "443",
+				"last_page": "449"
+			},
+			"is_retracted": false,
+			"is_paratext": false,
+			"primary_topic": {
+				"id": "https://openalex.org/T12492",
+				"display_name": "Zoonotic diseases and public health",
+				"score": 0.9996,
+				"subfield": {
+					"id": "https://openalex.org/subfields/2739",
+					"display_name": "Public Health, Environmental and Occupational Health"
+				},
+				"field": {
+					"id": "https://openalex.org/fields/27",
+					"display_name": "Medicine"
+				},
+				"domain": {
+					"id": "https://openalex.org/domains/4",
+					"display_name": "Health Sciences"
+				}
+			},
+			"topics": [
+				{
+					"id": "https://openalex.org/T12492",
+					"display_name": "Zoonotic diseases and public health",
+					"score": 0.9996,
+					"subfield": {
+						"id": "https://openalex.org/subfields/2739",
+						"display_name": "Public Health, Environmental and Occupational Health"
+					},
+					"field": {
+						"id": "https://openalex.org/fields/27",
+						"display_name": "Medicine"
+					},
+					"domain": {
+						"id": "https://openalex.org/domains/4",
+						"display_name": "Health Sciences"
+					}
+				}
+			],
+			"keywords": [
+				{
+					"id": "https://openalex.org/keywords/one-health",
+					"display_name": "One Health",
+					"score": 0.4474327
+				}
+			],
+			"concepts": [
+				{
+					"id": "https://openalex.org/C29376679",
+					"wikidata": "https://www.wikidata.org/wiki/Q241741",
+					"display_name": "Wildlife",
+					"level": 2,
+					"score": 0.9107766
+				}
+			],
+			"mesh": [
+				{
+					"descriptor_ui": "D000835",
+					"descriptor_name": "Animals, Wild",
+					"qualifier_ui": "",
+					"qualifier_name": null,
+					"is_major_topic": true
+				},
+			],
+			"locations_count": 2,
+			"locations": [
+				{
+					"is_oa": false,
+					"landing_page_url": "https://doi.org/10.1126/science.287.5452.443",
+					"pdf_url": null,
+					"source": {
+						"id": "https://openalex.org/S3880285",
+						"display_name": "Science",
+						"issn_l": "0036-8075",
+						"issn": [
+							"0036-8075",
+							"1095-9203"
+						],
+						"is_oa": false,
+						"is_in_doaj": false,
+						"is_indexed_in_scopus": true,
+						"is_core": true,
+						"host_organization": "https://openalex.org/P4310315823",
+						"host_organization_name": "American Association for the Advancement of Science",
+						"host_organization_lineage": [
+							"https://openalex.org/P4310315823"
+						],
+						"host_organization_lineage_names": [
+							"American Association for the Advancement of Science"
+						],
+						"type": "journal"
+					},
+					"license": null,
+					"license_id": null,
+					"version": null,
+					"is_accepted": false,
+					"is_published": false
+				},
+				{
+					"is_oa": false,
+					"landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/10642539",
+					"pdf_url": null,
+					"source": {
+						"id": "https://openalex.org/S4306525036",
+						"display_name": "PubMed",
+						"issn_l": null,
+						"issn": null,
+						"is_oa": false,
+						"is_in_doaj": false,
+						"is_indexed_in_scopus": false,
+						"is_core": false,
+						"host_organization": "https://openalex.org/I1299303238",
+						"host_organization_name": "National Institutes of Health",
+						"host_organization_lineage": [
+							"https://openalex.org/I1299303238"
+						],
+						"host_organization_lineage_names": [
+							"National Institutes of Health"
+						],
+						"type": "repository"
+					},
+					"license": null,
+					"license_id": null,
+					"version": null,
+					"is_accepted": false,
+					"is_published": false
+				}
+			],
+			"best_oa_location": null,
+			"sustainable_development_goals": [
+				{
+					"score": 0.72,
+					"display_name": "Life on land",
+					"id": "https://metadata.un.org/sdg/15"
+				}
+			],
+			"grants": [
+
+			],
+			"datasets": [
+
+			],
+			"versions": [
+
+			],
+			"referenced_works_count": 124,
+			"referenced_works": [
+				"https://openalex.org/W1531076819",
+				"https://openalex.org/W1557724928",
+				"https://openalex.org/W74730613"
+			],
+			"related_works": [
+				"https://openalex.org/W634588095",
+				"https://openalex.org/W4319429997",
+				"https://openalex.org/W2605546711"
+			],
+			"abstract_inverted_index": {
+				"Emerging": [
+					0
+				],
+
+				"biodiversity.": [
+					93
+				]
+			},
+			"abstract_inverted_index_v3": null,
+			"cited_by_api_url": "https://api.openalex.org/works?filter=cites:W2150891147",
+			"counts_by_year": [
+				{
+					"year": 2025,
+					"cited_by_count": 45
+				},
+				{
+					"year": 2024,
+					"cited_by_count": 159
+				},
+				{
+					"year": 2012,
+					"cited_by_count": 212
+				}
+			],
+			"updated_date": "2025-05-27T02:52:19.182644",
+			"created_date": "2016-06-24",
+			"downloaded": false,
+			"pdfdownloaded": false,
+			"jsondownloaded": false,
+			"csvmade": false,
+			"htmlmade": false
+		},
+
+	"total_hits": 5,
+	"cursor_mark": "IlsyNzMuMzMxNjcsIDEzMDQyOTQ0MDAwMDAsICdodHRwczovL29wZW5hbGV4Lm9yZy9XMjE0MjIxMTQxMiddIg=="
+}
+    """
+    # json_dict = AmiJson.read_nested_dicts()
+    def __init__(self):
+        pass
+
+    @classmethod
+    def read_json_create_write_html_table(cls, infile, outfile, wanted_keys):
+        logger.warning("read_json_create_write_html_table not yet written")
 

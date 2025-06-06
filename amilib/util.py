@@ -144,6 +144,11 @@ class Util:
 
     @classmethod
     def read_pydict_from_json(cls, file):
+        """
+        read json file into python dictionary
+        :param file: to read
+        :return: Python dict
+        """
         with open(file, "r") as f:
             contents = f.read()
             dictionary = ast.literal_eval(contents)
