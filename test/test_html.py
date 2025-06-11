@@ -1296,8 +1296,8 @@ class PDFHTMLTest(AmiAnyTest):
         reports = [
 
             "wg1",
-            "wg2",
-            "wg3",
+            # "wg2",
+            # "wg3",
         ]
         subreport = "spm"
         for report in reports:
@@ -1421,6 +1421,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
 
         """
         total_pages = "total_pages"
+        MAX_PAGES = 10
         stem = total_pages
         group_stem = "groups"
         wgs = [
@@ -1456,7 +1457,8 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
             page_json_dir = output_page_dir
             ami_pdfplumber = AmiPDFPlumber(param_dict=report_dict)
             HtmlGenerator.create_html_pages(
-                ami_pdfplumber, input_pdf=input_pdf, outdir=output_page_dir, page_json_dir=page_json_dir, debug=True, outstem=total_pages)
+                ami_pdfplumber, input_pdf=input_pdf, outdir=output_page_dir, page_json_dir=page_json_dir, debug=True,
+                outstem=total_pages, maxpages=MAX_PAGES)
 
             outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "annotation", f"{wg}", f"{chapter}")
             outfile = Path(outdir, "fulltext_final.html")

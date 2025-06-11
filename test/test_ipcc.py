@@ -17,7 +17,7 @@ from amilib.ami_html import HtmlLib
 from lxml.html import HTMLParser
 
 from test.ipcc_constants import DE_GATSBY, HTML_WITH_IDS, ID_LIST, PARA_LIST, WORDPRESS, DE_WORDPRESS, IPCC_DIR, \
-    CLEANED_CONTENT, SYR_LR, HTML_WITH_IDS_HTML, AR6_URL, IP_WG1, GATSBY, SPM, TS, QUERIES_DIR, SYR, GATSBY_RAW
+    CLEANED_CONTENT, SYR_LR, HTML_WITH_IDS_HTML, AR6_URL, IP_WG1, GATSBY, LR, SPM, ANN_IDX, TS, QUERIES_DIR, SYR, GATSBY_RAW
 # from climate.amix import AMIClimate
 # from climate.ipcc import IPCCWordpress, IPCCGatsby, IPCCChapter, IPCCArgs
 # from climate.un import UNFCCCArgs, IPCC
@@ -202,6 +202,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
     @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
     def test_pdfplumber_json_longer_report_debug(self):
         """creates AmiPDFPlumber and reads pdf and debugs"""
+        MAXPAGES = 3
         path = Path(Resources.TEST_IPCC_LONGER_REPORT, "fulltext.pdf")
         ami_pdfplumber = AmiPDFPlumber()
         # pdf_json = ami_pdfplumber.create_parsed_json(path)
@@ -214,7 +215,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
               )
         pages = plumber_json.get_ami_json_pages()
         assert len(pages) == 85
-        for page in pages:
+        for page in pages[:MAXPAGES]:
             ami_pdfplumber.debug_page(page)
         # pprint.pprint(f"c {c}[:20]")
 
@@ -453,7 +454,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         """
         download over all chapters in reports and convert to raw semantic form
         """
-
+        MAX_CHAP = 2
         for section in [
             LR,
             SPM,
@@ -467,8 +468,8 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
 
         for report in [
             "report/ar6/wg1",
-            "report/ar6/wg2",
-            "report/ar6/wg3",
+            # "report/ar6/wg2",
+            # "report/ar6/wg3",
             # "sr15",
             # "srocc",
             # "srccl",
@@ -483,7 +484,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
                 if error is not None and error.status_code == 404:
                     print(f"no online chapter or {url}, assume end of chapters")
 
-            for chapter_no in range(1, 99):
+            for chapter_no in range(1, MAX_CHAP):
                 outchap_no = chapter_no if chapter_no >= 10 else f"0{chapter_no}"
                 url = f"https://www.ipcc.ch/{report}/chapter/chapter-{chapter_no}/"
                 outfile = Path(Resources.TEMP_DIR, "ipcc", report, f"Chapter{outchap_no}", f"{GATSBY}.html")

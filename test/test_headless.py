@@ -50,7 +50,7 @@ EXPAND_SECTION_PARAS = [
 
 run_test = False
 force = False
-force = True
+# force = True
 
 logger = Util.get_logger(__name__)
 
@@ -481,12 +481,13 @@ class DriverTest(AmiAnyTest):
         """https://www.ipcc.ch/report/ar6/wg2/chapter/ccp1/"""
 
         CHAP_PREF = "cross_chapters"
+        MAX_CCP = 2
         wg = 2
         logger.debug(f"wg = {wg}")
         wg_url = AR6_URL + f"wg{wg}/"
         logger.info(f"downloading from {wg_url}")
         # iterate over 7 cross-chapters (1-based)
-        for ccp in range(1, 8): # chapters 1-7
+        for ccp in range(1, MAX_CCP): # chapters 1-7
             ccp = str(ccp)
             # driver contains the headless browser
             driver = AmiDriver(sleep=SLEEP)

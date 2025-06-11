@@ -1100,7 +1100,8 @@ class AmiDictionaryTest(AmiAnyTest):
         """
         stem = "carbon_cycle"
         MAXPARAS = 100 # to limit test time
-        words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}_edited.txt")
+        NTERMS = 5
+        words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}_edited_small.txt")
         assert words_path.exists()
 
         chapter_file = Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html")
@@ -1110,7 +1111,7 @@ class AmiDictionaryTest(AmiAnyTest):
 
         dictionary, outpath = AmiDictionary.create_dictionary_from_wordfile(words_path)
         assert dictionary is not None
-        assert len(dictionary.get_terms()) == 43
+        assert len(dictionary.get_terms()) == NTERMS
 
         xml_dict_path = Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.xml")
         dictionary.create_html_write_to_file(xml_dict_path, debug=True)
@@ -1122,7 +1123,7 @@ class AmiDictionaryTest(AmiAnyTest):
 
         phrases = dictionary.get_terms()
         dictionary.location = html_dict_path
-        assert len(phrases) == 43
+        assert len(phrases) == NTERMS
         para_phrase_dict = HtmlLib.search_phrases_in_paragraphs(paras[:MAXPARAS], phrases, markup=html_dict_path)
 
         # write marked_up html

@@ -602,7 +602,10 @@ class PDFTest(AmiAnyTest):
     # @unittest.skipUnless(VERYLONG, "why is this so long?")
     @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally; why is this so long?")
 
-    def test_pdf_html_wg2_format(self):
+    def test_pdf_html_wg2_format_VERYLONG(self):
+        """
+        why is this so long?
+        """
 
         chapter_dict = {"wg2_03": {'pages': '14'}}
         PDFArgs.create_pdf_args_for_chapter(

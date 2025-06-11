@@ -121,7 +121,7 @@ class HtmlGenerator:
     @classmethod
     def create_html_pages(cls, ami_pdfplumber, input_pdf=None, outdir=None, pages=None, debug=False,
                           outstem="total_pages", svg_dir=None, max_edges=10000, max_lines=100,
-                          tidy_prims=True, page_json_dir=None):
+                          tidy_prims=True, page_json_dir=None, maxpages=9999):
         """
         :param tidy_primitives: convert thin rects to lines, and other layout stuff
         """
@@ -143,7 +143,7 @@ class HtmlGenerator:
         post_parse = HtmlGenerator.pmr_time()
         logger.debug(f"PARSE {post_parse - pre_parse}")
 
-        for i, ami_json_page in enumerate(ami_json_pages):
+        for i, ami_json_page in enumerate(ami_json_pages[:maxpages]):
             page_start_time = HtmlGenerator.pmr_time()
             page_no = i + 1
             if debug:

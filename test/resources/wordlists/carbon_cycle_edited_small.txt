@@ -1,0 +1,5 @@
+anthropogenic
+tropospheric
+permafrost
+centennial
+aerosols

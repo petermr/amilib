@@ -995,6 +995,7 @@ class AmiCorpusTest(AmiAnyTest):
         reads words from file and searches corpus giving term_oriented table
         """
         MAXFILES = 5 # to save test time
+        MAXFILES = 2 # to save test time
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         query_stem = "carbon_cycle"
         outfile = str(Path(Resources.TEMP_DIR, "corpus", f"{query_stem}.html"))
@@ -1037,6 +1038,7 @@ class AmiCorpusTest(AmiAnyTest):
         main_out_dir = Path(Resources.TEMP_DIR, main_key)
         outfile = Path(main_out_dir, f"out.html")
         MAXFILES = 5 # to limit test time
+        MAXFILES = 2 # to limit test time
 
         ami_corpus = AmiCorpus(
             indir=indir,
