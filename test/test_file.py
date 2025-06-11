@@ -381,10 +381,11 @@ class File0Test(AmiAnyTest):
         file_lib_dir = Path(Resources.TEMP_DIR, "file_lib")
         FileLib.force_mkdir(file_lib_dir)
         tempdictfile = Path(file_lib_dir, "pydict.txt")
+
         logger.info(f"wrote json dict {tempdictfile}")
         with open (tempdictfile, "w", encoding="UTF-8") as f:
             f.write(pydict_str)
-        pydict = json.load(tempdictfile)
+            pydict = json.loads(pydict_str)
         assert pydict is not None
         assert type(pydict) is dict
         assert pydict.get("a") == "foo"

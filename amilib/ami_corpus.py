@@ -1365,6 +1365,8 @@ class OpenAlex:
 }
     """
     # json_dict = AmiJson.read_nested_dicts()
+    RESULTS_JSON = "openalex-results.json"
+
     def __init__(self):
         pass
 

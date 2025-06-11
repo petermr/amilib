@@ -419,6 +419,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         for head_elem in head_elems:
             print(f"h> {ET.tostring(head_elem)}")
 
+    @unittest.skip("robots may be disallowed")
     def test_download_wg_chapter_and_strip_non_content(self):
         """read single chapter from "EXPLORE" button and convert to raw semantic HTML
         """
@@ -1701,6 +1702,7 @@ class TestIPCCDownloadHTML(AmiAnyTest):
     tests primarily concerned with downloading HTML
     """
 
+    @unittest.skip("blocked by robots?")
     def test_download_sr15_chapter1_and_strip_non_content(self):
         """read single chapter from "view" button and convert to raw semantic HTML
         Tests the encoding
@@ -1712,6 +1714,7 @@ class TestIPCCDownloadHTML(AmiAnyTest):
         url = f"https://www.ipcc.ch/{rep}/chapter/chapter-{chapter_no}/"
         html_tree = HtmlLib.retrieve_with_useragent_parse_html(url, debug=debug)
         title = html_tree.xpath('/html/head/title')[0].text
+        # DOWNLOADS now have robot screening - this may not work
         assert title == "Chapter 1 — Global Warming of 1.5 ºC"
         p0text = html_tree.xpath('//p')[0].text
         assert p0text[:41] == "Understanding the impacts of 1.5°C global"
