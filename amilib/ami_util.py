@@ -1,9 +1,9 @@
 """
 Utilities (mainly classmethods)
 """
-import collections
 import logging
 from pathlib import Path
+from collections import OrderedDict
 
 import configparser
 import numpy as np
@@ -422,7 +422,7 @@ class AmiJson:
         :return: dictionary corresponding to a ?rectangular table
         TODO use JsonPath
         """
-        dict_by_id = collections.OrderedDict()
+        dict_by_id = OrderedDict()
         for key, data in data_items.items():
             dict_row = {k: AmiJson.read_nested_dicts(data, k) for k in wanted_keys}
             dict_by_id.update({key: dict_row})

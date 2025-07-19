@@ -17,7 +17,6 @@ import time
 from enum import Enum
 from pathlib import Path
 
-import pandas as pd
 import requests
 
 from amilib.core.constants import GENERATE
