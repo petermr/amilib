@@ -46,6 +46,22 @@ class AmiDriver:
         """
         options = webdriver.ChromeOptions()
         options.page_load_strategy = "none"
+        
+        # Configure headless mode to prevent browser windows from appearing
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1920,1080")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-plugins")
+        options.add_argument("--disable-images")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--allow-running-insecure-content")
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        
         chrome_path = ChromeDriverManager().install()
         chrome_service = Service(chrome_path)
         self.web_driver = Chrome(options=options, service=chrome_service)

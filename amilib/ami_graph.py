@@ -7,6 +7,9 @@ from pathlib import Path
 import graphviz
 import lxml.etree as ET
 import networkx as nx
+import matplotlib
+# Configure matplotlib to run in headless mode
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
 from amilib.ami_html import HtmlLib, logger
@@ -208,7 +211,8 @@ class AmiGraph:
             """NOTE the PDF viewer caches the displays and does not update
             this wasted a lot of time
             """
-            graph.view()
+            # Run in headless mode - don't open viewer
+            # graph.view()
         return graph
 
 

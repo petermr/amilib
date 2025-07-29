@@ -16,11 +16,8 @@ from amilib.dict_args import AmiDictArgs
 from amilib.search_args import SearchArgs
 from amilib.util import Util
 
-# cyclic import?
-try:
-    from html_args import HTMLArgs
-except ModuleNotFoundError as e:
-    from amilib.html_args import HTMLArgs
+# Import HTMLArgs - use absolute import for consistency
+from amilib.html_args import HTMLArgs
 
 from amilib.pdf_args import PDFArgs
 from amilib.ami_args import AbstractArgs
@@ -371,64 +368,10 @@ class AmiLib:
 
     def version(self):
         """
-        reads setup.py and extracts line of form version='0.0.29'
-        This is still a mess. We need to set the version once somewhere.
+        Get version from version.py
         """
-
-        version = '0.0.1a1'  # 2024-03-27
-        version = '0.0.1a3'  # 2024-03-27
-        version = '0.0.1'  # 2024-04-03
-        version = '0.0.2'  # 2024-04-04
-        version = '0.0.3'  # 2024-04-19
-        # had to revert here I think
-        version = '0.0.6'  # 2024-04-19
-        version = '0.0.7'  # 2024-04-23
-        version = '0.0.8'  # 2024-04-23
-        version = '0.0.9'  # 2024-05-09
-        version = '0.0.10'  # 2024-05-09
-        version = '0.1.0'  # 2024-05-10 # fixed absolute imports and mended tests
-        version = '0.1.1'  # 2024-05-11 # fixed subclassing of AmiLibArgs
-        version = '0.1.1a'  # 2024-05-11 # simple requirements.txt
-        version = '0.1.2'  # 2024-05-20 # uploadable to pypi
-        version = '0.1.3'  # 2024-05-20 # revert pdfplumber to 0.10.0
-        version = '0.1.4'  # 2024-05-22 # revert pdfplumber to 0.11.0 
-        version = '0.1.5'  # 2024-05-25 # fixed nlp, pdfplumber
-        version = '0.2.0a1'  # 2024-06-06 # includes amidict 
-        version = '0.2.1a1'  # 2024-06-06 # includes amidict and commandline
-        version = '0.2.1a2'  # 2024-06-06 # includes amidict and commandline
-        version = '0.2.1a3'  # 2024-07-03 # added wordlists
-        version = '0.2.2a1'  # 2024-07-11 # wikipedia lookup and paragrah splitting
-        version = '0.2.3a1'  # 2024-07-16 # markup html with dictionaries
-        version = '0.2.3a2'  # 2024-07-17 # markup html with dictionaries
-        version = '0.2.4a1'  # 2024-07-17 # add Wiktionary
-        version = '0.2.4a2'  # 2024-08-27 # build dictionaries from wordlists preparing for release
-        version = '0.2.5a1'  # 2024-08-30 # fixed Wiktionary bug
-        version = '0.2.5'    # 2024-09-09 # testing as library usable by amiclimate
-        version = '0.2.6'    # 2024-09-12 # added medisawiki parser
-        version = '0.2.7'    # 2024-09-12 # corrected bug
-        version = '0.3.0a1'  # 2024-09-17 # added SEARCH option
-        version = '0.3.0a2'  # 2024-09-17 # removed import bug
-        version = '0.3.0a3'  # 2024-09-17 # ensure compatibility with amiclimate
-        version = '0.3.0'    # 2024-09-18 # 
-        version = '0.3.1'    # 2024-09-18 # correct import bugs 
-        version = '0.3.2'    # 2024-09-18 # correct import bugs
-        version = '0.3.3'    # 2024-09-18 # correct import bugs
-        version = '0.3.4'    # 2024-09-18 # correct import bugs and libraries
-        version = '0.3.5'    # 2024-09-18 # correct import bugs and libraries
-        version = '0.3.6'    # 2024-09-29 # add search command
-        version = '0.3.7'    # 2024-09-29 # add search command
-        version = '0.3.8'    # 2024-09-29 # add search command
-        version = '0.3.9'    # 2024-09-29 # fixed bugs and brought search from amiclimate
-        version = '0.3.10a1'
-        version = '0.3.10a6'
-        version = '0.3.11a5' # 2024-11-06 add corpus framework
-        version = '0.4.1a1' # 2024-11-09 includes  datatables
-        version = '0.4.2a1' # 2024-12-19 increase to Python 3.12
-        version = '0.5.1a1' # 2025-04-30 merged amiclimate,
-        version = '0.5.1a3' # 2025-04-30 merged amiclimate,
-        version = '0.5.1a4' # 2025-04-30 merged amiclimate,
-        # logging.warn(f"VERSION {version}")
-        return version
+        from amilib.version import get_version
+        return get_version()
 
 
 class AmiLibArgs(AbstractArgs):

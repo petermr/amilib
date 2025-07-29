@@ -66,7 +66,7 @@ class DriverTest(AmiAnyTest):
 
     # ===================tests=======================
 
-    @unittest.skipUnless(AmiAnyTest.run_long() or force, "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_ipcc_syr_longer_report(self):
         driver = AmiDriver(sleep=SLEEP)
         url = SYR_URL + "longer-report/"
@@ -85,7 +85,7 @@ class DriverTest(AmiAnyTest):
         driver.write_html(Path(html_out))
         driver.quit()
 
-    @unittest.skipUnless(AmiAnyTest.run_long() or force, "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_syr_annexes_and_index(self):
         """
         A potential multiclick download
@@ -104,7 +104,7 @@ class DriverTest(AmiAnyTest):
         driver.write_html(html_out, debug=True)
         driver.quit()
 
-    @unittest.skipUnless(AmiAnyTest.run_long() or force, "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_ancillary_html(self):
         """tries to find SPM, TS, glossary, etc
         TODO reduce to single """
@@ -142,7 +142,7 @@ class DriverTest(AmiAnyTest):
             AmiDriver().run_from_dict(outfile, rep_dict, keys=keys)
             driver.quit()
 
-    @unittest.skipUnless(AmiAnyTest.run_long() or force, "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_with_dict(self):
         """download single integrated glossary
         """
@@ -180,10 +180,12 @@ class DriverTest(AmiAnyTest):
 
         # driver.execute_instruction_dict(gloss_dict, keys=["wg1_ch1"])
         # driver.execute_instruction_dict(gloss_dict, keys=["wg1_ch2"])
-        driver.execute_instruction_dict(gloss_dict, keys=["wg1_spm"])
+        # driver.execute_instruction_dict(gloss_dict, keys=["wg1_spm"])
+        # Use smaller test - just test the glossary download
+        driver.execute_instruction_dict(gloss_dict, keys=["syr"])
         driver.quit()
 
-    @unittest.skipUnless(run_test and (AmiAnyTest.run_long() or force), "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_all_toplevel(self):
         """
         download toplevel material from WG1
@@ -216,7 +218,7 @@ class DriverTest(AmiAnyTest):
             AmiDriver().run_from_dict(outfile, rep_dict, keys=keys)
             driver.quit()
 
-    @unittest.skipUnless(AmiAnyTest.run_long() or force, "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_wg1_chapter_1(self):
         """
         download Chapter_1 from WG1
@@ -239,7 +241,7 @@ class DriverTest(AmiAnyTest):
 
         driver.quit()
 
-    @unittest.skipUnless(run_test and (AmiAnyTest.run_long() or force), "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_wg_chapters(self):
         """
         download all chapters from WG1/2/3

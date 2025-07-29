@@ -7,6 +7,11 @@ import unittest
 from glob import glob
 from pathlib import Path
 
+# Configure headless operation
+os.environ['MPLBACKEND'] = 'Agg'
+if 'DISPLAY' not in os.environ:
+    os.environ['DISPLAY'] = ':99'
+
 from amilib.util import Util
 
 from test.resources import Resources

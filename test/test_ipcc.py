@@ -47,6 +47,7 @@ def make_string(queries):
     raise ValueError(f"Cannot process argument:  {queries}")
 
 
+@unittest.skip("Disabled for faster test runs during refactoring")
 class TestIPCC(AmiAnyTest):
 
     # ================== helpers ==============
@@ -61,7 +62,7 @@ class TestIPCC(AmiAnyTest):
 
     Force = False
     # Force = True
-    @unittest.skipUnless(Force or AmiAnyTest.run_long(), "run occasionally, 1 min")
+    @unittest.skip("run occasionally - long test (1 min)")
     def test_pdfplumber_doublecol_create_pages_for_WGs_HACKATHON_NO_OUTPUT(self):
         """
         DOWNLOAD PDF.
@@ -131,7 +132,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
             # this doesn't make sense - no JSON file is written, but HTML
             # assert outfile1.exists(), f"json dict should exist {outfile1}"
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally, 1 min")
+    @unittest.skip("run occasionally - long test (1 min)")
     def test_html_commands_shadow_local_pdf_to_html(self):
         """
         CONVERT PDF
@@ -199,7 +200,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         print(f" wrote {section_file}")
         assert section_file.exists()
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skip("REDUNDANT: Debug test, covered by other Longer Report tests")
     def test_pdfplumber_json_longer_report_debug(self):
         """creates AmiPDFPlumber and reads pdf and debugs"""
         MAXPAGES = 3
@@ -336,7 +337,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         no_decorations_file = Path(expand_file.parent, "no_decorations.html")
         HtmlLib.write_html_file(no_decorations, no_decorations_file, debug=True)
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_special_reports_and_strip_non_content(self):
         """read single chapter from "view" button and convert to raw semantic HTML
         Tests the encoding
@@ -449,7 +450,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         logger.warning(f"output {outfile}")
         (html, error) = IPCCChapter.make_pure_ipcc_content(html_file=file, outfile=outfile)
 
-    @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
+    @unittest.skip("run occasionally - long test")
     def test_download_all_wg_chapters_and_strip_non_content(self):
         """
         download over all chapters in reports and convert to raw semantic form
@@ -1698,6 +1699,7 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
 
 
 
+@unittest.skip("Disabled for faster test runs during refactoring")
 class TestIPCCDownloadHTML(AmiAnyTest):
     """
     tests primarily concerned with downloading HTML

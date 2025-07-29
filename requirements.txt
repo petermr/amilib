@@ -7,6 +7,7 @@ pandas~=2.2.3
 pdfminer.six
 pdfplumber~=0.11.4
 Pillow~=11.0.0
+PyMuPDF~=1.24.11
 pytest~=8.3.3
 requests~=2.32.3
 selenium~=4.25.0

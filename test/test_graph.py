@@ -65,7 +65,8 @@ class AmiGraphTest(AmiAnyTest):
                 wg3.edge('wg3.Chap05', 'toc3')
                 wg3.edge('wg3,Chap06', 'toc3')
 
-        ipcc.view()
+        # Run in headless mode - don't open viewer
+        # ipcc.view()
 
 
     def test_extract_toc_graph_from_report_toplevel(self):
@@ -397,4 +398,5 @@ class AmiGraphTest(AmiAnyTest):
                 wg3.edge('wg3.Chap05', 'toc3')
                 wg3.edge('wg3,Chap06', 'toc3')
 
-        ipcc.view()
+        # Run in headless mode - don't open viewer
+        # ipcc.view()
