@@ -10,11 +10,12 @@ import shutil
 from pathlib import Path
 import sys
 import os
+import pymupdf
 
 # Add the amilib directory to the path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from amilib.pdf_hyperlink_adder import PDFHyperlinkAdder, create_sample_word_list
+from amilib.ami_pdf_libs import PDFHyperlinkAdder, create_sample_word_list
 from amilib.core.util import Util
 
 class TestPDFHyperlinkAdder(unittest.TestCase):
@@ -243,7 +244,7 @@ class TestPDFHyperlinkAdder(unittest.TestCase):
             )
             
                     # This should handle the error gracefully
-        with self.assertRaises(FileNotFoundError):
+        with self.assertRaises((FileNotFoundError, pymupdf.FileNotFoundError)):
             adder.process_pdf()
         
         # Output should not be created

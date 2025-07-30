@@ -45,7 +45,10 @@ class AmiCorpus:
         """
         self.topdir = Path(topdir) if topdir else None
         if self.topdir and not self.topdir.is_dir():
-            raise ValueError(f"AmiCorpus() requires valid directory {self.topdir}")
+            if mkdir:
+                self.topdir.mkdir(parents=True, exist_ok=True)
+            else:
+                raise ValueError(f"AmiCorpus() requires valid directory {self.topdir}")
 
         self.container_by_file = dict()
         # rootnode
@@ -362,6 +365,66 @@ outfile: {self.outfile}
             logger.info(f"Running query: {query_id}")
             
         return html_by_query_id
+
+    def ingest_files(self, source_dir: Union[str, Path], file_pattern: str = "*", 
+                    target_container: str = "files", file_type: str = "unknown") -> List[Path]:
+        """
+        Ingest files from source directory into corpus using AmiCorpus methods.
+        
+        Args:
+            source_dir: Directory containing files to ingest
+            file_pattern: Glob pattern to match files (default: "*" for all files)
+            target_container: Name of container to ingest into (default: "files")
+            file_type: Type of files being ingested (default: "unknown")
+            
+        Returns:
+            List of paths to ingested files
+        """
+        source_path = Path(source_dir)
+        if not source_path.exists():
+            raise ValueError(f"Source directory does not exist: {source_path}")
+        
+        # Find files matching pattern
+        files_to_ingest = list(source_path.glob(file_pattern))
+        if not files_to_ingest:
+            logger.warning(f"No files found matching pattern '{file_pattern}' in {source_path}")
+            return []
+        
+        # Get or create target container
+        target_container_obj = None
+        for container in self.ami_container.child_containers:
+            if container.file.name == "data":
+                for child in container.child_containers:
+                    if child.file.name == target_container:
+                        target_container_obj = child
+                        break
+                break
+        
+        if not target_container_obj:
+            # Create data container if it doesn't exist
+            data_container = self.ami_container.create_corpus_container("data", bib_type="bagit_data", mkdir=True)
+            target_container_obj = data_container.create_corpus_container(target_container, bib_type=file_type, mkdir=True)
+        
+        # Ingest files
+        ingested_files = []
+        for source_file in files_to_ingest:
+            if source_file.is_file():
+                try:
+                    # Create document in corpus using AmiCorpus method
+                    dest_path = target_container_obj.create_document(source_file.name)
+                    
+                    # Copy file content
+                    import shutil
+                    shutil.copy2(source_file, dest_path)
+                    
+                    ingested_files.append(dest_path)
+                    logger.info(f"Ingested: {source_file.name} -> {dest_path}")
+                    
+                except Exception as e:
+                    logger.error(f"Failed to ingest {source_file.name}: {e}")
+        
+        logger.info(f"Ingestion complete: {len(ingested_files)} files ingested")
+        return ingested_files
 
     # Utility methods
     def _posix_glob(self, pattern: str, recursive: bool = False) -> List[Path]:
