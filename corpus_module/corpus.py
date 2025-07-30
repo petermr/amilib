@@ -7,6 +7,11 @@ from pathlib import Path
 from typing import List, Dict, Optional, Any, Union
 from collections import defaultdict
 import json
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+import fitz  # PyMuPDF
+from keybert import KeyBERT
 
 logger = logging.getLogger(__name__)
 
@@ -425,6 +430,284 @@ outfile: {self.outfile}
         
         logger.info(f"Ingestion complete: {len(ingested_files)} files ingested")
         return ingested_files
+
+    def extract_significant_phrases(self, file_pattern: str = "*.pdf", 
+                                   min_tfidf_score: float = 0.1,
+                                   max_phrases: int = 100,
+                                   min_word_length: int = 3) -> List[Dict[str, Any]]:
+        """
+        Extract significant phrases using TF-IDF analysis.
+        
+        Args:
+            file_pattern: Glob pattern for files to process (e.g., "*.pdf", "*.xml.html")
+            min_tfidf_score: Minimum TF-IDF score threshold
+            max_phrases: Maximum number of phrases to return
+            min_word_length: Minimum word length to consider
+            
+        Returns:
+            List of phrase dictionaries with TF-IDF scores and metadata
+        """
+        logger.info(f"Extracting significant phrases from files matching '{file_pattern}'")
+        
+        # Find the files container
+        files_container = None
+        for container in self.ami_container.child_containers:
+            if container.file.name == "data":
+                for child in container.child_containers:
+                    if child.file.name == "files":
+                        files_container = child
+                        break
+                break
+        
+        if not files_container:
+            raise ValueError("No 'data/files' container found in corpus")
+        
+        # Get files matching pattern
+        files_to_process = list(files_container.file.glob(file_pattern))
+        if not files_to_process:
+            logger.warning(f"No files found matching pattern '{file_pattern}' in {files_container.file}")
+            return []
+        
+        logger.info(f"Processing {len(files_to_process)} files for TF-IDF analysis")
+        
+        # Extract text from files
+        documents = []
+        file_names = []
+        
+        for file_path in files_to_process:
+            try:
+                text = self._extract_text_from_file(file_path)
+                if text and len(text.strip()) > 0:
+                    documents.append(text)
+                    file_names.append(file_path.name)
+                    logger.debug(f"Extracted text from {file_path.name} ({len(text)} characters)")
+                else:
+                    logger.warning(f"No text extracted from {file_path.name}")
+            except Exception as e:
+                logger.error(f"Error extracting text from {file_path.name}: {e}")
+                continue
+        
+        if not documents:
+            logger.error("No documents with text content found")
+            return []
+        
+        # Perform TF-IDF analysis
+        phrases = self._perform_tfidf_analysis(documents, file_names, min_tfidf_score, 
+                                             max_phrases, min_word_length)
+        
+        logger.info(f"Extracted {len(phrases)} significant phrases")
+        return phrases
+
+    def _extract_text_from_file(self, file_path: Path) -> str:
+        """Extract text from a file based on its type."""
+        if file_path.suffix.lower() == '.pdf':
+            return self._extract_text_from_pdf(file_path)
+        elif file_path.suffix.lower() in ['.html', '.htm', '.xml']:
+            return self._extract_text_from_html(file_path)
+        elif file_path.suffix.lower() in ['.txt', '.md']:
+            return self._extract_text_from_text(file_path)
+        else:
+            logger.warning(f"Unsupported file type: {file_path.suffix}")
+            return ""
+
+    def _extract_text_from_pdf(self, file_path: Path) -> str:
+        """Extract text from PDF file using PyMuPDF."""
+        try:
+            doc = fitz.open(str(file_path))
+            text = ""
+            for page in doc:
+                text += page.get_text()
+            doc.close()
+            return text
+        except Exception as e:
+            logger.error(f"Error extracting text from PDF {file_path}: {e}")
+            return ""
+
+    def _extract_text_from_html(self, file_path: Path) -> str:
+        """Extract text from HTML/XML file."""
+        try:
+            from lxml import html
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            tree = html.fromstring(content)
+            return tree.text_content()
+        except Exception as e:
+            logger.error(f"Error extracting text from HTML {file_path}: {e}")
+            return ""
+
+    def _extract_text_from_text(self, file_path: Path) -> str:
+        """Extract text from plain text file."""
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except Exception as e:
+            logger.error(f"Error extracting text from text file {file_path}: {e}")
+            return ""
+
+    def _perform_tfidf_analysis(self, documents: List[str], file_names: List[str],
+                               min_tfidf_score: float, max_phrases: int, 
+                               min_word_length: int) -> List[Dict[str, Any]]:
+        """Perform TF-IDF analysis on documents."""
+        # Custom stop words - combine sklearn's stop words with additional ones
+        custom_stop_words = list(ENGLISH_STOP_WORDS)
+        custom_stop_words.extend([
+            'said', 'will', 'one', 'may', 'would', 'could', 'should',
+            # URL artifacts
+            'https', 'http', 'www', 'org', 'com', 'edu', 'gov', 'uk', 'us',
+            # Common artifacts
+            'pdf', 'html', 'xml', 'txt', 'doc', 'docx'
+        ])
+        
+        # Configure TF-IDF vectorizer
+        vectorizer = TfidfVectorizer(
+            lowercase=True,  # Case-insensitive
+            stop_words=custom_stop_words,
+            min_df=1,  # Include terms that appear in at least 1 document
+            max_df=0.95,  # Exclude terms that appear in more than 95% of documents
+            token_pattern=r'\b[a-zA-Z]{%d,}\b(?!\.[a-z]{2,})' % min_word_length,  # Words with min_word_length+ chars, exclude file extensions
+            ngram_range=(1, 2),  # Single words and bigrams
+            max_features=max_phrases * 2  # Get more features than needed for filtering
+        )
+        
+        # Fit and transform documents
+        tfidf_matrix = vectorizer.fit_transform(documents)
+        feature_names = vectorizer.get_feature_names_out()
+        
+        # Calculate average TF-IDF scores across all documents
+        avg_tfidf_scores = tfidf_matrix.mean(axis=0).A1
+        
+        # Create phrase list with scores and document information
+        phrases = []
+        for i, (phrase, score) in enumerate(zip(feature_names, avg_tfidf_scores)):
+            if score >= min_tfidf_score:
+                # Find which documents contain this phrase
+                doc_indices = tfidf_matrix[:, i].nonzero()[0]
+                doc_names = [file_names[j] for j in doc_indices]
+                
+                phrases.append({
+                    "phrase": phrase,
+                    "tfidf_score": float(score),
+                    "frequency": int(tfidf_matrix[:, i].sum()),
+                    "documents": doc_names,
+                    "wikipedia_url": None,
+                    "definition": None
+                })
+        
+        # Sort by TF-IDF score (descending) and limit to max_phrases
+        phrases.sort(key=lambda x: x["tfidf_score"], reverse=True)
+        phrases = phrases[:max_phrases]
+        
+        return phrases
+
+    def extract_significant_phrases_keybert(self, file_pattern: str = "*.pdf", 
+                                          max_phrases: int = 200,
+                                          min_word_length: int = 3,
+                                          diversity: float = 0.7) -> List[Dict[str, Any]]:
+        """
+        Extract significant phrases using KeyBERT (BERT-based keyphrase extraction).
+        
+        Args:
+            file_pattern: Glob pattern for files to process (e.g., "*.pdf", "*.xml.html")
+            max_phrases: Maximum number of phrases to return
+            min_word_length: Minimum word length to consider
+            diversity: Diversity parameter for KeyBERT (0.0-1.0, higher = more diverse)
+            
+        Returns:
+            List of phrase dictionaries with KeyBERT scores and metadata
+        """
+        logger.info(f"Extracting significant phrases using KeyBERT from files matching '{file_pattern}'")
+        
+        # Find the files container
+        files_container = None
+        for container in self.ami_container.child_containers:
+            if container.file.name == "data":
+                for child in container.child_containers:
+                    if child.file.name == "files":
+                        files_container = child
+                        break
+                break
+        
+        if not files_container:
+            raise ValueError("No 'data/files' container found in corpus")
+        
+        # Get files matching pattern
+        files_to_process = list(files_container.file.glob(file_pattern))
+        if not files_to_process:
+            logger.warning(f"No files found matching pattern '{file_pattern}' in {files_container.file}")
+            return []
+        
+        logger.info(f"Processing {len(files_to_process)} files for KeyBERT analysis")
+        
+        # Extract text from files
+        documents = []
+        file_names = []
+        
+        for file_path in files_to_process:
+            try:
+                text = self._extract_text_from_file(file_path)
+                if text and len(text.strip()) > 0:
+                    documents.append(text)
+                    file_names.append(file_path.name)
+                    logger.debug(f"Extracted text from {file_path.name} ({len(text)} characters)")
+                else:
+                    logger.warning(f"No text extracted from {file_path.name}")
+            except Exception as e:
+                logger.error(f"Error extracting text from {file_path.name}: {e}")
+                continue
+        
+        if not documents:
+            logger.error("No documents with text content found")
+            return []
+        
+        # Perform KeyBERT analysis
+        phrases = self._perform_keybert_analysis(documents, file_names, max_phrases, 
+                                               min_word_length, diversity)
+        
+        logger.info(f"Extracted {len(phrases)} significant phrases using KeyBERT")
+        return phrases
+
+    def _perform_keybert_analysis(self, documents: List[str], file_names: List[str],
+                                max_phrases: int, min_word_length: int, 
+                                diversity: float) -> List[Dict[str, Any]]:
+        """Perform KeyBERT analysis on documents."""
+        # Initialize KeyBERT
+        kw_model = KeyBERT()
+        
+        # Combine all documents for analysis
+        combined_text = " ".join(documents)
+        
+        # Extract keyphrases using KeyBERT
+        keyphrases = kw_model.extract_keywords(
+            combined_text,
+            keyphrase_ngram_range=(1, 2),  # Single words and bigrams
+            stop_words='english',
+            use_maxsum=True,  # Use MaxSum algorithm for diversity
+            nr_candidates=max_phrases * 2,  # Get more candidates than needed
+            diversity=diversity
+        )
+        
+        # Create phrase list with scores and document information
+        phrases = []
+        for phrase, score in keyphrases:
+            # Filter by minimum word length
+            words = phrase.split()
+            if all(len(word) >= min_word_length for word in words):
+                # Find which documents contain this phrase (case-insensitive)
+                doc_names = []
+                for i, doc in enumerate(documents):
+                    if phrase.lower() in doc.lower():
+                        doc_names.append(file_names[i])
+                
+                phrases.append({
+                    "phrase": phrase,
+                    "keybert_score": float(score),
+                    "frequency": len(doc_names),
+                    "documents": doc_names,
+                    "wikipedia_url": None,
+                    "definition": None
+                })
+        
+        return phrases
 
     # Utility methods
     def _posix_glob(self, pattern: str, recursive: bool = False) -> List[Path]:
