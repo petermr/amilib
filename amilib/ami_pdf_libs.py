@@ -1,6 +1,7 @@
 """ Mainly for converting PDF to HTML and SVG """
 import base64
 import copy
+import csv
 import json
 import logging
 import os.path
@@ -10,7 +11,7 @@ import time
 from binascii import b2a_hex
 from io import BytesIO
 from pathlib import Path
-from typing import Container
+from typing import Container, Dict, List, Optional, Tuple
 
 import fitz
 import lxml
@@ -2368,18 +2369,140 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
+class HTMLWordlistParser:
+    """Parse HTML wordlist files with div-based entries"""
+    
+    def __init__(self, html_file_path: str):
+        self.html_file_path = html_file_path
+        self.entries: List[Dict[str, str]] = []
+        
+    def parse_html(self) -> List[Dict[str, str]]:
+        """Extract terms, descriptions, and create Wikipedia URLs from HTML"""
+        print(f"📖 Parsing HTML wordlist: {self.html_file_path}")
+        
+        if not Path(self.html_file_path).exists():
+            raise FileNotFoundError(f"HTML file not found: {self.html_file_path}")
+        
+        with open(self.html_file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Use lxml for HTML parsing (already imported)
+        from lxml import html
+        tree = html.fromstring(content)
+        
+        # Find all div elements with role="ami_entry"
+        entry_divs = tree.xpath('//div[@role="ami_entry"]')
+        
+        print(f"🔍 Found {len(entry_divs)} word entries")
+        
+        for div in entry_divs:
+            entry = self._extract_entry_from_div(div)
+            if entry:
+                self.entries.append(entry)
+        
+        print(f"✅ Successfully parsed {len(self.entries)} entries")
+        return self.entries
+    
+    def _extract_entry_from_div(self, div) -> Optional[Dict[str, str]]:
+        """Extract term, description, and create Wikipedia URL from a div"""
+        try:
+            # Extract term from @term attribute
+            term = div.get('term', '').strip()
+            if not term:
+                return None
+            
+            # Extract description from <p class="wpage_first_para">
+            description = self._extract_description(div)
+            
+            # Create Wikipedia URL
+            wikipedia_url = self._create_wikipedia_url(term)
+            
+            return {
+                'term': term,
+                'description': description,
+                'wikipedia_url': wikipedia_url
+            }
+            
+        except Exception as e:
+            print(f"⚠️  Error parsing entry: {e}")
+            return None
+    
+    def _extract_description(self, div) -> str:
+        """Extract description from the first paragraph with class wpage_first_para"""
+        desc_p = div.xpath('.//p[@class="wpage_first_para"]')
+        if desc_p:
+            # Get text content, removing extra whitespace
+            description = desc_p[0].text_content().strip()
+            # Clean up the description (remove excessive whitespace, etc.)
+            description = re.sub(r'\s+', ' ', description)
+            return description
+        return ""
+    
+    def _create_wikipedia_url(self, term: str) -> str:
+        """Create Wikipedia URL from term"""
+        # Clean the term for URL
+        clean_term = term.strip()
+        
+        # Handle special characters and spaces
+        # Replace spaces with underscores
+        url_term = clean_term.replace(' ', '_')
+        
+        # Remove any special characters that might cause URL issues
+        url_term = re.sub(r'[^\w\s-]', '', url_term)
+        
+        # Create the Wikipedia URL
+        wikipedia_url = f"https://en.wikipedia.org/wiki/{url_term}"
+        
+        return wikipedia_url
+    
+    def get_terms_for_pdf_search(self) -> Dict[str, str]:
+        """Get terms and URLs formatted for PDF search (case-insensitive)"""
+        term_dict = {}
+        for entry in self.entries:
+            term = entry['term'].lower()  # Make case-insensitive
+            term_dict[term] = entry['wikipedia_url']
+        return term_dict
+
+
 class PDFHyperlinkAdder:
-    def __init__(self, input_pdf: str, word_list_file: str, output_pdf: str):
+    def __init__(self, input_pdf: str, word_list_file: str, output_pdf: str, html_wordlist: str = None):
         self.input_pdf = input_pdf
         self.word_list_file = word_list_file
         self.output_pdf = output_pdf
+        self.html_wordlist = html_wordlist
         self.word_links: Dict[str, str] = {}
         self.processed_words = 0
         self.total_matches = 0
+        self.entries = []  # Store full entries for potential future use
         
     def load_word_list(self) -> None:
-        """Load the word list with hyperlinks from CSV file"""
-        print(f"📖 Loading word list from {self.word_list_file}...")
+        """Load the word list with hyperlinks from CSV file or HTML wordlist"""
+        if self.html_wordlist:
+            self._load_from_html()
+        else:
+            self._load_from_csv()
+    
+    def _load_from_html(self) -> None:
+        """Load word list from HTML file"""
+        print(f"📖 Loading word list from HTML: {self.html_wordlist}")
+        
+        parser = HTMLWordlistParser(self.html_wordlist)
+        self.entries = parser.parse_html()
+        self.word_links = parser.get_terms_for_pdf_search()
+        
+        print(f"✅ Loaded {len(self.word_links)} words with hyperlinks from HTML")
+        
+        # Show some examples
+        if self.word_links:
+            print("📋 Sample terms loaded:")
+            for i, (term, url) in enumerate(list(self.word_links.items())[:5]):
+                print(f"   {i+1}. {term} -> {url}")
+            if len(self.word_links) > 5:
+                print(f"   ... and {len(self.word_links) - 5} more terms")
+    
+    def _load_from_csv(self) -> None:
+        """Load word list from CSV file"""
+        print(f"📖 Loading word list from CSV: {self.word_list_file}")
         
         with open(self.word_list_file, 'r', encoding='utf-8') as f:
             reader = csv.reader(f)
@@ -2389,7 +2512,15 @@ class PDFHyperlinkAdder:
                     link = row[1].strip()
                     self.word_links[word] = link
                     
-        print(f"✅ Loaded {len(self.word_links)} words with hyperlinks")
+        print(f"✅ Loaded {len(self.word_links)} words with hyperlinks from CSV")
+    
+    def get_entry_info(self, term: str) -> Optional[Dict[str, str]]:
+        """Get full entry information for a term"""
+        term_lower = term.lower()
+        for entry in self.entries:
+            if entry['term'].lower() == term_lower:
+                return entry
+        return None
         
     def find_word_instances(self, doc: fitz.Document) -> List[Tuple[int, str, fitz.Rect, str]]:
         """Find all instances of words in the PDF with their positions"""
@@ -2437,17 +2568,27 @@ class PDFHyperlinkAdder:
         return word_instances
     
     def add_hyperlinks_and_styling(self, doc: fitz.Document, word_instances: List[Tuple[int, str, fitz.Rect, str]]) -> None:
-        """Add hyperlinks and visual styling to the PDF"""
+        """Add hyperlinks and visual styling to the PDF with enhanced information"""
         print("🎨 Adding hyperlinks and styling...")
         
         for page_num, word, bbox, link in word_instances:
             page = doc[page_num]
             
-            # Add hyperlink annotation
-            link_annot = page.add_link_annot(bbox, uri=link)
+            # Get full entry information for better tooltip
+            entry_info = self.get_entry_info(word)
+            tooltip = f"Click to visit: {word}"
+            if entry_info and entry_info['description']:
+                # Add description to tooltip (truncated)
+                desc = entry_info['description'][:100] + "..." if len(entry_info['description']) > 100 else entry_info['description']
+                tooltip = f"{word}: {desc}"
             
-            # Add tooltip (using annotation title)
-            link_annot.set_info(title=f"Click to visit: {word}")
+            # Add hyperlink annotation
+            link_annot = page.insert_link({
+                "kind": fitz.LINK_URI,
+                "uri": link,
+                "from": bbox,
+                "title": tooltip
+            })
             
             # Add visual styling - blue underline
             # Note: PyMuPDF doesn't directly modify text color, but we can add visual indicators
@@ -2457,7 +2598,7 @@ class PDFHyperlinkAdder:
             
             self.processed_words += 1
             
-            if self.processed_words % 100 == 0:
+            if self.processed_words % 50 == 0:
                 print(f"   Processed {self.processed_words}/{self.total_matches} words...")
     
     def process_pdf(self) -> None:
@@ -2488,12 +2629,40 @@ class PDFHyperlinkAdder:
         doc.save(self.output_pdf)
         doc.close()
         
-        print("-" * 50)
+        print("-" * 60)
         print(f"✅ Processing complete!")
         print(f"📊 Statistics:")
         print(f"   Total words processed: {self.processed_words}")
         print(f"   Total matches found: {self.total_matches}")
         print(f"   Output saved to: {self.output_pdf}")
+        
+        # Show some statistics about the wordlist
+        if self.entries:
+            print(f"📋 Wordlist statistics:")
+            print(f"   Total terms in wordlist: {len(self.entries)}")
+            print(f"   Terms found in PDF: {len(set(word for _, word, _, _ in word_instances))}")
+            print(f"   Terms not found: {len(self.word_links) - len(set(word for _, word, _, _ in word_instances))}")
+
+def process_ipcc_pdf_with_html_wordlist(
+    pdf_path: str, 
+    html_wordlist_path: str, 
+    output_path: str
+) -> None:
+    """Main function to process IPCC PDF with HTML wordlist"""
+    print("🔗 IPCC PDF Annotation with HTML Wordlist")
+    print("=" * 60)
+    
+    # Validate inputs
+    if not Path(pdf_path).exists():
+        raise FileNotFoundError(f"PDF file not found: {pdf_path}")
+    
+    if not Path(html_wordlist_path).exists():
+        raise FileNotFoundError(f"HTML wordlist not found: {html_wordlist_path}")
+    
+    # Process the PDF
+    adder = PDFHyperlinkAdder(pdf_path, "", output_path, html_wordlist_path)
+    adder.process_pdf()
+
 
 def create_sample_word_list(filename: str = "word_list.csv") -> None:
     """Create a sample word list CSV file for testing"""
