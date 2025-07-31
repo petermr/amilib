@@ -1,0 +1,31 @@
+temp/
+.idea/
+amilib.egg-info/
+dist/
+
+# Pipeline directories
+pipeline/*/logs/
+pipeline/*/temp/
+pipeline/*/output/
+pipeline/*/01_corpus/corpus/temp/
+pipeline/*/01_corpus/corpus/search_results/
+pipeline/*/01_corpus/corpus/summaries/
+
+# Test outputs
+test/resources/corpus/breward2023_corpus/
+
+# Windows-incompatible filenames (containing special characters)
+*[[]*
+*[]]*
+*:*
+*;*
+*\**
+*\?*
+*"*
+*<*
+*>*
+*|*
+
+# macOS system files
+.DS_Store
+**/.DS_Store
