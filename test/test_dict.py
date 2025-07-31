@@ -13,6 +13,9 @@ import requests
 from lxml import etree
 from lxml.etree import XMLSyntaxError, _Element
 import lxml.etree as ET
+import csv
+from typing import List, Dict, Tuple
+from lxml import html
 
 # from github import Github
 
@@ -2009,3 +2012,129 @@ else:
 
 def main():
     pass
+
+
+class TestIPCCGlossaryExtraction(unittest.TestCase):
+    """Test extraction of IPCC glossary terms from HTML content."""
+    
+    def setUp(self):
+        # Complete URL to the raw IPCC glossary HTML file on GitHub
+        # Users can visit this URL to see the HTML structure: https://raw.githubusercontent.com/petermr/semanticClimate/refs/heads/main/ipcc/ar6/test/total_glossary/total%20copy.html
+        self.glossary_url = "https://raw.githubusercontent.com/petermr/semanticClimate/refs/heads/main/ipcc/ar6/test/total_glossary/total%20copy.html"
+        # GitHub HTML preview service that renders the content in browser
+        self.github_html_preview_url = "https://htmlpreview.github.io/?https://raw.githubusercontent.com/petermr/semanticClimate/refs/heads/main/ipcc/ar6/test/total_glossary/total%20copy.html"
+        self.output_file = Path("temp", "ipcc_glossary_wordlist.csv")
+        
+    def test_extract_glossary_terms(self):
+        """Test extraction of terms and definitions from IPCC glossary HTML."""
+        # 1. Download HTML content from GitHub
+        print(f"\nDownloading IPCC glossary from: {self.glossary_url}")
+        response = requests.get(self.glossary_url)
+        self.assertEqual(response.status_code, 200, "Failed to download glossary HTML")
+        
+        # 2. Parse HTML content
+        tree = html.fromstring(response.content)
+        
+
+        
+        # 3. Extract terms and definitions from table
+        terms_data = self._extract_terms_from_table(tree)
+        
+        # 4. Assert we have extracted data
+        self.assertGreater(len(terms_data), 0, "No terms extracted from glossary")
+        print(f"Successfully extracted {len(terms_data)} terms from IPCC glossary")
+        
+        # 5. Create wordlist TSV
+        self._create_wordlist_csv(terms_data)
+        
+        # 6. Verify output file exists and has content
+        self.assertTrue(self.output_file.exists(), "Wordlist CSV file not created")
+        
+        # Read back and verify format
+        with open(self.output_file, 'r', encoding='utf-8') as f:
+            reader = csv.reader(f, delimiter='\t')
+            header = next(reader)
+            # Handle UTF-8 BOM in first column
+            expected_header = ['term', 'definition', 'link_to_glossary_entry', 'link_to_wikipedia']
+            if header[0].startswith('\ufeff'):
+                header[0] = header[0][1:]  # Remove BOM
+            self.assertEqual(header, expected_header)
+            
+            # Check we have data rows
+            rows = list(reader)
+            self.assertGreater(len(rows), 0, "No data rows in wordlist CSV")
+            
+            # Verify first row has expected structure
+            first_row = rows[0]
+            self.assertEqual(len(first_row), 4, "Row should have 4 columns")
+            self.assertTrue(first_row[0], "Term should not be empty")
+            self.assertTrue(first_row[1], "Definition should not be empty")
+    
+    def _extract_terms_from_table(self, tree) -> List[Dict[str, str]]:
+        """Extract terms and definitions from the HTML table structure."""
+        terms_data = []
+        
+        # Look for h4 elements (terms) and their corresponding dd elements (definitions)
+        h4_elements = tree.xpath('//h4[@class="fw-bold fs-5 bg-primary text-light p-2"]')
+        
+        for h4 in h4_elements:
+            # Get the term text
+            term = h4.text_content().strip()
+            
+            # Find the corresponding dd element (definition) - it should be a sibling or nearby
+            # Look for dd element that follows this h4
+            dd_element = h4.xpath('following-sibling::dd[1]')
+            if not dd_element:
+                # Try to find dd in the same container
+                dd_element = h4.xpath('ancestor::div[contains(@class, "modal-content")]//dd')
+            
+            definition = ""
+            if dd_element:
+                # Extract HTML content from p elements with class="definition"
+                definition_elements = dd_element[0].xpath('.//p[@class="definition"]')
+                if definition_elements:
+                    # Preserve HTML markup by getting the HTML content
+                    definition = html.tostring(definition_elements[0], encoding='unicode', method='html').strip()
+                else:
+                    # Fallback: get HTML content from dd
+                    definition = html.tostring(dd_element[0], encoding='unicode', method='html').strip()
+            
+            if term and definition:
+                # Clean up encoding issues in term and definition
+                clean_term = term.encode('utf-8', errors='replace').decode('utf-8')
+                clean_definition = definition.encode('utf-8', errors='replace').decode('utf-8')
+                
+                terms_data.append({
+                    'term': clean_term,
+                    'definition': clean_definition,
+                    'link_to_glossary_entry': f"{self.github_html_preview_url}#{clean_term.lower().replace(' ', '_').replace('–', '-').replace('/', '_').replace('(', '').replace(')', '')}",
+                    'link_to_wikipedia': ""  # Blank for now
+                })
+        
+        return terms_data
+    
+    def _create_wordlist_csv(self, terms_data: List[Dict[str, str]]):
+        """Create the wordlist TSV file with the required columns."""
+        # Ensure temp directory exists
+        self.output_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(self.output_file, 'w', newline='', encoding='utf-8') as f:
+            # Write UTF-8 BOM for better compatibility
+            f.write('\ufeff')
+            writer = csv.writer(f, delimiter='\t')
+            
+            # Write header
+            writer.writerow(['term', 'definition', 'link_to_glossary_entry', 'link_to_wikipedia'])
+            
+            # Write data rows
+            for term_data in terms_data:
+                writer.writerow([
+                    term_data['term'],
+                    term_data['definition'],
+                    term_data['link_to_glossary_entry'],
+                    term_data['link_to_wikipedia']
+                ])
+
+
+if __name__ == '__main__':
+    unittest.main()
