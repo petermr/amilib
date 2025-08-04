@@ -12,8 +12,7 @@ if 'DISPLAY' not in os.environ:
     os.environ['DISPLAY'] = ':99'
 os.environ['GRAPHVIZ_DOT'] = 'dot'
 
-# Add the parent directory to the path so we can import from amilib
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Note: amilib should be installed with 'pip install -e .' for tests to work properly
 
 def pytest_ignore_collect(collection_path):
     """Ignore IPCC and UNFCCC application test files during collection."""
