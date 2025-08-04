@@ -18,8 +18,14 @@ import lxml
 import lxml.etree as ET
 import lxml.html
 import pandas as pd
-import pdfplumber
-import pdfplumber as pdfp
+try:
+    import pdfplumber
+    import pdfplumber as pdfp
+    PDFPLUMBER_AVAILABLE = True
+except ImportError:
+    PDFPLUMBER_AVAILABLE = False
+    pdfplumber = None
+    pdfp = None
 from PIL import Image
 from lxml import etree
 from lxml.builder import E
@@ -29,7 +35,10 @@ from pdfminer.image import ImageWriter
 from pdfminer.layout import LAParams, LTImage, LTTextLineHorizontal, LTTextBoxHorizontal
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
-from pdfplumber.page import Page
+try:
+    from pdfplumber.page import Page
+except ImportError:
+    Page = None
 
 from amilib.ami_html import STYLE, FONT_SIZE, FONT_WEIGHT, FONT_STYLE, STROKE, CSSStyle, FONT_FAMILY, P_X0, P_X1, \
     P_Y0, \
@@ -469,6 +478,9 @@ class AmiPage:
 
         creates Raw HTML
         """
+        if not PDFPLUMBER_AVAILABLE:
+            raise ImportError("pdfplumber is not available. Install it with: pip install pdfplumber")
+            
         from amilib.ami_integrate import HtmlGenerator  # may avoid cyclic imports butn needs tidying
 
         if not input_pdf or not Path(input_pdf).exists():
