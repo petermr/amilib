@@ -177,7 +177,10 @@ class AmiEntry:
         return None
 
     def add_term(self, term):
-        self.element.attrib[TERM] = term
+        if self.element is None:
+            self.element = AmiEntry.create_lxml_entry_from_term(term)
+        else:
+            self.element.attrib[TERM] = term
 
     def get_term(self):
         term = self.element.attrib[TERM]
@@ -217,13 +220,18 @@ class AmiEntry:
 
     # AmiEntry
 
+    def set_attribute(self, attribute_name, value):
+        """set an attribute on the element"""
+        if attribute_name and value:
+            self.element.attrib[attribute_name] = value
+
     def set_description(self, desc):
         """set description attribute, can be anything"""
         if desc:
             self.set_attribute(DESCRIPTION, desc)
 
     def get_description(self):
-        return self.get_attribute_value(DESCRIPTION)
+        return self.get_attribute_value(self.element, DESCRIPTION)
 
     def check_validity(self):
         self.check_valid_attributes()
@@ -1355,6 +1363,10 @@ class AmiDictionary:
         self.entry_by_term = dict()
         self.entry_by_wikidata_id = {}
         
+        # Create root element if it doesn't exist
+        if self.root is None:
+            self.root = etree.Element(AmiDictionary.TAG)
+        
         # Load metadata
         if "metadata" in json_data:
             metadata = json_data["metadata"]
@@ -1368,7 +1380,12 @@ class AmiDictionary:
             for entry_data in json_data["entries"]:
                 entry = AmiEntry()
                 entry.from_json(entry_data)
-                self._add_entry(entry)
+                # Add the entry element to the root
+                self.root.append(entry.element)
+                self.entries.append(entry.element)
+        
+        # Initialize internal data structures
+        self.create_entry_by_term()
     
     def save_json(self, file_path: str):
         """
@@ -1714,6 +1731,11 @@ class AmiDictionary:
     def set_title(self, title):
         assert self.root is not None
         self.root.attrib[AmiDictionary.TITLE_A] = title
+
+    def get_title(self):
+        if self.root is None or self.root.attrib is None or AmiDictionary.TITLE_A not in self.root.attrib:
+            return None
+        return self.root.attrib.get(AmiDictionary.TITLE_A)
 
     def set_encoding(self, encoding=UTF_8):
         assert self.root is not None
