@@ -12,8 +12,7 @@ import sys
 import os
 import pymupdf
 
-# Add the amilib directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Note: amilib should be installed with 'pip install -e .' for tests to work properly
 
 from amilib.ami_pdf_libs import PDFHyperlinkAdder, create_sample_word_list
 from amilib.core.util import Util
