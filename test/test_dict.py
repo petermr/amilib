@@ -2009,3 +2009,205 @@ else:
 
 def main():
     pass
+
+class AmiDictionaryJSONTest(AmiAnyTest):
+    """Tests for JSON serialization/deserialization of AmiDictionary and AmiEntry"""
+    
+    def setUp(self):
+        """Set up test fixtures"""
+        self.test_dict = AmiDictionary.create_minimal_dictionary()
+        self.test_dict.set_title("Test Dictionary")
+        self.test_dict.set_version("1.0.0")
+        
+        # Add test entries
+        entry1_element = self.test_dict.create_and_add_entry_with_term("climate change")
+        entry1 = AmiEntry.create_from_element(entry1_element)
+        entry1.set_description("Long-term alteration of temperature patterns")
+        entry1.set_wikidata_id("Q125928")
+        
+        entry2_element = self.test_dict.create_and_add_entry_with_term("global warming")
+        entry2 = AmiEntry.create_from_element(entry2_element)
+        entry2.set_description("Rise in global average temperature")
+        entry2.set_wikidata_id("Q7942")
+    
+    def test_ami_entry_to_json(self):
+        """Test converting AmiEntry to JSON"""
+        entry = self.test_dict.get_ami_entry("climate change")
+        json_data = entry.to_json()
+        
+        # Check required fields
+        self.assertIn("term", json_data, "JSON should contain 'term' field")
+        self.assertEqual(json_data["term"], "climate change", "Term should match expected value")
+        
+        # Check optional fields
+        self.assertIn("description", json_data, "JSON should contain 'description' field")
+        self.assertEqual(json_data["description"], "Long-term alteration of temperature patterns", "Description should match expected value")
+        self.assertIn("wikidata_id", json_data, "JSON should contain 'wikidata_id' field")
+        self.assertEqual(json_data["wikidata_id"], "Q125928", "Wikidata ID should match expected value")
+        
+        # Check structure
+        self.assertIsInstance(json_data, dict, "JSON data should be a dictionary")
+        self.assertIn("id", json_data, "JSON should contain 'id' field")
+    
+    def test_ami_entry_from_json(self):
+        """Test creating AmiEntry from JSON"""
+        json_data = {
+            "term": "test term",
+            "description": "test description",
+            "wikidata_id": "Q12345",
+            "name": "test name"
+        }
+        
+        entry = AmiEntry()
+        entry.from_json(json_data)
+        
+        self.assertEqual(entry.get_term(), "test term", "Term should be set correctly from JSON")
+        self.assertEqual(entry.get_description(), "test description", "Description should be set correctly from JSON")
+        self.assertEqual(entry.get_wikidata_id(), "Q12345", "Wikidata ID should be set correctly from JSON")
+        self.assertEqual(entry.get_name(), "test name", "Name should be set correctly from JSON")
+    
+    def test_ami_dictionary_to_json(self):
+        """Test converting AmiDictionary to JSON"""
+        json_data = self.test_dict.to_json()
+        
+        # Check metadata
+        self.assertIn("metadata", json_data, "JSON should contain 'metadata' section")
+        metadata = json_data["metadata"]
+        self.assertEqual(metadata["title"], "Test Dictionary", "Title should match expected value")
+        self.assertEqual(metadata["version"], "1.0.0", "Version should match expected value")
+        self.assertIn("entry_count", metadata, "Metadata should contain 'entry_count' field")
+        self.assertEqual(metadata["entry_count"], 2, "Entry count should match expected value")
+        
+        # Check entries
+        self.assertIn("entries", json_data, "JSON should contain 'entries' section")
+        entries = json_data["entries"]
+        self.assertEqual(len(entries), 2, "Should have exactly 2 entries")
+        
+        # Check first entry
+        entry1 = entries[0]
+        self.assertEqual(entry1["term"], "climate change", "First entry term should match expected value")
+        self.assertEqual(entry1["description"], "Long-term alteration of temperature patterns", "First entry description should match expected value")
+        self.assertEqual(entry1["wikidata_id"], "Q125928", "First entry Wikidata ID should match expected value")
+    
+    def test_ami_dictionary_from_json(self):
+        """Test creating AmiDictionary from JSON"""
+        json_data = {
+            "metadata": {
+                "title": "Test Dictionary",
+                "version": "1.0.0",
+                "language": "en",
+                "description": "Test dictionary for JSON functionality"
+            },
+            "entries": [
+                {
+                    "term": "test term 1",
+                    "description": "test description 1",
+                    "wikidata_id": "Q12345"
+                },
+                {
+                    "term": "test term 2",
+                    "description": "test description 2",
+                    "wikidata_id": "Q67890"
+                }
+            ]
+        }
+        
+        dictionary = AmiDictionary()
+        dictionary.from_json(json_data)
+        
+        # Check metadata
+        self.assertEqual(dictionary.get_title(), "Test Dictionary", "Title should be set correctly from JSON")
+        self.assertEqual(dictionary.get_version(), "1.0.0", "Version should be set correctly from JSON")
+        
+        # Check entries
+        self.assertEqual(dictionary.get_entry_count(), 2, "Entry count should be set correctly from JSON")
+        
+        entry1 = dictionary.get_ami_entry("test term 1")
+        self.assertIsNotNone(entry1, "Entry should be found by term")
+        self.assertEqual(entry1.get_description(), "test description 1", "Entry description should be set correctly from JSON")
+        self.assertEqual(entry1.get_wikidata_id(), "Q12345", "Entry Wikidata ID should be set correctly from JSON")
+    
+    def test_ami_dictionary_save_and_load_json(self):
+        """Test saving and loading AmiDictionary as JSON file"""
+        import tempfile
+        import os
+        
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            temp_file = f.name
+        
+        try:
+            # Save dictionary to JSON
+            self.test_dict.save_json(temp_file)
+            
+            # Verify file exists and has content
+            self.assertTrue(os.path.exists(temp_file), "JSON file should be created")
+            with open(temp_file, 'r') as f:
+                content = f.read()
+                self.assertGreater(len(content), 0, "JSON file should not be empty")
+            
+            # Load dictionary from JSON
+            loaded_dict = AmiDictionary.load_json(temp_file)
+            
+            # Verify loaded dictionary matches original
+            self.assertEqual(loaded_dict.get_title(), self.test_dict.get_title(), "Loaded title should match original")
+            self.assertEqual(loaded_dict.get_version(), self.test_dict.get_version(), "Loaded version should match original")
+            self.assertEqual(loaded_dict.get_entry_count(), self.test_dict.get_entry_count(), "Loaded entry count should match original")
+            
+            # Verify entries match
+            original_entry = self.test_dict.get_ami_entry("climate change")
+            loaded_entry = loaded_dict.get_ami_entry("climate change")
+            self.assertEqual(original_entry.get_description(), loaded_entry.get_description(), "Loaded entry description should match original")
+            self.assertEqual(original_entry.get_wikidata_id(), loaded_entry.get_wikidata_id(), "Loaded entry Wikidata ID should match original")
+            
+        finally:
+            # Clean up
+            if os.path.exists(temp_file):
+                os.unlink(temp_file)
+    
+    def test_json_roundtrip(self):
+        """Test JSON serialization and deserialization roundtrip"""
+        # Convert to JSON
+        json_data = self.test_dict.to_json()
+        
+        # Convert back to dictionary
+        new_dict = AmiDictionary()
+        new_dict.from_json(json_data)
+        
+        # Verify they match
+        self.assertEqual(self.test_dict.get_title(), new_dict.get_title(), "Title should be preserved in roundtrip")
+        self.assertEqual(self.test_dict.get_version(), new_dict.get_version(), "Version should be preserved in roundtrip")
+        self.assertEqual(self.test_dict.get_entry_count(), new_dict.get_entry_count(), "Entry count should be preserved in roundtrip")
+        
+        # Verify entries match
+        original_terms = set(self.test_dict.get_terms())
+        new_terms = set(new_dict.get_terms())
+        self.assertEqual(original_terms, new_terms, "Terms should be preserved in roundtrip")
+    
+    def test_empty_dictionary_json(self):
+        """Test JSON handling of empty dictionary"""
+        empty_dict = AmiDictionary.create_minimal_dictionary()
+        empty_dict.set_title("Empty Dictionary")
+        empty_dict.set_version("1.0.0")
+        
+        json_data = empty_dict.to_json()
+        
+        self.assertIn("metadata", json_data, "Empty dictionary JSON should contain metadata section")
+        self.assertEqual(json_data["metadata"]["entry_count"], 0, "Empty dictionary should have zero entry count")
+        self.assertIn("entries", json_data, "Empty dictionary JSON should contain entries section")
+        self.assertEqual(len(json_data["entries"]), 0, "Empty dictionary should have empty entries list")
+    
+    def test_json_with_missing_optional_fields(self):
+        """Test JSON handling of entries with missing optional fields"""
+        minimal_entry = AmiEntry()
+        minimal_entry.add_term("minimal term")
+        
+        json_data = minimal_entry.to_json()
+        
+        # Required field should be present
+        self.assertIn("term", json_data, "Minimal entry JSON should contain term field")
+        self.assertEqual(json_data["term"], "minimal term", "Term should match expected value")
+        
+        # Optional fields should be None or missing
+        self.assertNotIn("description", json_data, "Minimal entry should not contain description field")
+        self.assertNotIn("wikidata_id", json_data, "Minimal entry should not contain wikidata_id field")
+        self.assertNotIn("name", json_data, "Minimal entry should not contain name field")

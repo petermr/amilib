@@ -4,6 +4,7 @@ import logging
 import os
 import re
 import urllib.request
+import warnings
 from collections import Counter
 from enum import Enum
 from pathlib import Path
@@ -65,6 +66,27 @@ LANG_UR = "ur"
 
 # logger = logging.getLogger("ami_dict")
 logger = Util.get_logger(__name__)
+
+
+def deprecated(reason):
+    """
+    Decorator to mark methods as deprecated.
+    
+    Usage:
+        @deprecated("Use to_json() instead")
+        def old_method(self):
+            pass
+    """
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            warnings.warn(
+                f"{func.__name__} is deprecated: {reason}",
+                DeprecationWarning,
+                stacklevel=2
+            )
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
 
 
 # class syntax
@@ -589,6 +611,63 @@ class AmiEntry:
             for figure in figures:
                 figure_div.append(copy.deepcopy(figures))
 
+    # ===== JSON METHODS =====
+    
+    def to_json(self) -> dict:
+        """
+        Convert entry to JSON representation.
+        
+        Returns:
+            dict: JSON representation of the entry
+        """
+        json_data = {
+            "term": self.get_term(),
+            "id": AmiEntry.create_id(self.get_term())
+        }
+        
+        # Add optional fields if they exist
+        description = self.get_description()
+        if description:
+            json_data["description"] = description
+            
+        wikidata_id = self.get_wikidata_id()
+        if wikidata_id:
+            json_data["wikidata_id"] = wikidata_id
+            
+        name = self.get_name()
+        if name:
+            json_data["name"] = name
+        
+        return json_data
+    
+    def from_json(self, json_data: dict):
+        """
+        Load entry from JSON representation.
+        
+        Args:
+            json_data (dict): JSON representation of the entry
+        """
+        # Create XML element if it doesn't exist
+        if self.element is None:
+            term = json_data.get("term")
+            if not term:
+                raise ValueError("JSON entry must contain 'term' field")
+            self.element = AmiEntry.create_lxml_entry_from_term(term)
+        
+        # Set required field
+        if "term" in json_data:
+            self.add_term(json_data["term"])
+        
+        # Set optional fields
+        if "description" in json_data:
+            self.set_description(json_data["description"])
+            
+        if "wikidata_id" in json_data:
+            self.set_wikidata_id(json_data["wikidata_id"])
+            
+        if "name" in json_data:
+            self.set_name(json_data["name"])
+
 
 class AmiDictionary:
     """wrapper for an ami dictionary including search flags
@@ -644,6 +723,7 @@ class AmiDictionary:
     #    class AmiDictionary:
 
     @classmethod
+    @deprecated("Use load_json() instead")
     def create_from_xml_file(cls, xml_file,
                              title=None,
                              ignorecase=False):
@@ -1227,10 +1307,118 @@ class AmiDictionary:
         HtmlLib.add_base_to_head(sem_html, self.html_base)
         return sem_html
 
+    @deprecated("Use save_json() instead")
     def write_xml_dictionary(self, file, root):
         with open(file, 'wb') as f:
             root.write(f, encoding="utf-8",
                        xml_declaration=True, pretty_print=True)
+
+    # ===== JSON METHODS =====
+    
+    def to_json(self) -> dict:
+        """
+        Convert dictionary to JSON representation.
+        
+        Returns:
+            dict: JSON representation of the dictionary
+        """
+        import json
+        
+        # Build metadata
+        metadata = {
+            "title": self.get_title(),
+            "version": self.get_version(),
+            "language": "en",  # Default, could be made configurable
+            "entry_count": self.get_entry_count()
+        }
+        
+        # Build entries
+        entries = []
+        for entry in self.get_ami_entries():
+            entries.append(entry.to_json())
+        
+        return {
+            "metadata": metadata,
+            "entries": entries
+        }
+    
+    def from_json(self, json_data: dict):
+        """
+        Load dictionary from JSON representation.
+        
+        Args:
+            json_data (dict): JSON representation of the dictionary
+        """
+        # Clear existing data
+        self.entries = []
+        self.entry_by_id = dict()
+        self.entry_by_term = dict()
+        self.entry_by_wikidata_id = {}
+        
+        # Load metadata
+        if "metadata" in json_data:
+            metadata = json_data["metadata"]
+            if "title" in metadata:
+                self.set_title(metadata["title"])
+            if "version" in metadata:
+                self.set_version(metadata["version"])
+        
+        # Load entries
+        if "entries" in json_data:
+            for entry_data in json_data["entries"]:
+                entry = AmiEntry()
+                entry.from_json(entry_data)
+                self._add_entry(entry)
+    
+    def save_json(self, file_path: str):
+        """
+        Save dictionary as JSON file.
+        
+        Args:
+            file_path (str): Path to save the JSON file
+        """
+        import json
+        
+        json_data = self.to_json()
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(json_data, f, indent=2, ensure_ascii=False)
+    
+    @classmethod
+    def load_json(cls, file_path: str):
+        """
+        Load dictionary from JSON file.
+        
+        Args:
+            file_path (str): Path to the JSON file
+            
+        Returns:
+            AmiDictionary: Loaded dictionary
+        """
+        import json
+        
+        with open(file_path, 'r', encoding='utf-8') as f:
+            json_data = json.load(f)
+        
+        dictionary = cls()
+        dictionary.from_json(json_data)
+        return dictionary
+    
+    @classmethod
+    def create_minimal_json_dictionary(cls, title="New Dictionary", version="1.0.0"):
+        """
+        Create a minimal dictionary for JSON operations.
+        
+        Args:
+            title (str): Dictionary title
+            version (str): Dictionary version
+            
+        Returns:
+            AmiDictionary: New minimal dictionary
+        """
+        dictionary = cls()
+        dictionary.set_title(title)
+        dictionary.set_version(version)
+        return dictionary
 
     def add_wikidata_from_terms(self, allowed_descriptions=ANY):
 
@@ -1514,6 +1702,7 @@ class AmiDictionary:
         return dictionary_file
 
     @classmethod
+    @deprecated("Use create_from_json() or create_minimal_json_dictionary() instead")
     def create_minimal_dictionary(cls):
         element = etree.Element(AmiDictionary.TAG)
         element.attrib["title"] = "minimal"
@@ -1524,7 +1713,7 @@ class AmiDictionary:
 
     def set_title(self, title):
         assert self.root is not None
-        self.root.title = title
+        self.root.attrib[AmiDictionary.TITLE_A] = title
 
     def set_encoding(self, encoding=UTF_8):
         assert self.root is not None
