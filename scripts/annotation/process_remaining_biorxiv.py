@@ -8,6 +8,8 @@ import subprocess
 import time
 from pathlib import Path
 import sys
+import os
+import signal
 
 # Note: amilib should be installed with 'pip install -e .' for scripts to work properly
 
@@ -73,10 +75,10 @@ def check_status():
         
         # Check if process is still running
         try:
-            subprocess.run(["kill", "-0", str(pid)], check=True)
+            os.kill(pid, 0)  # Signal 0 just checks if process exists
             print(f"🔄 Background process (PID: {pid}) is still running")
             return True
-        except subprocess.CalledProcessError:
+        except OSError:
             print(f"✅ Background process (PID: {pid}) has completed")
             return False
     except FileNotFoundError:
@@ -100,10 +102,12 @@ def main():
         try:
             with open("temp/biorxiv_process.pid", "r") as f:
                 pid = int(f.read().strip())
-            subprocess.run(["kill", str(pid)])
+            os.kill(pid, signal.SIGTERM)  # Send SIGTERM first
             print(f"🛑 Stopped background process (PID: {pid})")
         except FileNotFoundError:
             print("❌ No background process found")
+        except OSError:
+            print(f"❌ Could not stop background process (PID: {pid})")
     else:
         # Default: start background processing
         run_in_background()
