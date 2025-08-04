@@ -6,7 +6,7 @@ Replaces problematic characters with safe alternatives.
 
 import os
 import re
-import sys
+import argparse
 from pathlib import Path
 
 
@@ -92,17 +92,18 @@ def rename_file_safely(old_path, new_path, dry_run=True):
 
 def main():
     """Main function to sanitize filenames."""
-    if len(sys.argv) < 2:
-        print("Usage: python sanitize_filenames.py <directory> [--execute]")
-        print("  --execute: Actually rename files (default is dry-run)")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Sanitize filenames in a directory")
+    parser.add_argument("directory", help="Directory to process")
+    parser.add_argument("--execute", action="store_true", help="Actually rename files (default is dry-run)")
     
-    directory = Path(sys.argv[1])
-    dry_run = '--execute' not in sys.argv
+    args = parser.parse_args()
+    
+    directory = Path(args.directory)
+    dry_run = not args.execute
     
     if not directory.exists():
         print(f"Error: Directory {directory} does not exist")
-        sys.exit(1)
+        return 1
     
     print(f"🔍 Scanning for problematic filenames in: {directory}")
     print(f"Mode: {'DRY RUN' if dry_run else 'EXECUTING'}")
@@ -142,7 +143,7 @@ def main():
     
     if dry_run and problematic_files:
         print("\n💡 To actually rename files, run with --execute flag:")
-        print(f"   python {sys.argv[0]} {directory} --execute")
+        print(f"   python {Path(__file__).name} {directory} --execute")
 
 
 if __name__ == "__main__":
