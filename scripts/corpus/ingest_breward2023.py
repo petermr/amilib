@@ -7,8 +7,7 @@ STYLE: No top-level or pipeline files. Uses only AmiCorpus methods.
 import sys
 from pathlib import Path
 
-# Ensure amilib is on the path
-sys.path.append(str(Path(__file__).parent.parent))
+# Note: amilib should be installed with 'pip install -e .' for scripts to work properly
 
 from corpus_module.corpus import AmiCorpus
 

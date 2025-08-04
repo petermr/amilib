@@ -9,8 +9,7 @@ import time
 from pathlib import Path
 import sys
 
-# Add the current directory to Python path to import from local amilib
-sys.path.insert(0, str(Path.cwd()))
+# Note: amilib should be installed with 'pip install -e .' for scripts to work properly
 
 from scripts.markup_climate_pdfs_with_glossary import ClimatePDFProcessor
 
