@@ -54,7 +54,7 @@ class HtmlTable:
         cls.add_rows(dict_by_id, row_keys, table, transform_dict)
         
         if datatables:
-            from .datatables import Datatables
+            from datatables_module.datatables import Datatables
             Datatables.add_body_scripts(body, table_id)
             
         return htmlx, table
@@ -77,7 +77,7 @@ class HtmlTable:
         head = cls.get_or_create_head(htmlx)
         
         if datatables:
-            from .datatables import Datatables
+            from datatables_module.datatables import Datatables
             Datatables.add_head_info(head, htmlx)
 
         if styles and len(styles) > 0:
