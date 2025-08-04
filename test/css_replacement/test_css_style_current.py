@@ -7,8 +7,7 @@ import pytest
 import sys
 import os
 
-# Add amilib to path for imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+# Note: amilib should be installed with 'pip install -e .' for tests to work properly
 
 from amilib.ami_html import CSSStyle
 
