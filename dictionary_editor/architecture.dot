@@ -1,0 +1,87 @@
+digraph DictionaryEditorArchitecture {
+    // Graph settings
+    rankdir=TB;
+    node [shape=box, style=filled, fontname="Arial", fontsize=10];
+    edge [fontname="Arial", fontsize=9];
+    
+    // Subgraphs for different layers
+    subgraph cluster_browser {
+        label="Browser Environment";
+        style=filled;
+        color=lightblue;
+        
+        HTML [label="index.html\n(Main Interface)", shape=note];
+        JS [label="JavaScript Modules\n(editor.js, validation.js, file-handler.js)", shape=component];
+        JSONEditor [label="JSONEditor Library\n(CDN)", shape=component];
+        LocalStorage [label="LocalStorage\n(Browser Storage)", shape=cylinder];
+    }
+    
+    subgraph cluster_data {
+        label="Data Sources";
+        style=filled;
+        color=lightyellow;
+        
+        JSONFiles [label="JSON Dictionary\nFiles", shape=folder];
+        XMLFiles [label="XML Dictionary\nFiles (Import)", shape=folder];
+        Clipboard [label="Clipboard\n(Copy/Paste)", shape=note];
+    }
+    
+    subgraph cluster_external {
+        label="External APIs";
+        style=filled;
+        color=lightcoral;
+        
+        Wikidata [label="Wikidata API\n(Client-side calls)", shape=component];
+        Wikipedia [label="Wikipedia API\n(Client-side calls)", shape=component];
+        AmiLib [label="amilib\n(Import/Export)", shape=component];
+    }
+    
+    // Browser internal connections
+    HTML -> JS [label="loads"];
+    JS -> JSONEditor [label="initializes"];
+    JS -> LocalStorage [label="saves/loads"];
+    
+    // Data connections
+    JS -> JSONFiles [label="File API\nread/write", style=dashed];
+    JS -> XMLFiles [label="File API\nimport", style=dashed];
+    JS -> Clipboard [label="Clipboard API", style=dashed];
+    
+    // External API connections
+    JS -> Wikidata [label="fetch()", style=dashed];
+    JS -> Wikipedia [label="fetch()", style=dashed];
+    JS -> AmiLib [label="conversion", style=dashed];
+    
+    // Data flow annotations
+    subgraph cluster_flow {
+        label="Client-Side Data Flow";
+        style=filled;
+        color=lightgray;
+        
+        Flow1 [label="1. User opens index.html", shape=plaintext];
+        Flow2 [label="2. JavaScript loads JSONEditor", shape=plaintext];
+        Flow3 [label="3. User imports file or starts new", shape=plaintext];
+        Flow4 [label="4. CRUD operations in memory", shape=plaintext];
+        Flow5 [label="5. Auto-save to localStorage", shape=plaintext];
+        Flow6 [label="6. Export to file when done", shape=plaintext];
+    }
+    
+    // Key features
+    subgraph cluster_features {
+        label="Key Features";
+        style=filled;
+        color=lightgreen;
+        
+        Feature1 [label="• No Server Required", shape=plaintext];
+        Feature2 [label="• Offline Capable", shape=plaintext];
+        Feature3 [label="• Instant Response", shape=plaintext];
+        Feature4 [label="• Privacy Preserved", shape=plaintext];
+        Feature5 [label="• File Import/Export", shape=plaintext];
+    }
+    
+    // Styling
+    HTML [fillcolor=skyblue];
+    JS [fillcolor=lightgreen];
+    JSONEditor [fillcolor=orange];
+    JSONFiles [fillcolor=yellow];
+    Wikidata [fillcolor=lightcoral];
+} 

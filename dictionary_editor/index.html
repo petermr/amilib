@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Editor</title>
+    
+    <!-- JSONEditor CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Dictionary Editor</h1>
+            <div class="toolbar">
+                <button id="newBtn" class="btn btn-primary">New Dictionary</button>
+                <button id="importBtn" class="btn btn-secondary">Import JSON</button>
+                <button id="exportBtn" class="btn btn-secondary">Export JSON</button>
+                <button id="addEntryBtn" class="btn btn-success">Add Entry</button>
+                <button id="searchBtn" class="btn btn-info">Search</button>
+                <button id="validateBtn" class="btn btn-warning">Validate</button>
+            </div>
+        </header>
+
+        <!-- Search Panel -->
+        <div id="searchPanel" class="search-panel hidden">
+            <input type="text" id="searchInput" placeholder="Search terms, definitions, or tags...">
+            <button id="searchCloseBtn" class="btn btn-sm">×</button>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Editor Container -->
+            <div id="jsoneditor" class="editor-container"></div>
+            
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <span id="statusText">Ready</span>
+                <span id="entryCount">0 entries</span>
+                <span id="lastSaved">Not saved</span>
+            </div>
+        </main>
+
+        <!-- Modal for Add Entry -->
+        <div id="addEntryModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Entry</h3>
+                    <button id="closeModalBtn" class="btn btn-sm">×</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addEntryForm">
+                        <div class="form-group">
+                            <label for="termInput">Term *</label>
+                            <input type="text" id="termInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="definitionInput">Definition *</label>
+                            <textarea id="definitionInput" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="synonymsInput">Synonyms (comma-separated)</label>
+                            <input type="text" id="synonymsInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryInput">Category</label>
+                            <input type="text" id="categoryInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="tagsInput">Tags (comma-separated)</label>
+                            <input type="text" id="tagsInput">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">Add Entry</button>
+                            <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden file input -->
+        <input type="file" id="fileInput" accept=".json" style="display: none;">
+    </div>
+
+    <!-- JSONEditor JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/validation.js"></script>
+    <script src="js/file-handler.js"></script>
+    <script src="js/editor.js"></script>
+</body>
+</html> 

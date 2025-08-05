@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Editor Demo</title>
+    
+    <!-- JSONEditor CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        .demo-controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        .btn-warning { background-color: #ffc107; color: black; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn:hover { opacity: 0.8; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .explanation {
+            background: #e7f3ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+            display: none;
+        }
+        .explanation.show {
+            display: block;
+        }
+        
+        #jsoneditor {
+            height: 500px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            background: #d4edda;
+            border-radius: 5px;
+            display: none;
+        }
+        .status.show {
+            display: block;
+        }
+        
+        .step-indicator {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #ccc;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .step-indicator.active {
+            background: #007bff;
+        }
+        .step-indicator.completed {
+            background: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 Dictionary Editor Demo</h1>
+            <p>A simple client-side dictionary editor for climate science terms</p>
+        </div>
+
+        <!-- Demo Controls -->
+        <div class="demo-controls">
+            <h3>Demo Steps - Click each button in order:</h3>
+            <p><strong>💡 Tip:</strong> You can also interact directly with the JSON editor below - try expanding/collapsing nodes, editing values, or switching to "Code" mode!</p>
+            <p><strong>🔍 ID System:</strong> This dictionary uses "cc_" prefix (climate change). Other dictionaries might use "bio_" (biology), "chem_" (chemistry), etc. This prevents collisions when merging dictionaries.</p>
+            <p><strong>📊 Large Dataset Support:</strong> JSONEditor handles hundreds/thousands of entries well. For better navigation with large dictionaries, you can use the search function (Ctrl+F) or switch to "Code" mode for faster editing.</p>
+            
+            <div class="step">
+                <span class="step-indicator" id="step1">1</span>
+                <button id="loadBtn" class="btn btn-primary">1. Load Sample Dictionary</button>
+                <div class="explanation" id="explain1">
+                    <strong>What's happening:</strong> We're loading a sample dictionary with climate science terms into the JSON editor. 
+                    The data includes terms like "climate change", "greenhouse gas", and "carbon footprint" with their definitions, 
+                    descriptions from authoritative sources, and synonyms including regex patterns for plurals.
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-indicator" id="step2">2</span>
+                <button id="addBtn" class="btn btn-success" disabled>2. Add New Entry</button>
+                <div class="explanation" id="explain2">
+                    <strong>What's happening:</strong> We're adding a new dictionary entry for "renewable energy". 
+                    This demonstrates the CREATE operation - we generate a unique ID, add the entry to the dictionary, 
+                    and the JSON editor automatically updates to show the new entry in the tree view.
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-indicator" id="step3">3</span>
+                <button id="editBtn" class="btn btn-warning" disabled>3. Edit an Entry</button>
+                <div class="explanation" id="explain3">
+                    <strong>What's happening:</strong> We're updating the "greenhouse gas" entry to add more synonyms and examples. 
+                    This demonstrates the UPDATE operation - we find the entry by ID and modify its properties. 
+                    The changes are immediately visible in the editor.
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-indicator" id="step4">4</span>
+                <button id="deleteBtn" class="btn btn-danger" disabled>4. Delete an Entry</button>
+                <div class="explanation" id="explain4">
+                    <strong>What's happening:</strong> We're removing the "carbon footprint" entry from the dictionary. 
+                    This demonstrates the DELETE operation - we find the entry and remove it from the entries array. 
+                    The editor updates to show the reduced dictionary.
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-indicator" id="step5">5</span>
+                <button id="exportBtn" class="btn btn-primary" disabled>5. Export Dictionary</button>
+                <div class="explanation" id="explain5">
+                    <strong>What's happening:</strong> We're exporting the modified dictionary as a JSON file that can be downloaded. 
+                    This demonstrates how the editor can save work locally without needing a server. 
+                    The file includes all the CRUD operations we performed.
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-indicator" id="step6">6</span>
+                <button id="resetBtn" class="btn btn-warning" disabled>6. Reset Demo</button>
+                <div class="explanation" id="explain6">
+                    <strong>What's happening:</strong> We're clearing the editor and resetting to the original sample data. 
+                    This allows you to run the demo again or start fresh with your own data.
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Messages -->
+        <div class="status" id="status">
+            <span id="statusText"></span>
+        </div>
+
+        <!-- JSON Editor -->
+        <div id="jsoneditor"></div>
+        
+        <!-- Editor Controls Info -->
+        <div class="editor-info" style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 12px;">
+            <h4>🎮 JSON Editor Controls:</h4>
+            <ul style="margin: 5px 0; padding-left: 20px;">
+                <li><strong>Tree Mode:</strong> Click ▶️ to expand/collapse nodes, double-click values to edit</li>
+                <li><strong>Code Mode:</strong> Click "Code" button for raw JSON editing</li>
+                <li><strong>Search:</strong> Use Ctrl+F (Cmd+F on Mac) to find text</li>
+                <li><strong>Undo/Redo:</strong> Use Ctrl+Z and Ctrl+Y (Cmd+Z and Cmd+Y on Mac)</li>
+                <li><strong>Copy/Paste:</strong> Right-click for context menu options</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- JSONEditor JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.js"></script>
+    
+    <script>
+        // Global variables
+        let editor;
+        let currentDictionary = null;
+        let stepCounter = 0;
+
+        // Sample dictionary data
+        const sampleDictionary = {
+            "metadata": {
+                "title": "Climate Science Dictionary",
+                "version": "1.0.0",
+                "description": "A dictionary of climate science terms with authoritative descriptions",
+                "created": "2024-01-01T00:00:00Z",
+                "modified": "2024-01-01T00:00:00Z",
+                "author": "Demo User",
+                "language": "en"
+            },
+            "entries": [
+                {
+                    "id": "cc_1",
+                    "term": "climate change",
+                    "definition": "Long-term changes in global or regional climate patterns.",
+                    "description": "Climate change refers to long-term shifts in temperatures and weather patterns. These shifts may be natural, such as through variations in the solar cycle. But since the 1800s, human activities have been the main driver of climate change, primarily due to the burning of fossil fuels like coal, oil and gas. (Source: IPCC AR6)",
+                    "synonyms": ["climate changes", "climate.*change", "global warming", "climate crisis"],
+                    "examples": ["The IPCC reports show unprecedented climate change.", "Climate change is affecting weather patterns worldwide."],
+                    "category": "environmental_science",
+                    "tags": ["climate", "environment", "IPCC"],
+                    "references": ["IPCC AR6", "NASA Climate Change"],
+                    "wikidata_id": "Q7942",
+                    "wikipedia_url": "https://en.wikipedia.org/wiki/Climate_change"
+                },
+                {
+                    "id": "cc_2",
+                    "term": "greenhouse gas",
+                    "definition": "A gas that contributes to the greenhouse effect by absorbing infrared radiation.",
+                    "description": "A greenhouse gas is a gas that absorbs and emits radiant energy within the thermal infrared range, causing the greenhouse effect. The primary greenhouse gases in Earth's atmosphere are water vapor, carbon dioxide, methane, nitrous oxide, and ozone. Without greenhouse gases, the average temperature of Earth's surface would be about −18 °C (0 °F), rather than the present average of 15 °C (59 °F). (Source: Wikipedia)",
+                    "synonyms": ["greenhouse gases", "GHG", "GHGs", "greenhouse.*gas"],
+                    "examples": ["Carbon dioxide is a major greenhouse gas.", "Methane is a potent greenhouse gas."],
+                    "category": "atmospheric_science",
+                    "tags": ["atmosphere", "climate", "emissions"],
+                    "references": ["Wikipedia", "EPA"],
+                    "wikidata_id": "Q37836",
+                    "wikipedia_url": "https://en.wikipedia.org/wiki/Greenhouse_gas"
+                },
+                {
+                    "id": "cc_3",
+                    "term": "carbon footprint",
+                    "definition": "The total greenhouse gas emissions caused by an individual, event, organization, or product.",
+                    "description": "A carbon footprint is the total greenhouse gas emissions caused by an individual, event, organization, service, place or product, expressed as carbon dioxide equivalent. Greenhouse gases, including the carbon-containing gases carbon dioxide and methane, can be emitted through the burning of fossil fuels, land clearance and the production and consumption of food, manufactured goods, materials, wood, roads, buildings, transportation and other services. (Source: Wikipedia)",
+                    "synonyms": ["carbon footprints", "carbon.*footprint", "CO2 footprint"],
+                    "examples": ["Flying has a large carbon footprint.", "Eating local food reduces your carbon footprint."],
+                    "category": "environmental_science",
+                    "tags": ["emissions", "sustainability", "environment"],
+                    "references": ["Wikipedia", "Carbon Trust"],
+                    "wikidata_id": "Q1057636",
+                    "wikipedia_url": "https://en.wikipedia.org/wiki/Carbon_footprint"
+                }
+            ]
+        };
+
+        // Initialize the editor
+        function initEditor() {
+            const container = document.getElementById('jsoneditor');
+            const options = {
+                mode: 'tree',
+                modes: ['tree', 'code'],
+                onChangeJSON: function() {
+                    // Auto-save to localStorage
+                    const json = editor.get();
+                    localStorage.setItem('dictionary_demo', JSON.stringify(json));
+                }
+            };
+            editor = new JSONEditor(container, options);
+            
+            // Load from localStorage if available
+            const saved = localStorage.getItem('dictionary_demo');
+            if (saved) {
+                try {
+                    editor.set(JSON.parse(saved));
+                    currentDictionary = JSON.parse(saved);
+                } catch (e) {
+                    console.log('No valid saved data');
+                }
+            }
+        }
+
+        // Show status message
+        function showStatus(message, duration = 3000) {
+            const status = document.getElementById('status');
+            const statusText = document.getElementById('statusText');
+            statusText.textContent = message;
+            status.classList.add('show');
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, duration);
+        }
+
+        // Update step indicators
+        function updateStep(step) {
+            for (let i = 1; i <= 6; i++) {
+                const indicator = document.getElementById(`step${i}`);
+                if (i < step) {
+                    indicator.className = 'step-indicator completed';
+                } else if (i === step) {
+                    indicator.className = 'step-indicator active';
+                } else {
+                    indicator.className = 'step-indicator';
+                }
+            }
+        }
+
+        // Step 1: Load Sample Dictionary
+        document.getElementById('loadBtn').addEventListener('click', function() {
+            console.log('Loading sample dictionary...');
+            
+            // Show explanation
+            document.getElementById('explain1').classList.add('show');
+            
+            // Load the sample data
+            editor.set(sampleDictionary);
+            currentDictionary = sampleDictionary;
+            
+            // Save to localStorage
+            localStorage.setItem('dictionary_demo', JSON.stringify(sampleDictionary));
+            
+            // Update UI
+            this.disabled = true;
+            document.getElementById('addBtn').disabled = false;
+            updateStep(2);
+            
+            showStatus('✅ Sample dictionary loaded successfully! You can now see the climate science terms in the editor.');
+        });
+
+        // Step 2: Add New Entry
+        document.getElementById('addBtn').addEventListener('click', function() {
+            console.log('Adding new entry...');
+            
+            // Show explanation
+            document.getElementById('explain2').classList.add('show');
+            
+            // Get current dictionary
+            const dict = editor.get();
+            
+            // Create new entry
+            const newEntry = {
+                "id": "cc_4",
+                "term": "renewable energy",
+                "definition": "Energy from sources that are naturally replenished on a human timescale.",
+                "description": "Renewable energy is energy that is collected from renewable resources that are naturally replenished on a human timescale. It includes sources such as sunlight, wind, the movement of water, and geothermal heat. Although most renewable energy sources are sustainable, some are not. For example, some biomass sources are considered unsustainable at current rates of exploitation. (Source: Wikipedia)",
+                "synonyms": ["renewable energies", "clean energy", "green energy", "renewable.*energy"],
+                "examples": ["Solar and wind are forms of renewable energy.", "Renewable energy is growing rapidly worldwide."],
+                "category": "energy",
+                "tags": ["energy", "sustainability", "clean"],
+                "references": ["Wikipedia", "IEA"],
+                "wikidata_id": "Q219423",
+                "wikipedia_url": "https://en.wikipedia.org/wiki/Renewable_energy"
+            };
+            
+            // Add to dictionary
+            dict.entries.push(newEntry);
+            dict.metadata.modified = new Date().toISOString();
+            
+            // Update editor
+            editor.set(dict);
+            currentDictionary = dict;
+            
+            // Update UI
+            this.disabled = true;
+            document.getElementById('editBtn').disabled = false;
+            updateStep(3);
+            
+            showStatus('✅ New entry "renewable energy" added successfully!');
+        });
+
+        // Step 3: Edit an Entry
+        document.getElementById('editBtn').addEventListener('click', function() {
+            console.log('Editing entry...');
+            
+            // Show explanation
+            document.getElementById('explain3').classList.add('show');
+            
+            // Get current dictionary
+            const dict = editor.get();
+            
+            // Find and update greenhouse gas entry
+            const entry = dict.entries.find(e => e.id === 'cc_2');
+            if (entry) {
+                entry.synonyms.push('carbon dioxide', 'methane', 'CO2');
+                entry.examples.push('The concentration of greenhouse gases in the atmosphere is increasing.');
+                entry.tags.push('carbon', 'methane');
+                dict.metadata.modified = new Date().toISOString();
+            }
+            
+            // Update editor
+            editor.set(dict);
+            currentDictionary = dict;
+            
+            // Update UI
+            this.disabled = true;
+            document.getElementById('deleteBtn').disabled = false;
+            updateStep(4);
+            
+            showStatus('✅ "Greenhouse gas" entry updated with more synonyms and examples!');
+        });
+
+        // Step 4: Delete an Entry
+        document.getElementById('deleteBtn').addEventListener('click', function() {
+            console.log('Deleting entry...');
+            
+            // Show explanation
+            document.getElementById('explain4').classList.add('show');
+            
+            // Get current dictionary
+            const dict = editor.get();
+            
+            // Remove carbon footprint entry
+            dict.entries = dict.entries.filter(e => e.id !== 'cc_3');
+            dict.metadata.modified = new Date().toISOString();
+            
+            // Update editor
+            editor.set(dict);
+            currentDictionary = dict;
+            
+            // Update UI
+            this.disabled = true;
+            document.getElementById('exportBtn').disabled = false;
+            updateStep(5);
+            
+            showStatus('✅ "Carbon footprint" entry deleted successfully!');
+        });
+
+        // Step 5: Export Dictionary
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            console.log('Exporting dictionary...');
+            
+            // Show explanation
+            document.getElementById('explain5').classList.add('show');
+            
+            // Get current dictionary
+            const dict = editor.get();
+            
+            // Create download link
+            const dataStr = JSON.stringify(dict, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'climate_dictionary_modified.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            // Update UI
+            this.disabled = true;
+            document.getElementById('resetBtn').disabled = false;
+            updateStep(6);
+            
+            showStatus('✅ Dictionary exported as "climate_dictionary_modified.json"!');
+        });
+
+        // Step 6: Reset Demo
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            console.log('Resetting demo...');
+            
+            // Show explanation
+            document.getElementById('explain6').classList.add('show');
+            
+            // Clear localStorage
+            localStorage.removeItem('dictionary_demo');
+            
+            // Reset editor
+            editor.set({});
+            
+            // Reset UI
+            document.getElementById('loadBtn').disabled = false;
+            document.getElementById('addBtn').disabled = true;
+            document.getElementById('editBtn').disabled = true;
+            document.getElementById('deleteBtn').disabled = true;
+            document.getElementById('exportBtn').disabled = true;
+            this.disabled = true;
+            updateStep(1);
+            
+            // Hide all explanations
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`explain${i}`).classList.remove('show');
+            }
+            
+            showStatus('🔄 Demo reset! Click "Load Sample Dictionary" to start again.');
+        });
+
+        // Import Foreign Files (XML/HTML/CSV)
+        function setupImportForeign() {
+            const foreignFileInput = document.createElement('input');
+            foreignFileInput.type = 'file';
+            foreignFileInput.accept = '.xml,.html,.csv,.txt';
+            foreignFileInput.style.display = 'none';
+            document.body.appendChild(foreignFileInput);
+            
+            foreignFileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const content = e.target.result;
+                        showStatus('⚠️ Foreign import not yet implemented. File: ' + file.name + ' (' + content.length + ' chars)');
+                        // TODO: Implement conversion logic for XML/HTML/CSV
+                    };
+                    reader.readAsText(file);
+                }
+            });
+            
+            return foreignFileInput;
+        }
+        
+        // Add Import Foreign button functionality
+        function addImportForeignButton() {
+            const foreignFileInput = setupImportForeign();
+            
+            // Add button to demo controls
+            const demoControls = document.querySelector('.demo-controls');
+            const importForeignBtn = document.createElement('button');
+            importForeignBtn.id = 'importForeignBtn';
+            importForeignBtn.className = 'btn btn-secondary';
+            importForeignBtn.textContent = 'Import Foreign (XML/HTML/CSV)';
+            importForeignBtn.style.marginTop = '10px';
+            
+            importForeignBtn.addEventListener('click', function() {
+                foreignFileInput.click();
+            });
+            
+            demoControls.appendChild(importForeignBtn);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initEditor();
+            updateStep(1);
+            addImportForeignButton();
+            showStatus('🎯 Welcome to the Dictionary Editor Demo! Click "Load Sample Dictionary" to begin.');
+        });
+    </script>
+</body>
+</html> 
