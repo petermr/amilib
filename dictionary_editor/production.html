@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Editor - Production</title>
+    
+    <!-- JSONEditor CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .toolbar {
+            background: #34495e;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary { background-color: #3498db; color: white; }
+        .btn-success { background-color: #27ae60; color: white; }
+        .btn-warning { background-color: #f39c12; color: white; }
+        .btn-danger { background-color: #e74c3c; color: white; }
+        .btn-info { background-color: #17a2b8; color: white; }
+        .btn:hover { opacity: 0.8; transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        
+        .status-bar {
+            background: #ecf0f1;
+            padding: 10px 20px;
+            border-bottom: 1px solid #bdc3c7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .main-content {
+            display: flex;
+            height: 70vh;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .editor-container {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        #jsoneditor {
+            height: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .entry-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .entry-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .entry-item:hover {
+            background: #e9ecef;
+        }
+        
+        .entry-item.selected {
+            background: #007bff;
+            color: white;
+        }
+        
+        .entry-id {
+            font-weight: bold;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        .entry-term {
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .entry-definition {
+            font-size: 12px;
+            color: #6c757d;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            text-align: right;
+            margin-top: 20px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .info-panel {
+            background: #e7f3ff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌍 Dictionary Editor - Production</h1>
+            <p>Manual CRUD operations for dictionary management</p>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <button id="newBtn" class="btn btn-primary">New Dictionary</button>
+            <button id="loadBtn" class="btn btn-primary">Load JSON</button>
+            <button id="importForeignBtn" class="btn btn-info">Import Foreign</button>
+            <button id="saveBtn" class="btn btn-success">Save Dictionary</button>
+            <button id="exportBtn" class="btn btn-warning">Export JSON</button>
+            
+            <div style="flex: 1;"></div>
+            
+            <button id="addEntryBtn" class="btn btn-success">Add Entry</button>
+            <button id="editEntryBtn" class="btn btn-warning" disabled>Edit Entry</button>
+            <button id="deleteEntryBtn" class="btn btn-danger" disabled>Delete Entry</button>
+            <button id="searchBtn" class="btn btn-info">Search</button>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span id="statusText">Ready - No dictionary loaded</span>
+            <span id="entryCount">0 entries</span>
+            <span id="lastSaved">Not saved</span>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="info-panel">
+                    <h4>Quick Actions</h4>
+                    <p><strong>1.</strong> Load or create dictionary</p>
+                    <p><strong>2.</strong> Edit entries manually in JSON</p>
+                    <p><strong>3.</strong> Use sidebar for quick navigation</p>
+                    <p><strong>4.</strong> Save when done</p>
+                </div>
+                
+                <input type="text" id="searchInput" class="search-box" placeholder="Search entries...">
+                
+                <div id="entryList">
+                    <p style="text-align: center; color: #6c757d;">No entries loaded</p>
+                </div>
+            </div>
+
+            <!-- Editor -->
+            <div class="editor-container">
+                <div id="jsoneditor"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Entry Modal -->
+    <div id="entryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Entry</h3>
+                <button id="closeModalBtn" class="btn btn-sm" style="float: right;">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="entryForm">
+                    <div class="form-group">
+                        <label for="termInput">Term *</label>
+                        <input type="text" id="termInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="definitionInput">Definition *</label>
+                        <textarea id="definitionInput" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="descriptionInput">Description (Authoritative Source)</label>
+                        <textarea id="descriptionInput"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="synonymsInput">Synonyms (comma-separated, can include regex)</label>
+                        <input type="text" id="synonymsInput" placeholder="synonym1, synonym2, term.*pattern">
+                    </div>
+                    <div class="form-group">
+                        <label for="examplesInput">Examples (comma-separated)</label>
+                        <input type="text" id="examplesInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryInput">Category</label>
+                        <input type="text" id="categoryInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="tagsInput">Tags (comma-separated)</label>
+                        <input type="text" id="tagsInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="referencesInput">References (comma-separated)</label>
+                        <input type="text" id="referencesInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="wikidataIdInput">Wikidata ID</label>
+                        <input type="text" id="wikidataIdInput" placeholder="Q12345">
+                    </div>
+                    <div class="form-group">
+                        <label for="wikipediaUrlInput">Wikipedia URL</label>
+                        <input type="text" id="wikipediaUrlInput" placeholder="https://en.wikipedia.org/wiki/Term">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">Save Entry</button>
+                        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="jsonFileInput" class="file-input" accept=".json">
+    <input type="file" id="foreignFileInput" class="file-input" accept=".xml,.html,.csv,.txt">
+
+    <!-- JSONEditor JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.js"></script>
+    
+    <script>
+        // Global variables
+        let editor;
+        let currentDictionary = null;
+        let selectedEntryId = null;
+        let dictionaryPrefix = 'cc_'; // Default prefix
+
+        // Initialize the editor
+        function initEditor() {
+            const container = document.getElementById('jsoneditor');
+            const options = {
+                mode: 'tree',
+                modes: ['tree', 'code'],
+                onChangeJSON: function() {
+                    updateStatus('Modified - changes not saved');
+                    updateEntryList();
+                }
+            };
+            editor = new JSONEditor(container, options);
+            
+            // Load from localStorage if available
+            const saved = localStorage.getItem('dictionary_production');
+            if (saved) {
+                try {
+                    const dict = JSON.parse(saved);
+                    editor.set(dict);
+                    currentDictionary = dict;
+                    updateStatus('Loaded from browser storage');
+                    updateEntryList();
+                } catch (e) {
+                    console.log('No valid saved data');
+                }
+            }
+        }
+
+        // Update status bar
+        function updateStatus(message) {
+            document.getElementById('statusText').textContent = message;
+        }
+
+        // Update entry count
+        function updateEntryCount() {
+            const dict = editor.get();
+            const count = dict.entries ? dict.entries.length : 0;
+            document.getElementById('entryCount').textContent = `${count} entries`;
+        }
+
+        // Update last saved time
+        function updateLastSaved() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById('lastSaved').textContent = `Last saved: ${now}`;
+        }
+
+        // Update entry list in sidebar
+        function updateEntryList() {
+            const dict = editor.get();
+            const entryList = document.getElementById('entryList');
+            
+            if (!dict.entries || dict.entries.length === 0) {
+                entryList.innerHTML = '<p style="text-align: center; color: #6c757d;">No entries</p>';
+                return;
+            }
+            
+            const html = dict.entries.map(entry => `
+                <div class="entry-item" data-id="${entry.id}" onclick="selectEntry('${entry.id}')">
+                    <div class="entry-id">${entry.id}</div>
+                    <div class="entry-term">${entry.term}</div>
+                    <div class="entry-definition">${entry.definition || 'No definition'}</div>
+                </div>
+            `).join('');
+            
+            entryList.innerHTML = html;
+            updateEntryCount();
+        }
+
+        // Select entry in sidebar
+        function selectEntry(id) {
+            selectedEntryId = id;
+            
+            // Update visual selection
+            document.querySelectorAll('.entry-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            document.querySelector(`[data-id="${id}"]`).classList.add('selected');
+            
+            // Enable edit/delete buttons
+            document.getElementById('editEntryBtn').disabled = false;
+            document.getElementById('deleteEntryBtn').disabled = false;
+        }
+
+        // Create new dictionary
+        document.getElementById('newBtn').addEventListener('click', function() {
+            const newDict = {
+                metadata: {
+                    title: "New Dictionary",
+                    version: "1.0.0",
+                    description: "Dictionary created in production editor",
+                    created: new Date().toISOString(),
+                    modified: new Date().toISOString(),
+                    author: "Editor User",
+                    language: "en"
+                },
+                entries: []
+            };
+            
+            editor.set(newDict);
+            currentDictionary = newDict;
+            updateStatus('New dictionary created');
+            updateEntryList();
+        });
+
+        // Load JSON file
+        document.getElementById('loadBtn').addEventListener('click', function() {
+            document.getElementById('jsonFileInput').click();
+        });
+
+        document.getElementById('jsonFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const dict = JSON.parse(e.target.result);
+                        editor.set(dict);
+                        currentDictionary = dict;
+                        updateStatus(`Loaded: ${file.name}`);
+                        updateEntryList();
+                        
+                        // Auto-save to localStorage
+                        localStorage.setItem('dictionary_production', JSON.stringify(dict));
+                    } catch (error) {
+                        updateStatus(`Error loading file: ${error.message}`);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Save dictionary
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const dict = editor.get();
+            
+            // Auto-save to localStorage
+            localStorage.setItem('dictionary_production', JSON.stringify(dict));
+            
+            // Create download
+            const dataStr = JSON.stringify(dict, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${dict.metadata.title.replace(/\s+/g, '_')}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            updateStatus('Dictionary saved');
+            updateLastSaved();
+        });
+
+        // Export JSON
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const dict = editor.get();
+            const dataStr = JSON.stringify(dict, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${dict.metadata.title.replace(/\s+/g, '_')}_export.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            updateStatus('Dictionary exported');
+        });
+
+        // Import foreign files
+        document.getElementById('importForeignBtn').addEventListener('click', function() {
+            document.getElementById('foreignFileInput').click();
+        });
+
+        document.getElementById('foreignFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                updateStatus(`Foreign import not yet implemented. File: ${file.name}`);
+                // TODO: Implement conversion logic
+            }
+        });
+
+        // Add entry
+        document.getElementById('addEntryBtn').addEventListener('click', function() {
+            showEntryModal('add');
+        });
+
+        // Edit entry
+        document.getElementById('editEntryBtn').addEventListener('click', function() {
+            if (selectedEntryId) {
+                showEntryModal('edit', selectedEntryId);
+            }
+        });
+
+        // Delete entry
+        document.getElementById('deleteEntryBtn').addEventListener('click', function() {
+            if (selectedEntryId && confirm('Are you sure you want to delete this entry?')) {
+                const dict = editor.get();
+                dict.entries = dict.entries.filter(e => e.id !== selectedEntryId);
+                dict.metadata.modified = new Date().toISOString();
+                editor.set(dict);
+                currentDictionary = dict;
+                
+                selectedEntryId = null;
+                document.getElementById('editEntryBtn').disabled = true;
+                document.getElementById('deleteEntryBtn').disabled = true;
+                
+                updateStatus('Entry deleted');
+                updateEntryList();
+            }
+        });
+
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm) {
+                const dict = editor.get();
+                const results = dict.entries.filter(entry => 
+                    entry.term.toLowerCase().includes(searchTerm) ||
+                    entry.definition.toLowerCase().includes(searchTerm) ||
+                    entry.synonyms.some(s => s.toLowerCase().includes(searchTerm))
+                );
+                
+                if (results.length > 0) {
+                    updateStatus(`Found ${results.length} entries matching "${searchTerm}"`);
+                    // Highlight results in sidebar
+                    document.querySelectorAll('.entry-item').forEach(item => {
+                        const entryId = item.getAttribute('data-id');
+                        const isMatch = results.some(r => r.id === entryId);
+                        item.style.backgroundColor = isMatch ? '#fff3cd' : '';
+                    });
+                } else {
+                    updateStatus(`No entries found matching "${searchTerm}"`);
+                }
+            }
+        });
+
+        // Modal functions
+        function showEntryModal(mode, entryId = null) {
+            const modal = document.getElementById('entryModal');
+            const title = document.getElementById('modalTitle');
+            const form = document.getElementById('entryForm');
+            
+            if (mode === 'add') {
+                title.textContent = 'Add New Entry';
+                form.reset();
+            } else if (mode === 'edit' && entryId) {
+                title.textContent = 'Edit Entry';
+                const dict = editor.get();
+                const entry = dict.entries.find(e => e.id === entryId);
+                if (entry) {
+                    fillFormWithEntry(entry);
+                }
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function fillFormWithEntry(entry) {
+            document.getElementById('termInput').value = entry.term || '';
+            document.getElementById('definitionInput').value = entry.definition || '';
+            document.getElementById('descriptionInput').value = entry.description || '';
+            document.getElementById('synonymsInput').value = entry.synonyms ? entry.synonyms.join(', ') : '';
+            document.getElementById('examplesInput').value = entry.examples ? entry.examples.join(', ') : '';
+            document.getElementById('categoryInput').value = entry.category || '';
+            document.getElementById('tagsInput').value = entry.tags ? entry.tags.join(', ') : '';
+            document.getElementById('referencesInput').value = entry.references ? entry.references.join(', ') : '';
+            document.getElementById('wikidataIdInput').value = entry.wikidata_id || '';
+            document.getElementById('wikipediaUrlInput').value = entry.wikipedia_url || '';
+        }
+
+        function closeModal() {
+            document.getElementById('entryModal').style.display = 'none';
+        }
+
+        // Modal event listeners
+        document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+        document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+        // Form submission
+        document.getElementById('entryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const dict = editor.get();
+            const newEntry = {
+                id: document.getElementById('modalTitle').textContent.includes('Add') ? 
+                    `${dictionaryPrefix}${dict.entries.length + 1}` : selectedEntryId,
+                term: document.getElementById('termInput').value,
+                definition: document.getElementById('definitionInput').value,
+                description: document.getElementById('descriptionInput').value,
+                synonyms: document.getElementById('synonymsInput').value.split(',').map(s => s.trim()).filter(s => s),
+                examples: document.getElementById('examplesInput').value.split(',').map(s => s.trim()).filter(s => s),
+                category: document.getElementById('categoryInput').value,
+                tags: document.getElementById('tagsInput').value.split(',').map(s => s.trim()).filter(s => s),
+                references: document.getElementById('referencesInput').value.split(',').map(s => s.trim()).filter(s => s),
+                wikidata_id: document.getElementById('wikidataIdInput').value,
+                wikipedia_url: document.getElementById('wikipediaUrlInput').value
+            };
+            
+            if (document.getElementById('modalTitle').textContent.includes('Add')) {
+                dict.entries.push(newEntry);
+            } else {
+                const index = dict.entries.findIndex(e => e.id === selectedEntryId);
+                if (index !== -1) {
+                    dict.entries[index] = newEntry;
+                }
+            }
+            
+            dict.metadata.modified = new Date().toISOString();
+            editor.set(dict);
+            currentDictionary = dict;
+            
+            closeModal();
+            updateStatus('Entry saved');
+            updateEntryList();
+        });
+
+        // Search input
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            document.querySelectorAll('.entry-item').forEach(item => {
+                const term = item.querySelector('.entry-term').textContent.toLowerCase();
+                const definition = item.querySelector('.entry-definition').textContent.toLowerCase();
+                const isMatch = term.includes(searchTerm) || definition.includes(searchTerm);
+                item.style.display = isMatch || !searchTerm ? 'block' : 'none';
+            });
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initEditor();
+            updateStatus('Ready - Load or create a dictionary to begin');
+        });
+    </script>
+</body>
+</html> 
