@@ -532,12 +532,128 @@
             demoControls.appendChild(importForeignBtn);
         }
 
+        // Programmatic CRUD functions for command-line driving
+        window.dictionaryEditor = {
+            // Load sample dictionary
+            loadSample: function() {
+                document.getElementById('loadBtn').click();
+                return 'Sample dictionary loaded';
+            },
+            
+            // Add new entry
+            addEntry: function(term, definition, description) {
+                const dict = editor.get();
+                const newId = 'cc_' + (dict.entries.length + 1);
+                
+                const newEntry = {
+                    "id": newId,
+                    "term": term || "new term",
+                    "definition": definition || "definition",
+                    "description": description || "description",
+                    "synonyms": [],
+                    "examples": [],
+                    "category": "general",
+                    "tags": [],
+                    "references": [],
+                    "wikidata_id": "",
+                    "wikipedia_url": ""
+                };
+                
+                dict.entries.push(newEntry);
+                dict.metadata.modified = new Date().toISOString();
+                editor.set(dict);
+                
+                return `Entry "${term}" added with ID ${newId}`;
+            },
+            
+            // Get entry by ID
+            getEntry: function(id) {
+                const dict = editor.get();
+                const entry = dict.entries.find(e => e.id === id);
+                return entry || 'Entry not found';
+            },
+            
+            // Update entry
+            updateEntry: function(id, updates) {
+                const dict = editor.get();
+                const entry = dict.entries.find(e => e.id === id);
+                if (entry) {
+                    Object.assign(entry, updates);
+                    dict.metadata.modified = new Date().toISOString();
+                    editor.set(dict);
+                    return `Entry ${id} updated`;
+                }
+                return 'Entry not found';
+            },
+            
+            // Delete entry
+            deleteEntry: function(id) {
+                const dict = editor.get();
+                const originalLength = dict.entries.length;
+                dict.entries = dict.entries.filter(e => e.id !== id);
+                dict.metadata.modified = new Date().toISOString();
+                editor.set(dict);
+                
+                if (dict.entries.length < originalLength) {
+                    return `Entry ${id} deleted`;
+                }
+                return 'Entry not found';
+            },
+            
+            // List all entries
+            listEntries: function() {
+                const dict = editor.get();
+                return dict.entries.map(e => `${e.id}: ${e.term}`).join('\n');
+            },
+            
+            // Export to JSON
+            export: function() {
+                const dict = editor.get();
+                const dataStr = JSON.stringify(dict, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'dictionary_export.json';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                return 'Dictionary exported as dictionary_export.json';
+            },
+            
+            // Get current dictionary
+            getDictionary: function() {
+                return editor.get();
+            },
+            
+            // Set dictionary
+            setDictionary: function(dict) {
+                editor.set(dict);
+                return 'Dictionary updated';
+            }
+        };
+
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initEditor();
             updateStep(1);
             addImportForeignButton();
             showStatus('🎯 Welcome to the Dictionary Editor Demo! Click "Load Sample Dictionary" to begin.');
+            
+            // Log available commands
+            console.log('🎮 Dictionary Editor Commands Available:');
+            console.log('dictionaryEditor.loadSample() - Load sample dictionary');
+            console.log('dictionaryEditor.addEntry(term, definition, description) - Add new entry');
+            console.log('dictionaryEditor.getEntry(id) - Get entry by ID');
+            console.log('dictionaryEditor.updateEntry(id, updates) - Update entry');
+            console.log('dictionaryEditor.deleteEntry(id) - Delete entry');
+            console.log('dictionaryEditor.listEntries() - List all entries');
+            console.log('dictionaryEditor.export() - Export dictionary');
+            console.log('dictionaryEditor.getDictionary() - Get current dictionary');
+            console.log('dictionaryEditor.setDictionary(dict) - Set dictionary');
         });
     </script>
 </body>
