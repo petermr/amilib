@@ -227,6 +227,7 @@
             <button id="editEntryBtn" class="btn btn-warning" disabled>Edit Entry</button>
             <button id="deleteEntryBtn" class="btn btn-danger" disabled>Delete Entry</button>
             <button id="searchBtn" class="btn btn-info">Search</button>
+            <button id="exitBtn" class="btn btn-danger">Exit</button>
         </div>
 
         <!-- Status Bar -->
@@ -343,6 +344,16 @@
                 onChangeJSON: function() {
                     updateStatus('Modified - changes not saved');
                     updateEntryList();
+                },
+                // Customize tree display to show terms instead of IDs
+                onNodeName: function(node) {
+                    if (node.path && node.path.length > 0) {
+                        const path = node.path.join('.');
+                        if (path.includes('entries') && path.includes('term')) {
+                            return node.value || 'Unnamed Entry';
+                        }
+                    }
+                    return node.field;
                 }
             };
             editor = new JSONEditor(container, options);
@@ -392,9 +403,9 @@
             
             const html = dict.entries.map(entry => `
                 <div class="entry-item" data-id="${entry.id}" onclick="selectEntry('${entry.id}')">
-                    <div class="entry-id">${entry.id}</div>
                     <div class="entry-term">${entry.term}</div>
                     <div class="entry-definition">${entry.definition || 'No definition'}</div>
+                    <div class="entry-id">${entry.id}</div>
                 </div>
             `).join('');
             
@@ -419,9 +430,12 @@
 
         // Create new dictionary
         document.getElementById('newBtn').addEventListener('click', function() {
+            const title = prompt('Enter dictionary title:', 'New Dictionary');
+            if (!title) return;
+            
             const newDict = {
                 metadata: {
-                    title: "New Dictionary",
+                    title: title,
                     version: "1.0.0",
                     description: "Dictionary created in production editor",
                     created: new Date().toISOString(),
@@ -434,7 +448,7 @@
             
             editor.set(newDict);
             currentDictionary = newDict;
-            updateStatus('New dictionary created');
+            updateStatus(`New dictionary created: ${title}`);
             updateEntryList();
         });
 
@@ -472,20 +486,24 @@
             // Auto-save to localStorage
             localStorage.setItem('dictionary_production', JSON.stringify(dict));
             
-            // Create download
+            // Create download with proper filename
             const dataStr = JSON.stringify(dict, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
             const url = URL.createObjectURL(dataBlob);
             
+            const filename = dict.metadata.title ? 
+                `${dict.metadata.title.replace(/[^a-zA-Z0-9]/g, '_')}.json` : 
+                'dictionary.json';
+            
             const link = document.createElement('a');
             link.href = url;
-            link.download = `${dict.metadata.title.replace(/\s+/g, '_')}.json`;
+            link.download = filename;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
             
-            updateStatus('Dictionary saved');
+            updateStatus(`Dictionary saved as ${filename}`);
             updateLastSaved();
         });
 
@@ -496,15 +514,19 @@
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
             const url = URL.createObjectURL(dataBlob);
             
+            const filename = dict.metadata.title ? 
+                `${dict.metadata.title.replace(/[^a-zA-Z0-9]/g, '_')}_export.json` : 
+                'dictionary_export.json';
+            
             const link = document.createElement('a');
             link.href = url;
-            link.download = `${dict.metadata.title.replace(/\s+/g, '_')}_export.json`;
+            link.download = filename;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
             
-            updateStatus('Dictionary exported');
+            updateStatus(`Dictionary exported as ${filename}`);
         });
 
         // Import foreign files
@@ -534,19 +556,24 @@
 
         // Delete entry
         document.getElementById('deleteEntryBtn').addEventListener('click', function() {
-            if (selectedEntryId && confirm('Are you sure you want to delete this entry?')) {
+            if (selectedEntryId) {
                 const dict = editor.get();
-                dict.entries = dict.entries.filter(e => e.id !== selectedEntryId);
-                dict.metadata.modified = new Date().toISOString();
-                editor.set(dict);
-                currentDictionary = dict;
+                const entry = dict.entries.find(e => e.id === selectedEntryId);
+                const termName = entry ? entry.term : selectedEntryId;
                 
-                selectedEntryId = null;
-                document.getElementById('editEntryBtn').disabled = true;
-                document.getElementById('deleteEntryBtn').disabled = true;
-                
-                updateStatus('Entry deleted');
-                updateEntryList();
+                if (confirm(`Are you sure you want to delete entry "${termName}"?`)) {
+                    dict.entries = dict.entries.filter(e => e.id !== selectedEntryId);
+                    dict.metadata.modified = new Date().toISOString();
+                    editor.set(dict);
+                    currentDictionary = dict;
+                    
+                    selectedEntryId = null;
+                    document.getElementById('editEntryBtn').disabled = true;
+                    document.getElementById('deleteEntryBtn').disabled = true;
+                    
+                    updateStatus(`Entry "${termName}" deleted`);
+                    updateEntryList();
+                }
             }
         });
 
@@ -664,6 +691,27 @@
                 const isMatch = term.includes(searchTerm) || definition.includes(searchTerm);
                 item.style.display = isMatch || !searchTerm ? 'block' : 'none';
             });
+        });
+
+        // Exit button
+        document.getElementById('exitBtn').addEventListener('click', function() {
+            const dict = editor.get();
+            if (dict.entries && dict.entries.length > 0) {
+                if (confirm('You have unsaved changes. Save before exiting?')) {
+                    // Trigger save
+                    document.getElementById('saveBtn').click();
+                }
+            }
+            
+            // Clear localStorage
+            localStorage.removeItem('dictionary_production');
+            
+            // Close window or redirect
+            if (window.opener) {
+                window.close();
+            } else {
+                window.location.href = 'about:blank';
+            }
         });
 
         // Initialize when page loads
