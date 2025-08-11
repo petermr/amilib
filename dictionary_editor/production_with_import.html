@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary Editor - Production with Import</title>
+    <title>Dictionary Editor - Production with Import & Directory Picker</title>
     
     <!-- JSONEditor CSS -->
     <link href="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
@@ -265,6 +265,7 @@
             <button id="newBtn" class="btn btn-primary">New Dictionary</button>
             <button id="loadBtn" class="btn btn-primary">Load JSON</button>
             <button id="importLegacyBtn" class="btn btn-info">Import Legacy</button>
+            <button id="chooseDirBtn" class="btn btn-info">Choose Directory</button>
             <button id="saveBtn" class="btn btn-success">Save Dictionary</button>
             <button id="exportBtn" class="btn btn-warning">Export JSON</button>
             <button id="editNameBtn" class="btn btn-info">Edit Name</button>
@@ -282,6 +283,7 @@
         <div class="status-bar">
             <span id="statusText">Ready - No dictionary loaded</span>
             <span id="entryCount">0 entries</span>
+            <span id="currentDirectory">No directory selected</span>
             <span id="lastSaved">Not saved</span>
         </div>
 
@@ -423,6 +425,7 @@
         let selectedEntryId = null;
         let dictionaryPrefix = 'cc_';
         let lastSaved = null;
+        let selectedDirectory = null;
         let legacyImporter = new LegacyDictionaryImporter();
 
         // Initialize JSONEditor
@@ -494,6 +497,16 @@
                 infoDiv.style.display = 'none';
             }
             updateEntryCount();
+        }
+
+        // Update directory display
+        function updateDirectoryDisplay() {
+            const dirSpan = document.getElementById('currentDirectory');
+            if (selectedDirectory) {
+                dirSpan.textContent = `Directory: ${selectedDirectory.name}`;
+            } else {
+                dirSpan.textContent = 'No directory selected';
+            }
         }
 
         // Update entry list in sidebar - FIXED VERSION
@@ -646,6 +659,22 @@
             document.getElementById('legacyFileInput').click();
         });
 
+        // Choose Directory
+        document.getElementById('chooseDirBtn').addEventListener('click', async function() {
+            try {
+                if ('showDirectoryPicker' in window) {
+                    const dirHandle = await window.showDirectoryPicker();
+                    selectedDirectory = dirHandle;
+                    updateDirectoryDisplay();
+                    updateStatus(`Directory selected: ${dirHandle.name}`);
+                } else {
+                    updateStatus('Directory picker not supported in this browser');
+                }
+            } catch (error) {
+                updateStatus(`Error selecting directory: ${error.message}`);
+            }
+        });
+
         document.getElementById('legacyFileInput').addEventListener('change', async function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -704,6 +733,28 @@
                         }]
                     };
                     
+                    // If directory is selected, try to use it
+                    if (selectedDirectory) {
+                        try {
+                            // Try to save to selected directory
+                            const fileHandle = await selectedDirectory.getFileHandle(
+                                currentDictionary.metadata.filename || 'dictionary.json',
+                                { create: true }
+                            );
+                            const writable = await fileHandle.createWritable();
+                            const jsonString = JSON.stringify(currentDictionary, null, 2);
+                            await writable.write(jsonString);
+                            await writable.close();
+                            
+                            updateStatus(`Dictionary saved to: ${selectedDirectory.name}/${fileHandle.name}`);
+                            updateLastSaved();
+                            return;
+                        } catch (dirError) {
+                            updateStatus(`Could not save to selected directory: ${dirError.message}. Using file picker instead.`);
+                        }
+                    }
+                    
+                    // Fallback to file picker
                     const fileHandle = await window.showSaveFilePicker(options);
                     const writable = await fileHandle.createWritable();
                     const jsonString = JSON.stringify(currentDictionary, null, 2);
@@ -738,25 +789,46 @@
         });
 
         // Export JSON
-        document.getElementById('exportBtn').addEventListener('click', function() {
+        document.getElementById('exportBtn').addEventListener('click', async function() {
             const dict = editor.get();
-            const dataStr = JSON.stringify(dict, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(dataBlob);
-            
             const filename = dict.metadata.filename ? 
                 `${dict.metadata.filename.replace('.json', '')}_export.json` :
                 `${dict.metadata.title.replace(/[^a-zA-Z0-9]/g, '_')}_export.json`;
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            updateStatus(`Dictionary exported as ${filename}`);
+
+            try {
+                // If directory is selected, try to export to it
+                if (selectedDirectory) {
+                    try {
+                        const fileHandle = await selectedDirectory.getFileHandle(filename, { create: true });
+                        const writable = await fileHandle.createWritable();
+                        const jsonString = JSON.stringify(dict, null, 2);
+                        await writable.write(jsonString);
+                        await writable.close();
+                        
+                        updateStatus(`Dictionary exported to: ${selectedDirectory.name}/${filename}`);
+                        return;
+                    } catch (dirError) {
+                        updateStatus(`Could not export to selected directory: ${dirError.message}. Using download instead.`);
+                    }
+                }
+                
+                // Fallback to download method
+                const dataStr = JSON.stringify(dict, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                updateStatus(`Dictionary exported as ${filename}`);
+            } catch (error) {
+                updateStatus(`Error exporting: ${error.message}`);
+            }
         });
 
         // Edit Dictionary Name
@@ -984,6 +1056,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             initEditor();
             updateStatus('Ready - Load or import a dictionary to begin');
+            updateDirectoryDisplay(); // Initialize directory display
         });
     </script>
 </body>
