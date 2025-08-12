@@ -1464,6 +1464,296 @@ class SPARQLTests:
         # print(results)
 
 
+class WikidataServiceTest(base_test):
+    """
+    Tests for the new WikidataService class
+    """
+    
+    def setUp(self):
+        """Set up test fixtures."""
+        from amilib.wikidata_service import WikidataService
+        self.service = WikidataService()
+    
+    def test_service_initialization(self):
+        """Test WikidataService initialization."""
+        from amilib.wikidata_service import WikidataService
+        
+        # Test default language
+        service = WikidataService()
+        self.assertEqual(service.language, 'en')
+        
+        # Test custom language
+        service_fr = WikidataService(language='fr')
+        self.assertEqual(service_fr.language, 'fr')
+    
+    def test_validate_qid(self):
+        """Test QID validation."""
+        from amilib.wikidata_service import WikidataService
+        
+        service = WikidataService()
+        
+        # Valid QIDs
+        self.assertTrue(service.validate_qid('Q12345'))
+        self.assertTrue(service.validate_qid('Q1'))
+        self.assertTrue(service.validate_qid('Q999999999'))
+        
+        # Invalid QIDs
+        self.assertFalse(service.validate_qid(''))
+        self.assertFalse(service.validate_qid(None))
+        self.assertFalse(service.validate_qid('12345'))
+        self.assertFalse(service.validate_qid('Q'))
+        self.assertFalse(service.validate_qid('q12345'))
+        self.assertFalse(service.validate_qid('Q12345a'))
+        self.assertFalse(service.validate_qid('P12345'))
+    
+    def test_search_entity_basic(self):
+        """Test basic entity search functionality."""
+        # This test may require internet connection
+        # We'll test the structure and error handling
+        
+        results = self.service.search_entity("test_nonexistent_term_xyz123")
+        
+        # Should return empty list for non-existent terms
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 0)
+    
+    def test_get_entity_properties_structure(self):
+        """Test entity properties retrieval structure."""
+        # Test with a known entity (Q42 - Douglas Adams)
+        properties = self.service.get_entity_properties("Q42")
+        
+        # Should return a dictionary
+        self.assertIsInstance(properties, dict)
+        
+        # Properties should be structured correctly
+        for prop_name, prop_values in properties.items():
+            self.assertIsInstance(prop_values, list)
+            for value in prop_values:
+                self.assertIsInstance(value, dict)
+                self.assertIn('type', value)
+                self.assertIn('value', value)
+    
+    def test_get_entity_description(self):
+        """Test entity description retrieval."""
+        # Test with a known entity
+        description = self.service.get_entity_description("Q42")
+        
+        # Should return string or None
+        if description is not None:
+            self.assertIsInstance(description, str)
+            self.assertGreater(len(description), 0)
+    
+    def test_get_entity_aliases(self):
+        """Test entity aliases retrieval."""
+        # Test with a known entity
+        aliases = self.service.get_entity_aliases("Q42")
+        
+        # Should return a list
+        self.assertIsInstance(aliases, list)
+        
+        # All aliases should be strings
+        for alias in aliases:
+            self.assertIsInstance(alias, str)
+    
+    def test_get_wikipedia_links(self):
+        """Test Wikipedia links retrieval."""
+        # Test with a known entity
+        links = self.service.get_wikipedia_links("Q42")
+        
+        # Should return a dictionary
+        self.assertIsInstance(links, dict)
+        
+        # Should have English link
+        if 'en' in links:
+            self.assertIsInstance(links['en'], str)
+            self.assertIn('wikipedia.org', links['en'])
+    
+    def test_get_entity_summary_structure(self):
+        """Test entity summary structure."""
+        # Test with a known entity
+        summary = self.service.get_entity_summary("Q42")
+        
+        # Should return a dictionary
+        self.assertIsInstance(summary, dict)
+        
+        # Should have expected keys
+        expected_keys = ['id', 'label', 'description', 'aliases', 'properties', 'wikipedia_links', 'type']
+        for key in expected_keys:
+            self.assertIn(key, summary)
+        
+        # ID should match input
+        self.assertEqual(summary['id'], 'Q42')
+    
+    def test_enrich_term_structure(self):
+        """Test term enrichment structure."""
+        # Test with a known term
+        result = self.service.enrich_term("Douglas Adams")
+        
+        # Should return a dictionary with expected structure
+        self.assertIsInstance(result, dict)
+        self.assertIn('term', result)
+        self.assertIn('wikidata', result)
+        self.assertIn('enrichment_status', result)
+        
+        # Term should match input
+        self.assertEqual(result['term'], 'Douglas Adams')
+        
+        # Status should be valid
+        valid_statuses = ['success', 'no_entity_found', 'error']
+        self.assertIn(result['enrichment_status'], valid_statuses)
+    
+    def test_batch_enrich_terms(self):
+        """Test batch term enrichment."""
+        terms = ["Douglas Adams", "test_nonexistent_term_xyz123"]
+        results = self.service.batch_enrich_terms(terms)
+        
+        # Should return list with same length as input
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), len(terms))
+        
+        # Each result should have expected structure
+        for result in results:
+            self.assertIsInstance(result, dict)
+            self.assertIn('term', result)
+            self.assertIn('wikidata', result)
+            self.assertIn('enrichment_status', result)
+    
+    def test_error_handling(self):
+        """Test error handling for invalid inputs."""
+        # Test with invalid QID
+        properties = self.service.get_entity_properties("invalid_qid")
+        self.assertEqual(properties, {})
+        
+        # Test with empty string - should raise exception
+        with self.assertRaises(Exception):
+            self.service.get_entity_description("")
+        
+        # Test with None - should raise exception
+        with self.assertRaises(Exception):
+            self.service.get_entity_description(None)
+        
+        # Test with None for aliases
+        aliases = self.service.get_entity_aliases(None)
+        self.assertEqual(aliases, [])
+    
+    def test_convenience_functions(self):
+        """Test convenience functions."""
+        from amilib.wikidata_service import (
+            search_wikidata_entity,
+            get_wikidata_entity_summary,
+            enrich_term_with_wikidata
+        )
+        
+        # Test convenience functions exist and are callable
+        self.assertTrue(callable(search_wikidata_entity))
+        self.assertTrue(callable(get_wikidata_entity_summary))
+        self.assertTrue(callable(enrich_term_with_wikidata))
+        
+        # Test they return expected types
+        search_results = search_wikidata_entity("test_term")
+        self.assertIsInstance(search_results, list)
+        
+        summary = get_wikidata_entity_summary("Q42")
+        self.assertIsInstance(summary, dict)
+        
+        enrichment = enrich_term_with_wikidata("test_term")
+        self.assertIsInstance(enrichment, dict)
+    
+    def test_cache_functionality(self):
+        """Test cache functionality."""
+        # Test cache clearing
+        self.service.clear_cache()
+        
+        # Cache should be empty after clearing
+        self.assertEqual(len(self.service._cache), 0)
+    
+    def test_language_specific_functionality(self):
+        """Test language-specific functionality."""
+        from amilib.wikidata_service import WikidataService
+        
+        # Create service with different language
+        service_hi = WikidataService(language='hi')
+        
+        # Test that language is set correctly
+        self.assertEqual(service_hi.language, 'hi')
+        
+        # Test that WikidataExtractor uses correct language
+        self.assertEqual(service_hi.wikidata_extractor.lang, 'hi')
+    
+    def test_property_label_extraction(self):
+        """Test property label extraction."""
+        # Test with a known property (P31 - instance of)
+        prop_label = self.service._get_property_label("P31")
+        
+        # Should return string or None
+        if prop_label is not None:
+            self.assertIsInstance(prop_label, str)
+            self.assertGreater(len(prop_label), 0)
+    
+    def test_entity_type_detection(self):
+        """Test entity type detection."""
+        # Test with a known entity type
+        entity_type = self.service._get_entity_type("Q42", {})  # Douglas Adams
+        
+        # Should return a string or None
+        if entity_type is not None:
+            self.assertIsInstance(entity_type, str)
+    
+    def test_disambiguation_page_detection(self):
+        """Test Wikipedia disambiguation page detection."""
+        # This test may need to be mocked or use a known disambiguation page
+        # For now, test the method exists and returns boolean
+        result = self.service.is_wikipedia_disambiguation_page("Q42")
+        self.assertIsInstance(result, bool)
+    
+    def test_disambiguation_options_retrieval(self):
+        """Test retrieval of disambiguation options."""
+        # Test the method exists and returns expected type
+        options = self.service.get_disambiguation_options("Q42")
+        # Should return None (not a disambiguation page) or a list
+        if options is not None:
+            self.assertIsInstance(options, list)
+        else:
+            self.assertIsNone(options)
+    
+    def test_exception_raising_for_no_description(self):
+        """Test that exception is raised when no description is found."""
+        # Test with an invalid QID that won't have a description
+        with self.assertRaises(Exception):
+            self.service.get_entity_description("invalid_qid")
+    
+    def test_exception_raising_for_empty_qid(self):
+        """Test that exception is raised for empty QID."""
+        with self.assertRaises(Exception):
+            self.service.get_entity_description("")
+    
+    def test_exception_raising_for_none_qid(self):
+        """Test that exception is raised for None QID."""
+        with self.assertRaises(Exception):
+            self.service.get_entity_description(None)
+
+
+class SPARQLTests:
+    @classmethod
+    @unittest.skip("WS symbol?")
+    def test_sparql_wrapper_WIKI(cls):
+        """
+        Author Shweata N Hegde
+        from wikidata query site
+        """
+        #
+        # query = """#research council
+        # SELECT ?researchcouncil ?researchcouncilLabel
+        # WHERE
+        # {
+        #   ?researchcouncil wdt:P31 wd:Q10498148.
+        #   SERVICE wikibase:label_xml { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+        # }"""
+        #
+        # results = WS.get_results_xml(query)
+        # print(results)
+
+
 if __name__ == '__main__':
     unittest.main()
     # if wiki_test:

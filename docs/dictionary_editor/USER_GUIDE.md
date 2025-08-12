@@ -288,3 +288,5 @@ The Dictionary Editor is designed to work with the amilib ecosystem:
 **Last Updated**: January 27, 2025  
 **Version**: 1.0.0  
 **Author**: Dictionary Editor Team
+
+

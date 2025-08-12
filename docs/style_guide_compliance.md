@@ -120,6 +120,18 @@ We updated the official style guide with additional rules:
 
 - ✅ **Good**: Empty `__init__.py` files
 - ❌ **Bad**: `__init__.py` files with import statements or other code
+
+### STYLE: Do not write business logic in tests without authorisation
+
+- ✅ **Good**: Tests that call existing library methods
+- ✅ **Good**: Tests that verify library functionality
+- ❌ **Bad**: Tests that implement business logic
+- ❌ **Bad**: Tests that duplicate library functionality
+- ❌ **Bad**: Tests that contain complex processing logic
+
+**Rationale**: Business logic in tests pollutes the test suite, makes tests harder to maintain, 
+and creates technical debt. Tests should focus on verifying existing functionality, not 
+implementing new features.
 ```
 
 ## Best Practices Established
