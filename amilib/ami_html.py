@@ -13,6 +13,9 @@ from collections import defaultdict, Counter, OrderedDict
 from enum import Enum
 from io import StringIO
 from pathlib import Path
+from urllib.error import URLError
+
+import requests
 
 import lxml
 import numpy as np
@@ -3215,7 +3218,7 @@ class HtmlEditor:
         for i, child in enumerate(list(elem)):
             if not child.get('id'):
                 child.set('id', f"{current_id}.{i + 1}")
-            ensure_unique_ids(child, child.get('id'))
+            HtmlEditor.ensure_unique_ids(child, child.get('id'))
 
     def process_xml_string(xml_string):
         """
@@ -4101,6 +4104,36 @@ class HtmlUtil:
             raise e
         return htmlx
 
+    @classmethod
+    def scrape_url(cls, url):
+        """
+        scrapes an HTML URL with politeness
+        uses requests and headers with User-Agent MyBot
+        :param url; URL to download
+        :return: content of URL or None
+        """
+
+        headers = {
+            'User-Agent': 'MyBot/1.0 (https://example.com/bot; your-email@example.com)',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+        }
+
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            response.raise_for_status()
+            return response.text
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 429:
+                logger.error(f"Rate limited: {e}")
+                # Implement exponential backoff here
+                raise URLError(f"Rate limited by Wikimedia: {e}")
+            else:
+                raise URLError(f"HTTP error {e.response.status_code}: {e}")
+        except requests.exceptions.RequestException as e:
+            raise URLError(f"Request failed: {e}")
+
+        return None if not response else response.content
 
 
 class HtmlAnnotator:
@@ -4329,6 +4362,7 @@ class AnnotatorCommand:
             self.make_group(parent_elem, group_lead)
 
     # class AnnotatorCommand
+    TITLE = "title"
 
     def make_group(self, elem, group_lead, end_group=None):
         parent = XmlLib.getparent(elem, debug=True)
@@ -4342,7 +4376,7 @@ class AnnotatorCommand:
             print(f"siblings {len(siblings)}!!!")
         div = ET.SubElement(parent, "div")
         div.append(group_lead)
-        div.attrib[TITLE] = group_lead.text if group_lead.text else "?"
+        div.attrib[HtmlEditor.TITLE] = group_lead.text if group_lead.text else "?"
         div.attrib[STYLE] = "border:black dashed 2px;"
         xp = self.end_xpath
         xp = "self::div[span[contains(text(),'END')]]"

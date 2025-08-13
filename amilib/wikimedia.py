@@ -10,6 +10,8 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import urlopen
+import requests
+from urllib.error import URLError
 
 import lxml.etree
 import requests
@@ -1167,17 +1169,19 @@ class WikidataSparql:
 
 
 class ParserWrapper:
+
     @classmethod
     def parse_utf8_html_to_root(cla, url):
 
         if url is None:
             raise ValueError("url is None")
         try:
-            content = None
-            with urlopen(url) as u:
-                content = u.read().decode("utf-8")
+            content = HtmlUtil.scrape_url(url)
+            # with urlopen(url) as u:
+            #     content = u.read().decode("utf-8")
+
         except HTTPError as e:
-            logger.info(f"cannout open {url} because {e}")
+            logger.info(f"cannot open {url} because {e}")
             raise URLError(f"failed to read {url} because {e}")
         tree = ET.parse(StringIO(content), ET.HTMLParser())
         root = tree.getroot()
@@ -1364,11 +1368,16 @@ class WikipediaPage:
         """gets main content from Wikipedia page
         also cleans some non-content elements incl buttons, navs, etc.
         """
+        if self.html_elem is None:
+            not logger.warning(f"no self.html_elem for wikipedia page")
+            return None
         try:
             main_contents = self.html_elem.xpath(".//main")
             main_content = main_contents[0]
+            if main_content is None:
+                raise ValueError(f"wikpedia page has no main element")
         except Exception as e:
-            logger.debug(f"except {e}")
+            logger.warning(f"except {e}")
             return None
         XmlLib.remove_elements(main_content, xpath="//nav")
         XmlLib.remove_elements(main_content, xpath="//noscript")
@@ -1380,10 +1389,13 @@ class WikipediaPage:
         get wrapper for first paragraph in main content (usually with definitions in lead sentence
         """
         main_elem = self.get_main_element()
+        if main_elem is None:
+            logger.warning(f"wikipedia has no main_element")
+            return None
         ps = main_elem.xpath(".//p")
         if not ps:
             return None
-        # iterate until meaningfile para length found
+        # iterate until meaningful para length found
         for p in ps:
             text = XmlLib.get_text(p).strip()
             if len(text) > WikipediaPara.MIN_FIRST_PARA_LEN:

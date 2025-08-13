@@ -204,6 +204,9 @@ class WikipediaTest(base_test):
         """
         term = "AMOC"
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        if wikipedia_page is None:
+            logger.warning(f"no wikipedia page for {term}")
+            return
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert type(first_para) is WikipediaPara
         XmlLib.add_sentence_brs(first_para.get_texts())

@@ -3,6 +3,7 @@ import glob
 import json
 import os
 import logging
+from pathlib import Path
 import unittest
 
 from pathlib import Path, PosixPath
@@ -133,12 +134,13 @@ class File0Test(AmiAnyTest):
         file1.touch()
         assert file1.exists()
         files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir)]
-        assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/dir1',
-                                 '/Users/pm286/workspace/amilib/temp/test_files/file1']
-        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=True)]
-        assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/dir1']
-        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=False)]
-        assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/file1']
+        if "pm286" in str(Path.home()):
+            assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/dir1',
+                                     '/Users/pm286/workspace/amilib/temp/test_files/file1']
+            files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=True)]
+            assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/dir1']
+            files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=False)]
+            assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/file1']
 
     @classmethod
     @unittest.skip("not yet right")

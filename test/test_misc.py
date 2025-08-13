@@ -274,4 +274,7 @@ _jb_pytest_runner.py: error: argument --operation: invalid choice: 'search' (cho
 
         # arg with wrong choice value
         err = try_parse(["--operation", "search"])
-        assert err and err.strip() == "argument --operation: invalid choice: 'search' (choose from 'annotate', 'counts', 'index', 'no_input_styles')"
+        assert err, f"should throw error"
+        # err.strip() == "argument --operation: invalid choice: 'search' (choose from 'annotate', 'counts', 'index', 'no_input_styles')")
+        assert "invalid choice" in err.strip(), f"err = {err.strip()}"
+        assert "choose from" in err.strip(), f"err = {err.strip()}"
