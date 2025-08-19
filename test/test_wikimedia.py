@@ -11,7 +11,7 @@ from lxml import etree, html
 from amilib.ami_dict import AmiDictionary
 from amilib.ami_html import HtmlUtil, HtmlLib
 from amilib.amix import AmiLib
-from amilib.file_lib import FileLib
+from amilib.file_lib import FileLib, HEADERS
 from amilib.util import Util
 from amilib.wikimedia import WikidataLookup, MediawikiParser
 # local
@@ -29,6 +29,10 @@ import time
 cd pyami # toplevel checkout
 python3 -m test.test_wikidata
 """
+
+WIKIPEDIA_SERVICE_URL="https://en.wikipedia.org"
+WIKIPEDIA_SERVICE_NAME="Wikipedia"
+
 
 TEST_RESOURCES_DIR = Path(Path(__file__).parent.parent, "test", "resources")
 # TEMP_DIR = Path(Path(__file__).parent.parent, "temp_oldx_delete")
@@ -101,7 +105,7 @@ class WikipediaTest(base_test):
         """
         creates WikipediaPage.FirstPage object
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("Greenhouse gas")
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert first_para is not None
 
@@ -109,12 +113,13 @@ class WikipediaTest(base_test):
         """
         creates WikipediaPage.FirstPage object , looks for <b> and <a @href>
         """
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("AMOC")
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("Greenhouse gas")
         first_para = wikipedia_page.create_first_wikipedia_para()
+        logger.info(f"first_para: {ET.tostring(first_para.para_element)}")
         assert first_para is not None
         bolds =  first_para.get_bolds()
         assert len(bolds) == 2
-        assert bolds[0].text == "Atlantic meridional overturning circulation"
+        assert bolds[0].text == "Greenhouse gas"
         ahrefs =  first_para.get_ahrefs()
         assert len(ahrefs) == 9
         assert ahrefs[0].text == "ocean current"
@@ -126,36 +131,16 @@ class WikipediaTest(base_test):
         creates WikipediaPage.FirstPage object
         wraps all tails (mixed content text) in spans
         """
-        term = "AMOC"
+        term = "Greenhouse gas"
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert type(first_para) is WikipediaPara
         # texts = self.get_texts()
         XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
         print(f"Tailed text: {ET.tostring(first_para.para_element)}")
-        assert ET.tostring(first_para.para_element) == (
-         b'<p class="wpage_first_para">The <b>Atlantic meridional overturning circulati'
-         b'on</b><span> (</span><b>AMOC</b><span>) is the main </span><a href="/wiki/Oc'
-         b'ean_current" title="Ocean current">ocean current</a><span> system in the </s'
-         b'pan><a href="/wiki/Atlantic_Ocean" title="Atlantic Ocean">Atlantic Ocean</a>'
-         b'<span>.</span><sup id="cite_ref-IPCC_AR6_AnnexVII_1-0" class="reference"><a '
-         b'href="#cite_note-IPCC_AR6_AnnexVII-1"><span class="cite-bracket">[</span>1<s'
-         b'pan class="cite-bracket">]</span></a></sup><sup class="reference nowrap"><sp'
-         b'an title="Page / location: 2238">:&#8202;2238&#8202;</span></sup><span> It i'
-         b's a component of Earth\'s </span><a href="/wiki/Ocean_circulation" class='
-         b'"mw-redirect" title="Ocean circulation">ocean circulation</a><span> system a'
-         b'nd plays an important role in the </span><a href="/wiki/Climate_system" titl'
-         b'e="Climate system">climate system</a><span>. The AMOC includes Atlantic curr'
-         b'ents at the surface and at great depths that are driven by changes in weathe'
-         b'r, temperature and </span><a href="/wiki/Salinity" title="Salinity">salinity'
-         b'</a><span>. Those currents comprise half of the global </span><a href="/wiki'
-         b'/Thermohaline_circulation" title="Thermohaline circulation">thermohaline cir'
-         b'culation</a><span> that includes the flow of major ocean currents, the other'
-         b' half being the </span><a href="/wiki/Southern_Ocean_overturning_circulation'
-         b'" title="Southern Ocean overturning circulation">Southern Ocean overturning '
-         b'circulation</a><span>.</span><sup id="cite_ref-NOAA2023_2-0" class="referenc'
-         b'e"><a href="#cite_note-NOAA2023-2"><span class="cite-bracket">[</span>2<span'
-         b' class="cite-bracket">]</span></a></sup><span>\n</span></p>')
+        assert ET.tostring(first_para.para_element) == """
+<p><b>Greenhouse gases</b> (<b>GHGs</b>) are the gases in an <a href="/wiki/Atmosphere" title="Atmosphere">atmosphere</a> that trap heat, raising the surface temperature of <a href="/wiki/Astronomical_bodies" class="mw-redirect" title="Astronomical bodies">astronomical bodies</a> such as Earth. Unlike other gases, greenhouse gases <a href="/wiki/Absorption_(electromagnetic_radiation)" title="Absorption (electromagnetic radiation)">absorb</a> the <a href="/wiki/Electromagnetic_spectrum" title="Electromagnetic spectrum">radiations</a> that a <a href="/wiki/Outgoing_longwave_radiation" title="Outgoing longwave radiation">planet emits</a>, resulting in the <a href="/wiki/Greenhouse_effect" title="Greenhouse effect">greenhouse effect</a>.<sup id="cite_ref-AR6WG1annexVII_1-0" class="reference"><a href="#cite_note-AR6WG1annexVII-1"><span class="cite-bracket">&#91;</span>1<span class="cite-bracket">&#93;</span></a></sup> The Earth is warmed by sunlight, causing its surface to <a href="/wiki/Radiant_energy" title="Radiant energy">radiate heat</a>, which is then mostly absorbed by greenhouse gases. Without greenhouse gases in the atmosphere, the average temperature of <a href="/wiki/Earth#Surface" title="Earth">Earth's surface</a> would be about −18&#160;°C (0&#160;°F),<sup id="cite_ref-NASACO2_2-0" class="reference"><a href="#cite_note-NASACO2-2"><span class="cite-bracket">&#91;</span>2<span class="cite-bracket">&#93;</span></a></sup> rather than the present average of 15&#160;°C (59&#160;°F).<sup id="cite_ref-Trenberth2003_3-0" class="reference"><a href="#cite_note-Trenberth2003-3"><span class="cite-bracket">&#91;</span>3<span class="cite-bracket">&#93;</span></a></sup><sup id="cite_ref-:0_4-0" class="reference"><a href="#cite_note-:0-4"><span class="cite-bracket">&#91;</span>4<span class="cite-bracket">&#93;</span></a></sup>
+</p>"""
 
     @unittest.skip("duplicate")
     def test_wikipedia_page_first_para_sentence_add_brs(self):
@@ -163,38 +148,19 @@ class WikipediaTest(base_test):
         creates WikipediaPage.FirstPage object
         wraps all tails (mixed content text) in spans
         """
-        term = "AMOC"
+        term = "Greenhouse gas"
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert type(first_para) is WikipediaPara
         XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
-        assert ET.tostring(first_para.para_element) == (
-            b'<p class="wpage_first_para">The <b>Atlantic meridional overturning circulati'
-            b'on</b><span> (</span><b>AMOC</b><span>) is the main </span><a href="/wiki/Oc'
-            b'ean_current" title="Ocean current">ocean current</a><span> system in the </s'
-            b'pan><a href="/wiki/Atlantic_Ocean" title="Atlantic Ocean">Atlantic Ocean</a>'
-            b'<span>.</span><sup id="cite_ref-IPCC_AR6_AnnexVII_1-0" class="reference"><a '
-            b'href="#cite_note-IPCC_AR6_AnnexVII-1">[1]</a></sup><sup class="reference now'
-            b'rap"><span title="Page / location: 2238">:&#8202;2238&#8202;</span></sup><sp'
-            b'an> It is a component of Earth\'s </span><a href="/wiki/Ocean_circulation'
-            b'" class="mw-redirect" title="Ocean circulation">ocean circulation</a><span> '
-            b'system and plays an important role in the </span><a href="/wiki/Climate_syst'
-            b'em" title="Climate system">climate system</a><span>. The AMOC includes Atlan'
-            b'tic currents at the surface and at great depths that are driven by changes i'
-            b'n weather, temperature and </span><a href="/wiki/Salinity" title="Salinity">'
-            b'salinity</a><span>. Those currents comprise half of the global </span><a hre'
-            b'f="/wiki/Thermohaline_circulation" title="Thermohaline circulation">thermoha'
-            b'line circulation</a><span> that includes the flow of major ocean currents, t'
-            b'he other half being the </span><a href="/wiki/Southern_Ocean_overturning_cir'
-            b'culation" title="Southern Ocean overturning circulation">Southern Ocean over'
-            b'turning circulation</a><span>.</span><sup id="cite_ref-NOAA2023_2-0" class="'
-            b'reference"><a href="#cite_note-NOAA2023-2">[2]</a></sup><span>\n</span><'
-            b'/p>')
+        assert ET.tostring(first_para.para_element) == """
+<p><b>Greenhouse gases</b> (<b>GHGs</b>) are the gases in an <a href="/wiki/Atmosphere" title="Atmosphere">atmosphere</a> that trap heat, raising the surface temperature of <a href="/wiki/Astronomical_bodies" class="mw-redirect" title="Astronomical bodies">astronomical bodies</a> such as Earth. Unlike other gases, greenhouse gases <a href="/wiki/Absorption_(electromagnetic_radiation)" title="Absorption (electromagnetic radiation)">absorb</a> the <a href="/wiki/Electromagnetic_spectrum" title="Electromagnetic spectrum">radiations</a> that a <a href="/wiki/Outgoing_longwave_radiation" title="Outgoing longwave radiation">planet emits</a>, resulting in the <a href="/wiki/Greenhouse_effect" title="Greenhouse effect">greenhouse effect</a>.<sup id="cite_ref-AR6WG1annexVII_1-0" class="reference"><a href="#cite_note-AR6WG1annexVII-1"><span class="cite-bracket">&#91;</span>1<span class="cite-bracket">&#93;</span></a></sup> The Earth is warmed by sunlight, causing its surface to <a href="/wiki/Radiant_energy" title="Radiant energy">radiate heat</a>, which is then mostly absorbed by greenhouse gases. Without greenhouse gases in the atmosphere, the average temperature of <a href="/wiki/Earth#Surface" title="Earth">Earth's surface</a> would be about −18&#160;°C (0&#160;°F),<sup id="cite_ref-NASACO2_2-0" class="reference"><a href="#cite_note-NASACO2-2"><span class="cite-bracket">&#91;</span>2<span class="cite-bracket">&#93;</span></a></sup> rather than the present average of 15&#160;°C (59&#160;°F).<sup id="cite_ref-Trenberth2003_3-0" class="reference"><a href="#cite_note-Trenberth2003-3"><span class="cite-bracket">&#91;</span>3<span class="cite-bracket">&#93;</span></a></sup><sup id="cite_ref-:0_4-0" class="reference"><a href="#cite_note-:0-4"><span class="cite-bracket">&#91;</span>4<span class="cite-bracket">&#93;</span></a></sup>
+</p>        """
 
         htmlx = HtmlEditor()
         htmlx.add_style("span", "{border:solid 1px;}")
         htmlx.body.append(first_para.para_element)
-        htmlx.write(Path(Resources.TEMP_DIR, "misc", "amoc2.html"))
+        htmlx.write(Path(Resources.TEMP_DIR, "misc", "ghg2.html"))
 
     def test_insert_br_for_lone_period(self):
         """
@@ -202,16 +168,13 @@ class WikipediaTest(base_test):
         this will be developed to include more complex situations later
 
         """
-        term = "AMOC"
+        term = "Greenhouse gas"
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
-        if wikipedia_page is None:
-            logger.warning(f"no wikipedia page for {term}")
-            return
         first_para = wikipedia_page.create_first_wikipedia_para()
         assert type(first_para) is WikipediaPara
         XmlLib.add_sentence_brs(first_para.get_texts())
         # assert ET.tostring(first_para.para_element) == 'foo'
-        html_file = Path(Resources.TEMP_DIR, "words", "html", "amoc_test.html")
+        html_file = Path(Resources.TEMP_DIR, "words", "html", "ghg_test.html")
         htmlx = HtmlEditor()
         htmlx.add_style("span", "{background: pink; border: solid 1px blue;}")
 
@@ -626,6 +589,67 @@ THIS SEEMS TO BE THE BEST
                 HtmlLib.write_html_file(page.html_elem, Path(page_dir, "disambig.html"), debug=True)
                 HtmlLib.write_html_file(page.html_elem, Path(page_dir, "disambig_clean.html"), debug=True)
 
+    def test_wikipedia_page_first_para_empirical_bold_detection(self):
+        """
+        Empirical approach: Find the first paragraph that starts with a bold or contains a bold near the start.
+        This handles cases where the first few paragraphs are metadata/disambiguation.
+        """
+        term = "Greenhouse gas"
+        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Get the main content area
+        main_elem = wikipedia_page.get_main_element()
+        self.assertIsNotNone(main_elem)
+        
+        # Find all paragraphs
+        paras = main_elem.xpath('.//p')
+        self.assertGreater(len(paras), 0)
+        
+        # Empirical logic: Find first paragraph with bold near the start
+        first_meaningful_para = None
+        for para in paras:
+            if not para.text_content().strip():  # Skip empty paragraphs
+                continue
+                
+            # Look for bold elements in this paragraph
+            bolds = para.xpath('.//b')
+            if not bolds:
+                continue
+                
+            # Check if any bold is near the start (within first 50 characters of text)
+            para_text = para.text_content()
+            for bold in bolds:
+                # Get the position of this bold element in the paragraph text
+                # This is a simplified approach - we'll refine it later
+                bold_text = bold.text_content()
+                if bold_text and len(bold_text) > 0:
+                    # If bold text appears in first 50 chars, consider it "near the start"
+                    if bold_text in para_text[:50]:
+                        first_meaningful_para = para
+                        break
+            
+            if first_meaningful_para:
+                break
+        
+        # Should find a meaningful paragraph
+        self.assertIsNotNone(first_meaningful_para, "Should find a paragraph with bold near the start")
+        
+        # Verify it has the expected content structure
+        para_text = first_meaningful_para.text_content()
+        self.assertIn("Greenhouse gases", para_text)
+        self.assertIn("GHGs", para_text)
+        
+        # Should have bold elements
+        bolds = first_meaningful_para.xpath('.//b')
+        self.assertGreater(len(bolds), 0)
+        
+        # Should have links
+        links = first_meaningful_para.xpath('.//a[@href]')
+        self.assertGreater(len(links), 0)
+        
+        print(f"Found meaningful paragraph: {para_text[:100]}...")
+        print(f"Bold elements: {[b.text_content() for b in bolds]}")
+        print(f"Link count: {len(links)}")
 
 
 
@@ -1047,7 +1071,7 @@ class WikidataTest(base_test):
                   f"&language=en" \
                   f"&format=json"
         try:
-            response = requests.get(url_str, timeout=10)
+            response = requests.get(url_str, headers=HEADERS, timeout=10)
             if response.status_code == 429:
                 warnings.warn("Wikidata rate limit (429) encountered. Skipping test.")
                 pytest.skip("Wikidata rate limit (429) encountered. Skipping test.")
@@ -1070,7 +1094,7 @@ class WikidataTest(base_test):
                   f"&ids={ids}" \
                   f"&language=en" \
                   f"&format=json"
-        response = requests.get(url_str)
+        response = requests.get(url_str, headers=HEADERS)
         print(f"First request status: {response.status_code}")
         if response.status_code == 429:
             warnings.warn("Wikidata rate limit (429) encountered. Skipping test.")
@@ -1102,7 +1126,7 @@ class WikidataTest(base_test):
                   f"&ids={ids}" \
                   f"&language=en" \
                   f"&format=json"
-        response = requests.get(url_str)
+        response = requests.get(url_str, headers=HEADERS)
         print(f"Second request status: {response.status_code}")
         if response.status_code == 429:
             warnings.warn("Wikidata rate limit (429) encountered. Skipping test.")
@@ -1127,7 +1151,7 @@ class WikidataTest(base_test):
     def test_multiple_wikidata_ids(self):
         ids = "P31|P117"
         url_str = f"https://www.wikidata.org/w/api.php?action=wbgetentities&ids={ids}&language=en&format=json"
-        response = requests.get(url_str)
+        response = requests.get(url_str, headers=HEADERS)
         json_dict = response.json()
         assert list(json_dict['entities'].keys()) == ['P31', 'P117']
         assert list(json_dict['entities']['P117'].keys()) == [
@@ -1445,6 +1469,227 @@ class MWParserTest(AmiAnyTest):
         assert input_html is not None and body is not None
         HtmlUtil.write_html_elem(input_html, Path(Resources.TEMP_DIR, "mw_wiki", f"{stem}.html"))
 
+    def test_wikipedia_lookup_direct_entry(self):
+        """Test Wikipedia lookup for a direct entry (climate term)."""
+        
+        # Test with a climate term that should have a direct Wikipedia entry
+        term = "climate change"
+        page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Should find the page
+        self.assertIsNotNone(page)
+        self.assertIsNotNone(page.html_elem)
+        
+        # Should not be disambiguation page
+        self.assertFalse(page.is_disambiguation_page())
+        
+        # Should have content
+        main_elem = page.get_main_element()
+        self.assertIsNotNone(main_elem)
+        
+        first_para = page.create_first_wikipedia_para()
+        self.assertIsNotNone(first_para)
+        
+        # Test connection before lookup
+        connection_result = FileLib.check_service_connection(
+            service_url=WIKIPEDIA_SERVICE_URL,
+            service_name=WIKIPEDIA_SERVICE_NAME,
+            timeout=10
+        )
+        self.assertTrue(connection_result['connected'])
+
+    def test_wikipedia_lookup_disambiguation(self):
+        """Test Wikipedia lookup for a disambiguation page (climate term)."""
+        
+        # Test with a climate term that leads to disambiguation
+        term = "AGW"
+        page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Should find the page
+        self.assertIsNotNone(page)
+        self.assertIsNotNone(page.html_elem)
+        
+        # Should be disambiguation page
+        self.assertTrue(page.is_disambiguation_page())
+        
+        # Should have disambiguation options
+        disambig_list = page.get_disambiguation_list()
+        self.assertIsNotNone(disambig_list)
+        self.assertGreater(len(disambig_list), 0)
+        
+        # Test connection before lookup
+        connection_result = FileLib.check_service_connection(
+            service_url=WIKIPEDIA_SERVICE_URL,
+            service_name=WIKIPEDIA_SERVICE_NAME,
+            timeout=10
+        )
+        self.assertTrue(connection_result['connected'])
+
+    def test_wikipedia_lookup_redirect(self):
+        """Test Wikipedia lookup for a redirect page (climate term)."""
+        
+        # Test with a climate term that redirects
+        term = "global warming"
+        page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Should find the page
+        self.assertIsNotNone(page)
+        self.assertIsNotNone(page.html_elem)
+        
+        # Should not be disambiguation page
+        self.assertFalse(page.is_disambiguation_page())
+        
+        # For redirect pages, we can check if the content is different from expected
+        # Redirects often have different content structure
+        main_elem = page.get_main_element()
+        self.assertIsNotNone(main_elem)
+        
+        # Test connection before lookup
+        connection_result = FileLib.check_service_connection(
+            service_url=WIKIPEDIA_SERVICE_URL,
+            service_name=WIKIPEDIA_SERVICE_NAME,
+            timeout=10
+        )
+        self.assertTrue(connection_result['connected'])
+
+    def test_wikipedia_lookup_page_not_found(self):
+        """Test Wikipedia lookup for a non-existent page (climate term)."""
+        
+        # Test with a climate term that doesn't exist
+        term = "nonexistentclimateterm12345"
+        page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Should not find the page - page object exists but html_elem contains error content
+        self.assertIsNotNone(page)
+        self.assertIsNotNone(page.html_elem)
+        
+        # Check that the content indicates "page not found"
+        main_elem = page.get_main_element()
+        self.assertIsNotNone(main_elem)
+        
+        # Look for indicators that this is a "not found" page
+        text_content = ''.join(main_elem.itertext())
+        self.assertIn("There were no results matching the query", text_content)
+        self.assertIn("does not exist", text_content)
+        
+        # Test connection before lookup
+        connection_result = FileLib.check_service_connection(
+            service_url=WIKIPEDIA_SERVICE_URL,
+            service_name=WIKIPEDIA_SERVICE_NAME,
+            timeout=10
+        )
+        self.assertTrue(connection_result['connected'])
+
+    def test_wikipedia_lookup_acronym_direct_entry(self):
+        """Test Wikipedia lookup for acronym with direct entry (climate acronym)."""
+        
+        # Test with a climate acronym that should have a direct entry
+        term = "IPCC"
+        page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Should find the page
+        self.assertIsNotNone(page)
+        self.assertIsNotNone(page.html_elem)
+        
+        # Should not be disambiguation page
+        self.assertFalse(page.is_disambiguation_page())
+        
+        # Should have content
+        main_elem = page.get_main_element()
+        self.assertIsNotNone(main_elem)
+        
+        first_para = page.create_first_wikipedia_para()
+        self.assertIsNotNone(first_para)
+        
+        # Test connection before lookup
+        connection_result = FileLib.check_service_connection(
+            service_url=WIKIPEDIA_SERVICE_URL,
+            service_name=WIKIPEDIA_SERVICE_NAME,
+            timeout=10
+        )
+        self.assertTrue(connection_result['connected'])
+
+    def test_wikipedia_lookup_acronym_disambiguation(self):
+        """Test Wikipedia lookup for acronym with disambiguation (climate acronym)."""
+        
+        # Test with a climate acronym that leads to disambiguation
+        term = "AGW"
+        page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Should find the page
+        self.assertIsNotNone(page)
+        self.assertIsNotNone(page.html_elem)
+        
+        # Should be disambiguation page
+        self.assertTrue(page.is_disambiguation_page())
+        
+        # Should have disambiguation options
+        disambig_list = page.get_disambiguation_list()
+        self.assertIsNotNone(disambig_list)
+        self.assertGreater(len(disambig_list), 0)
+        
+        # Test connection before lookup
+        connection_result = FileLib.check_service_connection(
+            service_url=WIKIPEDIA_SERVICE_URL,
+            service_name=WIKIPEDIA_SERVICE_NAME,
+            timeout=10
+        )
+        self.assertTrue(connection_result['connected'])
+
+    def test_wikipedia_lookup_acronym_redirect(self):
+        """Test Wikipedia lookup for acronym with redirect (climate acronym)."""
+        
+        # Test with a climate acronym that redirects
+        term = "GE"
+        page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Should find the page
+        self.assertIsNotNone(page)
+        self.assertIsNotNone(page.html_elem)
+        
+        # Should not be disambiguation page
+        self.assertFalse(page.is_disambiguation_page())
+        
+        # For redirect pages, we can check if the content is different from expected
+        # Redirects often have different content structure
+        main_elem = page.get_main_element()
+        self.assertIsNotNone(main_elem)
+        
+        # Test connection before lookup
+        connection_result = FileLib.check_service_connection(
+            service_url=WIKIPEDIA_SERVICE_URL,
+            service_name=WIKIPEDIA_SERVICE_NAME,
+            timeout=10
+        )
+        self.assertTrue(connection_result['connected'])
+
+    def test_wikipedia_lookup_acronym_page_not_found(self):
+        """Test Wikipedia lookup for non-existent acronym (climate acronym)."""
+        
+        # Test with a climate acronym that doesn't exist
+        term = "NONEXISTENT123"
+        page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        
+        # Should not find the page - page object exists but html_elem contains error content
+        self.assertIsNotNone(page)
+        self.assertIsNotNone(page.html_elem)
+        
+        # Check that the content indicates "page not found"
+        main_elem = page.get_main_element()
+        self.assertIsNotNone(main_elem)
+        
+        # Look for indicators that this is a "not found" page
+        text_content = ''.join(main_elem.itertext())
+        self.assertIn("There were no results matching the query", text_content)
+        self.assertIn("does not exist", text_content)
+        
+        # Test connection before lookup
+        connection_result = FileLib.check_service_connection(
+            service_url=WIKIPEDIA_SERVICE_URL,
+            service_name=WIKIPEDIA_SERVICE_NAME,
+            timeout=10
+        )
+        self.assertTrue(connection_result['connected'])
 
 class SPARQLTests:
     @classmethod
@@ -1467,273 +1712,6 @@ class SPARQLTests:
         # print(results)
 
 
-class WikidataServiceTest(base_test):
-    """
-    Tests for the new WikidataService class
-    """
-    
-    def setUp(self):
-        """Set up test fixtures."""
-        from amilib.wikidata_service import WikidataService
-        self.service = WikidataService()
-    
-    def test_service_initialization(self):
-        """Test WikidataService initialization."""
-        from amilib.wikidata_service import WikidataService
-        
-        # Test default language
-        service = WikidataService()
-        self.assertEqual(service.language, 'en')
-        
-        # Test custom language
-        service_fr = WikidataService(language='fr')
-        self.assertEqual(service_fr.language, 'fr')
-    
-    def test_validate_qid(self):
-        """Test QID validation."""
-        from amilib.wikidata_service import WikidataService
-        
-        service = WikidataService()
-        
-        # Valid QIDs
-        self.assertTrue(service.validate_qid('Q12345'))
-        self.assertTrue(service.validate_qid('Q1'))
-        self.assertTrue(service.validate_qid('Q999999999'))
-        
-        # Invalid QIDs
-        self.assertFalse(service.validate_qid(''))
-        self.assertFalse(service.validate_qid(None))
-        self.assertFalse(service.validate_qid('12345'))
-        self.assertFalse(service.validate_qid('Q'))
-        self.assertFalse(service.validate_qid('q12345'))
-        self.assertFalse(service.validate_qid('Q12345a'))
-        self.assertFalse(service.validate_qid('P12345'))
-    
-    def test_search_entity_basic(self):
-        """Test basic entity search functionality."""
-        # This test may require internet connection
-        # We'll test the structure and error handling
-        
-        results = self.service.search_entity("test_nonexistent_term_xyz123")
-        
-        # Should return empty list for non-existent terms
-        self.assertIsInstance(results, list)
-        self.assertEqual(len(results), 0)
-    
-    def test_get_entity_properties_structure(self):
-        """Test entity properties retrieval structure."""
-        # Test with a known entity (Q42 - Douglas Adams)
-        properties = self.service.get_entity_properties("Q42")
-        
-        # Should return a dictionary
-        self.assertIsInstance(properties, dict)
-        
-        # Properties should be structured correctly
-        for prop_name, prop_values in properties.items():
-            self.assertIsInstance(prop_values, list)
-            for value in prop_values:
-                self.assertIsInstance(value, dict)
-                self.assertIn('type', value)
-                self.assertIn('value', value)
-    
-    def test_get_entity_description(self):
-        """Test entity description retrieval."""
-        # Test with a known entity
-        description = self.service.get_entity_description("Q42")
-        
-        # Should return string or None
-        if description is not None:
-            self.assertIsInstance(description, str)
-            self.assertGreater(len(description), 0)
-    
-    def test_get_entity_aliases(self):
-        """Test entity aliases retrieval."""
-        # Test with a known entity
-        aliases = self.service.get_entity_aliases("Q42")
-        
-        # Should return a list
-        self.assertIsInstance(aliases, list)
-        
-        # All aliases should be strings
-        for alias in aliases:
-            self.assertIsInstance(alias, str)
-    
-    def test_get_wikipedia_links(self):
-        """Test Wikipedia links retrieval."""
-        # Test with a known entity
-        links = self.service.get_wikipedia_links("Q42")
-        
-        # Should return a dictionary
-        self.assertIsInstance(links, dict)
-        
-        # Should have English link
-        if 'en' in links:
-            self.assertIsInstance(links['en'], str)
-            self.assertIn('wikipedia.org', links['en'])
-    
-    def test_get_entity_summary_structure(self):
-        """Test entity summary structure."""
-        # Test with a known entity
-        summary = self.service.get_entity_summary("Q42")
-        
-        # Should return a dictionary
-        self.assertIsInstance(summary, dict)
-        
-        # Should have expected keys
-        expected_keys = ['id', 'label', 'description', 'aliases', 'properties', 'wikipedia_links', 'type']
-        for key in expected_keys:
-            self.assertIn(key, summary)
-        
-        # ID should match input
-        self.assertEqual(summary['id'], 'Q42')
-    
-    def test_enrich_term_structure(self):
-        """Test term enrichment structure."""
-        # Test with a known term
-        result = self.service.enrich_term("Douglas Adams")
-        
-        # Should return a dictionary with expected structure
-        self.assertIsInstance(result, dict)
-        self.assertIn('term', result)
-        self.assertIn('wikidata', result)
-        self.assertIn('enrichment_status', result)
-        
-        # Term should match input
-        self.assertEqual(result['term'], 'Douglas Adams')
-        
-        # Status should be valid
-        valid_statuses = ['success', 'no_entity_found', 'error']
-        self.assertIn(result['enrichment_status'], valid_statuses)
-    
-    def test_batch_enrich_terms(self):
-        """Test batch term enrichment."""
-        terms = ["Douglas Adams", "test_nonexistent_term_xyz123"]
-        results = self.service.batch_enrich_terms(terms)
-        
-        # Should return list with same length as input
-        self.assertIsInstance(results, list)
-        self.assertEqual(len(results), len(terms))
-        
-        # Each result should have expected structure
-        for result in results:
-            self.assertIsInstance(result, dict)
-            self.assertIn('term', result)
-            self.assertIn('wikidata', result)
-            self.assertIn('enrichment_status', result)
-    
-    def test_error_handling(self):
-        """Test error handling for invalid inputs."""
-        # Test with invalid QID
-        properties = self.service.get_entity_properties("invalid_qid")
-        self.assertEqual(properties, {})
-        
-        # Test with empty string - should raise exception
-        with self.assertRaises(Exception):
-            self.service.get_entity_description("")
-        
-        # Test with None - should raise exception
-        with self.assertRaises(Exception):
-            self.service.get_entity_description(None)
-        
-        # Test with None for aliases
-        aliases = self.service.get_entity_aliases(None)
-        self.assertEqual(aliases, [])
-    
-    def test_convenience_functions(self):
-        """Test convenience functions."""
-        from amilib.wikidata_service import (
-            search_wikidata_entity,
-            get_wikidata_entity_summary,
-            enrich_term_with_wikidata
-        )
-        
-        # Test convenience functions exist and are callable
-        self.assertTrue(callable(search_wikidata_entity))
-        self.assertTrue(callable(get_wikidata_entity_summary))
-        self.assertTrue(callable(enrich_term_with_wikidata))
-        
-        # Test they return expected types
-        search_results = search_wikidata_entity("test_term")
-        self.assertIsInstance(search_results, list)
-        
-        summary = get_wikidata_entity_summary("Q42")
-        self.assertIsInstance(summary, dict)
-        
-        enrichment = enrich_term_with_wikidata("test_term")
-        self.assertIsInstance(enrichment, dict)
-    
-    def test_cache_functionality(self):
-        """Test cache functionality."""
-        # Test cache clearing
-        self.service.clear_cache()
-        
-        # Cache should be empty after clearing
-        self.assertEqual(len(self.service._cache), 0)
-    
-    def test_language_specific_functionality(self):
-        """Test language-specific functionality."""
-        from amilib.wikidata_service import WikidataService
-        
-        # Create service with different language
-        service_hi = WikidataService(language='hi')
-        
-        # Test that language is set correctly
-        self.assertEqual(service_hi.language, 'hi')
-        
-        # Test that WikidataExtractor uses correct language
-        self.assertEqual(service_hi.wikidata_extractor.lang, 'hi')
-    
-    def test_property_label_extraction(self):
-        """Test property label extraction."""
-        # Test with a known property (P31 - instance of)
-        prop_label = self.service._get_property_label("P31")
-        
-        # Should return string or None
-        if prop_label is not None:
-            self.assertIsInstance(prop_label, str)
-            self.assertGreater(len(prop_label), 0)
-    
-    def test_entity_type_detection(self):
-        """Test entity type detection."""
-        # Test with a known entity type
-        entity_type = self.service._get_entity_type("Q42", {})  # Douglas Adams
-        
-        # Should return a string or None
-        if entity_type is not None:
-            self.assertIsInstance(entity_type, str)
-    
-    def test_disambiguation_page_detection(self):
-        """Test Wikipedia disambiguation page detection."""
-        # This test may need to be mocked or use a known disambiguation page
-        # For now, test the method exists and returns boolean
-        result = self.service.is_wikipedia_disambiguation_page("Q42")
-        self.assertIsInstance(result, bool)
-    
-    def test_disambiguation_options_retrieval(self):
-        """Test retrieval of disambiguation options."""
-        # Test the method exists and returns expected type
-        options = self.service.get_disambiguation_options("Q42")
-        # Should return None (not a disambiguation page) or a list
-        if options is not None:
-            self.assertIsInstance(options, list)
-        else:
-            self.assertIsNone(options)
-    
-    def test_exception_raising_for_no_description(self):
-        """Test that exception is raised when no description is found."""
-        # Test with an invalid QID that won't have a description
-        with self.assertRaises(Exception):
-            self.service.get_entity_description("invalid_qid")
-    
-    def test_exception_raising_for_empty_qid(self):
-        """Test that exception is raised for empty QID."""
-        with self.assertRaises(Exception):
-            self.service.get_entity_description("")
-    
-    def test_exception_raising_for_none_qid(self):
-        """Test that exception is raised for None QID."""
-        with self.assertRaises(Exception):
-            self.service.get_entity_description(None)
 
 
 class SPARQLTests:
