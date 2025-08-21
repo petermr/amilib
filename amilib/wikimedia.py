@@ -21,7 +21,7 @@ from lxml import html
 
 # local
 from amilib.ami_html import HtmlUtil, HtmlLib
-from amilib.file_lib import FileLib
+from amilib.file_lib import FileLib, HEADERS
 from amilib.util import Util
 from amilib.xml_lib import XmlLib
 
@@ -1332,7 +1332,7 @@ class WikipediaPage:
     def lookup_wikipedia_page_for_term(cls, search_term):
         """
         gets Wikipedia URL by term.
-        Also gets exact page if last fiels of URL is used
+        Also gets exact page if last field of URL is used
         :param search_term: term/phrase to search with
         :return: new WikipediaPage or None
         """
@@ -1354,7 +1354,7 @@ class WikipediaPage:
         wikipedia_page = None
         if url is not None:
             try:
-                response = requests.get(url)
+                response = requests.get(url, headers=HEADERS)
                 decode = response.content.decode("UTF-8")
                 html_content = HtmlLib.parse_html_string(decode)
                 wikipedia_page = WikipediaPage()
@@ -2134,7 +2134,7 @@ class WiktionaryPage:
             logger.debug(f"no term or url given")
             return (None, None)
         try:
-            res = requests.get(url)
+            res = requests.get(url, headers=HEADERS)
             res_content = res.content
             if res_content is None:
                 logger.error(f"No content for resource {url}")

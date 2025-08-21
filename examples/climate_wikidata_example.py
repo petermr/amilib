@@ -2,28 +2,28 @@
 """
 Climate Wikidata Example
 
-This script demonstrates how to use the WikidataService
+This script demonstrates how to use existing amilib components
 for enriching climate-related terms with Wikidata information.
 
-Author: Dictionary Editor Team
-Date: January 27, 2025
+Author: Dictionary Editor Team  
+Date: August 21, 2025
 """
 
 import json
 from pathlib import Path
 from datetime import datetime
-
-from amilib.wikidata_service import WikidataService
+from amilib.wikimedia import WikidataLookup, WikipediaPage, WikidataPage
 
 
 def main():
-    """Demonstrate Wikidata service functionality with climate terms."""
+    """Demonstrate Wikidata functionality with climate terms using existing amilib."""
     
     print("🌍 Climate Wikidata Example")
     print("=" * 50)
     
-    # Initialize the service
-    service = WikidataService()
+    # Initialize the amilib components
+    wikidata_lookup = WikidataLookup()
+    print("✅ Using existing amilib WikidataLookup and WikipediaPage")
     
     # Climate-related terms to enrich
     climate_terms = [
@@ -60,52 +60,88 @@ def main():
         print(f"🔍 Term: {term}")
         print("-" * 40)
         
-        # Enrich the term
-        result = service.enrich_term(term)
-        
-        # Store result for JSON export
-        term_result = {
-            "term": term,
-            "result": result
-        }
-        
-        if result['enrichment_status'] == 'success':
-            wikidata = result['wikidata']
-            print(f"✅ Found Wikidata entity: {wikidata['id']}")
-            print(f"📝 Description: {wikidata['description']}")
-            print(f"🏷️  Label: {wikidata['label']}")
-            print(f"🎯 Confidence: {wikidata['confidence']}")
+        # Enrich the term using existing amilib
+        try:
+            # Look up entity using WikidataLookup
+            hit0_id, hit0_description, wikidata_hits = wikidata_lookup.lookup_wikidata(term)
             
-            # Get additional details
-            summary = wikidata['summary']
-            if summary.get('aliases'):
-                print(f"🔄 Aliases: {', '.join(summary['aliases'][:3])}")
-            
-            if summary.get('wikipedia_links', {}).get('en'):
-                print(f"🌐 Wikipedia: {summary['wikipedia_links']['en']}")
-            
-            # Check if it's a disambiguation page
-            is_disambig = service.is_wikipedia_disambiguation_page(wikidata['id'])
-            if is_disambig:
-                print("⚠️  This is a disambiguation page!")
-                disambig_options = service.get_disambiguation_options(wikidata['id'])
-                if disambig_options:
-                    print(f"📋 Disambiguation options: {', '.join(disambig_options[:5])}")
-            
-            # Show entity type if available
-            if summary.get('type'):
-                print(f"🏷️  Entity Type: {summary['type']}")
-            
-            # Store disambiguation info for JSON export
-            term_result["disambiguation"] = {
-                "is_disambiguation_page": is_disambig,
-                "disambiguation_options": disambig_options if is_disambig else None
+            term_result = {
+                "term": term,
+                "result": {}
             }
+            
+            if hit0_id and hit0_description:
+                qid = hit0_id
+                description = hit0_description
                 
-        elif result['enrichment_status'] == 'no_entity_found':
-            print("❌ No Wikidata entity found")
-        else:
-            print(f"⚠️  Error: {result['enrichment_status']}")
+                print(f"✅ Found Wikidata entity: {qid}")
+                print(f"📝 Description: {description}")
+                
+                # Get additional information using existing methods
+                try:
+                    # Get WikidataPage for this QID to find Wikipedia URL
+                    wikidata_page = WikidataPage(pqitem=qid)
+                    wikipedia_url = wikidata_page.get_wikipedia_page_link(lang="en")
+                    
+                    if wikipedia_url:
+                        print(f"🌐 Wikipedia: {wikipedia_url}")
+                    
+                    # If we have a Wikipedia URL, try to get the actual Wikipedia page for disambiguation check
+                    is_disambig = False
+                    disambig_options = []
+                    if wikipedia_url:
+                        try:
+                            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_url(wikipedia_url)
+                            if wikipedia_page:
+                                is_disambig = wikipedia_page.is_disambiguation_page()
+                                if is_disambig:
+                                    print("⚠️  This is a disambiguation page!")
+                                    disambig_options = wikipedia_page.get_disambiguation_options() or []
+                                    if disambig_options:
+                                        print(f"📋 Disambiguation options: {', '.join(disambig_options[:5])}")
+                        except Exception as e:
+                            print(f"⚠️  Could not check disambiguation: {e}")
+                    
+                    # Store result for JSON export
+                    result_data = {
+                        "enrichment_status": "success",
+                        "wikidata": {
+                            "id": qid,
+                            "label": term,  # Use term as label
+                            "description": description,
+                            "wikipedia_url": wikipedia_url,
+                            "is_disambiguation": is_disambig,
+                            "disambiguation_options": disambig_options
+                        }
+                    }
+                    term_result["result"] = result_data
+                    
+                except Exception as e:
+                    print(f"⚠️  Error extracting details: {e}")
+                    result_data = {
+                        "enrichment_status": "partial_success",
+                        "wikidata": {
+                            "id": qid,
+                            "label": term,
+                            "description": description,
+                            "wikipedia_url": "",
+                            "error": str(e)
+                        }
+                    }
+                    term_result["result"] = result_data
+                    
+            else:
+                print("❌ No Wikidata entity found")
+                term_result["result"] = {
+                    "enrichment_status": "no_entity_found"
+                }
+                
+        except Exception as e:
+            print(f"❌ Error enriching '{term}': {e}")
+            term_result["result"] = {
+                "enrichment_status": "error",
+                "error": str(e)
+            }
         
         all_results["climate_terms_enriched"].append(term_result)
         print()
@@ -114,67 +150,67 @@ def main():
     print("🔬 Detailed Analysis: Climate Change")
     print("=" * 50)
     
-    # Search for climate change specifically
-    climate_change_results = service.search_entity("climate change", max_results=3)
-    
-    detailed_analysis = {
-        "search_term": "climate change",
-        "search_results": climate_change_results
-    }
-    
-    if climate_change_results:
-        primary_result = climate_change_results[0]
-        qid = primary_result['id']
+    # Search for climate change specifically using existing amilib
+    try:
+        hit0_id, hit0_description, wikidata_hits = wikidata_lookup.lookup_wikidata("climate change")
         
-        print(f"🏆 Primary Result: {primary_result['label']} ({qid})")
-        print(f"📝 Description: {primary_result['description']}")
-        print(f"🎯 Confidence: {primary_result['confidence']}")
-        
-        # Get comprehensive summary
-        print(f"\n📊 Comprehensive Summary:")
-        summary = service.get_entity_summary(qid)
-        
-        detailed_analysis["primary_result"] = {
-            "qid": qid,
-            "label": primary_result['label'],
-            "description": primary_result['description'],
-            "confidence": primary_result['confidence'],
-            "summary": summary
+        detailed_analysis = {
+            "search_term": "climate change",
+            "search_results": wikidata_hits if wikidata_hits else []
         }
         
-        if summary:
-            print(f"   Label: {summary.get('label', 'N/A')}")
-            print(f"   Description: {summary.get('description', 'N/A')}")
-            print(f"   Type: {summary.get('type', 'N/A')}")
+        if hit0_id and hit0_description:
+            qid = hit0_id
+            label = "climate change"
+            description = hit0_description
             
-            # Show properties
-            properties = summary.get('properties', {})
-            if properties:
-                print(f"\n🏷️  Key Properties:")
-                for prop_name, prop_values in list(properties.items())[:5]:
-                    print(f"   {prop_name}: {len(prop_values)} values")
+            print(f"🏆 Primary Result: {label} ({qid})")
+            print(f"📝 Description: {description}")
             
-            # Show Wikipedia links
-            wikipedia_links = summary.get('wikipedia_links', {})
-            if wikipedia_links:
-                print(f"\n🌐 Wikipedia Links:")
-                for lang, url in list(wikipedia_links.items())[:5]:
-                    print(f"   {lang}: {url}")
+            # Try to get Wikipedia page using WikidataPage
+            try:
+                wikidata_page = WikidataPage(pqitem=qid)
+                wikipedia_url = wikidata_page.get_wikipedia_page_link(lang="en")
+                
+                is_disambig = False
+                
+                if wikipedia_url:
+                    try:
+                        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_url(wikipedia_url)
+                        if wikipedia_page:
+                            is_disambig = wikipedia_page.is_disambiguation_page()
+                    except:
+                        is_disambig = False
+                
+                print(f"🌐 Wikipedia URL: {wikipedia_url}")
+                print(f"⚠️  Disambiguation Page: {'Yes' if is_disambig else 'No'}")
+                
+                detailed_analysis["primary_result"] = {
+                    "qid": qid,
+                    "label": label,
+                    "description": description,
+                    "wikipedia_url": wikipedia_url,
+                    "is_disambiguation": is_disambig
+                }
+                
+            except Exception as e:
+                print(f"⚠️  Could not retrieve Wikipedia details: {e}")
+                detailed_analysis["primary_result"] = {
+                    "qid": qid,
+                    "label": label,
+                    "description": description,
+                    "error": str(e)
+                }
+        else:
+            print("❌ No results found for 'climate change'")
+            detailed_analysis["primary_result"] = None
             
-            # Check disambiguation status
-            is_disambig = service.is_wikipedia_disambiguation_page(qid)
-            print(f"\n⚠️  Disambiguation Page: {'Yes' if is_disambig else 'No'}")
-            
-            detailed_analysis["disambiguation_status"] = is_disambig
-            
-            if is_disambig:
-                disambig_options = service.get_disambiguation_options(qid)
-                if disambig_options:
-                    print(f"📋 Disambiguation Options (first 10):")
-                    for i, option in enumerate(disambig_options[:10], 1):
-                        print(f"   {i}. {option}")
-                    
-                    detailed_analysis["disambiguation_options"] = disambig_options
+    except Exception as e:
+        print(f"❌ Error in detailed analysis: {e}")
+        detailed_analysis = {
+            "search_term": "climate change",
+            "error": str(e)
+        }
     
     all_results["detailed_analysis"] = detailed_analysis
     
@@ -184,7 +220,8 @@ def main():
     qid_validation_results = {}
     
     for test_qid in test_qids:
-        is_valid = service.validate_qid(test_qid)
+        # Simple QID validation - QIDs should start with Q and be followed by digits
+        is_valid = test_qid.startswith('Q') and test_qid[1:].isdigit() and len(test_qid) > 1
         status = "✅" if is_valid else "❌"
         print(f"   {status} {test_qid}")
         
@@ -192,22 +229,23 @@ def main():
     
     all_results["qid_validation"] = qid_validation_results
     
-    # Show batch enrichment results
-    print(f"\n🔄 Batch Enrichment Summary:")
-    batch_results = service.batch_enrich_terms(climate_terms[:5])  # First 5 terms
+    # Show summary of enrichment results
+    print(f"\n📊 Enrichment Summary:")
+    successful_terms = [result for result in all_results["climate_terms_enriched"] 
+                       if result["result"].get("enrichment_status") == "success"]
     
-    success_count = sum(1 for r in batch_results if r['enrichment_status'] == 'success')
-    print(f"   Successfully enriched: {success_count}/{len(batch_results)} terms")
+    print(f"   Successfully enriched: {len(successful_terms)}/{len(climate_terms)} terms")
     
     batch_summary = {
-        "total_terms": len(batch_results),
-        "successful_enrichments": success_count,
-        "results": batch_results
+        "total_terms": len(climate_terms),
+        "successful_enrichments": len(successful_terms),
+        "results": all_results["climate_terms_enriched"][:5]  # First 5 terms
     }
     
-    for result in batch_results:
-        status = "✅" if result['enrichment_status'] == 'success' else "❌"
-        print(f"   {status} {result['term']}: {result['enrichment_status']}")
+    for result in all_results["climate_terms_enriched"][:5]:
+        status = "✅" if result["result"].get("enrichment_status") == "success" else "❌"
+        enrichment_status = result["result"].get("enrichment_status", "unknown")
+        print(f"   {status} {result['term']}: {enrichment_status}")
     
     all_results["batch_enrichment"] = batch_summary
     

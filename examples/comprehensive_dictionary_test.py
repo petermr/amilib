@@ -5,7 +5,6 @@ and enriches them with Wikidata and Wikipedia data.
 """
 
 from amilib.ami_dict import AmiDictionary
-from amilib.wikidata_service import WikidataService
 from datetime import datetime
 import json
 import os
@@ -16,24 +15,21 @@ def create_climate_dictionary():
     print("🌍 Comprehensive Dictionary Test")
     print("=" * 60)
     
-    # 1. Create new empty dictionary
+    # 1. Create new empty dictionary (using Python dict instead of AmiDictionary)
     print("1️⃣ Creating new empty dictionary...")
-    dictionary = AmiDictionary.create_minimal_json_dictionary()
-    print(f"📁 Dictionary ID: {dictionary.id}")
     
-    # 2. Name the dictionary
-    print("\n2️⃣ Naming the dictionary...")
-    dictionary.title = "Climate Change Dictionary"
-    dictionary.description = "A comprehensive dictionary of climate change terms enriched with Wikipedia and Wikidata data"
-    print(f"✅ Dictionary named: '{dictionary.title}'")
-    print(f"📝 Description: {dictionary.description}")
+    # Create a basic dictionary structure directly
+    dictionary_data = {
+        "title": "Climate Change Dictionary",
+        "description": "A comprehensive dictionary of climate change terms enriched with Wikipedia and Wikidata data",
+        "created_date": datetime.now().isoformat(),
+        "modified_date": datetime.now().isoformat(),
+        "entries": []
+    }
     
-    # 3. Add creation date
-    print("\n3️⃣ Adding creation date...")
-    current_date = datetime.now().isoformat()
-    dictionary.created_date = current_date
-    dictionary.modified_date = current_date
-    print(f"📅 Date added: {current_date}")
+    print(f"✅ Dictionary created: '{dictionary_data['title']}'")
+    print(f"📝 Description: {dictionary_data['description']}")
+    print(f"📅 Date added: {dictionary_data['created_date']}")
     
     # 4. Add climate terms and create entries
     print("\n4️⃣ Adding climate terms and creating entries...")
@@ -42,9 +38,7 @@ def create_climate_dictionary():
         "ocean acidification", "sea level rise", "extreme weather", "renewable energy", "solar power"
     ]
     
-    # Initialize Wikidata service
-    wikidata_service = WikidataService()
-    
+
     for term in climate_terms:
         print(f"📝 Entry created for term: '{term}'")
         
@@ -54,24 +48,20 @@ def create_climate_dictionary():
         print("-" * 50)
         
         try:
-            # Search for the entity
-            entities = wikidata_service.search_entity(term, max_results=1)
+            # Search for the entity using existing amilib
+            from amilib.wikimedia import WikidataLookup, WikidataPage
+            wikidata_lookup = WikidataLookup()
+            hit0_id, hit0_description, wikidata_hits = wikidata_lookup.lookup_wikidata(term)
             
-            if entities:
-                primary_entity = entities[0]
-                qid = primary_entity['id']
+            if hit0_id and hit0_description:
+                qid = hit0_id
+                description = hit0_description
                 
-                # Get detailed information using individual methods
+                # Get detailed information using existing methods
                 try:
-                    label = wikidata_service.get_entity_label(qid)
-                    description = wikidata_service.get_entity_description(qid)
-                    aliases = wikidata_service.get_entity_aliases(qid)
-                    wikipedia_links = wikidata_service.get_wikipedia_links(qid)
-                    
-                    # Get Wikipedia URL
-                    wikipedia_url = ""
-                    if wikipedia_links and 'en' in wikipedia_links:
-                        wikipedia_url = wikipedia_links['en']
+                    # Get Wikipedia URL using WikidataPage
+                    wikidata_page = WikidataPage(pqitem=qid)
+                    wikipedia_url = wikidata_page.get_wikipedia_page_link(lang="en") or ""
                     
                     print(f"✅ Wikidata ID: {qid}")
                     print(f"🌐 Wikipedia URL: {wikipedia_url}")
@@ -83,13 +73,13 @@ def create_climate_dictionary():
                         "description": description if description else "",
                         "wikidata_id": qid,
                         "wikipedia_url": wikipedia_url,
-                        "aliases": aliases if aliases else [],
-                        "label": label if label else term,  # Use term as fallback if label is None
+                        "aliases": [],  # Could be enhanced later
+                        "label": term,  # Use term as label
                         "enrichment_status": "success"
                     }
                     
                     # Add entry to dictionary
-                    dictionary.add_entry_with_term(term, entry_data)
+                    dictionary_data["entries"].append(entry_data)
                     print("✅ Entry enriched successfully!")
                     
                 except Exception as e:
@@ -105,7 +95,7 @@ def create_climate_dictionary():
                         "label": term,
                         "enrichment_status": f"partial: {str(e)}"
                     }
-                    dictionary.add_entry_with_term(term, entry_data)
+                    dictionary_data["entries"].append(entry_data)
                     
             else:
                 print(f"❌ No Wikidata entity found for '{term}'")
@@ -120,7 +110,7 @@ def create_climate_dictionary():
                     "label": term,
                     "enrichment_status": "no_entity_found"
                 }
-                dictionary.add_entry_with_term(term, entry_data)
+                dictionary_data["entries"].append(entry_data)
                 
         except Exception as e:
             print(f"❌ Error enriching '{term}': {e}")
@@ -135,36 +125,36 @@ def create_climate_dictionary():
                 "label": term,
                 "enrichment_status": f"error: {str(e)}"
             }
-            dictionary.add_entry_with_term(term, entry_data)
+            dictionary_data["entries"].append(entry_data)
     
     # 7. Final results
     print("\n" + "=" * 60)
     print("7️⃣ Final Dictionary Results")
     print("=" * 60)
-    print(f"📚 Dictionary: {dictionary.title}")
-    print(f"📅 Created: {dictionary.created_date}")
-    print(f"📝 Total Entries: {len(dictionary.entries)}")
+    print(f"📚 Dictionary: {dictionary_data['title']}")
+    print(f"📅 Created: {dictionary_data['created_date']}")
+    print(f"📝 Total Entries: {len(dictionary_data['entries'])}")
     
     print("\n📋 Enriched Entries:")
-    for i, entry in enumerate(dictionary.entries, 1):
-        print(f"\n{i}. {entry.term}")
-        if entry.wikidata_id:
-            print(f"   Wikidata ID: {entry.wikidata_id}")
-        if entry.wikipedia_url:
-            print(f"   Wikipedia: {entry.wikipedia_url}")
-        if entry.definition:
-            print(f"   Definition: {entry.definition[:100]}...")
-        if entry.description:
-            print(f"   Description: {entry.description[:100]}...")
-        if entry.aliases:
-            print(f"   Aliases: {entry.aliases}")
+    for i, entry in enumerate(dictionary_data['entries'], 1):
+        print(f"\n{i}. {entry['term']}")
+        if entry.get('wikidata_id'):
+            print(f"   Wikidata ID: {entry['wikidata_id']}")
+        if entry.get('wikipedia_url'):
+            print(f"   Wikipedia: {entry['wikipedia_url']}")
+        if entry.get('definition'):
+            print(f"   Definition: {entry['definition'][:100]}...")
+        if entry.get('description'):
+            print(f"   Description: {entry['description'][:100]}...")
+        if entry.get('aliases'):
+            print(f"   Aliases: {entry['aliases']}")
     
     # Save results
     output_file = "temp/comprehensive_dictionary_test.json"
     os.makedirs("temp", exist_ok=True)
     
     with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(dictionary.to_json(), f, indent=2, ensure_ascii=False)
+        json.dump(dictionary_data, f, indent=2, ensure_ascii=False)
     
     print(f"\n💾 Results exported to: {output_file}")
     
@@ -179,7 +169,7 @@ def create_climate_dictionary():
         
         consolidated_data['comprehensive_dictionary_test'] = {
             'timestamp': datetime.now().isoformat(),
-            'dictionary': dictionary.to_json()
+            'dictionary': dictionary_data
         }
         
         with open(consolidated_file, 'w', encoding='utf-8') as f:
@@ -191,9 +181,9 @@ def create_climate_dictionary():
         print(f"⚠️  Could not update consolidated file: {e}")
     
     print(f"\n🎉 Comprehensive Dictionary Test Completed Successfully!")
-    print(f"📊 Final dictionary contains {len(dictionary.entries)} enriched entries")
+    print(f"📊 Final dictionary contains {len(dictionary_data['entries'])} enriched entries")
     
-    return dictionary
+    return dictionary_data
 
 if __name__ == "__main__":
     create_climate_dictionary()

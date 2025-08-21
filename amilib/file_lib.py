@@ -16,8 +16,16 @@ import errno
 import lxml
 import requests
 
-from amilib.util import TextUtil, Util
+GOOGLE_SERVICE_URL="https://8.8.8.8"
+GOOGLE_SERVICE_NAME="Internet (Google DNS)"
 
+GOOGLE_HEADERS = {
+    "service_url":GOOGLE_SERVICE_URL,
+    "service_name":GOOGLE_SERVICE_NAME,
+}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; Pyami/0.1; +https://github.com/petermr/pyami/)"
+}
 # wildcards
 STARS = "**"
 STAR = "*"
@@ -108,7 +116,7 @@ S_XML = "xml"
 #         logger.info(f"created logger {module} {logger}")
 #         return logger
 #
-logger = Util.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class FileLib:
@@ -785,6 +793,92 @@ class FileLib:
             # Already POSIX-like, normalize using PurePosixPath to remove redundant slashes, etc.
             return PurePosixPath(path_str).as_posix()
 
+    @classmethod
+    def check_service_connection(cls, service_url, service_name=None, timeout=10, user_agent=None):
+        """
+        Check connection to a specified service with configurable parameters.
+        
+        Args:
+            service_url (str): URL of the service to test
+            service_name (str): Human-readable name of the service (for logging)
+            timeout (int): Request timeout in seconds
+            user_agent (str): Custom User-Agent string. If None, uses amilib default
+        
+        Returns:
+            dict: Connection check results with keys:
+                - 'connected': bool - True if connection successful
+                - 'status_code': int - HTTP status code if available
+                - 'response_time': float - Response time in seconds
+                - 'error': str - Error message if connection failed
+                - 'service': str - Service name tested
+        """
+        import time
+        import requests
+        from amilib.util import Util
+        
+        logger = Util.get_logger(__name__)
+        
+        # Use amilib default User-Agent if none specified
+        if user_agent is None:
+            user_agent = "Mozilla/5.0 (compatible; Pyami/0.1; +https://github.com/petermr/pyami/)"
+        
+        headers = {"User-Agent": user_agent}
+        
+        start_time = time.time()
+        result = {
+            'connected': False,
+            'status_code': None,
+            'response_time': None,
+            'error': None,
+            'service': service_name
+        }
+        
+        try:
+            logger.info(f"Checking connection to {service_name} at {service_url}")
+            response = requests.get(service_url, headers=headers, timeout=timeout)
+            
+            result['status_code'] = response.status_code
+            result['response_time'] = time.time() - start_time
+            
+            if response.status_code == 200:
+                result['connected'] = True
+                logger.info(f"Successfully connected to {service_name} (status: {response.status_code}, time: {result['response_time']:.2f}s)")
+            else:
+                result['error'] = f"HTTP {response.status_code}: {response.reason}"
+                logger.warning(f"Connection to {service_name} failed: {result['error']}")
+                
+        except requests.exceptions.Timeout:
+            result['error'] = f"Connection timeout after {timeout}s"
+            logger.warning(f"Connection to {service_name} timed out")
+        except requests.exceptions.ConnectionError as e:
+            result['error'] = f"Connection error: {str(e)}"
+            logger.warning(f"Connection to {service_name} failed: {result['error']}")
+        except requests.exceptions.RequestException as e:
+            result['error'] = f"Request error: {str(e)}"
+            logger.warning(f"Connection to {service_name} failed: {result['error']}")
+        except Exception as e:
+            result['error'] = f"Unexpected error: {str(e)}"
+            logger.error(f"Unexpected error checking {service_name}: {result['error']}")
+        
+        return result
+
+
+    @classmethod
+    def check_internet_connection(cls, timeout=5):
+        """
+        Check basic internet connectivity using Google's DNS.
+        
+        Args:
+            timeout (int): Request timeout in seconds
+        
+        Returns:
+            dict: Connection check results
+        """
+        return FileLib.check_service_connection(
+            service_url=GOOGLE_SERVICE_URL,
+            service_name=GOOGLE_SERVICE_NAME,
+            timeout=timeout
+        )
 
 # see https://realpython.com/python-pathlib/
 
