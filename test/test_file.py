@@ -134,13 +134,17 @@ class File0Test(AmiAnyTest):
         file1.touch()
         assert file1.exists()
         files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir)]
-        if "pm286" in str(Path.home()):
-            assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/dir1',
-                                     '/Users/pm286/workspace/amilib/temp/test_files/file1']
-            files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=True)]
-            assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/dir1']
-            files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=False)]
-            assert sorted(files) == ['/Users/pm286/workspace/amilib/temp/test_files/file1']
+        # Use dynamic paths instead of hardcoded ones for cross-platform compatibility
+        expected_files = [str(PosixPath(top_dir, "dir1")), str(PosixPath(top_dir, "file1"))]
+        assert sorted(files) == sorted(expected_files)
+        
+        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=True)]
+        expected_dirs = [str(PosixPath(top_dir, "dir1"))]
+        assert sorted(files) == sorted(expected_dirs)
+        
+        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=False)]
+        expected_files_only = [str(PosixPath(top_dir, "file1"))]
+        assert sorted(files) == sorted(expected_files_only)
 
     @classmethod
     @unittest.skip("not yet right")
@@ -392,7 +396,86 @@ class File0Test(AmiAnyTest):
         assert type(pydict) is dict
         assert pydict.get("a") == "foo"
 
+class DownloadTest(AmiAnyTest):
+    """    
+    download tests
+    """
+
+    def test_service_connection_basic(self):
+        """Test basic service connection functionality."""
+
+        # Test with a reliable service
+        result = FileLib.check_service_connection(
+            service_url="https://httpbin.org/status/200",
+            service_name="HTTPBin Test",
+            timeout=10
+        )
+        
+        self.assertIsInstance(result, dict)
+        self.assertIn('connected', result)
+        self.assertIn('status_code', result)
+        self.assertIn('response_time', result)
+        self.assertIn('error', result)
+        self.assertIn('service', result)
+        
+        # Should be connected to HTTPBin
+        self.assertTrue(result['connected'])
+        self.assertEqual(result['status_code'], 200)
+        self.assertEqual(result['service'], "HTTPBin Test")
+        self.assertIsInstance(result['response_time'], float)
+        self.assertGreater(result['response_time'], 0)
+
+
+    def test_service_connection_timeout(self):
+        """Test service connection timeout handling."""
+
+        # Test with a very short timeout to trigger timeout
+        result = FileLib.check_service_connection(
+            service_url="https://httpbin.org/delay/5",
+            service_name="Timeout Test",
+            timeout=1
+        )
+        
+        self.assertFalse(result['connected'])
+        self.assertIsNotNone(result['error'])
+        self.assertIn("timeout", result['error'].lower())
+        self.assertEqual(result['service'], "Timeout Test")
+
+
+    def test_service_connection_invalid_url(self):
+        """Test service connection with invalid URL."""
+
+        result = FileLib.check_service_connection(
+            service_url="https://invalid-domain-that-does-not-exist-12345.com",
+            service_name="Invalid URL Test",
+            timeout=5
+        )
+        
+        self.assertFalse(result['connected'])
+        self.assertIsNotNone(result['error'])
+        self.assertEqual(result['service'], "Invalid URL Test")
+
+
+    def test_internet_connection(self):
+        """Test basic internet connectivity."""
+
+        result = FileLib.check_internet_connection(timeout=5)
+        
+        self.assertIsInstance(result, dict)
+        self.assertEqual(result['service'], "Internet (Google DNS)")
+        
+        # Note: This test may fail if no internet connection
+        # In that case, we just verify the structure is correct
+        if result['connected']:
+            self.assertEqual(result['status_code'], 200)
+            self.assertIsInstance(result['response_time'], float)
+        else:
+            self.assertIsNotNone(result['error'])
+
 
 def main():
     File0Test.test_file_simple()
     File0Test.test_templates()
+
+if __name__ == "__main__":
+    main()
