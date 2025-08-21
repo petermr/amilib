@@ -327,8 +327,16 @@
                         <textarea id="descriptionInput"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="synonymsInput">Synonyms (comma-separated, can include regex)</label>
-                        <input type="text" id="synonymsInput" placeholder="synonym1, synonym2, term.*pattern">
+                        <label for="synonyms_wiktionary">Wiktionary Synonyms (pipe-separated)</label>
+                        <input type="text" id="synonyms_wiktionary" placeholder="GHG|atmospheric gas|heat-trapping gas">
+                    </div>
+                    <div class="form-group">
+                        <label for="synonyms_inline">Text References (pipe-separated)</label>
+                        <input type="text" id="synonyms_inline" placeholder="greenhouse gases (GHGs)|GHGs">
+                    </div>
+                    <div class="form-group">
+                        <label for="synonyms_languages">Other Languages (pipe-separated)</label>
+                        <input type="text" id="synonyms_languages" placeholder="gaz à effet de serre (French)|ग्रीनहाउस गैस (Hindi)">
                     </div>
                     <div class="form-group">
                         <label for="examplesInput">Examples (comma-separated)</label>
@@ -718,7 +726,9 @@
                 const results = dict.entries.filter(entry => 
                     entry.term.toLowerCase().includes(searchTerm) ||
                     entry.definition.toLowerCase().includes(searchTerm) ||
-                    entry.synonyms.some(s => s.toLowerCase().includes(searchTerm))
+                    (entry.synonyms_wiktionary && entry.synonyms_wiktionary.toLowerCase().includes(searchTerm)) ||
+                    (entry.synonyms_inline && entry.synonyms_inline.toLowerCase().includes(searchTerm)) ||
+                    (entry.synonyms_languages && entry.synonyms_languages.toLowerCase().includes(searchTerm))
                 );
                 
                 if (results.length > 0) {
@@ -760,7 +770,21 @@
             document.getElementById('termInput').value = entry.term || '';
             document.getElementById('definitionInput').value = entry.definition || '';
             document.getElementById('descriptionInput').value = entry.description || '';
-            document.getElementById('synonymsInput').value = entry.synonyms ? entry.synonyms.join(', ') : '';
+            
+            // Handle backward compatibility - convert old synonyms to new structure
+            if (entry.synonyms && Array.isArray(entry.synonyms)) {
+                // Convert old comma-separated synonyms to new structure
+                const oldSynonyms = entry.synonyms.join('|');
+                document.getElementById('synonyms_wiktionary').value = oldSynonyms;
+                document.getElementById('synonyms_inline').value = '';
+                document.getElementById('synonyms_languages').value = '';
+            } else {
+                // New structure
+                document.getElementById('synonyms_wiktionary').value = entry.synonyms_wiktionary || '';
+                document.getElementById('synonyms_inline').value = entry.synonyms_inline || '';
+                document.getElementById('synonyms_languages').value = entry.synonyms_languages || '';
+            }
+            
             document.getElementById('examplesInput').value = entry.examples ? entry.examples.join(', ') : '';
             document.getElementById('categoryInput').value = entry.category || '';
             document.getElementById('tagsInput').value = entry.tags ? entry.tags.join(', ') : '';
@@ -794,7 +818,9 @@
                 term: document.getElementById('termInput').value,
                 definition: document.getElementById('definitionInput').value,
                 description: document.getElementById('descriptionInput').value,
-                synonyms: document.getElementById('synonymsInput').value.split(',').map(s => s.trim()).filter(s => s),
+                synonyms_wiktionary: document.getElementById('synonyms_wiktionary').value.split('|').map(s => s.trim()).filter(s => s).join('|'),
+                synonyms_inline: document.getElementById('synonyms_inline').value.split('|').map(s => s.trim()).filter(s => s).join('|'),
+                synonyms_languages: document.getElementById('synonyms_languages').value.split('|').map(s => s.trim()).filter(s => s).join('|'),
                 examples: document.getElementById('examplesInput').value.split(',').map(s => s.trim()).filter(s => s),
                 category: document.getElementById('categoryInput').value,
                 tags: document.getElementById('tagsInput').value.split(',').map(s => s.trim()).filter(s => s),
@@ -858,7 +884,20 @@
             document.querySelectorAll('.entry-item').forEach(item => {
                 const term = item.querySelector('.entry-term').textContent.toLowerCase();
                 const definition = item.querySelector('.entry-definition').textContent.toLowerCase();
-                const isMatch = term.includes(searchTerm) || definition.includes(searchTerm);
+                
+                // Get entry data for synonym search
+                const entryId = item.getAttribute('data-id');
+                const dict = editor.get();
+                const entry = dict.entries.find(e => e.id === entryId);
+                
+                let synonymMatch = false;
+                if (entry) {
+                    synonymMatch = (entry.synonyms_wiktionary && entry.synonyms_wiktionary.toLowerCase().includes(searchTerm)) ||
+                                  (entry.synonyms_inline && entry.synonyms_inline.toLowerCase().includes(searchTerm)) ||
+                                  (entry.synonyms_languages && entry.synonyms_languages.toLowerCase().includes(searchTerm));
+                }
+                
+                const isMatch = term.includes(searchTerm) || definition.includes(searchTerm) || synonymMatch;
                 item.style.display = isMatch || !searchTerm ? 'block' : 'none';
             });
         });
@@ -892,5 +931,13 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
