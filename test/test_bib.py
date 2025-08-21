@@ -193,8 +193,8 @@ class PygetpapersTest(AmiAnyTest):
         xpath = None
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         outfile = Path(indir, f"{query}.html")
-        globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
-        infiles = FileLib.posix_glob(globstr, recursive=True)
+        # Use cross-platform recursive globbing
+        infiles = list(indir.rglob(f"*/{HTML_WITH_IDS}.html"))
         assert 50 <= len(infiles) <= 55
         phrases = [
             "bananas",
@@ -213,7 +213,8 @@ class PygetpapersTest(AmiAnyTest):
         path = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         outfile = Path(path, f"{query}.html")
         debug = False
-        infiles = FileLib.posix_glob(f"{str(path)}/**/{HTML_WITH_IDS}.html", recursive=True)
+        # Use cross-platform recursive globbing
+        infiles = list(path.rglob(f"*/{HTML_WITH_IDS}.html"))
         phrases = [
             "bananas",
             "South Asia"
@@ -555,9 +556,7 @@ class AmiCorpusTest(AmiAnyTest):
         logger.info(f"ipcc_dir {cleaned_content_dir}")
         assert cleaned_content_dir.exists(), f"{cleaned_content_dir} should exist"
 
-        report_glob_str = f"{str(cleaned_content_dir)}/*"
-        logger.info(f"glob {report_glob_str}")
-        report_dirs = FileLib.posix_glob(report_glob_str, recursive=False)
+        # Use cross-platform get_children instead of posix_glob
         report_dirs = FileLib.get_children(cleaned_content_dir, dirx=True)
         assert len(report_dirs) == 7, f"child files are {report_dirs}"
         total_chapter_count = 0
@@ -565,13 +564,13 @@ class AmiCorpusTest(AmiAnyTest):
         all_html_id_files = []
         for report_dir in sorted(report_dirs):
             report = Path(report_dir).stem
-            chapter_str = f"{str(report_dir)}/Chapter*"
-            chapter_dirs = FileLib.posix_glob(chapter_str, recursive=False)
+            # Use cross-platform get_children with pattern matching
+            chapter_dirs = [d for d in FileLib.get_children(report_dir, dirx=True) if "Chapter" in d.name]
             total_chapter_count += len(chapter_dirs)
             logger.info(f"chapter {report}: {total_chapter_count}")
             for chapter_dir in sorted(chapter_dirs):
-                html_str = f"{str(chapter_dir)}/*.html"
-                html_files =  FileLib.posix_glob(html_str, recursive=False)
+                # Use cross-platform get_children with pattern matching
+                html_files = [f for f in FileLib.get_children(chapter_dir, dirx=False) if f.suffix == '.html']
                 for html_file in html_files:
                     stem = Path(html_file).stem
                     if stem == "de_wordpress" or stem == "de_gatsby":
@@ -600,13 +599,16 @@ class AmiCorpusTest(AmiAnyTest):
                                  href=f"{report}/downloads/report/IPCC_AR6_WG{roman}_{stem}.pdf")
         else:
             cls.add_cell_content(tr, text=pdf_name)
-        gatsby_glob = f"{str(chapter_dir)}/de_gatsby.html"
-        wordpress_glob = f"{str(chapter_dir)}/de_wordpress.html"
-        cleaned_files = FileLib.posix_glob(gatsby_glob, recursive=False) + \
-                        FileLib.posix_glob(wordpress_glob, recursive=False)
+        # Use cross-platform file checking instead of posix_glob
+        gatsby_file = chapter_dir / "de_gatsby.html"
+        wordpress_file = chapter_dir / "html_with_ids.html"
+        cleaned_files = []
+        if gatsby_file.exists():
+            cleaned_files.append(gatsby_file)
+        if wordpress_file.exists():
+            cleaned_files.append(wordpress_file)
         cls.add_content_for_files(cleaned_files, tr)
-        html_id_glob = f"{str(chapter_dir)}/html_with_ids.html"
-        html_id_files = FileLib.posix_glob(html_id_glob, recursive=False)
+        html_id_files = [wordpress_file] if wordpress_file.exists() else []
         cls.add_content_for_files(html_id_files, tr)
 
     @classmethod
@@ -862,8 +864,8 @@ class AmiCorpusTest(AmiAnyTest):
         xpath = None
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         outfile = Path(indir, f"{query}.html")
-        globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
-        infiles = FileLib.posix_glob(globstr, recursive=True)
+        # Use cross-platform recursive globbing
+        infiles = list(indir.rglob(f"*/{HTML_WITH_IDS}.html"))
         assert 50 <= len(infiles) <= 55
         phrases = [
             "methane emissions"
@@ -965,8 +967,8 @@ class AmiCorpusTest(AmiAnyTest):
         MAXFILES = 1  # Reduced from 5 for faster testing
         indir = Path(Resources.TEST_RESOURCES_DIR, 'ipcc')
         outfile = Path(Resources.TEMP_DIR, "corpus", f"{query}.html")
-        globstr = f"{str(indir)}/**/{HTML_WITH_IDS}.html"
-        infiles = FileLib.posix_glob(globstr, recursive=True)
+        # Use cross-platform recursive globbing
+        infiles = list(indir.rglob(f"*/{HTML_WITH_IDS}.html"))
         logger.info(f"found {len(infiles)} files")
         assert len(infiles) > 0, f"failed to find {HTML_WITH_IDS}.html in {indir}"
         words_path = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "carbon_cycle_noabb.txt")
