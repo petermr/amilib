@@ -1,0 +1,7 @@
+BagIt-Version: 1.0
+Tag-File-Character-Encoding: UTF-8
+Payload-Oxum: 0.0
+Bagging-Date: 2025-07-30
+External-Identifier: breward2023
+Internal-Sender-Identifier: breward2023_corpus
+Internal-Sender-Description: Breward2023 Climate Change Seminar Corpus

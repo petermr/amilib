@@ -1,0 +1,7 @@
+search:
+  config:
+    brute_force: true
+    inverted_index: data/indices/inverted_index.json
+    max_results: 100
+    search_log: search_results/search_history.txt
+  index_type: file_based

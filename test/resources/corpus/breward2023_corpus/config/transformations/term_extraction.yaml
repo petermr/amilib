@@ -1,0 +1,6 @@
+transformations:
+- method: pymupdf
+  name: extract_text
+  output: text
+  source: pdf
+  type: text_extraction
