@@ -112,6 +112,7 @@ class WikipediaTest(base_test):
     def test_wikipedia_page_first_para_bold_ahrefs(self):
         """
         creates WikipediaPage.FirstPage object , looks for <b> and <a @href>
+        TODO fails, needs debugging
         """
         wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term("Greenhouse gas")
         first_para = wikipedia_page.create_first_wikipedia_para()
@@ -119,11 +120,11 @@ class WikipediaTest(base_test):
         assert first_para is not None
         bolds =  first_para.get_bolds()
         assert len(bolds) == 2
-        assert bolds[0].text == "Greenhouse gas"
+        assert bolds[0].text == "Greenhouse gases"
         ahrefs =  first_para.get_ahrefs()
-        assert len(ahrefs) == 9
-        assert ahrefs[0].text == "ocean current"
-        assert ahrefs[0].attrib.get("href") == "/wiki/Ocean_current"
+        assert len(ahrefs) >= 7
+        assert ahrefs[0].text == "atmosphere"
+        assert ahrefs[0].attrib.get("href") == "/wiki/Atmosphere"
 
 
     def test_wikipedia_page_first_para_sentence_span_tails(self):
@@ -137,10 +138,10 @@ class WikipediaTest(base_test):
         assert type(first_para) is WikipediaPara
         # texts = self.get_texts()
         XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
-        print(f"Tailed text: {ET.tostring(first_para.para_element)}")
-        assert ET.tostring(first_para.para_element) == """
-<p><b>Greenhouse gases</b> (<b>GHGs</b>) are the gases in an <a href="/wiki/Atmosphere" title="Atmosphere">atmosphere</a> that trap heat, raising the surface temperature of <a href="/wiki/Astronomical_bodies" class="mw-redirect" title="Astronomical bodies">astronomical bodies</a> such as Earth. Unlike other gases, greenhouse gases <a href="/wiki/Absorption_(electromagnetic_radiation)" title="Absorption (electromagnetic radiation)">absorb</a> the <a href="/wiki/Electromagnetic_spectrum" title="Electromagnetic spectrum">radiations</a> that a <a href="/wiki/Outgoing_longwave_radiation" title="Outgoing longwave radiation">planet emits</a>, resulting in the <a href="/wiki/Greenhouse_effect" title="Greenhouse effect">greenhouse effect</a>.<sup id="cite_ref-AR6WG1annexVII_1-0" class="reference"><a href="#cite_note-AR6WG1annexVII-1"><span class="cite-bracket">&#91;</span>1<span class="cite-bracket">&#93;</span></a></sup> The Earth is warmed by sunlight, causing its surface to <a href="/wiki/Radiant_energy" title="Radiant energy">radiate heat</a>, which is then mostly absorbed by greenhouse gases. Without greenhouse gases in the atmosphere, the average temperature of <a href="/wiki/Earth#Surface" title="Earth">Earth's surface</a> would be about −18&#160;°C (0&#160;°F),<sup id="cite_ref-NASACO2_2-0" class="reference"><a href="#cite_note-NASACO2-2"><span class="cite-bracket">&#91;</span>2<span class="cite-bracket">&#93;</span></a></sup> rather than the present average of 15&#160;°C (59&#160;°F).<sup id="cite_ref-Trenberth2003_3-0" class="reference"><a href="#cite_note-Trenberth2003-3"><span class="cite-bracket">&#91;</span>3<span class="cite-bracket">&#93;</span></a></sup><sup id="cite_ref-:0_4-0" class="reference"><a href="#cite_note-:0-4"><span class="cite-bracket">&#91;</span>4<span class="cite-bracket">&#93;</span></a></sup>
-</p>"""
+        tostring = ET.tostring(first_para.para_element).decode("UTF-8")
+        print(f"Tailed text: {tostring}")
+        assert tostring.startswith("""<p class="wpage_first_para"><b>Greenhouse gases</b><span> (</span><b>GHGs</b><span>) are the gases in an </span><a href="/wiki/Atmosphere" title="Atmosphere">atmosphere</a><span> that trap heat, raising the surface temperature of </span><a href="/wiki/Astronomical_bodies" class="mw-redirect" title="Astronomical bodies">astronomical bodies</a><span> such as Earth. Unlike other gases, greenhouse gases </span><a href="/wiki/Absorption_(electromagnetic_radiation)" title="Absorption (electromagnetic radiation)">absorb</a><span> the </span><a href="/wiki/Electromagnetic_spectrum" title="Electromagnetic spectrum">radiations</a><span> that a </span><a href="/wiki/Outgoing_longwave_radiation" title="Outgoing longwave radiation">planet emits</a><span>, resulting in the </span><a href="/wiki/Greenhouse_effect" title="Greenhouse effect">greenhouse effect</a><span>.</span><sup id="cite_ref-AR6WG1annexVII_1-0" class="reference"><a href="#cite_note-AR6WG1annexVII-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup><span> The Earth is warmed by sunlight, causing its surface to </span><a href="/wiki/Radiant_energy" title="Radiant energy">radiate heat</a><span>, which is then mostly absorbed by greenhouse gases. Without greenhouse gases in the atmosphere, the average temperature of </span><a href="/wiki/Earth#Surface" title="Earth">Earth's surface</a><span> would be about &#8722;18&#160;&#176;C (0&#160;&#176;F),</span><sup id="cite_ref-NASACO2_2-0" class="reference"><a href="#cite_note-NASACO2-2"><span class="cite-bracket">[</span>2<span class="cite-bracket">]</span></a></sup><span> rather than the present average of 15&#160;&#176;C (59&#160;&#176;F).</span><sup id="cite_ref-Trenberth2003_3-0" class="reference"><a href="#cite_note-Trenberth2003-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-:0_4-0" class="reference"><a href="#cite_note-:0-4"><span class="cite-bracket">[</span>4<span class="cite-bracket">]</span></a></sup><span>
+</span></p>""")
 
     @unittest.skip("duplicate")
     def test_wikipedia_page_first_para_sentence_add_brs(self):

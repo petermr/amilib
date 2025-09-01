@@ -257,3 +257,9 @@ Total Score = (Term Matches × 0.6) + (Description Matches × 0.3) + (Synonym Ma
 ---
 
 **The Disambiguation Classifier transforms Wikipedia's overwhelming options into focused, relevant results using your existing knowledge base. Start with a good dictionary, test with real examples, and watch your content discovery efficiency soar!**
+
+
+
+
+
+

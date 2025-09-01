@@ -1154,25 +1154,30 @@ class AmiDictionaryTest(AmiAnyTest):
     def test_search_with_dictionary_and_make_links_COMMANDLINE(self):
         """
         same logic and files as test_search_with_dictionary_and_make_links_CODE. Check that that runs
+        This fails the first time it's run and works the second. It's not
+        creating the output file.
+        NEEDS DEBUGGING
         """
 
         stem = "carbon_cycle"
         chapter_file = str(Path(Resources.TEST_RESOURCES_DIR, "ar6", "wg1", "Chapter05", f"{self.HTML_WITH_IDS}.html"))
         chapter_outpath = str(Path(Resources.TEMP_DIR, "ipcc", "wg1", "Chapter05", "marked_up.html"))
         FileLib.delete_file(chapter_outpath)
-        html_dict_path = str(Path(Resources.TEMP_DIR, "dictionary", "climate", f"{stem}.html"))
+        assert not Path(chapter_outpath).exists(), f"no output file {chapter_outpath}"
+        html_dict_path = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "climate", f"{stem}.html")
+        assert html_dict_path.exists(), f"dictionary path {html_dict_path}"
 
         # commandline
         args = [
             "DICT",
             "--inpath", chapter_file,
             "--outpath", chapter_outpath,
-            "--dict", html_dict_path,
+            "--dict", str(html_dict_path),
             "--operation", MARKUP_FILE,
         ]
         logger.info(f"cmd> {' '.join(args)}")
         AmiLib().run_command(args)
-        assert Path(chapter_outpath).exists()
+        assert Path(chapter_outpath).exists(), f"file {chapter_outpath}"
 
     def test_args_help(self):
         args = [

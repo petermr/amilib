@@ -9,7 +9,9 @@ import tempfile
 import shutil
 from pathlib import Path
 
+from amilib.file_lib import FileLib
 from corpus_module.corpus import AmiCorpus
+from test.resources import Resources
 
 
 class TestCorpusIngestion(unittest.TestCase):
@@ -17,14 +19,15 @@ class TestCorpusIngestion(unittest.TestCase):
 
     def setUp(self):
         """Set up test environment."""
-        self.test_dir = Path(tempfile.mkdtemp())
-        self.corpus_path = self.test_dir / "breward2023_corpus"
-        self.source_path = Path("test", "resources", "corpus", "breward2025")
+        self.corpus_path = Path(Resources.TEMP_DIR, "breward2023_corpus")
+        FileLib.force_mkdir(self.corpus_path)
+        self.source_path = Path(Resources.TEST_RESOURCES_DIR, "corpus", "breward2025")
         
     def tearDown(self):
         """Clean up test environment."""
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
+        # if self.test_dir.exists():
+        #     shutil.rmtree(self.test_dir)
+        pass
 
     def test_ami_corpus_ingestion(self):
         """Test ingesting files using AmiCorpus methods."""

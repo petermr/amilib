@@ -27,14 +27,14 @@ WG1_URL = AR6_URL + "wg1/"
 WG2_URL = AR6_URL + "wg2/"
 WG3_URL = AR6_URL + "wg3/"
 
-SC_TEST_DIR = Path(OUT_DIR_TOP, "ar6", "test")
+SC_OUT_DIR = Path(OUT_DIR_TOP, "ar6")
 
-SYR_OUT_DIR = Path(SC_TEST_DIR, "syr")
-WG1_OUT_DIR = Path(SC_TEST_DIR, "wg1")
+SYR_OUT_DIR = Path(SC_OUT_DIR, "syr")
+WG1_OUT_DIR = Path(SC_OUT_DIR, "wg1")
 # WG2_OUT_DIR = Path(SC_TEST_DIR, "wg2")
 # WG3_OUT_DIR = Path(SC_TEST_DIR, "wg3")
 
-TOTAL_GLOSS_DIR = Path(SC_TEST_DIR, "total_glossary")
+TOTAL_GLOSS_DIR = Path(Resources.TEST_RESOURCES_DIR, "ar6", "test", "total_glossary")
 
 OMIT_LONG = True
 
@@ -73,7 +73,7 @@ class DriverTest(AmiAnyTest):
         level = 99
         click_list = EXPAND_SECTION_PARAS
 
-        html_out = Path(SC_TEST_DIR, f"complete_text_{level}.html")
+        html_out = Path(SC_OUT_DIR, f"complete_text_{level}.html")
         driver.download_expand_save(url, click_list, html_out, level=level)
         elem_count = driver.get_lxml_element_count()
         assert elem_count > 0
@@ -123,7 +123,7 @@ class DriverTest(AmiAnyTest):
             (IPCC_URL, "srccl", "chapter"),  # https://www.ipcc.ch/srccl/chapter/glossary/ - NO HTML found
         ][:MAXDOCS]:
             driver = AmiDriver(sleep=SLEEP)
-            outfile = Path(SC_TEST_DIR, doc[1], "glossary.html")
+            outfile = Path(SC_OUT_DIR, doc[1], "glossary.html")
             url = doc[0] + doc[1] + "/"
             if len(doc) == 3:
                 url = url + doc[2] + "/"
@@ -155,7 +155,7 @@ class DriverTest(AmiAnyTest):
                 {
                     URL: "https://apps.ipcc.ch/glossary/",
                     XPATH: None,  # this skips any button pushes
-                    OUTFILE: Path(SC_TEST_DIR, "total_glossary.html")
+                    OUTFILE: Path(SC_OUT_DIR, "total_glossary.html")
                 },
             "wg1_ch1":
                 {
@@ -203,7 +203,7 @@ class DriverTest(AmiAnyTest):
                                (IPCC_URL, "srccl"),
                            ][:MAX_REPORTS]:
             driver = AmiDriver(sleep=SLEEP)
-            outfile = Path(SC_TEST_DIR, report_base[1], "toplevel.html")
+            outfile = Path(SC_OUT_DIR, report_base[1], "toplevel.html")
             url = report_base[0] + report_base[1] + "/"
             REPORT_TOP = "report_top"
             rep_dict = {
@@ -259,9 +259,9 @@ class DriverTest(AmiAnyTest):
                 driver = AmiDriver(sleep=SLEEP)
                 ch_url = wg_url + f"chapter/chapter-{ch}/"
 
-                outfile = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "noexp.html")
-                outfile_clean = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "clean.html")
-                outfile_figs = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "figs.html")
+                outfile = Path(SC_OUT_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "noexp.html")
+                outfile_clean = Path(SC_OUT_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "clean.html")
+                outfile_figs = Path(SC_OUT_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "figs.html")
                 wg_dict = {
                     f"wg{wg}_ch":
                         {
@@ -326,6 +326,7 @@ class DriverTest(AmiAnyTest):
         Adaptation_limits_A.html
         """
         input = Path(TOTAL_GLOSS_DIR, "input", "Adaptation_limits_A.html")
+        logger.info(f"adaptation {input}")
         with open(str(input), "r", encoding="UTF-8") as f:
             content = f.read()
             logger.debug(f"content {content}")
@@ -444,17 +445,21 @@ class DriverTest(AmiAnyTest):
         """
         reads an abbreviations and looks up wikipedia
         """
+        assert TOTAL_GLOSS_DIR.exists(), f"TOTAL_GLOSS_DIR exists {TOTAL_GLOSS_DIR}"
         glossdir = Path(TOTAL_GLOSS_DIR, "glossaries", "total")
-        glossdir.mkdir(exist_ok=True, parents=True)
-        abbrev_file = Path(glossdir, "acronyms_wiki.csv")
+        assert glossdir.exists(), f"glossdir must exist {glossdir}"
+        # glossdir.mkdir(exist_ok=True, parents=True)
+        abbrev_infile = Path(glossdir, "acronyms_wiki.csv")
+        assert abbrev_infile.exists(), f"{abbrev_infile} must exist"
         output_file = Path(glossdir, "acronyms_wiki_pedia.csv")
+ #       ./ test / resources / ar6 / test / total_glossary / glossaries / total / acronyms_wiki.csv
         maxout = 5  # 1700 in total
         lookup = WikidataLookup()
         with open(output_file, "w", encoding="UTF-8") as fout:
             csvwriter = csv.writer(fout)
             # csv header
             csvwriter.writerow(['abb', 'term', 'qid', 'desc', 'hits', 'wikipedia'])
-            with open(abbrev_file, newline='') as input:
+            with open(abbrev_infile, newline='') as input:
                 csvreader = csv.reader(input)
                 for i, row in enumerate(csvreader):
                     if i > maxout:
@@ -496,9 +501,9 @@ class DriverTest(AmiAnyTest):
             ch_url = wg_url + f"chapter/ccp{ccp}/"
             logger.debug(f"downloading {ch_url}")
 
-            outfile = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}", f"ccp{ccp}", "raw.html")
+            outfile = Path(SC_OUT_DIR, f"wg{wg}", f"{CHAP_PREF}", f"ccp{ccp}", "raw.html")
             # outfile_clean = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "clean.html")
-            outfile_figs = Path(SC_TEST_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "figs.html")
+            outfile_figs = Path(SC_OUT_DIR, f"wg{wg}", f"{CHAP_PREF}{ccp}", "figs.html")
             wg_dict = {
                 f"wg{wg}_ch":
                     {

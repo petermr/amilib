@@ -2,7 +2,7 @@
 """
 Test script for TF-IDF phrase extraction functionality
 """
-
+import logging
 import unittest
 import tempfile
 import shutil
@@ -11,7 +11,11 @@ from pathlib import Path
 import sys
 import os
 
+from test.resources import Resources
+
 # Note: amilib should be installed with 'pip install -e .' for tests to work properly
+
+logger = logging.getLogger(__name__)
 
 from corpus_module.corpus import AmiCorpus
 
@@ -21,9 +25,9 @@ class TestPhraseExtraction(unittest.TestCase):
     
     def setUp(self):
         """Set up test environment"""
-        self.test_dir = Path(tempfile.mkdtemp())
+        self.test_dir = Path(Resources.TEMP_DIR)
         self.corpus_path = self.test_dir / "test_corpus"
-        self.source_path = Path("test", "resources", "corpus", "breward2025")
+        self.source_path = Path(Resources.TEST_RESOURCES_DIR, "corpus", "breward2025")
         
     def tearDown(self):
         """Clean up test environment"""
@@ -36,7 +40,7 @@ class TestPhraseExtraction(unittest.TestCase):
         print("\n=== Test: TF-IDF Phrase Extraction ===")
         
         # 1. Use existing corpus with files already ingested
-        existing_corpus_path = Path("test", "resources", "corpus", "breward2023_corpus")
+        existing_corpus_path = Path(Resources.TEST_RESOURCES_DIR, "corpus", "breward2023_corpus")
         if existing_corpus_path.exists():
             corpus = AmiCorpus(topdir=existing_corpus_path)
             print(f"Using existing corpus at: {existing_corpus_path}")
@@ -140,7 +144,7 @@ class TestPhraseExtraction(unittest.TestCase):
         # Create corpus and ingest files
         corpus = AmiCorpus(topdir=self.corpus_path, mkdir=True)
         self._setup_corpus_structure(corpus)
-        
+        print(f"source path {self.source_path}")
         corpus.ingest_files(
             source_dir=self.source_path,
             file_pattern="*.pdf",

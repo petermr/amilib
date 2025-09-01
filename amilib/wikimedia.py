@@ -1340,8 +1340,17 @@ class WikipediaPage:
         "https://en.wikipedia.org/w/index.php?search=lulucx&title=Special%3ASearch&ns0=1"
         url = f"{WikipediaPage.WIKIPEDIA_PHP}search={search_term}"
         wikipedia_page = cls.lookup_wikipedia_page_for_url(url)
-        wikipedia_page.search_term = search_term
+        if wikipedia_page is not None:
+            wikipedia_page.remove_revision_popups()
+            wikipedia_page.search_term = search_term
         return wikipedia_page
+
+    def remove_revision_popups(self):
+        """
+        The BODY can contain revision notes which make if hard to find the         main paragraph
+
+        """
+        self.remove_nodes_with_ids(['mw-fr-revision-messages'])
 
     @classmethod
     def lookup_wikipedia_page_for_url(cls, url):
@@ -1689,6 +1698,20 @@ followed by <ul><li>...</li></ul> etc.
         if include is None and exclude is None:
             logger.error("disambiguate requires exactly one of include/exclude")
         return new_page
+
+    def remove_nodes_with_ids(self, ids=None):
+        """
+        remove unwanted sections/divs from body
+        typical one is <div id="mw-fr-revision-messages" in content subtitle>
+
+        """
+        if self.html_elem is not None and ids is not None:
+            for id in ids:
+                revisions = self.html_elem.xpath(f".//*[@id='{id}']")
+                for revision in revisions:
+                    revision.getparent().remove(revision)
+
+
 
 class WikipediaPara:
     """

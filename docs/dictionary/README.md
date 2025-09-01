@@ -159,3 +159,9 @@ AmiDictionary is a flexible, multilingual dictionary system that supports:
 ---
 
 **AmiDictionary v2.0 represents a significant evolution from a complex XML-based system to a simple, powerful HTML-based system that's easier to use, more flexible, and better integrated with modern web technologies.**
+
+
+
+
+
+
