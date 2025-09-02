@@ -6,7 +6,7 @@ import logging
 from pathlib import Path
 import unittest
 
-from pathlib import Path, PosixPath
+from pathlib import Path
 
 from amilib.file_lib import FileLib
 from amilib.util import Util
@@ -133,17 +133,17 @@ class File0Test(AmiAnyTest):
         file1 = Path(top_dir, "file1")
         file1.touch()
         assert file1.exists()
-        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir)]
+        files = [str(Path(f)) for f in FileLib.get_children(top_dir)]
         # Use dynamic paths instead of hardcoded ones for cross-platform compatibility
-        expected_files = [str(PosixPath(top_dir, "dir1")), str(PosixPath(top_dir, "file1"))]
+        expected_files = [str(Path(top_dir, "dir1")), str(Path(top_dir, "file1"))]
         assert sorted(files) == sorted(expected_files)
         
-        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=True)]
-        expected_dirs = [str(PosixPath(top_dir, "dir1"))]
+        files = [str(Path(f)) for f in FileLib.get_children(top_dir, dirx=True)]
+        expected_dirs = [str(Path(top_dir, "dir1"))]
         assert sorted(files) == sorted(expected_dirs)
         
-        files = [str(PosixPath(f)) for f in FileLib.get_children(top_dir, dirx=False)]
-        expected_files_only = [str(PosixPath(top_dir, "file1"))]
+        files = [str(Path(f)) for f in FileLib.get_children(top_dir, dirx=False)]
+        expected_files_only = [str(Path(top_dir, "file1"))]
         assert sorted(files) == sorted(expected_files_only)
 
     @classmethod
