@@ -272,10 +272,10 @@ class File0Test(AmiAnyTest):
         abspath = Path("/a/b/c/d/e.txt")
         refpath = Path("/a/b/c/")
         diffpath = FileLib.get_relative_path(abspath, refpath)
-        assert str(diffpath) == "d/e.txt"
+        assert diffpath == Path("d/e.txt")
 
         diffpath = FileLib.get_relative_path(refpath, abspath)
-        assert str(diffpath) == "../.."
+        assert diffpath == Path("../..")
 
         # dont' use Python 3.12 walk_up
         refpath = Path("/a/b/c/x/y.txt")
@@ -288,9 +288,9 @@ class File0Test(AmiAnyTest):
         refpath = Path("/a/b/c/x/y/z.txt")
 
         diffpath = FileLib.get_relative_path(abspath, refpath, walk_up=True)
-        assert str(diffpath) == ("../../../d/e.txt")
+        assert diffpath == Path("../../../d/e.txt")
         diffpath = FileLib.get_relative_path(refpath, abspath, walk_up=True)
-        assert str(diffpath) == ("../../x/y/z.txt")
+        assert diffpath == Path("../../x/y/z.txt")
 
     def test_force_write_operations(self):
         """Test basic file writing operations"""
