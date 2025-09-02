@@ -1,0 +1,15 @@
+include README.md
+include LICENSE
+recursive-include amilib *.ini
+recursive-include amilib *.xml
+recursive-include amilib *.xsl
+recursive-include amilib *.json
+recursive-include amilib *.css
+recursive-include amilib *.txt
+recursive-include amilib *.svg
+recursive-include amilib *.dot
+recursive-include amilib *.gv
+recursive-include amilib *.py
+recursive-include amilib *.md
+recursive-include resources *
+recursive-include amilib/resources *
