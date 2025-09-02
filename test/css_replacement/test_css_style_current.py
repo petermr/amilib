@@ -4,8 +4,6 @@ Establishes baseline behavior before migration to cssutils.
 """
 
 import pytest
-import sys
-import os
 
 # Note: amilib should be installed with 'pip install -e .' for tests to work properly
 

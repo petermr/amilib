@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Discussion - Encyclopedia Entry Example</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .encyclopedia {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .encyclopedia-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .encyclopedia-title {
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+            font-weight: 300;
+        }
+        .encyclopedia-meta {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .entry {
+            border-bottom: 1px solid #ecf0f1;
+            padding: 30px;
+            margin: 0;
+        }
+        .term {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .synonyms {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .synonym-group {
+            margin-bottom: 15px;
+        }
+        .synonym-group h4 {
+            color: #7f8c8d;
+            margin: 0 0 10px 0;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .synonym {
+            display: inline-block;
+            background: #e8f4fd;
+            color: #2980b9;
+            padding: 4px 12px;
+            margin: 2px 5px 2px 0;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        .content-section {
+            margin: 25px 0;
+        }
+        .section-title {
+            color: #34495e;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        .section-content {
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+        .metadata {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .categories, .tags {
+            margin-bottom: 15px;
+        }
+        .category, .tag {
+            display: inline-block;
+            background: #d5dbdb;
+            color: #2c3e50;
+            padding: 4px 12px;
+            margin: 2px 5px 2px 0;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        .wikidata-info, .wikipedia-source {
+            background: #fff8dc;
+            border: 1px solid #f0e68c;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .wikidata-title, .wikipedia-title {
+            color: #8b4513;
+            margin-top: 0;
+        }
+        .property {
+            margin: 10px 0;
+            padding: 10px;
+            background: #fffaf0;
+            border-radius: 3px;
+        }
+        .property-label {
+            font-weight: bold;
+            color: #8b4513;
+        }
+        .processing-info {
+            background: #e8f5e8;
+            border: 1px solid #90ee90;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .info {
+            display: inline-block;
+            background: #f0fff0;
+            color: #228b22;
+            padding: 3px 8px;
+            margin: 2px 5px 2px 0;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        .frequency-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            float: right;
+            margin-top: -10px;
+        }
+        .discussion-notes {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .discussion-title {
+            color: #856404;
+            margin-top: 0;
+        }
+        .note-item {
+            background: #fff8dc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            border-left: 3px solid #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="encyclopedia" 
+         data-title="Climate Change Encyclopedia - Team Discussion" 
+         data-version="1.0.0" 
+         data-created="2025-01-27T00:00:00Z" 
+         data-author="Climate Science Team" 
+         data-language="en" 
+         data-source="Enhanced from Wikimedia sources">
+        
+        <div class="encyclopedia-header">
+            <h1 class="encyclopedia-title">Climate Change Encyclopedia</h1>
+            <div class="encyclopedia-meta">
+                Team Discussion Example | Version 1.0.0 | Created: January 27, 2025
+            </div>
+        </div>
+
+        <!-- Single Entry for Team Discussion -->
+        <div class="entry" 
+             data-id="entry_001" 
+             data-term="Greenhouse Gas" 
+             data-category="climate_science" 
+             data-wikidata-id="Q37836" 
+             data-wikipedia-url="https://en.wikipedia.org/wiki/Greenhouse_gas" 
+             data-frequency="1250" 
+             data-ingestion-date="2025-01-27T00:00:00Z" 
+             data-extraction-method="amilib_wikipedia_parser">
+            
+            <h2 class="term" data-primary="true">
+                Greenhouse Gas
+                <span class="frequency-badge">Frequency: 1250</span>
+            </h2>
+            
+            <div class="synonyms">
+                <div class="synonym-group" data-type="wiktionary" data-source="wiktionary">
+                    <h4>Wiktionary Synonyms</h4>
+                    <span class="synonym" data-confidence="0.95">GHG</span>
+                    <span class="synonym" data-confidence="0.90">atmospheric gas</span>
+                    <span class="synonym" data-confidence="0.85">heat-trapping gas</span>
+                </div>
+                
+                <div class="synonym-group" data-type="inline" data-source="text_analysis">
+                    <h4>Text References</h4>
+                    <span class="synonym" data-context="parenthetical">greenhouse gases (GHGs)</span>
+                    <span class="synonym" data-context="abbreviation">GHGs</span>
+                </div>
+                
+                <div class="synonym-group" data-type="languages" data-source="multilingual">
+                    <h4>Other Languages</h4>
+                    <span class="synonym" data-language="fr" data-script="latin">gaz à effet de serre</span>
+                    <span class="synonym" data-language="hi" data-script="devanagari">ग्रीनहाउस गैस</span>
+                    <span class="synonym" data-language="ta" data-script="tamil">பசுமைக்குடில் வாயு</span>
+                </div>
+            </div>
+            
+            <div class="content">
+                <div class="content-section" 
+                     data-type="definition" 
+                     data-source="wikipedia" 
+                     data-extraction-date="2025-01-27T00:00:00Z" 
+                     data-confidence="0.95">
+                    <h3 class="section-title">Definition</h3>
+                    <div class="section-content">
+                        <p><strong>Greenhouse gases</strong> are gases in Earth's atmosphere that trap heat by absorbing infrared radiation. They allow sunlight to pass through the atmosphere but prevent the heat from escaping back into space, creating a natural greenhouse effect that keeps Earth warm enough to support life.</p>
+                    </div>
+                </div>
+                
+                <div class="content-section" 
+                     data-type="description" 
+                     data-source="wikipedia" 
+                     data-extraction-date="2025-01-27T00:00:00Z" 
+                     data-confidence="0.90">
+                    <h3 class="section-title">Description</h3>
+                    <div class="section-content">
+                        <p>These gases include carbon dioxide (CO₂), methane (CH₄), nitrous oxide (N₂O), and fluorinated gases. They contribute to the greenhouse effect, which is essential for maintaining Earth's temperature but can lead to global warming when concentrations increase due to human activities such as burning fossil fuels, deforestation, and industrial processes.</p>
+                    </div>
+                </div>
+                
+                <div class="content-section" 
+                     data-type="examples" 
+                     data-source="wikipedia" 
+                     data-extraction-date="2025-01-27T00:00:00Z" 
+                     data-confidence="0.88">
+                    <h3 class="section-title">Examples</h3>
+                    <div class="section-content">
+                        <ul>
+                            <li data-wikidata-id="Q421">Carbon dioxide (CO₂) - Most significant anthropogenic greenhouse gas</li>
+                            <li data-wikidata-id="Q3710">Methane (CH₄) - More potent than CO₂ but shorter atmospheric lifetime</li>
+                            <li data-wikidata-id="Q190909">Nitrous oxide (N₂O) - Agricultural and industrial emissions</li>
+                            <li data-wikidata-id="Q11344">Fluorinated gases - Synthetic compounds with very high warming potential</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="metadata">
+                <div class="categories">
+                    <h4>Categories</h4>
+                    <span class="category" data-primary="true" data-type="domain">climate_science</span>
+                    <span class="category" data-type="subdomain">atmospheric_chemistry</span>
+                    <span class="category" data-type="subdomain">environmental_science</span>
+                </div>
+                
+                <div class="tags">
+                    <h4>Tags</h4>
+                    <span class="tag" data-type="concept">atmosphere</span>
+                    <span class="tag" data-type="concept">climate</span>
+                    <span class="tag" data-type="concept">emissions</span>
+                    <span class="tag" data-type="process">greenhouse_effect</span>
+                    <span class="tag" data-type="impact">global_warming</span>
+                </div>
+                
+                <div class="processing-info" data-extraction-method="amilib_wikipedia_parser">
+                    <h4>Processing Information</h4>
+                    <span class="info" data-type="extraction_date">2025-01-27T00:00:00Z</span>
+                    <span class="info" data-type="content_sections">definition,description,examples</span>
+                    <span class="info" data-type="cross_references_found">4</span>
+                    <span class="info" data-type="content_quality">verified</span>
+                </div>
+            </div>
+            
+            <div class="wikidata-info" data-entity-id="Q37836">
+                <h4 class="wikidata-title">Wikidata Information</h4>
+                <div class="wikidata-properties">
+                    <div class="property" data-property-id="P31" data-property-value="Q11344">
+                        <span class="property-label">instance of</span>: 
+                        <span class="property-value">greenhouse gas</span>
+                    </div>
+                    <div class="property" data-property-id="P279" data-property-value="Q79529">
+                        <span class="property-label">subclass of</span>: 
+                        <span class="property-value">atmospheric gas</span>
+                    </div>
+                    <div class="property" data-property-id="P361" data-property-value="Q7942">
+                        <span class="property-label">part of</span>: 
+                        <span class="property-value">climate change</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wikipedia-source" data-url="https://en.wikipedia.org/wiki/Greenhouse_gas">
+                <h4 class="wikipedia-title">Wikipedia Source</h4>
+                <div class="wikipedia-content">
+                    <p>Content extracted from <a href="https://en.wikipedia.org/wiki/Greenhouse_gas" target="_blank">Wikipedia - Greenhouse Gas</a></p>
+                    <div class="extraction-details">
+                        <span class="detail" data-type="last_updated">2025-01-27</span>
+                        <span class="detail" data-type="extraction_method">amilib_wikipedia_parser</span>
+                        <span class="detail" data-type="content_quality">verified</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Discussion Notes -->
+            <div class="discussion-notes">
+                <h4 class="discussion-title">Team Discussion Points</h4>
+                
+                <div class="note-item">
+                    <strong>Entry Structure:</strong> This shows the complete encyclopedia entry format with all key components: term, synonyms, content sections, metadata, Wikidata integration, and Wikipedia sourcing.
+                </div>
+                
+                <div class="note-item">
+                    <strong>Data Sources:</strong> Entry combines data from multiple sources: Wiktionary (synonyms), Wikipedia (content), Wikidata (properties), and text analysis (frequency, context).
+                </div>
+                
+                <div class="note-item">
+                    <strong>amilib Integration:</strong> The entry demonstrates how amilib modules can populate: Wikidata IDs, Wikipedia URLs, content extraction, and cross-references.
+                </div>
+                
+                <div class="note-item">
+                    <strong>Export/Import:</strong> This HTML format can be converted back to amilib XML format for processing, creating a round-trip workflow.
+                </div>
+                
+                <div class="note-item">
+                    <strong>Discussion Questions:</strong> 
+                    <ul>
+                        <li>Should we add more content sections (e.g., "Related Terms", "Historical Context")?</li>
+                        <li>How should we handle conflicting information from different sources?</li>
+                        <li>What validation rules should we implement for entry quality?</li>
+                        <li>How can we automate the enrichment process using existing amilib code?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+
+
+

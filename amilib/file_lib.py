@@ -742,21 +742,21 @@ class FileLib:
         return None
 
     @classmethod
-    def get_reletive_path(cls, pathx, refpath, walk_up=True):
+    def get_relative_path(cls, pathx, refpath, walk_up=True):
         """
-        get path eelatuve to refpath
+        get path relative to refpath
         :param pathx: to relativise
         :param refpath: reference path
         :return: path to convert refpath to path
-        :except: raisea Value error if no relative path
+        :except: raise Value error if no relative path
         """
         if pathx is None:
             return None
         if refpath is None:
             return None
         # ensure we are working with Paths
-        pathx = PosixPath(pathx)
-        refpath = PosixPath(refpath)
+        pathx = Path(pathx)
+        refpath = Path(refpath)
 
         if walk_up:
             try:

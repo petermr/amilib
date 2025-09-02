@@ -269,27 +269,27 @@ class File0Test(AmiAnyTest):
         convert absolute pathname to relative to another path
         some of this is in Python 3.12 but we'll support earlier versions
         """
-        abspath = PosixPath("/a/b/c/d/e.txt")
-        refpath = PosixPath("/a/b/c/")
-        diffpath = FileLib.get_reletive_path(abspath, refpath)
+        abspath = Path("/a/b/c/d/e.txt")
+        refpath = Path("/a/b/c/")
+        diffpath = FileLib.get_relative_path(abspath, refpath)
         assert str(diffpath) == "d/e.txt"
 
-        diffpath = FileLib.get_reletive_path(refpath, abspath)
+        diffpath = FileLib.get_relative_path(refpath, abspath)
         assert str(diffpath) == "../.."
 
         # dont' use Python 3.12 walk_up
         refpath = Path("/a/b/c/x/y.txt")
         try:
-            diffpath = FileLib.get_reletive_path(abspath, refpath, walk_up=False)
+            diffpath = FileLib.get_relative_path(abspath, refpath, walk_up=False)
         except ValueError as e:
             assert str(e) == "'/a/b/c/d/e.txt' is not in the subpath of '/a/b/c/x/y.txt'"
 
         # use Python 3.12 walk_up
         refpath = Path("/a/b/c/x/y/z.txt")
 
-        diffpath = FileLib.get_reletive_path(abspath, refpath, walk_up=True)
+        diffpath = FileLib.get_relative_path(abspath, refpath, walk_up=True)
         assert str(diffpath) == ("../../../d/e.txt")
-        diffpath = FileLib.get_reletive_path(refpath, abspath, walk_up=True)
+        diffpath = FileLib.get_relative_path(refpath, abspath, walk_up=True)
         assert str(diffpath) == ("../../x/y/z.txt")
 
     def test_force_write_operations(self):
@@ -419,7 +419,7 @@ class DownloadTest(AmiAnyTest):
         self.assertIn('service', result)
         
         # Should be connected to HTTPBin
-        self.assertTrue(result['connected'])
+        self.assertTrue(result['connected'], f"connection failed")
         self.assertEqual(result['status_code'], 200)
         self.assertEqual(result['service'], "HTTPBin Test")
         self.assertIsInstance(result['response_time'], float)

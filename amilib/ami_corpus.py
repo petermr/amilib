@@ -436,7 +436,9 @@ outfile: {self.outfile}
 
         for html_file in html_files:
             if outpath:
-                offset = FileLib.get_reletive_path(html_file, outpath.parent, walk_up=True)
+                # before python method
+                offset = FileLib.get_relative_path(html_file, outpath.parent, walk_up=True)
+                # offset = Path(html_file).relative_to(Path(outpath).parent)
             tr = ET.SubElement(tbody, "tr")
             HtmlLib.add_cell_content(tr, text=offset, href=f"{offset}")
         HtmlLib.write_html_file(self.datables_html, outpath, debug=debug)
