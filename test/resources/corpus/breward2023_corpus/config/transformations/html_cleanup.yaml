@@ -1,0 +1,5 @@
+transformations:
+- action: delete
+  name: remove_empty_elements
+  type: html_edit
+  xpath: //div[count(*)=0 and count(text()=0]
