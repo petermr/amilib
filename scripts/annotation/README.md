@@ -75,6 +75,36 @@ python create_flat_glossary.py --input /path/to/input.csv --output /path/to/outp
 
 **Recommendation**: Merge functionality into main annotation tool
 
+### **`markup_ipcc_chapters_with_keywords.py`** ⭐⭐⭐⭐⭐
+**Purpose**: Annotate IPCC HTML chapters with keyphrase hyperlinks
+
+**Current Status**:
+- ✅ Excellent user-facing tool with full CLI
+- ✅ Supports both CSV and AmiDictionary keyword sources
+- ✅ Batch processing of multiple chapters
+- ✅ GitHub integration for keyword loading
+- ✅ Comprehensive error handling and logging
+- ✅ Follows amilib style guide
+
+**Features**:
+- Load keywords from GitHub CSV files or local AmiDictionary
+- Process individual chapters or all chapters at once
+- Create hyperlinks to Wikipedia/dictionary entries
+- Generate statistics and progress reports
+- Configurable input/output directories
+
+**Usage**:
+```bash
+# Process Chapter 1 with CSV keywords
+python markup_ipcc_chapters_with_keywords.py --chapter 1 --keywords csv
+
+# Process multiple chapters
+python markup_ipcc_chapters_with_keywords.py --chapter 1,2,3 --keywords csv
+
+# Process all chapters with dictionary
+python markup_ipcc_chapters_with_keywords.py --all-chapters --keywords dictionary --dict-path /path/to/dict.xml
+```
+
 ### **`process_remaining_biorxiv.py`** ⭐⭐
 **Purpose**: Background processing of bioRxiv PDFs
 

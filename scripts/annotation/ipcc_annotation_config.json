@@ -1,0 +1,46 @@
+{
+  "description": "Configuration file for IPCC chapter annotation",
+  "version": "1.0",
+  "defaults": {
+    "chapter_dir": "test/resources/ipcc/cleaned_content/wg1",
+    "output_dir": "temp/annotate/keyphrases",
+    "dict_base_url": "https://en.wikipedia.org/wiki/",
+    "keyword_source": "csv"
+  },
+  "chapters": {
+    "1": {
+      "name": "Framing, Context and Methods",
+      "keywords_url": "https://raw.githubusercontent.com/semanticClimate/encyclopedia/udita/Dictionary/ipcc/ipcc_wg1/ipcc_wg1_files/Chapter_1_keywords.csv",
+      "enabled": true
+    },
+    "2": {
+      "name": "Changing State of the Climate System",
+      "keywords_url": "https://raw.githubusercontent.com/semanticClimate/encyclopedia/udita/Dictionary/ipcc/ipcc_wg1/ipcc_wg1_files/Chapter_2_keywords.csv",
+      "enabled": true
+    },
+    "3": {
+      "name": "Human Influence on the Climate System",
+      "keywords_url": "https://raw.githubusercontent.com/semanticClimate/encyclopedia/udita/Dictionary/ipcc/ipcc_wg1/ipcc_wg1_files/Chapter_3_keywords.csv",
+      "enabled": true
+    }
+  },
+  "dictionary_sources": {
+    "local_counter": {
+      "path_pattern": "test/resources/ipcc/cleaned_content/wg1/Chapter{chapter:02d}/marked/kw_counter.txt",
+      "format": "counter",
+      "enabled": true
+    },
+    "github_csv": {
+      "base_url": "https://raw.githubusercontent.com/semanticClimate/encyclopedia/udita/Dictionary/ipcc/ipcc_wg1/ipcc_wg1_files/",
+      "file_pattern": "Chapter_{chapter}_keywords.csv",
+      "format": "csv",
+      "enabled": true
+    }
+  },
+  "output_options": {
+    "create_statistics": true,
+    "create_index": true,
+    "preserve_structure": true,
+    "annotation_class": "annotation"
+  }
+}
