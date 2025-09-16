@@ -3799,9 +3799,14 @@ class HtmlUtil:
 
         for el in elem.xpath(".//*[not(*)]"):
             text = HtmlUtil.get_text_content(el)
+
             text1 = text.replace('\n', '')
             if text1 != text:
-                el.text = text1
+                try:
+                    el.text = text1
+                except Exception as e:
+                    logger.error(f"Cannot convert {text1} to el.text {type(el.text)}")
+
 
     @classmethod
     def remove_style(cls, xpath_root_elem, names):

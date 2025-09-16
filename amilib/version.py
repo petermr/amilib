@@ -2,7 +2,6 @@
 Version management for amilib package.
 """
 import configparser
-import os
 from pathlib import Path
 
 def get_version():

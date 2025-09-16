@@ -1,0 +1,65 @@
+digraph Knowledge capture {
+
+	compound=true;
+
+	
+    // Define node styles
+    node [shape=box style=filled fontname="Helvetica"];
+    edge [shape=box style=filled fontname="Helvetica"];
+	
+	label     = "dictionary ecosystem"	   
+	labelloc  =  t // t: Place the graph's title on top.
+	fontsize  = 30 // Make title stand out by giving a large font size
+	fontcolor = blue
+	fontname = "Helvetica"
+	
+    // Overall graph layout direction
+    rankdir=TB;  // Top to Bottom direction (default)
+    // Nodes with specific labels
+ //   pygetpapers [label="pygetpapers 3-4*" fillcolor=lightyellow];
+ //   IPCC_website [label="IPCC_website 1*" fillcolor=lightyellow];
+ //   UNFCCC_website [label="UNFCCC_website 1*" fillcolor=lightyellow];
+    Wikimedia [label="Wikimedia 5*" fillcolor=cyan];
+	IPCCGlossary [label="IPCC Glossary 1*" fillcolor=lightyellow];
+    
+    // Define edges
+    UN_corpus -> dictionary [label="phrases   " color=black];
+    dictionary -> UN_corpus [label=" W3C-annotate" color=black];
+    open_science_corpus -> dictionary [label="phrases   " color=black];
+    dictionary -> open_science_corpus [label="  W3C-annotate" color=black];
+	Wikimedia -> dictionary;
+    pygetpapers -> open_science_corpus [label=" pygetpapers" color=black];
+    IPCC_website -> UN_corpus [label=" amilib" color=black];
+    UNFCCC_website -> UN_corpus [label=" amilib" color=black];
+    IPCCGlossary -> dictionary;
+    
+    // Subgraph to control the order of IPCC_corpus and open_science_corpus
+    { rank=same; color=cyan UN_corpus; open_science_corpus; }
+    
+    // Subgraph to control the order of IPCC_website and pygetpapers
+    { rank=same; IPCC_website; UNFCCC_website; pygetpapers; }
+    
+    // Adding invisible edges to control horizontal ordering
+    UN_corpus -> open_science_corpus [style=invis];
+	
+    { rank=same; dictionary; Wikimedia; IPCCGlossary;}
+	 Wikimedia -> dictionary -> IPCCGlossary [style=invis];
+
+	subgraph {label="
+Documents populate dictionaries with Phrases which are
+semantified with Wikimedia"
+    labelloc  =  b // b: Place the graph's title at bottom.
+    fontsize  = 20 // Make title stand out by giving a large font size
+    fontcolor = lightblue} // doesn't yet work
+
+
+
+	subgraph cluster_0 {
+		    dictionary [label="dictionary 5*" fillcolor=lightblue];
+		    open_science_corpus [label="opensci_corpus 5*" fillcolor=lightpink];
+		    UN_corpus [label="UN Corpus 5*" fillcolor=lightpink];
+
+	}
+		
+	
+}

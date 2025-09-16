@@ -347,6 +347,7 @@ class WikipediaTest(base_test):
         """
         term = "Tipping point"
         wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
+        assert wpage is not None
 
         # html_file = Path(Resources.TEST_RESOURCES_DIR,"html", "tipping_disambig.html")
         # assert html_file.exists()

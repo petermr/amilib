@@ -8,12 +8,11 @@ except ImportError:
 import configparser
 import os
 
-# Read version from config.ini
-with open(os.path.join(os.path.dirname(__file__), "amilib", "config.ini")) as f:
-    config_file = f.read()
-config = configparser.RawConfigParser(allow_no_value=True)
-config.read_string(config_file)
-version = config.get("amilib", "version")
+# Read version from __init__.py
+import re
+with open(os.path.join(os.path.dirname(__file__), "amilib", "__init__.py")) as f:
+    content = f.read()
+version = re.search(r'__version__ = ["\']([^"\']+)["\']', content).group(1)
 
 # Read README
 try:
@@ -30,8 +29,10 @@ requirements = [
     'pandas',         # Data manipulation
     'numpy',          # Numerical operations
     'pdfplumber',     # PDF processing
+    'pymupdf',        # PDF processing (fitz)
     'selenium',       # Web automation
     'webdriver-manager', # Chrome driver management
+    'SPARQLWrapper',    # SPARQL querying
 ]
 
 # Optional dependencies for specific features

@@ -368,10 +368,10 @@ class AmiLib:
 
     def version(self):
         """
-        Get version from version.py
+        Get version from __init__.py
         """
-        from amilib.version import get_version
-        return get_version()
+        from amilib import __version__
+        return __version__
 
 
 class AmiLibArgs(AbstractArgs):

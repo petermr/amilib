@@ -3,13 +3,12 @@
 cd
 cd workspace/amilib  # or whatever your top dir
 rm -rf dist build amilib.egg-info
-# *** EDIT VERSION NUMBER (e.g. 0.0.2) IN setup.py AND amilib/amix.version() ***
+# *** EDIT VERSION NUMBER (e.g. 0.0.2) IN amilib/__init__.py ***
 python setup.py sdist
 
 twine upload dist/* # <login is pypi, not github> I am petermr
 
 #
-# version = "0.0.1a1"
 # pip install amilib=version # or whatever version
 # OR for pre-release versions append --pre (othewise you don't get the latest)r
 # pip install --pre amilib==version

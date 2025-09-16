@@ -132,6 +132,17 @@ We updated the official style guide with additional rules:
 **Rationale**: Business logic in tests pollutes the test suite, makes tests harder to maintain, 
 and creates technical debt. Tests should focus on verifying existing functionality, not 
 implementing new features.
+
+### STYLE: Do not return values from tests other than None
+
+- ✅ **Good**: Tests that return None (implicit or explicit)
+- ✅ **Good**: Tests that use assertions to verify behavior
+- ❌ **Bad**: Tests that return True/False or other values
+- ❌ **Bad**: Tests that return data for other tests to use
+
+**Rationale**: Tests should focus on verification through assertions, not data flow. 
+Returning values from tests creates dependencies between tests and makes the test suite 
+harder to understand and maintain.
 ```
 
 ## Best Practices Established

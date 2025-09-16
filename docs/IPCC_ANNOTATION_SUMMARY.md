@@ -122,6 +122,3 @@ The script leverages existing amilib functionality:
 - **Help**: Comprehensive command-line help
 - **Examples**: Multiple usage scenarios
 - **Configuration**: JSON configuration template
-
-
-

@@ -1,5 +1,5 @@
 chardet~=5.2.0
-graphviz~=0.20.3
+graphviz==0.20.3
 lxml~=5.3.0
 networkx~=3.4.2
 numpy~=2.2.0
