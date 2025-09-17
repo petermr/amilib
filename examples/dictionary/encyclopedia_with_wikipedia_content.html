@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Change Encyclopedia - Wikipedia Content</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .encyclopedia {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .encyclopedia-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .encyclopedia-title {
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+            font-weight: 300;
+        }
+        .encyclopedia-meta {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        /* Alphabetic Lookup Explorer */
+        .alphabet-explorer {
+            background: #34495e;
+            padding: 20px;
+            color: white;
+        }
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+            gap: 5px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .letter-link {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .letter-link:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+        }
+        .letter-link.active {
+            background: #e74c3c;
+        }
+        .letter-section {
+            display: none;
+        }
+        .letter-section.active {
+            display: block;
+        }
+        .letter-header {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .entry {
+            border-bottom: 1px solid #ecf0f1;
+            padding: 30px;
+            margin: 0;
+        }
+        .entry:last-child {
+            border-bottom: none;
+        }
+        .term {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .synonyms {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .synonym-group {
+            margin-bottom: 15px;
+        }
+        .synonym-group h4 {
+            color: #7f8c8d;
+            margin: 0 0 10px 0;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .synonym {
+            display: inline-block;
+            background: #e8f4fd;
+            color: #2980b9;
+            padding: 4px 12px;
+            margin: 2px 5px 2px 0;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        .content-section {
+            margin: 25px 0;
+        }
+        .section-title {
+            color: #34495e;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        .section-content {
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+        .wikipedia-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .wikipedia-link:hover {
+            text-decoration: underline;
+        }
+        .metadata {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .categories, .tags {
+            margin-bottom: 15px;
+        }
+        .category, .tag {
+            display: inline-block;
+            background: #d5dbdb;
+            color: #2c3e50;
+            padding: 4px 12px;
+            margin: 2px 5px 2px 0;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        .wikidata-info, .wikipedia-source {
+            background: #fff8dc;
+            border: 1px solid #f0e68c;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .wikidata-title, .wikipedia-title {
+            color: #8b4513;
+            margin-top: 0;
+        }
+        .property {
+            margin: 10px 0;
+            padding: 10px;
+            background: #fffaf0;
+            border-radius: 3px;
+        }
+        .property-label {
+            font-weight: bold;
+            color: #8b4513;
+        }
+        .processing-info {
+            background: #e8f5e8;
+            border: 1px solid #90ee90;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .info {
+            display: inline-block;
+            background: #f0fff0;
+            color: #228b22;
+            padding: 3px 8px;
+            margin: 2px 5px 2px 0;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        .frequency-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            float: right;
+            margin-top: -10px;
+        }
+        .content-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="encyclopedia" 
+         data-title="Climate Change Encyclopedia - Wikipedia Enhanced" 
+         data-version="1.0.0" 
+         data-created="2025-01-27T00:00:00Z" 
+         data-author="Climate Science Team" 
+         data-language="en" 
+         data-source="Enhanced from Wikimedia sources using amilib">
+        
+        <div class="encyclopedia-header">
+            <h1 class="encyclopedia-title">Climate Change Encyclopedia</h1>
+            <div class="encyclopedia-meta">
+                Enhanced from Wikimedia sources using amilib | Version 1.0.0 | Created: January 27, 2025
+            </div>
+        </div>
+
+        <!-- Alphabetic Lookup Explorer -->
+        <div class="alphabet-explorer">
+            <h3 style="text-align: center; margin-bottom: 20px;">Alphabetic Term Explorer</h3>
+            <div class="alphabet-grid">
+                <a href="#A" class="letter-link" onclick="showLetter('A')">A</a>
+                <a href="#B" class="letter-link" onclick="showLetter('B')">B</a>
+                <a href="#C" class="letter-link" onclick="showLetter('C')">C</a>
+                <a href="#D" class="letter-link" onclick="showLetter('D')">D</a>
+                <a href="#E" class="letter-link" onclick="showLetter('E')">E</a>
+                <a href="#F" class="letter-link" onclick="showLetter('F')">F</a>
+                <a href="#G" class="letter-link" onclick="showLetter('G')">G</a>
+                <a href="#H" class="letter-link" onclick="showLetter('H')">H</a>
+                <a href="#I" class="letter-link" onclick="showLetter('I')">I</a>
+                <a href="#J" class="letter-link" onclick="showLetter('J')">J</a>
+                <a href="#K" class="letter-link" onclick="showLetter('K')">K</a>
+                <a href="#L" class="letter-link" onclick="showLetter('L')">L</a>
+                <a href="#M" class="letter-link" onclick="showLetter('M')">M</a>
+                <a href="#N" class="letter-link" onclick="showLetter('N')">N</a>
+                <a href="#O" class="letter-link" onclick="showLetter('O')">O</a>
+                <a href="#P" class="letter-link" onclick="showLetter('P')">P</a>
+                <a href="#Q" class="letter-link" onclick="showLetter('Q')">Q</a>
+                <a href="#R" class="letter-link" onclick="showLetter('R')">R</a>
+                <a href="#S" class="letter-link" onclick="showLetter('S')">S</a>
+                <a href="#T" class="letter-link" onclick="showLetter('T')">T</a>
+                <a href="#U" class="letter-link" onclick="showLetter('U')">U</a>
+                <a href="#V" class="letter-link" onclick="showLetter('V')">V</a>
+                <a href="#W" class="letter-link" onclick="showLetter('W')">W</a>
+                <a href="#X" class="letter-link" onclick="showLetter('X')">X</a>
+                <a href="#Y" class="letter-link" onclick="showLetter('Y')">Y</a>
+                <a href="#Z" class="letter-link" onclick="showLetter('Z')">Z</a>
+            </div>
+        </div>
+
+        <!-- Letter A Section -->
+        <div id="A" class="letter-section active">
+            <div class="letter-header">A</div>
+            
+            <!-- Entry: Adaptation -->
+            <div class="entry" 
+                 data-id="entry_001" 
+                 data-term="Adaptation" 
+                 data-category="climate_science" 
+                 data-wikidata-id="Q123456" 
+                 data-wikipedia-url="https://en.wikipedia.org/wiki/Climate_change_adaptation" 
+                 data-frequency="890" 
+                 data-ingestion-date="2025-01-27T00:00:00Z" 
+                 data-extraction-method="amilib_wikipedia_parser">
+                
+                <h2 class="term" data-primary="true">
+                    Adaptation
+                    <span class="frequency-badge">Frequency: 890</span>
+                </h2>
+                
+                <div class="synonyms">
+                    <div class="synonym-group" data-type="wiktionary" data-source="wiktionary">
+                        <h4>Wiktionary Synonyms</h4>
+                        <span class="synonym" data-confidence="0.95">climate adaptation</span>
+                        <span class="synonym" data-confidence="0.90">adaptive capacity</span>
+                        <span class="synonym" data-confidence="0.85">resilience building</span>
+                    </div>
+                    
+                    <div class="synonym-group" data-type="inline" data-source="text_analysis">
+                        <h4>Text References</h4>
+                        <span class="synonym" data-context="parenthetical">climate adaptation</span>
+                        <span class="synonym" data-context="abbreviation">adaptation</span>
+                    </div>
+                    
+                    <div class="synonym-group" data-type="languages" data-source="multilingual">
+                        <h4>Other Languages</h4>
+                        <span class="synonym" data-language="fr" data-script="latin">adaptation</span>
+                        <span class="synonym" data-language="hi" data-script="devanagari">अनुकूलन</span>
+                        <span class="synonym" data-language="es" data-script="latin">adaptación</span>
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <div class="content-section" 
+                         data-type="definition" 
+                         data-source="wikipedia" 
+                         data-extraction-date="2025-01-27T00:00:00Z" 
+                         data-confidence="0.95">
+                        <h3 class="section-title">Definition</h3>
+                        <div class="section-content">
+                            <p><strong>Climate change adaptation</strong> refers to the process of adjusting to actual or expected climate and its effects. It involves taking practical actions to manage risks from climate impacts, protect communities, and strengthen the resilience of the economy.</p>
+                            <p>Source: <a href="https://en.wikipedia.org/wiki/Climate_change_adaptation" class="wikipedia-link" target="_blank">Wikipedia - Climate Change Adaptation</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section" 
+                         data-type="description" 
+                         data-source="wikipedia" 
+                         data-extraction-date="2025-01-27T00:00:00Z" 
+                         data-confidence="0.90">
+                        <h3 class="section-title">Description</h3>
+                        <div class="section-content">
+                            <p>Adaptation strategies can be implemented at various levels, from individual actions to national policies. Examples include building sea walls to protect against rising sea levels, developing drought-resistant crops, improving water management systems, and creating early warning systems for extreme weather events. Successful adaptation requires understanding local climate risks, engaging stakeholders, and implementing flexible solutions that can evolve as conditions change.</p>
+                            <p>Source: <a href="https://en.wikipedia.org/wiki/Climate_change_adaptation" class="wikipedia-link" target="_blank">Wikipedia - Climate Change Adaptation</a></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metadata">
+                    <div class="categories">
+                        <h4>Categories</h4>
+                        <span class="category" data-primary="true" data-type="domain">climate_science</span>
+                        <span class="category" data-type="subdomain">climate_policy</span>
+                        <span class="category" data-type="subdomain">resilience</span>
+                    </div>
+                    
+                    <div class="tags">
+                        <h4>Tags</h4>
+                        <span class="tag" data-type="concept">adaptation</span>
+                        <span class="tag" data-type="concept">resilience</span>
+                        <span class="tag" data-type="concept">policy</span>
+                        <span class="tag" data-type="process">risk_management</span>
+                    </div>
+                    
+                    <div class="processing-info" data-extraction-method="amilib_wikipedia_parser">
+                        <h4>Processing Information</h4>
+                        <span class="info" data-type="extraction_date">2025-01-27T00:00:00Z</span>
+                        <span class="info" data-type="content_sections">definition,description</span>
+                        <span class="info" data-type="content_quality">verified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Letter C Section -->
+        <div id="C" class="letter-section">
+            <div class="letter-header">C</div>
+            
+            <!-- Entry: Carbon Dioxide -->
+            <div class="entry" 
+                 data-id="entry_002" 
+                 data-term="Carbon Dioxide" 
+                 data-category="climate_science" 
+                 data-wikidata-id="Q421" 
+                 data-wikipedia-url="https://en.wikipedia.org/wiki/Carbon_dioxide" 
+                 data-frequency="1250" 
+                 data-ingestion-date="2025-01-27T00:00:00Z" 
+                 data-extraction-method="amilib_wikipedia_parser">
+                
+                <h2 class="term" data-primary="true">
+                    Carbon Dioxide
+                    <span class="frequency-badge">Frequency: 1250</span>
+                </h2>
+                
+                <div class="synonyms">
+                    <div class="synonym-group" data-type="wiktionary" data-source="wiktionary">
+                        <h4>Wiktionary Synonyms</h4>
+                        <span class="synonym" data-confidence="0.95">CO₂</span>
+                        <span class="synonym" data-confidence="0.90">carbonic acid gas</span>
+                        <span class="synonym" data-confidence="0.85">dry ice (solid form)</span>
+                    </div>
+                    
+                    <div class="synonym-group" data-type="inline" data-source="text_analysis">
+                        <h4>Text References</h4>
+                        <span class="synonym" data-context="abbreviation">CO₂</span>
+                        <span class="synonym" data-context="chemical_formula">carbon dioxide</span>
+                    </div>
+                    
+                    <div class="synonym-group" data-type="languages" data-source="multilingual">
+                        <h4>Other Languages</h4>
+                        <span class="synonym" data-language="fr" data-script="latin">dioxyde de carbone</span>
+                        <span class="synonym" data-language="hi" data-script="devanagari">कार्बन डाइऑक्साइड</span>
+                        <span class="synonym" data-language="de" data-script="latin">Kohlendioxid</span>
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <div class="content-section" 
+                         data-type="definition" 
+                         data-source="wikipedia" 
+                         data-extraction-date="2025-01-27T00:00:00Z" 
+                         data-confidence="0.95">
+                        <h3 class="section-title">Definition</h3>
+                        <div class="section-content">
+                            <p><strong>Carbon dioxide</strong> (chemical formula CO₂) is a colorless, odorless gas that is vital to life on Earth. It is a naturally occurring chemical compound composed of one carbon atom covalently double bonded to two oxygen atoms.</p>
+                            <p>Source: <a href="https://en.wikipedia.org/wiki/Carbon_dioxide" class="wikipedia-link" target="_blank">Wikipedia - Carbon Dioxide</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section" 
+                         data-type="description" 
+                         data-source="wikipedia" 
+                         data-extraction-date="2025-01-27T00:00:00Z" 
+                         data-confidence="0.92">
+                        <h3 class="section-title">Description</h3>
+                        <div class="section-content">
+                            <p>Carbon dioxide is a crucial component of the carbon cycle, where it is exchanged between the atmosphere, oceans, soil, and living organisms. Plants use CO₂ during photosynthesis to produce oxygen and organic compounds, while animals and other organisms release CO₂ through respiration and decomposition. Human activities, particularly the burning of fossil fuels, have significantly increased atmospheric CO₂ concentrations, contributing to climate change.</p>
+                            <p>Source: <a href="https://en.wikipedia.org/wiki/Carbon_dioxide" class="wikipedia-link" target="_blank">Wikipedia - Carbon Dioxide</a></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metadata">
+                    <div class="categories">
+                        <h4>Categories</h4>
+                        <span class="category" data-primary="true" data-type="domain">climate_science</span>
+                        <span class="category" data-type="subdomain">atmospheric_chemistry</span>
+                        <span class="category" data-type="subdomain">carbon_cycle</span>
+                    </div>
+                    
+                    <div class="tags">
+                        <h4>Tags</h4>
+                        <span class="tag" data-type="concept">carbon</span>
+                        <span class="tag" data-type="concept">atmosphere</span>
+                        <span class="tag" data-type="concept">emissions</span>
+                        <span class="tag" data-type="process">photosynthesis</span>
+                    </div>
+                    
+                    <div class="processing-info" data-extraction-method="amilib_wikipedia_parser">
+                        <h4>Processing Information</h4>
+                        <span class="info" data-type="extraction_date">2025-01-27T00:00:00Z</span>
+                        <span class="info" data-type="content_sections">definition,description</span>
+                        <span class="info" data-type="content_quality">verified</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Entry: Climate Change -->
+            <div class="entry" 
+                 data-id="entry_003" 
+                 data-term="Climate Change" 
+                 data-category="climate_science" 
+                 data-wikidata-id="Q7942" 
+                 data-wikipedia-url="https://en.wikipedia.org/wiki/Climate_change" 
+                 data-frequency="2100" 
+                 data-ingestion-date="2025-01-27T00:00:00Z" 
+                 data-extraction-method="amilib_wikipedia_parser">
+                
+                <h2 class="term" data-primary="true">
+                    Climate Change
+                    <span class="frequency-badge">Frequency: 2100</span>
+                </h2>
+                
+                <div class="synonyms">
+                    <div class="synonym-group" data-type="wiktionary" data-source="wiktionary">
+                        <h4>Wiktionary Synonyms</h4>
+                        <span class="synonym" data-confidence="0.95">global warming</span>
+                        <span class="synonym" data-confidence="0.90">climate crisis</span>
+                        <span class="synonym" data-confidence="0.85">climate emergency</span>
+                    </div>
+                    
+                    <div class="synonym-group" data-type="inline" data-source="text_analysis">
+                        <h4>Text References</h4>
+                        <span class="synonym" data-context="parenthetical">climate change (CC)</span>
+                        <span class="synonym" data-context="abbreviation">CC</span>
+                    </div>
+                    
+                    <div class="synonym-group" data-type="languages" data-source="multilingual">
+                        <h4>Other Languages</h4>
+                        <span class="synonym" data-language="fr" data-script="latin">changement climatique</span>
+                        <span class="synonym" data-language="hi" data-script="devanagari">जलवायु परिवर्तन</span>
+                        <span class="synonym" data-language="es" data-script="latin">cambio climático</span>
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <div class="content-section" 
+                         data-type="definition" 
+                         data-source="wikipedia" 
+                         data-extraction-date="2025-01-27T00:00:00Z" 
+                         data-confidence="0.95">
+                        <h3 class="section-title">Definition</h3>
+                        <div class="section-content">
+                            <p><strong>Climate change</strong> refers to long-term shifts in global weather patterns and average temperatures. While climate change has occurred throughout Earth's history, the current period of warming is occurring more rapidly than any past events and is primarily driven by human activities.</p>
+                            <p>Source: <a href="https://en.wikipedia.org/wiki/Climate_change" class="wikipedia-link" target="_blank">Wikipedia - Climate Change</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section" 
+                         data-type="description" 
+                         data-source="wikipedia" 
+                         data-extraction-date="2025-01-27T00:00:00Z" 
+                         data-confidence="0.93">
+                        <h3 class="section-title">Description</h3>
+                        <div class="section-content">
+                            <p>The primary driver of current climate change is the increase in greenhouse gas concentrations in the atmosphere, particularly carbon dioxide from burning fossil fuels. This leads to global warming, which causes widespread changes including rising sea levels, more frequent extreme weather events, shifts in precipitation patterns, and impacts on ecosystems and human societies. Addressing climate change requires both mitigation (reducing emissions) and adaptation (preparing for impacts).</p>
+                            <p>Source: <a href="https://en.wikipedia.org/wiki/Climate_change" class="wikipedia-link" target="_blank">Wikipedia - Climate Change</a></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metadata">
+                    <div class="categories">
+                        <h4>Categories</h4>
+                        <span class="category" data-primary="true" data-type="domain">climate_science</span>
+                        <span class="category" data-type="subdomain">global_systems</span>
+                        <span class="category" data-type="subdomain">environmental_science</span>
+                    </div>
+                    
+                    <div class="tags">
+                        <h4>Tags</h4>
+                        <span class="tag" data-type="concept">climate</span>
+                        <span class="tag" data-type="concept">global_warming</span>
+                        <span class="tag" data-type="concept">greenhouse_effect</span>
+                        <span class="tag" data-type="impact">environmental</span>
+                    </div>
+                    
+                    <div class="processing-info" data-extraction-method="amilib_wikipedia_parser">
+                        <h4>Processing Information</h4>
+                        <span class="info" data-type="extraction_date">2025-01-27T00:00:00Z</span>
+                        <span class="info" data-type="content_sections">definition,description</span>
+                        <span class="info" data-type="content_quality">verified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Letter G Section -->
+        <div id="G" class="letter-section">
+            <div class="letter-header">G</div>
+            
+            <!-- Entry: Greenhouse Gas -->
+            <div class="entry" 
+                 data-id="entry_004" 
+                 data-term="Greenhouse Gas" 
+                 data-category="climate_science" 
+                 data-wikidata-id="Q37836" 
+                 data-wikipedia-url="https://en.wikipedia.org/wiki/Greenhouse_gas" 
+                 data-frequency="1350" 
+                 data-ingestion-date="2025-01-27T00:00:00Z" 
+                 data-extraction-method="amilib_wikipedia_parser">
+                
+                <h2 class="term" data-primary="true">
+                    Greenhouse Gas
+                    <span class="frequency-badge">Frequency: 1350</span>
+                </h2>
+                
+                <div class="synonyms">
+                    <div class="synonym-group" data-type="wiktionary" data-source="wiktionary">
+                        <h4>Wiktionary Synonyms</h4>
+                        <span class="synonym" data-confidence="0.95">GHG</span>
+                        <span class="synonym" data-confidence="0.90">atmospheric gas</span>
+                        <span class="synonym" data-confidence="0.85">heat-trapping gas</span>
+                    </div>
+                    
+                    <div class="synonym-group" data-type="inline" data-source="text_analysis">
+                        <h4>Text References</h4>
+                        <span class="synonym" data-context="parenthetical">greenhouse gases (GHGs)</span>
+                        <span class="synonym" data-context="abbreviation">GHGs</span>
+                    </div>
+                    
+                    <div class="synonym-group" data-type="languages" data-source="multilingual">
+                        <h4>Other Languages</h4>
+                        <span class="synonym" data-language="fr" data-script="latin">gaz à effet de serre</span>
+                        <span class="synonym" data-language="hi" data-script="devanagari">ग्रीनहाउस गैस</span>
+                        <span class="synonym" data-language="ta" data-script="tamil">பசுமைக்குடில் வாயு</span>
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <div class="content-section" 
+                         data-type="definition" 
+                         data-source="wikipedia" 
+                         data-extraction-date="2025-01-27T00:00:00Z" 
+                         data-confidence="0.95">
+                        <h3 class="section-title">Definition</h3>
+                        <div class="section-content">
+                            <p><strong>Greenhouse gases</strong> are gases in Earth's atmosphere that trap heat by absorbing infrared radiation. They allow sunlight to pass through the atmosphere but prevent the heat from escaping back into space, creating a natural greenhouse effect that keeps Earth warm enough to support life.</p>
+                            <p>Source: <a href="https://en.wikipedia.org/wiki/Greenhouse_gas" class="wikipedia-link" target="_blank">Wikipedia - Greenhouse Gas</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section" 
+                         data-type="description" 
+                         data-source="wikipedia" 
+                         data-extraction-date="2025-01-27T00:00:00Z" 
+                         data-confidence="0.90">
+                        <h3 class="section-title">Description</h3>
+                        <div class="section-content">
+                            <p>These gases include carbon dioxide (CO₂), methane (CH₄), nitrous oxide (N₂O), and fluorinated gases. They contribute to the greenhouse effect, which is essential for maintaining Earth's temperature but can lead to global warming when concentrations increase due to human activities such as burning fossil fuels, deforestation, and industrial processes.</p>
+                            <p>Source: <a href="https://en.wikipedia.org/wiki/Greenhouse_gas" class="wikipedia-link" target="_blank">Wikipedia - Greenhouse Gas</a></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metadata">
+                    <div class="categories">
+                        <h4>Categories</h4>
+                        <span class="category" data-primary="true" data-type="domain">climate_science</span>
+                        <span class="category" data-type="subdomain">atmospheric_chemistry</span>
+                        <span class="category" data-type="subdomain">environmental_science</span>
+                    </div>
+                    
+                    <div class="tags">
+                        <h4>Tags</h4>
+                        <span class="tag" data-type="concept">atmosphere</span>
+                        <span class="tag" data-type="concept">climate</span>
+                        <span class="tag" data-type="concept">emissions</span>
+                        <span class="tag" data-type="process">greenhouse_effect</span>
+                    </div>
+                    
+                    <div class="processing-info" data-extraction-method="amilib_wikipedia_parser">
+                        <h4>Processing Information</h4>
+                        <span class="info" data-type="extraction_date">2025-01-27T00:00:00Z</span>
+                        <span class="info" data-type="content_sections">definition,description</span>
+                        <span class="info" data-type="content_quality">verified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Note -->
+        <div class="content-note">
+            <h4>Content Source Information</h4>
+            <p><strong>Note:</strong> This encyclopedia demonstrates the HTML schema design with sample content. In production, the <strong>definition</strong> and <strong>description</strong> content would be automatically extracted from Wikipedia using amilib tools, and the Wikipedia links would be dynamically generated based on the actual content sources.</p>
+            <p>The content shown here represents the expected output format after processing through amilib's Wikipedia extraction pipeline.</p>
+        </div>
+
+    </div>
+
+    <script>
+        function showLetter(letter) {
+            // Hide all letter sections
+            const sections = document.querySelectorAll('.letter-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all letter links
+            const links = document.querySelectorAll('.letter-link');
+            links.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected letter section
+            const selectedSection = document.getElementById(letter);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+            
+            // Add active class to clicked letter link
+            const clickedLink = document.querySelector(`[onclick="showLetter('${letter}')"]`);
+            if (clickedLink) {
+                clickedLink.classList.add('active');
+            }
+        }
+        
+        // Initialize with letter A active
+        document.addEventListener('DOMContentLoaded', function() {
+            showLetter('A');
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
