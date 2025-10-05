@@ -52,6 +52,7 @@ DUPLICATE_ENTRIES = "test_duplicate_entries"
 RESOURCES_DIR = "resources"
 # AMIDICTS = Path(Path(__file__).parent.parent, "py4ami/resources/amidicts")  # relative to dictribution base
 AMIDICTS = Path(Path(__file__).parent.parent, f"{RESOURCES_DIR}/amidicts")  # relative to dictribution base
+AMIDICTS = Path(Path(__file__).parent.parent, f"{TEST_RESOURCE_DIR}/amidicts")  # relative to dictribution base
 
 STARTING_VERSION = "0.0.1"
 

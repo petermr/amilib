@@ -1,10 +1,11 @@
-    """sometimes graphviz doesn't install_
-    """
+"""sometimes graphviz doesn't install_
+"""
 import graphviz
+from test.test_all import AmiAnyTest
 
 class GraphvizTest(AmiAnyTest):
 
-    def ree{self}
+    def test_smoke(self):
         # Test basic functionality
         try:
             dot = graphviz.Digraph(comment='Test')
@@ -15,3 +16,4 @@ class GraphvizTest(AmiAnyTest):
             print("Available attributes:", [attr for attr in dir(graphviz) if not attr.startswith('_')])
         except Exception as e:
             print(f"❌ Error: {e}")
+            raise e

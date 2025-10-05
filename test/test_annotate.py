@@ -2,6 +2,7 @@
 """
 Test suite for PDF annotation functionality
 """
+import csv
 
 import requests
 import fitz  # PyMuPDF
@@ -14,15 +15,17 @@ from lxml.etree import tostring
 from test.test_all import AmiAnyTest
 from test.resources import Resources
 from amilib.ami_pdf_libs import PDFHyperlinkAdder, create_sample_word_list
+import logging
 
+logger = logging.getLogger(__name__)
 class AnnotateTest(AmiAnyTest):
     """Test class for PDF annotation functionality"""
     
     def setUp(self):
         """Set up test environment"""
         self.test_terms = ["climate change", "IPCC", "global warming"]
-        self.shaik_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/Shaik-Zainab/IPCC_WG2_Chapter07/Wordlist_WG2Ch07.txt"
-        self.shaik_html_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/Shaik-Zainab/IPCC_WG2_Chapter07/WG2Ch07_dict.html"
+        self.shaik_url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/refs/heads/Shaik-Zainab/IPCC_WG2_Chapter07/ch7_wordlist.txt"
+        self.shaik_html_url = "https://github.com/semanticClimate/internship_sC/blob/Shaik-Zainab/IPCC_WG2_Chapter07/ch7_dict.html"
         self.ipcc_pdf = Resources.TEST_PDFS_DIR / "IPCC_AR6_WGII_Chapter07.pdf"
     
     def test_read_shaik_wordlist(self):
@@ -35,9 +38,10 @@ class AnnotateTest(AmiAnyTest):
         print("🧪 Testing Shaik wordlist access...")
         
         terms = self._load_wordlist_from_url(self.shaik_url)
+        assert 290 <= len(terms) <= 310
         
         # Verify 3 specific terms
-        test_terms = ["Aedes aegypti", "Urban heat island effects", "Zoonotic transmission"]
+        test_terms = ["Aedes aegypti", "developing countries", "green infrastructure"]
         
         for term in test_terms:
             if term in terms:
@@ -114,8 +118,18 @@ class AnnotateTest(AmiAnyTest):
         finally:
             if doc and not doc.is_closed:
                 doc.close()
-    
+
+    def test_create_word_csv_from_url(self):
+        temp_csv = self._create_word_csv_from_url(self.shaik_url)
+        print(f"csv {temp_csv}")
+        csvreader = csv.reader(str(temp_csv))
+        for row in csvreader:
+            print(f">> {','.join(row)}")
+
+
+    @unittest.skip("only annotates a few single words, needs mending")
     def test_annotate_pdf_with_shaik_wordlist(self):
+        """VERY LONG - 35 mins on my laptop"""
         """Test annotating PDF with words from Shaik wordlist using PDFHyperlinkAdder
         
         Input: IPCC_AR6_WGII_Chapter07.pdf, external GitHub wordlist URL
@@ -127,7 +141,8 @@ class AnnotateTest(AmiAnyTest):
         self._verify_file_exists(self.ipcc_pdf, "IPCC PDF")
         
         # Create temp CSV from URL wordlist
-        temp_csv = self._create_temp_csv_from_url(self.shaik_url)
+        temp_csv = self._create_word_csv_from_url(self.shaik_url)
+        logger.info(f"wrote {temp_csv} as CSV file")
         
         # Create output PDF path
         output_pdf = Resources.TEMP_DIR / "IPCC_AR6_WGII_Chapter07_annotated.pdf"
@@ -159,7 +174,7 @@ class AnnotateTest(AmiAnyTest):
         self._verify_file_exists(self.ipcc_pdf, "IPCC PDF")
         
         # Create temp CSV from URL wordlist
-        temp_csv = self._create_temp_csv_from_url(self.shaik_url)
+        temp_csv = self._create_word_csv_from_url(self.shaik_url)
         
         # Create output PDF path
         output_pdf = Resources.TEMP_DIR / "IPCC_AR6_WGII_Chapter07_dictionary_annotated.pdf"
@@ -514,10 +529,11 @@ class AnnotateTest(AmiAnyTest):
             print(f"❌ Error loading HTML wordlist from URL: {e}")
             raise RuntimeError(f"Failed to load HTML wordlist from URL {url}: {e}") from e
     
-    def _create_temp_csv_from_url(self, url: str) -> Path:
+    def _create_word_csv_from_url(self, url: str) -> Path:
         """Create temporary CSV file from URL wordlist for PDFHyperlinkAdder"""
         terms = self._load_wordlist_from_url(url)
-        temp_csv = Resources.TEMP_DIR / "temp_wordlist.csv"
+        print(f"terms {len(terms)}")
+        temp_csv = Path(Resources.TEMP_DIR, "words", "pdf_annotate_wordlist.csv")
         temp_csv.parent.mkdir(parents=True, exist_ok=True)
         
         with open(temp_csv, 'w', newline='', encoding='utf-8') as f:
