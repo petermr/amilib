@@ -1327,6 +1327,7 @@ class WikipediaPage:
         self.html_elem = None
         self.search_term = None
         self.search_url = None
+        self.url = None
 
     @classmethod
     def lookup_wikipedia_page_for_term(cls, search_term):
@@ -1369,6 +1370,8 @@ class WikipediaPage:
                 wikipedia_page = WikipediaPage()
                 wikipedia_page.html_elem = html_content
                 wikipedia_page.search_url = url
+                # Set the actual URL (from final redirect if any)
+                wikipedia_page.url = response.url
             except Exception as e:
                 logger.info(f"HTML exception {e}")
         return wikipedia_page

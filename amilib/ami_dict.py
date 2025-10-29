@@ -450,6 +450,9 @@ class AmiEntry:
                 wp_para = wikipedia_page.create_first_wikipedia_para()
                 if wp_para is not None:
                     self.element.append(wp_para.para_element)
+                # Store the Wikipedia page URL in the entry element
+                if wikipedia_page.url:
+                    self.element.attrib["wikipedia_url"] = wikipedia_page.url
         return wikipedia_page
 
     def create_semantic_html(self):
@@ -1923,12 +1926,31 @@ class AmiDictionary:
             else:
                 entry_div = ami_entry.create_semantic_div()
                 p = ET.Element("p")
-                wp_info = "None" if wikipedia_page is None else wikipedia_page.search_url
-                p.text = f"search term:  {ami_entry.get_term()} "
-                if wikipedia_page.search_url is not None:
-                    a = ET.SubElement(p, "a")
-                    a.attrib[A_HREF] = wikipedia_page.search_url
-                    a.text = "Wikipedia Page"
+                # Get Wikipedia URL from stored attribute or from current lookup
+                wikipedia_url = ami_entry.element.attrib.get("wikipedia_url")
+                if wikipedia_url is None and wikipedia_page is not None:
+                    # Get the actual Wikipedia page URL
+                    wikipedia_url = wikipedia_page.url
+                
+                # Create text showing search term and Wikipedia URL address
+                search_term = ami_entry.get_term()
+                p.text = f"search term: {search_term}"
+                
+                if wikipedia_url is not None:
+                    # Add Wikipedia URL as clickable link with page title
+                    ET.SubElement(p, "br")  # Line break
+                    url_text = ET.SubElement(p, "span")
+                    url_text.text = "Wikipedia URL: "
+                    
+                    # Extract page title from URL for link text
+                    page_title = wikipedia_url.split("/wiki/")[-1] if "/wiki/" in wikipedia_url else search_term
+                    page_title = page_title.replace("_", " ")  # Convert underscores to spaces
+                    
+                    # Create clickable link with page title
+                    wiki_link = ET.SubElement(p, "a")
+                    wiki_link.attrib[A_HREF] = wikipedia_url
+                    wiki_link.text = page_title
+                
                 entry_div.insert(0, p)
             if len(entry_div.xpath("*")) == 0:
 

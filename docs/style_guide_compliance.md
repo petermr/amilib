@@ -141,8 +141,53 @@ implementing new features.
 - ❌ **Bad**: Tests that return data for other tests to use
 
 **Rationale**: Tests should focus on verification through assertions, not data flow. 
-Returning values from tests creates dependencies between tests and makes the test suite 
+Returning values from tests creates dependencies between tests电能 makes the test suite 
 harder to understand and maintain.
+
+### STYLE: Use Resources.TEMP_DIR for temporary files with module/class-based subdirectories
+
+**Rule:** All temporary files must be created under `<root>/temp`, which is defined in `Resources.TEMP_DIR`. Use subdirectories based on modules and classes.
+
+**✅ CORRECT:**
+```python
+from pathlib import Path
+from test.resources import Resources
+
+# For test files - use Path constructor with multiple arguments
+self.temp_dir = Path(Resources.TEMP_DIR, "test", "encyclopedia", "EncyclopediaTest")
+self.temp_dir.mkdir(parents=True, exist_ok=True)
+
+# For scripts
+temp_dir = Path(Resources.TEMP_DIR, "scripts", "annotation")
+```
+
+**❌ WRONG:**
+```python
+import tempfile
+
+# Using system temp directory
+self.temp_dir = Path(tempfile.mkdtemp())
+
+# Using relative temp directory
+self.temp_dir = Path("temp")
+
+# Using / operator instead of Path constructor
+self.temp_dir = Resources.TEMP_DIR / "test" / "encyclopedia"
+```
+
+**Rationale**: Using a centralized temp directory:
+- Keeps all temporary files in one predictable location
+- Makes cleanup easier
+- Allows easy inspection of test outputs
+- Follows consistent directory structure based on modules/classes
+- Defined in Resources for consistency across the codebase
+- Using Path() constructor explicitly makes path operations clearer and more consistent
+
+**Subdirectory Naming:**
+- Tests: `Path(Resources.TEMP_DIR, "test", <module_name>, <class_name>)`
+- Scripts: `Path(Resources.TEMP_DIR, "scripts", <module_name>)`
+- Examples: `Path(Resources.TEMP_DIR, "examples", <example_name>)`
+- Other modules: `Path(Resources.TEMP_DIR, <module_name>, <class_or_function>)`
 ```
 
 ## Best Practices Established

@@ -253,6 +253,9 @@ class WikipediaTest(base_test):
         ami_dict = AmiDictionary.create_from_html_file(output_dict)
         assert ami_dict is not None
         assert len(ami_dict.get_ami_entries()) == LEN
+        dict_entries = ami_dict.get_ami_entries()
+        ami_entry_0 = dict_entries[0]
+        print(f"ami_entry0 {ami_entry_0.create_semantic_html()}")
 
     def test_create_from_html_dictionary(self):
         """
@@ -1692,6 +1695,156 @@ class MWParserTest(AmiAnyTest):
             timeout=10
         )
         self.assertTrue(connection_result['connected'])
+
+    def test_read_encyclopedia_and_count_entries(self):
+        """Test reading encyclopedia  and counting entries using AmiDictionary
+        
+        Input: file containing encyclopedia HTML
+        Operations: use AmiDictionary to read and count entries
+        Output: Count of encyclopedia entries with Wikipedia links
+        """
+        print("🧪 Testing encyclopedia reading from local file using AmiDictionary...")
+        
+        # Local HTML file path
+        html_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "html", "ch7_dict.html")
+        
+        # Check if file exists
+        assert html_file.exists(), f"Encyclopedia HTML file not found: {html_file}"
+        
+        try:
+            # Use AmiDictionary to read the HTML file
+            dictionary = AmiDictionary.create_from_html_file(
+                html_file,
+                title="IPCC_WG2_Chapter07_Encyclopedia",
+                ignorecase=True
+            )
+            
+            assert dictionary is not None, "Failed to create dictionary from HTML file"
+            
+            # Count entries using AmiDictionary methods
+            entry_count = dictionary.get_entry_count()
+            entries = dictionary.get_ami_entries()
+            
+            # Count Wikipedia links in the dictionary
+            wikipedia_links = []
+            all_links = []
+            
+            for entry in entries:
+                # entry is an AmiEntry object, get its XML element
+                # entry.element is the XML element that has xpath
+                if hasattr(entry, 'element') and entry.element is not None:
+                    # Get all links in this entry
+                    entry_links = entry.element.xpath(".//a[@href]")
+                    all_links.extend(entry_links)
+                    
+                    # Filter for Wikipedia links
+                    entry_wiki_links = entry.element.xpath(".//a[contains(@href, 'wikipedia.org')]")
+                    wikipedia_links.extend(entry_wiki_links)
+            
+            print(f"✅ Found {entry_count} encyclopedia entries")
+            print(f"✅ Found {len(wikipedia_links)} Wikipedia links")
+            print(f"✅ Found {len(all_links)} total links")
+            
+            # Basic assertions
+            assert entry_count > 0, "Should find at least some encyclopedia entries"
+            assert len(all_links) > 0, "Should find at least some links in the encyclopedia"
+            
+            # Verify dictionary structure
+            assert dictionary.title is not None, "Dictionary should have a title"
+            assert dictionary.root is not None, "Dictionary should have a root element"
+            
+            print("✅ Successfully read and parsed encyclopedia using AmiDictionary")
+            
+        except Exception as e:
+            self.fail(f"Failed to process encyclopedia content: {e}")
+
+    def test_create_html_dictionary_with_wikipedia_urls(self):
+        """Test creating HTML dictionary with Wikipedia URLs included
+        
+        Input: Wordlist file with terms
+        Operations: Create dictionary with Wikipedia lookup, generate HTML, verify URLs
+        Output: HTML dictionary with Wikipedia URLs, definitions, and optional figures
+        """
+        print("🧪 Testing HTML dictionary creation with Wikipedia URLs...")
+        
+        # Use existing wordlist for testing
+        stem = "small_2"
+        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
+        assert words_file.exists(), f"Wordlist file not found: {words_file}"
+        
+        try:
+            # Create dictionary from wordlist with Wikipedia lookup
+            xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(
+                words_file, 
+                title=stem,
+                wikidata=False,  # Focus on Wikipedia only
+                debug=True
+            )
+            assert xml_ami_dict is not None, "Failed to create dictionary from wordlist"
+            
+            # Add Wikipedia content to entries
+            from amilib.ami_dict import AmiEntry
+            for entry_elem in xml_ami_dict.entries:
+                ami_entry = AmiEntry.create_from_element(entry_elem)
+                wikipedia_page = ami_entry.lookup_and_add_wikipedia_page()
+                if wikipedia_page is not None:
+                    ami_entry.add_figures_to_entry(wikipedia_page)
+            
+            # Generate HTML dictionary
+            html_elem = xml_ami_dict.create_html_dictionary(create_default_entry=False, title=stem)
+            assert html_elem is not None, "Failed to create HTML dictionary"
+            
+            # Save HTML file for inspection
+            html_path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}_with_wikipedia_urls.html")
+            html_path.parent.mkdir(exist_ok=True, parents=True)
+            HtmlLib.write_html_file(html_elem, html_path, debug=True)
+            assert html_path.exists(), "HTML file should be created"
+            
+            # Verify HTML structure contains Wikipedia URLs
+            body = HtmlLib.get_body(html_elem)
+            dictionary_div = body.xpath(".//div[@role='ami_dictionary']")[0]
+            entry_divs = dictionary_div.xpath(".//div[@role='ami_entry']")
+            
+            assert len(entry_divs) > 0, "Should have at least one dictionary entry"
+            
+            # Check that entries contain Wikipedia URLs
+            wikipedia_links_found = 0
+            wikipedia_url_labels = 0
+            for entry_div in entry_divs:
+                # Check for Wikipedia links in the entry
+                wikipedia_links = entry_div.xpath(".//a[contains(@href, 'wikipedia.org')]")
+                wikipedia_url_spans = entry_div.xpath(".//span[text()='Wikipedia URL: ']")
+                
+                if len(wikipedia_links) > 0:
+                    wikipedia_links_found += 1
+                    # Verify the link has proper structure
+                    link = wikipedia_links[0]
+                    assert link.attrib.get("href") is not None, "Wikipedia link should have href"
+                    assert link.text is not None, "Wikipedia link should have page title as text"
+                    # Verify link text is the page title (not full URL)
+                    assert "wikipedia.org" not in link.text, "Link text should be page title, not full URL"
+                
+                if len(wikipedia_url_spans) > 0:
+                    wikipedia_url_labels += 1
+                    # Verify the label is present
+                    span = wikipedia_url_spans[0]
+                    assert span.text == "Wikipedia URL: ", "Should have Wikipedia URL label"
+            
+            print(f"✅ Found {len(entry_divs)} dictionary entries")
+            print(f"✅ Found {wikipedia_links_found} entries with Wikipedia links")
+            print(f"✅ Found {wikipedia_url_labels} entries with Wikipedia URL labels")
+            
+            # Basic assertions
+            assert wikipedia_links_found > 0, "Should find at least some Wikipedia links in entries"
+            assert wikipedia_url_labels > 0, "Should find at least some Wikipedia URL labels in entries"
+            
+            # Verify dictionary structure
+            assert dictionary_div.attrib.get("title") is not None, "Dictionary should have title"
+            
+            print("✅ Successfully created HTML dictionary with Wikipedia URLs")
+            
+        except Exception as e:
+            self.fail(f"Failed to create HTML dictionary with Wikipedia URLs: {e}")
 
 class SPARQLTests:
     @classmethod
