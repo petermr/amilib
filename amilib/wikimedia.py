@@ -1424,13 +1424,39 @@ class WikipediaPage:
 </li>
         """
         if self.html_elem is not None:
+            # Try multiple XPath patterns to find Wikidata EntityPage link
+            # First try: Find link with "EntityPage" in href (most reliable)
+            # Ignore links with "sitelinks" or "Scholia" in the URL
+            alist = self.html_elem.xpath(".//a[contains(@href, 'EntityPage')]")
+            if len(alist) > 0:
+                for a_elem in alist:
+                    href = a_elem.attrib.get("href")
+                    if href and "EntityPage" in href:
+                        # Ignore sitelinks and Scholia links
+                        if "sitelinks" not in href and "Scholia" not in href:
+                            return href
+            
+            # Second try: Find by ID t-wikibase
+            wds = self.html_elem.xpath(".//li[@id='t-wikibase']//a")
+            if len(wds) > 0:
+                for a_elem in wds:
+                    href = a_elem.attrib.get("href")
+                    if href:
+                        # Ignore sitelinks and Scholia links
+                        if "sitelinks" not in href and "Scholia" not in href and "EntityPage" in href:
+                            return href
+            
+            # Third try: Original pattern with span text
             wds = self.html_elem.xpath(".//li[a[span[text()='Wikidata item']]]")
-            spans = self.html_elem.xpath(".//span[.='Wikidata item']")
-            alist = self.html_elem.xpath(".//li/a[span[.='Wikidata item']]")
             if len(wds) > 0:
                 alist = wds[0].xpath("a")
-                href = alist[0].attrib.get("href")
-                return href
+                if len(alist) > 0:
+                    for a_elem in alist:
+                        href = a_elem.attrib.get("href")
+                        if href:
+                            # Ignore sitelinks and Scholia links
+                            if "sitelinks" not in href and "Scholia" not in href and "EntityPage" in href:
+                                return href
         return None
 
     @classmethod
@@ -1635,6 +1661,73 @@ followed by <ul><li>...</li></ul> etc.
         ul = HtmlLib.get_first_object_by_xpath(p_may_refer.getparent(), "ul")
         lis = ul.xpath("li")
         return lis
+
+    def is_redirect_page(self):
+        """
+        Detect if Wikipedia page is a redirect.
+        Redirects occur when search_url != final url after lookup.
+        """
+        if self.search_url and self.url:
+            # If the final URL differs from search URL, likely a redirect
+            # Also check for redirect indicators in HTML
+            redirect_indicators = self.html_elem.xpath(
+                ".//div[@class='redirectMsg'] | "
+                ".//div[contains(@class, 'redirect')] | "
+                ".//span[@class='mw-redirect']"
+            )
+            return len(redirect_indicators) > 0 or self.search_url != self.url
+        return False
+
+    def is_list_page(self):
+        """
+        Detect if Wikipedia page is a list page.
+        List pages typically have titles starting with "List of" or contain list markers.
+        """
+        if not self.html_elem:
+            return False
+        
+        # Check title for list indicators
+        title_elem = self.html_elem.xpath(".//h1[@id='firstHeading']")
+        if title_elem:
+            title_text = XmlLib.get_text(title_elem[0]).lower()
+            list_indicators = [
+                "list of", "lists of", "index of", 
+                "category:", "list:", "timeline of"
+            ]
+            if any(indicator in title_text for indicator in list_indicators):
+                return True
+        
+        # Check for list page markers in content
+        list_markers = self.html_elem.xpath(
+            ".//div[contains(@class, 'mw-parser-output')]//"
+            "p[contains(., 'This is a') and contains(., 'list')] | "
+            ".//table[contains(@class, 'wikitable') and contains(@class, 'sortable')]"
+        )
+        return len(list_markers) > 0
+
+    def get_page_type(self):
+        """
+        Classify Wikipedia page type.
+        Returns one of: 'article', 'disambiguation', 'redirect', 'list', 'not_found', 'unknown'
+        """
+        if not self.html_elem:
+            return 'not_found'
+        
+        if self.is_disambiguation_page():
+            return 'disambiguation'
+        
+        if self.is_redirect_page():
+            return 'redirect'
+        
+        if self.is_list_page():
+            return 'list'
+        
+        # If we have main content, assume it's an article
+        main_elem = self.get_main_element()
+        if main_elem:
+            return 'article'
+        
+        return 'unknown'
 
     @classmethod
     def lookup_pages_for_words_in_file(cls, filestem, indir, suffix=".txt"):

@@ -442,11 +442,36 @@ class AmiEntry:
                 p.text = str(value)
 
     def lookup_and_add_wikipedia_page(self):
+        """
+        Lookup Wikipedia page for term and add first paragraph.
+        Also extracts and stores Wikidata ID if available.
+        """
         term = self.get_term()
         wikipedia_page = None
         if term:
             wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
             if wikipedia_page:
+                # Extract and store Wikidata ID BEFORE any modifications to the page
+                wikidata_url = wikipedia_page.get_wikidata_item()
+                if wikidata_url:
+                    # Ignore URLs with sitelinks or Scholia (should be filtered in get_wikidata_item, but double-check)
+                    if "sitelinks" not in wikidata_url and "Scholia" not in wikidata_url:
+                        # Extract Q/P ID from URL like:
+                        # https://www.wikidata.org/wiki/Special:EntityPage/Q7942
+                        # or https://www.wikidata.org/wiki/Special:EntityPage/Q125928#sitelinks-wikipedia
+                        # Pattern matches Q123 or P123 after EntityPage/ or at end of URL (before fragment)
+                        match = re.search(r'[Ee]ntity[Pp]age/([QP]\d+)', wikidata_url)
+                        if not match:
+                            # Try pattern for URLs ending with /Q123 or /P123
+                            match = re.search(r'/([QP]\d+)(?:#|/|$)', wikidata_url)
+                        if match:
+                            qid = match.group(1)
+                            # Validate and store
+                            try:
+                                self.set_wikidata_id(qid)
+                            except AMIDictError as e:
+                                logger.warning(f"Invalid Wikidata ID {qid} for term {term}: {e}")
+                
                 wp_para = wikipedia_page.create_first_wikipedia_para()
                 if wp_para is not None:
                     self.element.append(wp_para.para_element)
