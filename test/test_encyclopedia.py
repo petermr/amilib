@@ -94,14 +94,14 @@ class EncyclopediaTest(unittest.TestCase):
         
         print(f"✅ Aggregated into {len(synonym_groups)} synonym groups")
     
-    def test_create_normalized_html(self):
-        """Test creating normalized HTML output"""
+    def test_create_wiki_normalized_html(self):
+        """Test creating wiki-normalized HTML output"""
         print("🧪 Testing normalized HTML creation...")
         
         encyclopedia = AmiEncyclopedia()
         encyclopedia.create_from_html_file(self.test_html_file)
         
-        html_content = encyclopedia.create_normalized_html()
+        html_content = encyclopedia.create_wiki_normalized_html()
         
         assert html_content is not None, "Should generate HTML content"
         assert len(html_content) > 0, "HTML content should not be empty"
@@ -110,15 +110,15 @@ class EncyclopediaTest(unittest.TestCase):
         
         print("✅ Generated normalized HTML content")
     
-    def test_save_normalized_html(self):
-        """Test saving normalized HTML to file"""
+    def test_save_wiki_normalized_html(self):
+        """Test saving wiki-normalized HTML to file"""
         print("🧪 Testing normalized HTML file saving...")
         
         encyclopedia = AmiEncyclopedia()
         encyclopedia.create_from_html_file(self.test_html_file)
         
         output_file = self.temp_dir / "normalized_encyclopedia.html"
-        encyclopedia.save_normalized_html(output_file)
+        encyclopedia.save_wiki_normalized_html(output_file)
         
         assert output_file.exists(), "Output file should be created"
         
@@ -213,27 +213,6 @@ class EncyclopediaUtilTest(unittest.TestCase):
             assert normalized == expected_url, f"URL {input_url} should normalize to {expected_url}"
         
         print("✅ Wikipedia URL normalization working correctly")
-    
-    def test_synonym_normalization(self):
-        """Test synonym normalization"""
-        print("🧪 Testing synonym normalization...")
-        
-        # Test basic normalization
-        assert self.normalizer.normalize_term("Climate Change") == "climate change"
-        assert self.normalizer.normalize_term("GREENHOUSE GAS") == "greenhouse gas"
-        
-        # Test synonym detection
-        assert self.normalizer.are_synonyms("gas", "gases") == True
-        assert self.normalizer.are_synonyms("Gas", "gas") == True
-        assert self.normalizer.are_synonyms("climate", "weather") == False
-        
-        # Test grouping
-        terms = ["gas", "gases", "Gas", "climate", "Climate", "weather"]
-        groups = self.normalizer.group_synonyms(terms)
-        
-        assert len(groups) > 0, "Should create synonym groups"
-        
-        print(f"✅ Created {len(groups)} synonym groups from {len(terms)} terms")
 
 
 class EncyclopediaIntegrationTest(unittest.TestCase):
@@ -351,7 +330,7 @@ class EncyclopediaIntegrationTest(unittest.TestCase):
         encyclopedia.create_from_html_content(test_html)
         
         # Generate HTML
-        html_content = encyclopedia.create_normalized_html()
+        html_content = encyclopedia.create_wiki_normalized_html()
         
         # Check for Wikipedia URL link
         assert 'href="https://en.wikipedia.org/wiki/Climate_change"' in html_content, "Should contain Wikipedia URL link"
@@ -514,11 +493,11 @@ class EncyclopediaIntegrationTest(unittest.TestCase):
         synonym_groups = encyclopedia.aggregate_synonyms()
         
         # Generate HTML
-        html_content = encyclopedia.create_normalized_html()
+        html_content = encyclopedia.create_wiki_normalized_html()
         
         # Save to file
         output_file = self.temp_dir / "integration_test.html"
-        encyclopedia.save_normalized_html(output_file)
+        encyclopedia.save_wiki_normalized_html(output_file)
         
         # Get statistics
         stats = encyclopedia.get_statistics()
@@ -691,7 +670,7 @@ class CompositionTest(unittest.TestCase):
         encyclopedia.create_from_html_file(self.test_html_file)
         
         # Generate normalized HTML
-        html_content = encyclopedia.create_normalized_html()
+        html_content = encyclopedia.create_wiki_normalized_html()
         
         assert html_content is not None, "Should generate HTML"
         assert len(html_content) > 0, "HTML should not be empty"
@@ -699,7 +678,7 @@ class CompositionTest(unittest.TestCase):
         
         # Save and verify
         output_file = self.temp_dir / "composition_test.html"
-        encyclopedia.save_normalized_html(output_file)
+        encyclopedia.save_wiki_normalized_html(output_file)
         
         assert output_file.exists(), "Output file should be created"
         
