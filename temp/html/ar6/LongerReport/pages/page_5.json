@@ -25,10 +25,10 @@
   "chars": [
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         56.64,
         797.28
       ],
@@ -49,23 +49,21 @@
       "ncs": "DeviceGray",
       "text": "A",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         63.83112,
         797.28
       ],
@@ -86,23 +84,21 @@
       "ncs": "DeviceGray",
       "text": "d",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         68.87088,
         797.28
       ],
@@ -123,23 +119,21 @@
       "ncs": "DeviceGray",
       "text": "o",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         73.90068000000001,
         797.28
       ],
@@ -160,23 +154,21 @@
       "ncs": "DeviceGray",
       "text": "p",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         78.93048,
         797.28
       ],
@@ -197,23 +189,21 @@
       "ncs": "DeviceGray",
       "text": "t",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         81.69936000000001,
         797.28
       ],
@@ -234,23 +224,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         86.184,
         797.28
       ],
@@ -271,23 +259,21 @@
       "ncs": "DeviceGray",
       "text": "d",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         91.104,
         797.28
       ],
@@ -308,23 +294,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         268.61,
         797.28
       ],
@@ -345,23 +329,21 @@
       "ncs": "DeviceGray",
       "text": "L",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         274.71548,
         797.28
       ],
@@ -382,23 +364,21 @@
       "ncs": "DeviceGray",
       "text": "o",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         279.74528000000004,
         797.28
       ],
@@ -419,23 +399,21 @@
       "ncs": "DeviceGray",
       "text": "n",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         284.77508,
         797.28
       ],
@@ -456,23 +434,21 @@
       "ncs": "DeviceGray",
       "text": "g",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         289.80488,
         797.28
       ],
@@ -493,23 +469,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         294.22712,
         797.28
       ],
@@ -530,23 +504,21 @@
       "ncs": "DeviceGray",
       "text": "r",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         297.48404,
         797.28
       ],
@@ -567,23 +539,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         299.99396,
         797.28
       ],
@@ -604,23 +574,21 @@
       "ncs": "DeviceGray",
       "text": "R",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         306.59744,
         797.28
       ],
@@ -641,23 +609,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         311.01968,
         797.28
       ],
@@ -678,23 +644,21 @@
       "ncs": "DeviceGray",
       "text": "p",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         316.06940000000003,
         797.28
       ],
@@ -715,23 +679,21 @@
       "ncs": "DeviceGray",
       "text": "o",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         321.0992,
         797.28
       ],
@@ -752,23 +714,21 @@
       "ncs": "DeviceGray",
       "text": "r",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         324.44576,
         797.28
       ],
@@ -789,23 +749,21 @@
       "ncs": "DeviceGray",
       "text": "t",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         327.19,
         797.28
       ],
@@ -826,23 +784,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         472.06,
         797.28
       ],
@@ -863,23 +819,21 @@
       "ncs": "DeviceGray",
       "text": "I",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         475.40656,
         797.28
       ],
@@ -900,23 +854,21 @@
       "ncs": "DeviceGray",
       "text": "P",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         480.94432,
         797.28
       ],
@@ -937,23 +889,21 @@
       "ncs": "DeviceGray",
       "text": "C",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         487.52788,
         797.28
       ],
@@ -974,23 +924,21 @@
       "ncs": "DeviceGray",
       "text": "C",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         494.13136000000003,
         797.28
       ],
@@ -1011,23 +959,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         496.64128,
         797.28
       ],
@@ -1048,23 +994,21 @@
       "ncs": "DeviceGray",
       "text": "A",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         503.95192000000003,
         797.28
       ],
@@ -1085,23 +1029,21 @@
       "ncs": "DeviceGray",
       "text": "R",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         510.5554,
         797.28
       ],
@@ -1122,23 +1064,21 @@
       "ncs": "DeviceGray",
       "text": "6",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         515.5852,
         797.28
       ],
@@ -1159,23 +1099,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         518.09512,
         797.28
       ],
@@ -1196,23 +1134,21 @@
       "ncs": "DeviceGray",
       "text": "S",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         523.63288,
         797.28
       ],
@@ -1233,23 +1169,21 @@
       "ncs": "DeviceGray",
       "text": "Y",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         530.9236,
         797.28
       ],
@@ -1270,23 +1204,21 @@
       "ncs": "DeviceGray",
       "text": "R",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         537.72,
         797.28
       ],
@@ -1307,23 +1239,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 36.95136000000002,
       "bottom": 46.911359999999945,
       "doctop": 3405.11136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         56.64,
         50.04
       ],
@@ -1344,23 +1274,21 @@
       "ncs": "DeviceGray",
       "text": "S",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         61.671,
         50.04
       ],
@@ -1381,23 +1309,21 @@
       "ncs": "DeviceGray",
       "text": "u",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         66.702,
         50.04
       ],
@@ -1418,23 +1344,21 @@
       "ncs": "DeviceGray",
       "text": "b",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         71.733,
         50.04
       ],
@@ -1455,23 +1379,21 @@
       "ncs": "DeviceGray",
       "text": "j",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         74.73,
         50.04
       ],
@@ -1492,23 +1414,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         78.69,
         50.04
       ],
@@ -1529,23 +1449,21 @@
       "ncs": "DeviceGray",
       "text": "c",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         82.64999999999999,
         50.04
       ],
@@ -1566,23 +1484,21 @@
       "ncs": "DeviceGray",
       "text": "t",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         85.64699999999999,
         50.04
       ],
@@ -1603,23 +1519,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         87.984,
         50.04
       ],
@@ -1640,23 +1554,21 @@
       "ncs": "DeviceGray",
       "text": "t",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         90.981,
         50.04
       ],
@@ -1677,23 +1589,21 @@
       "ncs": "DeviceGray",
       "text": "o",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         95.535,
         50.04
       ],
@@ -1714,23 +1624,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         97.824,
         50.04
       ],
@@ -1751,23 +1659,21 @@
       "ncs": "DeviceGray",
       "text": "C",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         104.187,
         50.04
       ],
@@ -1788,23 +1694,21 @@
       "ncs": "DeviceGray",
       "text": "o",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         108.741,
         50.04
       ],
@@ -1825,23 +1729,21 @@
       "ncs": "DeviceGray",
       "text": "p",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         113.77199999999999,
         50.04
       ],
@@ -1862,23 +1764,21 @@
       "ncs": "DeviceGray",
       "text": "y",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         118.209,
         50.04
       ],
@@ -1899,23 +1799,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         120.5,
         50.04
       ],
@@ -1936,23 +1834,21 @@
       "ncs": "DeviceGray",
       "text": "E",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         126.503,
         50.04
       ],
@@ -1973,23 +1869,21 @@
       "ncs": "DeviceGray",
       "text": "d",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         131.534,
         50.04
       ],
@@ -2010,23 +1904,21 @@
       "ncs": "DeviceGray",
       "text": "i",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         134.036,
         50.04
       ],
@@ -2047,23 +1939,21 @@
       "ncs": "DeviceGray",
       "text": "t",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         137.06,
         50.04
       ],
@@ -2084,23 +1974,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         139.22,
         50.04
       ],
@@ -2121,23 +2009,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         141.488,
         50.04
       ],
@@ -2158,23 +2044,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         143.756,
         50.04
       ],
@@ -2195,23 +2079,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         146.024,
         50.04
       ],
@@ -2232,23 +2114,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         148.184,
         50.04
       ],
@@ -2269,23 +2149,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         150.452,
         50.04
       ],
@@ -2306,23 +2184,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         152.72,
         50.04
       ],
@@ -2343,23 +2219,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         154.988,
         50.04
       ],
@@ -2380,23 +2254,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         157.148,
         50.04
       ],
@@ -2417,23 +2289,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         159.5,
         50.04
       ],
@@ -2454,23 +2324,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         161.78,
         50.04
       ],
@@ -2491,23 +2359,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         164.048,
         50.04
       ],
@@ -2528,23 +2394,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         166.208,
         50.04
       ],
@@ -2565,23 +2429,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         168.476,
         50.04
       ],
@@ -2602,23 +2464,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         170.744,
         50.04
       ],
@@ -2639,23 +2499,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         173.012,
         50.04
       ],
@@ -2676,23 +2534,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         175.172,
         50.04
       ],
@@ -2713,23 +2569,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         177.332,
         50.04
       ],
@@ -2750,23 +2604,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         179.6,
         50.04
       ],
@@ -2787,23 +2639,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         181.868,
         50.04
       ],
@@ -2824,23 +2674,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         184.136,
         50.04
       ],
@@ -2861,23 +2709,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         186.404,
         50.04
       ],
@@ -2898,23 +2744,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         188.672,
         50.04
       ],
@@ -2935,23 +2779,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         190.832,
         50.04
       ],
@@ -2972,23 +2814,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         193.1,
         50.04
       ],
@@ -3009,23 +2849,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         195.368,
         50.04
       ],
@@ -3046,23 +2884,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         197.63600000000002,
         50.04
       ],
@@ -3083,23 +2919,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         199.796,
         50.04
       ],
@@ -3120,23 +2954,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         202.06400000000002,
         50.04
       ],
@@ -3157,23 +2989,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         204.332,
         50.04
       ],
@@ -3194,23 +3024,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         206.60000000000002,
         50.04
       ],
@@ -3231,23 +3059,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         208.76,
         50.04
       ],
@@ -3268,23 +3094,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         211.02800000000002,
         50.04
       ],
@@ -3305,23 +3129,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         213.296,
         50.04
       ],
@@ -3342,23 +3164,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         215.56400000000002,
         50.04
       ],
@@ -3379,23 +3199,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         217.724,
         50.04
       ],
@@ -3416,23 +3234,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         219.99200000000002,
         50.04
       ],
@@ -3453,23 +3269,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         222.26,
         50.04
       ],
@@ -3490,23 +3304,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         224.52800000000002,
         50.04
       ],
@@ -3527,23 +3339,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         226.688,
         50.04
       ],
@@ -3564,23 +3374,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         228.95600000000002,
         50.04
       ],
@@ -3601,23 +3409,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         231.224,
         50.04
       ],
@@ -3638,23 +3444,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         233.49200000000002,
         50.04
       ],
@@ -3675,23 +3479,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         235.652,
         50.04
       ],
@@ -3712,23 +3514,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         237.92000000000002,
         50.04
       ],
@@ -3749,23 +3549,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         240.188,
         50.04
       ],
@@ -3786,23 +3584,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         242.45600000000002,
         50.04
       ],
@@ -3823,23 +3619,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         244.61599999999999,
         50.04
       ],
@@ -3860,23 +3654,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         246.88400000000001,
         50.04
       ],
@@ -3897,23 +3689,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         249.152,
         50.04
       ],
@@ -3934,23 +3724,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         251.42000000000002,
         50.04
       ],
@@ -3971,23 +3759,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         253.57999999999998,
         50.04
       ],
@@ -4008,23 +3794,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         255.848,
         50.04
       ],
@@ -4045,23 +3829,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         258.116,
         50.04
       ],
@@ -4082,23 +3864,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         260.384,
         50.04
       ],
@@ -4119,23 +3899,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         262.544,
         50.04
       ],
@@ -4156,23 +3934,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         264.812,
         50.04
       ],
@@ -4193,23 +3969,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         267.08,
         50.04
       ],
@@ -4230,23 +4004,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         269.348,
         50.04
       ],
@@ -4267,23 +4039,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         271.508,
         50.04
       ],
@@ -4304,23 +4074,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         273.776,
         50.04
       ],
@@ -4341,23 +4109,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         276.044,
         50.04
       ],
@@ -4378,23 +4144,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         278.312,
         50.04
       ],
@@ -4415,23 +4179,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         280.472,
         50.04
       ],
@@ -4452,23 +4214,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         282.74,
         50.04
       ],
@@ -4489,23 +4249,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         285.008,
         50.04
       ],
@@ -4526,23 +4284,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         287.276,
         50.04
       ],
@@ -4563,23 +4319,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         289.436,
         50.04
       ],
@@ -4600,23 +4354,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         291.704,
         50.04
       ],
@@ -4637,23 +4389,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         293.972,
         50.04
       ],
@@ -4674,23 +4424,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         296.24,
         50.04
       ],
@@ -4711,23 +4459,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         298.4,
         50.04
       ],
@@ -4748,23 +4494,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         300.668,
         50.04
       ],
@@ -4785,23 +4529,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         302.93600000000004,
         50.04
       ],
@@ -4822,23 +4564,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         305.204,
         50.04
       ],
@@ -4859,23 +4599,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         307.472,
         50.04
       ],
@@ -4896,23 +4634,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         309.74,
         50.04
       ],
@@ -4933,23 +4669,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         311.9,
         50.04
       ],
@@ -4970,23 +4704,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         314.168,
         50.04
       ],
@@ -5007,23 +4739,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         316.43600000000004,
         50.04
       ],
@@ -5044,23 +4774,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         318.704,
         50.04
       ],
@@ -5081,23 +4809,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         320.86400000000003,
         50.04
       ],
@@ -5118,23 +4844,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         323.132,
         50.04
       ],
@@ -5155,23 +4879,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         325.4,
         50.04
       ],
@@ -5192,23 +4914,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         327.668,
         50.04
       ],
@@ -5229,23 +4949,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         329.828,
         50.04
       ],
@@ -5266,23 +4984,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         332.096,
         50.04
       ],
@@ -5303,23 +5019,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         334.36400000000003,
         50.04
       ],
@@ -5340,23 +5054,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         336.632,
         50.04
       ],
@@ -5377,23 +5089,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         338.79200000000003,
         50.04
       ],
@@ -5414,23 +5124,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         341.06,
         50.04
       ],
@@ -5451,23 +5159,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         343.328,
         50.04
       ],
@@ -5488,23 +5194,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         345.596,
         50.04
       ],
@@ -5525,23 +5229,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         347.756,
         50.04
       ],
@@ -5562,23 +5264,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         350.024,
         50.04
       ],
@@ -5599,23 +5299,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         352.29200000000003,
         50.04
       ],
@@ -5636,23 +5334,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         354.56,
         50.04
       ],
@@ -5673,23 +5369,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         356.72,
         50.04
       ],
@@ -5710,23 +5404,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         358.988,
         50.04
       ],
@@ -5747,23 +5439,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         361.256,
         50.04
       ],
@@ -5784,23 +5474,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         363.524,
         50.04
       ],
@@ -5821,23 +5509,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         365.68399999999997,
         50.04
       ],
@@ -5858,23 +5544,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         367.952,
         50.04
       ],
@@ -5895,23 +5579,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         370.22,
         50.04
       ],
@@ -5932,23 +5614,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         372.488,
         50.04
       ],
@@ -5969,23 +5649,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         374.648,
         50.04
       ],
@@ -6006,23 +5684,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         376.916,
         50.04
       ],
@@ -6043,23 +5719,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         379.18399999999997,
         50.04
       ],
@@ -6080,23 +5754,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         381.452,
         50.04
       ],
@@ -6117,23 +5789,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         383.61199999999997,
         50.04
       ],
@@ -6154,23 +5824,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         385.88,
         50.04
       ],
@@ -6191,23 +5859,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         388.148,
         50.04
       ],
@@ -6228,23 +5894,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         390.416,
         50.04
       ],
@@ -6265,23 +5929,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         392.576,
         50.04
       ],
@@ -6302,23 +5964,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         394.844,
         50.04
       ],
@@ -6339,23 +5999,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         397.11199999999997,
         50.04
       ],
@@ -6376,23 +6034,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         399.38,
         50.04
       ],
@@ -6413,23 +6069,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         401.53999999999996,
         50.04
       ],
@@ -6450,23 +6104,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         403.808,
         50.04
       ],
@@ -6487,23 +6139,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         406.076,
         50.04
       ],
@@ -6524,23 +6174,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         408.344,
         50.04
       ],
@@ -6561,23 +6209,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         410.504,
         50.04
       ],
@@ -6598,23 +6244,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         412.772,
         50.04
       ],
@@ -6635,23 +6279,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         415.03999999999996,
         50.04
       ],
@@ -6672,23 +6314,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         417.308,
         50.04
       ],
@@ -6709,23 +6349,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         419.4680000000001,
         50.04
       ],
@@ -6746,23 +6384,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         421.736,
         50.04
       ],
@@ -6783,23 +6419,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         424.004,
         50.04
       ],
@@ -6820,23 +6454,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         426.27199999999993,
         50.04
       ],
@@ -6857,23 +6489,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         428.53999999999996,
         50.04
       ],
@@ -6894,23 +6524,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         430.8079999999999,
         50.04
       ],
@@ -6931,23 +6559,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         432.96799999999996,
         50.04
       ],
@@ -6968,23 +6594,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         435.2359999999999,
         50.04
       ],
@@ -7005,23 +6629,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         437.5039999999999,
         50.04
       ],
@@ -7042,23 +6664,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         439.7719999999998,
         50.04
       ],
@@ -7079,23 +6699,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         443.14,
         50.04
       ],
@@ -7116,23 +6734,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         445.40799999999996,
         50.04
       ],
@@ -7153,23 +6769,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         447.676,
         50.04
       ],
@@ -7190,23 +6804,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         449.94399999999996,
         50.04
       ],
@@ -7227,23 +6839,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         452.104,
         50.04
       ],
@@ -7264,23 +6874,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         454.37199999999996,
         50.04
       ],
@@ -7301,23 +6909,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         456.64,
         50.04
       ],
@@ -7338,23 +6944,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         458.908,
         50.04
       ],
@@ -7375,23 +6979,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         461.068,
         50.04
       ],
@@ -7412,23 +7014,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         463.336,
         50.04
       ],
@@ -7449,23 +7049,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         465.604,
         50.04
       ],
@@ -7486,23 +7084,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         467.872,
         50.04
       ],
@@ -7523,23 +7119,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         470.032,
         50.04
       ],
@@ -7560,23 +7154,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         472.3,
         50.04
       ],
@@ -7597,23 +7189,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         474.568,
         50.04
       ],
@@ -7634,23 +7224,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         476.836,
         50.04
       ],
@@ -7671,23 +7259,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         478.996,
         50.04
       ],
@@ -7708,23 +7294,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         481.264,
         50.04
       ],
@@ -7745,23 +7329,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         483.532,
         50.04
       ],
@@ -7782,23 +7364,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         485.8,
         50.04
       ],
@@ -7819,23 +7399,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         487.96,
         50.04
       ],
@@ -7856,23 +7434,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         490.228,
         50.04
       ],
@@ -7893,23 +7469,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         492.496,
         50.04
       ],
@@ -7930,23 +7504,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         494.764,
         50.04
       ],
@@ -7967,23 +7539,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         496.924,
         50.04
       ],
@@ -8004,23 +7574,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         499.192,
         50.04
       ],
@@ -8041,23 +7609,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         501.46,
         50.04
       ],
@@ -8078,23 +7644,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         503.728,
         50.04
       ],
@@ -8115,23 +7679,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         505.888,
         50.04
       ],
@@ -8152,23 +7714,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         508.15599999999995,
         50.04
       ],
@@ -8189,23 +7749,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         510.424,
         50.04
       ],
@@ -8226,23 +7784,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         512.692,
         50.04
       ],
@@ -8263,23 +7819,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         515.14,
         50.04
       ],
@@ -8300,23 +7854,21 @@
       "ncs": "DeviceGray",
       "text": "p",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         519.6999999999999,
         50.04
       ],
@@ -8337,23 +7889,21 @@
       "ncs": "DeviceGray",
       "text": ".",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         521.86,
         50.04
       ],
@@ -8374,23 +7924,21 @@
       "ncs": "DeviceGray",
       "text": "5",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         526.3,
         50.04
       ],
@@ -8411,23 +7959,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 784.944,
       "bottom": 793.944,
       "doctop": 4153.103999999999
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         56.64,
         38.88
       ],
@@ -8448,23 +7994,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 796.1039999999999,
       "bottom": 805.1039999999999,
       "doctop": 4164.264
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         538.56,
         703.42
       ],
@@ -8485,23 +8029,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 129.96464000000003,
       "bottom": 141.00464,
       "doctop": 3498.12464
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         56.64,
         693.94
       ],
@@ -8522,23 +8064,21 @@
       "ncs": "DeviceGray",
       "text": "F",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         62.74548,
         693.94
       ],
@@ -8559,23 +8099,21 @@
       "ncs": "DeviceGray",
       "text": "i",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         65.51436,
         693.94
       ],
@@ -8596,23 +8134,21 @@
       "ncs": "DeviceGray",
       "text": "g",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         70.5342,
         693.94
       ],
@@ -8633,23 +8169,21 @@
       "ncs": "DeviceGray",
       "text": "u",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         76.07196,
         693.94
       ],
@@ -8670,23 +8204,21 @@
       "ncs": "DeviceGray",
       "text": "r",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         80.4942,
         693.94
       ],
@@ -8707,23 +8239,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         84.91644000000001,
         693.94
       ],
@@ -8744,23 +8274,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         87.44628000000002,
         693.94
       ],
@@ -8781,23 +8309,21 @@
       "ncs": "DeviceGray",
       "text": "1",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         92.47608000000001,
         693.94
       ],
@@ -8818,23 +8344,21 @@
       "ncs": "DeviceGray",
       "text": ".",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         94.98600000000002,
         693.94
       ],
@@ -8855,23 +8379,21 @@
       "ncs": "DeviceGray",
       "text": "1",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         100.01580000000001,
         693.94
       ],
@@ -8892,23 +8414,21 @@
       "ncs": "DeviceGray",
       "text": ":",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         103.36236,
         693.94
       ],
@@ -8929,23 +8449,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         105.98,
         693.94
       ],
@@ -8966,23 +8484,21 @@
       "ncs": "DeviceGray",
       "text": "T",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         111.97592,
         693.94
       ],
@@ -9003,23 +8519,21 @@
       "ncs": "DeviceGray",
       "text": "h",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         117.00572,
         693.94
       ],
@@ -9040,23 +8554,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         121.42796,
         693.94
       ],
@@ -9077,23 +8589,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         123.9578,
         693.94
       ],
@@ -9114,23 +8624,21 @@
       "ncs": "DeviceGray",
       "text": "S",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         129.49556,
         693.94
       ],
@@ -9151,23 +8659,21 @@
       "ncs": "DeviceGray",
       "text": "y",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         134.50544000000002,
         693.94
       ],
@@ -9188,23 +8694,21 @@
       "ncs": "DeviceGray",
       "text": "n",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         139.53524000000002,
         693.94
       ],
@@ -9225,23 +8729,21 @@
       "ncs": "DeviceGray",
       "text": "t",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         142.30412,
         693.94
       ],
@@ -9262,23 +8764,21 @@
       "ncs": "DeviceGray",
       "text": "h",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         147.32396,
         693.94
       ],
@@ -9299,23 +8799,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         151.74620000000002,
         693.94
       ],
@@ -9336,23 +8834,21 @@
       "ncs": "DeviceGray",
       "text": "s",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         155.62064,
         693.94
       ],
@@ -9373,23 +8869,21 @@
       "ncs": "DeviceGray",
       "text": "i",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         158.38952,
         693.94
       ],
@@ -9410,23 +8904,21 @@
       "ncs": "DeviceGray",
       "text": "s",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         162.20420000000001,
         693.94
       ],
@@ -9447,23 +8939,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         164.71412000000004,
         693.94
       ],
@@ -9484,23 +8974,21 @@
       "ncs": "DeviceGray",
       "text": "R",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         171.31760000000003,
         693.94
       ],
@@ -9521,23 +9009,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         175.73984000000002,
         693.94
       ],
@@ -9558,23 +9044,21 @@
       "ncs": "DeviceGray",
       "text": "p",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         180.78956000000005,
         693.94
       ],
@@ -9595,23 +9079,21 @@
       "ncs": "DeviceGray",
       "text": "o",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         185.81936000000005,
         693.94
       ],
@@ -9632,23 +9114,21 @@
       "ncs": "DeviceGray",
       "text": "r",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         189.16592000000006,
         693.94
       ],
@@ -9669,23 +9149,21 @@
       "ncs": "DeviceGray",
       "text": "t",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         191.93480000000005,
         693.94
       ],
@@ -9706,23 +9184,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         194.42480000000006,
         693.94
       ],
@@ -9743,23 +9219,21 @@
       "ncs": "DeviceGray",
       "text": "f",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         197.79128000000006,
         693.94
       ],
@@ -9780,23 +9254,21 @@
       "ncs": "DeviceGray",
       "text": "i",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         200.56016000000005,
         693.94
       ],
@@ -9817,23 +9289,21 @@
       "ncs": "DeviceGray",
       "text": "g",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         205.47044000000005,
         693.94
       ],
@@ -9854,23 +9324,21 @@
       "ncs": "DeviceGray",
       "text": "u",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         210.50024000000008,
         693.94
       ],
@@ -9891,23 +9359,21 @@
       "ncs": "DeviceGray",
       "text": "r",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         213.8468000000001,
         693.94
       ],
@@ -9928,23 +9394,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         218.26904000000007,
         693.94
       ],
@@ -9965,23 +9429,21 @@
       "ncs": "DeviceGray",
       "text": "s",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         222.14348000000007,
         693.94
       ],
@@ -10002,23 +9464,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         224.63348000000008,
         693.94
       ],
@@ -10039,23 +9499,21 @@
       "ncs": "DeviceGray",
       "text": "k",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         229.67324000000008,
         693.94
       ],
@@ -10076,23 +9534,21 @@
       "ncs": "DeviceGray",
       "text": "e",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         234.09548000000007,
         693.94
       ],
@@ -10113,23 +9569,21 @@
       "ncs": "DeviceGray",
       "text": "y",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         239.14520000000005,
         693.94
       ],
@@ -10150,23 +9604,21 @@
       "ncs": "DeviceGray",
       "text": ".",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         241.73,
         693.94
       ],
@@ -10187,23 +9639,21 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 140.29135999999994,
       "bottom": 150.25135999999986,
       "doctop": 3508.45136
     },
     {
       "matrix": [
-        1,
-        0,
-        0,
-        1,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
         56.64,
         681.58
       ],
@@ -10224,13 +9674,11 @@
       "ncs": "DeviceGray",
       "text": " ",
       "stroking_color": [
-        0
+        0.0
       ],
-      "stroking_pattern": null,
       "non_stroking_color": [
-        0
+        0.0
       ],
-      "non_stroking_pattern": null,
       "top": 151.80463999999995,
       "bottom": 162.8446399999999,
       "doctop": 3519.9646399999997
@@ -10266,16 +9714,12 @@
       "stroke": 0,
       "fill": 1,
       "evenodd": 1,
-      "stroking_color": null,
-      "non_stroking_color": [
-        0
-      ],
+      "stroking_color": 0,
+      "non_stroking_color": 0.0,
       "mcid": null,
       "tag": "Artifact",
       "object_type": "rect",
       "page_number": 5,
-      "stroking_pattern": null,
-      "non_stroking_pattern": null,
       "path": [
         [
           "m",
@@ -10343,16 +9787,12 @@
       "stroke": 0,
       "fill": 1,
       "evenodd": 1,
-      "stroking_color": null,
-      "non_stroking_color": [
-        0
-      ],
+      "stroking_color": 0,
+      "non_stroking_color": 0.0,
       "mcid": null,
       "tag": "Artifact",
       "object_type": "rect",
       "page_number": 5,
-      "stroking_pattern": null,
-      "non_stroking_pattern": null,
       "path": [
         [
           "m",
@@ -10400,6 +9840,7 @@
       "y1": 785.336,
       "width": 481.8500000000001,
       "height": 81.99599999999998,
+      "name": "Image154",
       "stream": {
         "rawdata": "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"
       },

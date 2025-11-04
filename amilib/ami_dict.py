@@ -1242,13 +1242,19 @@ class AmiDictionary:
         return lxml_entry.get(WIKIDATA_ID)
 
     def get_ami_entries(self):
-        """creates entriws from elements in self.entry_by_term
+        """creates entries from elements in self.entry_by_term
         TODO maybe index the AmiEntry's instead
         :return: list of AmiEntries"""
         assert self.entry_by_term is not None
         ami_entry_list = []
-        for entry_element in self.entry_by_term.values():
-            ami_entry = AmiEntry.create_from_element(entry_element)
+        for entry_value in self.entry_by_term.values():
+            # entry_by_term.values() contains AmiEntry objects, not elements
+            # Check if it's already an AmiEntry or if it's an element
+            if isinstance(entry_value, AmiEntry):
+                ami_entry = entry_value
+            else:
+                # If it's an element, wrap it
+                ami_entry = AmiEntry.create_from_element(entry_value)
             ami_entry_list.append(ami_entry)
         return ami_entry_list
 

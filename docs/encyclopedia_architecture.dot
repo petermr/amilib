@@ -1,0 +1,78 @@
+digraph EncyclopediaArchitecture {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+    
+    // Main Classes
+    AmiEncyclopedia [label="AmiEncyclopedia\nMain Class\n- create_from_html_file()\n- normalize_by_wikipedia_url()\n- aggregate_synonyms()\n- create_wiki_normalized_html()", fillcolor=lightblue, style="filled,rounded"];
+    
+    // Utility Classes
+    EncyclopediaLinkExtractor [label="EncyclopediaLinkExtractor\n- extract_entries_from_html()\n- normalize_wikipedia_url()\n- _classify_link_type()", fillcolor=lightgreen, style="filled,rounded"];
+    LinkValidator [label="LinkValidator\n- validate_link()\n- check_link_accessibility()", fillcolor=lightgreen, style="filled,rounded"];
+    SynonymNormalizer [label="SynonymNormalizer\n- normalize_terms()\n- get_canonical_term()", fillcolor=lightgreen, style="filled,rounded"];
+    EncyclopediaArgs [label="EncyclopediaArgs\nCLI Arguments\n- process_args()\n- create_encyclopedia()", fillcolor=lightyellow, style="filled,rounded"];
+    
+    // Dependencies (Composition)
+    AmiDictionary [label="AmiDictionary\nComposition\n- create_from_html_file()\n- entry_by_term", fillcolor=lightcoral, style="filled,rounded"];
+    AmiEntry [label="AmiEntry\n- element\n- get_term()", fillcolor=lightcoral, style="filled,rounded"];
+    
+    // Supporting Libraries
+    HtmlLib [label="HtmlLib\nHTML Processing\n- parse_html_string()\n- create_html_with_empty_head_body()", fillcolor=wheat, style="filled,rounded"];
+    WikipediaPage [label="WikipediaPage\nWikipedia Integration", fillcolor=wheat, style="filled,rounded"];
+    XmlLib [label="XmlLib\nXML Processing\n- element_to_string()", fillcolor=wheat, style="filled,rounded"];
+    
+    // Data Structures
+    Entries [label="entries\nList[Dict]\n- term\n- search_term\n- wikipedia_url\n- description_html", shape=ellipse, fillcolor=lavender, style="filled"];
+    NormalizedEntries [label="normalized_entries\nDict[URL, List[Entry]]", shape=ellipse, fillcolor=lavender, style="filled"];
+    SynonymGroups [label="synonym_groups\nDict[URL, Group]\n- canonical_term\n- synonyms\n- page_title", shape=ellipse, fillcolor=lavender, style="filled"];
+    
+    // Input/Output
+    HTMLInput [label="HTML Input\nFile/Content", shape=parallelogram, fillcolor=lightcyan, style="filled"];
+    HTMLOutput [label="HTML Output\nNormalized Encyclopedia", shape=parallelogram, fillcolor=lightcyan, style="filled"];
+    
+    // Relationships - Main Flow
+    HTMLInput -> AmiEncyclopedia [label="create_from_html_file()"];
+    AmiEncyclopedia -> AmiDictionary [label="uses (composition)"];
+    AmiDictionary -> AmiEntry [label="contains"];
+    AmiEncyclopedia -> Entries [label="extracts"];
+    Entries -> NormalizedEntries [label="normalize_by_wikipedia_url()"];
+    NormalizedEntries -> SynonymGroups [label="aggregate_synonyms()"];
+    SynonymGroups -> HTMLOutput [label="create_wiki_normalized_html()"];
+    
+    // Utility Usage
+    AmiEncyclopedia -> EncyclopediaLinkExtractor [label="uses (optional)"];
+    AmiEncyclopedia -> LinkValidator [label="uses (optional)"];
+    AmiEncyclopedia -> SynonymNormalizer [label="uses (optional)"];
+    
+    // Library Dependencies
+    AmiEncyclopedia -> HtmlLib [label="depends on"];
+    AmiEncyclopedia -> XmlLib [label="depends on"];
+    EncyclopediaLinkExtractor -> HtmlLib [label="depends on"];
+    EncyclopediaLinkExtractor -> WikipediaPage [label="depends on"];
+    AmiDictionary -> HtmlLib [label="depends on"];
+    
+    // CLI Flow
+    EncyclopediaArgs -> AmiEncyclopedia [label="creates"];
+    
+    // Internal Methods (shown as subgraph)
+    subgraph cluster_internal {
+        label="Internal Processing Methods";
+        style=dashed;
+        
+        NormalizeURL [label="_normalize_wikipedia_url()"];
+        NormalizeTerms [label="_normalize_terms()"];
+        GetCanonical [label="_get_canonical_term()"];
+        ExtractPageTitle [label="_extract_page_title_from_url()"];
+        GetBestDescription [label="_get_best_description()"];
+        
+        AmiEncyclopedia -> NormalizeURL;
+        AmiEncyclopedia -> NormalizeTerms;
+        AmiEncyclopedia -> GetCanonical;
+        AmiEncyclopedia -> ExtractPageTitle;
+        AmiEncyclopedia -> GetBestDescription;
+    }
+    
+    // Styling
+    {rank=same; HTMLInput; HTMLOutput}
+    {rank=same; Entries; NormalizedEntries; SynonymGroups}
+}
+

@@ -1,10 +1,10 @@
 """
-AmiEncyclopedia - Encyclopedia management with Wikipedia URL normalization
+AmiEncyclopedia - Encyclopedia management with Wikidata ID normalization
 
 Provides functionality to:
 - Extract entries from encyclopedia HTML
-- Normalize entries by Wikipedia URL
-- Aggregate synonyms by canonical Wikipedia pages
+- Normalize entries by Wikidata ID
+- Aggregate synonyms by Wikidata ID (canonical identifiers)
 - Generate normalized encyclopedia output
 """
 
@@ -31,7 +31,7 @@ class AmiEncyclopedia:
         self.dictionary = None  # AmiDictionary instance (composition)
         self.entries = []  # Processed entries as list of dicts
         self.normalized_entries = {}
-        self.synonym_groups = defaultdict(list)
+        self.synonym_groups = {}  # Dict[str, Dict] - aggregated synonym groups by Wikidata ID
         
     def create_from_html_file(self, html_file: Path) -> 'AmiEncyclopedia':
         """Create encyclopedia from HTML file"""
@@ -41,7 +41,7 @@ class AmiEncyclopedia:
         html_content = html_file.read_text(encoding='utf-8')
         return self.create_from_html_content(html_content)
     
-    def create_from_html_content(self, html_content: str) -> 'AmiEncyclopedia':
+    def create_from_html_content(self, html_content: str, enable_auto_lookup: bool = False) -> 'AmiEncyclopedia':
         """Create encyclopedia from HTML content"""
         # Use AmiDictionary to parse HTML
         from io import StringIO
@@ -54,6 +54,10 @@ class AmiEncyclopedia:
             temp_path = Path(temp_file.name)
         
         try:
+            # Parse HTML first to get original elements with all attributes
+            from amilib.ami_html import HtmlUtil
+            self._original_html_root = HtmlUtil.parse_html_file_to_xml(temp_path)
+            
             # Use AmiDictionary to parse (composition)
             self.dictionary = AmiDictionary.create_from_html_file(temp_path, ignorecase=False)
             
@@ -71,19 +75,76 @@ class AmiEncyclopedia:
                     if 'search term:' in search_text:
                         search_term = search_text.split('search term:')[-1].strip()
                 
-                # Extract wikipedia_url with priority: attribute > explicit link > description links
+                # Extract wikidata_id with priority: attribute > from Wikipedia page > lookup
+                wikidata_id = ''
                 wikipedia_url = ''
                 
-                # Priority 1: Check if wikipedia_url is stored as an attribute on the entry element
+                # Priority 1: Check if wikidataID is stored as an attribute on the entry element
+                # HTML parser lowercases attributes, so wikidataID becomes wikidataid
+                # But AmiDictionary may strip it, so check the original HTML element before dictionary processing
+                # Try to get it from the original parsed HTML before AmiDictionary processed it
+                from amilib.ami_dict import WIKIDATA_ID
+                
+                # First try AmiEntry property (may not work if AmiDictionary stripped the attribute)
+                wikidata_id = ami_entry.wikidata_id if hasattr(ami_entry, 'wikidata_id') else None
+                
+                # If not found, check element directly (with lowercase variant)
+                if not wikidata_id:
+                    wikidata_id = (
+                        entry_element.get('wikidataID') or 
+                        entry_element.get('wikidataid') or  # Lowercase version from HTML parser
+                        entry_element.get('wikidata_id') or 
+                        entry_element.get(WIKIDATA_ID) or
+                        ''
+                    )
+                
+                # If still not found, try to get from original HTML element before dictionary processing
+                # AmiDictionary creates new entry elements and only copies term/id, so wikidataID is lost
+                # Use the original HTML root we stored during parsing
+                if not wikidata_id and hasattr(self, '_original_html_root'):
+                    try:
+                        # Find the original HTML entry element by term
+                        original_entries = self._original_html_root.xpath(f".//div[@role='ami_entry' and @term='{term}']")
+                        if not original_entries:
+                            # Try by name attribute as fallback
+                            original_entries = self._original_html_root.xpath(f".//div[@role='ami_entry' and @name='{term}']")
+                        if original_entries:
+                            orig_entry = original_entries[0]
+                            wikidata_id = (
+                                orig_entry.get('wikidataID') or 
+                                orig_entry.get('wikidataid') or  # Lowercase from HTML parser
+                                orig_entry.get('wikidata_id') or
+                                ''
+                            )
+                    except Exception:
+                        pass
+                
+                # Extract wikipedia_url for display purposes (also needed for Wikidata ID lookup)
                 wikipedia_url = entry_element.get('wikipedia_url', '')
                 
-                # Priority 2: If no attribute, check for Wikipedia link in the search term paragraph
+                # Priority 2: If no Wikipedia URL attribute, check for Wikipedia link in the search term paragraph
                 if not wikipedia_url:
+                    # Check for direct /wiki/ links
                     wiki_links_in_para = entry_element.xpath(".//p[contains(text(), 'search term:')]//a[contains(@href, 'en.wikipedia.org/wiki/')]")
                     if wiki_links_in_para:
                         href = wiki_links_in_para[0].get('href', '')
                         if href.startswith('http'):
                             wikipedia_url = href
+                    # Also check for search URLs and convert them to canonical URLs
+                    if not wikipedia_url:
+                        search_links = entry_element.xpath(".//p[contains(text(), 'search term:')]//a[contains(@href, 'wikipedia.org/w/index.php?search=')]")
+                        if search_links:
+                            href = search_links[0].get('href', '')
+                            # Extract search term from URL
+                            if 'search=' in href:
+                                from urllib.parse import parse_qs, urlparse
+                                parsed = urlparse(href)
+                                params = parse_qs(parsed.query)
+                                search_term_from_url = params.get('search', [''])[0]
+                                if search_term_from_url:
+                                    # Convert search term to canonical Wikipedia URL
+                                    page_title = search_term_from_url.replace(' ', '_')
+                                    wikipedia_url = f"https://en.wikipedia.org/wiki/{page_title}"
                 
                 # Priority 3: Fall back to finding any /wiki/ directive link in the description
                 if not wikipedia_url:
@@ -96,6 +157,47 @@ class AmiEncyclopedia:
                         elif href.startswith('http'):
                             wikipedia_url = href
                 
+                # Priority 2 for Wikidata ID: If no attribute, try to extract from Wikipedia page
+                # Only auto-lookup if explicitly enabled (disabled by default for performance)
+                if not wikidata_id and wikipedia_url and enable_auto_lookup:
+                    try:
+                        # Extract page title from URL
+                        if '/wiki/' in wikipedia_url:
+                            page_title = wikipedia_url.split('/wiki/')[-1].split('#')[0].split('?')[0]
+                            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(page_title)
+                            if wikipedia_page:
+                                wikidata_url = wikipedia_page.get_wikidata_item()
+                                if wikidata_url:
+                                    # Extract Q/P ID from URL
+                                    match = re.search(r'[Ee]ntity[Pp]age/([QP]\d+)', wikidata_url)
+                                    if not match:
+                                        match = re.search(r'/([QP]\d+)(?:#|/|$)', wikidata_url)
+                                    if match:
+                                        wikidata_id = match.group(1)
+                    except Exception as e:
+                        logger = Util.get_logger(__name__)
+                        logger.warning(f"Could not extract Wikidata ID from Wikipedia URL {wikipedia_url}: {e}")
+                
+                # Priority 3 for Wikidata ID: If still no Wikidata ID, try direct lookup from term
+                # Only auto-lookup if explicitly enabled (disabled by default for performance)
+                if not wikidata_id and term and enable_auto_lookup:
+                    try:
+                        from amilib.wikimedia import WikidataLookup
+                        wikidata_lookup = WikidataLookup()
+                        qitem, desc, qitems = wikidata_lookup.lookup_wikidata(term)
+                        if qitem:
+                            wikidata_id = qitem
+                    except Exception as e:
+                        logger = Util.get_logger(__name__)
+                        logger.warning(f"Could not lookup Wikidata ID for term {term}: {e}")
+                
+                # Validate Wikidata ID format
+                if wikidata_id:
+                    if not re.match(r'^[QP]\d+$', wikidata_id):
+                        logger = Util.get_logger(__name__)
+                        logger.warning(f"Invalid Wikidata ID format: {wikidata_id} (must be Q or P followed by digits)")
+                        wikidata_id = ''  # Treat as missing
+                
                 # Extract description_html from <p class="wpage_first_para">
                 description_html = ''
                 desc_p = entry_element.xpath(".//p[@class='wpage_first_para']")
@@ -106,7 +208,8 @@ class AmiEncyclopedia:
                 entry_dict = {
                     'term': term,
                     'search_term': search_term,
-                    'wikipedia_url': wikipedia_url,
+                    'wikidata_id': wikidata_id,  # PRIMARY identifier
+                    'wikipedia_url': wikipedia_url,  # Secondary (for display)
                     'description_html': description_html,
                 }
                 self.entries.append(entry_dict)
@@ -129,22 +232,32 @@ class AmiEncyclopedia:
         """Classify link type based on href pattern"""
         raise NotImplementedError("AmiEncyclopedia._classify_link_type not yet implemented")
     
-    def normalize_by_wikipedia_url(self) -> Dict[str, List[Dict]]:
-        """Normalize entries by grouping by Wikipedia URL"""
-        url_groups = defaultdict(list)
+    def normalize_by_wikidata_id(self) -> Dict[str, List[Dict]]:
+        """Normalize entries by grouping by Wikidata ID"""
+        wikidata_groups = defaultdict(list)
         
         for entry in self.entries:
-            wikipedia_url = entry.get('wikipedia_url', '')
-            if wikipedia_url:
-                # Normalize URL
-                normalized_url = self._normalize_wikipedia_url(wikipedia_url)
-                url_groups[normalized_url].append(entry)
+            wikidata_id = entry.get('wikidata_id', '')
+            if wikidata_id:
+                # Validate Wikidata ID format (Q or P followed by digits)
+                if re.match(r'^[QP]\d+$', wikidata_id):
+                    wikidata_groups[wikidata_id].append(entry)
+                else:
+                    logger = Util.get_logger(__name__)
+                    logger.warning(f"Invalid Wikidata ID format: {wikidata_id}")
+                    wikidata_groups['invalid_wikidata_id'].append(entry)
             else:
-                # Entries without Wikipedia URLs go to a special group
-                url_groups['no_wikipedia_url'].append(entry)
+                # Entries without Wikidata IDs cannot be grouped
+                wikidata_groups['no_wikidata_id'].append(entry)
         
-        self.normalized_entries = dict(url_groups)
+        self.normalized_entries = dict(wikidata_groups)
         return self.normalized_entries
+    
+    def normalize_by_wikipedia_url(self) -> Dict[str, List[Dict]]:
+        """Normalize entries by grouping by Wikipedia URL (DEPRECATED - use normalize_by_wikidata_id)"""
+        # For backward compatibility, delegate to Wikidata ID normalization
+        # This assumes entries have Wikidata IDs derived from Wikipedia URLs
+        return self.normalize_by_wikidata_id()
     
     def _normalize_wikipedia_url(self, url: str) -> str:
         """Normalize Wikipedia URL to canonical format - preserve case"""
@@ -162,15 +275,15 @@ class AmiEncyclopedia:
         return url
     
     def aggregate_synonyms(self) -> Dict[str, Dict]:
-        """Aggregate synonyms by Wikipedia URL and normalize terms"""
+        """Aggregate synonyms by Wikidata ID and normalize terms"""
         # Ensure entries are normalized first
         if not self.normalized_entries:
-            self.normalize_by_wikipedia_url()
+            self.normalize_by_wikidata_id()
         
         synonym_groups = {}
         
-        for wikipedia_url, entries in self.normalized_entries.items():
-            if wikipedia_url == 'no_wikipedia_url':
+        for wikidata_id, entries in self.normalized_entries.items():
+            if wikidata_id in ('no_wikidata_id', 'invalid_wikidata_id'):
                 continue
             
             # Extract all search terms
@@ -182,16 +295,20 @@ class AmiEncyclopedia:
             # Get canonical term (using helper method)
             canonical_term = self._get_canonical_term(normalized_terms)
             
-            # Get page title from URL (using helper method)
-            page_title = self._extract_page_title_from_url(wikipedia_url)
+            # Get Wikipedia URL from first entry (for display)
+            wikipedia_url = entries[0].get('wikipedia_url', '') if entries else ''
+            
+            # Get page title from Wikipedia URL (if available)
+            page_title = self._extract_page_title_from_url(wikipedia_url) if wikipedia_url else canonical_term
             
             # Use the best available description (using helper method)
             best_description = self._get_best_description(entries)
             
-            synonym_groups[wikipedia_url] = {
+            synonym_groups[wikidata_id] = {
+                'wikidata_id': wikidata_id,  # PRIMARY identifier
                 'canonical_term': canonical_term,
                 'page_title': page_title,
-                'wikipedia_url': wikipedia_url,
+                'wikipedia_url': wikipedia_url,  # Secondary (for display)
                 'search_terms': search_terms,
                 'synonyms': list(set(normalized_terms)),
                 'description_html': best_description,
@@ -199,11 +316,23 @@ class AmiEncyclopedia:
                 'source_entries': entries
             }
         
+        # Store for later use
+        self.synonym_groups = synonym_groups
         return synonym_groups
     
     def merge(self) -> 'AmiEncyclopedia':
-        """Merge entries with the same Wikipedia URL into single entries"""
-        raise NotImplementedError("AmiEncyclopedia.merge not yet implemented")
+        """Merge entries with the same Wikidata ID into single entries"""
+        # Ensure entries are normalized first
+        if not self.normalized_entries:
+            self.normalize_by_wikidata_id()
+        
+        # Merge operation: aggregate synonyms if not already done
+        if not self.synonym_groups:
+            self.aggregate_synonyms()
+        
+        # The merge operation is essentially already done by aggregate_synonyms()
+        # This method ensures the merge state is consistent
+        return self
     
     def _normalize_terms(self, terms: List[str]) -> List[str]:
         """Normalize terms - only handle underscores and URL escaping"""
@@ -270,12 +399,59 @@ class AmiEncyclopedia:
         encyclopedia_div.attrib["role"] = "ami_encyclopedia"
         encyclopedia_div.attrib["title"] = self.title
         
-        # Add entry divs for each entry
-        for entry in self.entries:
+        # Get aggregated synonym groups if available
+        if not self.synonym_groups or len(self.synonym_groups) == 0:
+            synonym_groups = self.aggregate_synonyms()
+        else:
+            synonym_groups = self.synonym_groups
+        
+        # Add entry divs for each synonym group (normalized by Wikidata ID)
+        for wikidata_id, group in synonym_groups.items():
             entry_div = ET.SubElement(encyclopedia_div, "div")
             entry_div.attrib["role"] = "ami_entry"
-            if entry.get('term'):
-                entry_div.attrib["term"] = entry['term']
+            
+            # Add Wikidata ID as primary identifier
+            entry_div.attrib["wikidataID"] = wikidata_id
+            
+            # Add canonical term
+            canonical_term = group.get('canonical_term', '')
+            if canonical_term:
+                entry_div.attrib["term"] = canonical_term
+            
+            # Add Wikipedia URL link (for display)
+            wikipedia_url = group.get('wikipedia_url', '')
+            if wikipedia_url:
+                wiki_link = ET.SubElement(entry_div, "a")
+                wiki_link.attrib["href"] = wikipedia_url
+                page_title = group.get('page_title', canonical_term)
+                wiki_link.text = page_title if page_title else wikipedia_url
+            
+            # Add Wikidata link
+            wikidata_link = ET.SubElement(entry_div, "a")
+            wikidata_link.attrib["href"] = f"https://www.wikidata.org/wiki/{wikidata_id}"
+            wikidata_link.text = f"Wikidata: {wikidata_id}"
+            
+            # Add synonym list
+            synonyms = group.get('synonyms', [])
+            if synonyms:
+                synonym_ul = ET.SubElement(entry_div, "ul")
+                synonym_ul.attrib["class"] = "synonym_list"
+                for synonym in synonyms:
+                    synonym_li = ET.SubElement(synonym_ul, "li")
+                    synonym_li.text = synonym
+            
+            # Add description if available
+            description_html = group.get('description_html', '')
+            if description_html:
+                # Parse description HTML and append to entry
+                from lxml.html import fromstring
+                try:
+                    desc_elem = fromstring(description_html)
+                    entry_div.append(desc_elem)
+                except Exception:
+                    # If parsing fails, add as text
+                    desc_p = ET.SubElement(entry_div, "p")
+                    desc_p.text = description_html
         
         return XmlLib.element_to_string(html_root, pretty_print=True)
     
@@ -291,4 +467,22 @@ class AmiEncyclopedia:
     
     def get_statistics(self) -> Dict:
         """Get encyclopedia statistics"""
-        raise NotImplementedError("AmiEncyclopedia.get_statistics not yet implemented")
+        # Ensure we have aggregated synonym groups
+        if not self.synonym_groups:
+            self.aggregate_synonyms()
+        
+        total_entries = len(self.entries)
+        normalized_groups = len(self.synonym_groups)
+        
+        # Count total synonyms across all groups
+        total_synonyms = sum(len(group.get('synonyms', [])) for group in self.synonym_groups.values())
+        
+        # Calculate compression ratio (entries to groups)
+        compression_ratio = total_entries / normalized_groups if normalized_groups > 0 else 0.0
+        
+        return {
+            'total_entries': total_entries,
+            'normalized_groups': normalized_groups,
+            'total_synonyms': total_synonyms,
+            'compression_ratio': compression_ratio
+        }
