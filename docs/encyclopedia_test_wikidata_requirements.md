@@ -341,3 +341,5 @@ def assert_synonym_group_has_wikidata_id(self, group, wikidata_id=None):
 - **Validation:** Add strict validation to fail fast if Wikidata IDs are missing
 - **Error Messages:** Provide clear error messages when Wikidata IDs are missing or invalid
 
+
+

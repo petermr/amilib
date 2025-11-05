@@ -298,3 +298,5 @@ def _normalize_wikipedia_url(self, url: str) -> str:
 - Consider adding unit tests for `_normalize_wikipedia_url()` to verify edge cases
 - The `merge()` method implementation depends on whether it should actually merge entries or just ensure normalization
 
+
+
