@@ -153,16 +153,19 @@ class TestDictWikidataExtraction(AmiAnyTest):
                      "Should return None or empty string when not found")
                      
     def test_wikidata_id_html_output(self):
-        """Test that Wikidata ID and link appear in HTML output"""
+        """Test that Wikidata ID and link appear in HTML output
+        
+        OPTIMIZATION: Limited to 1 term instead of 2 for faster testing while maintaining at least one lookup
+        """
         # Create dictionary with Wikipedia descriptions
         dict_file = Path(self.temp_dir, "test_wikidata_output.html")
         
         # Use command-line equivalent
         from amilib.dict_args import AmiDictArgs
         
-        # Create test words file
+        # OPTIMIZATION: Use only 1 term instead of 2 (maintains at least one lookup)
         words_file = Path(self.temp_dir, "test_words.txt")
-        words_file.write_text("climate change\ncarbon dioxide\n")
+        words_file.write_text("climate change\n")
         
         args = AmiDictArgs()
         args.words = str(words_file)

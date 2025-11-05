@@ -50,6 +50,39 @@ from .core.util import Util
 from .core.constants import NS_MAP
 ```
 
+### No Mocks in Tests
+
+**Rule:** Do not use mocks or patches in tests. Tests should use real implementations and real services.
+
+**✅ CORRECT:**
+```python
+def test_service_connection_basic(self):
+    """Test basic service connection functionality."""
+    result = FileLib.check_service_connection(
+        service_url="https://httpbin.org/status/200",
+        service_name="HTTPBin Test",
+        timeout=10
+    )
+    # Handle both success and failure cases
+    if result['connected']:
+        self.assertEqual(result['status_code'], 200)
+    else:
+        self.assertIsNotNone(result['error'])
+```
+
+**❌ WRONG:**
+```python
+@patch('amilib.file_lib.requests.get')
+def test_service_connection_basic(self, mock_get):
+    """Test basic service connection functionality."""
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_get.return_value = mock_response
+    # ... test code
+```
+
+**Rationale**: Tests should verify real behavior, not mocked behavior. Mocks hide integration issues and make tests less reliable. If external services are unreliable, tests should handle both success and failure cases gracefully.
+
 ## Violations Encountered
 
 ### 1. Relative Imports

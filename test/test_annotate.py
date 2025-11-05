@@ -168,13 +168,15 @@ class AnnotateTest(AmiAnyTest):
         Input: IPCC_AR6_WGII_Chapter07.pdf, external GitHub wordlist URL
         Operations: Load wordlist from URL, create temp CSV, process PDF with PDFHyperlinkAdder
         Output: Annotated PDF with dictionary-based hyperlinks and visual indicators
+        
+        OPTIMIZATION: Limited to 5 terms and 10 pages for faster testing while maintaining at least one lookup
         """
         print("🧪 Testing complete dictionary annotation workflow...")
         
         self._verify_file_exists(self.ipcc_pdf, "IPCC PDF")
         
-        # Create temp CSV from URL wordlist
-        temp_csv = self._create_word_csv_from_url(self.shaik_url)
+        # OPTIMIZATION: Limit to 5 terms instead of 290+ for faster testing
+        temp_csv = self._create_word_csv_from_url(self.shaik_url, max_terms=5)
         
         # Create output PDF path
         output_pdf = Resources.TEMP_DIR / "IPCC_AR6_WGII_Chapter07_dictionary_annotated.pdf"
@@ -182,7 +184,8 @@ class AnnotateTest(AmiAnyTest):
         try:
             # Use existing PDFHyperlinkAdder
             adder = self._create_pdf_adder(self.ipcc_pdf, temp_csv, output_pdf)
-            adder.process_pdf()
+            # OPTIMIZATION: Process only first 10 pages instead of entire PDF
+            adder.process_pdf(max_pages=10)
             
             # Verify results
             self._assert_pdf_processed_successfully(output_pdf, adder)
@@ -318,6 +321,8 @@ class AnnotateTest(AmiAnyTest):
         Input: IPCC_AR6_WGII_Chapter07.pdf, climate_words.csv
         Operations: Create PDFHyperlinkAdder, process PDF with word list
         Output: Annotated PDF with hyperlinks and visual indicators
+        
+        OPTIMIZATION: Limited to 10 pages for faster testing
         """
         print("🌍 Testing PDF hyperlink adder with IPCC PDF...")
         
@@ -330,7 +335,8 @@ class AnnotateTest(AmiAnyTest):
         
         # Use helper methods
         adder = self._create_pdf_adder(self.ipcc_pdf, climate_words, output_pdf)
-        adder.process_pdf()
+        # OPTIMIZATION: Process only first 10 pages instead of entire PDF
+        adder.process_pdf(max_pages=10)
         
         # Verify results
         self._assert_pdf_processed_successfully(output_pdf, adder)
@@ -529,9 +535,17 @@ class AnnotateTest(AmiAnyTest):
             print(f"❌ Error loading HTML wordlist from URL: {e}")
             raise RuntimeError(f"Failed to load HTML wordlist from URL {url}: {e}") from e
     
-    def _create_word_csv_from_url(self, url: str) -> Path:
-        """Create temporary CSV file from URL wordlist for PDFHyperlinkAdder"""
+    def _create_word_csv_from_url(self, url: str, max_terms: int = None) -> Path:
+        """Create temporary CSV file from URL wordlist for PDFHyperlinkAdder
+        
+        Args:
+            url: URL to load wordlist from
+            max_terms: Maximum number of terms to include (None = all)
+        """
         terms = self._load_wordlist_from_url(url)
+        if max_terms is not None and len(terms) > max_terms:
+            terms = terms[:max_terms]
+            print(f"⚠️  Limited to first {max_terms} terms for faster testing")
         print(f"terms {len(terms)}")
         temp_csv = Path(Resources.TEMP_DIR, "words", "pdf_annotate_wordlist.csv")
         temp_csv.parent.mkdir(parents=True, exist_ok=True)

@@ -2534,13 +2534,23 @@ class PDFHyperlinkAdder:
                 return entry
         return None
         
-    def find_word_instances(self, doc: fitz.Document) -> List[Tuple[int, str, fitz.Rect, str]]:
-        """Find all instances of words in the PDF with their positions"""
+    def find_word_instances(self, doc: fitz.Document, max_pages: int = None) -> List[Tuple[int, str, fitz.Rect, str]]:
+        """Find all instances of words in the PDF with their positions
+        
+        Args:
+            doc: PDF document
+            max_pages: Maximum number of pages to process (None = all pages)
+        """
         print("🔍 Searching for word instances...")
         
         word_instances = []
+        total_pages = len(doc)
+        pages_to_process = min(max_pages, total_pages) if max_pages is not None else total_pages
         
-        for page_num in range(len(doc)):
+        if max_pages is not None and max_pages < total_pages:
+            print(f"⚠️  Processing only first {pages_to_process} of {total_pages} pages for faster testing")
+        
+        for page_num in range(pages_to_process):
             page = doc[page_num]
             
             # Get text blocks with positioning
@@ -2576,7 +2586,7 @@ class PDFHyperlinkAdder:
                                     word_instances.append((page_num, word, word_bbox, link))
                                     self.total_matches += 1
                                     
-        print(f"✅ Found {self.total_matches} word instances across {len(doc)} pages")
+        print(f"✅ Found {self.total_matches} word instances across {pages_to_process} pages")
         return word_instances
     
     def add_hyperlinks_and_styling(self, doc: fitz.Document, word_instances: List[Tuple[int, str, fitz.Rect, str]]) -> None:
@@ -2613,8 +2623,12 @@ class PDFHyperlinkAdder:
             if self.processed_words % 50 == 0:
                 print(f"   Processed {self.processed_words}/{self.total_matches} words...")
     
-    def process_pdf(self) -> None:
-        """Main processing function"""
+    def process_pdf(self, max_pages: int = None) -> None:
+        """Main processing function
+        
+        Args:
+            max_pages: Maximum number of pages to process (None = all pages)
+        """
         print(f"📄 Processing PDF: {self.input_pdf}")
         print(f"📝 Word list: {self.word_list_file}")
         print(f"💾 Output: {self.output_pdf}")
@@ -2628,7 +2642,7 @@ class PDFHyperlinkAdder:
         print(f"📖 PDF opened: {len(doc)} pages")
         
         # Find all word instances
-        word_instances = self.find_word_instances(doc)
+        word_instances = self.find_word_instances(doc, max_pages=max_pages)
         
         if not word_instances:
             print("❌ No matching words found in the PDF")
