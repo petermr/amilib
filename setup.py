@@ -60,6 +60,7 @@ setup(
     install_requires=requirements,
     extras_require=optional_requirements,
     license='Apache License 2.0',
+    license_files=[],  # Prevent automatic License-File metadata field
     zip_safe=False,
     keywords='scientific documents, PDF processing, HTML processing, text analysis',
     classifiers=[
