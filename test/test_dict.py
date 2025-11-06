@@ -1748,8 +1748,6 @@ class DictionaryCreationTest(AmiAnyTest):
             logger.info(f"creating figure entries for {stem}")
             self.create_dict_for_word_file(stem, wiktionary=True)
 
-    def test_more_words(self):
-        pass
 
     def create_dict_for_word_file(
             self, stem, wiktionary=True, input_file=None, output_dict=None):
