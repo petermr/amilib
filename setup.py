@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from pathlib import Path
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-import configparser
-import os
+from setuptools import setup
 
 # Read version from __init__.py
 import re
-with open(os.path.join(os.path.dirname(__file__), "amilib", "__init__.py")) as f:
+
+parent = Path(__file__).parent
+with open(str(Path(parent, "amilib", "__init__.py"))) as f:
     content = f.read()
 version = re.search(r'__version__ = ["\']([^"\']+)["\']', content).group(1)
 
@@ -53,7 +51,7 @@ setup(
     description='A library for processing and analyzing scientific documents',
     long_description_content_type='text/markdown',
     long_description=readme,
-    author='Peter Murray-Rust',
+    author='Peter Murray-Rust and semanticClimate team',
     author_email='pm286@cam.ac.uk',
     url='https://github.com/petermr/amilib',
     packages=['amilib'],
