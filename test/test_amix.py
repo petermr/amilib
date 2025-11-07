@@ -19,27 +19,3 @@ class AmixTest(unittest.TestCase):
         logger.error("ERROR")
         logger.fatal("FATAL!!")
 
-    @unittest.skip("only works on PMR machine")
-    def test_logger(self):
-        """
-        logger outputs 2 messages (2024-09-16) - this is to debug it
-        """
-        logger = Util.get_logger(__name__)
-        logger.setLevel(logging.WARNING)
-
-        with self.assertLogs(logger, level='INFO') as cm:
-
-            self._logger_messages(logger)
-
-            self.assertEqual([
-                # 'DEBUG:test.test_amix:debug', this was excluded
-                'INFO:test.test_amix:info',
-                'WARNING:test.test_amix:warning',
-                'ERROR:test.test_amix:ERROR',
-                'CRITICAL:test.test_amix:FATAL!!',
-            ],
-                             cm.output)
-
-        amix = AmiLib()
-
-

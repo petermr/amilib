@@ -78,7 +78,7 @@ class TestDictWikidataExtraction(AmiAnyTest):
                 
                 wikipedia_page = ami_entry.lookup_and_add_wikipedia_page()
                 
-                if wikipedia_page and wikipedia_page.html_elem:
+                if wikipedia_page and len(wikipedia_page.html_elem) > 0:
                     # Check if it's a disambiguation page
                     try:
                         is_disambig = wikipedia_page.is_disambiguation_page()

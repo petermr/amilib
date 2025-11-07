@@ -6,13 +6,11 @@ import csv
 from pathlib import Path
 import lxml.etree as ET
 import pdfplumber
-# from keybert import KeyBERT
 from lxml.html import HTMLParser
 
 from amilib.ami_html import HtmlLib
 from amilib.file_lib import FileLib
 from amilib.util import Util
-from amilib.xml_lib import XmlLib
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 
@@ -55,34 +53,6 @@ class ExtractTextTest(AmiAnyTest):
             chapters_by_chapnos[chapnos].append(lines_by_page)
             logger.info(f"chapters: {chapters_by_chapnos}")
         logger.setLevel(save_level)
-
-    @unittest.skip("not using keybert")
-    def test_keybert_breward_1(self):
-        """
-        uses keyBERT to extract phrases/words
-        """
-        from keybert import KeyBERT
-      #   doc = """
-      #    Supervised learning is the machine learning task of learning a function that
-      #    maps an input to an output based on example input-output pairs. It infers a
-      #    function from labeled training data consisting of a set of training examples.
-      #    In supervised learning, each example is a pair consisting of an input object
-      #    (typically a vector) and a desired output value (also called the supervisory signal).
-      #    A supervised learning algorithm analyzes the training data and produces an inferred function,
-      #    which can be used for mapping new examples. An optimal scenario will allow for the
-      #    algorithm to correctly determine the class labels for unseen instances. This requires
-      #    the learning algorithm to generalize from the training data to unseen situations in a
-      #    'reasonable' way (see inductive bias).
-      # """
-        phrase_range = (1, 3)
-        phrase_range = (1, 1)
-        top_n = 4
-        breward_dir = Path(Resources.TEMP_DIR, "pdf", "html", "breward_1")
-
-        kw_counter = self._read_chapter_extract_keywords(breward_dir, phrase_range, top_n)
-        assert kw_counter is not None
-        assert len(kw_counter) > 10
-        assert 'climate' in kw_counter
 
 
     def _read_chapter_extract_keywords(
@@ -173,52 +143,6 @@ class ExtractTextTest(AmiAnyTest):
         # logger.info(f"kw_counter {kw_counter}")
         return kw_counter, html_by_file, chunks_by_file
 
-    @unittest.skip("no longer supporting KEYBERT in amilib")
-    def test_keybert_ipcc_wg1_3(self):
-        """file:///Users/pm286/workspace/amilib/test/resources/ipcc/cleaned_content/wg1/Chapter03/html_with_ids.html"""
-        indir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content","wg1", "Chapter03")
-        assert indir.exists()
-        kw_counter = self._read_chapter_extract_keywords(
-            indir, phrase_range=(1,1), top_n=50, globstr="html_with_ids.html", chunk_xpath="//p")
-        assert "madagascar" in kw_counter
-        assert Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter03", "marked/kw_counter.txt").exists()
-
-
-    @unittest.skip("no longer supporting KEYBERT in amilib")
-    def test_keybert_ipcc_wg1(self):
-        """file:///Users/pm286/workspace/amilib/test/resources/ipcc/cleaned_content/wg1/Chapter03/html_with_ids.html"""
-
-        wgdir = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content","wg1")
-        chapters = [
-            # "Chapter01",
-            "Chapter02",
-            # "Chapter03",
-            # "Chapter04",
-            # "Chapter05",
-            # "Chapter06",
-            # "Chapter07",
-            # "Chapter08",
-            # "Chapter09",
-            # "Chapter10",
-            # "Chapter11",
-            # "Chapter12",
-        ]
-        all_words = Counter()
-        for chapter in chapters:
-            indir = Path(wgdir, chapter)
-            assert indir.exists()
-            kw_counter = self._read_chapter_extract_keywords(
-                indir, phrase_range=(1,1), top_n=100, globstr="html_with_ids.html", chunk_xpath="//p")
-            for word, count in kw_counter.items():
-                all_words[word] += count
-        logger.info(f"all words {all_words.most_common()}")
-        marked_dir = Path(wgdir, "marked")
-        FileLib.force_mkdir(marked_dir)
-        outpath = Path(marked_dir, "keywords.txt")
-        with open(outpath, "w", encoding="UTF-8") as f:
-            f.write(str(all_words))
-        assert outpath.exists(), f"{outpath} should exist"
-
     def test_extract_title_id_para_from_ipcc_syr(self):
         """
         read a chapter from IPCC and extract paras with ids and their section titles
@@ -296,51 +220,6 @@ class ExtractTextTest(AmiAnyTest):
 
     # -------------------------------------------------
 
-    @unittest.skip("only for PMR")
-    def test_extract_title_id_para_from_makespace(self):
-        """
-        read makespace pages and extract text with titles
-
-        Purpose is to create CSV for input to LLM/RAG
-        reads makespace scrape, returns the title and
-        text.
-        """
-
-        makespacedir = Path(Path(__file__).parent.parent.parent,
-                            "ollama_langchain_rag", "AI-ML-Prj1", "MSWebScrape", "2025March")
-        assert makespacedir.exists(), f"makespacedir {makespacedir} should exist"
-        outdir = Path(Resources.TEMP_DIR, "csv", "makespace")
-        FileLib.force_mkdir(outdir)
-        csvout = Path(outdir, "makespace.csv")
-        files = os.listdir(str(Path(makespacedir)))
-        with open(csvout, 'w', encoding="UTF-8") as csvfile:
-            csvwriter = csv.writer(csvfile)
-            csvwriter.writerow(["id", "title", "text"])
-            for i, file in enumerate(files):
-                if Path(file).is_dir():
-                    continue
-                logger.info(f"makespace_file: {file}")
-                filename = Path(file).stem
-                path = Path(makespacedir, filename)
-                if not path.exists():
-                    logger.error(f"Cannot read {path}")
-                    continue
-                if path.is_dir():
-                    logger.warning(f"Skipped directory {path}")
-                    continue
-                with open(path, "r", encoding="UTF-8") as f:
-                    strings = f.readlines()
-                # print(f"strings {strings}")
-                text_ = "".join(list(strings))
-                divid = str(i)
-                if text_ is None or len(text_) == 0:
-                    logger.info(f"empty text for {divid}")
-                    continue
-                if divid:
-                    # print(f"{pid}: [{title}] {text_}")
-                    row = [divid, filename, text_]
-                    csvwriter.writerow(row)
-        logger.info(f"wrote CSV {csvout}")
 
 class MiscLib:
 

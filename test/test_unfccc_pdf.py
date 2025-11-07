@@ -277,7 +277,6 @@ WG3_URL = AR6_URL + "wg3/"
 logger = Util.get_logger(__name__)
 logger.setLevel(logging.INFO)
 
-
 @unittest.skip("Disabled for faster test runs during refactoring")
 class TestUNFCCC(AmiAnyTest):
     """Tests high level operations relating to UN content (currently SpanMarker and UN/IPCC)
@@ -454,7 +453,6 @@ class TestUNFCCC(AmiAnyTest):
         files = FileLib.posix_glob(str(in_dir) + f"/*/Decision*/{stem}.html")
         return files
 
-
     # ========================== tests ==================
 
     # @unittest.skip("not the current approach. TODO add make to spanmarker pipeline")
@@ -564,8 +562,6 @@ class TestUNFCCC(AmiAnyTest):
         adds classes
         tackles most of functionality
 
-
-
         """
         """
         Does inline markup
@@ -648,17 +644,6 @@ class TestUNFCCC(AmiAnyTest):
         assert outfile.exists()
         assert len(HtmlLib.get_body(html_elem).xpath("div")) > 0
 
-    @unittest.skip("obsolete approach to splitting files. TODO needs mending")
-    def test_split_into_files_at_id_single_IMPORTANT(self):
-
-        dict_name = "sections"
-        input_dir = Path(UNFCCC_TEMP_DOC_DIR, "CMA_3")
-        infile = Path(input_dir, "1_CMA_3_section", f"normalized.{dict_name}.html")
-
-        splitter = "./span[@class='Decision']"
-        output_dir = input_dir
-        SpanMarker.presplit_by_regex_into_sections(infile, output_dir, splitter=splitter, debug=True)
-
     @unittest.skip("until we fix the previous")
     def test_split_into_files_at_id_multiple_IMPORTANT(self):
         """Splits files at Decisions for all sessions"""
@@ -693,7 +678,6 @@ class TestUNFCCC(AmiAnyTest):
         span_marker.move_implicit_children_to_parents(span_marker.inhtml)
         outfile = str(infile).replace("sections", "nested")
         HtmlLib.write_html_file(span_marker.inhtml, outfile, debug=True)
-
 
     @unittest.skip("needs mending")
     def test_pipeline(self):
@@ -734,7 +718,6 @@ class TestUNFCCC(AmiAnyTest):
         span_marker.read_and_process_pdfs(pdf_list)
         span_marker.write_links("links.csv")  # currently no-op
         span_marker.analyse_after_match_NOOP()
-
 
     def test_explicit_conversion_pipeline_IMPORTANT_DEFINITIVE(self):
         """reads PDF and sequentially applies transformation to generate increasingly semantic HTML
@@ -798,7 +781,6 @@ class TestUNFCCC(AmiAnyTest):
                 session_dir,
                 top_out_dir=top_out_dir
             )
-
 
     def test_create_decision_hyperlink_table(self):
         """creates table of hyperlinks from inline markuo to decisions
@@ -906,6 +888,4 @@ class TestUNFCCC(AmiAnyTest):
     #         raise ValueError("should raise bad argument 'Pipeline' NYI")
     #     except Exception as e:
     #         assert True, "expected fail"
-
-
 

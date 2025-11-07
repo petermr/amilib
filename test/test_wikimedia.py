@@ -1,6 +1,4 @@
 # Tests wikipedia and wikidata methods under pytest
-import copy
-import pprint
 import unittest
 from pathlib import Path
 
@@ -33,7 +31,6 @@ python3 -m test.test_wikidata
 WIKIPEDIA_SERVICE_URL="https://en.wikipedia.org"
 WIKIPEDIA_SERVICE_NAME="Wikipedia"
 
-
 TEST_RESOURCES_DIR = Path(Path(__file__).parent.parent, "test", "resources")
 # TEMP_DIR = Path(Path(__file__).parent.parent, "temp_oldx_delete")
 # DICTIONARY_DIR = Path(os.path.expanduser("~"), "projects", "CEVOpen", "dictionary")
@@ -58,21 +55,6 @@ class WikipediaTest(base_test):
         stem = "small_2"  # file stem
         wikipedia_pages = WikipediaPage.lookup_pages_for_words_in_file(stem, wordlist_dir)
 
-    @unittest.skipUnless(AmiAnyTest.IS_PMR, "long and development only")
-    def test_wikipedia_lookup_several_word_lists(self):
-        """tests multiple lookup of wikipedia page by name"""
-        wordlist_dir = Path(Resources.TEST_RESOURCES_DIR, "wordlists")
-        wordlists = [
-            # "carbon_cycle",
-            # "climate_words",
-            # "food_ecosystem",
-            # "water_cyclone",
-            # "poverty",
-            "small_2"
-        ]
-        outdir = Path(Resources.TEMP_DIR, "html", "terms")
-        for wordlist_stem in wordlists:
-            word_dict = WikipediaPage.lookup_pages_for_words_in_file(wordlist_stem, wordlist_dir)
 
     def test_wikipedia_page_from_wikidata(self):
         qitem = "Q144362"  # azulene
@@ -100,7 +82,6 @@ class WikipediaTest(base_test):
                 "--wikipedia"]
         pyami.run_command(args)
 
-
     def test_wikipedia_page_first_para(self):
         """
         creates WikipediaPage.FirstPage object
@@ -126,7 +107,6 @@ class WikipediaTest(base_test):
         assert ahrefs[0].text == "atmosphere"
         assert ahrefs[0].attrib.get("href") == "/wiki/Atmosphere"
 
-
     def test_wikipedia_page_first_para_sentence_span_tails(self):
         """
         creates WikipediaPage.FirstPage object
@@ -151,233 +131,6 @@ class WikipediaTest(base_test):
         assert '<a href="/wiki/Greenhouse_effect"' in tostring, "Should contain Greenhouse effect link"
         assert '<span> rather than the present average of 15' in tostring, "Should contain temperature comparison text"
         assert '</p>' in tostring, "Should end with closing paragraph tag"
-
-    @unittest.skip("duplicate")
-    def test_wikipedia_page_first_para_sentence_add_brs(self):
-        """
-        creates WikipediaPage.FirstPage object
-        wraps all tails (mixed content text) in spans
-        """
-        term = "Greenhouse gas"
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
-        first_para = wikipedia_page.create_first_wikipedia_para()
-        assert type(first_para) is WikipediaPara
-        XmlLib.replace_child_tail_texts_with_spans(first_para.para_element)
-        assert ET.tostring(first_para.para_element) == """
-<p><b>Greenhouse gases</b> (<b>GHGs</b>) are the gases in an <a href="/wiki/Atmosphere" title="Atmosphere">atmosphere</a> that trap heat, raising the surface temperature of <a href="/wiki/Astronomical_bodies" class="mw-redirect" title="Astronomical bodies">astronomical bodies</a> such as Earth. Unlike other gases, greenhouse gases <a href="/wiki/Absorption_(electromagnetic_radiation)" title="Absorption (electromagnetic radiation)">absorb</a> the <a href="/wiki/Electromagnetic_spectrum" title="Electromagnetic spectrum">radiations</a> that a <a href="/wiki/Outgoing_longwave_radiation" title="Outgoing longwave radiation">planet emits</a>, resulting in the <a href="/wiki/Greenhouse_effect" title="Greenhouse effect">greenhouse effect</a>.<sup id="cite_ref-AR6WG1annexVII_1-0" class="reference"><a href="#cite_note-AR6WG1annexVII-1"><span class="cite-bracket">&#91;</span>1<span class="cite-bracket">&#93;</span></a></sup> The Earth is warmed by sunlight, causing its surface to <a href="/wiki/Radiant_energy" title="Radiant energy">radiate heat</a>, which is then mostly absorbed by greenhouse gases. Without greenhouse gases in the atmosphere, the average temperature of <a href="/wiki/Earth#Surface" title="Earth">Earth's surface</a> would be about −18&#160;°C (0&#160;°F),<sup id="cite_ref-NASACO2_2-0" class="reference"><a href="#cite_note-NASACO2-2"><span class="cite-bracket">&#91;</span>2<span class="cite-bracket">&#93;</span></a></sup> rather than the present average of 15&#160;°C (59&#160;°F).<sup id="cite_ref-Trenberth2003_3-0" class="reference"><a href="#cite_note-Trenberth2003-3"><span class="cite-bracket">&#91;</span>3<span class="cite-bracket">&#93;</span></a></sup><sup id="cite_ref-:0_4-0" class="reference"><a href="#cite_note-:0-4"><span class="cite-bracket">&#91;</span>4<span class="cite-bracket">&#93;</span></a></sup>
-</p>        """
-
-        htmlx = HtmlEditor()
-        htmlx.add_style("span", "{border:solid 1px;}")
-        htmlx.body.append(first_para.para_element)
-        htmlx.write(Path(Resources.TEMP_DIR, "misc", "ghg2.html"))
-
-    def test_insert_br_for_lone_period(self):
-        """
-        insert a <br/> after a single '.'
-        this will be developed to include more complex situations later
-
-        """
-        term = "Greenhouse gas"
-        wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
-        first_para = wikipedia_page.create_first_wikipedia_para()
-        assert type(first_para) is WikipediaPara
-        XmlLib.add_sentence_brs(first_para.get_texts())
-        # assert ET.tostring(first_para.para_element) == 'foo'
-        html_file = Path(Resources.TEMP_DIR, "words", "html", "ghg_test.html")
-        htmlx = HtmlEditor()
-        htmlx.add_style("span", "{background: pink; border: solid 1px blue;}")
-
-        htmlx.body.append(first_para.para_element)
-        htmlx.write(html_file, debug=True)
-
-
-
-
-    def test_create_html_dictionary_from_xml(self):
-        """
-        create semanticHtml from XML dictionary (created by lookup wikipedia)
-        """
-        xml_dict_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "xml", "breward_wikipedia.xml")
-        assert xml_dict_file.exists()
-        xml_ami_dict = AmiDictionary.create_from_xml_file(xml_dict_file)
-        assert xml_ami_dict is not None
-        entries = xml_ami_dict.get_ami_entries()
-        assert len(entries) == 30, f"{xml_dict_file} should have 30 entries"
-        ami_entry = entries[0]
-        div = ami_entry.create_semantic_div_from_term()
-        html_elem = HtmlLib.create_html_with_empty_head_body()
-        body = HtmlLib.get_body(html_elem)
-        body.append(div)
-        path = Path(Resources.TEMP_DIR, "words", "html", "covid.html")
-        HtmlLib.write_html_file(
-            html_elem, path, debug=True)
-        assert path.exists()
-
-    def test_create_html_dictionary_from_words(self):
-        """
-        create semanticHtml from wordlist and lookup in Wikipedia
-        """
-        stem = "small_2"  # Reduced from small_10 for faster testing
-        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
-        assert words_file.exists()
-        xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
-        assert xml_ami_dict is not None
-        xml_ami_dict.create_html_write_to_file(Path(Resources.TEMP_DIR, "words", "xml", f"{stem}.xml"))
-        html_elem = xml_ami_dict.create_html_dictionary(create_default_entry=True, title=stem)
-        path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
-        HtmlLib.write_html_file(html_elem, path, debug=True)
-        assert path.exists()
-
-    def test_create_html_dictionary_from_words_COMMAND(self):
-        """
-        create HTML dictionary from amilib commandline
-        """
-        stem = "small_2"  # Reduced from small_10 for faster testing
-        input = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
-        output_dict = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
-        logger.debug(f"output dict: {output_dict}")
-        FileLib.delete_file(output_dict)
-        args = ["DICT",
-                "--words", input,
-                "--dict", output_dict,
-                "--wikipedia",
-                ]
-        amilib = AmiLib()
-        # create by COMMANDLINE
-        amilib.run_command(args)
-        # check validity
-        assert output_dict.exists()
-        dict_elem = HtmlUtil.parse_html_file_to_xml(output_dict)
-        assert dict_elem is not None
-        assert dict_elem.tag == "html"
-        dictionary_elem = dict_elem.xpath("./body/div[@role='ami_dictionary']")[0]
-        assert dictionary_elem is not None
-        assert dictionary_elem.attrib.get("title") is not None
-        entry_divs = dict_elem.xpath("./body/div[@role='ami_dictionary']/div[@role='ami_entry']")
-        LEN = 2  # Reduced from 10 for faster testing
-        assert len(entry_divs) == LEN
-
-        # validate
-        ami_dict = AmiDictionary.create_from_html_file(output_dict)
-        assert ami_dict is not None
-        assert len(ami_dict.get_ami_entries()) == LEN
-        dict_entries = ami_dict.get_ami_entries()
-        ami_entry_0 = dict_entries[0]
-        print(f"ami_entry0 {ami_entry_0.create_semantic_html()}")
-
-    def test_create_from_html_dictionary(self):
-        """
-        reads a valid HTML ami_dictionary
-        """
-        dict_file = Path(Resources.TEST_RESOURCES_DIR, "dictionary", "html", "small_10.html")
-        assert dict_file.exists(), f"cannot find HTML dictionary {dict_file}"
-        ami_dict = AmiDictionary.create_from_html_file(dict_file)
-        ami_entries = ami_dict.get_ami_entries()
-
-    def test_create_semantic_html_split_sentences(self):
-        """
-        create semanticHtml from wordlist and lookup in Wikipedia
-        """
-        stem = "small_5"
-        words_file = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
-        assert words_file.exists()
-        xml_ami_dict, outpath = AmiDictionary.create_dictionary_from_wordfile(words_file)
-        assert xml_ami_dict is not None
-        xml_ami_dict.create_html_write_to_file(Path(Resources.TEMP_DIR, "words", f"{stem}.html"))
-        html_elem = xml_ami_dict.create_html_dictionary(create_default_entry=True)
-        path = Path(Resources.TEMP_DIR, "words", "html", f"{stem}.html")
-        HtmlLib.write_html_file(html_elem, path, debug=True)
-        assert path.exists()
-
-#    @unittest.skip("not yet working")
-
-    def test_flat_disambiguation_page(self):
-        """
-        annotates disambiguation page
-        """
-        term = "AGW"
-        wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
-        basic_info = wpage.get_basic_information()
-        assert basic_info is not None
-        central_desc = basic_info.get_central_description()
-        assert central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
-        assert wpage.is_disambiguation_page()
-        diambig_list = wpage.get_disambiguation_list()
-        html_new = HtmlLib.create_html_with_empty_head_body()
-        body = HtmlLib.get_body(html_new)
-        div = ET.SubElement(body, "div")
-        ul = ET.SubElement(div, "ul")
-
-
-        for i, li in enumerate(diambig_list):
-            a = HtmlLib.get_first_object_by_xpath(li, "a")
-            if a is not None:
-                li_new = ET.SubElement(ul, "li")
-                li_new.attrib["id"] = f"li_{i}"
-                li_new.append(copy.copy(a))
-                delete_button = ET.SubElement(li_new, "button")
-                delete_button.attrib["id"] = f"delete_{i}"
-                delete_button.text = "delete"
-                li_new.append(delete_button)
-                script = ET.SubElement(li_new, "script")
-                script.text = f"""
-
-    const button_{i} = document.getElementById('delete_{i}');
-    const li_{i} = document.getElementById('li_{i}');
-    button_{i}.addEventListener('click', (button) => {{button.remove()}});
-                        """
-            print(f"a {ET.tostring(script)}")
-
-            """
-              <button id="addButton">Add "OK"</button>
-
-  <div id="container"></div>
-
-  <script>
-    // Get references to the button and the container div
-    const button = document.getElementById('addButton');
-    const container = document.getElementById('container');
-
-    // Set up the event listener for the button
-    button.addEventListener('click', () => {
-      // Add "OK" to the container div
-      const newContent = document.createElement('p');
-      newContent.textContent = 'OK';
-      container.appendChild(newContent);
-   	  button.remove(); 
-    });
-  </script>
-"""
-        html_out = Path(Resources.TEMP_DIR, "html", "wiki", f"{term.lower().replace(' ', '_')}.html")
-        HtmlLib.write_html_file(html_new, html_out, debug=True)
-
-
-    def test_edit_disambiguation_page(self):
-        """
-        edits disambiguation page
-        """
-        term = "Tipping point"
-        wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
-        assert wpage is not None
-
-        # html_file = Path(Resources.TEST_RESOURCES_DIR,"html", "tipping_disambig.html")
-        # assert html_file.exists()
-        # local_html = HtmlLib.parse_html(html_file)
-        #
-        # wpage = WikipediaPage.lookup_wikipedia_page_for_term(term)
-        basic_info = wpage.get_basic_information()
-        assert basic_info is not None
-        central_desc = basic_info.get_central_description()
-        assert central_desc == WikipediaPage.WM_DISAMBIGUATION_PAGE
-        assert wpage.is_disambiguation_page()
-        div = XmlLib.get_single_element(wpage.html_elem, "//*[@id='mw-content-text']")
-        if div is None:
-            logger.error("no 'mw-content-text'")
-            return
-        li_list = div.xpath(".//li")
-        for li in li_list:
-            self.get_target_first_para_text(li)
 
     @classmethod
     def get_target_first_para_text(cls, elem_with_a_href):
@@ -665,9 +418,6 @@ THIS SEEMS TO BE THE BEST
         print(f"Bold elements: {[b.text_content() for b in bolds]}")
         print(f"Link count: {len(links)}")
 
-
-
-
 class WikidataTest(base_test):
     """
     lookup wikidata terms, Ids, Requires NET
@@ -694,7 +444,6 @@ class WikidataTest(base_test):
         ahref_dict = wpage.get_wikipedia_page_links(["en", "de", "zz"])
         assert ahref_dict == {'en': 'https://en.wikipedia.org/wiki/Azulene',
                               'de': 'https://de.wikipedia.org/wiki/Azulen'}
-
 
     def test_lookup_wiki_properties_chemical_compound(self):
         """
@@ -733,7 +482,6 @@ class WikidataTest(base_test):
                 "--wikidata"]
         logger.info(f"args {args}")
         pyami.run_command(args)
-
 
     def test_lookup_multiple_terms_solvents(self):
         """
@@ -886,139 +634,6 @@ class WikidataTest(base_test):
         assert len(language_elems) == 1
         assert language_elems[0].text == 'Language'
 
-    @unittest.skip("bug is comparison of sets, needs fixing")
-    def test_find_left_properties_and_statements(self):
-        """
-        TODO comparison of retrieved properties
-            <div class="wikibase-snaklistview">
-                <div class="wikibase-snaklistview-listview">
-                    <div class="wikibase-snakview wikibase-snakview-755d14b02a41025911e80439cb6ed31dcc966768">
-                        <div class="wikibase-snakview-property-container">
-                            <div class="wikibase-snakview-property" dir="auto">
-                               <a title="Property:P662" href="/wiki/Property:P662">PubChem CID</a>
-                           </div>
-                           ...
-        """
-        # property_list = WikidataPage("q407418").root.xpath(".//"
-        #                                                    "div[@class='wikibase-snaklistview']/"
-        #                                                    "div[@class='wikibase-snaklistview-listview']/"
-        #                                                    "div/"
-        #                                                    "div[@class='wikibase-snakview-property-container']/"
-        #                                                    "div[@class='wikibase-snakview-property']/"
-        #                                                    "a[starts-with(@title,'Property:')]")
-
-        """<div class="wikibase-statementgroupview-property-label" dir="auto">
-              <a title="Property:P274" href="/wiki/Property:P274">chemical formula</a></div>
-        """
-        lookup = "sroperty"
-        lookup = "statement"
-        property_list = []
-        if lookup == "property":
-            classx = "wikibase-statementgroupview-property-label"
-            selector = f"@class='{classx}'"
-            property_selector = f".//div[@class='{classx}']//a[starts-with(@title,'Property:')]"
-            property_list = WikidataPage("q407418").root.xpath(property_selector)
-        if lookup == "statement":
-            """wikibase-statementgroupview listview-item"""
-            # selector = f".//div[@class='wikibase-statementgroupview listview-item']"
-            selector = f".//div[starts-with(@class,'wikibase-statementgroupview')]"
-            selector = f".//div[@data-property-id]"
-            selector = f".//div[@data-property-id]/div[@class='wikibase-statementlistview']//a"
-            selector = f".//div[@data-property-id]"
-            # selector = f".//div[contains(@class,'wikibase-statementgroupview') and contains(@class,'listview-item')]"
-            # selector = f".//div[contains(@class,'listview-item')]"
-
-        property_list = WikidataPage("q407418").root.xpath(selector)
-
-        # <!-- property-[statement-list] container TOP LEVEL -->
-        # <div class="wikibase-statementgroupview listview-item" id="P31" data-property-id="P31">
-        # <!-- property-subject container -->
-        # <div class="wikibase-statementgroupview-property">
-        #   <div class="wikibase-statementgroupview-property-label" dir="auto"><a title="Property:P31" href="/wiki/Property:P31">instance of</a></div>
-        # </div>
-        # <!-- statementlist container -->
-        # <div class="wikibase-statementlistview">
-        # <div class="wikibase-statementlistview-listview">
-        # <div id="Q407418$8A24EA26-7C5E-4494-B40C-65356BBB3AA4" class="wikibase-statementview wikibase-statement-Q407418$8A24EA26-7C5E-4494-B40C-65356BBB3AA4 wb-normal listview-item wikibase-toolbar-item">
-        # <div class="wikibase-statementview-rankselector"><div class="wikibase-rankselector ui-state-disabled">
-        # <!-- "button?" -->
-        # <span class="ui-icon ui-icon-rankselector wikibase-rankselector-normal" title="Normal rank"></span>
-        # </div></div>
-        # <div class="wikibase-statementview-mainsnak-container">
-        # <div class="wikibase-statementview-mainsnak" dir="auto"><div class="wikibase-snakview wikibase-snakview-e823b98d1498aa78e139709b1b02f5decd75c887">
-        # <div class="wikibase-snakview-property-container">
-        # <div class="wikibase-snakview-property" dir="auto"></div>
-        # </div>
-        # <!-- object-value-container -->
-        # <div class="wikibase-snakview-value-container" dir="auto">
-        # <div class="wikibase-snakview-typeselector"></div>
-        # <div class="wikibase-snakview-body">
-        # <div class="wikibase-snakview-value wikibase-snakview-variation-valuesnak"><a title="Q11173" href="/wiki/Q11173">chemical compound</a></div>
-        # <div class="wikibase-snakview-indicators"></div>
-        # </div>
-        # </div>
-        # </div></div>
-        # <div class="wikibase-statementview-qualifiers"></div>
-        # </div>
-        # <span class="wikibase-toolbar-container wikibase-edittoolbar-container"><span class="wikibase-toolbar wikibase-toolbar-item wikibase-toolbar-container"><span class="wikibase-toolbarbutton wikibase-toolbar-item wikibase-toolbar-button wikibase-toolbar-button-edit"><a href="#" title=""><span class="wb-icon"></span>edit</a></span></span></span>
-        # <div class="wikibase-statementview-references-container">
-        # <div class="wikibase-statementview-references-heading"><a class="ui-toggler ui-toggler-toggle ui-state-default"><span class="ui-toggler-icon ui-icon ui-icon-triangle-1-s"></span><span class="ui-toggler-label">0 references</span></a><div class="wikibase-tainted-references-container" data-v-app=""><div class="wb-tr-app"><!----></div></div></div>
-        # <div class="wikibase-statementview-references "><div class="wikibase-addtoolbar wikibase-toolbar-item wikibase-toolbar wikibase-addtoolbar-container wikibase-toolbar-container"><span class="wikibase-toolbarbutton wikibase-toolbar-item wikibase-toolbar-button wikibase-toolbar-button-add"><a href="#" title=""><span class="wb-icon"></span>add reference</a></span></div></div>
-        # </div>
-        # </div><div id="Q407418$A25EE807-DBE3-47CA-9272-00BF975DAEA8" class="wikibase-statementview wikibase-statement-Q407418$A25EE807-DBE3-47CA-9272-00BF975DAEA8 wb-normal listview-item wikibase-toolbar-item">
-        # <div class="wikibase-statementview-rankselector"><div class="wikibase-rankselector ui-state-disabled">
-        # <span class="ui-icon ui-icon-rankselector wikibase-rankselector-normal" title="Normal rank"></span>
-        # </div></div>
-        # <div class="wikibase-statementview-mainsnak-container">
-        # <div class="wikibase-statementview-mainsnak" dir="auto"><div class="wikibase-snakview wikibase-snakview-87cdd435c7bb91eadb3355615e99ee224aa44984">
-        # <div class="wikibase-snakview-property-container">
-        # <div class="wikibase-snakview-property" dir="auto"></div>
-        # </div>
-        # <!-- object-value-container -->
-        # <div class="wikibase-snakview-value-container" dir="auto">
-        # <div class="wikibase-snakview-typeselector"></div>
-        # <div class="wikibase-snakview-body">
-        # <div class="wikibase-snakview-value wikibase-snakview-variation-valuesnak"><a title="Q12140" href="/wiki/Q12140">medication</a></div>
-        # <div class="wikibase-snakview-indicators"></div>
-        # <!-- ..... -->
-        # </div>
-        # </div></div>
-        # </div></div>
-        # </div></div><div class="wikibase-addtoolbar wikibase-toolbar-item wikibase-toolbar wikibase-addtoolbar-container wikibase-toolbar-container"><span class="wikibase-toolbarbutton wikibase-toolbar-item wikibase-toolbar-button wikibase-toolbar-button-add"><a href="#" title=""><span class="wb-icon"></span>add reference</a></span></div></div>
-        # </div>
-        # </div>
-        # </div>
-        # <span class="wikibase-toolbar-container"></span>
-        # <span class="wikibase-toolbar-wrapper"><div class="wikibase-addtoolbar wikibase-toolbar-item wikibase-toolbar wikibase-addtoolbar-container wikibase-toolbar-container"><span class="wikibase-toolbarbutton wikibase-toolbar-item wikibase-toolbar-button wikibase-toolbar-button-add"><a href="#" title="Add a new value"><span class="wb-icon"></span>add value</a></span></div></span></div>
-        # </div>"""
-        # """wikibase-statementgroupview listview-item"""
-
-        wikidata_page = WikidataPage("q407418")
-        data_property_list = wikidata_page.get_data_property_list()
-        property_set = set(data_property_list)
-        assert 100 >= len(property_set) >= 70
-        expected = {[
-            'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054']}
-        difference = expected.symmetric_difference(property_set)
-        assert expected.issubset(property_set), f"not found in {property_set}"
-        assert set(wikidata_page.get_property_id_list()[:10]).difference(expected) == set()
-        assert wikidata_page.get_property_name_list()[:10] == [
-            'instance of', 'subclass of', 'part of', 'chemical structure', 'molecular model or crystal lattice model',
-            'mass', 'chemical formula', 'canonical SMILES', 'isomeric SMILES', 'density']
-        property_list = wikidata_page.get_data_property_list()
-        assert 108 >= len(property_list) >= 70
-        # assert wikidata_page.get_property_id_list()[:10] == [
-        #     'P31', 'P279', 'P361', 'P117', 'P8224', 'P2067', 'P274', 'P233', 'P2017', 'P2054']
-        assert 'P31' in wikidata_page.get_property_id_list()
-        # assert wikidata_page.get_property_name_list()[:10] == [
-        #     'instance of', 'subclass of', 'part of', 'chemical structure', 'molecular model or crystal lattice model',
-        #     'mass', 'chemical formula', 'canonical SMILES', 'isomeric SMILES', 'density']
-        assert "instance of" in wikidata_page.get_property_name_list()
-
-        properties_dict = WikidataProperty.get_properties_dict(property_list)
-        dict_str = pprint.pformat(properties_dict)
-        assert properties_dict['P662'] == {'name': 'PubChem CID', 'value': '16666'}
-
 
     def test_get_instances(self):
         """<div class="wikibase-statementview-mainsnak-container">
@@ -1038,35 +653,6 @@ class WikidataTest(base_test):
 </div>"""
         pass
 
-    # @unittest.skip("LONG DOWNLOAD")
-    # def test_add_wikidata_to_imageanalysis_output(self):
-    #     """creates dictionary from list of terms and looks up Wikidata"""
-    #     terms = [
-    #         "isopentyl-diphosphate delta-isomerase"
-    #         "squalene synthase",
-    #         "squalene monoxygenase",
-    #         "phytoene synthase",
-    #         "EC 2.5.1.6",
-    #         "EC 4.4.1.14",
-    #         "EC 1.14.17.4",
-    #         "ETRL",
-    #         "ETR2",
-    #         "ERS1",
-    #         "EIN4",
-    #     ]
-    #     with open(Path(RESOURCES_DIR, EO_COMPOUND, "compounds.txt"), "r") as f:
-    #         terms = f.readlines()
-    #         assert 100 > len(terms) > 87
-    #     wikidata_lookup = WikidataLookup()
-    #     # qitems, descs = wikidata_lookup.lookup_items(terms)
-    #     temp_dir = Path(TEMP_DIR, "wikidata")
-    #     temp_dir.mkdir(exist_ok=True)
-    #     # limit = 10000
-    #     limit = 5
-    #     amidict, dictfile = AmiDictionary.create_dictionary_from_words(terms[:limit], title="compounds",
-    #                                                                               wikidata=True, outdir=temp_dir)
-    #     print(f"wrote to {dictfile}")
-    #     assert os.path.exists(dictfile)
 
     def test_wikidata_extractor(self):
         query = '2-fluorobenzoic acid'
@@ -1183,8 +769,6 @@ class WikidataTest(base_test):
         assert filter.json['filter'][
                    'regex'] == "(chemical compound|chemical element)", f"found {filter.json['filter']['regex']}"
 
-
-
 class WiktionaryTest(AmiAnyTest):
     """
     Tests WiktionaryPage routines
@@ -1210,186 +794,6 @@ class WiktionaryTest(AmiAnyTest):
 
         term = WiktionaryPage.get_term_from_html_element(html_element)
         WiktionaryPage.validate_mw_content(mw_content_text, term=term, outdir=outdir, nchild=nchild)
-
-    @unittest.skip("not yet working")
-    def test_lookup_single_term(self):
-        """
-       test failure to find unkown terms
-        """
-        html_page = HtmlLib.create_html_with_empty_head_body()
-        base = ET.SubElement(html_page, "base")
-        base.attrib["href"] = WiktionaryPage.WIKTIONARY_BASE
-
-        term = "nimby"
-        html_div = self.create_div_for_term(term)
-
-        html_body = HtmlLib.get_body(html_page)
-        html_body.append(html_div)
-        html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{term}.html")
-        if html_page is not None:
-            logger.info(f"wrote to {html_out}")
-            HtmlUtil.write_html_elem(html_page, html_out)
-
-    @unittest.skip("not yet working")
-    def test_lookup_terms(self):
-        """
-       test lookup of list of terms in Wiktionary
-       Inclucdes some missing terms
-        """
-        terms = [
-            "nimby",
-            "fruitcake",
-            "KJABSDd",
-            "crusty",
-            "xjhade",
-            "grockle",
-        ]
-        html_page = WiktionaryPage.lookup_list_of_terms(terms)
-        assert html_page is not None
-        body = HtmlLib.get_body(html_page)
-        assert body is not None
-        divs = body.xpath("div")
-        assert len(divs) == 4 # only nimby, fruitcake, crusty and grockle are in Wiktionary
-        div0 = divs[0]
-        # <div class="wiktionary_pos"><p><span class="headword-line"><strong class="Latn headword" lang="en">nimby</strong>
-        terms = div0.xpath("p/span/strong")
-        assert len(terms) >= 1
-        assert terms[0].text == 'nimby'
-
-        html_out = Path(Resources.TEMP_DIR, "wiktionary", f"terms.html")
-        logger.info(f"wrote to {html_out}")
-        HtmlUtil.write_html_elem(html_page, html_out)
-
-
-
-    def test_lookup_plants_write_to_file(self):
-        """
-        lookup 2 plants
-        """
-        terms = [
-            "parijat",
-            "lemon verbena"
-        ]
-        stem = "plants"
-        html_page = WiktionaryPage.lookup_list_of_terms(terms, add_style=None)
-        html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
-        logger.info(f"wrote to {html_out}")
-        HtmlUtil.write_html_elem(html_page, html_out)
-        assert html_out.exists()
-
-    @unittest.skip("not yet working")
-    def test_lookup_words_in_file(self):
-        """
-        read text file and lookup each line
-        """
-        wordfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", "chap2.txt")
-        assert wordfile.exists()
-        with open(wordfile, "r") as f:
-            terms = f.readlines()
-        assert len(terms) == 63
-        terms1 = []
-        for term in terms:
-            # term = term.lower()
-            if len(term.strip()) > 0:
-                terms1.append(term)
-        assert len(terms1) == 60
-
-        stem = "chap_2"
-        html_page = WiktionaryPage.lookup_list_of_terms(terms1, add_style=WiktionaryPage.DEFAULT_STYLE)
-
-        html_out = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
-        logger.info(f"wrote to {html_out}")
-        HtmlUtil.write_html_elem(html_page, html_out)
-        assert html_out.exists()
-
-    @unittest.skip("not yet working")
-
-    def test_lookup_wordfile_write_html(self):
-        """
-        read text file and lookup each line
-        """
-        html_stem = "carbon_cycle"
-        wordfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{html_stem}.txt")
-        outdir = Path(Resources.TEMP_DIR, "wiktionary")
-
-        html_out = WiktionaryPage.loookup_wordlist_file_write_html(wordfile, outdir, html_stem)
-        logger.info(f"wrote to {html_out}")
-        assert html_out.exists()
-
-    def test_group_languages_pos(self):
-        """
-        try to group the Wiktionary output (effort 1)
-        """
-        stem = "peat_bread_cow"
-        terms = ["peat", "bread", "cow"]
-        terms = ["bread", "cow", "hurricane"]
-        outdir = Path(Resources.TEMP_DIR, "wiktionary")
-        html_page = WiktionaryPage.lookup_list_of_terms(
-            terms, add_style=WiktionaryPage.DEFAULT_STYLE)
-        html_out = Path(outdir, f"{stem}.html")
-        print (f"wrote {html_out}")
-        HtmlUtil.write_html_elem(html_page, html_out)
-
-    def test_create_html(self):
-
-        """
-        read toc and try to use it to navigate the linera elements
-        """
-        terms = [
-            "bread",
-            "curlicue",
-            # "xxqz",
-            # "fish",
-            # "hydrogen",
-            # "opacity",
-            # "stubble",
-        ]
-        stem = "test_words"
-        parts_of_speech = [
-            "Noun",
-            "Verb",
-            # "Adjective",
-
-        ]
-        languages = "English"
-        languages = "Spanish"
-        add_toc = True
-        add_toc = False
-
-        htmlx = WiktionaryPage.search_terms_create_html(terms, languages, parts_of_speech, add_toc)
-
-        HtmlLib.add_link_stylesheet("wiktionary.css", htmlx)
-        outpath = Path(Resources.TEMP_DIR, "wiktionary", f"{stem}.html")
-        HtmlUtil.write_html_elem(htmlx, outpath, debug=True)
-        assert outpath.exists(), f"output html should exist {outpath}"
-        FileLib.copyanything(Path(Resources.TEST_RESOURCES_DIR, "wiktionary", "wiktionary.css"),
-                          Path(Resources.TEMP_DIR, "wiktionary", "wiktionary.css"))
-
-    def test_get_ancestor_language(self):
-        termx = "curlicue"
-        html_element, mw_content_text = WiktionaryPage.lookup_wiktionary_content(termx)
-
-    def test_lookup_wiktionary_command_line(self):
-        """
-        Looks up words in Wiktionary and creates HTML
-        """
-        stem = "small_5"
-        wordsfile = Path(Resources.TEST_RESOURCES_DIR, "wordlists", f"{stem}.txt")
-        dict_xml = str(Path(Resources.TEMP_DIR, "words", f"{stem}_wiktionary.xml"))
-        # dict_html = str(Path(Resources.TEMP_DIR, "words", f"{stem}_wikipedia.html"))
-
-        assert wordsfile.exists(), f"{wordsfile} should exist"
-        pyami = AmiLib()
-
-        args = ["DICT",
-                "--words", wordsfile,
-                "--dict", dict_xml,
-                "--wiktionary"]
-
-        pyami.run_command(args)
-
-
-
 
 class MWParserTest(AmiAnyTest):
 
@@ -1421,8 +825,6 @@ class MWParserTest(AmiAnyTest):
         ]
 
         mw_parser.levels = [5, 4, 3, 2]
-
-
 
         for stem in stems:
             input_file = Path(Resources.TEST_RESOURCES_DIR, "wiktionary", f"{stem}.html")
@@ -1854,49 +1256,6 @@ class MWParserTest(AmiAnyTest):
             
         except Exception as e:
             self.fail(f"Failed to create HTML dictionary with Wikipedia URLs: {e}")
-
-class SPARQLTests:
-    @classmethod
-    @unittest.skip("WS symbol?")
-    def test_sparql_wrapper_WIKI(cls):
-        """
-        Author Shweata N Hegde
-        from wikidata query site
-        """
-        #
-        # query = """#research council
-        # SELECT ?researchcouncil ?researchcouncilLabel
-        # WHERE
-        # {
-        #   ?researchcouncil wdt:P31 wd:Q10498148.
-        #   SERVICE wikibase:label_xml { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-        # }"""
-        #
-        # results = WS.get_results_xml(query)
-        # print(results)
-
-
-
-
-class SPARQLTests:
-    @classmethod
-    @unittest.skip("WS symbol?")
-    def test_sparql_wrapper_WIKI(cls):
-        """
-        Author Shweata N Hegde
-        from wikidata query site
-        """
-        #
-        # query = """#research council
-        # SELECT ?researchcouncil ?researchcouncilLabel
-        # WHERE
-        # {
-        #   ?researchcouncil wdt:P31 wd:Q10498148.
-        #   SERVICE wikibase:label_xml { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-        # }"""
-        #
-        # results = WS.get_results_xml(query)
-        # print(results)
 
 
 if __name__ == '__main__':

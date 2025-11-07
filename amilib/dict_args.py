@@ -250,6 +250,9 @@ class AmiDictArgs(AbstractArgs):
         from amilib.ami_dict import AmiDictionary
 
         if self.words is not None:
+            # Process words - handle file paths, lists, strings
+            # This ensures file paths are read and converted to list of strings
+            self.words = self.make_input_words(self.words)
             logger.info(f"creating dictionary from {self.words[:3]}...")
             self.ami_dict, _ = AmiDictionary.create_dictionary_from_words(
                 terms=self.words, title=self.title, wiktionary=False)

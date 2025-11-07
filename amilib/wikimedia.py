@@ -1710,7 +1710,7 @@ followed by <ul><li>...</li></ul> etc.
         Classify Wikipedia page type.
         Returns one of: 'article', 'disambiguation', 'redirect', 'list', 'not_found', 'unknown'
         """
-        if not self.html_elem:
+        if self.html_elem is None:
             return 'not_found'
         
         if self.is_disambiguation_page():

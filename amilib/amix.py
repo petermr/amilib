@@ -20,6 +20,7 @@ from amilib.util import Util
 from amilib.html_args import HTMLArgs
 
 from amilib.pdf_args import PDFArgs
+from amilib.ami_encyclopedia_args import EncyclopediaArgs
 from amilib.ami_args import AbstractArgs
 from amilib.wikimedia import WikidataLookup
 
@@ -86,6 +87,7 @@ class AmiLib:
             '  HTML <options>      # create/edit HTML\n'
             '  PDF <options>       # convert PDF into HTML and images\n'
             '  SEARCH <options>    # search and index documents\n'
+            '  ENCYCLOPEDIA <options>  # normalize and aggregate encyclopedia entries\n'
             '\n'
             'After installation, run \n'
             '  amilib <subcommand> <options>\n'
@@ -114,11 +116,13 @@ class AmiLib:
         logger.debug(f"pdf_parser {pdf_parser}")
         search_parser = AmiLibArgs.make_sub_parser(SearchArgs(), subparsers)
         logger.debug(f"search_parser {search_parser}")
+        encyclopedia_parser = AmiLibArgs.make_sub_parser(EncyclopediaArgs(), subparsers)
+        logger.debug(f"encyclopedia_parser {encyclopedia_parser}")
 
         parser.epilog = "other entry points run as 'python -m amilib.amix <args>'"
         parser.epilog = """run:
         pyamihtmlx <subcommand> <args>
-          where subcommand is in   {DICT, HTML,PDF, SEARCH} and args depend on subcommand
+          where subcommand is in   {DICT, HTML,PDF, SEARCH, ENCYCLOPEDIA} and args depend on subcommand
         """
 
         return parser
@@ -245,6 +249,7 @@ class AmiLib:
             "SEARCH": SearchArgs(),
             "HTML": HTMLArgs(),
             "PDF": PDFArgs(),
+            "ENCYCLOPEDIA": EncyclopediaArgs(),
         }
         abstract_args = subparser_dict.get(subparser_type)
 

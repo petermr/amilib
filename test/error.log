@@ -6908,3 +6908,13 @@ ERROR wikimedia.py:2163:no pos_div for POS.ADV
 ERROR wikimedia.py:2163:no pos_div for POS.PHRASE
 ERROR wikimedia.py:2128:lemon verbena type <class 'str'>
 ERROR wikimedia.py:2128:curlicue type <class 'str'>
+ERROR file_lib.py:713:Failed to connect to database: 'my_db'
+Traceback (most recent call last):
+  File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
+    raise Exception("Failed to connect to database: 'my_db'")
+Exception: Failed to connect to database: 'my_db'
+ERROR file_lib.py:713:Failed to connect to database: 'my_db'
+Traceback (most recent call last):
+  File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
+    raise Exception("Failed to connect to database: 'my_db'")
+Exception: Failed to connect to database: 'my_db'

@@ -126,42 +126,6 @@ class AnnotateTest(AmiAnyTest):
         for row in csvreader:
             print(f">> {','.join(row)}")
 
-
-    @unittest.skip("only annotates a few single words, needs mending")
-    def test_annotate_pdf_with_shaik_wordlist(self):
-        """VERY LONG - 35 mins on my laptop"""
-        """Test annotating PDF with words from Shaik wordlist using PDFHyperlinkAdder
-        
-        Input: IPCC_AR6_WGII_Chapter07.pdf, external GitHub wordlist URL
-        Operations: Load wordlist from URL, create temp CSV, process PDF with PDFHyperlinkAdder
-        Output: Annotated PDF with hyperlinks and visual indicators
-        """
-        print("🧪 Testing PDF annotation with Shaik wordlist...")
-        
-        self._verify_file_exists(self.ipcc_pdf, "IPCC PDF")
-        
-        # Create temp CSV from URL wordlist
-        temp_csv = self._create_word_csv_from_url(self.shaik_url)
-        logger.info(f"wrote {temp_csv} as CSV file")
-        
-        # Create output PDF path
-        output_pdf = Resources.TEMP_DIR / "IPCC_AR6_WGII_Chapter07_annotated.pdf"
-        
-        try:
-            # Use existing PDFHyperlinkAdder
-            adder = self._create_pdf_adder(self.ipcc_pdf, temp_csv, output_pdf)
-            adder.process_pdf()
-            
-            # Verify results
-            self._assert_pdf_processed_successfully(output_pdf, adder)
-            
-            print(f"💾 Saved annotated PDF: {output_pdf}")
-            
-        finally:
-            # Clean up temp file
-            if temp_csv.exists():
-                temp_csv.unlink()
-    
     def test_dictionary_annotation_workflow(self):
         """Test complete dictionary annotation workflow using external wordlist
         

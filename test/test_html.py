@@ -1,11 +1,6 @@
 """Create, transform, markup up HTML, etc."""
-import copy
-import glob
 import logging
-import os
-import pprint
 import re
-import unittest
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -55,7 +50,6 @@ MINI_IPCC_PATH = Path(Resources.TEST_IPCC_CHAP06, "mini.html")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-
 """
 see ami_html
 
@@ -64,12 +58,10 @@ s1  to mean class name (classname)
 .s1 to mean a reference to a classname (only used in <style> elements but involved in conversions
 """
 
-
 # def add_children(jats, htmlx):
 #     tag = jats.tag()
 #     if tag == 'p':
 #         html
-
 
 class HtmlTest(AmiAnyTest):
     """
@@ -120,45 +112,6 @@ class HtmlTest(AmiAnyTest):
         pyami = AmiLib()
         pyami.run_command("HTML")
         pyami.run_command("HTML --help")
-
-
-    @unittest.skip("dictionaries not included")
-    def test_parse_commandline(self):
-        """
-        Simulate running from commandline
-        """
-        infile = Path(Resources.TEST_IPCC_CHAP06, "fulltext.html")
-        assert infile.exists()
-        outpath = Path(AmiAnyTest.TEMP_DIR, "html", 'fulltext.annot.html')
-        if outpath.exists():
-            os.remove(outpath)
-        dictfile = Path(Resources.TEST_IPCC_CHAP06, 'abbrev_as.xml')
-        assert dictfile.exists()
-        args = f"HTML --inpath {infile} --outpath {outpath} --annotate --dict {dictfile} --color YELLOW"
-        AmiLib().run_command(args)
-        assert outpath.exists(), f"outpath {outpath} should exist"
-        element = lxml.etree.parse(str(outpath))
-        # crude count of success
-        xpath = "//*[@href]"
-        href_elems = element.xpath(xpath)
-        assert len(href_elems) == 3, f"expected 3 hrefs, found {len(href_elems)}"
-
-    @unittest.skipIf(OLD, "use TextChunker")
-    def test_find_single_brackets_in_span(self):
-        """
-        add docs here
-        """
-        html_span = lxml.etree.fromstring(HTML_SINGLE_REF)
-        text = html_span.text
-        rec = re.compile(Util.SINGLE_BRACKET_RE)
-        match = rec.match(text)
-        assert match
-        assert len(match.groups()) == 3
-        assert match.group(
-            0) == "It  is  important  blah blah detailed  national  studies  (Bataille  et  al.  2016a)  and more blah "
-        assert match.group(1) == "It  is  important  blah blah detailed  national  studies  "
-        assert match.group(2) == "Bataille  et  al.  2016a"
-        assert match.group(3) == "  and more blah "
 
     def test_find_single_biblio_ref_in_span(self):
         """
@@ -245,37 +198,6 @@ class HtmlTest(AmiAnyTest):
         assert counter['Bindoff'] == 5
         assert counter['de Coninck'] == 2
 
-    @unittest.skip("excluded from pyami_lite")
-    def test_exceptions_biblio_ref_in_span(self):
-        """
-        Need docs
-        """
-        assert Reference.SINGLE_REF_REC.match("Foo bar (d'Arcy & other stuff in 2008) not a ref")
-        assert Reference.SINGLE_REF_REC.match("Foo bar (de Sitter and other stuff in 2008) not a ref")
-
-    @unittest.skip("excluded from pyami_lite")
-    def test_not_ref_fail(self):
-        assert not Reference.SINGLE_REF_REC.match("Foo bar (and other stuff in 2008) not a ref")
-
-    @unittest.skip("excluded from pyami_lite")
-    def test_markup_dois_in_references_(self):
-        """reads a references file and creates active hyperlinks to referenced articles"""
-
-        ref_path = Path(Resources.TEST_IPCC_CHAP04, "references.html")
-        assert ref_path.exists()
-        ref_elem = lxml.etree.parse(str(ref_path))
-        ref_divs = ref_elem.xpath("body/div")
-        assert len(ref_divs) == 1316
-
-        for div in ref_divs:
-            ref = Reference.create_ref_from_div(div)
-            ref.markup_dois_in_spans()
-        path = Path(AmiAnyTest.TEMP_DIR, "ipcc_html")
-        path.mkdir(exist_ok=True)
-        chap4_dir = Path(path, "chapter04")
-        chap4_dir.mkdir(exist_ok=True)
-        outpath = Path(chap4_dir, "ref_doi.html")
-        ref_elem.write(str(outpath))
 
     def test_make_reference_class(self):
         """reads a references file and creates class"""
@@ -435,49 +357,6 @@ class HtmlTest(AmiAnyTest):
         with open(str(Path(test_dir, "add_href.html")), "wb") as f:
             f.write(lxml.etree.tostring(div, method="html"))
 
-    @unittest.skip("needs dictionary")
-    def test_markup_chapter_with_dictionary_no_css(self):
-        """read dictionary file and index a set of spans
-        Test: ami_dict.markup_html_from_dictionary
-        and add style
-        and write result
-        """
-        dictionary_file = Path(Resources.TEST_IPCC_CHAP06, "abbrev_as.xml")
-        assert dictionary_file.exists(), f"file should exist {dictionary_file}"
-        # FIXME
-        # ami_dict = AmiDictionary.create_from_xml_file(dictionary_file)
-        ami_dict = None
-        ami_dict.ignorecase = False
-        inpath = Path(Resources.TEST_IPCC_CHAP06, "fulltext.flow20.html")
-        output_dir = Path(AmiAnyTest.TEMP_HTML_IPCC_CHAP06)
-        output_dir.mkdir(exist_ok=True)
-        output_path = Path(output_dir, "index.html")
-        ami_dict.markup_html_from_dictionary(inpath, output_path, "pink")
-
-    @unittest.skip("needs dictioary")
-    def test_markup_chapter_with_dictionary(self):
-        """read dictionary file and index a set of spans
-        Test: ami_dict.markup_html_from_dictionary
-        and add style
-        and write result]
-        TODO USE THIS!
-        """
-
-        dict_path = Path(Resources.TEST_IPCC_CHAP06, "abbrev_as.xml")
-        dict_path = Path(Resources.TEST_IPCC_CHAP06, "ipcc_ch6_rake.xml")
-        # FIXME when dictiomary is available
-        # ami_dict = AmiDictionary.create_from_xml_file(dict_path, ignorecase=False)
-        ami_dict = None
-        input_path = Path(Resources.TEST_IPCC_CHAP06, "fulltext.flow.html")
-        logger.info(f"reading pdf_html {input_path}")
-        html_output_dir = Path(AmiAnyTest.TEMP_HTML_IPCC_CHAP06)
-        logger.info(f"output html {html_output_dir}")
-        chap6_marked_path = Path(html_output_dir, "raked.html")
-
-        ami_dict.markup_html_from_dictionary(input_path, chap6_marked_path, "pink")
-        assert chap6_marked_path.exists(), f"marked-up html in {chap6_marked_path}"
-        with open(chap6_marked_path, "rb") as f:
-            marked_elem = lxml.etree.parse(f)
 
     # TODO fails
     def test_extract_styles_as_css(self):
@@ -543,113 +422,6 @@ class HtmlTest(AmiAnyTest):
                 last_span = span
                 last_style = style
 
-    @unittest.skipUnless(USER, "claim paras")
-    @unittest.skipIf(BUG and False, "bad input file")
-    def test_make_ipcc_obsidian_md_CURRENT(self):
-        """
-        Read IPCC exec_summary Chapter and make obsidian MD.
-        Reads an executive.summary consisting of about 20 paras, each of which
-        has a bold first sentence (main claim).
-        Tries to split this into the main claim and subclaims.
-
-        writes 1 file per paragraph into B_1.md, B_2.md, etc.
-
-<body>
-<p class="p1"><span class="s1"><b>Executive Summary</b></span></p>
-<p class="p2"><span class="s1"><b>Global net anthropogenic Greenhouse Gas (GHG) emissions during the last decade (2010-2019) were higher than at any previous time in human history </b><i>(high confidence)</i>. Since 2010, GHG emissions have continued to grow reaching 59±6.6 GtCO<sub>2</sub>eq in 2019<sup>1</sup>, but the average annual growth in the last decade (1.3%, 2010-2019) was lower than in the previous decade (2.1%, 2000-2009) (<i>high confidence</i>). Average annual GHG emissions were 56 GtCO<sub>2</sub>eqyr<sup>-1</sup> for the decade 2010-2019 growing by about 9.1 GtCO<sub>2</sub>eqyr<sup>-1</sup> from the previous decade (2000-2009) – the highest decadal average on record (<i>high confidence</i>). {2.2.2, Table 2.1, Figure 2.5}</span></p>
-<p class="p2"><span class="s1"><b>Emissions growth has varied, but persisted across all groups of greenhouse gases </b><i>(high confidence)</i>. The average annual emission levels of the last decade (2010-2019) were higher than in any previous decade for each group of greenhouse gases (<i>high confidence</i>). In 2019, CO<sub>2</sub> emissions were 45±5.5 GtCO<sub>2</sub>,<sub>2</sub> CH<sub>4</sub> 11±3.2 GtCO<sub>2</sub>eq, N<sub>2</sub>O 2.7±1.6 GtCO<sub>2</sub>eq and fluorinated gases (F-gases: HFCs, PFCs, SF<sub>6</sub>, NF<sub>3</sub>) 1.4±0.41 GtCO<sub>2</sub>eq. Compared to 1990, the magnitude and speed of these increases differed across gases: CO<sub>2</sub> from fossil fuel and industry (FFI) grew by 15 GtCO<sub>2</sub>eqyr<sup>-1</sup> (67%), CH<sub>4</sub> by 2.4 GtCO<sub>2</sub>eqyr<sup>-1</sup>(29%), F-gases by 0.97 GtCO<sub>2</sub>eqyr<sup>-1</sup> (250%), N<sub>2</sub>O by 0.65 GtCO<sub>2</sub>eqyr<sup>-1</sup> (33%). CO<sub>2</sub> emissions from net land use, land-use change and forestry (LULUCF) have shown little long-term change, with large uncertainties preventing the detection of statistically significant trends. F-gases excluded from GHG emissions inventories such as <i>chlorofluorocarbons</i> and <i>hydrochlorofluorocarbons</i> are about the same size as those included (<i>high confidence</i>). {2.2.1, 2.2.2, Table 2.1, Figure 2.2, Figure 2.3, Figure 2.5}</span></p>
-
-        BUGS: furst bold sentence missed out in B_10.md and B_20.md
-        Maybe full-stop after italics is bold?
-
-        THIS USED A STYLE-NORMALISED FILE WHICH I THINK WAS CREARTED  BY ATOM.
-        THE FILE MAY BE LOST
-        BUG
-
-        https://stackoverflow.com/questions/62472162/lxml-xpath-expression-for-selecting-all-text-under-a-given-child-node-including
-        """
-        in_file = Path(Resources.TEST_IPCC_CHAP02, "exec_summary.html")
-        outdir = Path(AmiAnyTest.TEMP_DIR, "obsidian")
-        os.makedirs(outdir, exist_ok=True)
-        path = Path(in_file)
-        assert path.exists(), f"{path} should exist"
-        tree = lxml.etree.parse(str(path))
-        ps = tree.findall(".//p")
-        assert 23 <= len(ps) <= 50
-        i = 0
-        for p in ps:
-            bs = p.xpath(".//b")
-            if len(bs) > 0:
-                i += 1
-                for b in bs:
-                    t = b.xpath('.//text()')
-                    bstr = "__".join(t)
-                    nonb = p.xpath(".//text()[not(ancestor::b)]")
-                    tstr = "".join(nonb)
-                file = Path(outdir, f"B_{i}.md")
-                logger.info(f"writing {file}")
-                with open(file, "w", encoding="UTF-8") as f:
-                    f.write(bstr)
-                    f.write(tstr)
-
-    @unittest.skip("climate-specific")
-    def test_extract_ipcc_nodes_and_pointers_raw_format_NODES_CURRENT(self):
-        """
-        read (old style) raw html with IPCC nodes and node_pointers and convert to HTML@a elements
-        example
-        '(high confidence). {2.2.2, Table 2.1, Figure 2.5}' contains 3 node pointers
-        """
-        # html = "executive_summary_css.html"
-        # html = "executive_summary1.html"
-        # file = Path(Resources.TEST_IPCC_CHAP02, "maintext_old.html")
-        file = Path(Resources.TEST_IPCC_DIR, "LongerReport", "fulltext.html")
-        # make dictionary of regex extractor/splitters
-        target_dict_from_ipcc_para_text = {
-            TargetExtractor.TARGET_LIST_RE: "{([^}]+)}", # curly {...}
-            TargetExtractor.TARGET_RE: "\\s*[,;]\\s*",   # semicolon/comma list ...; ...;
-            TargetExtractor.TARGET_VALUE_RE: "(Table|Figure)\\s+(.*)", # (table, figure) value
-        }
-        logger.debug(f"text_dict {target_dict_from_ipcc_para_text}")
-
-        node_extractor = TargetExtractor()
-        HAS_CURLY = "//div[//text()[contains(., '{')]]"
-        div_xp = HAS_CURLY
-        paragraph_dict = node_extractor.extract_anchor_paragraphs(div_xp, file, target_dict_from_ipcc_para_text)
-        logger.debug(f"paragraph_dict {paragraph_dict.keys()}")
-        PACKAGE = 'package'
-        SECTION = 'section'
-        SUBPACKAGE = 'subpackage'
-
-        node_re = re.compile(
-            f"(?P<{PACKAGE}>"
-              "(?:"
-                "(?:WG\\s*(?:1|2|3|I|II|III)|SROCC|SRCCL|SR1\\.5"
-                ")?"
-              ")"
-            ")"
-            "\\s*"
-                             
-             f"(?P<{SUBPACKAGE}>"
-             "(?:(?:Table|Figure|Box|SPM|TS|Chapter|Sections?|CCB|"
-             "Cross-Chapter\\s+Box"
-             "(?:\\s*[A-Z]+\\s*in\\s+Chapter\\s+[0-9]+)?"
-             ")?)"
-             ")"
-            "\\s*"
-             
-             f"(?P<{SECTION}>"
-             "(?:(?:(?:TS\\.)?[A-Z]|SPM|TS|[Ff]ootnote )\\.?)?"
-             "\\d+(?:\\.\\d+)*"
-             ")"
-        )
-        matched_dict = HtmlExtra.create_matched_dict_and_unmatched_keys(paragraph_dict, node_re)
-
-        return HtmlExtra.create_counters(PACKAGE, SECTION, SUBPACKAGE, matched_dict, debug=True)
-        # print(f"unmatched {len(unmatched_keys)} {unmatched_keys}")
-
-        (matched_dict.keys(), Counter(pck_counter), Counter(subp_counter), Counter(sect_counter))
-
-
 
     def test_remove_floats_from_fulltext_html_DEVELOP(self):
         package = "LongerReport"
@@ -657,7 +429,6 @@ class HtmlTest(AmiAnyTest):
         html_elem = lxml.etree.parse(str(file)).getroot()
         FloatBoundary.extract_floats_and_boundaries(html_elem, package, outdir=str(Path(AmiAnyTest.TEMP_HTML_IPCC, package)))
         XmlLib.write_xml(html_elem, Path(AmiAnyTest.TEMP_HTML_IPCC, package, "defloated.html"))
-
 
     def test_remove_footnotes_from_fulltext_html_DEVELOP(self):
         """
@@ -792,7 +563,6 @@ class HtmlTest(AmiAnyTest):
         contains = HtmlLib.find_and_markup_phrases(para, phrase, ignore_case=False)
         assert not contains
 
-
     # outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, package)
 
     def test_unescape_xml_character_entity_to_unicode(self):
@@ -865,44 +635,6 @@ class HtmlTest(AmiAnyTest):
         html_path = Path(Resources.TEST_IPCC_CHAP02, "maintext_old.html")
         html_searcher.search_path_chunk_node(html_path)
 
-    @unittest.skip("uses xml not lxml")
-    def test_write_list_of_text_strings_as_html(self):
-        """read a list of strings and outout as (X)HTML
-        """
-        strings = [
-            "WG1 physical basis",
-            "WG2 adaptation",
-            "WG3 mitigation",
-        ]
-        html = lxml.etree.Element('html')
-        head = lxml.etree.SubElement(html, 'head')
-        style = lxml.etree.SubElement(head, "style")
-        style.text = ".wg1 {color: red;}" \
-                     "div {background: cyan;}" \
-                     "span {background: pink;} "
-        title = lxml.etree.SubElement(head, 'title')
-        title.text = "test html"
-
-        body = lxml.etree.SubElement(html, 'body')
-        ul = lxml.etree.SubElement(body, "ul")
-        for string in strings:
-            li = lxml.etree.SubElement(ul, "li")
-            li.text = string
-            if string.startswith("WG1"):
-                li.attrib["class"] = "wg1"
-        div = lxml.etree.SubElement(body, "div")
-        span = lxml.etree.SubElement(div, "span")
-        span.attrib["style"] = "font-size: 10px; color:green;"
-        span.text = "The physical basis of climate change"
-        span = lxml.etree.SubElement(div, "span")
-        span.attrib["style"] = "font-size: 20px; border: blue dotted 1px;"
-        span.text = "very important"
-
-
-        lxml.etree.dump(html)
-        path = Path(AmiAnyTest.TEMP_HTML_DIR, "misc", "list.html")
-        HtmlLib.write_html_file(html, path)
-        assert path.exists()
 
     def test_get_html_head_style_from_classref(self):
         html = lxml.etree.fromstring(
@@ -946,188 +678,29 @@ class HtmlTest(AmiAnyTest):
         HtmlLib.write_html_file(html_out, str(outpath), debug=True)
         assert outpath.exists()
 
-
-    @unittest.skip("NYI")
-    def test_jats_to_html(self):
-        """
-
-        """
-
-        test_dir = Path(Resources.TEST_RESOURCES_DIR, "plant", "lantana_oil_india")
-        filesx = FileLib.posix_glob(f"{test_dir}/PMC*/sections/1_body")
-        if len(filesx) > 0:
-            logger.debug(f"intro {len(filesx)}")
-        for filex in filesx:
-            introductions = FileLib.posix_glob(f"{filex}/**/*introduction*/")
-            if len(introductions) > 0:
-                print("INTRO")
-            # htmlx = HtmlLib.create_html_with_empty_head_body()
-            # headh = HtmlLib.get_head(htmlx)
-            # bodyh = HtmlLib.get_body(htmlx)
-            # backh = lxml.etree.SubElement(bodyh, "back")
-            # try:
-            #     jats = lxml.etree.parse(file)
-            #     front = jats.xpath("/article/front")[0]
-            #     body = jats.xpath("/article/body")[0]
-            #     back = jats.xpath("/article/back")[0]
-            # except Exception as e:
-            #     print(f"EXC {e}")
-            #     continue
-            # # add_children(front, headh)
-            # # add_children(body, bodyh)
-            # # add_children(back, backh)
-
-    def test_element_to_string(self):
-        """
-        checks pretty-printing in XmlLib.element_to_string()
-        Note we cannot display it here without '\n'
-        """
-        p_elem = ET.Element("p")
-        span = ET.SubElement(p_elem, "span")
-        span.text = "text"
-
-        pretty_string = XmlLib.element_to_string(p_elem)
-        assert pretty_string == """<p>\n  <span>text</span>\n</p>\n"""
-
-        ugly_string = XmlLib.element_to_string(p_elem, pretty_print=False)
-        assert ugly_string == """<p><span>text</span></p>"""
-
-    def test_editor(self):
-        """
-        create simple HTML object and write to file
-        then add child paras and also CSS style (in head)
-        """
-        editor = HtmlEditor()
-        editor.create_skeleton_html()
-        editor.write(Path(Resources.TEMP_DIR, "html", "editor_0.html"), debug=True)
-        # get complete html object
-        html = editor.html
-        assert html is not None
-        # find body by xpath
-        body = editor.html.xpath("body")[0]
-        assert body is not None
-        # add div to body
-        div = ET.SubElement(body, "div")
-        # add p as child of div
-        p = ET.SubElement(div, "p")
-        # add text to p
-        p.text = "AMI loves html"
-        editor.write(Path(Resources.TEMP_DIR, "html", "editor_1.html"), debug=True)
-        # add new paragraph with class
-        p1 = ET.SubElement(div, "p")
-        p1.text = "paragraph with class=warning"
-        # add attribute
-        p1.attrib["class"] = "warning"
-        editor.write(Path(Resources.TEMP_DIR, "html", "editor_2.html"), debug=True)
-        # add <style> to <head> with CSS style
-        style = ET.SubElement(editor.head, "style")
-        # CSS selector (<p class='warning'> and style
-        style.text = "p.warning {background: red;}"
-        editor.write(Path(Resources.TEMP_DIR, "html", "editor_warning.html"), debug=True)
-
-    def test_extract_styles_into_stylesheet(self):
-        """
-        extract list of <head><style> elements into stylesheet
-        optionally replace styles by single call to load stylesheet
-        """
-        html = HtmlLib.parse_html(Path(Resources.TEST_RESOURCES_DIR,
-                "ipcc", "cleaned_content", "wg1", "Chapter01", "html_with_ids.html"))
-        assert html is not None
-        css_file = Path(Resources.TEMP_DIR, "styles", "nested_boxes.css")
-        styles = HtmlLib.extract_styles_to_css_file(html, css_file=css_file, link=True)
-        assert len(styles) == 19
-        assert css_file.exists()
-
-    def test_replace_style_elems_by_css_link(self):
-        """
-        removes all <style> elements and replaces by <link rel='stylesheet'>
-        """
-        inpath = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter01", "html_with_ids.html")
-        html = HtmlLib.parse_html(inpath)
-        assert html is not None
-        css_file = Path(Resources.TEST_RESOURCES_DIR, "styles", "nested_boxes.css")
-        styles = HtmlLib.extract_styles_to_css_file(html, css_file=css_file, link=True)
-        outfile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "cleaned_content", "wg1", "Chapter01", "html_with_ids.restyled.html")
-        HtmlLib.write_html_file(html, outfile=outfile, debug=True)
-
-
-
-
-def _make_test_elem():
-    body = lxml.etree.Element("body")
-    body.attrib["id"] = "b"
-    d1 = lxml.etree.SubElement(body, "div")
-    d1.attrib["id"] = "d1"
-    d21 = lxml.etree.SubElement(d1, 'div')
-    d21.attrib["id"] = "d21"
-    d22 = lxml.etree.SubElement(d1, 'div')
-    d22.attrib["id"] = "d22"
-    d31 = lxml.etree.SubElement(d21, 'div')
-    d31.attrib["id"] = "d31"
-    s1 = lxml.etree.SubElement(d31, 'span')
-    s1.text = "spantext"
-    s1.attrib["id"] = "s1"
-    string = lxml.etree.tostring(body).decode("utf-8")
-    logger.info(f"string |{string}|")
-    if string != """<body id="b"><div id="d1"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div><div id="d22"/></div></body>""":
-        print(f"string: {string}")
-    return body
-
-
-
 class PDFHTMLTest(AmiAnyTest):
 
-    # def _make_test_elem():
-    #     body = lxml.etree.Element("body")
-    #     body.attrib["id"] = "b"
-    #     d1 = ET.SubElement(body, "div")
-    #     d1.attrib["id"] = "d1"
-    #     d2 = ET.SubElement(d1, 'div')
-    #     d2.attrib["id"] = "d2"
-    #     d3 = ET.SubElement(d2, 'div')
-    #     d3.attrib["id"] = "d3"
-    #     s1 = ET.SubElement(d3, 'span')
-    #     s1.text = "spantext"
-    #     s1.attrib["id"] = "s1"
-    #     assert lxml.etree.tostring(
-    #         body) == b'<body id="b"><div id="d1"><div id="d2"><div id="d3"><span id="s1">spantext</span></div></div></div></body>'
-    #     return body
-    #
+    def _make_test_elem(self):
+        """Create test HTML element structure for div removal tests"""
+        body = lxml.etree.Element("body")
+        body.attrib["id"] = "b"
+        d22 = ET.SubElement(body, 'div')
+        d22.attrib["id"] = "d22"
+        d1 = ET.SubElement(body, "div")
+        d1.attrib["id"] = "d1"
+        d21 = ET.SubElement(d1, 'div')
+        d21.attrib["id"] = "d21"
+        d31 = ET.SubElement(d21, 'div')
+        d31.attrib["id"] = "d31"
+        s1 = ET.SubElement(d31, 'span')
+        s1.text = "spantext"
+        s1.attrib["id"] = "s1"
+        return body
     """
     Combine PDF2HTML with styles and other tidy
     Many tests are generic
     """
 
-    @unittest.skip("run occasionally - long test")
-    def test_pdf_to_styled_chapter_15_EXAMPLE(self):
-        pdf_args = PDFArgs()
-        outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "Chapter15")
-        outpath1 = Path(AmiAnyTest.TEMP_HTML_IPCC, "Chapter15", "fulltext.html")
-        maxpage = 30
-        style_count = 17
-        print_styles = True
-        inpath = Path(Resources.TEST_IPCC_CHAP15, "fulltext.pdf")
-        style_dict = pdf_args.pdf_to_styled_html_CORE(inpath, maxpage, outdir, outpath1)
-        pprint.pprint(f"STYLE {style_dict}")
-
-    @unittest.skipUnless(AmiAnyTest.IS_PMR, "multiple chapter and documents")
-    def test_pdf_to_styled_multiple_EXAMPLE(self):
-        pdf_args = PDFArgs()
-        for chapter in [
-            # "Chapter03",
-            # "Chapter15",
-            "LongerReport",
-            # # "wg2_03", # this has performance problems due to vector graphics/boxes
-            # "wg2_06",
-            # "wg2_spm",
-            # "wg3_spm",
-        ]:
-            outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, chapter)
-            outpath1 = Path(AmiAnyTest.TEMP_HTML_IPCC, chapter, "fulltext.html")
-            maxpage = 230
-            inpath = Path(Resources.TEST_IPCC_DIR, chapter, "fulltext.pdf")
-            style_dict = pdf_args.pdf_to_styled_html_CORE(inpath, maxpage, outdir, outpath1)
-            pprint.pprint(f"STYLE\n{style_dict}")
 
     def test_extract_string(self):
         elem = lxml.etree.fromstring("""<div><span>lead A.1.2 rest</span></div>""")
@@ -1164,79 +737,6 @@ class PDFHTMLTest(AmiAnyTest):
         )
                                          )
 
-    @unittest.skip("probably obsoledte as depends on old page format")
-    def test_extract_ids_page_IPCC(self):
-        input_html = Path(Resources.TEST_IPCC_DIR, "syr", "lr", "pages", "page_6.html")
-        html_elem = lxml.etree.parse(str(input_html))
-        divs = html_elem.xpath(".//div")
-        logger.debug(f"divs {len(divs)}")
-        section_regex = "(?P<pre>Section\\s*)(?P<body>\\d+)(?P<post>:.*)"
-        subsection_regex = "(?P<pre>\\s*)(?P<body>\\d+(\\.\\d+)+)(?P<post>.*)"
-        sections, subsections = HtmlGroup.extract_section_ids(
-            html_elem, regexes=[section_regex, subsection_regex])
-        assert len(sections) == 9
-        assert len(subsections) == 0
-
-    @unittest.skip("probably obsoledte as depends on old page format")
-    def test_extract_ids_pages_IPCC(self):
-
-        input_html = Path(Resources.TEST_IPCC_DIR, "syr", "lr", "pages", "total_pages.html")
-        html_elem = lxml.etree.parse(str(input_html))
-        section_regex = "(?P<pre>Section\\s*)(?P<body>\\d+)(?P<post>:.*)"
-        subsection_regex = "(?P<pre>\\s*)(?P<body>\\d+(\\.\\d+)+)(?P<post>.*)"
-
-        sections, subsections = HtmlGroup.extract_section_ids(
-            html_elem, regexes=[section_regex, subsection_regex])
-        assert sections == ['1', '2', '3', '4', '1', '2', '3', '4']
-
-        assert subsections == [
- '2.1', '2.1.1', '2.1.2',
- '2.2', '2.2.1', '2.2.2', '2.2.3',
- '2.3', '2.3.1', '2.3.2', '2.3.3',
- '3.1', '3.1.1', '3.1.2', '3.1.3',
- '3.2',
- '3.3', '3.3.1', '3.3.2', '3.3.3', '3.3.4',
- '3.4', '3.4.1', '3.4.2',
- '4.1',
- '4.2',
- '4.3',
- '4.4',
- '4.5', '4.5.1', '4.5.2', '4.5.3', '4.5.4', '4.5.5', '4.5.6',
- '4.6',
- '4.7',
- '4.8', '4.8.1', '4.8.2', '4.8.3',
- '4.9',
-
- '2.1', '2.1.1', '2.1.2',
- '2.2', '2.2.1', '2.2.2', '2.2.3',
- '2.3', '2.3.1', '2.3.2', '2.3.3',
- '3.1', '3.1.1', '3.1.2', '3.1.3',
- '3.2',
- '3.3', '3.3.1', '3.3.2', '3.3.3', '3.3.4',
- '3.4', '3.4.1', '3.4.2',
- '4.1',
- '4.2',
- '4.3',
- '4.4',
- '4.5', '4.5.1', '4.5.2', '4.5.3', '4.5.4', '4.5.5', '4.5.6',
- '4.6',
- '4.7',
- '4.8', '4.8.1', '4.8.2', '4.8.3',
- '4.9']
-
-    @unittest.skip("probably obsoledte as depends on old page format")
-    def test_extract_target_links_from_page(self):
-        """extracts target ids from trailing {} on sections and paras
-        does this still work? extract_section_ids
-        """
-        input_html = Path(Resources.TEST_IPCC_DIR, "syr", "lr", "pages", "page_16.html")
-        html_elem = lxml.etree.parse(str(input_html))
-        section_regexes = ["(?P<pre>.*)(?P<body>\\{.*\\})(?P<post>.*)"]
-        sections, subsections = HtmlGroup.extract_section_ids(
-            html_elem, xpaths=[".//span"], regexes=section_regexes)
-        assert len(sections) == 1
-        assert len(subsections) == 2
-
 
     def test_extract_divs_with_flattened_text_IPCC(self):
         """extract flat text from divs for indexing
@@ -1250,7 +750,6 @@ class PDFHTMLTest(AmiAnyTest):
             div_text = div.xpath('string(.//*)')
             print (f"div: {div_text[:10000]}")
             rows.append([HtmlUtil.get_id(div), div_text])
-
 
     def test_annotate_pdf_html_page_HACKATHON(self):
         """annotate divs and spans in semi-structured HTML
@@ -1275,57 +774,6 @@ class PDFHTMLTest(AmiAnyTest):
         with open(outfile, "wb") as f:
             f.write(lxml.etree.tostring(html_elem, method="html"))
 
-    @unittest.skip("run occasionally - long test")
-    def test_annotate_pdf_html_report_HACKATHON_LONG(self):
-        input_html = Path(Resources.TEST_IPCC_DIR, "syr", "lr", "pages", f"total_pages.html")
-        html_elem = lxml.etree.parse(str(input_html)).getroot()
-        annotator = HtmlAnnotator.create_ipcc_annotator()
-        HtmlStyle.add_head_styles_orig(html_elem, HtmlGroup.DEFAULT_STYLES)
-        spans = html_elem.xpath(".//span")
-        for span in spans:
-            annotator.run_commands(span)
-        outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "annotation", "lr")
-        outdir.mkdir(exist_ok=True, parents=True)
-        outfile = Path(outdir, f"fulltext.annotations.html")
-        with open(outfile, "wb") as f:
-            f.write(lxml.etree.tostring(html_elem, method="html"))
-    # IMPORTANT
-    @unittest.skip("run occasionally - long test")
-    def test_annotate_spm_reports_HACKATHON(self):
-        """uses Annotator approach"""
-        reports = [
-
-            "wg1",
-            # "wg2",
-            # "wg3",
-        ]
-        subreport = "spm"
-        for report in reports:
-            indir = Path(Resources.TEST_IPCC_DIR, report, subreport)
-            input_html = Path(indir, f"total_pages.html")
-            html_elem = lxml.etree.parse(str(input_html)).getroot()
-            annotator = HtmlAnnotator.create_ipcc_annotator()
-            HtmlStyle.add_head_styles_orig(html_elem, HtmlGroup.DEFAULT_STYLES)
-            spans = html_elem.xpath(".//span")
-            for span in spans:
-                annotator.run_commands(span)
-            outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "annotation", report, subreport)
-            outdir.mkdir(exist_ok=True, parents=True)
-            outfile = Path(outdir, f"fulltext.annotations.html")
-            print(f"writing to {outfile}")
-            with open(outfile, "wb") as f:
-                f.write(lxml.etree.tostring(html_elem, method="html"))
-
-    @unittest.skip("run occasionally - long test")
-    def test_extract_sections_report_HACKATHON_LATEST(self):
-        """extract float/s from HTML and copy to custom directories"""
-        # stem = "section2mini"
-        # stem = "total_pages.manual"
-        stem = "section2mini"  # Use smaller input file for faster testing
-        input_html = Path(Resources.TEST_IPCC_DIR, "syr", "lr", f"{stem}.html")
-        outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "annotation", "syr", "lr")
-        outfile = Path(outdir, f"test_{stem}_groups.html")
-        HtmlGroup.annotate_div_spans_write_final_html(input_html, outfile)
 
     # IMPORTANT , CREATES single STATEMENTS
     def test_extract_sections_HACKATHON_LATEST(self):
@@ -1370,179 +818,6 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/spm/tot
             outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "annotation", wg, "spm")
             HtmlGroup.make_hierarchical_sections_KEY(html_elem, stem, section_regexes=section_regexes, outdir=outdir)
 
-    @unittest.skip("run occasionally - long test")
-    def test_extract_sections_report_all_wg_HACKATHON_LATEST(self):
-        """create html for all WGs
-        starts_with *total_pages.html
-        creates *_groups.html files
-        """
-        stem = "total_pages"
-        wgs = [
-            # "wg1",
-            # "wg2",
-            # "wg3",
-            "srocc",
-            "srccl",
-            "sr15",
-        ]
-        pages = "pages/"   # maybe "" in some dirs
-
-
-        for wg in wgs:
-            input_html = Path(Resources.TEST_IPCC_DIR, f"{wg}", "spm", f"{pages}{stem}.html")
-            print(f"\n==========input: {input_html}===============")
-            html_elem = lxml.etree.parse(str(input_html)).getroot()
-            annotator = HtmlAnnotator.create_ipcc_annotator()
-            HtmlStyle.add_head_styles_orig(html_elem, HtmlGroup.DEFAULT_STYLES)
-            for span in html_elem.xpath(".//span"):
-                annotator.run_commands(span)
-            outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "annotation", f"{wg}", "spm")
-            HtmlLib.write_html_file(html_elem, Path(outdir, f"test_{stem}_pre_groups.html"), debug=True)
-            styles = [
-            "border : solid purple 2px; margin:2px;",
-            "border : dashed green 1.5px; margin:1.5px;",
-            "border : dotted blue 1px; margin:1px;",
-            ]
-            HtmlGroup.group_nested_siblings(html_elem, styles=styles)
-            HtmlLib.write_html_file(html_elem, Path(outdir, f"test_{stem}_groups.html"), debug=True)
-
-    # Chapters within Working groups
-
-    # @unittest.skipUnless(AmiAnyTest.run_long(), "run occasionally")
-    @unittest.skip("IPCC")
-    def test_chapter_toolchain_chapters_HACKATHON(self):
-        """
-        writing XML /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/wg3/Chapter07/pages/page_114.html
-writing XML /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/wg3/Chapter07/pages/total_pages.html
-wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter07/styles1.html
-wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter07/groups_styles.html
-wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter07/groups_groups.html
-wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter07/groups_statements.html
-
-        """
-        total_pages = "total_pages"
-        MAX_PAGES = 10
-        stem = total_pages
-        group_stem = "groups"
-        wgs = [
-            # "wg1",
-            # "wg2",
-            "wg3",
-            # "srocc",
-            # "srccl",
-            # "sr15",
-        ]
-        pages = "pages/"   # maybe "" in some dirs
-        chapters = [
-            "Chapter07",
-            "Chapter08",
-            ]
-
-        report_names = [
-            "WG3_CHAP07",
-            # "WG3_CHAP08",
-        ]
-        wg = "wg3"
-        for report_name in report_names:
-            chapter = "Chapter07" if "07" in report_name else "Chapter08"
-            report_dict = Resources.WG_REPORTS[report_name]
-            print(f"\n==================== {report_name} ==================")
-            input_pdf = report_dict["input_pdf"]
-            if not input_pdf.exists():
-                print(f"cannot find {input_pdf}")
-                continue
-            output_page_dir = report_dict["output_page_dir"]
-            print(f"output dir {output_page_dir}")
-            output_page_dir.mkdir(exist_ok=True, parents=True)
-            page_json_dir = output_page_dir
-            ami_pdfplumber = AmiPDFPlumber(param_dict=report_dict)
-            HtmlGenerator.create_html_pages(
-                ami_pdfplumber, input_pdf=input_pdf, outdir=output_page_dir, page_json_dir=page_json_dir, debug=True,
-                outstem=total_pages, maxpages=MAX_PAGES)
-
-            outdir = Path(AmiAnyTest.TEMP_HTML_IPCC, "annotation", f"{wg}", f"{chapter}")
-            outfile = Path(outdir, "fulltext_final.html")
-            input_html_path = Path(output_page_dir, f"{total_pages}.html")
-            # self.annotate_div_spans_write_final_html(input_html_path, outfile)
-            html_elem = lxml.etree.parse(str(input_html_path))
-            section_regexes = [
-                ("section", "\\s*(?P<id>Table of Contents|Frequently Asked Questions|Executive Summary|References|\\d+\\.\\d+)\\s*.*"),  # 7.1 Introductiom
-                ("sub_section", "(?P<id>FAQ \\d+\\.\\d+|\\d+\\.\\d+\\.\\d+)\\s.*"),  # 7.1.2 subtitle or FAQ 7.1 subtitle
-                ("sub_sub_section", "(?P<id>\\d+\\.\\d+\\.\\d+\\.\\d+)\\s*.*") # 7.1.2.3 subsubtitle
-            ]
-
-            HtmlGroup.make_hierarchical_sections_KEY(html_elem, group_stem, section_regexes=section_regexes, outdir=outdir)
-
-    # TODO bad url
-    @unittest.skip("get better URL")
-    def test_download_github_html(self):
-        github_url = HtmlLib.create_rawgithub_url(
-            username="petermr",
-            repository="semanticClimate",
-            branch="main",
-            # filepath="ar6/ar6/syr/lr/total_pages.annotated.html"
-            filepath = "ar6/ar6/syr/lr/total_pages.html"
-        )
-        print(f"github_url {github_url}")
-        url_cache = URLCache()
-        html_elem = url_cache.read_xml_element_from_github(github_url)
-        assert html_elem is not None
-        divs = html_elem.xpath("//div")
-        assert 640 > len(divs) > 635
-
-    @unittest.skip("MOVE TO UN")
-    def test_extract_anchors_initial_TEST_HACKATHON_KEY(self):
-        """tests target IDs in SYR/LR in WGI"""
-        import requests
-
-        url_cache = URLCache()
-        # html_elem = url_cache.read_xml_element_from_github(github_url)
-
-        # anchor_branch, anchor_repository, anchor_stem, anchor_username, link_factory, target_leaf_name, wg_dict = \
-        link_factory = LinkFactory.create_default_ipcc_link_factory()
-
-        leaf_name = "fulltext.annotations.id.html"
-
-        anchor_div = lxml.etree.Element("div")
-        anchor_div.attrib["id"] = "test_id"
-        span_containing_curly_list = lxml.etree.fromstring(
-            """<span class="targets"> by &#177;0.2&#176;C. {WGI SPM A.1, WGI SPM A.1.2, WGI SPM A.1.3, WGI SPM A.2.2, WGI Figure SPM.2; SRCCL TS.2} </span>""")
-        anchor_div.append(span_containing_curly_list)
-        print(f" new div {lxml.etree.tostring(anchor_div)}")
-        HtmlLib.write_html_file(anchor_div, Path(AmiAnyTest.TEMP_HTML_IPCC, "misc", "split_a.html"), debug=True)
-
-        IPCCTargetLink.read_links_from_span_and_follow_to_ipcc_repository_KEY(anchor_div, leaf_name, link_factory, span_containing_curly_list)
-
-
-    @unittest.skip("MOVE TO UN")
-    def test_extract_anchors_add_confidence_HACKATHON_KEY(self):
-        """ reads whole of SYR/LR after grouping
-      Then parses the confidence statements is SYR/LR
-        """
-        import requests
-
-        url_cache = URLCache()
-        link_factory = LinkFactory.create_default_ipcc_link_factory()
-
-        leaf_name = "fulltext.annotations.id.html"
-        syr_leaf = f"extract_floats.html"
-        syr_stem = "total_pages_groups"
-        # syr_stem = f"extract_floats"
-        syr_path = Path(Resources.TEST_IPCC_DIR, "syr", "lr", f"{syr_stem}.html")
-        syr_lr_html = lxml.etree.parse(str(syr_path)).getroot()
-        div = None
-        span = None
-        divs = syr_lr_html.xpath("//div[span[@class='targets']]")
-        assert 204 > len(divs) >= 200, f"expected 202 divs, found len{divs}"
-        df = IPCCTargetLink.create_dataframe_from_IPCC_target_ids_in_curly_brackets_divs_KEY(
-            divs, leaf_name, link_factory, max_divs=10)
-        print(f"DATAFRAME\n{df}")
-        Path(AmiAnyTest.TEMP_HTML_IPCC, "syr", "lr").mkdir(exist_ok=True, parents=True)
-        path = Path(AmiAnyTest.TEMP_HTML_IPCC, "syr", "lr", f"{syr_stem}_table.csv")
-        df.to_csv(str(path))
-        print(f" wrote link table {path}")
-        path = Path(AmiAnyTest.TEMP_HTML_IPCC, "syr", "lr", f"{syr_stem}_confidence.html")
-        HtmlLib.write_html_file(syr_lr_html, outfile=path)
 
     def test_extract_footnotes_HACKATHON(self):
         """extract footnotes from HTML and copy to custom directories"""
@@ -1552,7 +827,6 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         html_elem = lxml.etree.parse(str(input_html)).getroot()
         HtmlUtil.extract_footnotes(html_elem, "font-size: 6.0")
         HtmlLib.write_html_file(html_elem, str(Path(AmiAnyTest.TEMP_HTML_IPCC, "syr", "lr", f"{stem}.footnoted.html")))
-
 
     def test_add_sub_superscripts_to_page_HACKATHON(self):
         p = 16
@@ -1588,7 +862,6 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         elem = None
         HtmlUtil.remove_attribute(elem, "foo")
 
-
     def test_remove_single_child_div_from_nesting(self):
         """removes divs from web pages which have no semantic purpose
         Example:
@@ -1604,7 +877,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
             This can be recursive but spans should always have div parents
         """
 
-        body = _make_test_elem()
+        body = self._make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
         # now remove
         # removable_div_xpath = "//div[count(*)=1 and count(*)=1 and parent::div]"
@@ -1615,14 +888,14 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         assert lxml.etree.tostring(body).decode("utf-8") == \
                '<body id="b"><div id="d22"/><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></body>'
 
-        body = _make_test_elem()
+        body = self._make_test_elem()
         d2 = body.xpath("//*[@id='d22']")[0]
         HtmlUtil.remove_element_in_hierarchy(d2)
         decode = lxml.etree.tostring(body).decode("utf-8")
         assert decode == '<body id="b"><div id="d1"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></div></body>'
 
         # remove both elements in various orders
-        body = _make_test_elem()
+        body = self._make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
         d2 = body.xpath("//*[@id='d22']")[0]
         HtmlUtil.remove_element_in_hierarchy(d2)
@@ -1630,7 +903,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         assert lxml.etree.tostring(body).decode("utf-8") == \
                '<body id="b"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></body>'
 
-        body = _make_test_elem()
+        body = self._make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
         d2 = body.xpath("//*[@id='d22']")[0]
         HtmlUtil.remove_element_in_hierarchy(d1)
@@ -1638,7 +911,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         assert lxml.etree.tostring(body).decode("utf-8") == \
                '<body id="b"><div id="d21"><div id="d31"><span id="s1">spantext</span></div></div></body>'
 
-        body = _make_test_elem()
+        body = self._make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
         d3 = body.xpath("//*[@id='d31']")[0]
         HtmlUtil.remove_element_in_hierarchy(d1)
@@ -1646,14 +919,13 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         assert lxml.etree.tostring(body).decode("utf-8") == \
                '<body id="b"><div id="d22"/><div id="d21"><span id="s1">spantext</span></div></body>'
 
-        body = _make_test_elem()
+        body = self._make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
         d3 = body.xpath("//*[@id='d31']")[0]
         HtmlUtil.remove_element_in_hierarchy(d3)
         HtmlUtil.remove_element_in_hierarchy(d1)
         assert lxml.etree.tostring(body).decode("utf-8") == \
                '<body id="b"><div id="d22"/><div id="d21"><span id="s1">spantext</span></div></body>'
-
 
     def test_remove_multiple_child_div_from_nesting(self):
         """removes divs from web pages which have no semantic purpose
@@ -1669,7 +941,7 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
             </div>
             This can be recursive but spans should always have div parents
         """
-        body = _make_test_elem()
+        body = self._make_test_elem()
         d1 = body.xpath("//*[@id='d1']")[0]
         # now remove
         removable_div_xpath = "//div[count(*)=1 and count(*)=1 and parent::div]"
@@ -1724,8 +996,6 @@ wrote: /Users/pm286/workspace/pyamihtml_top/temp/html/ar6/annotation/wg3/Chapter
         outfile = Path(Resources.TEMP_DIR, "ipcc", "wg1", "stripped_toplevel.html")
         HtmlLib.write_html_file(html_elem, outfile, debug=True)
         assert outfile.exists()
-
-
 
 class HtmlTidyTest(AmiAnyTest):
 
@@ -1849,7 +1119,6 @@ TEST_HEAD = """<html><head>
 <style classref=".s2726">.s2726 {font-family: Calibri-Italic; font-size: 9.5; font-style: italic;}</style>
 <style classref=".s5690">.s5690 {font-family: FrutigerLTPro-Condensed; font-size: 8.5;}</style>
 <style classref=".s5778">.s5778 {font-family: MyriadPro-Regular; font-size: 8.59;}</style></head></html>"""
-
 
 class CSSStyleTest(AmiAnyTest):
 
@@ -2024,7 +1293,6 @@ class CSSStyleTest(AmiAnyTest):
         assert "width" in css_style
         assert css_style.get("width") == "34"
 
-
     def test_make_style_dict_from_html(self):
         """
         extracts <style> elements into a Python dic
@@ -2171,8 +1439,6 @@ class CSSStyleTest(AmiAnyTest):
         print(f"dict 4 {cssstyle.name_value_dict}")
         assert cssstyle.name_value_dict == {'font-family': 'Helvetica', 'font-size': '8.0', 'x0': '23.4', 'font-name': 'HelveticaBoldItalic', 'font': 'sans', 'font-weight': 'bold', 'font-style': 'italic'}
 
-
-
         # this isn't a real font but we can parse it
         cssstring = 'font-family: HelveticaItalicBold; font-size: 8.0; x0: 23.4;'
         cssstyle = AmiFont.create_font_edited_style_from_css_style_object(cssstring)
@@ -2208,17 +1474,6 @@ class CSSStyleTest(AmiAnyTest):
             cssstyle = AmiFont.create_font_edited_style_from_css_style_object(f"font-family: {f[0]}")
             assert cssstyle.name_value_dict == f[1]
 
-    @unittest.skip("Not currently used")
-    def test_tinycss(self):
-        import tinycss
-        parser = tinycss.make_parser('page3')
-        stylesheet = parser.parse_stylesheet_bytes(b'''@import "foo.css";
-        ...     p.error { color: red }  @lorem-ipsum;
-        ...     @page tables { size: landscape }''')
-        print(f"stylesheet {stylesheet.__dir__()}")
-        print(f"stylesheet.rules {stylesheet.rules}")
-        for rule in stylesheet.rules:
-            print(f"rule {rule}: {rule.__dir__}")
 
     def test_analyze_styles(self):
         """extracts styles from an already normalised styled document and summarise them"""
@@ -2260,7 +1515,6 @@ class CSSStyleTest(AmiAnyTest):
                 analyzer(input_html)
                 print(f"-------------------------------------")
             print(f"\n============================================")
-
 
 class HtmlClassTest(AmiAnyTest):
     """
@@ -2352,7 +1606,6 @@ class HtmlClassTest(AmiAnyTest):
         html_class.replace_class("foo", "plugh")  # contains existing class, so should equal remove
         assert html_class.class_string == "bar plugh"
 
-
 class HtmlTreeTest(AmiAnyTest):
     """
     makes sections from unstructured text
@@ -2375,24 +1628,6 @@ class HtmlTreeTest(AmiAnyTest):
         hierarchy.add_sections(decimal_sections, poplist=["Chapter 4:"])
         hierarchy.sort_sections()
 
-    @unittest.skip
-    def test_decimal_chapters_production(self):
-        # """NOT WORKING FULLY"""
-        # TEST_IPCC_WG3 = Path(Resources.TEST_IPCC_DIR)
-        # if not TEST_IPCC_WG3.exists():
-        #     print(f"semanticClimate files not available locally")
-        #     return
-        html_elem = lxml.etree.parse(str(Path(Resources.TEST_IPCC_DIR, "wg2_03", "fulltext.html")))
-        xpath = (".//div/span["
-                 "contains(@class, 'dec1') "
-                 "or contains(@class, 'dec2') "
-                 "or contains(@class, 'dec3') "
-                 "or contains(@class, 'dec4')]")
-        decimal_sections = HtmlTree.get_decimal_sections(html_elem, xpath=xpath)
-
-        hierarchy = SectionHierarchy()
-        hierarchy.add_sections(decimal_sections, poplist=["Chapter 3:"])
-        hierarchy.sort_sections()
 
 class FontTest(AmiAnyTest):
 
@@ -2408,7 +1643,6 @@ class FontTest(AmiAnyTest):
             assert str(ami_font) == test[1]
 
     # -------------------------------
-
 
     # TODO edit test results
     def test_create_from_names(self):
@@ -2451,87 +1685,7 @@ class FontTest(AmiAnyTest):
         self._assert_new_css_style("font-family: FooBarBold; fill: red",
                                   'font-family: FooBar; fill: red; font-name: FooBarBold; font: sans; font-weight: bold;')
 
-
     # TODO edit test
-    @unittest.skip("not yet written")
-    def test_normalize_fonts_in_head_style_elements_CURRENT(self):
-        """
-        extract font properties from styles and write back into html header
-        e.g.
-        <html>
-          <head>
-            <style>.s1 {font-family:ArialNarrowBold; fill:red}</style>
-            <style>.s2 {font-family:FooBar-Ita; fill:blue}</style>
-          </head>
-        </html>
-
-        goes to
-        <html>
-          <head>
-            <style>.s1 {font-family:Arial; font-weight: bold; font-stretched: Narrow; fill:red}</style>
-            <style>.s2 {font-family:FooBar; font-style: italic; fill:red}</style>
-          </head>
-        </html>
-        """
-        html_str = """
-        <html>
-          <head>
-            <style>.s1 {font-family:ArialNarrowBold; fill:red}</style>
-            <style>.s2 {font-family:FooBar-Ita; fill:blue}</style>
-          </head>
-        </html>
-"""
-        html_elem = lxml.etree.fromstring(html_str)
-        CSSStyle.normalize_styles_in_fonts_in_html_head(html_elem)
-
-    def test_display_styles(self):
-        """mainly to explore use of class attributes
-        if class has multiple components, which clash, then order of
-        <style> elements matters - last takes precedence.
-        """
-        html = HtmlLib.create_html_with_empty_head_body()
-        head = HtmlLib.get_head(html)
-        HtmlLib.add_explicit_head_style(html, ".blueborder", "{border:solid 1px blue;}")
-        HtmlLib.add_explicit_head_style(html, ".redborder", "{border:solid 1px red;}")
-        HtmlLib.add_explicit_head_style(html, ".blueborder", "{border:solid 1px blue;}")
-        HtmlLib.add_explicit_head_style(html, ".yellowback", "{background: yellow;}")
-
-        body = HtmlLib.get_body(html)
-        div = lxml.etree.SubElement(body, "div")
-        div.attrib["class"] = "div"
-
-        span1 = lxml.etree.SubElement(div, "span")
-        clazz = "blueborder"
-        span1.text = f"This is {clazz}"
-        span1.attrib["class"] = clazz
-
-
-        span2 = lxml.etree.SubElement(div, "span")
-        clazz = "yellowback"
-        span2.text = f"This is {clazz}"
-        span2.attrib["class"] = clazz
-
-        # both styles are applied
-        span3 = lxml.etree.SubElement(div, "span")
-        clazz = "blueborder yellowback"
-        span3.text = f"This is {clazz}"
-        span3.attrib["class"] = clazz
-
-        # both styles conflict
-        span3 = lxml.etree.SubElement(div, "span")
-        clazz = "blueborder redborder"
-        span3.text = f"This is {clazz}"
-        span3.attrib["class"] = clazz
-
-        # both styles conflict
-        span3 = lxml.etree.SubElement(div, "span")
-        clazz = "redborder blueborder"
-        span3.text = f"This is {clazz}"
-        span3.attrib["class"] = clazz
-
-        outfile = Path(Resources.TEMP_DIR, "styles", "classes.html")
-        HtmlLib.write_html_file(html, outfile, debug=True)
-
 
 class AnnotateTest(AmiAnyTest):
     """
@@ -2567,7 +1721,6 @@ class HtmlEditorTest(AmiAnyTest):
 
         assert ET.tostring(editor.html) == \
             b'<html><head/><body><a href="_blank" title="href">text</a></body></html>'
-
 
     def test_execute_commands(self):
         editor = HtmlEditor()
@@ -2722,5 +1875,4 @@ class HtmlEditorTest(AmiAnyTest):
         editor.add_element("//body/div/div[@id='d1.1']", "div", attrs={'id': 'd1.1.2', })
         editor.add_element("//body/div/div[@id='d1.2']", "div", attrs={'id': 'd1.2.1', })
         return editor
-
 

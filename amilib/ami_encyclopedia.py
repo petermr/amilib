@@ -304,6 +304,13 @@ class AmiEncyclopedia:
             # Use the best available description (using helper method)
             best_description = self._get_best_description(entries)
             
+            # Get figure from first entry that has one
+            figure_html = None
+            for entry in entries:
+                if entry.get('figure_html'):
+                    figure_html = entry.get('figure_html')
+                    break
+            
             synonym_groups[wikidata_id] = {
                 'wikidata_id': wikidata_id,  # PRIMARY identifier
                 'canonical_term': canonical_term,
@@ -312,6 +319,7 @@ class AmiEncyclopedia:
                 'search_terms': search_terms,
                 'synonyms': list(set(normalized_terms)),
                 'description_html': best_description,
+                'figure_html': figure_html,
                 'entry_count': len(entries),
                 'source_entries': entries
             }
@@ -405,53 +413,106 @@ class AmiEncyclopedia:
         else:
             synonym_groups = self.synonym_groups
         
-        # Add entry divs for each synonym group (normalized by Wikidata ID)
-        for wikidata_id, group in synonym_groups.items():
-            entry_div = ET.SubElement(encyclopedia_div, "div")
-            entry_div.attrib["role"] = "ami_entry"
-            
-            # Add Wikidata ID as primary identifier
-            entry_div.attrib["wikidataID"] = wikidata_id
-            
-            # Add canonical term
-            canonical_term = group.get('canonical_term', '')
-            if canonical_term:
-                entry_div.attrib["term"] = canonical_term
-            
-            # Add Wikipedia URL link (for display)
-            wikipedia_url = group.get('wikipedia_url', '')
-            if wikipedia_url:
-                wiki_link = ET.SubElement(entry_div, "a")
-                wiki_link.attrib["href"] = wikipedia_url
-                page_title = group.get('page_title', canonical_term)
-                wiki_link.text = page_title if page_title else wikipedia_url
-            
-            # Add Wikidata link
-            wikidata_link = ET.SubElement(entry_div, "a")
-            wikidata_link.attrib["href"] = f"https://www.wikidata.org/wiki/{wikidata_id}"
-            wikidata_link.text = f"Wikidata: {wikidata_id}"
-            
-            # Add synonym list
-            synonyms = group.get('synonyms', [])
-            if synonyms:
-                synonym_ul = ET.SubElement(entry_div, "ul")
-                synonym_ul.attrib["class"] = "synonym_list"
-                for synonym in synonyms:
-                    synonym_li = ET.SubElement(synonym_ul, "li")
-                    synonym_li.text = synonym
-            
-            # Add description if available
-            description_html = group.get('description_html', '')
-            if description_html:
-                # Parse description HTML and append to entry
-                from lxml.html import fromstring
-                try:
-                    desc_elem = fromstring(description_html)
-                    entry_div.append(desc_elem)
-                except Exception:
-                    # If parsing fails, add as text
-                    desc_p = ET.SubElement(entry_div, "p")
-                    desc_p.text = description_html
+        # If no synonym groups were created (e.g., no Wikidata IDs), output raw entries
+        if not synonym_groups or len(synonym_groups) == 0:
+            # Output entries that couldn't be normalized
+            for entry in self.entries:
+                entry_div = ET.SubElement(encyclopedia_div, "div")
+                entry_div.attrib["role"] = "ami_entry"
+                
+                # Add term
+                term = entry.get('term', '')
+                if term:
+                    entry_div.attrib["term"] = term
+                
+                # Add search term
+                search_term = entry.get('search_term', '')
+                if search_term:
+                    entry_div.attrib["name"] = search_term
+                
+                # Add Wikipedia URL if available
+                wikipedia_url = entry.get('wikipedia_url', '')
+                if wikipedia_url:
+                    wiki_link = ET.SubElement(entry_div, "a")
+                    wiki_link.attrib["href"] = wikipedia_url
+                    wiki_link.text = search_term if search_term else term
+                
+                # Add Wikidata ID if available
+                wikidata_id = entry.get('wikidata_id', '')
+                if wikidata_id and wikidata_id not in ('no_wikidata_id', 'invalid_wikidata_id'):
+                    entry_div.attrib["wikidataID"] = wikidata_id
+                    wikidata_link = ET.SubElement(entry_div, "a")
+                    wikidata_link.attrib["href"] = f"https://www.wikidata.org/wiki/{wikidata_id}"
+                    wikidata_link.text = f"Wikidata: {wikidata_id}"
+                
+                # Add description if available
+                description_html = entry.get('description_html', '')
+                if description_html:
+                    from lxml.html import fromstring
+                    try:
+                        desc_elem = fromstring(description_html)
+                        entry_div.append(desc_elem)
+                    except Exception:
+                        desc_p = ET.SubElement(entry_div, "p")
+                        desc_p.text = description_html
+                
+                # Add figure if available
+                figure_html = entry.get('figure_html')
+                if figure_html is not None:
+                    entry_div.append(figure_html)
+        else:
+            # Add entry divs for each synonym group (normalized by Wikidata ID)
+            for wikidata_id, group in synonym_groups.items():
+                entry_div = ET.SubElement(encyclopedia_div, "div")
+                entry_div.attrib["role"] = "ami_entry"
+                
+                # Add Wikidata ID as primary identifier
+                entry_div.attrib["wikidataID"] = wikidata_id
+                
+                # Add canonical term
+                canonical_term = group.get('canonical_term', '')
+                if canonical_term:
+                    entry_div.attrib["term"] = canonical_term
+                
+                # Add Wikipedia URL link (for display)
+                wikipedia_url = group.get('wikipedia_url', '')
+                if wikipedia_url:
+                    wiki_link = ET.SubElement(entry_div, "a")
+                    wiki_link.attrib["href"] = wikipedia_url
+                    page_title = group.get('page_title', canonical_term)
+                    wiki_link.text = page_title if page_title else wikipedia_url
+                
+                # Add Wikidata link
+                wikidata_link = ET.SubElement(entry_div, "a")
+                wikidata_link.attrib["href"] = f"https://www.wikidata.org/wiki/{wikidata_id}"
+                wikidata_link.text = f"Wikidata: {wikidata_id}"
+                
+                # Add synonym list
+                synonyms = group.get('synonyms', [])
+                if synonyms:
+                    synonym_ul = ET.SubElement(entry_div, "ul")
+                    synonym_ul.attrib["class"] = "synonym_list"
+                    for synonym in synonyms:
+                        synonym_li = ET.SubElement(synonym_ul, "li")
+                        synonym_li.text = synonym
+                
+                # Add description if available
+                description_html = group.get('description_html', '')
+                if description_html:
+                    # Parse description HTML and append to entry
+                    from lxml.html import fromstring
+                    try:
+                        desc_elem = fromstring(description_html)
+                        entry_div.append(desc_elem)
+                    except Exception:
+                        # If parsing fails, add as text
+                        desc_p = ET.SubElement(entry_div, "p")
+                        desc_p.text = description_html
+                
+                # Add figure if available (from first entry in group)
+                figure_html = group.get('figure_html')
+                if figure_html is not None:
+                    entry_div.append(figure_html)
         
         return XmlLib.element_to_string(html_root, pretty_print=True)
     

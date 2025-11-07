@@ -1,12 +1,8 @@
 # test util
 
 import csv
-import logging
-import re
 import shutil
-import sys
 import unittest
-from json import JSONDecodeError
 from pathlib import Path
 
 from amilib.ami_util import AmiJson
@@ -38,27 +34,6 @@ class Util0Test(AmiAnyTest):
     #     """restore args"""
     #     sys.argv = cls.sys_argv_save
 
-    @classmethod
-    @unittest.skip("not working properly, I think some tests change the args...")
-    # TODO fix args - some  tests change the args
-    def test_add_argstr(cls):
-        # this is a hack as normally there is only one element
-        # sys.argv = sys.argv[1:]
-        # assert sys.argv[1:] == []
-        cmd = "--help foo bar plinge"
-        Util.add_sys_argv_str(cmd)
-        assert sys.argv[1:] == ["--help", "foo", "bar", "plinge"]
-
-    @classmethod
-    @unittest.skip("not working properly")
-    # TODO fix args
-    def test_add_args(cls):
-        # this is a hack as normally there is only one element
-        sys.argv = sys.argv[1:]
-        # assert sys.argv[1:] == []
-        args = ["--help", "foox", "barx", "plingex"]
-        Util.add_sys_argv(args)
-        assert sys.argv[1:] == ["--help", "foox", "barx", "plingex"]
 
     @classmethod
     def test_copy_anything(cls):
@@ -174,26 +149,6 @@ class Util0Test(AmiAnyTest):
         url = "https://foo.bar/plugh/bloop.xml"
         assert Util.get_file_from_url(url) == "bloop.xml"
 
-    @unittest.skip("NYI")
-    def test_make_id_from_match_and_idgen(self):
-        """idgen is of the form <grouo>some text<group>
-        where groups correspond to named capture groups in regex
-        """
-        idgen = "12/CMA.34"
-        components = ["", ("decision", "\\d+"), "/", ("type", "CP|CMA|CMP"), "\\.", ("session", "\\d+"), ""]
-        enhanced_regex = EnhancedRegex(components=components)
-        id = enhanced_regex.make_id(idgen)
-        assert id == "12_CMA_34"
-
-    # ABANDONED
-    # def test_make_regex_with_capture_groups(self):
-    #     """idgen is of the form <grouo>some text<group>
-    #     where groups correspond to named capture groups in regex
-    #     """
-    #     enhanced_regex = EnhancedRegex()
-    #     components = ["", ("decision", "\d+"), "/", ("type", "CP|CMA|CMP"), "\.", ("session", "\d+"), ""]
-    #     regex = enhanced_regex.make_regex_with_capture_groups(components)
-    #     assert regex == '(?P<decision>\\d+)/(?P<type>CP|CMA|CMP)\\.(?P<session>\\d+)'
 
     def test_make_components_from_regex(self):
         """splits regex with capture groups into its components
@@ -238,25 +193,6 @@ class Util0Test(AmiAnyTest):
 
 
 
-
-class GithubDownloaderTest(AmiAnyTest):
-    # def __init__(self):
-    #     pass
-
-    @unittest.skip("VERY LONG, DOWNLOADS")
-    def test_explore_main_page(self):
-        owner = "petermr"
-        repo = "CEVOpen"
-        downloader = GithubDownloader(owner=owner, repo=repo, max_level=1)
-        page = None
-        downloader.make_get_main_url()
-        logger.info(f"main page {downloader.main_url}")
-        url = downloader.main_url
-        if not url:
-            print(f"no page {owner}/{repo}")
-            return None
-
-        downloader.load_page(url, level=0)
 
 
 class AmiArgParserTest(AmiAnyTest):

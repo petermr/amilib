@@ -31,8 +31,6 @@ SC_OUT_DIR = Path(OUT_DIR_TOP, "ar6")
 
 SYR_OUT_DIR = Path(SC_OUT_DIR, "syr")
 WG1_OUT_DIR = Path(SC_OUT_DIR, "wg1")
-# WG2_OUT_DIR = Path(SC_TEST_DIR, "wg2")
-# WG3_OUT_DIR = Path(SC_TEST_DIR, "wg3")
 
 TOTAL_GLOSS_DIR = Path(Resources.TEST_RESOURCES_DIR, "ar6", "test", "total_glossary")
 
@@ -54,8 +52,6 @@ force = False
 
 logger = Util.get_logger(__name__)
 
-# force = True # uncomment to run tests with this keyword
-# @unittest.skipUnless(AmiAnyTest.IS_PMR, "headless browsing still giving intermittent problems that PMR has to solve")
 class DriverTest(AmiAnyTest):
     """ Currently 8 minutes"""
     """
@@ -66,226 +62,7 @@ class DriverTest(AmiAnyTest):
 
     # ===================tests=======================
 
-    @unittest.skip("run occasionally - long test")
-    def test_download_ipcc_syr_longer_report(self):
-        driver = AmiDriver(sleep=SLEEP)
-        url = SYR_URL + "longer-report/"
-        level = 99
-        click_list = EXPAND_SECTION_PARAS
 
-        html_out = Path(SC_OUT_DIR, f"complete_text_{level}.html")
-        driver.download_expand_save(url, click_list, html_out, level=level)
-        elem_count = driver.get_lxml_element_count()
-        assert elem_count > 0
-        logger.debug(f"elem {elem_count}")
-        XmlLib.remove_common_clutter(driver.lxml_root_elem)
-
-        logger.debug(f"elem {elem_count}")
-        # TODO use HtmlLib.write() instead and remove this method
-        driver.write_html(Path(html_out))
-        driver.quit()
-
-    @unittest.skip("run occasionally - long test")
-    def test_download_syr_annexes_and_index(self):
-        """
-        A potential multiclick download
-        """
-        """
-        fails with:
-         OSError: [Errno 8] Exec format error:
-         """
-        url = SYR_URL + "annexes-and-index/"
-        driver = AmiDriver(sleep=SLEEP)
-        click_list = EXPAND_SECTION_PARAS
-
-        html_out = Path(SYR_OUT_DIR, "annexes-and-index", "gatsby.html")
-        driver.download_expand_save(url, click_list, html_out)
-        XmlLib.remove_common_clutter(driver.lxml_root_elem)
-        driver.write_html(html_out, debug=True)
-        driver.quit()
-
-    @unittest.skip("run occasionally - long test")
-    def test_download_ancillary_html(self):
-        """tries to find SPM, TS, glossary, etc
-        TODO reduce to single """
-        MAXDOCS = 2
-        for doc in [
-            (AR6_URL, "wg1"),
-            (AR6_URL, "wg2"),
-            (AR6_URL, "wg3"),  # https://www.ipcc.ch/report/ar6/wg3
-            (AR6_URL, "wg3", "spm",
-             "https://www.ipcc.ch/report/ar6/wg3/chapter/summary-for-policymakers/"),
-            (AR6_URL, "wg3", "ts",
-             "https://www.ipcc.ch/report/ar6/wg3/chapter/technical-summary/"),
-            (AR6_URL, "syr"),  # https://www.ipcc.ch/report/ar6/syr/annexes-and-index/
-            (IPCC_URL, "srocc", "chapter"),  # https://www.ipcc.ch/srocc/chapter/glossary/ - has sections
-            (IPCC_URL, "sr15", "chapter"),  # https://www.ipcc.ch/sr15/chapter/glossary/ - has sections
-            (IPCC_URL, "srccl", "chapter"),  # https://www.ipcc.ch/srccl/chapter/glossary/ - NO HTML found
-        ][:MAXDOCS]:
-            driver = AmiDriver(sleep=SLEEP)
-            outfile = Path(SC_OUT_DIR, doc[1], "glossary.html")
-            url = doc[0] + doc[1] + "/"
-            if len(doc) == 3:
-                url = url + doc[2] + "/"
-            url = url + "glossary" + "/"
-            logger.debug(f"url: {url}")
-            GLOSSARY_TOP = "glossary"
-            rep_dict = {
-                GLOSSARY_TOP:
-                    {
-                        URL: url,
-                        XPATH: None,
-                        OUTFILE: outfile
-                    }
-            }
-            keys = [GLOSSARY_TOP]
-            AmiDriver().run_from_dict(outfile, rep_dict, keys=keys)
-            driver.quit()
-
-    @unittest.skip("run occasionally - long test")
-    def test_download_with_dict(self):
-        """download single integrated glossary
-        """
-        # "https://apps.ipcc.ch/glossary/"
-
-        """useful if we can't download the integrated glossary"""
-        driver = AmiDriver(sleep=SLEEP)
-        gloss_dict = {
-            "syr":
-                {
-                    URL: "https://apps.ipcc.ch/glossary/",
-                    XPATH: None,  # this skips any button pushes
-                    OUTFILE: Path(SC_OUT_DIR, "total_glossary.html")
-                },
-            "wg1_ch1":
-                {
-                    URL: WG1_URL + "chapter/chapter-1/",
-                    XPATH: None,
-                    OUTFILE: Path(WG1_OUT_DIR, "chapter_1.html")
-                },
-            "wg1_ch2":
-                {
-                    URL: WG1_URL + "chapter/chapter-2/",
-                    XPATH: "//button[contains(@class, 'chapter-expand') and contains(text(), 'Expand section')]",
-                    OUTFILE: Path(WG1_OUT_DIR, "chapter_2.html")
-                },
-            "wg1_spm":
-                {
-                    URL: WG1_URL + "chapter/summary-for-policymakers/",
-                    XPATH: ["//button[contains(text(), 'Expand all sections')]",
-                            "//span[contains(text(), 'Expand')]"],
-                    OUTFILE: Path(WG1_OUT_DIR, "wg1", "spm.html")
-                }
-        }
-
-        # driver.execute_instruction_dict(gloss_dict, keys=["wg1_ch1"])
-        # driver.execute_instruction_dict(gloss_dict, keys=["wg1_ch2"])
-        # driver.execute_instruction_dict(gloss_dict, keys=["wg1_spm"])
-        # Use smaller test - just test the glossary download
-        driver.execute_instruction_dict(gloss_dict, keys=["syr"])
-        driver.quit()
-
-    @unittest.skip("run occasionally - long test")
-    def test_download_all_toplevel(self):
-        """
-        download toplevel material from WG1
-        likely to expand as we find more resources in it.
-        """
-
-        MAX_REPORTS = 1
-        for report_base in [
-                               (AR6_URL, "wg1"),
-                               (AR6_URL, "wg2"),
-                               (AR6_URL, "wg3"),
-                               (AR6_URL, "syr"),
-                               (IPCC_URL, "srocc"),
-                               (IPCC_URL, "sr15"),
-                               (IPCC_URL, "srccl"),
-                           ][:MAX_REPORTS]:
-            driver = AmiDriver(sleep=SLEEP)
-            outfile = Path(SC_OUT_DIR, report_base[1], "toplevel.html")
-            url = report_base[0] + report_base[1] + "/"
-            REPORT_TOP = "report_top"
-            rep_dict = {
-                REPORT_TOP:
-                    {
-                        URL: url,
-                        XPATH: None,
-                        OUTFILE: outfile
-                    }
-            }
-            keys = [REPORT_TOP]
-            AmiDriver().run_from_dict(outfile, rep_dict, keys=keys)
-            driver.quit()
-
-    @unittest.skip("run occasionally - long test")
-    def test_download_wg1_chapter_1(self):
-        """
-        download Chapter_1 from WG1
-        """
-
-        driver = AmiDriver(sleep=SLEEP)
-        ch1_url = WG1_URL + "chapter/chapter-1/"
-
-        outfile = Path(WG1_OUT_DIR, "chapter_1_noexp.html")
-        wg1_dict = {
-            "wg1_ch1":
-                {
-                    URL: ch1_url,
-                    XPATH: None,  # no expansiom
-                    OUTFILE: outfile
-                },
-        }
-        keys = ["wg1_ch1"]
-        AmiDriver().run_from_dict(outfile, wg1_dict, keys=keys)
-
-        driver.quit()
-
-    @unittest.skip("run occasionally - long test")
-    def test_download_wg_chapters(self):
-        """
-        download all chapters from WG1/2/3
-        saves output in petermr/semanticClimate and creates noexp.html as main output
-        """
-        CHAP_PREF = "Chapter"
-        for wg in range(3, 4):
-            logger.debug(f"wg = {wg}")
-            wg_url = AR6_URL + f"wg{wg}/"
-            logger.info(f"downloading from {wg_url}")
-            for ch in range(1, 18):
-                chs = str(ch)
-                if len(chs) == 1:
-                    chs = "0" + chs
-                driver = AmiDriver(sleep=SLEEP)
-                ch_url = wg_url + f"chapter/chapter-{ch}/"
-
-                outfile = Path(SC_OUT_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "noexp.html")
-                outfile_clean = Path(SC_OUT_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "clean.html")
-                outfile_figs = Path(SC_OUT_DIR, f"wg{wg}", f"{CHAP_PREF}{chs}", "figs.html")
-                wg_dict = {
-                    f"wg{wg}_ch":
-                        {
-                            URL: ch_url,
-                            XPATH: None,  # no expansiom
-                            OUTFILE: outfile
-                        },
-                }
-                AmiDriver().run_from_dict(outfile, wg_dict, keys=wg_dict.keys())
-                htmlx = HtmlLib.create_html_with_empty_head_body()
-                # create a new div to receive the driver output
-                div = ET.SubElement(HtmlLib.get_body(htmlx), "div")
-                # remove some clutter
-                if driver.lxml_root_elem is not None:
-                    XmlLib.remove_elements(driver.lxml_root_elem, xpath="//div[contains(@class, 'col-12')]",
-                                           new_parent=div, debug=True)
-                    # write the in-driver tree
-                    XmlLib.write_xml(driver.lxml_rootx_elem, outfile_clean)
-
-                    XmlLib.write_xml(htmlx, outfile_figs)
-
-                driver.quit()
-                # print(f"break for test, remove later")
-                # break
 
     def test_total_glossary(self):
         """Ayush has written code to download the total glossary.
@@ -405,41 +182,6 @@ class DriverTest(AmiAnyTest):
                 logger.debug(f"qitem {qitem0, desc}")
                 wikiwriter.writerow([term, qitem0, desc, wikidata_hits])
 
-    @unittest.skip("no idea what this does - I only wrote it!")
-    def test_abbreviations_wikimedia_WIKI(self):
-        """
-        reads an acronym file as CSV and looks up entries in Wikidata and Wikipedia
-        TODO move elsewhere
-        """
-        abbrev_file = Path(TOTAL_GLOSS_DIR, "glossaries", "total", "acronyms.csv")
-        logger.info(f"looking up acronym file {abbrev_file} in Wikidata")
-        offset = 1000
-        count = 0
-        MAXCOUNT = 3
-        for start in range(0, 3):
-            end = start + 1
-            lookup = WikidataLookup()
-            output_file = Path(TOTAL_GLOSS_DIR, "glossaries", "total", f"acronyms_wiki_{start}_{end}.csv")
-            with open(output_file, "w", encoding="UTF-8") as fout:
-                csvwriter = csv.writer(fout)
-                csvwriter.writerow(['abb', 'term', 'qid', 'desc', 'hits'])
-                with open(abbrev_file, newline='') as input:
-                    csvreader = csv.reader(input)
-                    for i, row in enumerate(csvreader):
-                        abb = row[0]
-                        term = row[1]
-                        qitem0, desc, hits = lookup.lookup_wikidata(term)
-                        if qitem0 is None:
-                            logger.warning(f"failed on text: {row}")
-                            # qitem0, desc, hits = lookup.lookup_wikidata(abb)
-                            if qitem0 is None:
-                                logger.warning(f"failed on text {term} and abbreviation: {abb}")
-                                out_row = [abb, term, "?", "?", "?"]
-                            else:
-                                out_row = [abb, term, qitem0, desc, hits]
-                        else:
-                            out_row = [abb, term, qitem0, desc, hits]
-                        csvwriter.writerow(out_row)
 
     def test_add_wikipedia_to_abbreviations_WIKI(self):
         """
@@ -525,35 +267,3 @@ class DriverTest(AmiAnyTest):
             driver.quit()
 
 
-# def test_plot_mentions(self):
-#
-#     from pyvis.network import Network
-#     import networkx as nx
-#     nx_graph = nx.cycle_graph(10)
-#     nx_graph.nodes[1]['title'] = 'Number 1'
-#     nx_graph.nodes[1]['group'] = 1
-#     nx_graph.nodes[3]['title'] = 'I belong to a different group!'
-#     nx_graph.nodes[3]['group'] = 10
-#     nx_graph.add_node(20, size=20, title='couple', group=2)
-#     nx_graph.add_node(21, size=15, title='couple', group=2)
-#     nx_graph.add_edge(20, 21, weight=5)
-#     nx_graph.add_node(25, size=25, label='lonely', title='lonely node', group=3)
-#     nt = Network('500px', '500px')
-#     # populates the nodes and edges data structures
-#     nt.from_nx(nx_graph)
-#     nt.show('nx.html')
-
-
-# cleaned_ipcc_graph = pd.read_csv(str(Path(TOTAL_GLOSS_DIR, "mentions.csv")))
-#
-# # cleaned_ipcc_graph = cleaning_nan(mention_df, ['source', 'package','target', 'section'])
-# ipcc_graph_with_coloured_nodes = get_package_names(cleaned_ipcc_graph, "package.json")
-# ipcc_graph_with_coloured_nodes.to_csv('coloured.csv')
-# make_graph(ipcc_graph_with_coloured_nodes, source='source', target='target', colour ='node_colour')
-
-class Utils1Test:
-
-    @unittest.skip("not written")
-    def test_strip_guillemets(self):
-        text = "Adjustments (in relation to effective radiative forcing) « WGI »"
-        HeadlessLib.extract_chunks()

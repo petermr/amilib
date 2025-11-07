@@ -1292,28 +1292,6 @@ class AmiCorpusTest(AmiAnyTest):
 
         # assert outfile.exists(), f"{outfile} should have been created"
 
-    @unittest.skip("Test requires specific pygetpapers test data that doesn't exist")
-    def test_read_single_open_alex_files(self):
-        """
-        iterate over a directory and try to read all open alex metadata
-        only works for PMR
-
-        """
-        indir = Path(Path(Resources.TEST_RESOURCES_DIR).parent.parent.parent, "pygetpapers")
-        assert indir.exists(), f"{indir} should exist"
-        pygetpapers_test = Path(indir, "invasive_plant_species_test" )
-        assert pygetpapers_test.exists(), f"{pygetpapers_test} should exist"
-        dirs = pygetpapers_test.iterdir()
-        for dir in dirs:
-            openalex = Path(dir, "openalex-result.json")
-            if not openalex.exists():
-                logger.error(f"no {openalex}")
-            else:
-                with open(openalex, "r") as f:
-                    pydict = json.loads(f.read())
-                    logger.info(f"{pydict.keys()}")
-
-
 
 # ===================== snippets ===================
 """

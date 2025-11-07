@@ -29,14 +29,12 @@ from test.test_all import AmiAnyTest
 from test.ipcc_classes import AMIClimate, IPCCChapter, IPCCArgs
 from test.ipcc_classes import IPCC, IPCCGatsby, IPCCWordpress
 
-
 # SC_TEST_DIR = Path(OUT_DIR_TOP, "ipcc", "ar6", "test")
 
 # logger = FileLib.get_logger(__file__)
 # logger.setLevel(logging.INFO)
 logger = Util.get_logger(__name__)
 logger.setLevel(logging.INFO)
-
 
 def make_string(queries):
 
@@ -45,7 +43,6 @@ def make_string(queries):
     if type(queries) is list:
         return " ".join(queries)
     raise ValueError(f"Cannot process argument:  {queries}")
-
 
 @unittest.skip("Disabled for faster test runs during refactoring")
 class TestIPCC(AmiAnyTest):
@@ -199,26 +196,6 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
                         # csvlist.append(["", qid, "P18"])
         print(f" wrote {section_file}")
         assert section_file.exists()
-
-    @unittest.skip("REDUNDANT: Debug test, covered by other Longer Report tests")
-    def test_pdfplumber_json_longer_report_debug(self):
-        """creates AmiPDFPlumber and reads pdf and debugs"""
-        MAXPAGES = 3
-        path = Path(Resources.TEST_IPCC_LONGER_REPORT, "fulltext.pdf")
-        ami_pdfplumber = AmiPDFPlumber()
-        # pdf_json = ami_pdfplumber.create_parsed_json(path)
-        plumber_json = ami_pdfplumber.create_ami_plumber_json(path)
-        assert type(plumber_json) is AmiPlumberJson
-        metadata_ = plumber_json.pdf_json_dict['metadata']
-        print(f"k {plumber_json.keys, metadata_.keys} \n====Pages====\n"
-              # f"{len(plumber_json['pages'])} "
-              # f"\n\n page_keys {c['pages'][0].items()}"
-              )
-        pages = plumber_json.get_ami_json_pages()
-        assert len(pages) == 85
-        for page in pages[:MAXPAGES]:
-            ami_pdfplumber.debug_page(page)
-        # pprint.pprint(f"c {c}[:20]")
 
     @unittest.skip("input file missing")
     def test_strip_decorations_from_raw_expand_wg3_ch09_old_INPUT_FAILS(self):
@@ -394,32 +371,6 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
                                     Path(Resources.TEMP_DIR, "ipcc", rep, chapter_no_out,
                                          f"{DE_WORDPRESS}_styles.html"),
                                     debug=True)
-
-    @unittest.skip("probably redundant")
-    def test_download_sr15_as_utf8(self):
-        """
-        maybe obsolete
-        """
-        url = "https://www.ipcc.ch/sr15/chapter/chapter-1/"
-        response = requests.get(url, headers={"user-agent": "myApp/1.0.0"})
-        content = response.content
-        content_string = content.decode("UTF-8")
-        chapter_no_out = "01"
-        rep = "sr15"
-        outfile = Path(Resources.TEMP_DIR, "ipcc", rep, f"Chapter{chapter_no_out}", f"{WORDPRESS}_1.html")
-        with open(outfile, "w", encoding="UTF-8") as f:
-            f.write(content_string)
-
-        content_html = ET.fromstring(content_string, HTMLParser())
-
-        paras = content_html.xpath("//p")
-        # check degree character is encoded
-        assert paras[0].text[:41] == "Understanding the impacts of 1.5°C global"
-        for p in paras[:10]:
-            print(f"p> {p.text}")
-        head_elems = content_html.xpath("/html/head/*")
-        for head_elem in head_elems:
-            print(f"h> {ET.tostring(head_elem)}")
 
     @unittest.skip("robots may be disallowed")
     def test_download_wg_chapter_and_strip_non_content(self):
@@ -845,7 +796,6 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         Returns
         -------
 
-
         """
         infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", f"{HTML_WITH_IDS}.html")
         assert infile.exists()
@@ -975,7 +925,6 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         Returns
         -------
 
-
         """
         infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", f"{HTML_WITH_IDS}.html")
         assert infile.exists()
@@ -1008,7 +957,6 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
 
         Returns
         -------
-
 
         """
         infile = Path(Resources.TEST_RESOURCES_DIR, "ipcc", "wg3", "Chapter03", f"{HTML_WITH_IDS}.html")
@@ -1696,8 +1644,6 @@ E                +    where exists = PosixPath('/Users/pm286/workspace/amilib/te
         outpath = Path(Resources.TEMP_DIR, "ipcc", "cleaned_content", "wg1", "Chapter01", "edited_html_with_ids.html")
         HtmlLib.write_html_file(editor.html, outpath, debug=True)
         assert outpath.exists(), f"output {outpath} must exist"
-
-
 
 @unittest.skip("Disabled for faster test runs during refactoring")
 class TestIPCCDownloadHTML(AmiAnyTest):

@@ -1,1 +1,1 @@
-__version__ = "1.1.0a1" # merged pmr202510 with encyclopedia
+__version__ = "1.0.0a8"

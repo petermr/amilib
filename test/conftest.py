@@ -4,6 +4,7 @@ Ensures all tests run without opening GUI windows.
 """
 import os
 import sys
+import warnings
 from pathlib import Path
 
 # Configure environment for headless operation BEFORE any imports
@@ -11,6 +12,17 @@ os.environ['MPLBACKEND'] = 'Agg'
 if 'DISPLAY' not in os.environ:
     os.environ['DISPLAY'] = ':99'
 os.environ['GRAPHVIZ_DOT'] = 'dot'
+
+# Filter out SWIG-related deprecation warnings from C extensions (lxml, etc.)
+# These warnings come from SWIG bindings (typically from lxml) and are harmless.
+# They are emitted during module import before Python's warnings system can filter them,
+# so they may still appear in test output. This is a known issue with SWIG bindings
+# in Python 3.12 and does not affect functionality.
+# Set up warnings filters in Python to suppress them when possible
+warnings.filterwarnings("ignore", message=".*builtin type SwigPyPacked.*")
+warnings.filterwarnings("ignore", message=".*builtin type SwigPyObject.*")
+warnings.filterwarnings("ignore", message=".*builtin type swigvarlink.*")
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="importlib._bootstrap")
 
 # Note: amilib should be installed with 'pip install -e .' for tests to work properly
 
@@ -38,6 +50,12 @@ def pytest_configure(config):
     import warnings
     warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")
     warnings.filterwarnings("ignore", category=UserWarning, module="PIL")
+    
+    # Filter out SWIG-related deprecation warnings from C extensions (lxml, etc.)
+    # These warnings come from SWIG bindings and are harmless
+    warnings.filterwarnings("ignore", message=".*builtin type SwigPyPacked.*")
+    warnings.filterwarnings("ignore", message=".*builtin type SwigPyObject.*")
+    warnings.filterwarnings("ignore", message=".*builtin type swigvarlink.*")
 
 def pytest_collection_modifyitems(config, items):
     """Add markers to tests based on their names and filter out application tests."""
