@@ -1,0 +1,98 @@
+digraph EncyclopediaClustering {
+    compound=true;
+    
+    // Define node styles
+    node [shape=box style=filled fontname="Helvetica" fontsize=10];
+    edge [fontname="Helvetica" fontsize=9];
+    
+    label = "Encyclopedia Entry Clustering Workflow\nBased on Description Text Similarity";
+    labelloc = t;
+    fontsize = 20;
+    fontcolor = blue;
+    fontname = "Helvetica";
+    
+    // Overall graph layout direction
+    rankdir=TB;
+    
+    // Input/Output nodes
+    AmiEncyclopedia [label="AmiEncyclopedia\n(entries with description_html)" fillcolor=lightblue];
+    ClusteredEncyclopedia [label="AmiEncyclopedia\n(entries with cluster_id)" fillcolor=lightgreen];
+    ClusterReport [label="Cluster Report\n(HTML/JSON)" fillcolor=lightyellow];
+    
+    // Main orchestrator
+    Clusterer [label="AmiEncyclopediaClusterer\n- cluster_entries()\n- assign_clusters_to_entries()\n- get_cluster_statistics()" fillcolor=cyan];
+    
+    // Processing components
+    TextExtractor [label="TextExtractor\n- extract_text()\n- preprocess_text()\n- batch_extract()" fillcolor=lightpink];
+    EmbeddingGen [label="EmbeddingGenerator\n- generate_embeddings()\n- Model: all-MiniLM-L6-v2" fillcolor=lightyellow];
+    ClusterAlgo [label="ClusterAlgorithm\n(KMeans/Agglomerative/DBSCAN)\n- fit()\n- predict()" fillcolor=orange];
+    Evaluator [label="ClusterEvaluator\n- evaluate()\n- silhouette_score()\n- cluster_size_distribution()" fillcolor=wheat];
+    
+    // Configuration
+    Config [label="ClusterConfig\n- method\n- n_clusters\n- embedding_model\n- clustering_algorithm" fillcolor=lavender shape=ellipse];
+    
+    // Workflow edges
+    AmiEncyclopedia -> Clusterer [label="Input"];
+    Config -> Clusterer [label="Configuration"];
+    
+    Clusterer -> TextExtractor [label="1. Extract Descriptions"];
+    TextExtractor -> EmbeddingGen [label="2. Plain Text"];
+    EmbeddingGen -> ClusterAlgo [label="3. Embeddings"];
+    ClusterAlgo -> Evaluator [label="4. Cluster Labels"];
+    Evaluator -> Clusterer [label="5. Metrics"];
+    
+    Clusterer -> ClusteredEncyclopedia [label="6. Assign Clusters"];
+    Clusterer -> ClusterReport [label="7. Generate Report"];
+    
+    // Subgraph for preprocessing details
+    subgraph cluster_preprocessing {
+        label = "Text Preprocessing";
+        labelloc = b;
+        fontsize = 12;
+        style = dashed;
+        
+        HTMLText [label="HTML Text\n(description_html)" fillcolor=lightgray];
+        PlainText [label="Plain Text\n(stripped tags)" fillcolor=lightgray];
+        PreprocessedText [label="Preprocessed Text\n(lowercase, normalized)" fillcolor=lightgray];
+        
+        HTMLText -> PlainText [label="strip_html_tags()"];
+        PlainText -> PreprocessedText [label="preprocess_text()"];
+    }
+    
+    TextExtractor -> HTMLText [style=dashed];
+    PreprocessedText -> EmbeddingGen [style=dashed];
+    
+    // Subgraph for clustering details
+    subgraph cluster_clustering {
+        label = "Clustering Pipeline";
+        labelloc = b;
+        fontsize = 12;
+        style = dashed;
+        
+        Embeddings [label="Embeddings\n(numpy array)" fillcolor=lightgray];
+        ClusterLabels [label="Cluster Labels\n(numpy array)" fillcolor=lightgray];
+        ClusterStats [label="Cluster Statistics\n(sizes, metrics)" fillcolor=lightgray];
+        
+        Embeddings -> ClusterLabels [label="fit() + predict()"];
+        ClusterLabels -> ClusterStats [label="evaluate()"];
+    }
+    
+    EmbeddingGen -> Embeddings [style=dashed];
+    ClusterAlgo -> ClusterLabels [style=dashed];
+    Evaluator -> ClusterStats [style=dashed];
+    
+    // External libraries
+    SentenceTransformers [label="sentence-transformers\nlibrary" fillcolor=palegreen shape=ellipse style=dashed];
+    Sklearn [label="scikit-learn\nlibrary" fillcolor=palegreen shape=ellipse style=dashed];
+    Numpy [label="numpy\nlibrary" fillcolor=palegreen shape=ellipse style=dashed];
+    
+    SentenceTransformers -> EmbeddingGen [style=dashed color=gray];
+    Sklearn -> ClusterAlgo [style=dashed color=gray];
+    Sklearn -> Evaluator [style=dashed color=gray];
+    Numpy -> EmbeddingGen [style=dashed color=gray];
+    
+    // Rank same level nodes
+    { rank=same; TextExtractor; EmbeddingGen; ClusterAlgo; Evaluator; }
+    { rank=same; AmiEncyclopedia; ClusteredEncyclopedia; ClusterReport; }
+}
+

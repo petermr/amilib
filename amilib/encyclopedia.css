@@ -1,0 +1,36 @@
+/* Encyclopedia styling */
+div[role="ami_entry"] {
+    border: solid 1px;
+    margin: 1px;
+}
+
+.synonym-group {
+    background-color: #f9f9f9;
+    margin: 5px 0;
+}
+
+.synonyms {
+    font-style: italic;
+    color: #666;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
