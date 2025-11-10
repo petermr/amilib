@@ -6918,3 +6918,177 @@ Traceback (most recent call last):
   File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
     raise Exception("Failed to connect to database: 'my_db'")
 Exception: Failed to connect to database: 'my_db'
+ERROR ami_corpus.py:119:Container has no file
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:119:Container has no file
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR test_bib.py:376:Exec Not implemented
+ERROR test_bib.py:379:FAQ Not implemented
+ERROR test_bib.py:382:Ref Not implemented
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR test_bib.py:1555:cannot parse /Users/pm286/workspace/amilib/test/resources/jats/amoc/PMC11441558/fulltext.xml; error Document is empty, line 1, column 1 (fulltext.xml, line 1)
+ERROR test_bib.py:1555:cannot parse /Users/pm286/workspace/amilib/test/resources/jats/amoc/PMC10853552/fulltext.xml; error Space required after 'PUBLIC', line 1, column 25 (fulltext.xml, line 1)
+ERROR test_dict.py:1430:no title given for dictionary
+ERROR test_dict.py:1577:404 cannot find https://api.github.com/repos/petermr/amilib/tree/pmr_aug/test/chapter11
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/edited_toplevel.html
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: the following arguments are required: --operation
+>>
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: argument --value: invalid int value: 'foo'
+>>
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: argument --operation: invalid choice: 'search' (choose from 'annotate', 'counts', 'index', 'no_input_styles')
+>>
+ERROR test_pdf.py:119:this is testing logger ERROR
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR file_lib.py:713:Failed to connect to database: 'my_db'
+Traceback (most recent call last):
+  File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
+    raise Exception("Failed to connect to database: 'my_db'")
+Exception: Failed to connect to database: 'my_db'
+ERROR file_lib.py:713:Failed to connect to database: 'my_db'
+Traceback (most recent call last):
+  File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
+    raise Exception("Failed to connect to database: 'my_db'")
+Exception: Failed to connect to database: 'my_db'
+ERROR wikimedia.py:2128:curlicue type <class 'str'>
+ERROR ami_corpus.py:119:Container has no file
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:119:Container has no file
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR test_bib.py:376:Exec Not implemented
+ERROR test_bib.py:379:FAQ Not implemented
+ERROR test_bib.py:382:Ref Not implemented
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR test_bib.py:1555:cannot parse /Users/pm286/workspace/amilib/test/resources/jats/amoc/PMC11441558/fulltext.xml; error Document is empty, line 1, column 1 (fulltext.xml, line 1)
+ERROR test_bib.py:1555:cannot parse /Users/pm286/workspace/amilib/test/resources/jats/amoc/PMC10853552/fulltext.xml; error Space required after 'PUBLIC', line 1, column 25 (fulltext.xml, line 1)
+ERROR test_dict.py:1430:no title given for dictionary
+ERROR test_dict.py:1577:404 cannot find https://api.github.com/repos/petermr/amilib/tree/pmr_aug/test/chapter11
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/edited_toplevel.html
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: the following arguments are required: --operation
+>>
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: argument --value: invalid int value: 'foo'
+>>
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: argument --operation: invalid choice: 'search' (choose from 'annotate', 'counts', 'index', 'no_input_styles')
+>>
+ERROR test_pdf.py:119:this is testing logger ERROR
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR file_lib.py:713:Failed to connect to database: 'my_db'
+Traceback (most recent call last):
+  File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
+    raise Exception("Failed to connect to database: 'my_db'")
+Exception: Failed to connect to database: 'my_db'
+ERROR file_lib.py:713:Failed to connect to database: 'my_db'
+Traceback (most recent call last):
+  File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
+    raise Exception("Failed to connect to database: 'my_db'")
+Exception: Failed to connect to database: 'my_db'
+ERROR wikimedia.py:2128:curlicue type <class 'str'>
+ERROR ami_corpus.py:119:Container has no file
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:119:Container has no file
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR test_bib.py:376:Exec Not implemented
+ERROR test_bib.py:379:FAQ Not implemented
+ERROR test_bib.py:382:Ref Not implemented
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR ami_corpus.py:107:self.infiles is None
+ERROR test_bib.py:1555:cannot parse /Users/pm286/workspace/amilib/test/resources/jats/amoc/PMC11441558/fulltext.xml; error Document is empty, line 1, column 1 (fulltext.xml, line 1)
+ERROR test_bib.py:1555:cannot parse /Users/pm286/workspace/amilib/test/resources/jats/amoc/PMC10853552/fulltext.xml; error Space required after 'PUBLIC', line 1, column 25 (fulltext.xml, line 1)
+ERROR test_dict.py:1430:no title given for dictionary
+ERROR test_dict.py:1577:404 cannot find https://api.github.com/repos/petermr/amilib/tree/pmr_aug/test/chapter11
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/stripped_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg2/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/edited_toplevel.html
+ERROR ami_html.py:1516:file does not exist /Users/pm286/workspace/amilib/test/resources/ar6/wg3/edited_toplevel.html
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: the following arguments are required: --operation
+>>
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: argument --value: invalid int value: 'foo'
+>>
+ERROR ami_args.py:262:Captured argparse error:
+<<usage: _jb_pytest_runner.py [-h] --value VALUE --operation
+                            {annotate,counts,index,no_input_styles}
+_jb_pytest_runner.py: error: argument --operation: invalid choice: 'search' (choose from 'annotate', 'counts', 'index', 'no_input_styles')
+>>
+ERROR test_pdf.py:119:this is testing logger ERROR
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1460:not a full html element
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR ami_html.py:1431:cannot create <head> on html elem; not written
+ERROR file_lib.py:713:Failed to connect to database: 'my_db'
+Traceback (most recent call last):
+  File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
+    raise Exception("Failed to connect to database: 'my_db'")
+Exception: Failed to connect to database: 'my_db'
+ERROR file_lib.py:713:Failed to connect to database: 'my_db'
+Traceback (most recent call last):
+  File "/Users/pm286/workspace/amilib/test/test_util.py", line 265, in test_logger
+    raise Exception("Failed to connect to database: 'my_db'")
+Exception: Failed to connect to database: 'my_db'
+ERROR wikimedia.py:2128:curlicue type <class 'str'>

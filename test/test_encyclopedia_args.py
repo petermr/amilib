@@ -95,7 +95,8 @@ class EncyclopediaArgsTest(AmiAnyTest):
     def test_encyclopedia_args_process_args_missing_inpath(self):
         """Test that process_args() raises error when inpath is missing"""
         args = EncyclopediaArgs()
-        args.args = {}  # Empty args dict
+        # Set arg_dict with inpath as None to trigger validation error
+        args.arg_dict = {"inpath": None}
         
         with self.assertRaises(ValueError) as context:
             args.process_args()
@@ -110,7 +111,7 @@ class EncyclopediaArgsTest(AmiAnyTest):
             self.skipTest(f"Test file not found: {test_file}")
         
         args = EncyclopediaArgs()
-        args.args = {
+        args.arg_dict = {
             "inpath": str(test_file),
             "outpath": str(self.temp_dir / "output.html"),
             "title": "Test Title",
@@ -134,7 +135,7 @@ class EncyclopediaArgsTest(AmiAnyTest):
             self.skipTest(f"Test file not found: {test_file}")
         
         args = EncyclopediaArgs()
-        args.args = {
+        args.arg_dict = {
             "inpath": str(test_file),
         }
         
