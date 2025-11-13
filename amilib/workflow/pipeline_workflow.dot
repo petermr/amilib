@@ -1,0 +1,58 @@
+digraph pipeline_workflow {
+    rankdir=LR;
+    node [fontname="Arial", fontsize=10];
+    
+    // Content nodes (ellipses)
+    query [shape=ellipse, style=filled, fillcolor=lightblue, label="Query\n(EPMC search terms)"];
+    corpus [shape=ellipse, style=filled, fillcolor=lightblue, label="Corpus\n(XML, PDF, JSON files)"];
+    html_corpus [shape=ellipse, style=filled, fillcolor=lightblue, label="HTML Corpus\n(converted files)"];
+    filtered_corpus [shape=ellipse, style=filled, fillcolor=lightblue, label="Filtered Corpus\n(refined dataset)"];
+    phrases [shape=ellipse, style=filled, fillcolor=lightblue, label="Common Phrases\n(TF-IDF results)"];
+    encyclopedia [shape=ellipse, style=filled, fillcolor=lightblue, label="Encyclopedia\n(Wikipedia-enhanced terms)"];
+    annotated_corpus [shape=ellipse, style=filled, fillcolor=lightblue, label="Annotated Corpus\n(full text with annotations)"];
+    knowledge_graph [shape=ellipse, style=filled, fillcolor=lightblue, label="Knowledge Graph\n(GraphML format)"];
+    
+    // Operation nodes (rectangles)
+    pygetpapers_ui [shape=rect, style=filled, fillcolor=lightgreen, label="1. pygetpapers UI\nQuery EPMC API"];
+    download [shape=rect, style=filled, fillcolor=lightgreen, label="2. Download\nCreate local corpus\n(XML, PDF, JSON)"];
+    convert_xml [shape=rect, style=filled, fillcolor=lightgreen, label="3. Convert XML to HTML\namilib.ami_html"];
+    datatables [shape=rect, style=filled, fillcolor=lightgreen, label="4. JQuery Datatables\nFilter & refine corpus\namilib.datatables_module"];
+    unsupervised_search [shape=rect, style=filled, fillcolor=lightgreen, label="5. Unsupervised Search\nTF-IDF phrase extraction\ntxt2phrases"];
+    encyclopedia_creation [shape=rect, style=filled, fillcolor=lightgreen, label="6. Encyclopedia Creation\nWikipedia & authorities\namilib.ami_encyclopedia"];
+    supervised_search [shape=rect, style=filled, fillcolor=lightgreen, label="7. Supervised Search\nEncyclopedia annotation\namilib.html_marker"];
+    kg_creation [shape=rect, style=filled, fillcolor=lightgreen, label="8. Knowledge Graph\nCreate GraphML\namilib.ami_graph"];
+    
+    // Workflow connections
+    query -> pygetpapers_ui;
+    pygetpapers_ui -> download;
+    download -> corpus;
+    corpus -> convert_xml;
+    convert_xml -> html_corpus;
+    html_corpus -> datatables;
+    datatables -> filtered_corpus;
+    
+    // Branching from step 4 (datatables) to both 5 and 7
+    filtered_corpus -> unsupervised_search;
+    filtered_corpus -> supervised_search;
+    
+    // Step 5 feeds into step 6
+    unsupervised_search -> phrases;
+    phrases -> encyclopedia_creation;
+    encyclopedia_creation -> encyclopedia;
+    
+    // Step 7 uses encyclopedia
+    encyclopedia -> supervised_search;
+    supervised_search -> annotated_corpus;
+    
+    // Step 8 creates knowledge graph
+    annotated_corpus -> kg_creation;
+    encyclopedia -> kg_creation;
+    kg_creation -> knowledge_graph;
+    
+    // Tool labels
+    {rank=same; pygetpapers_ui; download}
+    {rank=same; convert_xml; datatables}
+    {rank=same; unsupervised_search; supervised_search}
+    {rank=same; encyclopedia_creation; kg_creation}
+}
+
