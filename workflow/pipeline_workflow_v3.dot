@@ -1,0 +1,89 @@
+digraph pipeline_workflow_v3 {
+    rankdir=LR;
+    node [fontname="Arial", fontsize=10];
+
+    // Content nodes outside corpus
+    query [shape=ellipse, style=filled, fillcolor=lightblue, label="Query\n(EPMC search terms)"];
+
+    // Encyclopedia container
+    subgraph cluster_encyclopedia {
+        label="Encyclopedia A";
+        style=filled;
+        fillcolor="#dfefff";
+        fontsize=12;
+
+        phrases [shape=ellipse, style=filled, fillcolor=white, label="Weighted Phrases"];
+        encyclopedia_entries [shape=ellipse, style=filled, fillcolor=white, label="Entries\n(Wikipedia-enhanced)"];
+        knowledge_graph [shape=ellipse, style=filled, fillcolor=white, label="Knowledge Graph"];
+
+        // Programs operating within encyclopedia
+        txt2phrases [shape=rect, style="filled,rounded", fillcolor="#ffe9c6", color="#c97b00", penwidth=2, label="txt2phrases\nOR\ndocanalysis"];
+        ami_encyclopedia [shape=rect, style="filled,rounded", fillcolor="#ffe9c6", color="#c97b00", penwidth=2, label="ami_encyclopedia"];
+        ami_graph [shape=rect, style="filled,rounded", fillcolor="#ffe9c6", color="#c97b00", penwidth=2, label="ami_graph"];
+    }
+
+    // Corpus container with programs inside
+    subgraph cluster_corpus {
+        label="Corpus";
+        style=filled;
+        fillcolor="#e0f7ff";
+        fontsize=12;
+
+        // Files container
+        subgraph cluster_files {
+            label="";
+            style=filled;
+            fillcolor="#d0e7ff";
+            fontsize=10;
+
+            corpus_xml [shape=ellipse, style=filled, fillcolor=white, label="JSON\nPDF\nXML"];
+            ami_html [shape=rect, style="filled,rounded", fillcolor="#ffe9c6", color="#c97b00", penwidth=2, label="ami_html"];
+            corpus_html [shape=ellipse, style=filled, fillcolor=white, label="HTML"];
+            
+            // Vertical stacking in order: XML -> ami_html -> HTML
+            corpus_xml -> ami_html [style=invis, weight=100];
+            ami_html -> corpus_html [style=invis, weight=100];
+        }
+
+        corpus_datatables [shape=ellipse, style=filled, fillcolor=white, label="Datatables"];
+        corpus_annotated_html [shape=ellipse, style=filled, fillcolor=white, label="Annotated HTML"];
+
+        // Programs operating entirely within the corpus
+        jquery_tables [shape=rect, style="filled,rounded", fillcolor="#ffe9c6", color="#c97b00", penwidth=2, label="datatables_module"];
+        html_marker [shape=rect, style="filled,rounded", fillcolor="#ffe9c6", color="#c97b00", penwidth=2, label="html_marker"];
+    }
+
+    // Programs outside corpus (uniform style)
+    pygetpapers [shape=rect, style="filled,rounded", fillcolor="#ffe9c6", color="#c97b00", penwidth=2, label="pygetpapers"];
+
+    // Workflow connections
+    query -> pygetpapers;
+    pygetpapers -> corpus_xml;
+
+    corpus_xml -> ami_html;
+    ami_html -> corpus_html;
+
+    corpus_html -> jquery_tables;
+    corpus_xml -> jquery_tables;
+    jquery_tables -> corpus_datatables [label="creates"];
+
+    jquery_tables -> txt2phrases [arrowhead=normal, arrowtail=normal, dir=forward];
+    txt2phrases -> phrases;
+
+    phrases -> ami_encyclopedia;
+    ami_encyclopedia -> encyclopedia_entries;
+
+    encyclopedia_entries -> pygetpapers [label="supervised search"];
+    encyclopedia_entries -> html_marker;
+    corpus_html -> html_marker;
+    html_marker -> corpus_annotated_html [label="creates"];
+
+    corpus_annotated_html -> ami_graph;
+    encyclopedia_entries -> ami_graph;
+    ami_graph -> knowledge_graph;
+
+    // Ranks to keep layout tidy - enforce vertical ordering
+    {rank=same; pygetpapers}
+    pygetpapers -> phrases [style=invis, weight=100];
+    
+}

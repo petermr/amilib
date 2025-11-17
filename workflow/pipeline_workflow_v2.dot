@@ -1,0 +1,101 @@
+digraph pipeline_workflow {
+    rankdir=LR;
+    node [fontname="Arial", fontsize=10];
+    
+    // Content nodes (ellipses)
+    query [shape=ellipse, style=filled, fillcolor=lightblue, label="Query\n(EPMC search terms)"];
+    phrases [shape=ellipse, style=filled, fillcolor=lightblue, label="Common Phrases\n(TF-IDF results)"];
+    
+    // Encyclopedia container with subgraph showing contents
+    subgraph cluster_encyclopedia {
+        label="Encyclopedia";
+        style=filled;
+        fillcolor=lightblue;
+        fontsize=12;
+        
+        encyclopedia_terms [shape=ellipse, style=filled, fillcolor=white, label="Terms\n(Wikipedia-enhanced)"];
+        knowledge_graph [shape=ellipse, style=filled, fillcolor=white, label="Knowledge Graph\n(GraphML format)"];
+    }
+    
+    // Corpus container with subgraph showing contents
+    subgraph cluster_corpus {
+        label="Corpus";
+        style=filled;
+        fillcolor=lightblue;
+        fontsize=12;
+        
+        corpus_xml [shape=ellipse, style=filled, fillcolor=white, label="XML files"];
+        corpus_pdf [shape=ellipse, style=filled, fillcolor=white, label="PDF files"];
+        corpus_json [shape=ellipse, style=filled, fillcolor=white, label="JSON files"];
+        corpus_html [shape=ellipse, style=filled, fillcolor=white, label="HTML files"];
+        corpus_datatables [shape=ellipse, style=filled, fillcolor=white, label="Datatables\n(filtered/refined)"];
+        corpus_annotated_html [shape=ellipse, style=filled, fillcolor=white, label="Annotated HTML\n(full text with annotations)"];
+    }
+    
+    // Programs with distinct styles (boxed by program type)
+    // pygetpapers programs (orange)
+    pygetpapers_op [shape=rect, style="filled,rounded", fillcolor=orange, color=darkorange, penwidth=2, label="1. pygetpapers\nQuery EPMC API\nDownload corpus\n(XML, PDF, JSON)\n[pygetpapers]"];
+    
+    // amilib programs (lightgreen)
+    convert_xml [shape=rect, style="filled,rounded", fillcolor=lightgreen, color=darkgreen, penwidth=2, label="2. Convert XML to HTML\n[amilib.ami_html]"];
+    datatables [shape=rect, style="filled,rounded", fillcolor=lightgreen, color=darkgreen, penwidth=2, label="3. JQuery Datatables\nFilter & refine corpus\n[amilib.datatables_module]"];
+    encyclopedia_creation [shape=rect, style="filled,rounded", fillcolor=lightgreen, color=darkgreen, penwidth=2, label="5. Encyclopedia Creation\nWikipedia & authorities\n[amilib.ami_encyclopedia]"];
+    supervised_search [shape=rect, style="filled,rounded", fillcolor=lightgreen, color=darkgreen, penwidth=2, label="6. Supervised Search\nEncyclopedia annotation\n[amilib.html_marker]"];
+    kg_creation [shape=rect, style="filled,rounded", fillcolor=lightgreen, color=darkgreen, penwidth=2, label="7. Knowledge Graph\nCreate GraphML\n[amilib.ami_graph]"];
+    
+    // txt2phrases programs (yellow)
+    unsupervised_search [shape=rect, style="filled,rounded", fillcolor=yellow, color=gold, penwidth=2, label="4. Unsupervised Search\nTF-IDF phrase extraction\n[txt2phrases]"];
+    
+    // docanalysis programs (lightblue)
+    docanalysis_unsupervised [shape=rect, style="filled,rounded", fillcolor=lightblue, color=blue, penwidth=2, label="[docanalysis]"];
+    docanalysis_supervised [shape=rect, style="filled,rounded", fillcolor=lightblue, color=blue, penwidth=2, label="[docanalysis]"];
+    
+    // Workflow connections
+    query -> pygetpapers_op;
+    pygetpapers_op -> corpus_xml;
+    pygetpapers_op -> corpus_pdf;
+    pygetpapers_op -> corpus_json;
+    
+    // HTML conversion loops back into corpus
+    corpus_xml -> convert_xml;
+    convert_xml -> corpus_html [label="adds to"];
+    
+    // Datatables operates on corpus and creates datatables within corpus
+    corpus_html -> datatables;
+    corpus_xml -> datatables;
+    corpus_pdf -> datatables;
+    corpus_json -> datatables;
+    datatables -> corpus_datatables [label="creates"];
+    
+    // Branching from corpus (via datatables) to both 4 and 6
+    corpus_datatables -> unsupervised_search;
+    corpus_datatables -> docanalysis_unsupervised;
+    unsupervised_search -> phrases;
+    docanalysis_unsupervised -> phrases;
+    
+    corpus_datatables -> supervised_search;
+    corpus_datatables -> docanalysis_supervised;
+    docanalysis_supervised -> supervised_search;
+    
+    // Step 4 feeds into step 5
+    phrases -> encyclopedia_creation;
+    encyclopedia_creation -> encyclopedia_terms;
+    
+    // Step 6 uses encyclopedia and creates annotated HTML in corpus
+    encyclopedia_terms -> supervised_search;
+    corpus_html -> supervised_search;
+    supervised_search -> corpus_annotated_html [label="creates"];
+    
+    // Step 7 creates knowledge graph (inside encyclopedia)
+    corpus_annotated_html -> kg_creation;
+    encyclopedia_terms -> kg_creation;
+    kg_creation -> knowledge_graph;
+    
+    // Tool labels
+    {rank=same; pygetpapers_op}
+    {rank=same; convert_xml; datatables}
+    {rank=same; unsupervised_search; docanalysis_unsupervised}
+    {rank=same; supervised_search; docanalysis_supervised}
+    {rank=same; encyclopedia_creation; kg_creation}
+}
+
