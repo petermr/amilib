@@ -95,8 +95,7 @@ class EncyclopediaArgsTest(AmiAnyTest):
     def test_encyclopedia_args_process_args_missing_inpath(self):
         """Test that process_args() raises error when inpath is missing"""
         args = EncyclopediaArgs()
-        # Set arg_dict with inpath as None to trigger validation error
-        args.arg_dict = {"inpath": None}
+        args.args = {}  # Empty args dict
         
         with self.assertRaises(ValueError) as context:
             args.process_args()
