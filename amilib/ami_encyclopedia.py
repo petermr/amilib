@@ -22,9 +22,22 @@ from amilib.file_lib import FileLib
 from amilib.util import Util
 from amilib.xml_lib import XmlLib
 
+logger = Util.get_logger(__name__)
+
 
 class AmiEncyclopedia:
     """Main encyclopedia class for managing entries and normalization"""
+    
+    # Checkbox reason constants
+    REASON_MISSING_WIKIPEDIA = "missing_wikipedia"
+    REASON_GENERAL_TERM = "general_term"
+    REASON_FALSE_WIKIPEDIA = "false_wikipedia"
+    REASON_USER_SELECTED = "user_selected"
+    
+    # Entry category constants
+    CATEGORY_TRUE_WIKIPEDIA = "true_wikipedia"
+    CATEGORY_NO_WIKIPEDIA = "no_wikipedia"
+    CATEGORY_DISAMBIGUATION = "disambiguation"
     
     def __init__(self, title: str = "Encyclopedia"):
         self.title = title
@@ -32,6 +45,20 @@ class AmiEncyclopedia:
         self.entries = []  # Processed entries as list of dicts
         self.normalized_entries = {}
         self.synonym_groups = {}  # Dict[str, Dict] - aggregated synonym groups by Wikidata ID
+    
+    @classmethod
+    def get_valid_checkbox_reasons(cls) -> list:
+        """Get list of valid checkbox reason values
+        
+        Returns:
+            List of valid reason strings
+        """
+        return [
+            cls.REASON_MISSING_WIKIPEDIA,
+            cls.REASON_GENERAL_TERM,
+            cls.REASON_FALSE_WIKIPEDIA,
+            cls.REASON_USER_SELECTED,
+        ]
         
     def create_from_html_file(self, html_file: Path) -> 'AmiEncyclopedia':
         """Create encyclopedia from HTML file"""
@@ -120,7 +147,30 @@ class AmiEncyclopedia:
                         pass
                 
                 # Extract wikipedia_url for display purposes (also needed for Wikidata ID lookup)
-                wikipedia_url = entry_element.get('wikipedia_url', '')
+                # Try from entry element first
+                wikipedia_url = (
+                    entry_element.get('wikipedia_url') or 
+                    entry_element.get('wikipediaURL') or  # CamelCase variant
+                    entry_element.get('wikipedia-url') or  # Kebab-case variant
+                    ''
+                )
+                
+                # If not found, try from original HTML element (AmiDictionary may strip attributes)
+                if not wikipedia_url and hasattr(self, '_original_html_root'):
+                    try:
+                        original_entries = self._original_html_root.xpath(f".//div[@role='ami_entry' and @term='{term}']")
+                        if not original_entries:
+                            original_entries = self._original_html_root.xpath(f".//div[@role='ami_entry' and @name='{term}']")
+                        if original_entries:
+                            orig_entry = original_entries[0]
+                            wikipedia_url = (
+                                orig_entry.get('wikipedia_url') or 
+                                orig_entry.get('wikipediaURL') or
+                                orig_entry.get('wikipedia-url') or
+                                ''
+                            )
+                    except Exception:
+                        pass
                 
                 # Priority 2: If no Wikipedia URL attribute, check for Wikipedia link in the search term paragraph
                 if not wikipedia_url:
@@ -661,8 +711,36 @@ class AmiEncyclopedia:
         
         return False
     
+    def _classify_entry(self, entry_or_group: Dict) -> str:
+        """Classify entry into category based on Wikipedia status
+        
+        Categories:
+        - true_wikipedia: Valid Wikipedia page found (not disambiguation)
+        - no_wikipedia: No Wikipedia page found
+        - false_wikipedia: Wikipedia page found but wrong (user marks manually)
+        - too_general: Wikipedia page found but too general (user marks manually)
+        - disambiguation: Disambiguation page found
+        
+        Args:
+            entry_or_group: Entry dictionary or synonym group dictionary
+            
+        Returns:
+            Category string
+        """
+        wikipedia_url = entry_or_group.get('wikipedia_url', '')
+        has_wikipedia = bool(wikipedia_url)
+        
+        if not has_wikipedia:
+            return self.CATEGORY_NO_WIKIPEDIA
+        
+        if self._is_disambiguation_page(wikipedia_url):
+            return self.CATEGORY_DISAMBIGUATION
+        
+        # Default to true_wikipedia (can be marked as false/too_general manually)
+        return self.CATEGORY_TRUE_WIKIPEDIA
+    
     def _add_entry_checkboxes(self, entry_div, group: Dict, entry_id: str, wikidata_id: str = '') -> None:
-        """Add checkboxes to entry div for synonym groups
+        """Add checkboxes to entry div for synonym groups based on category
         
         Args:
             entry_div: Entry div element
@@ -670,78 +748,135 @@ class AmiEncyclopedia:
             entry_id: Entry identifier
             wikidata_id: Wikidata ID for merge checkbox
         """
+        # Classify entry
+        category = self._classify_entry(group)
+        
         # Create checkbox container div
         checkbox_container = ET.SubElement(entry_div, "div")
         checkbox_container.attrib["class"] = "entry-checkboxes"
+        checkbox_container.attrib["data-category"] = category
         
-        # 1. Missing Wikipedia checkbox
-        if not self._has_wikipedia_url(group):
+        # Add checkboxes based on category
+        if category == self.CATEGORY_NO_WIKIPEDIA:
+            # Missing Wikipedia checkbox (checked by default)
             self._add_hide_checkbox(
                 checkbox_container,
                 entry_id,
-                reason="missing_wikipedia",
-                checked=True,  # Checked by default
+                reason=self.REASON_MISSING_WIKIPEDIA,
+                checked=True,
                 label="Hide (missing Wikipedia)"
             )
         
-        # 2. General term checkbox (always present)
-        self._add_hide_checkbox(
-            checkbox_container,
-            entry_id,
-            reason="general_term",
-            checked=False,  # Unchecked by default
-            label="Hide (too general)"
-        )
+        elif category == self.CATEGORY_DISAMBIGUATION:
+            # Disambiguation selector
+            wikipedia_url = group.get('wikipedia_url', '')
+            self._add_disambiguation_selector(
+                checkbox_container,
+                entry_id,
+                wikipedia_url,
+                wikidata_id
+            )
+            # Also allow hiding
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason=self.REASON_GENERAL_TERM,
+                checked=False,
+                label="Hide (too general)"
+            )
         
-        # 3. Merge synonyms checkbox (if has multiple synonyms)
+        elif category == self.CATEGORY_TRUE_WIKIPEDIA:
+            # True Wikipedia entries can be marked as false or too general
+            # False Wikipedia checkbox
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason=self.REASON_FALSE_WIKIPEDIA,
+                checked=False,
+                label="Hide (false Wikipedia)"
+            )
+            # Too general checkbox
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason=self.REASON_GENERAL_TERM,
+                checked=False,
+                label="Hide (too general)"
+            )
+        
+        # Merge synonyms checkbox (if has multiple synonyms)
         synonyms = group.get('synonyms', [])
         if len(synonyms) > 1:
             self._add_merge_checkbox(
                 checkbox_container,
                 entry_id,
                 wikidata_id if wikidata_id and wikidata_id.startswith('Q') else '',
-                checked=True  # Checked if synonyms should be merged
-            )
-        
-        # 4. Disambiguation selector (if disambiguation page)
-        wikipedia_url = group.get('wikipedia_url', '')
-        if self._is_disambiguation_page(wikipedia_url):
-            self._add_disambiguation_selector(
-                checkbox_container,
-                entry_id,
-                wikipedia_url
+                checked=True  # Checked by default (automatic collapse)
             )
     
     def _add_entry_checkboxes_for_raw_entry(self, entry_div, entry: Dict, entry_id: str) -> None:
-        """Add checkboxes to entry div for raw entries (no synonym groups)
+        """Add checkboxes to entry div for raw entries (no synonym groups) based on category
         
         Args:
             entry_div: Entry div element
             entry: Raw entry dictionary
             entry_id: Entry identifier
         """
+        # Classify entry
+        category = self._classify_entry(entry)
+        
         # Create checkbox container div
         checkbox_container = ET.SubElement(entry_div, "div")
         checkbox_container.attrib["class"] = "entry-checkboxes"
+        checkbox_container.attrib["data-category"] = category
         
-        # 1. Missing Wikipedia checkbox
-        if not self._has_wikipedia_url(entry):
+        # Add checkboxes based on category
+        if category == self.CATEGORY_NO_WIKIPEDIA:
+            # Missing Wikipedia checkbox (checked by default)
             self._add_hide_checkbox(
                 checkbox_container,
                 entry_id,
-                reason="missing_wikipedia",
-                checked=True,  # Checked by default
+                reason=self.REASON_MISSING_WIKIPEDIA,
+                checked=True,
                 label="Hide (missing Wikipedia)"
             )
         
-        # 2. General term checkbox (always present)
-        self._add_hide_checkbox(
-            checkbox_container,
-            entry_id,
-            reason="general_term",
-            checked=False,  # Unchecked by default
-            label="Hide (too general)"
-        )
+        elif category == self.CATEGORY_DISAMBIGUATION:
+            # Disambiguation selector
+            wikipedia_url = entry.get('wikipedia_url', '')
+            self._add_disambiguation_selector(
+                checkbox_container,
+                entry_id,
+                wikipedia_url,
+                ''
+            )
+            # Also allow hiding
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason=self.REASON_GENERAL_TERM,
+                checked=False,
+                label="Hide (too general)"
+            )
+        
+        elif category == self.CATEGORY_TRUE_WIKIPEDIA:
+            # True Wikipedia entries can be marked as false or too general
+            # False Wikipedia checkbox
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason=self.REASON_FALSE_WIKIPEDIA,
+                checked=False,
+                label="Hide (false Wikipedia)"
+            )
+            # Too general checkbox
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason=self.REASON_GENERAL_TERM,
+                checked=False,
+                label="Hide (too general)"
+            )
     
     def _add_hide_checkbox(self, container, entry_id: str, reason: str, checked: bool, label: str) -> None:
         """Add hide checkbox to container
@@ -809,13 +944,14 @@ class AmiEncyclopedia:
         label_elem.attrib["for"] = checkbox_id
         label_elem.text = "Merge synonyms"
     
-    def _add_disambiguation_selector(self, container, entry_id: str, wikipedia_url: str) -> None:
-        """Add disambiguation selector to container
+    def _add_disambiguation_selector(self, container, entry_id: str, wikipedia_url: str, wikidata_id: str = '') -> None:
+        """Add disambiguation selector to container with populated options
         
         Args:
             container: Parent element to add selector to
             entry_id: Entry identifier
             wikipedia_url: Original disambiguation page URL
+            wikidata_id: Wikidata ID (optional, for future use)
         """
         # Create wrapper div
         wrapper = ET.SubElement(container, "div")
@@ -834,16 +970,103 @@ class AmiEncyclopedia:
         select.attrib["class"] = "disambiguation-selector"
         select.attrib["data-entry-id"] = entry_id
         select.attrib["id"] = selector_id
+        if wikidata_id:
+            select.attrib["data-wikidata-id"] = wikidata_id
         
         # Add default option
         default_option = ET.SubElement(select, "option")
         default_option.attrib["value"] = ""
-        default_option.text = "-- Select --"
+        default_option.text = "-- Select Wikipedia page --"
         
-        # Note: In a full implementation, we would fetch disambiguation options
-        # from Wikipedia API or parse the disambiguation page HTML
-        # For now, we just create the structure with the original URL as an option
-        if wikipedia_url:
-            option = ET.SubElement(select, "option")
-            option.attrib["value"] = wikipedia_url
-            option.text = wikipedia_url
+        # Try to fetch disambiguation options from Wikipedia page
+        disambiguation_options = self._get_disambiguation_options(wikipedia_url)
+        
+        if disambiguation_options:
+            # Populate with actual options
+            for option_url, option_title in disambiguation_options:
+                option = ET.SubElement(select, "option")
+                option.attrib["value"] = option_url
+                option.text = option_title
+                # Try to extract Wikidata ID from option if available
+                # (This would require additional lookup, so we skip for now)
+        else:
+            # Fallback: Add original URL as option
+            if wikipedia_url:
+                option = ET.SubElement(select, "option")
+                option.attrib["value"] = wikipedia_url
+                option.text = wikipedia_url.split('/wiki/')[-1].replace('_', ' ') if '/wiki/' in wikipedia_url else wikipedia_url
+    
+    def _get_disambiguation_options(self, wikipedia_url: str) -> list:
+        """Get disambiguation options from Wikipedia page
+        
+        Args:
+            wikipedia_url: Disambiguation page URL
+            
+        Returns:
+            List of tuples (url, title) for disambiguation options, or empty list
+        """
+        if not wikipedia_url:
+            return []
+        
+        try:
+            from amilib.wikimedia import WikipediaPage
+            
+            # Lookup Wikipedia page
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_url(wikipedia_url)
+            if not wikipedia_page or not wikipedia_page.html_elem:
+                return []
+            
+            # Check if it's actually a disambiguation page
+            if not wikipedia_page.is_disambiguation_page():
+                return []
+            
+            # Get disambiguation list
+            disambig_list = wikipedia_page.get_disambiguation_list()
+            if not disambig_list:
+                return []
+            
+            # Extract options from list items
+            options = []
+            base_url = "https://en.wikipedia.org"
+            
+            for li in disambig_list:
+                # Find links in the list item
+                links = li.xpath(".//a[@href]")
+                if links:
+                    for link in links:
+                        href = link.get('href', '')
+                        if href:
+                            # Convert relative URLs to absolute
+                            if href.startswith('/wiki/'):
+                                full_url = base_url + href
+                            elif href.startswith('//'):
+                                full_url = 'https:' + href
+                            elif href.startswith('http'):
+                                full_url = href
+                            else:
+                                continue
+                            
+                            # Get link text (title)
+                            title = link.text_content().strip() if hasattr(link, 'text_content') else (link.text or '').strip()
+                            if not title:
+                                # Fallback: extract from URL
+                                if '/wiki/' in full_url:
+                                    title = full_url.split('/wiki/')[-1].replace('_', ' ')
+                            
+                            if title and full_url:
+                                options.append((full_url, title))
+                                break  # Use first link in each list item
+                else:
+                    # No links, use text content as title
+                    text = li.text_content().strip() if hasattr(li, 'text_content') else (li.text or '').strip()
+                    if text:
+                        # Try to construct URL from text
+                        url_term = text.replace(' ', '_')
+                        full_url = f"{base_url}/wiki/{url_term}"
+                        options.append((full_url, text))
+            
+            return options[:20]  # Limit to first 20 options
+            
+        except Exception as e:
+            logger.warning(f"Could not fetch disambiguation options for {wikipedia_url}: {e}")
+            return []

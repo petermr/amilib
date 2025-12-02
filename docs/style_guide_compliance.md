@@ -83,6 +83,77 @@ def test_service_connection_basic(self, mock_get):
 
 **Rationale**: Tests should verify real behavior, not mocked behavior. Mocks hide integration issues and make tests less reliable. If external services are unreliable, tests should handle both success and failure cases gracefully.
 
+### No Magic Strings
+
+**Rule:** Do not use hardcoded string literals for values that represent constants, identifiers, or configuration. Use class constants or accessor methods instead.
+
+**✅ CORRECT:**
+```python
+class AmiEncyclopedia:
+    # Define constants as class attributes
+    REASON_MISSING_WIKIPEDIA = "missing_wikipedia"
+    REASON_GENERAL_TERM = "general_term"
+    REASON_FALSE_WIKIPEDIA = "false_wikipedia"
+    
+    @classmethod
+    def get_valid_checkbox_reasons(cls) -> list:
+        """Get list of valid checkbox reason values"""
+        return [
+            cls.REASON_MISSING_WIKIPEDIA,
+            cls.REASON_GENERAL_TERM,
+            cls.REASON_FALSE_WIKIPEDIA,
+        ]
+    
+    def _add_hide_checkbox(self, container, entry_id: str, reason: str):
+        # Use constant instead of string literal
+        if reason == self.REASON_MISSING_WIKIPEDIA:
+            # ...
+```
+
+```python
+# In tests - use constants from the class
+from amilib.ami_encyclopedia import AmiEncyclopedia
+
+def test_checkbox_reasons(self):
+    valid_reasons = AmiEncyclopedia.get_valid_checkbox_reasons()
+    assert AmiEncyclopedia.REASON_MISSING_WIKIPEDIA in valid_reasons
+```
+
+**❌ WRONG:**
+```python
+class AmiEncyclopedia:
+    def _add_hide_checkbox(self, container, entry_id: str, reason: str):
+        # Magic string - hard to maintain and error-prone
+        if reason == "missing_wikipedia":
+            # ...
+```
+
+```python
+# In tests - using magic strings
+def test_checkbox_reasons(self):
+    assert reason in ['missing_wikipedia', 'general_term', 'false_wikipedia']
+    # Hard to maintain - if constant changes, test breaks
+```
+
+**Rationale**: Magic strings (hardcoded string literals) create several problems:
+- **Typos**: Easy to make mistakes with string literals
+- **Maintainability**: If a value changes, must update it in multiple places
+- **Discoverability**: Hard to find all usages of a string value
+- **Type safety**: No way to validate string values at development time
+- **Refactoring**: Difficult to rename or change values across codebase
+
+**When to Use Constants:**
+- Configuration values (e.g., checkbox reasons, entry categories)
+- Status codes or state identifiers
+- Attribute names that are used in multiple places
+- Any string that represents a fixed set of possible values
+
+**When String Literals Are Acceptable:**
+- User-facing messages or labels
+- Format strings or templates
+- One-off string values that are not reused
+- File extensions or MIME types (though constants are still preferred)
+
 ## Violations Encountered
 
 ### 1. Relative Imports
