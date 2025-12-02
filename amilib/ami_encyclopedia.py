@@ -416,9 +416,13 @@ class AmiEncyclopedia:
         # If no synonym groups were created (e.g., no Wikidata IDs), output raw entries
         if not synonym_groups or len(synonym_groups) == 0:
             # Output entries that couldn't be normalized
-            for entry in self.entries:
+            for idx, entry in enumerate(self.entries):
                 entry_div = ET.SubElement(encyclopedia_div, "div")
                 entry_div.attrib["role"] = "ami_entry"
+                
+                # Generate entry ID
+                entry_id = self._generate_entry_id_from_entry(entry, idx)
+                entry_div.attrib["data-entry-id"] = entry_id
                 
                 # Add term
                 term = entry.get('term', '')
@@ -429,6 +433,9 @@ class AmiEncyclopedia:
                 search_term = entry.get('search_term', '')
                 if search_term:
                     entry_div.attrib["name"] = search_term
+                
+                # Add checkboxes BEFORE other content
+                self._add_entry_checkboxes_for_raw_entry(entry_div, entry, entry_id)
                 
                 # Add Wikipedia URL if available
                 wikipedia_url = entry.get('wikipedia_url', '')
@@ -471,10 +478,17 @@ class AmiEncyclopedia:
             # Add Wikidata ID as primary identifier
             entry_div.attrib["wikidataID"] = wikidata_id
             
+            # Generate entry ID for checkboxes
+            entry_id = self._generate_entry_id(group, wikidata_id)
+            entry_div.attrib["data-entry-id"] = entry_id
+            
             # Add canonical term
             canonical_term = group.get('canonical_term', '')
             if canonical_term:
                 entry_div.attrib["term"] = canonical_term
+            
+            # Add checkboxes BEFORE other content
+            self._add_entry_checkboxes(entry_div, group, entry_id, wikidata_id)
             
             # Add Wikipedia URL link (for display)
             wikipedia_url = group.get('wikipedia_url', '')
@@ -549,3 +563,287 @@ class AmiEncyclopedia:
             'total_synonyms': total_synonyms,
             'compression_ratio': compression_ratio
         }
+    
+    def _generate_entry_id(self, group: Dict, wikidata_id: str) -> str:
+        """Generate unique entry ID for checkbox data-entry-id attribute
+        
+        Args:
+            group: Synonym group dictionary
+            wikidata_id: Wikidata ID (may be 'no_wikidata_id' or 'invalid_wikidata_id')
+            
+        Returns:
+            Unique entry identifier string
+        """
+        # Primary: Use Wikidata ID if valid
+        if wikidata_id and wikidata_id not in ('no_wikidata_id', 'invalid_wikidata_id'):
+            return wikidata_id
+        
+        # Secondary: Use canonical term
+        canonical_term = group.get('canonical_term', '')
+        if canonical_term:
+            # Sanitize term for use as ID
+            safe_term = re.sub(r'[^a-zA-Z0-9_]', '_', canonical_term)
+            return safe_term
+        
+        # Fallback: Use first search term
+        search_terms = group.get('search_terms', [])
+        if search_terms:
+            safe_term = re.sub(r'[^a-zA-Z0-9_]', '_', search_terms[0])
+            return safe_term
+        
+        # Last resort: Generate ID
+        return f"entry_{hash(str(group)) % 10000}"
+    
+    def _generate_entry_id_from_entry(self, entry: Dict, index: int) -> str:
+        """Generate entry ID from raw entry dictionary
+        
+        Args:
+            entry: Raw entry dictionary
+            index: Entry index for fallback
+            
+        Returns:
+            Unique entry identifier string
+        """
+        # Primary: Use Wikidata ID if available
+        wikidata_id = entry.get('wikidata_id', '')
+        if wikidata_id and wikidata_id not in ('no_wikidata_id', 'invalid_wikidata_id'):
+            return wikidata_id
+        
+        # Secondary: Use term
+        term = entry.get('term', '')
+        if term:
+            safe_term = re.sub(r'[^a-zA-Z0-9_]', '_', term)
+            return safe_term
+        
+        # Fallback: Use search term
+        search_term = entry.get('search_term', '')
+        if search_term:
+            safe_term = re.sub(r'[^a-zA-Z0-9_]', '_', search_term)
+            return safe_term
+        
+        # Last resort: Generate ID
+        return f"entry_{index}"
+    
+    def _has_wikipedia_url(self, group_or_entry: Dict) -> bool:
+        """Check if group/entry has Wikipedia URL
+        
+        Args:
+            group_or_entry: Synonym group or entry dictionary
+            
+        Returns:
+            True if has Wikipedia URL, False otherwise
+        """
+        wikipedia_url = group_or_entry.get('wikipedia_url', '')
+        return bool(wikipedia_url and wikipedia_url.strip())
+    
+    def _is_disambiguation_page(self, wikipedia_url: str) -> bool:
+        """Detect if Wikipedia URL is a disambiguation page
+        
+        Args:
+            wikipedia_url: Wikipedia URL string
+            
+        Returns:
+            True if disambiguation page, False otherwise
+        """
+        if not wikipedia_url:
+            return False
+        
+        # Check for disambiguation pattern in URL
+        url_lower = wikipedia_url.lower()
+        if '(disambiguation)' in url_lower or 'disambiguation' in url_lower:
+            return True
+        
+        # Check URL path for disambiguation pattern
+        if '/wiki/' in wikipedia_url:
+            path_part = wikipedia_url.split('/wiki/')[-1]
+            if '(disambiguation)' in path_part.lower():
+                return True
+        
+        return False
+    
+    def _add_entry_checkboxes(self, entry_div, group: Dict, entry_id: str, wikidata_id: str = '') -> None:
+        """Add checkboxes to entry div for synonym groups
+        
+        Args:
+            entry_div: Entry div element
+            group: Synonym group dictionary
+            entry_id: Entry identifier
+            wikidata_id: Wikidata ID for merge checkbox
+        """
+        # Create checkbox container div
+        checkbox_container = ET.SubElement(entry_div, "div")
+        checkbox_container.attrib["class"] = "entry-checkboxes"
+        
+        # 1. Missing Wikipedia checkbox
+        if not self._has_wikipedia_url(group):
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason="missing_wikipedia",
+                checked=True,  # Checked by default
+                label="Hide (missing Wikipedia)"
+            )
+        
+        # 2. General term checkbox (always present)
+        self._add_hide_checkbox(
+            checkbox_container,
+            entry_id,
+            reason="general_term",
+            checked=False,  # Unchecked by default
+            label="Hide (too general)"
+        )
+        
+        # 3. Merge synonyms checkbox (if has multiple synonyms)
+        synonyms = group.get('synonyms', [])
+        if len(synonyms) > 1:
+            self._add_merge_checkbox(
+                checkbox_container,
+                entry_id,
+                wikidata_id if wikidata_id and wikidata_id.startswith('Q') else '',
+                checked=True  # Checked if synonyms should be merged
+            )
+        
+        # 4. Disambiguation selector (if disambiguation page)
+        wikipedia_url = group.get('wikipedia_url', '')
+        if self._is_disambiguation_page(wikipedia_url):
+            self._add_disambiguation_selector(
+                checkbox_container,
+                entry_id,
+                wikipedia_url
+            )
+    
+    def _add_entry_checkboxes_for_raw_entry(self, entry_div, entry: Dict, entry_id: str) -> None:
+        """Add checkboxes to entry div for raw entries (no synonym groups)
+        
+        Args:
+            entry_div: Entry div element
+            entry: Raw entry dictionary
+            entry_id: Entry identifier
+        """
+        # Create checkbox container div
+        checkbox_container = ET.SubElement(entry_div, "div")
+        checkbox_container.attrib["class"] = "entry-checkboxes"
+        
+        # 1. Missing Wikipedia checkbox
+        if not self._has_wikipedia_url(entry):
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason="missing_wikipedia",
+                checked=True,  # Checked by default
+                label="Hide (missing Wikipedia)"
+            )
+        
+        # 2. General term checkbox (always present)
+        self._add_hide_checkbox(
+            checkbox_container,
+            entry_id,
+            reason="general_term",
+            checked=False,  # Unchecked by default
+            label="Hide (too general)"
+        )
+    
+    def _add_hide_checkbox(self, container, entry_id: str, reason: str, checked: bool, label: str) -> None:
+        """Add hide checkbox to container
+        
+        Args:
+            container: Parent element to add checkbox to
+            entry_id: Entry identifier
+            reason: Reason for hiding (missing_wikipedia, general_term, user_selected)
+            checked: Whether checkbox should be checked by default
+            label: Label text for checkbox
+        """
+        # Create wrapper div
+        wrapper = ET.SubElement(container, "div")
+        wrapper.attrib["class"] = "entry-checkbox-wrapper"
+        
+        # Create checkbox ID
+        checkbox_id = f"hide_{entry_id}_{reason}".replace(' ', '_').replace('/', '_')
+        
+        # Create checkbox input
+        checkbox = ET.SubElement(wrapper, "input")
+        checkbox.attrib["type"] = "checkbox"
+        checkbox.attrib["class"] = "entry-hide-checkbox"
+        checkbox.attrib["data-entry-id"] = entry_id
+        checkbox.attrib["data-reason"] = reason
+        checkbox.attrib["id"] = checkbox_id
+        
+        if checked:
+            checkbox.attrib["checked"] = "checked"
+        
+        # Create label
+        label_elem = ET.SubElement(wrapper, "label")
+        label_elem.attrib["for"] = checkbox_id
+        label_elem.text = label
+    
+    def _add_merge_checkbox(self, container, entry_id: str, wikidata_id: str, checked: bool) -> None:
+        """Add merge synonyms checkbox to container
+        
+        Args:
+            container: Parent element to add checkbox to
+            entry_id: Entry identifier
+            wikidata_id: Wikidata ID for grouping
+            checked: Whether checkbox should be checked by default
+        """
+        # Create wrapper div
+        wrapper = ET.SubElement(container, "div")
+        wrapper.attrib["class"] = "entry-checkbox-wrapper"
+        
+        # Create checkbox ID
+        checkbox_id = f"merge_{entry_id}".replace(' ', '_').replace('/', '_')
+        
+        # Create checkbox input
+        checkbox = ET.SubElement(wrapper, "input")
+        checkbox.attrib["type"] = "checkbox"
+        checkbox.attrib["class"] = "merge-synonyms-checkbox"
+        checkbox.attrib["data-entry-id"] = entry_id
+        if wikidata_id:
+            checkbox.attrib["data-wikidata-id"] = wikidata_id
+        checkbox.attrib["id"] = checkbox_id
+        
+        if checked:
+            checkbox.attrib["checked"] = "checked"
+        
+        # Create label
+        label_elem = ET.SubElement(wrapper, "label")
+        label_elem.attrib["for"] = checkbox_id
+        label_elem.text = "Merge synonyms"
+    
+    def _add_disambiguation_selector(self, container, entry_id: str, wikipedia_url: str) -> None:
+        """Add disambiguation selector to container
+        
+        Args:
+            container: Parent element to add selector to
+            entry_id: Entry identifier
+            wikipedia_url: Original disambiguation page URL
+        """
+        # Create wrapper div
+        wrapper = ET.SubElement(container, "div")
+        wrapper.attrib["class"] = "disambiguation-wrapper"
+        
+        # Create selector ID
+        selector_id = f"disambiguation_{entry_id}".replace(' ', '_').replace('/', '_')
+        
+        # Create label
+        label_elem = ET.SubElement(wrapper, "label")
+        label_elem.attrib["for"] = selector_id
+        label_elem.text = "Select Wikipedia page:"
+        
+        # Create select element
+        select = ET.SubElement(wrapper, "select")
+        select.attrib["class"] = "disambiguation-selector"
+        select.attrib["data-entry-id"] = entry_id
+        select.attrib["id"] = selector_id
+        
+        # Add default option
+        default_option = ET.SubElement(select, "option")
+        default_option.attrib["value"] = ""
+        default_option.text = "-- Select --"
+        
+        # Note: In a full implementation, we would fetch disambiguation options
+        # from Wikipedia API or parse the disambiguation page HTML
+        # For now, we just create the structure with the original URL as an option
+        if wikipedia_url:
+            option = ET.SubElement(select, "option")
+            option.attrib["value"] = wikipedia_url
+            option.text = wikipedia_url
