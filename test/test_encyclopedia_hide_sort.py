@@ -22,6 +22,11 @@ from pathlib import Path
 import shutil
 import lxml.etree as ET
 
+try:
+    import requests
+except ImportError:
+    requests = None
+
 from amilib.ami_encyclopedia import AmiEncyclopedia
 from test.resources import Resources
 from test.test_all import AmiAnyTest
@@ -1002,75 +1007,54 @@ class EncyclopediaHideSortTest(AmiAnyTest):
     
     def test_metadata_creation(self):
         """Test metadata creation with system date"""
-        from datetime import datetime
+        encyclopedia = AmiEncyclopedia(title="Test Encyclopedia")
+        metadata = encyclopedia.metadata
         
-        metadata = {
-            "created": datetime.now().isoformat() + "Z",
-            "last_edited": datetime.now().isoformat() + "Z",
-            "title": "Test Encyclopedia",
-            "version": "1.0.0",
-            "actions": [],
-            "hidden_entries": [],
-            "statistics": {}
-        }
-        
-        assert "created" in metadata, "Metadata should have created date"
-        assert "last_edited" in metadata, "Metadata should have last_edited date"
-        assert metadata["created"].endswith("Z"), "Created date should be ISO 8601 format"
-        assert metadata["last_edited"].endswith("Z"), "Last edited date should be ISO 8601 format"
+        assert AmiEncyclopedia.METADATA_CREATED in metadata, "Metadata should have created date"
+        assert AmiEncyclopedia.METADATA_LAST_EDITED in metadata, "Metadata should have last_edited date"
+        assert metadata[AmiEncyclopedia.METADATA_CREATED].endswith("Z"), "Created date should be ISO 8601 format"
+        assert metadata[AmiEncyclopedia.METADATA_LAST_EDITED].endswith("Z"), "Last edited date should be ISO 8601 format"
+        assert metadata[AmiEncyclopedia.METADATA_TITLE] == "Test Encyclopedia", "Title should match"
+        assert metadata[AmiEncyclopedia.METADATA_VERSION] == "1.0.0", "Version should be 1.0.0"
         
         print("✅ Metadata creation works")
     
     def test_metadata_action_recording(self):
         """Test recording actions in metadata"""
-        from datetime import datetime
-        
-        metadata = {
-            "created": datetime.now().isoformat() + "Z",
-            "last_edited": datetime.now().isoformat() + "Z",
-            "title": "Test Encyclopedia",
-            "version": "1.0.0",
-            "actions": []
-        }
+        encyclopedia = AmiEncyclopedia(title="Test Encyclopedia")
+        metadata = encyclopedia.metadata
         
         # Record hide action
         action1 = {
-            "action": "hide",
+            "action": AmiEncyclopedia.ACTION_HIDE,
             "entry_id": "Q37836",
-            "reason": "missing_wikipedia",
-            "timestamp": datetime.now().isoformat() + "Z"
+            "reason": AmiEncyclopedia.REASON_MISSING_WIKIPEDIA,
+            "timestamp": AmiEncyclopedia._get_system_date()
         }
-        metadata["actions"].append(action1)
+        metadata[AmiEncyclopedia.METADATA_ACTIONS].append(action1)
         
         # Record disambiguation selection
         action2 = {
-            "action": "disambiguation_select",
+            "action": AmiEncyclopedia.ACTION_DISAMBIGUATION_SELECT,
             "entry_id": "entry_001",
             "selected_url": "https://en.wikipedia.org/wiki/Selected_Page",
             "selected_wikidata": "Q123",
-            "timestamp": datetime.now().isoformat() + "Z"
+            "timestamp": AmiEncyclopedia._get_system_date()
         }
-        metadata["actions"].append(action2)
+        metadata[AmiEncyclopedia.METADATA_ACTIONS].append(action2)
         
-        assert len(metadata["actions"]) == 2, "Should have 2 actions recorded"
-        assert metadata["actions"][0]["action"] == "hide", "First action should be hide"
-        assert metadata["actions"][1]["action"] == "disambiguation_select", "Second action should be disambiguation_select"
+        assert len(metadata[AmiEncyclopedia.METADATA_ACTIONS]) == 2, "Should have 2 actions recorded"
+        assert metadata[AmiEncyclopedia.METADATA_ACTIONS][0]["action"] == AmiEncyclopedia.ACTION_HIDE, "First action should be hide"
+        assert metadata[AmiEncyclopedia.METADATA_ACTIONS][1]["action"] == AmiEncyclopedia.ACTION_DISAMBIGUATION_SELECT, "Second action should be disambiguation_select"
         
         print("✅ Metadata action recording works")
     
     def test_metadata_persistence(self):
         """Test that metadata can be saved and loaded"""
-        from datetime import datetime
         import json
         
-        metadata = {
-            "created": datetime.now().isoformat() + "Z",
-            "last_edited": datetime.now().isoformat() + "Z",
-            "title": "Test Encyclopedia",
-            "version": "1.0.0",
-            "actions": [],
-            "hidden_entries": []
-        }
+        encyclopedia = AmiEncyclopedia(title="Test Encyclopedia")
+        metadata = encyclopedia.metadata
         
         # Save to file
         metadata_file = self.temp_dir / "metadata.json"
@@ -1083,8 +1067,8 @@ class EncyclopediaHideSortTest(AmiAnyTest):
         with open(metadata_file, 'r') as f:
             loaded_metadata = json.load(f)
         
-        assert loaded_metadata["title"] == metadata["title"], "Loaded metadata should match"
-        assert "created" in loaded_metadata, "Loaded metadata should have created date"
+        assert loaded_metadata[AmiEncyclopedia.METADATA_TITLE] == metadata[AmiEncyclopedia.METADATA_TITLE], "Loaded metadata should match"
+        assert AmiEncyclopedia.METADATA_CREATED in loaded_metadata, "Loaded metadata should have created date"
         
         print("✅ Metadata persistence works")
     
@@ -1106,15 +1090,16 @@ class EncyclopediaHideSortTest(AmiAnyTest):
         encyclopedia_div = root.xpath("//div[@role='ami_encyclopedia']")
         assert len(encyclopedia_div) > 0, "Should have encyclopedia container"
         
-        # Check for data-metadata attribute (will be added in implementation)
+        # Check for data-metadata attribute
         metadata_attr = encyclopedia_div[0].get('data-metadata')
-        # This may be None until implementation - that's expected
-        if metadata_attr:
-            try:
-                metadata = json.loads(metadata_attr)
-                assert "created" in metadata, "Metadata should have created date"
-            except json.JSONDecodeError:
-                assert False, "Metadata should be valid JSON"
+        assert metadata_attr is not None, "Metadata attribute should be present in HTML"
+        try:
+            metadata = json.loads(metadata_attr)
+            assert AmiEncyclopedia.METADATA_CREATED in metadata, "Metadata should have created date"
+            assert AmiEncyclopedia.METADATA_LAST_EDITED in metadata, "Metadata should have last_edited date"
+            assert metadata[AmiEncyclopedia.METADATA_CREATED].endswith("Z"), "Created date should be ISO 8601 format"
+        except json.JSONDecodeError:
+            assert False, "Metadata should be valid JSON"
         
         print("✅ Metadata can be stored in HTML")
     
@@ -1122,8 +1107,8 @@ class EncyclopediaHideSortTest(AmiAnyTest):
         """Test that system date is used and formatted correctly"""
         from datetime import datetime
         
-        # Get system date
-        system_date = datetime.now().isoformat() + "Z"
+        # Get system date using AmiEncyclopedia method
+        system_date = AmiEncyclopedia._get_system_date()
         
         # Verify format
         assert system_date.endswith("Z"), "Date should end with Z for UTC"
@@ -1135,6 +1120,12 @@ class EncyclopediaHideSortTest(AmiAnyTest):
             assert parsed is not None, "Date should be parseable"
         except ValueError:
             assert False, "Date should be in ISO 8601 format"
+        
+        # Verify it's used in metadata
+        encyclopedia = AmiEncyclopedia(title="Test")
+        metadata = encyclopedia.metadata
+        assert metadata[AmiEncyclopedia.METADATA_CREATED].endswith("Z"), "Metadata created date should use system date format"
+        assert metadata[AmiEncyclopedia.METADATA_LAST_EDITED].endswith("Z"), "Metadata last_edited date should use system date format"
         
         print("✅ System date format correct")
     
@@ -1587,6 +1578,137 @@ class EncyclopediaHideSortTest(AmiAnyTest):
         self._save_html_for_inspection(html_content, "test_automatic_collapse_case_synonyms")
         
         print(f"✅ Automatic collapse verified: {len(synonyms)} synonyms collapsed into 1 entry")
+    
+    def test_add_all_wikidata_ids_one_pass(self):
+        """Test adding all Wikidata IDs in one pass from GitHub URL
+        
+        Source: https://raw.githubusercontent.com/semanticClimate/internship_sC/nidhi/output_dict_path.html
+        """
+        try:
+            import requests
+        except ImportError:
+            print("⚠️  requests module not available, skipping test")
+            return
+        
+        print("🧪 Testing add all Wikidata IDs in one pass...")
+        
+        # Download HTML from GitHub
+        url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/nidhi/output_dict_path.html"
+        try:
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+            html_content = response.text
+            print(f"✅ Downloaded HTML from {url} ({len(html_content)} chars)")
+        except Exception as e:
+            print(f"⚠️  Could not download from URL: {e}")
+            # Skip test if network unavailable
+            return
+        
+        # Create encyclopedia from HTML
+        encyclopedia = AmiEncyclopedia(title="Nidhi Dictionary - One Pass")
+        encyclopedia.create_from_html_content(html_content)
+        
+        # Count entries before
+        total_entries = len(encyclopedia.entries)
+        entries_with_wd_before = sum(1 for e in encyclopedia.entries 
+                                    if e.get('wikidata_id') and e.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'))
+        
+        print(f"📊 Before lookup: {entries_with_wd_before}/{total_entries} entries have Wikidata IDs")
+        
+        # Add all Wikidata IDs in one pass (no batch size limit)
+        stats = encyclopedia.ensure_all_entries_have_wikidata_ids(batch_size=total_entries)
+        
+        # Count entries after
+        entries_with_wd_after = sum(1 for e in encyclopedia.entries 
+                                   if e.get('wikidata_id') and e.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'))
+        
+        print(f"📊 After lookup: {entries_with_wd_after}/{total_entries} entries have Wikidata IDs")
+        print(f"   Added: {entries_with_wd_after - entries_with_wd_before} Wikidata IDs")
+        print(f"   From Wikipedia URL: {stats['added_from_wikipedia_url']}")
+        print(f"   From Wikipedia term: {stats['added_from_wikipedia_term']}")
+        print(f"   From Wikidata lookup: {stats['added_from_wikidata_lookup']}")
+        print(f"   From SPARQL batch: {stats['added_from_sparql_batch']}")
+        
+        # Save for manual inspection
+        output_file = self.output_dir / "nidhi_dict_all_ids_one_pass.html"
+        encyclopedia.save_wiki_normalized_html(output_file)
+        print(f"💾 Saved to {output_file}")
+        
+        # Verify some entries got Wikidata IDs
+        assert entries_with_wd_after > entries_with_wd_before, "Should have added some Wikidata IDs"
+        assert stats['batches_processed'] == 1, f"Should process in 1 batch, got {stats['batches_processed']}"
+        
+        print("✅ One-pass lookup complete")
+    
+    def test_add_wikidata_ids_staged_100(self):
+        """Test adding Wikidata IDs in stages of 100, repeating until no further changes
+        
+        Source: https://raw.githubusercontent.com/semanticClimate/internship_sC/nidhi/output_dict_path.html
+        """
+        try:
+            import requests
+        except ImportError:
+            print("⚠️  requests module not available, skipping test")
+            return
+        
+        print("🧪 Testing staged lookup (100 IDs at a time)...")
+        
+        # Download HTML from GitHub
+        url = "https://raw.githubusercontent.com/semanticClimate/internship_sC/nidhi/output_dict_path.html"
+        try:
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+            html_content = response.text
+            print(f"✅ Downloaded HTML from {url} ({len(html_content)} chars)")
+        except Exception as e:
+            print(f"⚠️  Could not download from URL: {e}")
+            # Skip test if network unavailable
+            return
+        
+        # Create encyclopedia from HTML
+        encyclopedia = AmiEncyclopedia(title="Nidhi Dictionary - Staged")
+        encyclopedia.create_from_html_content(html_content)
+        
+        # Count entries before
+        total_entries = len(encyclopedia.entries)
+        entries_with_wd_before = sum(1 for e in encyclopedia.entries 
+                                    if e.get('wikidata_id') and e.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'))
+        
+        print(f"📊 Before lookup: {entries_with_wd_before}/{total_entries} entries have Wikidata IDs")
+        
+        # Staged lookup: 100 at a time, save after each batch
+        output_file = self.output_dir / "nidhi_dict_staged_100.html"
+        stats = encyclopedia.ensure_all_entries_have_wikidata_ids(
+            batch_size=100,
+            save_file=output_file
+        )
+        
+        # Count entries after
+        entries_with_wd_after = sum(1 for e in encyclopedia.entries 
+                                   if e.get('wikidata_id') and e.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'))
+        
+        print(f"📊 After staged lookup: {entries_with_wd_after}/{total_entries} entries have Wikidata IDs")
+        print(f"   Added: {entries_with_wd_after - entries_with_wd_before} Wikidata IDs")
+        print(f"   Batches processed: {stats['batches_processed']}")
+        print(f"   From Wikipedia URL: {stats['added_from_wikipedia_url']}")
+        print(f"   From Wikipedia term: {stats['added_from_wikipedia_term']}")
+        print(f"   From Wikidata lookup: {stats['added_from_wikidata_lookup']}")
+        print(f"   From SPARQL batch: {stats['added_from_sparql_batch']}")
+        print(f"   Still missing: {stats['entries_still_missing']}")
+        
+        # Verify file was saved
+        assert output_file.exists(), f"Output file should exist: {output_file}"
+        print(f"💾 Saved to {output_file}")
+        
+        # Verify some entries got Wikidata IDs
+        assert entries_with_wd_after > entries_with_wd_before, "Should have added some Wikidata IDs"
+        assert stats['batches_processed'] > 0, "Should have processed at least one batch"
+        
+        # Verify staged approach: should have multiple batches if more than 100 entries missing
+        if (total_entries - entries_with_wd_before) > 100:
+            assert stats['batches_processed'] > 1, f"Should process multiple batches for {total_entries} entries, got {stats['batches_processed']}"
+        
+        print("✅ Staged lookup complete")
 
 
 if __name__ == "__main__":

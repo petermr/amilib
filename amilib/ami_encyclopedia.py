@@ -9,11 +9,13 @@ Provides functionality to:
 """
 
 import re
+import json
 import lxml.etree as ET
 from pathlib import Path
 from typing import Optional, Dict, List
 from collections import defaultdict, Counter
 from urllib.parse import urlparse, unquote
+from datetime import datetime
 
 from amilib.ami_html import HtmlLib
 from amilib.wikimedia import WikipediaPage
@@ -39,12 +41,31 @@ class AmiEncyclopedia:
     CATEGORY_NO_WIKIPEDIA = "no_wikipedia"
     CATEGORY_DISAMBIGUATION = "disambiguation"
     
+    # Metadata field constants
+    METADATA_CREATED = "created"
+    METADATA_LAST_EDITED = "last_edited"
+    METADATA_TITLE = "title"
+    METADATA_VERSION = "version"
+    METADATA_ACTIONS = "actions"
+    METADATA_HIDDEN_ENTRIES = "hidden_entries"
+    METADATA_DISAMBIGUATION_SELECTIONS = "disambiguation_selections"
+    METADATA_MERGE_OPERATIONS = "merge_operations"
+    METADATA_SORT_HISTORY = "sort_history"
+    METADATA_STATISTICS = "statistics"
+    
+    # Action type constants
+    ACTION_HIDE = "hide"
+    ACTION_DISAMBIGUATION_SELECT = "disambiguation_select"
+    ACTION_MERGE_SYNONYMS = "merge_synonyms"
+    ACTION_SORT = "sort"
+    
     def __init__(self, title: str = "Encyclopedia"):
         self.title = title
         self.dictionary = None  # AmiDictionary instance (composition)
         self.entries = []  # Processed entries as list of dicts
         self.normalized_entries = {}
         self.synonym_groups = {}  # Dict[str, Dict] - aggregated synonym groups by Wikidata ID
+        self.metadata = self._create_metadata()
     
     @classmethod
     def get_valid_checkbox_reasons(cls) -> list:
@@ -59,6 +80,38 @@ class AmiEncyclopedia:
             cls.REASON_FALSE_WIKIPEDIA,
             cls.REASON_USER_SELECTED,
         ]
+    
+    @classmethod
+    def _get_system_date(cls) -> str:
+        """Get current system date in ISO 8601 format with Z suffix
+        
+        Returns:
+            ISO 8601 formatted date string with Z suffix (e.g., "2025-12-03T09:40:12Z")
+        """
+        return datetime.now().isoformat() + "Z"
+    
+    def _create_metadata(self) -> Dict:
+        """Create initial metadata dictionary with system dates
+        
+        Returns:
+            Dictionary containing metadata with created and last_edited timestamps
+        """
+        return {
+            self.METADATA_CREATED: self._get_system_date(),
+            self.METADATA_LAST_EDITED: self._get_system_date(),
+            self.METADATA_TITLE: self.title,
+            self.METADATA_VERSION: "1.0.0",
+            self.METADATA_ACTIONS: [],
+            self.METADATA_HIDDEN_ENTRIES: [],
+            self.METADATA_DISAMBIGUATION_SELECTIONS: [],
+            self.METADATA_MERGE_OPERATIONS: [],
+            self.METADATA_SORT_HISTORY: [],
+            self.METADATA_STATISTICS: {}
+        }
+    
+    def _update_last_edited(self) -> None:
+        """Update last_edited timestamp in metadata to current system date"""
+        self.metadata[self.METADATA_LAST_EDITED] = self._get_system_date()
         
     def create_from_html_file(self, html_file: Path) -> 'AmiEncyclopedia':
         """Create encyclopedia from HTML file"""
@@ -68,7 +121,7 @@ class AmiEncyclopedia:
         html_content = html_file.read_text(encoding='utf-8')
         return self.create_from_html_content(html_content)
     
-    def create_from_html_content(self, html_content: str, enable_auto_lookup: bool = False) -> 'AmiEncyclopedia':
+    def create_from_html_content(self, html_content: str) -> 'AmiEncyclopedia':
         """Create encyclopedia from HTML content"""
         # Use AmiDictionary to parse HTML
         from io import StringIO
@@ -208,38 +261,14 @@ class AmiEncyclopedia:
                             wikipedia_url = href
                 
                 # Priority 2 for Wikidata ID: If no attribute, try to extract from Wikipedia page
-                # Only auto-lookup if explicitly enabled (disabled by default for performance)
-                if not wikidata_id and wikipedia_url and enable_auto_lookup:
-                    try:
-                        # Extract page title from URL
-                        if '/wiki/' in wikipedia_url:
-                            page_title = wikipedia_url.split('/wiki/')[-1].split('#')[0].split('?')[0]
-                            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(page_title)
-                            if wikipedia_page:
-                                wikidata_url = wikipedia_page.get_wikidata_item()
-                                if wikidata_url:
-                                    # Extract Q/P ID from URL
-                                    match = re.search(r'[Ee]ntity[Pp]age/([QP]\d+)', wikidata_url)
-                                    if not match:
-                                        match = re.search(r'/([QP]\d+)(?:#|/|$)', wikidata_url)
-                                    if match:
-                                        wikidata_id = match.group(1)
-                    except Exception as e:
-                        logger = Util.get_logger(__name__)
-                        logger.warning(f"Could not extract Wikidata ID from Wikipedia URL {wikipedia_url}: {e}")
+                # Skip lookup if Wikidata ID already exists (avoid unnecessary network calls)
+                if not wikidata_id and wikipedia_url:
+                    wikidata_id = self._extract_wikidata_id_from_wikipedia_url(wikipedia_url)
                 
                 # Priority 3 for Wikidata ID: If still no Wikidata ID, try direct lookup from term
-                # Only auto-lookup if explicitly enabled (disabled by default for performance)
-                if not wikidata_id and term and enable_auto_lookup:
-                    try:
-                        from amilib.wikimedia import WikidataLookup
-                        wikidata_lookup = WikidataLookup()
-                        qitem, desc, qitems = wikidata_lookup.lookup_wikidata(term)
-                        if qitem:
-                            wikidata_id = qitem
-                    except Exception as e:
-                        logger = Util.get_logger(__name__)
-                        logger.warning(f"Could not lookup Wikidata ID for term {term}: {e}")
+                # Skip lookup if Wikidata ID already exists
+                if not wikidata_id and term:
+                    wikidata_id = self._lookup_wikidata_id_by_term(term)
                 
                 # Validate Wikidata ID format
                 if wikidata_id:
@@ -456,6 +485,13 @@ class AmiEncyclopedia:
         encyclopedia_div = ET.SubElement(body, "div")
         encyclopedia_div.attrib["role"] = "ami_encyclopedia"
         encyclopedia_div.attrib["title"] = self.title
+        
+        # Update last_edited timestamp before generating HTML
+        self._update_last_edited()
+        
+        # Add metadata as JSON string in data-metadata attribute
+        metadata_json = json.dumps(self.metadata, indent=2)
+        encyclopedia_div.attrib["data-metadata"] = metadata_json
         
         # Get aggregated synonym groups if available
         if not self.synonym_groups or len(self.synonym_groups) == 0:
@@ -1070,3 +1106,292 @@ class AmiEncyclopedia:
         except Exception as e:
             logger.warning(f"Could not fetch disambiguation options for {wikipedia_url}: {e}")
             return []
+    
+    @staticmethod
+    def _extract_qid_from_wikidata_url(wikidata_url: str) -> Optional[str]:
+        """Extract Q/P ID from Wikidata EntityPage URL
+        
+        Examples:
+            https://www.wikidata.org/wiki/Special:EntityPage/Q7942 -> Q7942
+            https://www.wikidata.org/wiki/Special:EntityPage/Q125928#sitelinks -> Q125928
+        
+        Args:
+            wikidata_url: Wikidata EntityPage URL
+            
+        Returns:
+            Wikidata ID (Q/P format) or None
+        """
+        if not wikidata_url:
+            return None
+        
+        # Pattern 1: EntityPage/Q123 or EntityPage/P123
+        match = re.search(r'[Ee]ntity[Pp]age/([QP]\d+)', wikidata_url)
+        if match:
+            return match.group(1)
+        
+        # Pattern 2: /Q123 or /P123 at end of URL
+        match = re.search(r'/([QP]\d+)(?:#|/|$)', wikidata_url)
+        if match:
+            return match.group(1)
+        
+        return None
+    
+    def _extract_wikidata_id_from_wikipedia_url(self, wikipedia_url: str) -> Optional[str]:
+        """Extract Wikidata ID from Wikipedia URL by looking up the Wikipedia page
+        
+        Args:
+            wikipedia_url: Wikipedia page URL
+            
+        Returns:
+            Wikidata ID (Q/P format) or None
+        """
+        if not wikipedia_url:
+            return None
+        
+        try:
+            # Extract page title from URL
+            if '/wiki/' in wikipedia_url:
+                page_title = wikipedia_url.split('/wiki/')[-1].split('#')[0].split('?')[0]
+                page_title = unquote(page_title)  # Decode URL encoding
+                wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(page_title)
+                if wikipedia_page:
+                    wikidata_url = wikipedia_page.get_wikidata_item()
+                    if wikidata_url:
+                        return self._extract_qid_from_wikidata_url(wikidata_url)
+        except Exception as e:
+            logger.warning(f"Could not extract Wikidata ID from Wikipedia URL {wikipedia_url}: {e}")
+        
+        return None
+    
+    def _lookup_wikidata_id_by_term(self, term: str) -> Optional[str]:
+        """Lookup Wikidata ID by term using Wikipedia lookup first, then direct Wikidata lookup
+        
+        Args:
+            term: Search term
+            
+        Returns:
+            Wikidata ID (Q/P format) or None
+        """
+        if not term:
+            return None
+        
+        # Try Wikipedia lookup first (more reliable)
+        try:
+            wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_term(term)
+            if wikipedia_page:
+                wikidata_url = wikipedia_page.get_wikidata_item()
+                if wikidata_url:
+                    qid = self._extract_qid_from_wikidata_url(wikidata_url)
+                    if qid:
+                        return qid
+        except Exception as e:
+            logger.debug(f"Wikipedia lookup failed for term '{term}': {e}")
+        
+        # Fallback to direct Wikidata lookup
+        try:
+            from amilib.wikimedia import WikidataLookup
+            wikidata_lookup = WikidataLookup()
+            qitem, desc, qitems = wikidata_lookup.lookup_wikidata(term)
+            if qitem:
+                return qitem
+        except Exception as e:
+            logger.warning(f"Could not lookup Wikidata ID for term '{term}': {e}")
+        
+        return None
+    
+    def _lookup_wikidata_ids_batch_sparql(self, terms: List[str]) -> Dict[str, Optional[str]]:
+        """Lookup multiple Wikidata IDs using SPARQL batch query (faster than individual lookups)
+        
+        Note: SPARQL batch lookup is more efficient but may have rate limits.
+        Falls back to individual lookups if SPARQL fails.
+        
+        Args:
+            terms: List of search terms
+            
+        Returns:
+            Dictionary mapping term -> Wikidata ID (or None if not found)
+        """
+        if not terms:
+            return {}
+        
+        results = {}
+        
+        try:
+            from amilib.wikimedia import WikidataSparql, NS_MAP, SPQ_RESULTS, SPQ_RESULT, SPQ_BINDING, SPQ_URI, NS_LITERAL
+            from amilib.ami_html import HtmlUtil
+            import lxml.etree as ET
+            
+            # Construct SPARQL query to search for multiple terms
+            # Use VALUES clause for batch lookup (limit to 50 terms per query to avoid timeout)
+            terms_subset = terms[:50]
+            terms_list = '", "'.join([term.replace('"', '\\"').replace('\n', ' ') for term in terms_subset])
+            
+            # SPARQL query: find items with labels matching our terms
+            sparql_query = f'''
+            SELECT ?item ?itemLabel ?term WHERE {{
+              VALUES ?term {{ "{terms_list}" }}
+              ?item rdfs:label ?itemLabel .
+              FILTER(LANG(?itemLabel) = "en")
+              FILTER(LCASE(?itemLabel) = LCASE(?term))
+            }}
+            LIMIT 100
+            '''
+            
+            sparql = WikidataSparql(None)  # Dictionary not needed for query-only
+            xml_string = sparql.get_results_xml(sparql_query)
+            
+            # Parse SPARQL XML results
+            # SPARQL XML format: <results><result><binding name="item"><uri>...</uri></binding>...</result></results>
+            try:
+                # Parse XML string
+                root = ET.fromstring(xml_string.encode('utf-8'))
+                
+                # Find all result elements
+                result_elements = root.findall(f".//{SPQ_RESULT}", NS_MAP)
+                
+                for result_elem in result_elements:
+                    # Extract item (Wikidata ID) and itemLabel (term)
+                    item_binding = result_elem.find(f".//{SPQ_BINDING}[@name='item']/{SPQ_URI}", NS_MAP)
+                    label_binding = result_elem.find(f".//{SPQ_BINDING}[@name='itemLabel']", NS_MAP)
+                    
+                    if item_binding is not None and label_binding is not None:
+                        # Extract QID from URI (e.g., http://www.wikidata.org/entity/Q7942 -> Q7942)
+                        item_uri = item_binding.text
+                        if item_uri:
+                            qid = item_uri.split('/')[-1] if '/' in item_uri else item_uri
+                            
+                            # Extract label text (from literal element)
+                            label_text = None
+                            literal_elem = label_binding.find(f".//{NS_LITERAL}", NS_MAP)
+                            if literal_elem is not None:
+                                label_text = literal_elem.text
+                            
+                            if qid and label_text:
+                                # Match label to original term (case-insensitive)
+                                label_lower = label_text.lower().strip()
+                                for term in terms_subset:
+                                    if term.lower().strip() == label_lower:
+                                        results[term] = qid
+                                        break
+                
+                if results:
+                    logger.info(f"SPARQL batch lookup found {len(results)}/{len(terms_subset)} Wikidata IDs")
+                else:
+                    logger.debug(f"SPARQL batch lookup found no matches for {len(terms_subset)} terms")
+                    
+            except Exception as parse_error:
+                logger.warning(f"Failed to parse SPARQL results: {parse_error}")
+            
+        except Exception as e:
+            logger.debug(f"SPARQL batch lookup failed (will use individual lookups): {e}")
+        
+        return results
+    
+    def ensure_all_entries_have_wikidata_ids(self, batch_size: int = 100, save_file: Optional[Path] = None) -> Dict[str, int]:
+        """Ensure all entries have Wikidata IDs using staged lookup strategy
+        
+        Process entries in batches:
+        1. Lookup next N missing IDs
+        2. Add to entries
+        3. Save dictionary if save_file provided
+        4. Repeat until all entries have IDs or no more can be found
+        
+        Args:
+            batch_size: Number of entries to process in each batch (default: 100)
+            save_file: Optional file path to save after each batch
+            
+        Returns:
+            Statistics dictionary with lookup results
+        """
+        stats = {
+            "total_entries": len(self.entries),
+            "entries_with_wikidata_id_before": 0,
+            "entries_with_wikidata_id_after": 0,
+            "added_from_wikipedia_url": 0,
+            "added_from_wikipedia_term": 0,
+            "added_from_wikidata_lookup": 0,
+            "added_from_sparql_batch": 0,
+            "entries_still_missing": 0,
+            "batches_processed": 0
+        }
+        
+        # Count entries with Wikidata IDs before
+        for entry in self.entries:
+            if entry.get('wikidata_id') and entry.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+                stats["entries_with_wikidata_id_before"] += 1
+        
+        # Get entries missing Wikidata IDs
+        missing_entries = [
+            (idx, entry) for idx, entry in enumerate(self.entries)
+            if not entry.get('wikidata_id') or entry.get('wikidata_id') in ('', 'no_wikidata_id', 'invalid_wikidata_id')
+        ]
+        
+        if not missing_entries:
+            logger.info("All entries already have Wikidata IDs")
+            stats["entries_with_wikidata_id_after"] = stats["entries_with_wikidata_id_before"]
+            return stats
+        
+        logger.info(f"Found {len(missing_entries)} entries missing Wikidata IDs. Processing in batches of {batch_size}...")
+        
+        # Process in batches
+        for batch_start in range(0, len(missing_entries), batch_size):
+            batch_end = min(batch_start + batch_size, len(missing_entries))
+            batch = missing_entries[batch_start:batch_end]
+            
+            logger.info(f"Processing batch {stats['batches_processed'] + 1}: entries {batch_start + 1}-{batch_end} of {len(missing_entries)}")
+            
+            # Try SPARQL batch lookup first (faster for multiple terms)
+            batch_terms = [entry[1].get('term', '') for entry in batch if entry[1].get('term')]
+            if batch_terms:
+                sparql_results = self._lookup_wikidata_ids_batch_sparql(batch_terms)
+                # Apply SPARQL results
+                for idx, entry in batch:
+                    term = entry.get('term', '')
+                    if term and term in sparql_results and sparql_results[term]:
+                        entry['wikidata_id'] = sparql_results[term]
+                        stats["added_from_sparql_batch"] += 1
+            
+            # Individual lookups for remaining entries in batch
+            for idx, entry in batch:
+                # Skip if already got ID from SPARQL
+                if entry.get('wikidata_id') and entry.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+                    continue
+                
+                term = entry.get('term', '')
+                wikipedia_url = entry.get('wikipedia_url', '')
+                
+                # Try Wikipedia URL lookup first
+                if wikipedia_url:
+                    wikidata_id = self._extract_wikidata_id_from_wikipedia_url(wikipedia_url)
+                    if wikidata_id:
+                        entry['wikidata_id'] = wikidata_id
+                        stats["added_from_wikipedia_url"] += 1
+                        continue
+                
+                # Try term-based lookup
+                if term:
+                    wikidata_id = self._lookup_wikidata_id_by_term(term)
+                    if wikidata_id:
+                        entry['wikidata_id'] = wikidata_id
+                        stats["added_from_wikipedia_term"] += 1
+            
+            stats["batches_processed"] += 1
+            
+            # Save after each batch if save_file provided
+            if save_file:
+                try:
+                    self.save_wiki_normalized_html(save_file)
+                    logger.info(f"Saved dictionary to {save_file} after batch {stats['batches_processed']}")
+                except Exception as e:
+                    logger.warning(f"Failed to save dictionary after batch: {e}")
+        
+        # Count entries with Wikidata IDs after
+        for entry in self.entries:
+            if entry.get('wikidata_id') and entry.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+                stats["entries_with_wikidata_id_after"] += 1
+        
+        stats["entries_still_missing"] = stats["total_entries"] - stats["entries_with_wikidata_id_after"]
+        
+        logger.info(f"Lookup complete: {stats['entries_with_wikidata_id_after']}/{stats['total_entries']} entries now have Wikidata IDs")
+        
+        return stats
