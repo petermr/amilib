@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Optional, Dict, List
 from collections import defaultdict, Counter
 from urllib.parse import urlparse, unquote
-from datetime import datetime
+from datetime import datetime, timezone
 
 from amilib.ami_html import HtmlLib
 from amilib.wikimedia import WikipediaPage
@@ -36,10 +36,18 @@ class AmiEncyclopedia:
     REASON_FALSE_WIKIPEDIA = "false_wikipedia"
     REASON_USER_SELECTED = "user_selected"
     
-    # Entry category constants
+    # Entry category constants (for Wikipedia page type)
     CATEGORY_TRUE_WIKIPEDIA = "true_wikipedia"
     CATEGORY_NO_WIKIPEDIA = "no_wikipedia"
     CATEGORY_DISAMBIGUATION = "disambiguation"
+    
+    # Entry classification constants (for processing status - avoids expensive lookups)
+    CLASSIFICATION_UNPROCESSED = "UNPROCESSED"
+    CLASSIFICATION_HAS_WIKIDATA = "HAS_WIKIDATA"
+    CLASSIFICATION_NO_WIKIDATA_ENTRY = "NO_WIKIDATA_ENTRY"
+    CLASSIFICATION_AMBIGUOUS = "AMBIGUOUS"
+    CLASSIFICATION_NO_WIKIPEDIA_PAGE = "NO_WIKIPEDIA_PAGE"
+    CLASSIFICATION_ERROR = "ERROR"
     
     # Metadata field constants
     METADATA_CREATED = "created"
@@ -83,12 +91,12 @@ class AmiEncyclopedia:
     
     @classmethod
     def _get_system_date(cls) -> str:
-        """Get current system date in ISO 8601 format with Z suffix
+        """Get current system date in ISO 8601 format with Z suffix (UTC)
         
         Returns:
-            ISO 8601 formatted date string with Z suffix (e.g., "2025-12-03T09:40:12Z")
+            ISO 8601 formatted date string with Z suffix in UTC (e.g., "2025-12-03T09:40:12Z")
         """
-        return datetime.now().isoformat() + "Z"
+        return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
     
     def _create_metadata(self) -> Dict:
         """Create initial metadata dictionary with system dates
@@ -284,12 +292,20 @@ class AmiEncyclopedia:
                     from amilib.xml_lib import XmlLib
                     description_html = XmlLib.element_to_string(desc_p[0])
                 
+                # Get Wikidata category (label/title) if we have a Wikidata ID
+                wikidata_category = ''
+                if wikidata_id and wikidata_id not in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+                    if re.match(r'^[QP]\d+$', wikidata_id):
+                        wikidata_category = self._get_wikidata_category(wikidata_id)
+                
                 entry_dict = {
                     'term': term,
                     'search_term': search_term,
                     'wikidata_id': wikidata_id,  # PRIMARY identifier
                     'wikipedia_url': wikipedia_url,  # Secondary (for display)
                     'description_html': description_html,
+                    'classification': self.CLASSIFICATION_UNPROCESSED,  # Initial classification
+                    'wikidata_category': wikidata_category,  # Wikidata label/title
                 }
                 self.entries.append(entry_dict)
         finally:
@@ -407,6 +423,273 @@ class AmiEncyclopedia:
         self.synonym_groups = synonym_groups
         return synonym_groups
     
+    def _merge_synonymous_entries(self) -> List[Dict]:
+        """Merge synonymous entries with identical Wikidata IDs
+        
+        Returns:
+            List of merged entry dictionaries, each containing:
+            - wikidata_id: Wikidata ID (primary identifier)
+            - canonical_term: Primary term for the merged entry
+            - synonyms: List of all synonym terms
+            - wikipedia_url: Wikipedia URL
+            - description_html: Best description from merged entries
+            - figure_html: Figure from first entry that has one
+            - And other merged entry data
+        """
+        # Normalize entries by Wikidata ID
+        if not self.normalized_entries:
+            self.normalize_by_wikidata_id()
+        
+        merged_entries = []
+        
+        # Process entries with Wikidata IDs (can be merged)
+        for wikidata_id, entries in self.normalized_entries.items():
+            if wikidata_id in ('no_wikidata_id', 'invalid_wikidata_id'):
+                # Process entries without Wikidata IDs separately (cannot be merged)
+                for entry in entries:
+                    # Get Wikidata category if available
+                    wikidata_category = entry.get('wikidata_category', '')
+                    
+                    merged_entries.append({
+                        'wikidata_id': '',
+                        'canonical_term': entry.get('term', entry.get('search_term', '')),
+                        'synonyms': [entry.get('term', entry.get('search_term', ''))],
+                        'wikipedia_url': entry.get('wikipedia_url', ''),
+                        'page_title': entry.get('term', entry.get('search_term', '')),
+                        'description_html': entry.get('description_html', ''),
+                        'figure_html': entry.get('figure_html'),
+                        'wikidata_category': wikidata_category,
+                        'entry_count': 1,
+                        'source_entries': [entry]
+                    })
+            else:
+                # Merge entries with same Wikidata ID
+                # Extract all search terms
+                search_terms = [entry.get('search_term', '') for entry in entries if entry.get('search_term')]
+                terms = [entry.get('term', '') for entry in entries if entry.get('term')]
+                all_terms = list(set(search_terms + terms))
+                
+                # Normalize terms
+                normalized_terms = self._normalize_terms(all_terms)
+                
+                # Get canonical term
+                canonical_term = self._get_canonical_term(normalized_terms)
+                
+                # Get Wikipedia URL from first entry
+                wikipedia_url = entries[0].get('wikipedia_url', '') if entries else ''
+                
+                # Get page title from Wikipedia URL
+                page_title = self._extract_page_title_from_url(wikipedia_url) if wikipedia_url else canonical_term
+                
+                # Get best description
+                best_description = self._get_best_description(entries)
+                
+                # Get figure from first entry that has one
+                figure_html = None
+                for entry in entries:
+                    if entry.get('figure_html'):
+                        figure_html = entry.get('figure_html')
+                        break
+                
+                # Get Wikidata category from first entry that has one, or look it up
+                wikidata_category = ''
+                for entry in entries:
+                    if entry.get('wikidata_category'):
+                        wikidata_category = entry.get('wikidata_category')
+                        break
+                
+                # If no category found but we have a Wikidata ID, look it up
+                if not wikidata_category and wikidata_id:
+                    wikidata_category = self._get_wikidata_category(wikidata_id)
+                
+                merged_entries.append({
+                    'wikidata_id': wikidata_id,
+                    'canonical_term': canonical_term,
+                    'synonyms': list(set(normalized_terms)),
+                    'wikipedia_url': wikipedia_url,
+                    'page_title': page_title,
+                    'description_html': best_description,
+                    'figure_html': figure_html,
+                    'wikidata_category': wikidata_category,
+                    'entry_count': len(entries),
+                    'source_entries': entries
+                })
+        
+        return merged_entries
+    
+    def _generate_entry_id_from_merged_entry(self, merged_entry: Dict, idx: int) -> str:
+        """Generate entry ID for merged entry
+        
+        Args:
+            merged_entry: Merged entry dictionary
+            idx: Index of entry
+            
+        Returns:
+            Entry ID string
+        """
+        wikidata_id = merged_entry.get('wikidata_id', '')
+        if wikidata_id and wikidata_id not in ('no_wikidata_id', 'invalid_wikidata_id'):
+            return wikidata_id
+        
+        # Fallback to canonical term
+        canonical_term = merged_entry.get('canonical_term', '')
+        if canonical_term:
+            return canonical_term.replace(' ', '_').replace('/', '_')
+        
+        return f"entry_{idx}"
+    
+    def _add_entry_checkboxes_for_merged_entry(self, entry_div, merged_entry: Dict, entry_id: str) -> None:
+        """Add checkboxes to entry div for merged entry
+        
+        Args:
+            entry_div: Entry div element
+            merged_entry: Merged entry dictionary
+            entry_id: Entry identifier
+        """
+        # Classify merged entry (check if it's a disambiguation page)
+        category = self._classify_merged_entry(merged_entry)
+        
+        # Track if we add any checkboxes
+        has_checkboxes = False
+        checkbox_container = None
+        
+        # Add checkboxes based on category
+        if category == self.CATEGORY_NO_WIKIPEDIA:
+            # Missing Wikipedia checkbox
+            checkbox_container = ET.SubElement(entry_div, "div")
+            checkbox_container.attrib["class"] = "entry-checkboxes"
+            checkbox_container.attrib["data-category"] = category
+            self._add_hide_checkbox(
+                checkbox_container,
+                entry_id,
+                reason=self.REASON_MISSING_WIKIPEDIA,
+                checked=True,
+                label="Hide (missing Wikipedia)"
+            )
+            has_checkboxes = True
+        
+        elif category == self.CATEGORY_DISAMBIGUATION:
+            # Stage 2: Label disambiguation pages and offer content with checkboxes
+            checkbox_container = ET.SubElement(entry_div, "div")
+            checkbox_container.attrib["class"] = "entry-checkboxes"
+            checkbox_container.attrib["data-category"] = category
+            wikipedia_url = merged_entry.get('wikipedia_url', '')
+            wikidata_id = merged_entry.get('wikidata_id', '')
+            self._add_disambiguation_selector(
+                checkbox_container,
+                entry_id,
+                wikipedia_url,
+                wikidata_id
+            )
+            has_checkboxes = True
+        
+        elif category == self.CATEGORY_TRUE_WIKIPEDIA:
+            # True Wikipedia entries - no checkboxes for now (will revisit later)
+            pass
+        
+        # Merge synonyms checkbox (if has multiple synonyms)
+        synonyms = merged_entry.get('synonyms', [])
+        if len(synonyms) > 1:
+            if checkbox_container is None:
+                checkbox_container = ET.SubElement(entry_div, "div")
+                checkbox_container.attrib["class"] = "entry-checkboxes"
+                checkbox_container.attrib["data-category"] = category
+            wikidata_id = merged_entry.get('wikidata_id', '')
+            self._add_merge_checkbox(
+                checkbox_container,
+                entry_id,
+                wikidata_id if wikidata_id and wikidata_id.startswith('Q') else '',
+                checked=True  # Checked by default (already merged)
+            )
+            has_checkboxes = True
+        
+        # Remove empty checkbox container
+        if checkbox_container is not None and not has_checkboxes and len(checkbox_container) == 0:
+            entry_div.remove(checkbox_container)
+    
+    def _classify_merged_entry(self, merged_entry: Dict) -> str:
+        """Classify merged entry into category
+        
+        Args:
+            merged_entry: Merged entry dictionary
+            
+        Returns:
+            Category string (CATEGORY_NO_WIKIPEDIA, CATEGORY_DISAMBIGUATION, or CATEGORY_TRUE_WIKIPEDIA)
+        """
+        wikipedia_url = merged_entry.get('wikipedia_url', '')
+        wikidata_id = merged_entry.get('wikidata_id', '')
+        
+        if not wikipedia_url:
+            return self.CATEGORY_NO_WIKIPEDIA
+        
+        # Check if it's a disambiguation page (check Wikidata first, then Wikipedia URL)
+        if self._is_disambiguation_page(wikipedia_url=wikipedia_url, wikidata_id=wikidata_id):
+            return self.CATEGORY_DISAMBIGUATION
+        
+        # Default to true_wikipedia (can be marked as false/too_general manually)
+        return self.CATEGORY_TRUE_WIKIPEDIA
+    
+    def _is_disambiguation_page(self, wikipedia_url: str = None, wikidata_id: str = None) -> bool:
+        """Check if entry is a disambiguation page by checking Wikidata
+        
+        First checks Wikidata for P31 (instance of) = Q4167410 (disambiguation page).
+        Falls back to Wikipedia URL pattern check if Wikidata ID not available.
+        
+        Args:
+            wikipedia_url: Wikipedia URL (optional, for fallback)
+            wikidata_id: Wikidata ID (optional, preferred method)
+            
+        Returns:
+            True if disambiguation page, False otherwise
+        """
+        # Priority 1: Check Wikidata for disambiguation label (most reliable)
+        if wikidata_id and wikidata_id not in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+            if re.match(r'^[QP]\d+$', wikidata_id):
+                try:
+                    from amilib.wikimedia import WikidataPage
+                    wikidata_page = WikidataPage(wikidata_id)
+                    if wikidata_page is not None and wikidata_page.root is not None:
+                        # Check for P31 (instance of) = Q4167410 (disambiguation page)
+                        # Use WikidataPage method to get Q items for property P31
+                        p31_qitems = wikidata_page.get_qitems_for_property_id('P31')
+                        if p31_qitems:
+                            # Check if any of the P31 values is Q4167410 (disambiguation page)
+                            for qitem in p31_qitems:
+                                qitem_title = qitem.get('title', '')
+                                if qitem_title == 'Q4167410':
+                                    return True
+                                # Also check href
+                                qitem_href = qitem.get('href', '')
+                                if '/wiki/Q4167410' in qitem_href:
+                                    return True
+                        
+                        # Alternative: Check for "disambiguation page" text in property values
+                        # Look for P31 property div and check its values
+                        p31_divs = wikidata_page.root.xpath(".//div[@id='P31']")
+                        if p31_divs:
+                            p31_text = ET.tostring(p31_divs[0], method='text', encoding='unicode').lower()
+                            if 'q4167410' in p31_text or 'disambiguation page' in p31_text:
+                                return True
+                except Exception as e:
+                    logger.debug(f"Could not check Wikidata for disambiguation: {e}")
+        
+        # Priority 2: Check Wikipedia URL pattern (fallback)
+        if wikipedia_url:
+            if '(disambiguation)' in wikipedia_url.lower():
+                return True
+            
+            # Also check by fetching the Wikipedia page
+            try:
+                from amilib.wikimedia import WikipediaPage
+                wikipedia_page = WikipediaPage.lookup_wikipedia_page_for_url(wikipedia_url)
+                if wikipedia_page and wikipedia_page.is_disambiguation_page():
+                    return True
+            except Exception:
+                # If lookup fails, fall back to URL pattern check
+                pass
+        
+        return False
+    
     def merge(self) -> 'AmiEncyclopedia':
         """Merge entries with the same Wikidata ID into single entries"""
         # Ensure entries are normalized first
@@ -480,6 +763,90 @@ class AmiEncyclopedia:
         # Use AmiDictionary pattern for HTML creation
         html_root = HtmlLib.create_html_with_empty_head_body()
         body = HtmlLib.get_body(html_root)
+        head = HtmlLib.get_head(html_root)
+        
+        # Add CSS stylesheet for entry boxes and checkboxes
+        style_elem = ET.SubElement(head, "style")
+        style_elem.text = """
+        /* Entry box styling */
+        div[role="ami_entry"] {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        
+        /* Disambiguation entry styling - different background color */
+        div[role="ami_entry"][data-category="disambiguation"] {
+            background-color: #fff3cd;
+            border-color: #ffc107;
+        }
+        
+        /* Wikidata category styling */
+        .wikidata-category {
+            font-weight: bold;
+            color: #666;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        
+        /* Entry checkboxes container */
+        .entry-checkboxes {
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+        }
+        
+        /* Checkbox wrapper */
+        .entry-checkbox-wrapper {
+            margin: 5px 0;
+        }
+        
+        /* Disambiguation wrapper */
+        .disambiguation-wrapper {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 3px;
+        }
+        
+        /* Disambiguation label */
+        .disambiguation-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #856404;
+        }
+        
+        /* Disambiguation checkbox wrapper */
+        .disambiguation-checkbox-wrapper {
+            margin: 5px 0;
+            padding: 3px 0;
+        }
+        
+        /* Disambiguation checkbox */
+        .disambiguation-checkbox {
+            margin-right: 5px;
+        }
+        
+        /* Disambiguation checkbox label */
+        .disambiguation-checkbox-wrapper label {
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        /* Disambiguation checkbox label link */
+        .disambiguation-checkbox-wrapper label a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .disambiguation-checkbox-wrapper label a:hover {
+            text-decoration: underline;
+        }
+        """
         
         # Create encyclopedia container (not dictionary)
         encyclopedia_div = ET.SubElement(body, "div")
@@ -493,105 +860,60 @@ class AmiEncyclopedia:
         metadata_json = json.dumps(self.metadata, indent=2)
         encyclopedia_div.attrib["data-metadata"] = metadata_json
         
-        # Get aggregated synonym groups if available
-        if not self.synonym_groups or len(self.synonym_groups) == 0:
-            synonym_groups = self.aggregate_synonyms()
-        else:
-            synonym_groups = self.synonym_groups
+        # Stage 1: Merge synonymous entries with identical Wikidata IDs
+        merged_entries = self._merge_synonymous_entries()
         
-        # If no synonym groups were created (e.g., no Wikidata IDs), output raw entries
-        if not synonym_groups or len(synonym_groups) == 0:
-            # Output entries that couldn't be normalized
-            for idx, entry in enumerate(self.entries):
-                entry_div = ET.SubElement(encyclopedia_div, "div")
-                entry_div.attrib["role"] = "ami_entry"
-                
-                # Generate entry ID
-                entry_id = self._generate_entry_id_from_entry(entry, idx)
-                entry_div.attrib["data-entry-id"] = entry_id
-                
-                # Add term
-                term = entry.get('term', '')
-                if term:
-                    entry_div.attrib["term"] = term
-                
-                # Add search term
-                search_term = entry.get('search_term', '')
-                if search_term:
-                    entry_div.attrib["name"] = search_term
-                
-                # Add checkboxes BEFORE other content
-                self._add_entry_checkboxes_for_raw_entry(entry_div, entry, entry_id)
-                
-                # Add Wikipedia URL if available
-                wikipedia_url = entry.get('wikipedia_url', '')
-                if wikipedia_url:
-                    wiki_link = ET.SubElement(entry_div, "a")
-                    wiki_link.attrib["href"] = wikipedia_url
-                    wiki_link.text = search_term if search_term else term
-                
-                # Add Wikidata ID if available
-                wikidata_id = entry.get('wikidata_id', '')
-                if wikidata_id and wikidata_id not in ('no_wikidata_id', 'invalid_wikidata_id'):
-                    entry_div.attrib["wikidataID"] = wikidata_id
-                    wikidata_link = ET.SubElement(entry_div, "a")
-                    wikidata_link.attrib["href"] = f"https://www.wikidata.org/wiki/{wikidata_id}"
-                    wikidata_link.text = f"Wikidata: {wikidata_id}"
-                
-                # Add description if available
-                description_html = entry.get('description_html', '')
-                if description_html:
-                    from lxml.html import fromstring
-                    try:
-                        desc_elem = fromstring(description_html)
-                        entry_div.append(desc_elem)
-                    except Exception:
-                        desc_p = ET.SubElement(entry_div, "p")
-                        desc_p.text = description_html
-                
-                # Add figure if available
-                figure_html = entry.get('figure_html')
-                if figure_html is not None:
-                    entry_div.append(figure_html)
-        else:
-            print(f"synonym groups?")
-            pass
-        # Add entry divs for each synonym group (normalized by Wikidata ID)
-        for wikidata_id, group in synonym_groups.items():
+        # Process merged entries sequentially
+        for idx, merged_entry in enumerate(merged_entries):
             entry_div = ET.SubElement(encyclopedia_div, "div")
             entry_div.attrib["role"] = "ami_entry"
+            entry_div.attrib["class"] = "encyclopedia-entry"
             
-            # Add Wikidata ID as primary identifier
-            entry_div.attrib["wikidataID"] = wikidata_id
-            
-            # Generate entry ID for checkboxes
-            entry_id = self._generate_entry_id(group, wikidata_id)
+            # Generate entry ID
+            entry_id = self._generate_entry_id_from_merged_entry(merged_entry, idx)
             entry_div.attrib["data-entry-id"] = entry_id
             
-            # Add canonical term
-            canonical_term = group.get('canonical_term', '')
+            # Add canonical term (primary term for this merged entry)
+            canonical_term = merged_entry.get('canonical_term', '')
             if canonical_term:
                 entry_div.attrib["term"] = canonical_term
             
-            # Add checkboxes BEFORE other content
-            self._add_entry_checkboxes(entry_div, group, entry_id, wikidata_id)
+            # Add Wikidata ID (primary identifier for merged entries)
+            wikidata_id = merged_entry.get('wikidata_id', '')
+            if wikidata_id and wikidata_id not in ('no_wikidata_id', 'invalid_wikidata_id'):
+                entry_div.attrib["wikidataID"] = wikidata_id
             
-            # Add Wikipedia URL link (for display)
-            wikipedia_url = group.get('wikipedia_url', '')
+            # Add Wikidata category if available
+            wikidata_category = merged_entry.get('wikidata_category', '')
+            if wikidata_category:
+                category_elem = ET.SubElement(entry_div, "div")
+                category_elem.attrib["class"] = "wikidata-category"
+                category_elem.text = f"Category: {wikidata_category}"
+            
+            # Add category attribute for CSS styling (especially for disambiguation)
+            category = self._classify_merged_entry(merged_entry)
+            entry_div.attrib["data-category"] = category
+            
+            # Add checkboxes
+            self._add_entry_checkboxes_for_merged_entry(entry_div, merged_entry, entry_id)
+            
+            # Add Wikipedia URL if available
+            wikipedia_url = merged_entry.get('wikipedia_url', '')
             if wikipedia_url:
                 wiki_link = ET.SubElement(entry_div, "a")
                 wiki_link.attrib["href"] = wikipedia_url
-                page_title = group.get('page_title', canonical_term)
+                page_title = merged_entry.get('page_title', canonical_term)
                 wiki_link.text = page_title if page_title else wikipedia_url
             
-            # Add Wikidata link
-            wikidata_link = ET.SubElement(entry_div, "a")
-            wikidata_link.attrib["href"] = f"https://www.wikidata.org/wiki/{wikidata_id}"
-            wikidata_link.text = f"Wikidata: {wikidata_id}"
+            # Add Wikidata link if available
+            if wikidata_id and wikidata_id not in ('no_wikidata_id', 'invalid_wikidata_id'):
+                wikidata_link = ET.SubElement(entry_div, "a")
+                wikidata_link.attrib["href"] = f"https://www.wikidata.org/wiki/{wikidata_id}"
+                wikidata_link.text = f"Wikidata: {wikidata_id}"
             
-            # Add synonym list
-            synonyms = group.get('synonyms', [])
-            if synonyms:
+            # Add synonym list if there are multiple synonyms
+            synonyms = merged_entry.get('synonyms', [])
+            if len(synonyms) > 1:
                 synonym_ul = ET.SubElement(entry_div, "ul")
                 synonym_ul.attrib["class"] = "synonym_list"
                 for synonym in synonyms:
@@ -599,22 +921,27 @@ class AmiEncyclopedia:
                     synonym_li.text = synonym
             
             # Add description if available
-            description_html = group.get('description_html', '')
+            description_html = merged_entry.get('description_html', '')
             if description_html:
-                # Parse description HTML and append to entry
                 from lxml.html import fromstring
                 try:
                     desc_elem = fromstring(description_html)
-                    entry_div.append(desc_elem)
+                    # If the root element is a div, extract its children instead
+                    if desc_elem.tag == 'div':
+                        # Copy children to avoid nested div structure
+                        for child in desc_elem:
+                            entry_div.append(child)
+                    else:
+                        # For p, span, etc., append directly
+                        entry_div.append(desc_elem)
                 except Exception:
-                    # If parsing fails, add as text
                     desc_p = ET.SubElement(entry_div, "p")
                     desc_p.text = description_html
-                
-                # Add figure if available (from first entry in group)
-                figure_html = group.get('figure_html')
-                if figure_html is not None:
-                    entry_div.append(figure_html)
+            
+            # Add figure if available
+            figure_html = merged_entry.get('figure_html')
+            if figure_html is not None:
+                entry_div.append(figure_html)
         
         return XmlLib.element_to_string(html_root, pretty_print=True)
     
@@ -722,30 +1049,6 @@ class AmiEncyclopedia:
         wikipedia_url = group_or_entry.get('wikipedia_url', '')
         return bool(wikipedia_url and wikipedia_url.strip())
     
-    def _is_disambiguation_page(self, wikipedia_url: str) -> bool:
-        """Detect if Wikipedia URL is a disambiguation page
-        
-        Args:
-            wikipedia_url: Wikipedia URL string
-            
-        Returns:
-            True if disambiguation page, False otherwise
-        """
-        if not wikipedia_url:
-            return False
-        
-        # Check for disambiguation pattern in URL
-        url_lower = wikipedia_url.lower()
-        if '(disambiguation)' in url_lower or 'disambiguation' in url_lower:
-            return True
-        
-        # Check URL path for disambiguation pattern
-        if '/wiki/' in wikipedia_url:
-            path_part = wikipedia_url.split('/wiki/')[-1]
-            if '(disambiguation)' in path_part.lower():
-                return True
-        
-        return False
     
     def _classify_entry(self, entry_or_group: Dict) -> str:
         """Classify entry into category based on Wikipedia status
@@ -769,11 +1072,100 @@ class AmiEncyclopedia:
         if not has_wikipedia:
             return self.CATEGORY_NO_WIKIPEDIA
         
-        if self._is_disambiguation_page(wikipedia_url):
+        # Check for Wikidata ID to use for disambiguation detection
+        wikidata_id = entry_or_group.get('wikidata_id', '')
+        if self._is_disambiguation_page(wikipedia_url=wikipedia_url, wikidata_id=wikidata_id):
             return self.CATEGORY_DISAMBIGUATION
         
         # Default to true_wikipedia (can be marked as false/too_general manually)
         return self.CATEGORY_TRUE_WIKIPEDIA
+    
+    def classify_entry_status(self, entry: Dict) -> str:
+        """Classify entry processing status to avoid expensive lookups
+        
+        This classification is stored in the entry and used to skip expensive operations.
+        Categories:
+        - UNPROCESSED: Entry hasn't been classified yet (default)
+        - HAS_WIKIDATA: Entry has a valid Wikidata ID
+        - NO_WIKIDATA_ENTRY: Wikipedia page exists but no Wikidata entry found
+        - AMBIGUOUS: Points to disambiguation page
+        - NO_WIKIPEDIA_PAGE: No Wikipedia page found
+        - ERROR: Error occurred during processing
+        
+        Args:
+            entry: Entry dictionary
+            
+        Returns:
+            Classification string
+        """
+        # Check if already classified
+        existing_classification = entry.get('classification')
+        if existing_classification and existing_classification != self.CLASSIFICATION_UNPROCESSED:
+            return existing_classification
+        
+        # Check for Wikidata ID first (fastest check)
+        wikidata_id = entry.get('wikidata_id', '')
+        if wikidata_id and wikidata_id not in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+            if re.match(r'^[QP]\d+$', wikidata_id):
+                return self.CLASSIFICATION_HAS_WIKIDATA
+        
+        # Check for Wikipedia URL
+        wikipedia_url = entry.get('wikipedia_url', '')
+        if not wikipedia_url:
+            return self.CLASSIFICATION_NO_WIKIPEDIA_PAGE
+        
+        # Check if disambiguation page
+        if self._is_disambiguation_page(wikipedia_url):
+            return self.CLASSIFICATION_AMBIGUOUS
+        
+        # If we have Wikipedia URL but no Wikidata ID, it needs lookup
+        # But we don't do the lookup here - just mark as needing it
+        # The actual lookup will set the classification
+        return self.CLASSIFICATION_UNPROCESSED
+    
+    def classify_all_entries(self) -> Dict[str, int]:
+        """Classify all entries and store classification in entry dictionaries
+        
+        This avoids expensive lookups by storing the classification status.
+        
+        Returns:
+            Statistics dictionary with classification counts
+        """
+        stats = {
+            "total_entries": len(self.entries),
+            "unprocessed": 0,
+            "has_wikidata": 0,
+            "no_wikidata_entry": 0,
+            "ambiguous": 0,
+            "no_wikipedia_page": 0,
+            "error": 0
+        }
+        
+        for entry in self.entries:
+            classification = self.classify_entry_status(entry)
+            entry['classification'] = classification
+            
+            # Update stats
+            if classification == self.CLASSIFICATION_UNPROCESSED:
+                stats["unprocessed"] += 1
+            elif classification == self.CLASSIFICATION_HAS_WIKIDATA:
+                stats["has_wikidata"] += 1
+            elif classification == self.CLASSIFICATION_NO_WIKIDATA_ENTRY:
+                stats["no_wikidata_entry"] += 1
+            elif classification == self.CLASSIFICATION_AMBIGUOUS:
+                stats["ambiguous"] += 1
+            elif classification == self.CLASSIFICATION_NO_WIKIPEDIA_PAGE:
+                stats["no_wikipedia_page"] += 1
+            elif classification == self.CLASSIFICATION_ERROR:
+                stats["error"] += 1
+        
+        logger.info(f"Classified {stats['total_entries']} entries: "
+                   f"{stats['has_wikidata']} with Wikidata, "
+                   f"{stats['unprocessed']} unprocessed, "
+                   f"{stats['ambiguous']} ambiguous, "
+                   f"{stats['no_wikipedia_page']} no Wikipedia page")
+        
+        return stats
     
     def _add_entry_checkboxes(self, entry_div, group: Dict, entry_id: str, wikidata_id: str = '') -> None:
         """Add checkboxes to entry div for synonym groups based on category
@@ -787,14 +1179,19 @@ class AmiEncyclopedia:
         # Classify entry
         category = self._classify_entry(group)
         
-        # Create checkbox container div
-        checkbox_container = ET.SubElement(entry_div, "div")
-        checkbox_container.attrib["class"] = "entry-checkboxes"
-        checkbox_container.attrib["data-category"] = category
+        # Track if we add any checkboxes
+        has_checkboxes = False
+        
+        # Create checkbox container div (only if we have checkboxes to add)
+        checkbox_container = None
         
         # Add checkboxes based on category
         if category == self.CATEGORY_NO_WIKIPEDIA:
             # Missing Wikipedia checkbox (checked by default)
+            if checkbox_container is None:
+                checkbox_container = ET.SubElement(entry_div, "div")
+                checkbox_container.attrib["class"] = "entry-checkboxes"
+                checkbox_container.attrib["data-category"] = category
             self._add_hide_checkbox(
                 checkbox_container,
                 entry_id,
@@ -802,9 +1199,14 @@ class AmiEncyclopedia:
                 checked=True,
                 label="Hide (missing Wikipedia)"
             )
+            has_checkboxes = True
         
         elif category == self.CATEGORY_DISAMBIGUATION:
             # Disambiguation selector
+            if checkbox_container is None:
+                checkbox_container = ET.SubElement(entry_div, "div")
+                checkbox_container.attrib["class"] = "entry-checkboxes"
+                checkbox_container.attrib["data-category"] = category
             wikipedia_url = group.get('wikipedia_url', '')
             self._add_disambiguation_selector(
                 checkbox_container,
@@ -812,43 +1214,30 @@ class AmiEncyclopedia:
                 wikipedia_url,
                 wikidata_id
             )
-            # Also allow hiding
-            self._add_hide_checkbox(
-                checkbox_container,
-                entry_id,
-                reason=self.REASON_GENERAL_TERM,
-                checked=False,
-                label="Hide (too general)"
-            )
+            has_checkboxes = True
         
         elif category == self.CATEGORY_TRUE_WIKIPEDIA:
-            # True Wikipedia entries can be marked as false or too general
-            # False Wikipedia checkbox
-            self._add_hide_checkbox(
-                checkbox_container,
-                entry_id,
-                reason=self.REASON_FALSE_WIKIPEDIA,
-                checked=False,
-                label="Hide (false Wikipedia)"
-            )
-            # Too general checkbox
-            self._add_hide_checkbox(
-                checkbox_container,
-                entry_id,
-                reason=self.REASON_GENERAL_TERM,
-                checked=False,
-                label="Hide (too general)"
-            )
+            # True Wikipedia entries - no checkboxes for now (will revisit later)
+            pass
         
         # Merge synonyms checkbox (if has multiple synonyms)
         synonyms = group.get('synonyms', [])
         if len(synonyms) > 1:
+            if checkbox_container is None:
+                checkbox_container = ET.SubElement(entry_div, "div")
+                checkbox_container.attrib["class"] = "entry-checkboxes"
+                checkbox_container.attrib["data-category"] = category
             self._add_merge_checkbox(
                 checkbox_container,
                 entry_id,
                 wikidata_id if wikidata_id and wikidata_id.startswith('Q') else '',
                 checked=True  # Checked by default (automatic collapse)
             )
+            has_checkboxes = True
+        
+        # Remove empty checkbox container to avoid nested divs
+        if checkbox_container is not None and not has_checkboxes and len(checkbox_container) == 0:
+            entry_div.remove(checkbox_container)
     
     def _add_entry_checkboxes_for_raw_entry(self, entry_div, entry: Dict, entry_id: str) -> None:
         """Add checkboxes to entry div for raw entries (no synonym groups) based on category
@@ -861,14 +1250,19 @@ class AmiEncyclopedia:
         # Classify entry
         category = self._classify_entry(entry)
         
-        # Create checkbox container div
-        checkbox_container = ET.SubElement(entry_div, "div")
-        checkbox_container.attrib["class"] = "entry-checkboxes"
-        checkbox_container.attrib["data-category"] = category
+        # Track if we add any checkboxes
+        has_checkboxes = False
+        
+        # Create checkbox container div (only if we have checkboxes to add)
+        checkbox_container = None
         
         # Add checkboxes based on category
         if category == self.CATEGORY_NO_WIKIPEDIA:
             # Missing Wikipedia checkbox (checked by default)
+            if checkbox_container is None:
+                checkbox_container = ET.SubElement(entry_div, "div")
+                checkbox_container.attrib["class"] = "entry-checkboxes"
+                checkbox_container.attrib["data-category"] = category
             self._add_hide_checkbox(
                 checkbox_container,
                 entry_id,
@@ -876,9 +1270,14 @@ class AmiEncyclopedia:
                 checked=True,
                 label="Hide (missing Wikipedia)"
             )
+            has_checkboxes = True
         
         elif category == self.CATEGORY_DISAMBIGUATION:
             # Disambiguation selector
+            if checkbox_container is None:
+                checkbox_container = ET.SubElement(entry_div, "div")
+                checkbox_container.attrib["class"] = "entry-checkboxes"
+                checkbox_container.attrib["data-category"] = category
             wikipedia_url = entry.get('wikipedia_url', '')
             self._add_disambiguation_selector(
                 checkbox_container,
@@ -886,33 +1285,15 @@ class AmiEncyclopedia:
                 wikipedia_url,
                 ''
             )
-            # Also allow hiding
-            self._add_hide_checkbox(
-                checkbox_container,
-                entry_id,
-                reason=self.REASON_GENERAL_TERM,
-                checked=False,
-                label="Hide (too general)"
-            )
+            has_checkboxes = True
         
         elif category == self.CATEGORY_TRUE_WIKIPEDIA:
-            # True Wikipedia entries can be marked as false or too general
-            # False Wikipedia checkbox
-            self._add_hide_checkbox(
-                checkbox_container,
-                entry_id,
-                reason=self.REASON_FALSE_WIKIPEDIA,
-                checked=False,
-                label="Hide (false Wikipedia)"
-            )
-            # Too general checkbox
-            self._add_hide_checkbox(
-                checkbox_container,
-                entry_id,
-                reason=self.REASON_GENERAL_TERM,
-                checked=False,
-                label="Hide (too general)"
-            )
+            # True Wikipedia entries - no checkboxes for now (will revisit later)
+            pass
+        
+        # Remove empty checkbox container to avoid nested divs
+        if checkbox_container is not None and not has_checkboxes and len(checkbox_container) == 0:
+            entry_div.remove(checkbox_container)
     
     def _add_hide_checkbox(self, container, entry_id: str, reason: str, checked: bool, label: str) -> None:
         """Add hide checkbox to container
@@ -981,7 +1362,10 @@ class AmiEncyclopedia:
         label_elem.text = "Merge synonyms"
     
     def _add_disambiguation_selector(self, container, entry_id: str, wikipedia_url: str, wikidata_id: str = '') -> None:
-        """Add disambiguation selector to container with populated options
+        """Add disambiguation selector with checkboxes for each link option
+        
+        Allows user to select one or more options from disambiguation page links.
+        Each link is presented as a checkbox.
         
         Args:
             container: Parent element to add selector to
@@ -993,44 +1377,69 @@ class AmiEncyclopedia:
         wrapper = ET.SubElement(container, "div")
         wrapper.attrib["class"] = "disambiguation-wrapper"
         
-        # Create selector ID
-        selector_id = f"disambiguation_{entry_id}".replace(' ', '_').replace('/', '_')
-        
-        # Create label
-        label_elem = ET.SubElement(wrapper, "label")
-        label_elem.attrib["for"] = selector_id
-        label_elem.text = "Select Wikipedia page:"
-        
-        # Create select element
-        select = ET.SubElement(wrapper, "select")
-        select.attrib["class"] = "disambiguation-selector"
-        select.attrib["data-entry-id"] = entry_id
-        select.attrib["id"] = selector_id
-        if wikidata_id:
-            select.attrib["data-wikidata-id"] = wikidata_id
-        
-        # Add default option
-        default_option = ET.SubElement(select, "option")
-        default_option.attrib["value"] = ""
-        default_option.text = "-- Select Wikipedia page --"
+        # Create label for the disambiguation section
+        label_elem = ET.SubElement(wrapper, "div")
+        label_elem.attrib["class"] = "disambiguation-label"
+        label_elem.text = "Select Wikipedia page(s) from disambiguation:"
         
         # Try to fetch disambiguation options from Wikipedia page
         disambiguation_options = self._get_disambiguation_options(wikipedia_url)
         
         if disambiguation_options:
-            # Populate with actual options
+            # Create checkbox for each option
+            import hashlib
             for option_url, option_title in disambiguation_options:
-                option = ET.SubElement(select, "option")
-                option.attrib["value"] = option_url
-                option.text = option_title
-                # Try to extract Wikidata ID from option if available
-                # (This would require additional lookup, so we skip for now)
+                checkbox_wrapper = ET.SubElement(wrapper, "div")
+                checkbox_wrapper.attrib["class"] = "disambiguation-checkbox-wrapper"
+                
+                # Create checkbox ID - use a hash of the URL to make ID unique
+                url_hash = hashlib.md5(option_url.encode()).hexdigest()[:8]
+                checkbox_id = f"disambig_{entry_id}_{url_hash}".replace(' ', '_').replace('/', '_')
+                
+                # Create checkbox input
+                checkbox = ET.SubElement(checkbox_wrapper, "input")
+                checkbox.attrib["type"] = "checkbox"
+                checkbox.attrib["class"] = "disambiguation-checkbox"
+                checkbox.attrib["data-entry-id"] = entry_id
+                checkbox.attrib["data-wikipedia-url"] = option_url
+                checkbox.attrib["id"] = checkbox_id
+                if wikidata_id:
+                    checkbox.attrib["data-wikidata-id"] = wikidata_id
+                
+                # Create label for checkbox
+                label = ET.SubElement(checkbox_wrapper, "label")
+                label.attrib["for"] = checkbox_id
+                
+                # Add link in label
+                link = ET.SubElement(label, "a")
+                link.attrib["href"] = option_url
+                link.attrib["target"] = "_blank"
+                link.text = option_title
         else:
-            # Fallback: Add original URL as option
+            # Fallback: Add original URL as checkbox option
             if wikipedia_url:
-                option = ET.SubElement(select, "option")
-                option.attrib["value"] = wikipedia_url
-                option.text = wikipedia_url.split('/wiki/')[-1].replace('_', ' ') if '/wiki/' in wikipedia_url else wikipedia_url
+                checkbox_wrapper = ET.SubElement(wrapper, "div")
+                checkbox_wrapper.attrib["class"] = "disambiguation-checkbox-wrapper"
+                
+                checkbox_id = f"disambig_{entry_id}_fallback".replace(' ', '_').replace('/', '_')
+                
+                checkbox = ET.SubElement(checkbox_wrapper, "input")
+                checkbox.attrib["type"] = "checkbox"
+                checkbox.attrib["class"] = "disambiguation-checkbox"
+                checkbox.attrib["data-entry-id"] = entry_id
+                checkbox.attrib["data-wikipedia-url"] = wikipedia_url
+                checkbox.attrib["id"] = checkbox_id
+                if wikidata_id:
+                    checkbox.attrib["data-wikidata-id"] = wikidata_id
+                
+                label = ET.SubElement(checkbox_wrapper, "label")
+                label.attrib["for"] = checkbox_id
+                
+                link = ET.SubElement(label, "a")
+                link.attrib["href"] = wikipedia_url
+                link.attrib["target"] = "_blank"
+                page_title = wikipedia_url.split('/wiki/')[-1].replace('_', ' ') if '/wiki/' in wikipedia_url else wikipedia_url
+                link.text = page_title
     
     def _get_disambiguation_options(self, wikipedia_url: str) -> list:
         """Get disambiguation options from Wikipedia page
@@ -1162,6 +1571,37 @@ class AmiEncyclopedia:
             logger.warning(f"Could not extract Wikidata ID from Wikipedia URL {wikipedia_url}: {e}")
         
         return None
+    
+    def _get_wikidata_category(self, wikidata_id: str) -> str:
+        """Get Wikidata category (label/title) from Wikidata ID
+        
+        This is typically the first string/label shown on the Wikidata page.
+        Can be a controlled vocabulary property or user-provided string.
+        
+        Args:
+            wikidata_id: Wikidata ID (Q/P format)
+            
+        Returns:
+            Wikidata category/label string, or empty string if not found
+        """
+        if not wikidata_id or wikidata_id in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+            return ''
+        
+        if not re.match(r'^[QP]\d+$', wikidata_id):
+            return ''
+        
+        try:
+            from amilib.wikimedia import WikidataPage
+            wikidata_page = WikidataPage(wikidata_id)
+            if wikidata_page is not None and wikidata_page.root is not None:
+                # Get title/label from Wikidata page (first string)
+                title = wikidata_page.get_title()
+                if title and title != "No title":
+                    return title
+        except Exception as e:
+            logger.debug(f"Could not get Wikidata category for {wikidata_id}: {e}")
+        
+        return ''
     
     def _lookup_wikidata_id_by_term(self, term: str) -> Optional[str]:
         """Lookup Wikidata ID by term using Wikipedia lookup first, then direct Wikidata lookup
@@ -1349,6 +1789,9 @@ class AmiEncyclopedia:
                     term = entry.get('term', '')
                     if term and term in sparql_results and sparql_results[term]:
                         entry['wikidata_id'] = sparql_results[term]
+                        # Get Wikidata category for newly added ID
+                        if entry['wikidata_id']:
+                            entry['wikidata_category'] = self._get_wikidata_category(entry['wikidata_id'])
                         stats["added_from_sparql_batch"] += 1
             
             # Individual lookups for remaining entries in batch
@@ -1365,6 +1808,8 @@ class AmiEncyclopedia:
                     wikidata_id = self._extract_wikidata_id_from_wikipedia_url(wikipedia_url)
                     if wikidata_id:
                         entry['wikidata_id'] = wikidata_id
+                        # Get Wikidata category for newly added ID
+                        entry['wikidata_category'] = self._get_wikidata_category(wikidata_id)
                         stats["added_from_wikipedia_url"] += 1
                         continue
                 
@@ -1373,6 +1818,8 @@ class AmiEncyclopedia:
                     wikidata_id = self._lookup_wikidata_id_by_term(term)
                     if wikidata_id:
                         entry['wikidata_id'] = wikidata_id
+                        # Get Wikidata category for newly added ID
+                        entry['wikidata_category'] = self._get_wikidata_category(wikidata_id)
                         stats["added_from_wikipedia_term"] += 1
             
             stats["batches_processed"] += 1
@@ -1393,5 +1840,150 @@ class AmiEncyclopedia:
         stats["entries_still_missing"] = stats["total_entries"] - stats["entries_with_wikidata_id_after"]
         
         logger.info(f"Lookup complete: {stats['entries_with_wikidata_id_after']}/{stats['total_entries']} entries now have Wikidata IDs")
+        
+        return stats
+    
+    def lookup_wikidata_ids_from_wikipedia_pages(self, max_ids: Optional[int] = None, output_file: Optional[Path] = None, delay_seconds: float = 0.1) -> Dict[str, int]:
+        """Lookup Wikidata IDs from Wikipedia page URLs for entries that have Wikipedia pages
+        
+        Uses classification to avoid expensive lookups:
+        - Skips entries classified as HAS_WIKIDATA (already have ID)
+        - Skips entries classified as NO_WIKIPEDIA_PAGE (no Wikipedia URL)
+        - Skips entries classified as AMBIGUOUS (disambiguation pages - handled separately)
+        - Only processes UNPROCESSED entries
+        
+        For each entry:
+        - If Wikidata ID already present, skip
+        - If no Wikipedia page, skip
+        - Lookup Wikidata ID from Wikipedia page using amilib routines
+        - Add wikidata_id to entry and update classification (with try/catch to never fail)
+        - Write edited encyclopedia if output_file provided
+        
+        Args:
+            max_ids: Maximum number of IDs to lookup (None = no limit, for batch processing)
+            output_file: Optional file path to write the edited encyclopedia
+            delay_seconds: Delay between requests in seconds (default: 0.1) to avoid rate limiting
+            
+        Returns:
+            Statistics dictionary with lookup results
+        """
+        import time
+        
+        stats = {
+            "total_entries": len(self.entries),
+            "entries_with_wikidata_id_before": 0,
+            "entries_with_wikidata_id_after": 0,
+            "entries_skipped_already_have_id": 0,
+            "entries_skipped_no_wikipedia": 0,
+            "entries_skipped_ambiguous": 0,
+            "entries_skipped_classified": 0,
+            "entries_looked_up": 0,
+            "entries_successfully_found": 0,
+            "entries_failed_lookup": 0
+        }
+        
+        # Count entries with Wikidata IDs before
+        for entry in self.entries:
+            if entry.get('wikidata_id') and entry.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+                stats["entries_with_wikidata_id_before"] += 1
+        
+        # Process entries that need lookup (use classification to skip expensive checks)
+        entries_to_process = []
+        for entry in self.entries:
+            # Get classification (will classify if not already classified)
+            classification = self.classify_entry_status(entry)
+            entry['classification'] = classification  # Store it
+            
+            # Skip based on classification (avoids expensive lookups)
+            if classification == self.CLASSIFICATION_HAS_WIKIDATA:
+                stats["entries_skipped_already_have_id"] += 1
+                stats["entries_skipped_classified"] += 1
+                continue
+            
+            if classification == self.CLASSIFICATION_NO_WIKIPEDIA_PAGE:
+                stats["entries_skipped_no_wikipedia"] += 1
+                stats["entries_skipped_classified"] += 1
+                continue
+            
+            if classification == self.CLASSIFICATION_AMBIGUOUS:
+                stats["entries_skipped_ambiguous"] += 1
+                stats["entries_skipped_classified"] += 1
+                continue
+            
+            # Only process UNPROCESSED entries (have Wikipedia URL but no Wikidata ID yet)
+            if classification == self.CLASSIFICATION_UNPROCESSED:
+                entries_to_process.append(entry)
+        
+        # Apply max_ids limit if specified
+        if max_ids is not None and max_ids > 0:
+            entries_to_process = entries_to_process[:max_ids]
+        
+        total_to_process = len(entries_to_process)
+        logger.info(f"Processing {total_to_process} entries for Wikidata ID lookup from Wikipedia pages")
+        
+        # Lookup Wikidata IDs for each entry
+        for idx, entry in enumerate(entries_to_process, 1):
+            wikipedia_url = entry.get('wikipedia_url', '')
+            term = entry.get('term', 'N/A')
+            
+            stats["entries_looked_up"] += 1
+            
+            # Progress logging for long-running batches
+            if total_to_process > 10 and idx % max(1, total_to_process // 10) == 0:
+                progress_pct = (idx / total_to_process) * 100
+                logger.info(f"Progress: {idx}/{total_to_process} ({progress_pct:.1f}%) - "
+                          f"Found: {stats['entries_successfully_found']}, "
+                          f"Failed: {stats['entries_failed_lookup']}")
+            
+            try:
+                # Lookup Wikidata ID from Wikipedia page URL
+                wikidata_id = self._extract_wikidata_id_from_wikipedia_url(wikipedia_url)
+                
+                if wikidata_id:
+                    # Validate Wikidata ID format
+                    if re.match(r'^[QP]\d+$', wikidata_id):
+                        entry['wikidata_id'] = wikidata_id
+                        entry['classification'] = self.CLASSIFICATION_HAS_WIKIDATA  # Update classification
+                        # Get Wikidata category for newly found ID
+                        entry['wikidata_category'] = self._get_wikidata_category(wikidata_id)
+                        stats["entries_successfully_found"] += 1
+                        logger.debug(f"Found Wikidata ID {wikidata_id} for '{term}' from {wikipedia_url}")
+                    else:
+                        logger.warning(f"Invalid Wikidata ID format for '{term}': {wikidata_id}")
+                        entry['classification'] = self.CLASSIFICATION_ERROR  # Mark as error
+                        stats["entries_failed_lookup"] += 1
+                else:
+                    # No Wikidata ID found - update classification
+                    entry['classification'] = self.CLASSIFICATION_NO_WIKIDATA_ENTRY
+                    stats["entries_failed_lookup"] += 1
+                    logger.debug(f"Could not find Wikidata ID for '{term}' from {wikipedia_url}")
+                    
+            except Exception as e:
+                # Never fail - catch all exceptions
+                entry['classification'] = self.CLASSIFICATION_ERROR  # Mark as error
+                stats["entries_failed_lookup"] += 1
+                logger.warning(f"Error looking up Wikidata ID for '{term}' from {wikipedia_url}: {e}")
+                # Continue processing other entries
+            
+            # Rate limiting: add delay between requests to avoid rate limiting
+            if delay_seconds > 0 and idx < total_to_process:
+                time.sleep(delay_seconds)
+        
+        # Count entries with Wikidata IDs after
+        for entry in self.entries:
+            if entry.get('wikidata_id') and entry.get('wikidata_id') not in ('', 'no_wikidata_id', 'invalid_wikidata_id'):
+                stats["entries_with_wikidata_id_after"] += 1
+        
+        logger.info(f"Lookup complete: {stats['entries_successfully_found']}/{stats['entries_looked_up']} lookups successful "
+                   f"({stats['entries_with_wikidata_id_after']}/{stats['total_entries']} total entries now have Wikidata IDs)")
+        
+        # Write edited encyclopedia if output_file provided
+        if output_file:
+            try:
+                self.save_wiki_normalized_html(output_file)
+                logger.info(f"Saved edited encyclopedia to {output_file}")
+            except Exception as e:
+                logger.warning(f"Failed to save edited encyclopedia to {output_file}: {e}")
+                # Don't fail - just log the warning
         
         return stats
