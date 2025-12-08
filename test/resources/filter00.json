@@ -1,7 +1,0 @@
-{"foo": "bar",
-  "plugh": "xyzzy",
-  "filter": {
-    "description": "chemical",
-    "regex" : "(chemical compound|chemical element)"
-  }
-}

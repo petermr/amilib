@@ -1,0 +1,146 @@
+[
+  {
+    "report": "WG1",
+    "annex": "Annex I",
+    "title": "Glossary",
+    "description": "Definitions of key terms used in the report",
+    "currentStatus": "Not Processed",
+    "process": true,
+    "reason": ""
+  },
+  {
+    "report": "WG1",
+    "annex": "Annex II",
+    "title": "Acronyms",
+    "description": "List of acronyms and abbreviations",
+    "currentStatus": "Not Processed",
+    "process": true,
+    "reason": ""
+  },
+  {
+    "report": "WG1",
+    "annex": "Annex III",
+    "title": "Contributors",
+    "description": "List of authors and contributors",
+    "currentStatus": "Not Processed",
+    "process": false,
+    "reason": "Lower priority"
+  },
+  {
+    "report": "WG1",
+    "annex": "Annex IV",
+    "title": "Reviewers",
+    "description": "List of expert reviewers",
+    "currentStatus": "Not Processed",
+    "process": false,
+    "reason": "Lower priority"
+  },
+  {
+    "report": "WG2",
+    "annex": "Annex I",
+    "title": "Global to Regional Atlas",
+    "description": "Visualizations of climate change impacts across regions",
+    "currentStatus": "Not Processed",
+    "process": false,
+    "reason": "Lower priority"
+  },
+  {
+    "report": "WG2",
+    "annex": "Annex II",
+    "title": "Glossary",
+    "description": "Definitions of key terms used in the report",
+    "currentStatus": "Not Processed",
+    "process": true,
+    "reason": ""
+  },
+  {
+    "report": "WG3",
+    "annex": "Annex I",
+    "title": "Glossary",
+    "description": "Definitions of key terms used in the report",
+    "currentStatus": "Not Processed",
+    "process": true,
+    "reason": ""
+  },
+  {
+    "report": "WG3",
+    "annex": "Annex II",
+    "title": "Acronyms",
+    "description": "List of acronyms and abbreviations",
+    "currentStatus": "Not Processed",
+    "process": true,
+    "reason": ""
+  },
+  {
+    "report": "WG3",
+    "annex": "Annex III",
+    "title": "Contributors",
+    "description": "List of authors and contributors",
+    "currentStatus": "Not Processed",
+    "process": false,
+    "reason": ""
+  },
+  {
+    "report": "WG3",
+    "annex": "Annex IV",
+    "title": "Reviewers",
+    "description": "List of expert reviewers",
+    "currentStatus": "Not Processed",
+    "process": false,
+    "reason": ""
+  },
+  {
+    "report": "SYR",
+    "annex": "Annex I",
+    "title": "Glossary",
+    "description": "Definitions of key terms used in the report",
+    "currentStatus": "Partially Processed",
+    "process": true,
+    "reason": ""
+  },
+  {
+    "report": "SYR",
+    "annex": "Annex II",
+    "title": "Acronyms",
+    "description": "List of acronyms and abbreviations",
+    "currentStatus": "Partially Processed",
+    "process": true,
+    "reason": ""
+  },
+  {
+    "report": "SYR",
+    "annex": "Annex III",
+    "title": "Contributors",
+    "description": "List of authors and contributors",
+    "currentStatus": "Not Processed",
+    "process": false,
+    "reason": "Lower priority"
+  },
+  {
+    "report": "SYR",
+    "annex": "Annex IV",
+    "title": "Reviewers",
+    "description": "List of expert reviewers",
+    "currentStatus": "Not Processed",
+    "process": false,
+    "reason": "Lower priority"
+  },
+  {
+    "report": "SYR",
+    "annex": "Annex V",
+    "title": "List of Publications",
+    "description": "Comprehensive list of IPCC publications",
+    "currentStatus": "Not Processed",
+    "process": false,
+    "reason": "Lower priority"
+  },
+  {
+    "report": "SYR",
+    "annex": "Annexes and Index",
+    "title": "Combined Annexes",
+    "description": "Combined annexes and index section (may include multiple annexes)",
+    "currentStatus": "Partially Processed",
+    "process": true,
+    "reason": "please clean"
+  }
+]

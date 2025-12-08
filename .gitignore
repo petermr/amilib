@@ -26,6 +26,8 @@ test/resources/corpus/breward2023_corpus/
 *>*
 *|*
 
+.pyscn
+
 # macOS system files
 .DS_Store
 **/.DS_Store
