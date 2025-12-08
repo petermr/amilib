@@ -1,0 +1,170 @@
+{
+  "document_type": "ipcc_ar6_annex",
+  "version": "1.0",
+  "description": "Template for IPCC AR6 Annexes (Glossaries and Acronyms)",
+  
+  "column_detection": {
+    "enabled": true,
+    "method": "coordinate_clustering",
+    "tolerance_px": 25,
+    "min_elements_per_column": 3,
+    "column_count": {
+      "auto_detect": true,
+      "max_columns": 3,
+      "preferred": [1, 2, 3]
+    }
+  },
+  
+  "section_detection": {
+    "hierarchical": true,
+    "patterns": [
+      {
+        "level": 1,
+        "regex": "^\\s*(?P<id>[A-Z]\\d+)\\s+(?P<title>.*)$",
+        "font_size_range": [12, 16],
+        "font_weight": "bold",
+        "class": "section_title"
+      },
+      {
+        "level": 2,
+        "regex": "^\\s*(?P<id>[A-Z]\\d+\\.\\d+)\\s+(?P<title>.*)$",
+        "font_size_range": [11, 14],
+        "font_weight": "bold",
+        "class": "subsection_title"
+      }
+    ],
+    "indentation_based": {
+      "enabled": true,
+      "thresholds": [0, 25, 50],
+      "min_indent_difference": 15
+    }
+  },
+  
+  "floating_elements": {
+    "enabled": true,
+    "markers": {
+      "start_pattern": "\\[START\\s+(?P<type>BOX|FIGURE|TABLE)\\s+(?P<id>.*?)\\s+HERE\\]",
+      "end_pattern": "\\[END\\s+(?P<type>BOX|FIGURE|TABLE)\\s+(?P<id>.*?)\\s+HERE\\]"
+    },
+    "bbox_detection": {
+      "enabled": true,
+      "min_width": 100,
+      "min_height": 50,
+      "isolation_threshold": 30
+    }
+  },
+  
+  "tables": {
+    "detection": "pdfplumber",
+    "wrap_in_figure": true,
+    "caption_pattern": "^Table\\s+(?P<id>\\d+[.\\d]*)\\s*[:.]\\s*(?P<title>.*)$"
+  },
+  
+  "images": {
+    "detection": "coordinate",
+    "wrap_in_figure": true,
+    "caption_pattern": "^Figure\\s+(?P<id>\\d+[.\\d]*)\\s*[:.]\\s*(?P<title>.*)$",
+    "min_width": 50,
+    "min_height": 50
+  },
+  
+  "indentation": {
+    "enabled": true,
+    "detection_method": "left_margin",
+    "thresholds": {
+      "level_0": [0, 10],
+      "level_1": [15, 35],
+      "level_2": [40, 60],
+      "level_3": [65, 85]
+    },
+    "apply_to": ["paragraphs", "lists"]
+  },
+  
+  "page_metadata": {
+    "enabled": true,
+    "page_numbers": {
+      "detection": "coordinate_and_pattern",
+      "patterns": [
+        "^Page\\s+(?P<number>\\d+)$",
+        "^(?P<number>\\d+)$"
+      ],
+      "regions": {
+        "header": {
+          "y_range": [0, 80],
+          "x_ranges": [[500, 600], [0, 100]]
+        },
+        "footer": {
+          "y_range": [750, 850],
+          "x_ranges": [[500, 600], [0, 100]]
+        }
+      },
+      "font_size_range": [8, 12],
+      "extract": true,
+      "store_as_attribute": "data-page-number"
+    },
+    "running_titles": {
+      "detection": "coordinate_and_pattern",
+      "regions": {
+        "header": {
+          "y_range": [0, 80]
+        },
+        "footer": {
+          "y_range": [750, 850]
+        }
+      },
+      "patterns": [
+        "^.*Annex\\s+[IVX]+.*$",
+        "^.*Glossary.*$",
+        "^.*Acronyms.*$",
+        "^.*Chapter\\s+\\d+.*$"
+      ],
+      "font_size_range": [9, 12],
+      "extract": true,
+      "store_as_attribute": "data-running-title"
+    },
+    "marginalia": {
+      "enabled": true,
+      "detection": "coordinate",
+      "regions": {
+        "left_margin": {
+          "x_range": [0, 50]
+        },
+        "right_margin": {
+          "x_range": [550, 600]
+        }
+      },
+      "extract": true,
+      "store_as_attribute": "data-marginalia"
+    },
+    "recto_verso": {
+      "enabled": true,
+      "detection": "page_number_position",
+      "recto": {
+        "page_number_x_range": [500, 600],
+        "running_title_x_range": [0, 200]
+      },
+      "verso": {
+        "page_number_x_range": [0, 100],
+        "running_title_x_range": [400, 600]
+      },
+      "store_as_attribute": "data-page-side"
+    }
+  },
+  
+  "output_structure": {
+    "container_class": "section",
+    "nested_containers": true,
+    "semantic_tags": {
+      "sections": "section",
+      "floats": "aside",
+      "tables": "figure",
+      "images": "figure",
+      "pages": "article",
+      "page_metadata": "header"
+    }
+  }
+}
+
+
+
+

@@ -12,14 +12,21 @@ import shutil
 from amilib.ami_encyclopedia import AmiEncyclopedia
 from amilib.ami_encyclopedia_util import EncyclopediaLinkExtractor, LinkValidator, SynonymNormalizer
 from test.resources import Resources
+from test.test_all import AmiAnyTest
 
+class AbstractEncyclopediaTest(AmiAnyTest):
 
-class EncyclopediaTest(unittest.TestCase):
-    """Test encyclopedia functionality"""
-    
     def setUp(self):
         """Set up test fixtures"""
-        self.test_html_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "wg1chap03_dict.html")
+        self.test_html_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "test_encyclopedia_15_entries.html")
+
+
+class EncyclopediaTest(AbstractEncyclopediaTest):
+    """Test encyclopedia functionality"""
+
+
+    def setUp(self):
+        super().setUp()
         self.temp_dir = Path(Resources.TEMP_DIR, "test", "encyclopedia", "EncyclopediaTest")
         self.temp_dir.mkdir(parents=True, exist_ok=True)
         
@@ -71,7 +78,7 @@ class EncyclopediaTest(unittest.TestCase):
                     assert entry.get('wikidata_id') == wikidata_id, "Entries should be grouped by Wikidata ID"
         
         print(f"✅ Normalized into {len(normalized_entries)} groups")
-    
+
     def test_aggregate_synonyms(self):
         """Test synonym aggregation"""
         print("🧪 Testing synonym aggregation...")
@@ -174,14 +181,14 @@ class EncyclopediaTest(unittest.TestCase):
         print(f"✅ Statistics: {stats['total_entries']} entries → {stats['normalized_groups']} groups")
 
 
-class EncyclopediaUtilTest(unittest.TestCase):
+class EncyclopediaUtilTest(AbstractEncyclopediaTest):
     """Test encyclopedia utility functions"""
     
     def setUp(self):
-        """Set up test fixtures"""
-        self.test_html_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "wg1chap03_dict.html")
+        super().setUp()
         self.temp_dir = Path(Resources.TEMP_DIR, "test", "encyclopedia", "EncyclopediaUtilTest")
         self.temp_dir.mkdir(parents=True, exist_ok=True)
+        """Set up test fixtures"""
         self.extractor = EncyclopediaLinkExtractor()
         self.validator = LinkValidator()
         self.normalizer = SynonymNormalizer()
@@ -240,14 +247,15 @@ class EncyclopediaUtilTest(unittest.TestCase):
         print("✅ Wikipedia URL normalization working correctly")
 
 
-class EncyclopediaIntegrationTest(unittest.TestCase):
+class EncyclopediaIntegrationTest(AbstractEncyclopediaTest):
     """Integration tests for encyclopedia functionality"""
     
     def setUp(self):
         """Set up test fixtures"""
-        self.test_html_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "wg1chap03_dict.html")
+        super().setUp()
         self.temp_dir = Path(Resources.TEMP_DIR, "test", "encyclopedia", "EncyclopediaIntegrationTest")
         self.temp_dir.mkdir(parents=True, exist_ok=True)
+
     
     def tearDown(self):
         """Clean up test fixtures"""
@@ -547,7 +555,7 @@ class EncyclopediaIntegrationTest(unittest.TestCase):
         assert synonyms == expected_synonyms, f"Synonyms should be {expected_synonyms}, got {synonyms}"
         
         print("✅ Ethanol and hydroxyethane with merge working correctly (merged by Wikidata ID)")
-    
+
     def test_full_encyclopedia_workflow(self):
         """Test complete encyclopedia workflow"""
         print("🧪 Testing complete encyclopedia workflow...")
@@ -588,12 +596,12 @@ class EncyclopediaIntegrationTest(unittest.TestCase):
         print(f"✅ Compression ratio: {stats['compression_ratio']:.2f}")
 
 
-class CompositionTest(unittest.TestCase):
+class CompositionTest(AbstractEncyclopediaTest):
     """Test composition relationship between AmiEncyclopedia and AmiDictionary"""
     
     def setUp(self):
         """Set up test fixtures"""
-        self.test_html_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "wg1chap03_dict.html")
+        super().setUp()
         self.temp_dir = Path(Resources.TEMP_DIR, "test", "encyclopedia", "CompositionTest")
         self.temp_dir.mkdir(parents=True, exist_ok=True)
         
@@ -601,7 +609,7 @@ class CompositionTest(unittest.TestCase):
         """Clean up test fixtures"""
         if self.temp_dir.exists():
             shutil.rmtree(self.temp_dir)
-    
+
     def test_create_encyclopedia_with_dictionary(self):
         """Test creating encyclopedia by composing with AmiDictionary"""
         print("🧪 Testing encyclopedia creation with AmiDictionary composition...")
@@ -690,6 +698,7 @@ class CompositionTest(unittest.TestCase):
         
         print("✅ Encyclopedia created from dictionary HTML structure")
     
+
     def test_encyclopedia_normalization_with_dictionary_data(self):
         """Test that encyclopedia normalization works with dictionary-derived data"""
         print("🧪 Testing encyclopedia normalization with dictionary data...")

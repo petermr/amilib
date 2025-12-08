@@ -7,10 +7,18 @@ from pathlib import Path
 
 from amilib.ami_encyclopedia import AmiEncyclopedia
 from test.resources import Resources
+from test.test_encyclopedia import AbstractEncyclopediaTest
 
 
-class EncyclopediaAutoLookupTest(unittest.TestCase):
+class EncyclopediaAutoLookupTest(AbstractEncyclopediaTest):
     """Test encyclopedia auto-lookup functionality with minimal network calls"""
+
+    def setUp(self):
+        super().setUp()
+
+        """Set up test fixtures"""
+        self.temp_dir = Path(Resources.TEMP_DIR, "test", "encyclopedia", "EncyclopediaAutoLookupTest")
+        self.temp_dir.mkdir(parents=True, exist_ok=True)
     
     def test_auto_lookup_from_wikipedia_url(self):
         """Test auto-lookup of Wikidata ID from Wikipedia URL (minimal lookup - 1 network call)"""
@@ -30,7 +38,7 @@ class EncyclopediaAutoLookupTest(unittest.TestCase):
         
         encyclopedia = AmiEncyclopedia(title="Test Encyclopedia")
         # Enable auto-lookup for this test
-        encyclopedia.create_from_html_content(test_html, enable_auto_lookup=True)
+        encyclopedia.create_from_html_content(test_html)
         
         # Verify entry was created
         assert len(encyclopedia.entries) > 0, "Should have entries"
@@ -75,7 +83,7 @@ class EncyclopediaAutoLookupTest(unittest.TestCase):
         
         encyclopedia = AmiEncyclopedia(title="Test Encyclopedia")
         # Enable auto-lookup for this test
-        encyclopedia.create_from_html_content(test_html, enable_auto_lookup=True)
+        encyclopedia.create_from_html_content(test_html)
         
         # Verify entry was created
         assert len(encyclopedia.entries) > 0, "Should have entries"

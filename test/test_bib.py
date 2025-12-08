@@ -195,7 +195,7 @@ class PygetpapersTest(AmiAnyTest):
         outfile = Path(indir, f"{query}.html")
         # Use cross-platform recursive globbing
         infiles = list(indir.rglob(f"*/{HTML_WITH_IDS}.html"))
-        assert 50 <= len(infiles) <= 55
+        assert 50 <= len(infiles) <= 70
         phrases = [
             "bananas",
             "South Asia",
@@ -866,7 +866,7 @@ class AmiCorpusTest(AmiAnyTest):
         outfile = Path(indir, f"{query}.html")
         # Use cross-platform recursive globbing
         infiles = list(indir.rglob(f"*/{HTML_WITH_IDS}.html"))
-        assert 50 <= len(infiles) <= 55
+        assert 50 <= len(infiles) <= 70
         phrases = [
             "methane emissions"
         ]

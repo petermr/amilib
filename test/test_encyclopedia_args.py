@@ -13,12 +13,15 @@ from amilib.amix import AmiLib
 from amilib.ami_encyclopedia_args import EncyclopediaArgs
 from test.resources import Resources
 from test.test_all import AmiAnyTest
+from test.test_encyclopedia import AbstractEncyclopediaTest
 
 
-class EncyclopediaArgsTest(AmiAnyTest):
+class EncyclopediaArgsTest(AbstractEncyclopediaTest):
     """Test EncyclopediaArgs command-line functionality"""
     
     def setUp(self):
+        super().setUp()    
+
         """Set up test fixtures"""
         self.temp_dir = Path(Resources.TEMP_DIR, "test", "encyclopedia", "EncyclopediaArgsTest")
         self.temp_dir.mkdir(parents=True, exist_ok=True)
@@ -105,7 +108,8 @@ class EncyclopediaArgsTest(AmiAnyTest):
     def test_encyclopedia_args_process_args_with_inpath(self):
         """Test that process_args() processes arguments correctly"""
         # Use a test file that exists
-        test_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "wg1chap03_dict.html")
+        # test_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "wg1chap03_dict.html")
+        test_file = self.test_html_file
         if not test_file.exists():
             self.skipTest(f"Test file not found: {test_file}")
         
@@ -129,7 +133,8 @@ class EncyclopediaArgsTest(AmiAnyTest):
     
     def test_encyclopedia_args_process_args_no_outpath(self):
         """Test that process_args() generates default outpath when not provided"""
-        test_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "wg1chap03_dict.html")
+        # test_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "wg1chap03_dict.html")
+        test_file = self.test_html_file
         if not test_file.exists():
             self.skipTest(f"Test file not found: {test_file}")
         
