@@ -17,11 +17,12 @@ from amilib.ami_encyclopedia import AmiEncyclopedia
 from test.resources import Resources
 from test.test_all import AmiAnyTest
 from amilib.util import Util
+from test.test_encyclopedia import AbstractEncyclopediaTest
 
 logger = Util.get_logger(__name__)
 
 
-class EncyclopediaAddWikidataIdsTest(AmiAnyTest):
+class EncyclopediaAddWikidataIdsTest(AbstractEncyclopediaTest):
     """Test adding Wikidata IDs from Wikipedia pages"""
     
     def setUp(self):

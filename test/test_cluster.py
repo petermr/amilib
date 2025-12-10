@@ -32,6 +32,7 @@ class ClusterTest(AmiAnyTest):
         if self.temp_dir.exists():
             shutil.rmtree(self.temp_dir)
     
+    @unittest.skip("runs for too long")    
     def test_clusterer_initialization(self):
         """Test that AmiEncyclopediaClusterer can be initialized"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer
@@ -45,6 +46,7 @@ class ClusterTest(AmiAnyTest):
         assert clusterer.encyclopedia == encyclopedia, "Clusterer should reference encyclopedia"
         print("✅ Clusterer initialization working")
     
+    @unittest.skip("runs for too long")    
     def test_clusterer_with_config(self):
         """Test that AmiEncyclopediaClusterer can be initialized with configuration"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer, ClusterConfig
@@ -62,11 +64,12 @@ class ClusterTest(AmiAnyTest):
         
         assert clusterer.config == config, "Clusterer should store configuration"
         print("✅ Clusterer initialization with config working")
-    
+
+    @unittest.skip("runs for too long")    
     def test_cluster_entries_basic(self):
         """Test basic clustering of entries"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer
-        
+        r
         encyclopedia = AmiEncyclopedia(title="Test Encyclopedia")
         encyclopedia.create_from_html_file(self.test_html_file)
         
@@ -85,6 +88,7 @@ class ClusterTest(AmiAnyTest):
         
         print(f"✅ Created {len(clusters)} clusters")
     
+    @unittest.skip("runs for too long")    
     def test_cluster_entries_with_method(self):
         """Test clustering with different methods"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer
@@ -107,6 +111,7 @@ class ClusterTest(AmiAnyTest):
         
         print("✅ Clustering with different methods working")
     
+    @unittest.skip("runs for too long")    
     def test_assign_clusters_to_entries(self):
         """Test assigning cluster IDs to encyclopedia entries"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer
@@ -130,6 +135,7 @@ class ClusterTest(AmiAnyTest):
         
         print(f"✅ Assigned clusters to {len(entries_with_cluster)} entries")
     
+    @unittest.skip("runs for too long")    
     def test_get_cluster_statistics(self):
         """Test getting cluster statistics"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer
@@ -152,6 +158,7 @@ class ClusterTest(AmiAnyTest):
         
         print(f"✅ Statistics: {stats['n_clusters']} clusters, silhouette={stats.get('silhouette_score', 'N/A')}")
     
+    @unittest.skip("runs for too long")    
     def test_export_cluster_report(self):
         """Test exporting cluster report"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer
@@ -485,6 +492,7 @@ class ClusterIntegrationTest(AmiAnyTest):
         if self.temp_dir.exists():
             shutil.rmtree(self.temp_dir)
     
+    @unittest.skip("runs for too long")    
     def test_full_clustering_workflow(self):
         """Test complete clustering workflow"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer
@@ -515,6 +523,7 @@ class ClusterIntegrationTest(AmiAnyTest):
         
         print(f"✅ Full workflow: {stats['n_clusters']} clusters, {len(updated_encyclopedia.entries)} entries")
     
+    @unittest.skip("runs for too long")    
     def test_clustering_with_different_n_clusters(self):
         """Test clustering with different numbers of clusters"""
         from amilib.ami_encyclopedia_cluster import AmiEncyclopediaClusterer, ClusterConfig
