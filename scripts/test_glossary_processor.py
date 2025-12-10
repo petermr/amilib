@@ -21,10 +21,9 @@ def main():
         print(f"❌ Input file not found: {input_html}")
         return 1
     
-    # Output file
-    output_dir = Path(Resources.TEMP_DIR, "scripts", "glossary_processor")
-    output_dir.mkdir(parents=True, exist_ok=True)
-    output_html = output_dir / "wg3_annex_vi_acronyms_structured.html"
+    # Output file - save alongside original in permanent location
+    output_dir = input_html.parent
+    output_html = output_dir / "structured.html"
     
     print(f"Input:  {input_html}")
     print(f"Output: {output_html}")
