@@ -292,6 +292,46 @@ self.temp_dir = Resources.TEMP_DIR / "test" / "encyclopedia"
 - Scripts: `Path(Resources.TEMP_DIR, "scripts", <module_name>)`
 - Examples: `Path(Resources.TEMP_DIR, "examples", <example_name>)`
 - Other modules: `Path(Resources.TEMP_DIR, <module_name>, <class_or_function>)`
+
+### STYLE: Always use Path to create filenames, never use isolated "/"
+
+**Rule:** Always use `Path()` constructor with multiple arguments or `Path.joinpath()` for building file paths. Never use string concatenation with "/" or isolated "/" characters.
+
+**✅ CORRECT:**
+```python
+from pathlib import Path
+
+# Use Path constructor with multiple arguments
+file_path = Path("temp", "dictionaries", "wg3", "annex-vi.html")
+output_dir = Path(Resources.TEMP_DIR, "scripts", "glossary_processor")
+
+# Use Path.joinpath() for dynamic paths
+base_path = Path("temp")
+file_path = base_path.joinpath("dictionaries", "wg3", "annex-vi.html")
+
+# For combining with existing Path objects
+parent_dir = Path("temp")
+file_path = Path(parent_dir, "dictionaries", "file.html")
+```
+
+**❌ WRONG:**
+```python
+# Using string concatenation with "/"
+file_path = "temp" + "/" + "dictionaries" + "/" + "wg3" + "/" + "annex-vi.html"
+
+# Using isolated "/" in Path
+file_path = Path("temp/dictionaries/wg3/annex-vi.html")
+
+# Using / operator (prefer Path constructor)
+file_path = Path("temp") / "dictionaries" / "wg3" / "annex-vi.html"
+```
+
+**Rationale**: 
+- Using Path constructor with multiple arguments is explicit and clear
+- Avoids platform-specific path separator issues
+- Makes path construction more readable
+- Consistent with style guide preference for explicit Path construction
+- Prevents accidental string concatenation errors
 ```
 
 ## Best Practices Established
