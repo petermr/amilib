@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style type="text/css">
+    [role="term"] { font-weight: bold; }
+    [role="definition"] { font-weight: normal; }
+    .role-cross_reference {
+      font-weight: normal;
+      font-style: italic;
+      color: #0066cc;
+    }
+    em {
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="glossary" data-report="wg3" data-annex="vi">
+    <!-- Entry with italicized term that should be a hyperlink -->
+    <div class="entry" id="wg3-annex-vi-acronyms-entry-ipcc">
+      <div role="term"><span class="role-term">IPCC</span></div>
+      <div role="definition">
+        <span class="role-definition">Intergovernmental Panel on Climate Change. See also </span>
+        <em class="role-cross_reference">AR6</em>
+        <span class="role-definition"> and </span>
+        <em class="role-cross_reference">WG1</em>
+        <span class="role-definition">.</span>
+      </div>
+    </div>
+    
+    <!-- Entry with mixed content: text, italicized cross-reference, more text -->
+    <div class="entry" id="wg3-annex-vi-acronyms-entry-ar6">
+      <div role="term"><span class="role-term">AR6</span></div>
+      <div role="definition">
+        <span class="role-definition">Sixth Assessment Report of the </span>
+        <em class="role-cross_reference">IPCC</em>
+        <span class="role-definition">. This report includes contributions from </span>
+        <em class="role-cross_reference">WG1</em>
+        <span class="role-definition">, </span>
+        <em class="role-cross_reference">WG2</em>
+        <span class="role-definition">, and </span>
+        <em class="role-cross_reference">WG3</em>
+        <span class="role-definition">.</span>
+      </div>
+    </div>
+    
+    <!-- Entry with definition containing italicized terms that might be hyperlinks -->
+    <div class="entry" id="wg3-annex-vi-acronyms-entry-ndc">
+      <div role="term"><span class="role-term">NDC</span></div>
+      <div role="definition">
+        <span class="role-definition">Nationally Determined Contribution. Parties to the </span>
+        <em class="role-cross_reference">Paris Agreement</em>
+        <span class="role-definition"> submit </span>
+        <em class="role-cross_reference">NDCs</em>
+        <span class="role-definition"> every five years.</span>
+      </div>
+    </div>
+    
+    <!-- Entry with complex mixed content: text, italic, text, italic, text -->
+    <div class="entry" id="wg3-annex-vi-acronyms-entry-ghg">
+      <div role="term"><span class="role-term">GHG</span></div>
+      <div role="definition">
+        <span class="role-definition">greenhouse gas. The main </span>
+        <em class="role-cross_reference">GHGs</em>
+        <span class="role-definition"> are </span>
+        <em class="role-cross_reference">CO<sub>2</sub></em>
+        <span class="role-definition">, </span>
+        <em class="role-cross_reference">CH<sub>4</sub></em>
+        <span class="role-definition">, and </span>
+        <em class="role-cross_reference">N<sub>2</sub>O</em>
+        <span class="role-definition">.</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
