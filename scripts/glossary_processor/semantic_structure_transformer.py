@@ -23,6 +23,7 @@ from amilib.util import Util
 from scripts.glossary_processor.font_role_detector import FontRoleDetector
 from scripts.glossary_processor.entry_detector import EntryDetector
 from scripts.glossary_processor.page_joiner import PageJoiner
+from scripts.glossary_processor.acronym_parser import AcronymParser
 
 logger = Util.get_logger(__name__)
 
@@ -116,6 +117,12 @@ class SemanticStructureTransformer:
             # Stage 4: Create semantic structure
             logger.info("Creating semantic structure...")
             semantic_html = self._create_semantic_structure(html_elem, entries, role_map, report, annex)
+            
+            # Stage 4.5: Parse acronyms/abbreviations if entry type is acronyms
+            if entry_type == 'acronyms':
+                logger.info("Parsing acronyms to extract full terms...")
+                modified_count = AcronymParser.parse_dictionary(semantic_html, entry_type)
+                logger.info(f"Modified {modified_count} acronym entries")
             
             # Stage 5: Add CSS stylesheet
             logger.info("Adding CSS stylesheet...")
