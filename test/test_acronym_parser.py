@@ -10,6 +10,7 @@ import lxml.etree as ET
 
 from amilib.ami_html import HtmlUtil, HtmlLib
 from scripts.glossary_processor.acronym_parser import AcronymParser
+from amilib.acronym_extractor import AcronymExtractor
 from scripts.glossary_processor.dictionary_template_constants import (
     ROLE_TERM, ROLE_DEFINITION, ROLE_ABBREVIATION, CLASS_ENTRY,
     DATA_TERM, DATA_HAS_ABBREVIATION, ANNEX_TYPE_ACRONYMS
@@ -161,26 +162,26 @@ class AcronymParserTest(unittest.TestCase):
         HtmlLib.write_html_file(html_elem, output_path, debug=True)
     
     def test_is_acronym(self):
-        """Test acronym detection."""
-        self.assertTrue(AcronymParser._is_acronym("IPCC"))
-        self.assertTrue(AcronymParser._is_acronym("AR6"))
-        self.assertTrue(AcronymParser._is_acronym("NDC"))
-        self.assertTrue(AcronymParser._is_acronym("CO2"))
-        self.assertTrue(AcronymParser._is_acronym("U.S."))
-        self.assertFalse(AcronymParser._is_acronym("climate"))
-        self.assertFalse(AcronymParser._is_acronym("Intergovernmental Panel"))
+        """Test acronym detection (delegates to AcronymExtractor)."""
+        self.assertTrue(AcronymExtractor.is_acronym("IPCC"))
+        self.assertTrue(AcronymExtractor.is_acronym("AR6"))
+        self.assertTrue(AcronymExtractor.is_acronym("NDC"))
+        self.assertTrue(AcronymExtractor.is_acronym("CO2"))
+        self.assertTrue(AcronymExtractor.is_acronym("U.S."))
+        self.assertFalse(AcronymExtractor.is_acronym("climate"))
+        self.assertFalse(AcronymExtractor.is_acronym("Intergovernmental Panel"))
     
     def test_could_be_full_term(self):
-        """Test full term detection."""
+        """Test full term detection (delegates to AcronymExtractor)."""
         # Standard cases
-        self.assertTrue(AcronymParser._could_be_full_term("IPCC", "Intergovernmental Panel on Climate Change"))
-        self.assertTrue(AcronymParser._could_be_full_term("AUM", "assets under management"))
-        self.assertTrue(AcronymParser._could_be_full_term("NDC", "Nationally Determined Contribution"))
-        self.assertTrue(AcronymParser._could_be_full_term("GHG", "greenhouse gas"))
+        self.assertTrue(AcronymExtractor._could_be_full_term("IPCC", "Intergovernmental Panel on Climate Change"))
+        self.assertTrue(AcronymExtractor._could_be_full_term("AUM", "assets under management"))
+        self.assertTrue(AcronymExtractor._could_be_full_term("NDC", "Nationally Determined Contribution"))
+        self.assertTrue(AcronymExtractor._could_be_full_term("GHG", "greenhouse gas"))
         
         # Should not match
-        self.assertFalse(AcronymParser._could_be_full_term("IPCC", "International Climate Panel"))
-        self.assertFalse(AcronymParser._could_be_full_term("ABC", "climate change"))
+        self.assertFalse(AcronymExtractor._could_be_full_term("IPCC", "International Climate Panel"))
+        self.assertFalse(AcronymExtractor._could_be_full_term("ABC", "climate change"))
 
 
 if __name__ == '__main__':

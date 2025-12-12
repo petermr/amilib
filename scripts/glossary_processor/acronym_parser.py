@@ -5,17 +5,19 @@ Detects when definitions start with the full term and reorganizes entries:
 - Extracts full term from definition
 - Moves acronym/abbreviation to abbreviation field
 - Updates entry structure accordingly
+
+Uses AcronymExtractor from amilib for business logic.
 """
-import re
 import sys
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict
 import lxml.etree as ET
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from amilib.util import Util
+from amilib.acronym_extractor import AcronymExtractor
 from scripts.glossary_processor.dictionary_template_constants import (
     ROLE_TERM, ROLE_DEFINITION, ROLE_ABBREVIATION, CLASS_ENTRY,
     DATA_TERM, DATA_HAS_ABBREVIATION, ANNEX_TYPE_ACRONYMS,
@@ -26,21 +28,12 @@ logger = Util.get_logger(__name__)
 
 
 class AcronymParser:
-    """Parses acronym/abbreviation entries to extract full terms."""
+    """
+    Parses acronym/abbreviation entries in HTML to extract full terms.
     
-    # Patterns to detect if definition starts with full term
-    # Common patterns: "Full Term Name", "Full Term Name (additional info)", etc.
-    FULL_TERM_PATTERNS = [
-        r'^([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)',  # Capitalized words: "Intergovernmental Panel"
-        r'^([a-z]+(?:\s+[a-z]+)*)',  # Lowercase words: "assets under management"
-        r'^([A-Z][a-z]+(?:\s+[a-z]+)*)',  # Mixed: "Carbon dioxide"
-    ]
-    
-    # Maximum words to consider as full term (usually 2-5 words)
-    MAX_FULL_TERM_WORDS = 6
-    
-    # Minimum words for full term (usually 2+ words)
-    MIN_FULL_TERM_WORDS = 2
+    Uses AcronymExtractor from amilib for business logic.
+    Handles HTML-specific structure manipulation.
+    """
     
     @classmethod
     def parse_entry(cls, entry_elem: ET.Element, entry_type: str = ANNEX_TYPE_ACRONYMS) -> bool:
@@ -72,11 +65,11 @@ class AcronymParser:
             return False
         
         # Check if term looks like an acronym/abbreviation
-        if not cls._is_acronym(term_text):
+        if not AcronymExtractor.is_acronym(term_text):
             return False
         
         # Try to extract full term from definition
-        full_term, remaining_def = cls._extract_full_term(term_text, def_text)
+        full_term, remaining_def = AcronymExtractor.extract_full_term(term_text, def_text)
         
         if full_term:
             # Reorganize entry
@@ -86,158 +79,6 @@ class AcronymParser:
         
         return False
     
-    @classmethod
-    def _is_acronym(cls, text: str) -> bool:
-        """
-        Check if text looks like an acronym/abbreviation.
-        
-        Args:
-            text: Text to check
-            
-        Returns:
-            True if text appears to be an acronym
-        """
-        text = text.strip()
-        
-        # Acronym patterns:
-        # - All uppercase, 2-10 characters: "IPCC", "AR6", "NDC"
-        # - Mixed case with periods: "U.S.", "U.K."
-        # - Numbers allowed: "AR6", "CO2"
-        
-        # All uppercase, short
-        if re.match(r'^[A-Z]{2,10}$', text):
-            return True
-        
-        # Mixed case with periods
-        if re.match(r'^[A-Z]\.?[A-Z]\.?[A-Z]?\.?$', text):
-            return True
-        
-        # Contains numbers (e.g., "AR6", "CO2")
-        if re.match(r'^[A-Z0-9]{2,10}$', text):
-            return True
-        
-        # Single word, all caps, short
-        if len(text) <= 10 and text.isupper() and not ' ' in text:
-            return True
-        
-        return False
-    
-    @classmethod
-    def _extract_full_term(cls, acronym: str, definition: str) -> Tuple[Optional[str], str]:
-        """
-        Extract full term from definition if it starts with it.
-        
-        Args:
-            acronym: The acronym/abbreviation
-            definition: The definition text
-            
-        Returns:
-            Tuple of (full_term, remaining_definition) or (None, definition) if not found
-        """
-        definition = definition.strip()
-        
-        # Try to match patterns where definition starts with full term
-        # Common patterns:
-        # - "Full Term Name" (exact match)
-        # - "Full Term Name, additional info"
-        # - "Full Term Name (additional info)"
-        # - "Full Term Name. Additional info"
-        
-        # Split definition into words
-        words = definition.split()
-        
-        # Try different lengths of initial words, starting from longest possible match
-        # This ensures we get the complete full term
-        # Stop at sentence boundaries (period, exclamation, question mark)
-        for num_words in range(min(len(words), cls.MAX_FULL_TERM_WORDS), 
-                              cls.MIN_FULL_TERM_WORDS - 1, -1):
-            # Get potential full term
-            potential_full_term = ' '.join(words[:num_words])
-            
-            # Check if we should stop at sentence boundary first
-            # If the last word ends with sentence punctuation, check if this matches
-            last_word = words[num_words - 1] if num_words > 0 else ''
-            if last_word and last_word[-1] in '.!?':
-                # Remove punctuation for matching
-                potential_full_term_clean = potential_full_term.rstrip('.!?')
-                if cls._could_be_full_term(acronym, potential_full_term_clean):
-                    # This looks like end of sentence - use this as full term
-                    remaining = ' '.join(words[num_words:]).strip()
-                    remaining = re.sub(r'^[,;:\-–—]\s*', '', remaining)
-                    return potential_full_term_clean, remaining
-            
-            # Check if this could be the full term for the acronym (without punctuation)
-            if cls._could_be_full_term(acronym, potential_full_term):
-                # Get remaining definition
-                remaining = ' '.join(words[num_words:]).strip()
-                
-                # Clean up remaining definition (remove leading punctuation)
-                remaining = re.sub(r'^[,;:\-–—]\s*', '', remaining)
-                
-                return potential_full_term, remaining
-        
-        return None, definition
-    
-    @classmethod
-    def _could_be_full_term(cls, acronym: str, potential_full_term: str) -> bool:
-        """
-        Check if potential_full_term could be the full term for acronym.
-        
-        Uses heuristics:
-        - First letters of words match acronym exactly
-        - Handles stop words (the, of, on, etc.) that don't contribute
-        
-        Args:
-            acronym: The acronym/abbreviation
-            potential_full_term: Potential full term to check
-            
-        Returns:
-            True if this could be the full term
-        """
-        # Remove common words that don't contribute to acronym
-        stop_words = {'the', 'a', 'an', 'of', 'for', 'and', 'or', 'in', 'on', 'at', 'to'}
-        words = [w for w in potential_full_term.split() if w.lower() not in stop_words]
-        
-        if not words:
-            return False
-        
-        # Extract first letters (case-insensitive)
-        first_letters = ''.join([w[0].upper() for w in words if w])
-        acronym_clean = acronym.upper().replace('.', '').replace('-', '').replace(' ', '')
-        
-        # Exact match is best
-        if first_letters == acronym_clean:
-            return True
-        
-        # For acronyms with numbers (e.g., AR6), check if letters match
-        # Extract only letters from acronym
-        acronym_letters = ''.join([c for c in acronym_clean if c.isalpha()])
-        if acronym_letters and first_letters == acronym_letters:
-            return True
-        
-        # For very short acronyms (2-3 chars), be more lenient
-        # Check if first letters start with acronym
-        if len(acronym_clean) <= 3 and len(first_letters) >= len(acronym_clean):
-            if first_letters[:len(acronym_clean)] == acronym_clean:
-                return True
-        
-        # Special case: "GHG" -> "greenhouse gas"
-        # This is a common abbreviation where GHG stands for "greenhouse gas(es)"
-        # Even though "greenhouse gas" starts with G-G, GHG is widely accepted
-        # Accept if we have words starting with G and the phrase relates to greenhouse/gas
-        if acronym_clean == "GHG":
-            # Check if we have at least 2 words and first word starts with G
-            if len(words) >= 2:
-                word1_first = words[0][0].upper() if words[0] else ''
-                # Accept if first word starts with G and it's a two-word phrase
-                # (common pattern: "greenhouse gas", "greenhouse gases")
-                if word1_first == 'G':
-                    # Check if second word relates to gas/gases
-                    word2_lower = words[1].lower() if len(words) > 1 else ''
-                    if 'gas' in word2_lower:
-                        return True
-        
-        return False
     
     @classmethod
     def _reorganize_entry(cls, entry_elem: ET.Element, term_elem: ET.Element,
@@ -289,20 +130,11 @@ class AcronymParser:
         entry_elem.set(DATA_HAS_ABBREVIATION, "true")
         
         # Update entry ID if needed (normalize full term)
-        normalized_term = cls._normalize_term(full_term)
+        normalized_term = AcronymExtractor.normalize_term(full_term)
         entry_id = f"{entry_elem.get('id', '').split('-entry-')[0]}-entry-{normalized_term}"
         entry_elem.set('id', entry_id)
         
         logger.debug(f"Reorganized entry: '{acronym}' -> term='{full_term}', abbrev='{acronym}'")
-    
-    @classmethod
-    def _normalize_term(cls, term: str) -> str:
-        """Normalize term for use in ID."""
-        # Convert to lowercase, replace spaces with hyphens
-        normalized = term.lower().strip()
-        normalized = re.sub(r'[^\w\s-]', '', normalized)  # Remove punctuation
-        normalized = re.sub(r'\s+', '-', normalized)  # Replace spaces with hyphens
-        return normalized
     
     @classmethod
     def parse_dictionary(cls, html_elem: ET.Element, entry_type: str = ANNEX_TYPE_ACRONYMS) -> int:
