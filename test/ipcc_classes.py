@@ -907,8 +907,9 @@ class IPCCGatsby(IPCCPublisherTool):
             grandparent = parent.getparent()
             grandid = grandparent.get("id")
 
+            # Accept numeric section IDs, special sections, AND non-numeric alphanumeric IDs (for SPM/TS)
             match = grandid is not None and re.match(
-                "\\d+(\\.\\d+)*|(box|cross-chapter-box|cross-working-group-box)-\\d+(\\.\\d+)*|executive-summary|FAQ \\d+(\\.\\d+)*|references",
+                "\\d+(\\.\\d+)*|(box|cross-chapter-box|cross-working-group-box)-\\d+(\\.\\d+)*|executive-summary|FAQ \\d+(\\.\\d+)*|references|[a-z0-9\\-]+",
                 grandid)
             if not match:
                 if debug:

@@ -1,0 +1,223 @@
+{
+  "font_role_mappings": [
+    {
+      "role": "term",
+      "description": "Glossary term or acronym (bold fonts, typically left column)",
+      "font_properties": {
+        "weight": ["bold", "black"],
+        "style": ["normal"],
+        "stretched": ["narrow", "condensed", "normal"]
+      },
+      "font_family_patterns": [
+        "FrutigerLTPro-BlackCn",
+        "FrutigerLTPro-BoldCn",
+        "TimesNewRomanPS-BoldMT"
+      ],
+      "font_size_range": null,
+      "coordinate_rules": {
+        "x0_range": {
+          "min": 50.0,
+          "max": 350.0,
+          "description": "Terms typically in left column"
+        }
+      }
+    },
+    {
+      "role": "definition",
+      "description": "Definition text (normal fonts, typically right column)",
+      "font_properties": {
+        "weight": ["normal", "light"],
+        "style": ["normal"],
+        "stretched": ["condensed", "narrow", "normal"]
+      },
+      "font_family_patterns": [
+        "FrutigerLTPro-Condensed",
+        "TimesNewRomanPSMT"
+      ],
+      "font_size_range": {
+        "min": 5.5,
+        "max": 10.0
+      },
+      "coordinate_rules": {
+        "x0_range": {
+          "min": 130.0,
+          "max": 560.0,
+          "description": "Definitions typically in right column"
+        }
+      }
+    },
+    {
+      "role": "cross_reference",
+      "description": "Italicized cross-reference to other entries",
+      "font_properties": {
+        "weight": ["normal", "light"],
+        "style": ["italic"],
+        "stretched": ["condensed", "narrow", "normal"]
+      },
+      "font_family_patterns": [
+        "FrutigerLTPro-CondensedIta",
+        "FrutigerLTPro-LightCnIta",
+        "Calibri-Italic"
+      ],
+      "font_size_range": {
+        "min": 8.0,
+        "max": 10.0
+      },
+      "coordinate_rules": null
+    },
+    {
+      "role": "section_heading",
+      "description": "Section heading (A, B, C, etc.) - bold fonts with larger sizes or specific x-coordinates",
+      "font_properties": {
+        "weight": ["bold"],
+        "style": ["normal"],
+        "stretched": ["normal", "narrow"]
+      },
+      "font_family_patterns": [
+        "FrutigerLTPro-BoldCn"
+      ],
+      "font_size_range": {
+        "min": 10.0,
+        "max": 72.0,
+        "description": "Section headings typically larger than entry text"
+      },
+      "coordinate_rules": {
+        "x0_range": {
+          "min": 200.0,
+          "max": 250.0,
+          "description": "Section headings typically centered or at specific x-coordinate"
+        },
+        "alternative": {
+          "font_size_min": 28.0,
+          "description": "Or very large font size indicates heading"
+        }
+      }
+    },
+    {
+      "role": "metadata",
+      "description": "Metadata (citation, editorial info) - light fonts, typically at top/bottom",
+      "font_properties": {
+        "weight": ["light", "normal"],
+        "style": ["normal", "italic"],
+        "stretched": ["normal", "narrow"]
+      },
+      "font_family_patterns": [
+        "FrutigerLTPro-LightCn",
+        "FrutigerLTPro-LightCnIta"
+      ],
+      "font_size_range": {
+        "min": 8.0,
+        "max": 9.0
+      },
+      "coordinate_rules": {
+        "y0_range": {
+          "min": 60.0,
+          "max": 110.0,
+          "description": "Metadata typically at top or bottom of page"
+        }
+      }
+    },
+    {
+      "role": "special_character",
+      "description": "Special characters or symbols",
+      "font_properties": {
+        "weight": ["normal"],
+        "style": ["normal", "italic"],
+        "stretched": ["normal"]
+      },
+      "font_family_patterns": [
+        "Calibri",
+        "Calibri-Italic",
+        "SymbolMT",
+        "MyriadPro-Regular"
+      ],
+      "font_size_range": null,
+      "coordinate_rules": null
+    }
+  ],
+  "report_specific_overrides": {
+    "wg3": {
+      "annex-vi-acronyms": {
+        "term": {
+          "font_family_patterns": ["FrutigerLTPro-BlackCn"],
+          "coordinate_rules": {
+            "x0_range": {
+              "min": 50.0,
+              "max": 330.0
+            }
+          }
+        },
+        "definition": {
+          "font_family_patterns": ["FrutigerLTPro-Condensed"],
+          "coordinate_rules": {
+            "x0_range": {
+              "min": 130.0,
+              "max": 449.0
+            }
+          }
+        },
+        "cross_reference": {
+          "font_family_patterns": ["FrutigerLTPro-CondensedIta"]
+        }
+      },
+      "annex-i-glossary": {
+        "term": {
+          "font_family_patterns": ["FrutigerLTPro-BlackCn"]
+        },
+        "definition": {
+          "font_family_patterns": ["FrutigerLTPro-Condensed"]
+        },
+        "cross_reference": {
+          "font_family_patterns": ["FrutigerLTPro-CondensedIta"]
+        }
+      }
+    },
+    "wg1": {
+      "annex-i-glossary": {
+        "term": {
+          "font_family_patterns": ["FrutigerLTPro-BlackCn"]
+        },
+        "definition": {
+          "font_family_patterns": ["FrutigerLTPro-Condensed"]
+        },
+        "cross_reference": {
+          "font_family_patterns": ["FrutigerLTPro-CondensedIta"]
+        }
+      },
+      "annex-ii-acronyms": {
+        "term": {
+          "font_family_patterns": ["FrutigerLTPro-BlackCn"]
+        },
+        "definition": {
+          "font_family_patterns": ["FrutigerLTPro-Condensed"]
+        }
+      }
+    },
+    "syr": {
+      "annex-i-glossary": {
+        "term": {
+          "font_family_patterns": ["TimesNewRomanPS-BoldMT"]
+        },
+        "definition": {
+          "font_family_patterns": ["TimesNewRomanPSMT"]
+        }
+      },
+      "annex-ii-acronyms": {
+        "term": {
+          "font_family_patterns": ["TimesNewRomanPS-BoldMT"]
+        },
+        "definition": {
+          "font_family_patterns": ["TimesNewRomanPSMT"]
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+

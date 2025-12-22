@@ -293,6 +293,25 @@ self.temp_dir = Resources.TEMP_DIR / "test" / "encyclopedia"
 - Examples: `Path(Resources.TEMP_DIR, "examples", <example_name>)`
 - Other modules: `Path(Resources.TEMP_DIR, <module_name>, <class_or_function>)`
 
+### STYLE: Distinguish between fixture temp files and human-inspection temp artifacts
+
+We use temporary files in two complementary ways:
+
+1. **Test fixtures (ephemeral)**: created for automated tests and cleaned up automatically.
+2. **Human inspection artifacts (persisted)**: written to `<root>/temp/` for manual validation after test runs.
+
+**Rule:**
+- ✅ **Fixtures** should create isolated temporary directories/files (e.g., `tmp_path`, `TemporaryDirectory`, or project fixtures in `conftest.py`) and use them for assertions.
+- ✅ **Human inspection outputs** may be written to `<root>/temp/...` (via `Resources.TEMP_DIR`) to support manual review.
+- ✅ Human inspection outputs may **overwrite previous versions** (to avoid unbounded growth).
+- ✅ The `<root>/temp/` directory is **not committed to GitHub** and is **not long-term storage**.
+- ✅ Even if outputs are persisted for review, tests should still assert at least **existence** and **basic content/sanity** (e.g., non-empty HTML, expected tags/strings).
+- ❌ Do not rely on environment variables to control this behavior (the project is distributed across many people with heterogeneous environments).
+
+**Rationale**:
+- Fixture outputs keep tests deterministic and self-contained.
+- Persisted artifacts in `<root>/temp/` enable visual/human QA for transformations (e.g., PDF→HTML) without polluting the repository or requiring commits of generated files.
+
 ### STYLE: Always use Path to create filenames, never use isolated "/"
 
 **Rule:** Always use `Path()` constructor with multiple arguments or `Path.joinpath()` for building file paths. Never use string concatenation with "/" or isolated "/" characters.

@@ -413,3 +413,4 @@ Traceback (most recent call last):
     raise Exception("Failed to connect to database: 'my_db'")
 Exception: Failed to connect to database: 'my_db'
 ERROR wikimedia.py:2128:curlicue type <class 'str'>
+ERROR glossary_processor.py:75:❌ Error processing /Users/pm286/workspace/amilib/test/resources/ipcc/cleaned_content/wg3/annex-vi-acronyms/annex-vi-acronyms.html: type object 'HtmlLib' has no attribute 'parse_html_lxml'
