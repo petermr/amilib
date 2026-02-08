@@ -83,6 +83,35 @@ def test_service_connection_basic(self, mock_get):
 
 **Rationale**: Tests should verify real behavior, not mocked behavior. Mocks hide integration issues and make tests less reliable. If external services are unreliable, tests should handle both success and failure cases gracefully.
 
+### Tests: Use assert to trap errors, not return False
+
+**Rule:** All tests should use `assert` to trap errors, not `return False`. Do not report failures by printing an error and returning False; fail the test with a clear assertion message.
+
+**Date added:** 2026-02-04 (system date)
+
+**✅ CORRECT:**
+```python
+def test_something():
+    result = do_thing()
+    assert result is not None, "do_thing() returned None"
+    assert result.get("ok"), f"Expected ok=True, got: {result}"
+```
+
+**❌ WRONG:**
+```python
+def test_something():
+    result = do_thing()
+    if result is None:
+        print("Error: do_thing() returned None")
+        return False
+    if not result.get("ok"):
+        print(f"Error: got {result}")
+        return False
+    return True
+```
+
+**Rationale**: Using `assert` ensures test runners (e.g. pytest) see a real failure with a clear message. `return False` and `print` do not cause a test failure and can be missed; assertions integrate with the test framework and CI.
+
 ### No Magic Strings
 
 **Rule:** Do not use hardcoded string literals for values that represent constants, identifiers, or configuration. Use class constants or accessor methods instead.
