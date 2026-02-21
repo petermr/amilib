@@ -16,6 +16,7 @@ Uses TDD approach - tests written before implementation.
 """
 
 import unittest
+import pytest
 import json
 import re
 from pathlib import Path
@@ -37,6 +38,7 @@ from amilib.util import Util
 logger = Util.get_logger(__name__)
 
 
+@pytest.mark.skip("Encyclopedia functionality moved to ../encyclopedia")
 class EncyclopediaHideSortTest(AbstractEncyclopediaTest):
     """Test hide and sort functionality in AmiEncyclopedia"""
     

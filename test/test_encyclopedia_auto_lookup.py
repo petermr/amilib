@@ -3,6 +3,7 @@ Tests for encyclopedia auto-lookup functionality
 These tests perform minimal network lookups to verify auto-lookup works
 """
 import unittest
+import pytest
 from pathlib import Path
 
 from amilib.ami_encyclopedia import AmiEncyclopedia
@@ -10,6 +11,7 @@ from test.resources import Resources
 from test.test_encyclopedia import AbstractEncyclopediaTest
 
 
+@pytest.mark.skip("Encyclopedia functionality moved to ../encyclopedia")
 class EncyclopediaAutoLookupTest(AbstractEncyclopediaTest):
     """Test encyclopedia auto-lookup functionality with minimal network calls"""
 

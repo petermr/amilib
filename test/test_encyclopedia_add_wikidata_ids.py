@@ -10,6 +10,7 @@ Tests the lookup_wikidata_ids_from_wikipedia_pages method which:
 """
 
 import unittest
+import pytest
 from pathlib import Path
 import shutil
 
@@ -22,6 +23,7 @@ from test.test_encyclopedia import AbstractEncyclopediaTest
 logger = Util.get_logger(__name__)
 
 
+@pytest.mark.skip("Encyclopedia functionality moved to ../encyclopedia")
 class EncyclopediaAddWikidataIdsTest(AbstractEncyclopediaTest):
     """Test adding Wikidata IDs from Wikipedia pages"""
     

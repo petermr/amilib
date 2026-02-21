@@ -1,4 +1,5 @@
 import csv
+import time
 import unittest
 from pathlib import Path
 
@@ -187,6 +188,7 @@ class DriverTest(AmiAnyTest):
         """
         reads an abbreviations and looks up wikipedia
         """
+        time.sleep(2)  # Delay to avoid rate limiting
         assert TOTAL_GLOSS_DIR.exists(), f"TOTAL_GLOSS_DIR exists {TOTAL_GLOSS_DIR}"
         glossdir = Path(TOTAL_GLOSS_DIR, "glossaries", "total")
         assert glossdir.exists(), f"glossdir must exist {glossdir}"

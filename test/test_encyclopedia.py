@@ -5,6 +5,7 @@ Tests encyclopedia creation, normalization, and synonym aggregation
 """
 
 import unittest
+import pytest
 import re
 from pathlib import Path
 import shutil
@@ -21,6 +22,7 @@ class AbstractEncyclopediaTest(AmiAnyTest):
         self.test_html_file = Path(Resources.TEST_RESOURCES_DIR, "encyclopedia", "test_encyclopedia_15_entries.html")
 
 
+@pytest.mark.skip("Encyclopedia functionality moved to ../encyclopedia")
 class EncyclopediaTest(AbstractEncyclopediaTest):
     """Test encyclopedia functionality"""
 
@@ -181,6 +183,7 @@ class EncyclopediaTest(AbstractEncyclopediaTest):
         print(f"✅ Statistics: {stats['total_entries']} entries → {stats['normalized_groups']} groups")
 
 
+@pytest.mark.skip("Encyclopedia functionality moved to ../encyclopedia")
 class EncyclopediaUtilTest(AbstractEncyclopediaTest):
     """Test encyclopedia utility functions"""
     
@@ -247,6 +250,7 @@ class EncyclopediaUtilTest(AbstractEncyclopediaTest):
         print("✅ Wikipedia URL normalization working correctly")
 
 
+@pytest.mark.skip("Encyclopedia functionality moved to ../encyclopedia")
 class EncyclopediaIntegrationTest(AbstractEncyclopediaTest):
     """Integration tests for encyclopedia functionality"""
     
@@ -596,6 +600,7 @@ class EncyclopediaIntegrationTest(AbstractEncyclopediaTest):
         print(f"✅ Compression ratio: {stats['compression_ratio']:.2f}")
 
 
+@pytest.mark.skip("Encyclopedia functionality moved to ../encyclopedia")
 class CompositionTest(AbstractEncyclopediaTest):
     """Test composition relationship between AmiEncyclopedia and AmiDictionary"""
     

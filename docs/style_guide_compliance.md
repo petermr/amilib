@@ -112,6 +112,38 @@ def test_something():
 
 **Rationale**: Using `assert` ensures test runners (e.g. pytest) see a real failure with a clear message. `return False` and `print` do not cause a test failure and can be missed; assertions integrate with the test framework and CI.
 
+### Tests: Use Descriptive Assert Messages
+
+**Rule:** When testing for counts of files or length of strings, avoid generic messages like "Length should be greater than 0". Instead, use messages that relate to the variable name or purpose.
+
+**Date added:** 2026-02-11 (system date)
+
+**✅ CORRECT:**
+```python
+csv_files = list(output_dir.glob("*_keywords.csv"))
+assert len(csv_files) > 0, f"Expected keyword CSV files in {output_dir}, found none"
+
+df = pd.read_csv(result)
+assert len(df) > 0, f"DataFrame {result} should contain keyword data, but is empty"
+
+content = Path(result).read_text(encoding="utf-8")
+assert len(content) > 0, f"Extracted text file {result} should contain text content"
+```
+
+**❌ WRONG:**
+```python
+csv_files = list(output_dir.glob("*_keywords.csv"))
+assert len(csv_files) > 0, "Length should be greater than 0"
+
+df = pd.read_csv(result)
+assert len(df) > 0, "Length should be greater than 0"
+
+content = Path(result).read_text(encoding="utf-8")
+assert len(content) > 0, "Length should be greater than 0"
+```
+
+**Rationale**: Descriptive assert messages that reference the variable name or purpose make test failures immediately understandable. Generic messages like "Length should be greater than 0" require reading the test code to understand what failed. Messages that include the variable name, file path, or purpose provide context directly in the failure output.
+
 ### No Magic Strings
 
 **Rule:** Do not use hardcoded string literals for values that represent constants, identifiers, or configuration. Use class constants or accessor methods instead.

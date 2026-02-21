@@ -1,0 +1,1221 @@
+[Peter Murray-Rust] 08:04:51
+Right. So, um…
+
+[Peter Murray-Rust] 08:04:54
+We've got to stage…
+
+[Peter Murray-Rust] 08:04:57
+Um, where…
+
+[Peter Murray-Rust] 08:05:00
+Yesterday, we… Hello, Vishnery!
+
+[Peter Murray-Rust] 08:05:04
+Alasagna?
+
+[Peter Murray-Rust] 08:05:07
+Uh, sex, near the four house.
+
+[Saniya] 08:05:10
+Hello,
+
+[Peter Murray-Rust] 08:05:10
+Um, hello.
+
+[Peter Murray-Rust] 08:05:14
+Hello, says Amy.
+
+[Peter Murray-Rust] 08:05:28
+Oh, dear.
+
+[Peter Murray-Rust] 08:05:33
+Right.
+
+[Peter Murray-Rust] 08:05:35
+Okay, we saw yesterday how to develop
+
+[Peter Murray-Rust] 08:05:39
+Um, a new function in a piece of code, right?
+
+[Peter Murray-Rust] 08:05:44
+Uh, so yesterday, um, is…
+
+[Peter Murray-Rust] 08:05:47
+a very valuable template for many of the things we want to do.
+
+[Peter Murray-Rust] 08:05:52
+Um, so…
+
+[Peter Murray-Rust] 08:05:54
+Let's go over just one or two of the principles.
+
+[Peter Murray-Rust] 08:05:59
+So, the idea is that…
+
+[Peter Murray-Rust] 08:06:03
+Um…
+
+[Peter Murray-Rust] 08:06:05
+We learn by doing.
+
+[Peter Murray-Rust] 08:06:07
+Uh, but what we do is we consult with
+
+[Peter Murray-Rust] 08:06:12
+everybody in the group, I mean, in one of these sessions, before we actually
+
+[Peter Murray-Rust] 08:06:18
+write any code that we're going to make public, right?
+
+[Peter Murray-Rust] 08:06:21
+Um,
+
+[Peter Murray-Rust] 08:06:23
+So, why do we do this?
+
+[Peter Murray-Rust] 08:06:28
+anyone.
+
+[Taiba Shamim] 08:06:32
+Because we want to make sure that it runs on…
+
+[Taiba Shamim] 08:06:34
+All the systems, like, on various platforms.
+
+[Peter Murray-Rust] 08:06:38
+That's an excellent answer, yes.
+
+[Taiba Shamim] 08:06:41
+Yeah.
+
+[Peter Murray-Rust] 08:06:44
+There are others.
+
+[Azmi] 08:06:46
+also to get feedback from others.
+
+[Azmi] 08:06:48
+In case, um…
+
+[Peter Murray-Rust] 08:06:48
+You get feedback from others.
+
+[Azmi] 08:06:50
+Mm-hmm.
+
+[Peter Murray-Rust] 08:06:51
+Very important, yes?
+
+[Peter Murray-Rust] 08:07:01
+What other…
+
+[Peter Murray-Rust] 08:07:05
+Um, reasons.
+
+[Azmi] 08:07:09
+It's also important to get everybody on the same page.
+
+[Azmi] 08:07:12
+Before you make any changes.
+
+[Peter Murray-Rust] 08:07:14
+We need to have a common goal. Now, that doesn't mean that everybody has to be involved in
+
+[Peter Murray-Rust] 08:07:23
+Uh, every bit of development.
+
+[Peter Murray-Rust] 08:07:25
+But it means that, generally, it's pointing in the same direction.
+
+[Azmi] 08:07:30
+Mm-hmm.
+
+[Peter Murray-Rust] 08:07:30
+So, this is where project management comes in.
+
+[Peter Murray-Rust] 08:07:35
+Um,
+
+[Peter Murray-Rust] 08:07:38
+Uh, one of the biggest problems in
+
+[Peter Murray-Rust] 08:07:41
+Doing things in the world
+
+[Peter Murray-Rust] 08:07:43
+is not coordinating, uh, what happens, people pulling in different directions.
+
+[Peter Murray-Rust] 08:07:50
+And so on. So…
+
+[Peter Murray-Rust] 08:07:52
+let's say you have a whiz kid come into your group, somebody who knows
+
+[Peter Murray-Rust] 08:07:57
+All sorts of how to program
+
+[Peter Murray-Rust] 08:07:59
+And so forth, right?
+
+[Peter Murray-Rust] 08:08:01
+Uh, and says, I can do all this, right? You go off and…
+
+[Peter Murray-Rust] 08:08:04
+find the material, and I will write the code.
+
+[Peter Murray-Rust] 08:08:09
+In 6 months' time, that person will disappear.
+
+[Peter Murray-Rust] 08:08:13
+And if you don't know
+
+[Peter Murray-Rust] 08:08:16
+how to use that code. If you don't know
+
+[Peter Murray-Rust] 08:08:19
+How to maintain the code,
+
+[Peter Murray-Rust] 08:08:21
+Uh, then it will…
+
+[Peter Murray-Rust] 08:08:26
+Uh, you know, it will fail.
+
+[Peter Murray-Rust] 08:08:28
+It won't be used, it'll be a waste.
+
+[Peter Murray-Rust] 08:08:31
+Um, and I hear many, uh, stories of
+
+[Peter Murray-Rust] 08:08:35
+Geniuses, you know, who think they know how to do things, gone into a, um…
+
+[Peter Murray-Rust] 08:08:41
+an organization,
+
+[Peter Murray-Rust] 08:08:42
+Um,
+
+[Peter Murray-Rust] 08:08:45
+push their own ideas,
+
+[Peter Murray-Rust] 08:08:47
+Uh, without bringing people with them.
+
+[Peter Murray-Rust] 08:08:49
+And then you end up with, uh, something that was worse than before.
+
+[Peter Murray-Rust] 08:08:54
+So, there have been, you know,
+
+[Peter Murray-Rust] 08:08:57
+Hundreds of years of thought about how you run projects and so on.
+
+[Peter Murray-Rust] 08:09:01
+So, this is, um…
+
+[Peter Murray-Rust] 08:09:04
+why what we do is ask
+
+[Peter Murray-Rust] 08:09:09
+Selected people to take responsibility, you know, to be mini-project managers.
+
+[Peter Murray-Rust] 08:09:15
+Um, and, uh, they have to be able to say,
+
+[Peter Murray-Rust] 08:09:20
+Uh, you know, ultimately,
+
+[Peter Murray-Rust] 08:09:22
+Let's, uh, decide whether we're going to do something or not.
+
+[Peter Murray-Rust] 08:09:27
+Um, and if it turns out that, uh, it needs to be prioritized,
+
+[Peter Murray-Rust] 08:09:33
+Um, work out what the most important thing to do is.
+
+[Peter Murray-Rust] 08:09:37
+Um, in the first instance.
+
+[Peter Murray-Rust] 08:09:39
+And then, uh, there's the problem of…
+
+[Peter Murray-Rust] 08:09:43
+Integration. Now, we're building an infrastructure.
+
+[Peter Murray-Rust] 08:09:47
+So, um…
+
+[Peter Murray-Rust] 08:09:50
+Let's think about the…
+
+[Peter Murray-Rust] 08:09:52
+various codes that we've got.
+
+[Peter Murray-Rust] 08:09:55
+Um, and think of them in terms of
+
+[Peter Murray-Rust] 08:09:58
+Simple devices with
+
+[Peter Murray-Rust] 08:10:01
+inputs and outputs and controls, right?
+
+[Peter Murray-Rust] 08:10:05
+So, I'm going to, um…
+
+[Peter Murray-Rust] 08:10:10
+pick, uh…
+
+[Peter Murray-Rust] 08:10:12
+Uh, in no particular order. I'm going to go bottom-up from here.
+
+[Peter Murray-Rust] 08:10:17
+Uh, Pushpa.
+
+[Peter Murray-Rust] 08:10:20
+Are you there?
+
+[pushpa valli] 08:10:21
+Peter, I'm here.
+
+[Peter Murray-Rust] 08:10:22
+Right, okay. Can you tell us…
+
+[Peter Murray-Rust] 08:10:26
+what the inputs are…
+
+[Peter Murray-Rust] 08:10:28
+Uh, what the outputs are, and what the controls are on PyGet papers.
+
+[pushpa valli] 08:10:36
+Input file is, uh, the query we are going to… I mean, the… our topic.
+
+[Peter Murray-Rust] 08:10:39
+Yes?
+
+[pushpa valli] 08:10:42
+An output will be the PDF files of our…
+
+[pushpa valli] 08:10:46
+topic.
+
+[Peter Murray-Rust] 08:10:47
+Yes, oh, actually, it's, uh, you know, the…
+
+[Peter Murray-Rust] 08:10:50
+several types of output, but that's absolutely right.
+
+[Peter Murray-Rust] 08:10:54
+So, in… in a general way, uh, we would say that there are no
+
+[Peter Murray-Rust] 08:11:01
+file input to PDF papers.
+
+[Peter Murray-Rust] 08:11:05
+to PyGet papers.
+
+[pushpa valli] 08:11:05
+Yeah.
+
+[Peter Murray-Rust] 08:11:08
+Uh, there's… the output is a directory of files.
+
+[Peter Murray-Rust] 08:11:12
+And the controls are…
+
+[Peter Murray-Rust] 08:11:14
+the query and other parameters which adjust it. Well done.
+
+[Peter Murray-Rust] 08:11:19
+Okay, uh, Sanya.
+
+[pushpa valli] 08:11:20
+Yeah. Okay.
+
+[Peter Murray-Rust] 08:11:22
+If we take, um…
+
+[Peter Murray-Rust] 08:11:25
+text to phrases.
+
+[Peter Murray-Rust] 08:11:27
+Um, what are the inputs, the controls, and the outputs?
+
+[Peter Murray-Rust] 08:11:44
+Okay. Uh, well, let's move to Vaishnavi.
+
+[Peter Murray-Rust] 08:11:56
+Provotationary user.
+
+[VAISHNAVI] 08:11:58
+Yeah, I mean…
+
+[Peter Murray-Rust] 08:11:58
+It is… right, okay.
+
+[Peter Murray-Rust] 08:12:00
+Uh, you don't need to switch your microphone off, remember, right? Not unless…
+
+[VAISHNAVI] 08:12:05
+Yeah, yeah.
+
+[Peter Murray-Rust] 08:12:05
+Uh, there is, you know, a pneumatic drill in the background or something, okay?
+
+[Peter Murray-Rust] 08:12:11
+So, uh, we have…
+
+[Peter Murray-Rust] 08:12:14
+texture phrases.
+
+[Peter Murray-Rust] 08:12:15
+What are the inputs? What are the outputs?
+
+[VAISHNAVI] 08:12:17
+Yeah.
+
+[Peter Murray-Rust] 08:12:19
+And what are the controls?
+
+[VAISHNAVI] 08:12:22
+So, inputs are the PDFs and HTML files.
+
+[Peter Murray-Rust] 08:12:25
+Yes?
+
+[VAISHNAVI] 08:12:25
+And, uh, outputs are a CSV files.
+
+[Peter Murray-Rust] 08:12:30
+And the controls, are there any controls?
+
+[VAISHNAVI] 08:12:39
+And there are…
+
+[Peter Murray-Rust] 08:12:43
+Is it completely automatic, or…
+
+[Peter Murray-Rust] 08:12:46
+Can you influence what it does?
+
+[VAISHNAVI] 08:13:00
+We, uh, we have to give, uh…
+
+[VAISHNAVI] 08:13:04
+inputs.
+
+[Peter Murray-Rust] 08:13:07
+You give the name of the input, uh, directorial files, right?
+
+[Peter Murray-Rust] 08:13:12
+Um, you give the name of the output file, is there any other…
+
+[Peter Murray-Rust] 08:13:18
+influence you can have on the programme.
+
+[Peter Murray-Rust] 08:13:28
+Or, uh, anyone.
+
+[Azmi] 08:13:30
+Um, okay, so you can…
+
+[Azmi] 08:13:33
+used a n parameter to…
+
+[Azmi] 08:13:36
+tell it how many phrases you want, so if you want, like, 500 phrases, you can do minus N500, and it'll give you 500 phrases from that specific
+
+[Azmi] 08:13:46
+PDF, and um…
+
+[Peter Murray-Rust] 08:13:47
+Yes.
+
+[Azmi] 08:13:49
+Yeah, you can also, like…
+
+[Azmi] 08:13:51
+Text2Prases has, um, different modes, so you can do PDF to tags, HTML to text.
+
+[Azmi] 08:13:57
+extract key phrases or run the entire pipeline.
+
+[Azmi] 08:14:00
+Automatically, um…
+
+[Peter Murray-Rust] 08:14:02
+Yes, so you can, uh, uh, select what your input is.
+
+[Peter Murray-Rust] 08:14:08
+Uh, inform, and you can select what your output is.
+
+[Peter Murray-Rust] 08:14:12
+So, these are all very common aspects of
+
+[Azmi] 08:14:13
+Mm-hmm.
+
+[Peter Murray-Rust] 08:14:16
+Um, uh, of…
+
+[Peter Murray-Rust] 08:14:19
+Unix-like design, right?
+
+[Peter Murray-Rust] 08:14:21
+And it's reflected in the command line, okay?
+
+[Azmi] 08:14:22
+Yep.
+
+[Peter Murray-Rust] 08:14:26
+Uh, if we take, um…
+
+[VAISHNAVI] 08:14:27
+Yeah.
+
+[Peter Murray-Rust] 08:14:29
+Uh, if we ooze running, um…
+
+[Peter Murray-Rust] 08:14:33
+Who's running Semantic Corpus, who on that project?
+
+[Peter Murray-Rust] 08:14:38
+I think… what? Yes, good ORAP, but who is… who else is on the project?
+
+[Sakshi] 08:14:39
+Guram
+
+[VAISHNAVI] 08:14:45
+Oh, me and Tyler.
+
+[Peter Murray-Rust] 08:14:48
+Uh… sorry, you and…
+
+[Saniya] 08:14:52
+Wishtali.
+
+[Peter Murray-Rust] 08:14:54
+Right. Okay, Vosheri, tell me what the inputs are to
+
+[Peter Murray-Rust] 08:14:59
+Um, semantic corpus.
+
+[Peter Murray-Rust] 08:15:03
+what the outputs are, and what controls we have.
+
+[VAISHNAVI] 08:15:09
+So, first, we have to input the…
+
+[VAISHNAVI] 08:15:13
+private papers, and…
+
+[VAISHNAVI] 08:15:15
+For that, uh, we may get any PDFs or…
+
+[VAISHNAVI] 08:15:18
+already installed the search papers.
+
+[VAISHNAVI] 08:15:24
+And…
+
+[Peter Murray-Rust] 08:15:24
+Well, yeah, keep going.
+
+[VAISHNAVI] 08:15:27
+And then we get the data tables for that.
+
+[VAISHNAVI] 08:15:33
+And, uh, then we will prepare the corpus.
+
+[Peter Murray-Rust] 08:15:40
+Right, uh…
+
+[Peter Murray-Rust] 08:15:42
+Who else is on that project?
+
+[Saniya] 08:15:46
+Uh, me, Peter.
+
+[Peter Murray-Rust] 08:15:46
+Okay, can you, uh, say what the inputs are, the outputs are, and the controls?
+
+[Saniya] 08:15:53
+Uh, input for, like, extracting, uh, papers through PyGet PaperCover.
+
+[Saniya] 08:16:01
+Input is query, and the output, uh, is…
+
+[Saniya] 08:16:05
+The paper we get.
+
+[Saniya] 08:16:07
+Related to that query.
+
+[Peter Murray-Rust] 08:16:09
+Now, that's… I get papers. We're talking here about…
+
+[Saniya] 08:16:12
+Okay.
+
+[Peter Murray-Rust] 08:16:13
+Um, Semantic Corpus.
+
+[Peter Murray-Rust] 08:16:25
+So,
+
+[Saniya] 08:16:26
+For copies, the input are data tables, and output is…
+
+[Saniya] 08:16:31
+Cleaned…
+
+[Saniya] 08:16:33
+Metadata tables.
+
+[Saniya] 08:16:36
+I'm not sure.
+
+[Peter Murray-Rust] 08:16:36
+Right. So, um…
+
+[Peter Murray-Rust] 08:16:40
+Uh, it's useful to think in these ways.
+
+[Peter Murray-Rust] 08:16:43
+Um, many Unix tools are based on
+
+[Peter Murray-Rust] 08:16:48
+Having an input,
+
+[Peter Murray-Rust] 08:16:51
+an output and, uh, controls of some sort.
+
+[Peter Murray-Rust] 08:16:58
+They developed so that you might have
+
+[Peter Murray-Rust] 08:17:00
+more than one type of input.
+
+[Peter Murray-Rust] 08:17:03
+Uh, or you might have many files, or a container for the files.
+
+[Peter Murray-Rust] 08:17:09
+Um, but the output…
+
+[Peter Murray-Rust] 08:17:12
+Uh, you may have a single type of output, or you might have
+
+[Peter Murray-Rust] 08:17:16
+Many types of output.
+
+[Peter Murray-Rust] 08:17:19
+Um, if you have many types, then normally,
+
+[Peter Murray-Rust] 08:17:25
+manageable by the controls.
+
+[Peter Murray-Rust] 08:17:27
+Um, and the controls will be things like…
+
+[Peter Murray-Rust] 08:17:31
+Um, how much you get out,
+
+[Peter Murray-Rust] 08:17:34
+Uh, you might have a limit on…
+
+[Peter Murray-Rust] 08:17:37
+Um, verbosity,
+
+[Peter Murray-Rust] 08:17:39
+You know, um, what detail you output,
+
+[Peter Murray-Rust] 08:17:42
+Uh, to the console.
+
+[Peter Murray-Rust] 08:17:45
+Um, now…
+
+[Peter Murray-Rust] 08:17:49
+Early Unix tools output everything to the console, right?
+
+[Peter Murray-Rust] 08:17:53
+Well, no, they didn't, but it was very common.
+
+[Peter Murray-Rust] 08:17:57
+to output it to the console, and then…
+
+[Peter Murray-Rust] 08:17:59
+re-input that, uh, to another tool.
+
+[Peter Murray-Rust] 08:18:02
+Here, we're generally outputting to files,
+
+[Peter Murray-Rust] 08:18:05
+Um, and, um…
+
+[Peter Murray-Rust] 08:18:09
+Uh, uh, we're using…
+
+[Peter Murray-Rust] 08:18:11
+Uh, uh, flags to decide.
+
+[Peter Murray-Rust] 08:18:14
+what the, um, particular process and, um…
+
+[Peter Murray-Rust] 08:18:18
+attributes are for any particular job.
+
+[Peter Murray-Rust] 08:18:21
+Uh, so, almost all of your tools will have a minus i.
+
+[Peter Murray-Rust] 08:18:28
+on them, right?
+
+[Peter Murray-Rust] 08:18:30
+minus input. Which tool doesn't have minus i on?
+
+[Peter Murray-Rust] 08:18:38
+We've got… let's think of all the tools we've got.
+
+[pushpa valli] 08:18:41
+I get papers?
+
+[Peter Murray-Rust] 08:18:42
+Exactly. It doesn't have an input, right?
+
+[pushpa valli] 08:18:44
+Yeah.
+
+[Peter Murray-Rust] 08:18:45
+And…
+
+[Peter Murray-Rust] 08:18:48
+Are there any tools which…
+
+[Peter Murray-Rust] 08:18:50
+don't have outputs.
+
+[Peter Murray-Rust] 08:18:53
+The tools we've got are, I get papers,
+
+[Peter Murray-Rust] 08:18:56
+Semantic Corpus, um…
+
+[Peter Murray-Rust] 08:19:01
+Encyclopedia and Text to Phrases. Those are the…
+
+[Peter Murray-Rust] 08:19:05
+ones we're working with, right?
+
+[Peter Murray-Rust] 08:19:08
+And we also, in the background, have Amy Lube.
+
+[pushpa valli] 08:19:09
+Yeah.
+
+[Peter Murray-Rust] 08:19:14
+So we've got 5…
+
+[Peter Murray-Rust] 08:19:17
+different, um…
+
+[Peter Murray-Rust] 08:19:19
+components to our system.
+
+[Azmi] 08:19:30
+Do all of them have an output, don't they?
+
+[Peter Murray-Rust] 08:19:32
+Uh, all of them create something new, yes.
+
+[Azmi] 08:19:36
+Mm-hmm.
+
+[Peter Murray-Rust] 08:19:37
+Amylib is not really, um…
+
+[Peter Murray-Rust] 08:19:41
+part of the pipeline, um, and that's…
+
+[Peter Murray-Rust] 08:19:44
+Uh, where we've run into problems in the past, because
+
+[Peter Murray-Rust] 08:19:48
+Uh, Amy lives a library, but we've also given it functionality, um, and that has rather messed things up.
+
+[Azmi] 08:19:53
+Mm-hmm.
+
+[Peter Murray-Rust] 08:19:56
+Um, so it was probably a design…
+
+[Peter Murray-Rust] 08:19:59
+problem, uh, to…
+
+[Peter Murray-Rust] 08:20:03
+make Amy live a command,
+
+[Peter Murray-Rust] 08:20:04
+Rather than something that all the other tools use, right?
+
+[Peter Murray-Rust] 08:20:08
+But we're all just stuck with that. And that's a good…
+
+[Azmi] 08:20:09
+Yep.
+
+[Peter Murray-Rust] 08:20:13
+illustration of software design.
+
+[Peter Murray-Rust] 08:20:14
+that, um…
+
+[Peter Murray-Rust] 08:20:18
+decisions you make early on,
+
+[Peter Murray-Rust] 08:20:20
+Uh, and then start using.
+
+[Peter Murray-Rust] 08:20:23
+end up getting hard-coded into the system.
+
+[Peter Murray-Rust] 08:20:27
+And if they're not designed well,
+
+[Peter Murray-Rust] 08:20:29
+Um, then you end up with something which is difficult to maintain,
+
+[Peter Murray-Rust] 08:20:35
+difficult to, um, enhance, and so on. So that's why we're talking at the moment about what we did, and…
+
+[Azmi] 08:20:36
+Mm-hmm.
+
+[Peter Murray-Rust] 08:20:42
+Why, uh, we'll regard
+
+[Peter Murray-Rust] 08:20:45
+what Uditor and Renault did was, um,
+
+[Peter Murray-Rust] 08:20:51
+with texture phrases as version 1.
+
+[Peter Murray-Rust] 08:20:54
+Because it wasn't, um… it's not very easy to extend, so we've got…
+
+[Peter Murray-Rust] 08:21:00
+a new version of texture phrases, which…
+
+[Peter Murray-Rust] 08:21:04
+Um, uh, is going to be cleaner.
+
+[Peter Murray-Rust] 08:21:07
+Right, and then there's the…
+
+[Peter Murray-Rust] 08:21:11
+Question as to…
+
+[Peter Murray-Rust] 08:21:13
+Uh, whether we…
+
+[Peter Murray-Rust] 08:21:16
+Excuse me.
+
+[Peter Murray-Rust] 08:21:19
+Whether we put this in a monolithic…
+
+[Peter Murray-Rust] 08:21:22
+Um, program.
+
+[Peter Murray-Rust] 08:21:24
+And we call it, um…
+
+[Peter Murray-Rust] 08:21:27
+at one stage, we put everything in a program called Amy. Amy did everything.
+
+[Peter Murray-Rust] 08:21:32
+It would run text-to-phrases, it would run PyGet papers, it would run…
+
+[Peter Murray-Rust] 08:21:40
+Various analysis programs and so on.
+
+[Peter Murray-Rust] 08:21:43
+Uh… but, um…
+
+[VAISHNAVI] 08:21:46
+Excuse me, uh, feedback.
+
+[Peter Murray-Rust] 08:21:47
+It became…
+
+[VAISHNAVI] 08:21:51
+Uh, I was… I wanted to inform something.
+
+[Peter Murray-Rust] 08:21:53
+Yeah, sure.
+
+[VAISHNAVI] 08:21:55
+So, Dr. Raynu won be able to join today. She has got some urgent office work.
+
+[Peter Murray-Rust] 08:22:00
+That's perfectly okay.
+
+[Peter Murray-Rust] 08:22:02
+I was working on that General Assumption, right?
+
+[Peter Murray-Rust] 08:22:07
+Okay, so…
+
+[Peter Murray-Rust] 08:22:09
+We've got our design principles,
+
+[Peter Murray-Rust] 08:22:12
+Um, and we've got…
+
+[Peter Murray-Rust] 08:22:16
+are five components at the moment.
+
+[Peter Murray-Rust] 08:22:18
+Um, and…
+
+[Peter Murray-Rust] 08:22:23
+probably, um, we also went down a route where we wrote software
+
+[Peter Murray-Rust] 08:22:29
+Uh, to deal with, um,
+
+[Peter Murray-Rust] 08:22:33
+IPCC at one stage, so there was actually
+
+[Peter Murray-Rust] 08:22:37
+something called Amy Climate.
+
+[Peter Murray-Rust] 08:22:40
+Um, uh, and probably, uh,
+
+[Peter Murray-Rust] 08:22:44
+We had to write a lot of software for that.
+
+[Peter Murray-Rust] 08:22:47
+Uh, because of the…
+
+[Peter Murray-Rust] 08:22:50
+particular… you know, because there's a lot of parsing to be done,
+
+[Peter Murray-Rust] 08:22:54
+with the climate input,
+
+[Peter Murray-Rust] 08:22:56
+But it doesn't really make sense to have something called Amy Climate, it has some…
+
+[Peter Murray-Rust] 08:23:01
+Um, it's more that we pull together scripts which will process the climate,
+
+[Peter Murray-Rust] 08:23:08
+Um, into, uh, something which is, um,
+
+[Peter Murray-Rust] 08:23:14
+semantic.
+
+[Peter Murray-Rust] 08:23:15
+Um, and we're gradually working towards that, so…
+
+[Peter Murray-Rust] 08:23:20
+It looks as if we're not making much progress,
+
+[Peter Murray-Rust] 08:23:23
+At times, uh, but I'm afraid this is the reality of software.
+
+[Peter Murray-Rust] 08:23:29
+Um, that, from time to time, you make rapid progress.
+
+[Peter Murray-Rust] 08:23:33
+And the rest of the time, you, uh…
+
+[Peter Murray-Rust] 08:23:36
+try and, uh, refactor it and, um…
+
+[Peter Murray-Rust] 08:23:39
+make it maintainable and…
+
+[Peter Murray-Rust] 08:23:42
+Uh, then reusable and extendable.
+
+[Peter Murray-Rust] 08:23:47
+Okay, um…
+
+[Peter Murray-Rust] 08:23:49
+So, we use AmyLib as a command at the moment.
+
+[Peter Murray-Rust] 08:23:54
+Um, it's not good design, but the other thing is that…
+
+[Peter Murray-Rust] 08:23:59
+What we build
+
+[Peter Murray-Rust] 08:24:00
+does, to some extent, depend on
+
+[Peter Murray-Rust] 08:24:04
+Um, the skills of the people coming in, and the technology we've got to work with, so…
+
+[Peter Murray-Rust] 08:24:10
+We made Amy Lib rather monolithic.
+
+[Peter Murray-Rust] 08:24:13
+Uh, because, um…
+
+[Peter Murray-Rust] 08:24:17
+people didn't have as many…
+
+[Peter Murray-Rust] 08:24:20
+distributed skills as you now have.
+
+[Peter Murray-Rust] 08:24:22
+You have those skills, uh, at least in part, because the world
+
+[Peter Murray-Rust] 08:24:27
+Um, makes it much easier for people to learn.
+
+[Peter Murray-Rust] 08:24:30
+Um, uh, computing, and because…
+
+[Peter Murray-Rust] 08:24:35
+Uh, um,
+
+[Peter Murray-Rust] 08:24:37
+projects are… are…
+
+[Peter Murray-Rust] 08:24:39
+more robust. Okay.
+
+[Peter Murray-Rust] 08:24:43
+What are we going to do? Um…
+
+[Peter Murray-Rust] 08:24:46
+So, uh…
+
+[Peter Murray-Rust] 08:24:49
+We did texture phrases,
+
+[Peter Murray-Rust] 08:24:52
+Um…
+
+[Peter Murray-Rust] 08:24:57
+Did we put somebody in charge of PyGetPapers?
+
+[Peter Murray-Rust] 08:25:02
+Right, okay. So…
+
+[Taiba Shamim] 08:25:03
+No, nope.
+
+[Sakshi] 08:25:06
+No.
+
+[Sakshi] 08:25:09
+Um, I'm handling text-to-praces.
+
+[Peter Murray-Rust] 08:25:12
+Yes, um…
+
+[Peter Murray-Rust] 08:25:15
+I'm not sure we put anyone in charge of, uh…
+
+[Peter Murray-Rust] 08:25:18
+I get papers.
+
+[Peter Murray-Rust] 08:25:21
+Um… I'm still thinking about
+
+[Peter Murray-Rust] 08:25:24
+I get papers. Um…
+
+[Peter Murray-Rust] 08:25:28
+Version 20.
+
+[Peter Murray-Rust] 08:25:29
+It does a number of things which, um,
+
+[Peter Murray-Rust] 08:25:39
+Uh, are useful extensions.
+
+[Peter Murray-Rust] 08:25:42
+But start to overlap with semantic corpus. This is the problem.
+
+[Peter Murray-Rust] 08:25:47
+This is always…
+
+[Peter Murray-Rust] 08:25:49
+the problem in software is
+
+[Peter Murray-Rust] 08:25:52
+Um, working out how components work together.
+
+[Peter Murray-Rust] 08:25:56
+It's called, um, coupling.
+
+[Peter Murray-Rust] 08:25:59
+So, we've got a situation at the moment, if you want a data tables,
+
+[Peter Murray-Rust] 08:26:04
+You can get it from
+
+[Peter Murray-Rust] 08:26:07
+B20. I get papers.
+
+[Peter Murray-Rust] 08:26:09
+But then you come to a corpus,
+
+[Peter Murray-Rust] 08:26:11
+Uh, which doesn't have…
+
+[Peter Murray-Rust] 08:26:14
+Which wasn't created by PyGet Papers, and you want the data tables
+
+[Peter Murray-Rust] 08:26:19
+Um, but that as well.
+
+[Peter Murray-Rust] 08:26:22
+Uh, so you end up, if you're not careful, ending.
+
+[Peter Murray-Rust] 08:26:28
+creating two systems.
+
+[Peter Murray-Rust] 08:26:30
+Right?
+
+[Peter Murray-Rust] 08:26:32
+And, um, that means twice as much maintenance.
+
+[Peter Murray-Rust] 08:26:37
+Uh, twice as much
+
+[Peter Murray-Rust] 08:26:40
+education for users.
+
+[Peter Murray-Rust] 08:26:42
+Um, and a lot of confusion.
+
+[Peter Murray-Rust] 08:26:45
+So, I'm not sure what the best
+
+[Peter Murray-Rust] 08:26:49
+design is.
+
+[Peter Murray-Rust] 08:26:51
+Um, and…
+
+[Peter Murray-Rust] 08:26:54
+What I think we will do is we will ask the…
+
+[Peter Murray-Rust] 08:26:58
+AI about this problem.
+
+[Peter Murray-Rust] 08:27:00
+Um, and see if it comp…
+
+[Peter Murray-Rust] 08:27:05
+propose, uh, solutions here. Remember, we are splitting off encyclopedia from Amilib,
+
+[Peter Murray-Rust] 08:27:12
+Because we, uh…
+
+[Peter Murray-Rust] 08:27:15
+We don't really want all of that stuff still to be in Amy.
+
+[Peter Murray-Rust] 08:27:21
+Um, and, uh, the AI has told us that what we've got in Encyclopedia
+
+[Peter Murray-Rust] 08:27:27
+is functionally the same as Amelib.
+
+[Peter Murray-Rust] 08:27:29
+So it should be possible, uh, at some stage just to switch to
+
+[Peter Murray-Rust] 08:27:35
+Encyclopedia, and make sure that
+
+[Peter Murray-Rust] 08:27:39
+a keeping track…
+
+[Peter Murray-Rust] 08:27:40
+Uh, and then we are really going to jump just from one to the other.
+
+[Peter Murray-Rust] 08:27:44
+What we don't want is to diverge…
+
+[Peter Murray-Rust] 08:27:47
+Because if we diverge,
+
+[Peter Murray-Rust] 08:27:49
+between Amy Libb and, um…
+
+[Peter Murray-Rust] 08:27:53
+Encyclopedia, then we've got a lot of stuff in the middle here.
+
+[Peter Murray-Rust] 08:27:57
+Uh, which we have to, um…
+
+[Peter Murray-Rust] 08:28:03
+Uh, try and sync up.
+
+[Peter Murray-Rust] 08:28:04
+So, um…
+
+[Peter Murray-Rust] 08:28:07
+Any comments from people before we go on?
+
+[Azmi] 08:28:13
+Mmm, they're all good.
+
+[Sakshi] 08:28:13
+No.
+
+[Peter Murray-Rust] 08:28:15
+Okay, so I'm going to ask, uh…
+
+[Peter Murray-Rust] 08:28:19
+To summarize, um,
+
+[Peter Murray-Rust] 08:28:23
+uh… problem here…
+
+[Peter Murray-Rust] 08:28:40
+Um, I'm just trying to think… we've done it all!
+
+[Peter Murray-Rust] 08:28:44
+Um…
+
+[Peter Murray-Rust] 08:28:48
+I'm going to stop this so that we've got a summary of
+
+[Peter Murray-Rust] 08:28:54
+Uh, the Zoom session. I don't think…
+
+[Peter Murray-Rust] 08:28:58
+Uh, we… I don't, uh…
+
+[Peter Murray-Rust] 08:29:01
+They're in process. I'm… I'm going to stop the recording now.
+
+[Peter Murray-Rust] 08:29:12
+Well, recording stop.
+
+[Peter Murray-Rust] 08:29:14
+And… transcript.
+
+[Peter Murray-Rust] 08:29:16
+What we might do, actually, probably, is just…
+
+[Peter Murray-Rust] 08:29:21
+Uh… we might ask it just to work on the transcript.
+
+[Peter Murray-Rust] 08:29:26
+So that's fine. Um…
+
+[Peter Murray-Rust] 08:29:40
+Let me just think about this.
+

@@ -4,6 +4,7 @@ Tests for EncyclopediaArgs command-line arguments
 Tests that ENCYCLOPEDIA subparser is registered and basic functionality works
 """
 import unittest
+import pytest
 from pathlib import Path
 from io import StringIO
 import sys
@@ -16,6 +17,7 @@ from test.test_all import AmiAnyTest
 from test.test_encyclopedia import AbstractEncyclopediaTest
 
 
+@pytest.mark.skip("Encyclopedia functionality moved to ../encyclopedia")
 class EncyclopediaArgsTest(AbstractEncyclopediaTest):
     """Test EncyclopediaArgs command-line functionality"""
     

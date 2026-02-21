@@ -57,6 +57,7 @@ class WikipediaTest(base_test):
 
 
     def test_wikipedia_page_from_wikidata(self):
+        time.sleep(2)  # Delay to avoid rate limiting
         qitem = "Q144362"  # azulene
         wpage = WikidataPage(qitem)
         links = wpage.get_wikipedia_page_links()
@@ -438,6 +439,7 @@ class WikidataTest(base_test):
         assert 'Q49546' in wikidata_hits and len(wikidata_hits) >= 3
 
     def test_parse_wikidata_page(self):
+        time.sleep(2)  # Delay to avoid rate limiting
         qitem = "Q144362"  # azulene
         wpage = WikidataPage(qitem)
         # note "zz" has no entries
@@ -450,6 +452,7 @@ class WikidataTest(base_test):
         Lookup Wikidata page by Q number and confirm properties
         :return: None
         """
+        time.sleep(2)  # Delay to avoid rate limiting
         wiki_page = WikidataPage("Q49546")
         # wiki_page.debug_page()
         description = wiki_page.get_description()
@@ -606,6 +609,7 @@ class WikidataTest(base_test):
         assert qval[0].text == 'chemical compound'
 
     def test_get_title_of_page(self):
+        time.sleep(2)  # Delay to avoid rate limiting
         qitem = "q407418"
         page = WikidataPage(qitem)
         title = page.get_title()
@@ -615,6 +619,7 @@ class WikidataTest(base_test):
             assert title == "L-menthol"
 
     def test_get_alias_list(self):
+        time.sleep(2)  # Delay to avoid rate limiting
         aliases = WikidataPage("q407418").get_aliases()
         assert len(aliases) >= 5 and "l-menthol" in aliases
 
@@ -628,6 +633,7 @@ class WikidataTest(base_test):
         <th scope="col" class="wikibase-entitytermsforlanguagelistview-cell wikibase-entitytermsforlanguagelistview-language">Language</th>
 
         """
+        time.sleep(2)  # Delay to avoid rate limiting
         language_elems = WikidataPage("q407418").get_elements_for_attval_containing_word(
             "class",
             "wikibase-entitytermsforlanguagelistview-language")
